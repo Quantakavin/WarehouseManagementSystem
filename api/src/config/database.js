@@ -1,15 +1,5 @@
-const config = require('./config')
+const knexfile = require('../db/knexfile');
 
-const knex = require('knex')({
-    client: 'mysql',
-    connection: {
-      host : config.dbhost,
-      port : 3307,
-      user : config.dbuser,
-      password : config.dbpassword,
-      database : config.dbname
-    },
-    pool: { min: 0, max: 10 }
-});
+const knex = require('knex')(knexfile[process.env.NODE_ENV])
 
 module.exports = knex;

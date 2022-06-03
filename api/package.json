@@ -24,6 +24,7 @@
     "mariadb": "^3.0.0",
     "morgan": "^1.10.0",
     "mqtt": "^4.3.7",
+    "mysql": "^2.18.1",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "redis": "^4.1.0",

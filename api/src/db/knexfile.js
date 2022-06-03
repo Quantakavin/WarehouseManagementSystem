@@ -1,5 +1,5 @@
 // Update with your config settings.
-const config = require('../../config/config')
+const config = require('../config/config')
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
@@ -8,11 +8,11 @@ module.exports = {
   development: {
     client: 'mysql',
     connection: {
-      host : config.dbhost,
+      host : "isdnwms.dscloud.me",
       port : 3307,
-      user : config.dbuser,
-      password : config.dbpassword,
-      database : config.dbname
+      user : "isdnwmsdev",
+      password : "Leaptron!62889125",
+      database : "isdnwarehouse"
     }
   },
 
