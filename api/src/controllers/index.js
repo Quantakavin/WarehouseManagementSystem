@@ -1,11 +1,13 @@
-const rmaController = require('./rma.controller');
-const notificationGroupsController = require('./notifcationGroups.controller');
-const userGroupsController = require('./userGroups.controller');
 const usersController = require('./users.controller');
+const userGroupsController = require('./userGroups.controller');
+const notificationGroupsController = require('./notifcationGroups.controller');
+const productsController = require('./products.controller');
+const rmaController = require('./rma.controller');
 
 module.exports = {
-    notifcationGroupsController,
-    rmaController,
-    userGroupsController,
     usersController,
+    userGroupsController,
+    notificationGroupsController,
+    productsController,
+    rmaController,
 };
