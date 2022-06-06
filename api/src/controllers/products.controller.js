@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable prettier/prettier */
 const router = require('express').Router();
 const { productsService } = require('../services');
@@ -20,6 +21,7 @@ exports.Test = async (req, res) => {
 };
 
 // Get all products
+// eslint-disable-next-line consistent-return
 exports.getAllProducts = async (req, res) => {
     try {
         const result = await productsService.getAllProducts();
