@@ -1,5 +1,4 @@
 const router = require('express').Router();
-
 const userGroupController = require('./controllers/userGroupController');
 
 router.get('/usergroup/:id', userGroupController.getUserGroupById);
