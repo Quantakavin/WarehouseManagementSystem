@@ -56,3 +56,5 @@ exports.create = async (req, res) => {
       console.log({ e });
     }
   };
+
+  module.exports = router

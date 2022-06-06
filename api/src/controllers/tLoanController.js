@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const TLoan = require('../controllers/tLoanController')
+const TLoan = require('../services/tLoanService')
 
 router.get("/searchTLoan/:tloanno", async (req, res) => {
     let { tloanno } = req.params
@@ -23,12 +23,12 @@ router.get("/allLoan", async (req, res) => {
         if(results) {
             return res.status(201).send(results.rows)
         } else {
-            return res.status(500).send('Internal Server Error')
+            return res.status(404).send('Not Found')
         }
     }
     catch(error) {
-        // console.log(error)
-        return res.status(500).send('Internal Server Error')
+        console.log(error)
+        return res.status(500).send('Pussy Tight Pussy Clean Pussy Fresh')
     }
 })
 

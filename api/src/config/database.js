@@ -1,18 +1,23 @@
-const knexfile = require('../db/knexfile');
+// const knexfile = require('../db/knexfile');
 
-const knex = require('knex')(knexfile[process.env.NODE_ENV])
+// const knex = require('knex')(knexfile[process.env.NODE_ENV])
 
-module.exports = knex;
+// module.exports = knex;
 
-// const mysql = require('mysql');
+var mysql = require('mysql');
 
-// var con = mysql.createConnection({
-//     host: "localhost",
-//     user: "isdnwmsdev",
-//     password: ""
-//   });
-  
-//   con.connect(function(err) {
-//     if (err) throw err;
-//     console.log("Connected!");
-//   });
+var pool = {
+getConnection: function() {
+    var conn = mysql.createConnection({
+    user: "isdnwmsdev",
+    host: "isdnwms.dscloud.me",
+    database: "isdnwarehouse",
+    password: "Leaptron!62889125",
+    port: 3307,
+    max: 10
+});
+return conn;
+}
+};
+
+module.exports = pool

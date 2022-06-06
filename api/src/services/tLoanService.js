@@ -1,8 +1,9 @@
 
 
 const e = require('express')
-//Database Connection
+const db = require('../config/database')
 
+var pool = db.getConnection()
 var TLoan = {}
 
 TLoan.getAll = () =>{
@@ -13,8 +14,8 @@ TLoan.getAll = () =>{
             resolve(err);
           } else {
             try {
-              connection.query(
-                "",
+              pool.query(
+                "Select * from TLoan",
                 [],
                 (err, result) => {
                   if (err) {
@@ -24,7 +25,7 @@ TLoan.getAll = () =>{
                   }
                 }
               );
-              connection.release();
+              pool.release();
             } catch (error) {
               reject(error);
             }
@@ -69,7 +70,7 @@ TLoan.createTLoan = (TLoanTypeID, CompanyID, TLoanNumber, Requestor, Purpose, Ap
             resolve(err);
           } else {
             try {
-              connection.query(
+              pool.query(
                 "INSERT INTO TLoan(TLoanTypeID, CompanyID, TLoanNumber, Requestor, Purpose, ApplicationDate, Duration, RequiredDate, TLoanStatusID, PickStatus, Remarks) VALUES (?,?,?,?,?,?,?,?,?,?,?) ",
                 [TLoanTypeID, CompanyID, TLoanNumber, Requestor, Purpose, ApplicationDate, Duration, RequiredDate, TLoanStatusID, PickStatus, Remarks],
                 (err, result) => {
@@ -80,7 +81,7 @@ TLoan.createTLoan = (TLoanTypeID, CompanyID, TLoanNumber, Requestor, Purpose, Ap
                   }
                 }
               );
-              connection.release();
+             pool.end()
             } catch (error) {
               reject(error);
             }
