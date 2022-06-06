@@ -3,7 +3,7 @@ const http = require('http');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const formData = require('express-form-data');
-//const routes = require('./src/routes');
+const routes = require('./src/routes/app');
 
 const app = express();
 app.use('*', cors());
@@ -25,14 +25,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const router = express.Router();
-app.use(router);
+app.use('/api', routes);
 
 //app.use('/api', routes);
 
 // 404 Error
-app.use((req, res) => {
+
+app.use((req, res, next) => {
     res.status(404).send(`Sorry can't find that!`);
+    next();
 });
+
 
 server.listen(PORT, (err) => {
     if (err) return console.log(`Cannot Listen on PORT: ${PORT}`);

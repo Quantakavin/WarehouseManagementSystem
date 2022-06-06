@@ -8,11 +8,11 @@ module.exports = {
   development: {
     client: 'mysql',
     connection: {
-      host : "isdnwms.dscloud.me",
+      host : config.dbhost,
       port : 3307,
-      user : "isdnwmsdev",
-      password : "Leaptron!62889125",
-      database : "isdnwarehouse"
+      user : config.dbuser,
+      password : config.dbpassword,
+      database : config.dbname
     }
   },
 
