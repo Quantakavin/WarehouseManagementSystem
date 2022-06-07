@@ -19,11 +19,11 @@ router.get("/searchTLoan/:tloanno", async (req, res) => {
 
 router.get("/allLoan", async (req, res) => {
     try {
-        let results = await TLoan.getAll()
-        if(results) {
-            return res.status(201).send(results.rows)
+        const results = await TLoan.getAll()
+        if(results.length > 0) {
+            return res.status(200).json(results[0])
         } else {
-            return res.status(404).send('Not Found')
+            return res.status(404).send('You have not made any TLoans')
         }
     }
     catch(error) {
@@ -33,12 +33,12 @@ router.get("/allLoan", async (req, res) => {
 })
 
 router.post("/newLoan", async (req, res) => {
-    let {TLoanTypeID, CompanyID, TLoanNumber, Requestor, Purpose, ApplicationDate, Duration, RequiredDate, TLoanStatusID, PickStatus, Remarks} = req.body
+    const {TLoanTypeID, CompanyID, TLoanNumber, Requestor, Purpose, ApplicationDate, Duration, RequiredDate, TLoanStatusID, PickStatus, Remarks} = req.body
     try {
-        let results = await TLoan.createTLoan(TLoanTypeID, CompanyID, TLoanNumber, Requestor, Purpose, ApplicationDate, Duration, RequiredDate, TLoanStatusID, PickStatus, Remarks)
+        const results = await TLoan.createTLoan(TLoanTypeID, CompanyID, TLoanNumber, Requestor, Purpose, ApplicationDate, Duration, RequiredDate, TLoanStatusID, PickStatus, Remarks)
         if(results) {
             // console.log(results)
-            return res.status(201).send(results)
+            return res.status(200).json(results[0])
         } else {
             return res.status(500).send('Jesus') 
         }

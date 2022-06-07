@@ -116,6 +116,7 @@ TLoan.createTLoan = async (TLoanTypeID, CompanyID, TLoanNumber, Requestor, Purpo
     PickStatus: PickStatus,
     Remarks:Remarks
   })
+
 }
 
 
