@@ -4,20 +4,8 @@
 
 // module.exports = knex;
 
-var mysql = require('mysql');
+const knexfile = require('../db/knexfile');
+const config = require('./config');
 
-var pool = {
-getConnection: function() {
-    var conn = mysql.createConnection({
-    user: "isdnwmsdev",
-    host: "isdnwms.dscloud.me",
-    database: "isdnwarehouse",
-    password: "Leaptron!62889125",
-    port: 3307,
-    max: 10
-});
-return conn;
-}
-};
-
-module.exports = pool
+const knex = require('knex')(knexfile[config.environment|| 'development'])
+module.exports = knex;

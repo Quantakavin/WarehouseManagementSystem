@@ -40,12 +40,12 @@ router.post("/newLoan", async (req, res) => {
             // console.log(results)
             return res.status(201).send(results)
         } else {
-            return res.status(500).send('Internal Server Error') 
+            return res.status(500).send('Jesus') 
         }
     }
     catch(error) {
         // console.log(error)
-        return res.status(500).send('Internal Server Error')
+        return res.status(500).send('Christ')
     }
 })
 
