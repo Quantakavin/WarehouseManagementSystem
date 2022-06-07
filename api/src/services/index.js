@@ -1,7 +1,13 @@
-
-const tLoanService = require('./tLoanService')
+const notificationGroupsService = require('./notificationGroupService');
+const userGroupsService = require('./userGroupService');
+const usersService = require('./userService');
+const tLoanService = require('./tLoanService');
+const rmaService = require('./rma.Service');
 
 module.exports = {
-  
-    tLoanService,
+    notificationGroupsService,
+    rmaService,
+    userGroupsService,
+    usersService,
+    tloanService,
 };
