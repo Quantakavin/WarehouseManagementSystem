@@ -1,96 +1,50 @@
-const knex = require('../config/database')
-//more imports
+module.exports.getByRMANO = async (email) => {
+  //return knex.where('Email', email).select('UserID','Username','Password').from('User')
+  const query = `SELECT * FROM Rma WHERE RMANo = ?`;
+  return knex.raw(query, [email]);
+}
 
 module.exports.getAll = async () => {
-  const query = `SELECT * FROM RMA`;
+  const query = `SELECT * FROM Rma`;
   return knex.raw(query);
 }
 
-module.exports.getByRMANo = async (userID) => {
-  const query = `SELECT * FROM RMA WHERE RMANo = ?`;
-  return knex.raw(query, [RMANo]);
-}
-
-  exports.create = async (data) => {
+  exports.getByRMANO = async (RMANO) => {
     try {
-      const {  } = data;
-  
-      const created_at = new Date().toISOString();
-      const updated_at = new Date().toISOString();
-  
-      const values = {  };
-      const columns = Object.keys(values);
-      const rows = Object.values(values);
-      const queryColumns = columns.join(',');
-      const queryRows = serializer.SQLRows(rows).join(',');
-  
-      // Creating RMA
-      // stored procedure to create RMA
-  
-      const result = await connection.query(query);
-      if (!result) throw Error('RMA Not Created!');
-  
-    //   const id = result.rows[0]?.rma_id;
-  
-    //   return { id };
-    } catch (e) {
-      console.log({ e });
-      return null;
-    }
-  };
-
-  //Approve/Reject
-  module.exports.updateARStatus = async () => {
-    return knex('RMA').where('RMANo', RMANo).update({
-        // RmaStatus: name,
-    });
-}
-  //Enter instructions
-  exports.updateInstruction = async (key, payload) => {
-    try {
-      // const updated_at = new Date().toISOString();
-  
-      // const data = { ...payload, updated_at };
-  
-      // const columns = Object.keys(data);
-      // const rows = Object.values(data);
-      // const values = columns.map((col, i) => `${col}='${rows[i]}'`);
-  
-      // const query = `UPDATE RMA SET ${values.join(',')} WHERE rma_id=${key}`;
+      //stored procedure to get RMA matching rmano
   
       const result = await connection.query(query);
       if (!result) return null;
   
-      // const id = key;
-  
-      // return { id };
+      return result.rows[0];
     } catch (e) {
       console.log({ e });
       return null;
     }
   };
+  
+module.exports.insert = async (DateTime, company, customer, contactperson, contactno, rmano, supplierrma, salesmanid, rmastatusid, instruction,) => {
+  return knex('Rma').insert({
+      CompanyID: company,
+      ContactPerson: contactperson,
+      ContactNo: contactno,
+      RMANo: rmano,
+      SupplierRMA: invoice,
+      SalesmanID: salesmanid,
+      SupplierRma: supplierrma,
+      RmaStatusID: rmastatusid,
+      Instruction: instruction
+  });
+}
 
-  //Enter action taken
-  exports.updateActionTaken = async (key, payload) => {
-    try {
-      // const updated_at = new Date().toISOString();
-  
-      // const data = { ...payload, updated_at };
-  
-      // const columns = Object.keys(data);
-      // const rows = Object.values(data);
-      // const values = columns.map((col, i) => `${col}='${rows[i]}'`);
-  
-      // const query = `UPDATE RMA SET ${values.join(',')} WHERE rma_id=${key}`;
-  
-      const result = await connection.query(query);
-      if (!result) return null;
-  
-      // const id = key;
-  
-      // return { id };
-    } catch (e) {
-      console.log({ e });
-      return null;
-    }
-  };
+module.exports.update = async (rmastatusID, status) => {
+  return knex('RmaStatus').where('RmaStatusID', rmastatusID).update({
+      RmaStatus: status
+  });
+}
+
+module.exports.update = async (RMANo, instruction) => {
+  return knex('Rma').where('UserRMANo', RMANo).update({
+      Instruction: instruction
+  });
+}
