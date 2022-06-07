@@ -2,10 +2,12 @@ const rmaService = require('./rma.service');
 const userService = require('./userService.js');
 const userGroupService = require('./userGroupService.js');
 const notificationGroupService = require('./notificationGroupService.js');
+const tLoanService = require('./tLoanService')
 
 module.exports = {
     rmaService,
     userService,
     userGroupService,
-    notificationGroupService
+    notificationGroupService,
+    tLoanService
 };
