@@ -41,3 +41,15 @@ module.exports.insert = async (name, email, password, mobileno, company, usergro
     });
 }
 
+module.exports.update = async (userID, name, email, password, mobileno, company, usergroup, active) => {
+    return knex('User').where('UserID', userID).update({
+        Username: name,
+        Email: email,
+        Password: password,
+        MobileNo: mobileno,
+        CompanyID: company,
+        UserGroupID: usergroup,
+        Active: active
+    });
+}
+

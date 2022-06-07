@@ -12,7 +12,7 @@ const authorization = {
                     console.log(err)
                     res.status(401).json({ message: 'You do not have access' })
                 } else {
-                    req.body.userid = data.id
+                    //req.body.userid = data.id
                     next()
                 }
             })
@@ -20,7 +20,34 @@ const authorization = {
             console.log(`Header: ${req.body}`)
             res.status(401).send({ message: 'Please login first' })
         }
+    },
+
+    verifyAdmin: (req, res, next) => {
+        if (req.headers.usergroup === 'Admin') {
+            if (typeof req.headers.authorization !== 'undefined') {
+                const token = req.headers.authorization.split(' ')[1]
+    
+                jwt.verify(token, config.JWTKey, (err, data) => {
+                    console.log('data extracted from token \n', data)
+                    if (err) {
+                        console.log(err)
+                        res.status(401).json({ message: 'You do not have access' })
+                    } else {
+                        //req.body.userid = data.id
+                        next()
+                    }
+                })
+            } else {
+                console.log(`Header: ${req.body}`)
+                res.status(401).send({ message: 'Please login first' })
+            }
+        } else {
+            console.log(`Header: ${req.body}`)
+            res.status(403).send({ message: 'Only admins can access this function' })
+        }
     }
+
+
 }
 
 module.exports = authorization
