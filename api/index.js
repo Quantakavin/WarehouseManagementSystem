@@ -3,7 +3,7 @@ const http = require('http');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const formData = require('express-form-data');
-const routes = require('./src/routes/app');
+const routes = require('./src/routes/index');
 
 const app = express();
 app.use('*', cors());

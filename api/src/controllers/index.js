@@ -1,13 +1,16 @@
+const userController = require('./userController.js');
+const userGroupController = require('./userGroupController.js');
+const notificationGroupController = require('./notificationGroupController.js');
+const productController = require('./productController.js');
+const tLoanController = require('./tLoanController.js');
 const rmaController = require('./rma.controller');
-const usersController = require('./usercontroller.js');
-const userGroupsController = require('./userGroupController.js');
-const notificationGroupsController = require('./notificationGroupController.js');
-const tLoanController = require('./tLoanController')
 
 module.exports = {
     rmaController,
-    usersController,
-    userGroupsController,
-    notificationGroupsController,
-    tLoanController
+    userController,
+    userGroupController,
+    notificationGroupController,
+    productController,
+    tLoanController,
+    rmaController
 };
