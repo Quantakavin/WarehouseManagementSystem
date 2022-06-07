@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const notificationGroupController = require('./controllers/notificationGroupController');
+const notificationGroupController = require('../controllers/notificationGroupController');
 
 /*
 router.get('/notificationgroup/:id', notificationGroupController.getNotificationGroupById);

@@ -24,18 +24,13 @@ app.use(formData.union());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const router = express.Router();
 app.use('/api', routes);
 
-//app.use('/api', routes);
-
 // 404 Error
-
 app.use((req, res, next) => {
     res.status(404).send(`Sorry can't find that!`);
     next();
 });
-
 
 server.listen(PORT, (err) => {
     if (err) return console.log(`Cannot Listen on PORT: ${PORT}`);
