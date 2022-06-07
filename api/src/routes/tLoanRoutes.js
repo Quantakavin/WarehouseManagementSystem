@@ -1,6 +1,8 @@
 const router = require('express').Router();
-const TLoanRouter = require('../controllers/tLoanController');
 
-router.use('/tloan',TLoanRouter)
+const TLoanController = require('../controllers/tloanController');
 
-module.exports = router
+router.get('/tloan', TLoanController.allLoan);
+router.post('/newloan', TLoanController.newLoan)
+
+module.exports = router;

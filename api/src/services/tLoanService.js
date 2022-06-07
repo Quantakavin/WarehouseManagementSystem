@@ -1,13 +1,13 @@
 const knex = require('../config/database')
 
-var TLoan = {}
 
-TLoan.getAll = async () => {
+
+module.exports.getAll = async () => {
   const query = `SELECT * FROM TLoan`;
   return knex.raw(query);
 }
 
-TLoan.createTLoan = async (TLoanTypeID, CompanyID, TLoanNumber, Requestor, Purpose, ApplicationDate, Duration, RequiredDate, TLoanStatusID, PickStatus, Remarks) => {
+module.exports.createTLoan = async (TLoanTypeID, CompanyID, TLoanNumber, Requestor, Purpose, ApplicationDate, Duration, RequiredDate, TLoanStatusID, PickStatus, Remarks) => {
   return knex('TLoan').insert({
     TLoanTypeID: TLoanTypeID,
     CompanyID: CompanyID,
@@ -26,4 +26,3 @@ TLoan.createTLoan = async (TLoanTypeID, CompanyID, TLoanNumber, Requestor, Purpo
 
 
 
-module.exports = TLoan
