@@ -1,22 +1,15 @@
-//database connection
+const knex = require('../config/database')
 //more imports
 
-exports.getAllRMA = async () => {
-    try {
-      // const ORDER_BY = 'ORDER BY created_at ASC';
-      // const LIMIT = 'LIMIT 25';
-  
-      //const query = `SELECT * FROM "RMA" ${ORDER_BY} ${LIMIT}`;
-  
-      const result = await connection.query(query);
-      if (!result) return null;
-  
-      return result.rows;
-    } catch (e) {
-      console.log({ e });
-      return null;
-    }
-  };
+module.exports.getAll = async () => {
+  const query = `SELECT * FROM RMA`;
+  return knex.raw(query);
+}
+
+module.exports.getByRMANo = async (userID) => {
+  const query = `SELECT * FROM RMA WHERE RMANo = ?`;
+  return knex.raw(query, [RMANo]);
+}
 
   exports.create = async (data) => {
     try {
@@ -46,72 +39,14 @@ exports.getAllRMA = async () => {
     }
   };
 
-  exports.getByRMANO = async (RMANO) => {
-    try {
-      //stored procedure to get RMA matching rmano
-  
-      const result = await connection.query(query);
-      if (!result) return null;
-  
-      return result.rows[0];
-    } catch (e) {
-      console.log({ e });
-      return null;
-    }
-  };
-
   //Approve/Reject
-  exports.updateARStatus = async (key, payload) => {
-    try {
-      // const updated_at = new Date().toISOString();
-  
-      // const data = { ...payload, updated_at };
-  
-      // const columns = Object.keys(data);
-      // const rows = Object.values(data);
-      // const values = columns.map((col, i) => `${col}='${rows[i]}'`);
-  
-      // const query = `UPDATE RMA SET ${values.join(',')} WHERE rma_id=${key}`;
-  
-      const result = await connection.query(query);
-      if (!result) return null;
-  
-      // const id = key;
-  
-      // return { id };
-    } catch (e) {
-      console.log({ e });
-      return null;
-    }
-  };
-
-  //Mark as received in warehouse
-  exports.updateArrivalStatus = async (key, payload) => {
-    try {
-      // const updated_at = new Date().toISOString();
-  
-      // const data = { ...payload, updated_at };
-  
-      // const columns = Object.keys(data);
-      // const rows = Object.values(data);
-      // const values = columns.map((col, i) => `${col}='${rows[i]}'`);
-  
-      // const query = `UPDATE RMA SET ${values.join(',')} WHERE rma_id=${key}`;
-  
-      const result = await connection.query(query);
-      if (!result) return null;
-  
-      // const id = key;
-  
-      // return { id };
-    } catch (e) {
-      console.log({ e });
-      return null;
-    }
-  };
-
-  //Enter product condition and course of action
-  exports.updateProductCondition = async (key, payload) => {
+  module.exports.updateARStatus = async () => {
+    return knex('RMA').where('RMANo', RMANo).update({
+        // RmaStatus: name,
+    });
+}
+  //Enter instructions
+  exports.updateInstruction = async (key, payload) => {
     try {
       // const updated_at = new Date().toISOString();
   
