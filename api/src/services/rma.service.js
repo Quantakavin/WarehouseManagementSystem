@@ -59,3 +59,103 @@ exports.getAllRMA = async () => {
       return null;
     }
   };
+
+  //Approve/Reject
+  exports.updateARStatus = async (key, payload) => {
+    try {
+      // const updated_at = new Date().toISOString();
+  
+      // const data = { ...payload, updated_at };
+  
+      // const columns = Object.keys(data);
+      // const rows = Object.values(data);
+      // const values = columns.map((col, i) => `${col}='${rows[i]}'`);
+  
+      // const query = `UPDATE RMA SET ${values.join(',')} WHERE rma_id=${key}`;
+  
+      const result = await connection.query(query);
+      if (!result) return null;
+  
+      // const id = key;
+  
+      // return { id };
+    } catch (e) {
+      console.log({ e });
+      return null;
+    }
+  };
+
+  //Mark as received in warehouse
+  exports.updateArrivalStatus = async (key, payload) => {
+    try {
+      // const updated_at = new Date().toISOString();
+  
+      // const data = { ...payload, updated_at };
+  
+      // const columns = Object.keys(data);
+      // const rows = Object.values(data);
+      // const values = columns.map((col, i) => `${col}='${rows[i]}'`);
+  
+      // const query = `UPDATE RMA SET ${values.join(',')} WHERE rma_id=${key}`;
+  
+      const result = await connection.query(query);
+      if (!result) return null;
+  
+      // const id = key;
+  
+      // return { id };
+    } catch (e) {
+      console.log({ e });
+      return null;
+    }
+  };
+
+  //Enter product condition and course of action
+  exports.updateProductCondition = async (key, payload) => {
+    try {
+      // const updated_at = new Date().toISOString();
+  
+      // const data = { ...payload, updated_at };
+  
+      // const columns = Object.keys(data);
+      // const rows = Object.values(data);
+      // const values = columns.map((col, i) => `${col}='${rows[i]}'`);
+  
+      // const query = `UPDATE RMA SET ${values.join(',')} WHERE rma_id=${key}`;
+  
+      const result = await connection.query(query);
+      if (!result) return null;
+  
+      // const id = key;
+  
+      // return { id };
+    } catch (e) {
+      console.log({ e });
+      return null;
+    }
+  };
+
+  //Enter action taken
+  exports.updateActionTaken = async (key, payload) => {
+    try {
+      // const updated_at = new Date().toISOString();
+  
+      // const data = { ...payload, updated_at };
+  
+      // const columns = Object.keys(data);
+      // const rows = Object.values(data);
+      // const values = columns.map((col, i) => `${col}='${rows[i]}'`);
+  
+      // const query = `UPDATE RMA SET ${values.join(',')} WHERE rma_id=${key}`;
+  
+      const result = await connection.query(query);
+      if (!result) return null;
+  
+      // const id = key;
+  
+      // return { id };
+    } catch (e) {
+      console.log({ e });
+      return null;
+    }
+  };
