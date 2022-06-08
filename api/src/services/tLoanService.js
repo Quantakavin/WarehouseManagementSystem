@@ -7,22 +7,25 @@ module.exports.getAll = async () => {
   return knex.raw(query);
 }
 
-module.exports.createTLoan = async (TLoanTypeID, CompanyID, TLoanNumber, Requestor, Purpose, ApplicationDate, Duration, RequiredDate, TLoanStatusID, PickStatus, Remarks) => {
+module.exports.createTLoan = async (type, company, number, name, purpose, applicationdate, duration, requireddate, status, pick, remarks) => {
   return knex('TLoan').insert({
-    TLoanTypeID: TLoanTypeID,
-    CompanyID: CompanyID,
-    TLoanNumber: TLoanNumber,
-    Requestor: Requestor,
-    Purpose: Purpose,
-    ApplicationDate: ApplicationDate,
-    Duration: Duration,
-    RequiredDate: RequiredDate,
-    TLoanStatusID: TLoanStatusID,
-    PickStatus: PickStatus,
-    Remarks:Remarks
+    TLoanTypeID: type,
+    CompanyID: company,
+    TLoanNumber: number,
+    Requestor: name,
+    Purpose: purpose,
+    ApplicationDate: applicationdate,
+    Duration: duration,
+    RequiredDate: requireddate,
+    TLoanStatusID: status,
+    PickStatusID: pick,
+    Remarks: remarks
   })
 
 }
 
-
+module.exports.getLoanByNumber = async(TLoanNumber) => {
+  const query = `SELECT * FROM TLoan where TLoanNumber = ?`
+  return knex.raw(query, [TLoanNumber])
+}
 
