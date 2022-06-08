@@ -1,7 +1,6 @@
-const router = require('express').Router();
 const TLoan = require('../services/tLoanService')
 
-router.get("/searchTLoan/:tloanno", async (req, res) => {
+module.exports.searchLoan = async (req, res) => {
     let { tloanno } = req.params
     try {
         let results = await TLoan.getTLoanByNo(tloanno)
@@ -15,9 +14,9 @@ router.get("/searchTLoan/:tloanno", async (req, res) => {
         // console.log(error)
         return res.status(500).send('Internal Server Error')
     }
-})
+}
 
-router.get("/allLoan", async (req, res) => {
+module.exports.allLoan = async (req, res) => {
     try {
         const results = await TLoan.getAll()
         if(results.length > 0) {
@@ -30,9 +29,9 @@ router.get("/allLoan", async (req, res) => {
         console.log(error)
         return res.status(500).send('Pussy Tight Pussy Clean Pussy Fresh')
     }
-})
+}
 
-router.post("/newLoan", async (req, res) => {
+module.exports.newLoan = async (req, res) => {
     const {TLoanTypeID, CompanyID, TLoanNumber, Requestor, Purpose, ApplicationDate, Duration, RequiredDate, TLoanStatusID, PickStatus, Remarks} = req.body
     try {
         const results = await TLoan.createTLoan(TLoanTypeID, CompanyID, TLoanNumber, Requestor, Purpose, ApplicationDate, Duration, RequiredDate, TLoanStatusID, PickStatus, Remarks)
@@ -47,7 +46,6 @@ router.post("/newLoan", async (req, res) => {
         // console.log(error)
         return res.status(500).send('Christ')
     }
-})
+}
 
 
-module.exports = router;
