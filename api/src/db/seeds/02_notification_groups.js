@@ -4,15 +4,12 @@
  */
 exports.seed = async function(knex) {
 
-  return knex('NotificationGroup').truncate()
+  return knex('NotiGroup').del()
    .then(function () {
-    return knex('NotificationGroup').insert([
-      {UserGroupName: 'Sales Engineer', UserGroupDesc: 'Sales people who deal with customers'},
-      {UserGroupName: 'Sales Manager', UserGroupDesc: 'In charge of managing sales engineers'},
-      {UserGroupName: 'Sales Admin', UserGroupDesc: 'Deals with administrative tasks and paperwork'},
-      {UserGroupName: 'Warehouse Worker', UserGroupDesc: 'Store personnel working at the warehouse'},
-      {UserGroupName: 'Technical Staff', UserGroupDesc: 'Involved with repair and maintainence of equipment'},
-      {UserGroupName: 'Admin', UserGroupDesc: 'Super admin of the website'},
+    return knex('NotiGroup').insert([
+      {NotiGroupID: 1, NotiGroupName: 'Sales admin', NotiGroupDesc: 'Notifications for sales admins', CompanyID: 2},
+      {NotiGroupID: 2, NotiGroupName: 'Maintainence', NotiGroupDesc: 'Notifications for maintainence', CompanyID: 2},
+      {NotiGroupID: 3, NotiGroupName: 'Management', NotiGroupDesc: 'Notifications for for management', CompanyID: 2}
     ]);
    });
-};
+}; 

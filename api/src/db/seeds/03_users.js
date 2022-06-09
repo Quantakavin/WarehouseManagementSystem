@@ -4,15 +4,11 @@
  */
 exports.seed = async function(knex) {
 
-  return knex('User').truncate()
+  return knex('User').del()
     .then(function () {
       return knex('User').insert([
-        {UserGroupName: 'Sales Engineer', UserGroupDesc: 'Sales people who deal with customers'},
-        {UserGroupName: 'Sales Manager', UserGroupDesc: 'In charge of managing sales engineers'},
-        {UserGroupName: 'Sales Admin', UserGroupDesc: 'Deals with administrative tasks and paperwork'},
-        {UserGroupName: 'Warehouse Worker', UserGroupDesc: 'Store personnel working at the warehouse'},
-        {UserGroupName: 'Technical Staff', UserGroupDesc: 'Involved with repair and maintainence of equipment'},
-        {UserGroupName: 'Admin', UserGroupDesc: 'Super admin of the website'},
+        {UserID: 1, CompanyID: 2, SAPUserID: 9998, FirstName: 'Peter Wong', Username: 'peterwong', Password: '81dc9bdb52d04dc20036dbd8313ed055', MobileNo: '91851560', Email: 'peterwong@leaptron.com', Active: 'Y', UserGroupID: 1, SAPUser: 'N', Deleted: 0, DeleteFlag: 1},
+        {UserID: 3, CompanyID: 2, SAPUserID: 9999, FirstName: 'Kelyn Wong', Username: 'kelynwong', Password: '81dc9bdb52d04dc20036dbd8313ed055', MobileNo: '77777777', Email: 'kelynwonget@gmail.com', Active: 'Y', UserGroupID: 1, SAPUser: 'N', Deleted: 0, DeleteFlag: 1},
       ]);
     });
 };

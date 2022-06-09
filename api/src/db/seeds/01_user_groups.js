@@ -13,15 +13,15 @@ exports.seed = async function(knex) {
   ]);
   */
 
-  return knex('UserGroup').truncate()
+  return knex('UserGroup').del()
     .then(function () {
       return knex('UserGroup').insert([
-        {UserGroupName: 'Sales Engineer', UserGroupDesc: 'Sales people who deal with customers'},
-        {UserGroupName: 'Sales Manager', UserGroupDesc: 'In charge of managing sales engineers'},
-        {UserGroupName: 'Sales Admin', UserGroupDesc: 'Deals with administrative tasks and paperwork'},
-        {UserGroupName: 'Warehouse Worker', UserGroupDesc: 'Store personnel working at the warehouse'},
-        {UserGroupName: 'Technical Staff', UserGroupDesc: 'Involved with repair and maintainence of equipment'},
-        {UserGroupName: 'Admin', UserGroupDesc: 'Super admin of the website'},
+        {UserGroupID: 1, UserGroupName: 'Sales Admin', UserGroupDesc: 'Deals with administrative tasks and paperwork'},
+        {UserGroupID: 2, UserGroupName: 'Warehouse Worker', UserGroupDesc: 'Store personnel working at the warehouse'},
+        {UserGroupID: 3, UserGroupName: 'Sales Engineer', UserGroupDesc: 'Sales people who deal with customers'},
+        {UserGroupID: 4, UserGroupName: 'Sales Manager', UserGroupDesc: 'In charge of managing sales engineers'},
+        {UserGroupID: 5, UserGroupName: 'Technical Staff', UserGroupDesc: 'Involved with repair and maintainence of equipment'},
+        {UserGroupID: 6, UserGroupName: 'Admin', UserGroupDesc: 'Super admin of the website'},
       ]);
     });
 };
