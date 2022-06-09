@@ -1,13 +1,13 @@
 const TLoan = require('../services/tLoanService')
 
 module.exports.searchLoan = async (req, res) => {
-    let { tloanno } = req.params
+    let TLoanNumber = req.params.number
     try {
-        let results = await TLoan.getTLoanByNo(tloanno)
-        if(results) {
-            return res.status(201).send(results.rows)
+        let results = await TLoan.getLoanByNumber(TLoanNumber)
+        if(results.length > 0) {
+            return res.status(200).send(results[0])
         } else {
-            return res.status(500).send('Internal Server Error')       
+            return res.status(404).send('Does Not Exist')       
         }
     }
     catch(error) {
@@ -27,24 +27,24 @@ module.exports.allLoan = async (req, res) => {
     }
     catch(error) {
         console.log(error)
-        return res.status(500).send('Pussy Tight Pussy Clean Pussy Fresh')
+        return res.status(500).send('Internal Server Error')
     }
 }
 
 module.exports.newLoan = async (req, res) => {
-    const {TLoanTypeID, CompanyID, TLoanNumber, Requestor, Purpose, ApplicationDate, Duration, RequiredDate, TLoanStatusID, PickStatus, Remarks} = req.body
+    const {type, company, number, name, purpose, applicationdate, duration, requireddate, status, pick, remarks} = req.body
     try {
-        const results = await TLoan.createTLoan(TLoanTypeID, CompanyID, TLoanNumber, Requestor, Purpose, ApplicationDate, Duration, RequiredDate, TLoanStatusID, PickStatus, Remarks)
-        if(results) {
-            // console.log(results)
+        const results = await TLoan.createTLoan(type, company, number, name, purpose, applicationdate, duration, requireddate, status, pick, remarks)
+        if(results.length > 0) {
+            //console.log(results)
             return res.status(200).json(results[0])
         } else {
-            return res.status(500).send('Jesus') 
+            return res.status(500).send('Could Not Make The Loan') 
         }
     }
     catch(error) {
-        // console.log(error)
-        return res.status(500).send('Christ')
+        console.log(error)
+        return res.status(500).send('Internal Server Error')
     }
 }
 
