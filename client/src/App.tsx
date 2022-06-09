@@ -1,15 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+
 import './App.css';
+import DataTable from './Components/testtable';
+
 
 
 function App() {
   return (
     <div className="App">
-     
-      <h1>Hello</h1>
+    
+    <DataTable />
+   
+
     </div>
   );
 }
