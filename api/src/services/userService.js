@@ -15,17 +15,17 @@ module.exports.getByEmail = async (email) => {
 }
 
 module.exports.getAll = async () => {
-    const query = `SELECT u.UserID, u.Username, u.Email, c.CompanyName, g.UserGroupName, IFNULL(u.MobileNo, 'NULL') 'Mobile No'  FROM User u INNER JOIN Company c ON u.CompanyID = c.CompanyID INNER JOIN UserGroup g ON u.UserGroupID = g.UserGroupID`;
+    const query = `SELECT u.UserID, u.Username, u.Email, c.CompanyName, g.UserGroupName, IFNULL(u.MobileNo, 'NULL') 'MobileNo' FROM User u INNER JOIN Company c ON u.CompanyID = c.CompanyID INNER JOIN UserGroup g ON u.UserGroupID = g.UserGroupID`;
     return knex.raw(query);
 }
 
 module.exports.getByID = async (userID) => {
-    const query = `SELECT u.Username, u.Email, c.CompanyName, g.UserGroupName, IFNULL(u.MobileNo, 'NULL') 'Mobile No'  FROM User u INNER JOIN Company c ON u.CompanyID = c.CompanyID INNER JOIN UserGroup g ON u.UserGroupID = g.UserGroupID WHERE u.UserID = ?`;
+    const query = `SELECT u.Username, u.Email, c.CompanyName, g.UserGroupName, IFNULL(u.MobileNo, 'NULL') 'MobileNo'  FROM User u INNER JOIN Company c ON u.CompanyID = c.CompanyID INNER JOIN UserGroup g ON u.UserGroupID = g.UserGroupID WHERE u.UserID = ?`;
     return knex.raw(query, [userID]);
 }
 
 module.exports.getByName = async (name) => {
-    const query = `SELECT u.UserID, u.Username, u.Email, c.CompanyName, g.UserGroupName, IFNULL(u.MobileNo, 'NULL') 'Mobile No'  FROM User u INNER JOIN Company c ON u.CompanyID = c.CompanyID INNER JOIN UserGroup g ON u.UserGroupID = g.UserGroupID WHERE u.Username LIKE ?`;
+    const query = `SELECT u.UserID, u.Username, u.Email, c.CompanyName, g.UserGroupName, IFNULL(u.MobileNo, 'NULL') 'MobileNo'  FROM User u INNER JOIN Company c ON u.CompanyID = c.CompanyID INNER JOIN UserGroup g ON u.UserGroupID = g.UserGroupID WHERE u.Username LIKE ?`;
     return knex.raw(query, [ '%' + name + '%']);
 }
 

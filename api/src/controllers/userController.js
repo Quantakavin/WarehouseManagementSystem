@@ -2,8 +2,8 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const sgMail = require('@sendgrid/mail')
 const user = require('../services/userService')
+const notificationGroup = require('../services/notificationGroupService')
 const config = require('../config/config')
-const e = require('express')
 
 module.exports.loginUser = async (req, res) => {
     
@@ -44,13 +44,20 @@ module.exports.getAllUsers = async (req, res) => {
 module.exports.getUserById = async (req, res) => {
     const userID = req.params.id
     try {
+        let output = []
         const results = await user.getByID(userID)
-        if (results.length > 0) {
-            return res.status(200).send(results[0])
+        if (results[0].length > 0) {
+            output = results[0];
+            const results2 = await notificationGroup.getByUser(userID)
+            if (results2.length > 0) {
+                output[0].NotificationGroups = results2[0]
+            } 
+            return res.status(200).send(output)
         } else {
-            return res.status(404).send('Cannot find user with that id')
+            return res.status(404).json({ message: 'Cannot find user with that id' })
         }
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ message: 'Internal Server Error!' })
     }
 }
@@ -59,10 +66,10 @@ module.exports.getUserByName = async (req, res) => {
     const { name } = req.query
     try {
         const results = await user.getByName(name)
-        if (results.length > 0) {
+        if (results[0].length > 0) {
             return res.status(200).send(results[0])
         } else {
-            return res.status(404).send('No more results')
+            return res.status(404).json({ message: 'No more results' })
         }
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error!' })
@@ -75,8 +82,8 @@ module.exports.createUser = async (req, res) => {
     try {
         const hash = await bcrypt.hash(password, 10)
         try {
-            const results = await user.insert(name, email, hash, mobileno, company, usergroup)
-            return res.status(201).send({ message: 'User created successfully!' })
+            await user.insert(name, email, hash, mobileno, company, usergroup)
+            return res.status(201).json({ message: 'User created successfully!' })
         } catch (issue) {
             if (issue.code === 'ER_DUP_ENTRY') {
                 return res.status(422).json({ message: 'User with that email already exists' })
@@ -106,7 +113,7 @@ module.exports.updateUser = async (req, res) => {
                 return res.status(500).json({ message: 'Internal Server Error!' })
             }
         } else {
-            return res.status(404).send('Cannot find user with that id')
+            return res.status(404).json({ message: 'Cannot find user with that id' })
         }
     } catch (error) {
         console.log(error)
