@@ -60,7 +60,7 @@ module.exports.updateUserGroup = async (req, res) => {
         const results = await userGroup.getByID(userGroupID)
         if (results[0].length > 0) {
             await userGroup.update(userGroupID, name, description, features)
-            return res.status(204).json({ message: 'User Group updated successfully!' })
+            return res.status(200).json({ message: 'User Group updated successfully!' })
         } else {
             return res.status(404).json({ message: 'Cannot find User Group with that id' })
         }
@@ -77,7 +77,7 @@ module.exports.deleteUserGroup = async (req, res) => {
             const results2 = await user.getByUserGroup(userGroupID);
             if (results2[0][0].Count == 0) {
                 await userGroup.delete(userGroupID)
-                return res.status(204).json({ message: 'User Group deleted successfully!' })
+                return res.status(200).json({ message: 'User Group deleted successfully!' })
             } else {
                 return res.status(405).json({ message: 'This user group cannot be deleted as it contains users' })
             }
