@@ -1,22 +1,21 @@
-const validator = require('validator')
+const validator = require('validator');
 
 const sanitization = {
     sanitizeResult(req, res, next) {
-        for (let i = 0; i < res.length; i++) {
-            const row = res[i]
-            console.log(row)
+        for (let i = 0; i < res.length; i += 1) {
+            const row = res[i];
             for (const key in row) {
-                const val = row[key]
+                const val = row[key];
                 if (typeof val === 'string') {
-                    row[key] = validator.blacklist(val, '<|>|\'|"|&')
+                    row[key] = validator.blacklist(val, '<|>|\'|"|&');
                     res.status(400).json({
                         message: 'Malicious Data Detected'
-                    })
+                    });
                 }
             }
         }
-        next()
+        next();
     }
-}
+};
 
-module.exports = sanitization
+module.exports = sanitization;

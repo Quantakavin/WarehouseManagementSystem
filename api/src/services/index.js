@@ -1,7 +1,7 @@
-const userService = require('./userService.js');
-const userGroupService = require('./userGroupService.js');
-const notificationGroupService = require('./notificationGroupService.js');
-const productService = require('./productService.js');
+const userService = require('./userService');
+const userGroupService = require('./userGroupService');
+const notificationGroupService = require('./notificationGroupService');
+const productService = require('./productService');
 const tLoanService = require('./tLoanService');
 const rmaService = require('./rma.service');
 

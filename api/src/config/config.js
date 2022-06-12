@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+
 dotenv.config();
 
 module.exports = {
@@ -8,4 +9,4 @@ module.exports = {
     dbpassword: process.env.DBPASSWORD,
     JWTKey: process.env.JWTKEY,
     environment: process.env.NODE_ENV
-}
+};
