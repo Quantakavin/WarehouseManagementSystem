@@ -21,7 +21,8 @@ module.exports.getByName = async (name) => {
     return knex.raw(query, [ '%' + name + '%']);
 }
 
-module.exports.insert = async (name, email, password, mobileno, company, usergroup) => {
+module.exports.insert = async (name, email, password, mobileno, company, usergroup, notigroups) => {
+    /*
     return knex('User').insert({
         Username: name,
         Email: email,
@@ -31,9 +32,33 @@ module.exports.insert = async (name, email, password, mobileno, company, usergro
         UserGroupID: usergroup,
         Active: 'Y'
     });
+    */
+    return knex.transaction((trx) => {
+        knex.insert({
+            Username: name,
+            Email: email,
+            Password: password,
+            MobileNo: mobileno,
+            CompanyID: company,
+            UserGroupID: usergroup,
+            Active: 'Y'
+        }, 'UserID')
+        .into('User')
+        .transacting(trx)
+        .then((ids) => {
+            if (notigroups.length > 0) {
+                notigroups.forEach((notigroup) => notigroup.UserID = ids[0]);
+                return knex('UserNotiGroup').insert(notigroups).transacting(trx);
+            }
+        })
+        .then(trx.commit)
+        .catch(trx.rollback);
+    })
 }
 
-module.exports.update = async (userID, name, email, password, mobileno, company, usergroup, active) => {
+
+module.exports.update = async (userID, name, email, password, mobileno, company, usergroup, active, notigroups) => {
+    /*
     return knex('User').where('UserID', userID).update({
         Username: name,
         Email: email,
@@ -43,6 +68,30 @@ module.exports.update = async (userID, name, email, password, mobileno, company,
         UserGroupID: usergroup,
         Active: active
     });
+    */
+    return knex.transaction((trx) => {
+        knex('User').where('UserID', userID).update({
+            Username: name,
+            Email: email,
+            Password: password,
+            MobileNo: mobileno,
+            CompanyID: company,
+            UserGroupID: usergroup,
+            Active: active
+        })
+        .transacting(trx)
+        .then(() => {
+            return knex('UserNotiGroup').where('UserID', userID).del().transacting(trx)
+        })
+        .then(() => {
+            if (notigroups.length > 0) {
+                notigroups.forEach((notigroup) => notigroup.UserID = userID);
+                return knex('UserNotiGroup').insert(notigroups).transacting(trx);
+            }
+        })
+        .then(trx.commit)
+        .catch(trx.rollback);
+    })
 }
 
 module.exports.getByUserGroup = async (userGroupID) => {

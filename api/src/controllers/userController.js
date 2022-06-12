@@ -78,45 +78,36 @@ module.exports.getUserByName = async (req, res) => {
 
 
 module.exports.createUser = async (req, res) => {
-    const { name, email, password, mobileno, company, usergroup } = req.body
+    const { name, email, password, mobileno, company, usergroup, notigroups } = req.body
     try {
         const hash = await bcrypt.hash(password, 10)
-        try {
-            await user.insert(name, email, hash, mobileno, company, usergroup)
-            return res.status(201).json({ message: 'User created successfully!' })
-        } catch (issue) {
-            if (issue.code === 'ER_DUP_ENTRY') {
-                return res.status(422).json({ message: 'User with that email already exists' })
-            }
-            return res.status(500).json({ message: 'Internal Server Error!' })
-        }
+        await user.insert(name, email, hash, mobileno, company, usergroup, notigroups)
+        return res.status(201).json({ message: 'User created successfully!' })
     } catch (error) {
         console.log(error)
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.status(422).json({ message: 'User with that email already exists' })
+        }
         return res.status(500).json({ message: 'Internal Server Error!' })
     }
 }
 
 module.exports.updateUser = async (req, res) => {
     const userID = req.params.id
-    const { name, email, password, mobileno, company, usergroup, active } = req.body
+    const { name, email, password, mobileno, company, usergroup, active, notigroups } = req.body
     try {
         const results = await user.getByID(userID)
         if (results.length > 0) {
             const hash = await bcrypt.hash(password, 10)
-            try {
-                await user.update(userID, name, email, hash, mobileno, company, usergroup, active)
-                return res.status(204).json({ message: 'User updated successfully!' })
-            } catch (issue) {
-                if (issue.code === 'ER_DUP_ENTRY') {
-                    return res.status(422).json({ message: 'User with that email already exists' })
-                }
-                return res.status(500).json({ message: 'Internal Server Error!' })
-            }
+            await user.update(userID, name, email, hash, mobileno, company, usergroup, active, notigroups)
+            return res.status(204).json({ message: 'User updated successfully!' })
         } else {
             return res.status(404).json({ message: 'Cannot find user with that id' })
         }
     } catch (error) {
-        console.log(error)
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.status(422).json({ message: 'User with that email already exists' })
+        }
         return res.status(500).json({ message: 'Internal Server Error!' })
     }
     

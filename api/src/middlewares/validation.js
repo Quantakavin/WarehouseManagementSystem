@@ -2,8 +2,7 @@ const validator = require('validator')
 
 const validation = {
     validateLogin(req, res, next) {
-        const { email } = req.body
-        const { password } = req.body
+        const { email, password } = req.body
         
         const passswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$/
         if (password === '' || email === '') {
@@ -28,12 +27,7 @@ const validation = {
     },
 
     validateUser: (req, res, next) => {
-        const { name } = req.body
-        const { email } = req.body
-        const { password } = req.body
-        const { mobileno } = req.body
-        const { company } = req.body
-        const { usergroup } = req.body
+        const { name, email, password, mobileno, company, usergroup } = req.body
 
         const passswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$/;
         //const phoneRegex = /^[6|8|9]\d{7}|\+65[6|8|9]\d{7}|\+65\s[6|8|9]\d{7}$/;
@@ -42,11 +36,11 @@ const validation = {
             res.status(400).json({
                 message: 'Please fill up all fields correctly'
             })
-        } else if (company == null) {
+        } else if (company === null) {
             res.status(400).json({
                 message: 'Please select the company the user belongs to'
             })
-        } else if (usergroup == null) {
+        } else if (usergroup === null) {
             res.status(400).json({
                 message: 'Please select a user group to assign the user to'
             })
@@ -68,6 +62,34 @@ const validation = {
             res.status(400).json({
                 message: 'Please fill up all fields correctly'
             })
+        }
+    },
+
+    validateUserGroup: (req, res, next) => {
+        const { name, description } = req.body
+
+        if (name === '' || description === '') {
+            res.status(400).json({
+                message: 'Please fill up all fields correctly'
+            })
+        } else {
+            next()
+        }
+    },
+
+    validateNotificationGroup: (req, res, next) => {
+        const { name, description, company } = req.body
+
+        if (name === '' || description === '') {
+            res.status(400).json({
+                message: 'Please fill up all fields correctly'
+            })
+        } else if (company === null) {
+            res.status(400).json({
+                message: 'Please select a company to assign the notification group to'
+            })
+        } else {
+            next()
         }
     }
 }
