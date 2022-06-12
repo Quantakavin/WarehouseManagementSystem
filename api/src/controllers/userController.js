@@ -16,7 +16,7 @@ module.exports.loginUser = async (req, res) => {
                     id: results[0][0].UserID,
                     name: results[0][0].Username,
                     usergroup: results[0][0].UserGroupName,
-                    token: jwt.sign({ id: results[0][0].UserID}, config.JWTKey, {
+                    token: jwt.sign({ id: results[0][0].UserID, role: results[0][0].UserGroupName}, config.JWTKey, {
                         expiresIn: 86400
                     })
                 }
