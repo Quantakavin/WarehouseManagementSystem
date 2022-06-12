@@ -1,3 +1,4 @@
+const user = require('../services/userService')
 const notificationGroup = require('../services/notificationGroupService')
 
 module.exports.getAllNotificationGroups = async (req, res) => {
@@ -44,14 +45,49 @@ module.exports.getNotificationGroupByName = async (req, res) => {
 }
 
 module.exports.createNotificationGroup = async (req, res) => {
-    
+    const { name, description, company, notifications } = req.body
+    try {
+        await notificationGroup.insert(name, description, company, notifications)
+        return res.status(201).json({ message: 'Notification Group created successfully!' })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: 'Internal Server Error!' })
+    }
 }
 
 module.exports.updateNotificationGroup = async (req, res) => {
-    
+    const notificationGroupID = req.params.id
+    const { name, description, company, notifications } = req.body
+    try {
+        const results = await notificationGroup.getByID(notificationGroupID)
+        if (results[0].length > 0) {
+            await notificationGroup.update(notificationGroupID, name, description, company, notifications)
+            return res.status(200).json({ message: 'Notification Group updated successfully!' })
+        } else {
+            return res.status(404).json({ message: 'Cannot find Notification Group with that id' })
+        }
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' })
+    }
 }
 
 
 module.exports.deleteNotificationGroup = async (req, res) => {
-    
+    const notificationGroupID = req.params.id
+    try {
+        const results = await notificationGroup.getByID(notificationGroupID);
+        if (results[0].length > 0) {
+            const results2 = await user.getByNotificationGroup(notificationGroupID);
+            if (results2[0][0].Count == 0) {
+                await notificationGroup.delete(notificationGroupID)
+                return res.status(200).json({ message: 'Notification Group deleted successfully!' })
+            } else {
+                return res.status(405).json({ message: 'This Notification group cannot be deleted as it contains users' })
+            }
+        } else {
+            return res.status(404).json({ message: 'Cannot find Notification Group with that id' })
+        }
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' })
+    }
 }

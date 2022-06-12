@@ -98,3 +98,8 @@ module.exports.getByUserGroup = async (userGroupID) => {
     const query = `SELECT Count(UserID) 'Count' FROM User WHERE UserGroupID = ?`;
     return knex.raw(query, [userGroupID]);
 }
+
+module.exports.getByNotificationGroup = async (notiGroupID) => {
+    const query = `SELECT Count(UserID) 'Count' FROM UserNotiGroup WHERE NotiGroupID = ?`;
+    return knex.raw(query, [notiGroupID]);
+}

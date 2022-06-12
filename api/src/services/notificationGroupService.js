@@ -32,3 +32,55 @@ module.exports.getNotifications = async (notiGroupID) => {
     const query = `SELECT f.NotiFeature, t.NotiType FROM NotiGroupFeature g INNER JOIN NotiFeature f ON f.NotiFeatureID = g.NotiFeatureID INNER JOIN NotiType t ON t.NotiTypeID = g.NotiTypeID WHERE g.NotiGroupID = ?`;
     return knex.raw(query, [notiGroupID]);
 }
+
+module.exports.insert = async (name, description, company, notifications) => {
+    return knex.transaction((trx) => {
+        knex.insert({NotiGroupName: name, NotiGroupDesc: description, CompanyID: company}, 'NotiGroupID')
+        .into('NotiGroup')
+        .transacting(trx)
+        .then((ids) => {
+            if (notifications.length > 0) {
+                notifications.forEach((notification) => notification.NotiGroupID = ids[0]);
+                return knex('NotiGroupFeature').insert(notifications).transacting(trx);
+            }
+        })
+        .then(trx.commit)
+        .catch(trx.rollback);
+    })
+
+}
+
+module.exports.update = async (notiGroupID, name, description, company, notifications) => {
+
+    return knex.transaction((trx) => {
+        knex('NotiGroup').where('NotiGroupID', notiGroupID).update({
+            NotiGroupName: name, 
+            NotiGroupDesc: description, 
+            CompanyID: company
+        })
+        .transacting(trx)
+        .then(() => {
+            return knex('NotiGroupFeature').where('NotiGroupID', notiGroupID).del().transacting(trx)
+        })
+        .then(() => {
+            if (notifications.length > 0) {
+                notifications.forEach((notification) => notification.NotiGroupID = notiGroupID);
+                return knex('NotiGroupFeature').insert(notifications).transacting(trx);
+            }
+        })
+        .then(trx.commit)
+        .catch(trx.rollback);
+    })
+}
+
+module.exports.delete = async (notiGroupID) => {
+    return knex.transaction((trx) => {
+        knex('NotiGroupFeature').where('NotiGroupID', notiGroupID).del()
+        .transacting(trx)
+        .then(() => {
+            return knex('NotiGroup').where('NotiGroupID', notiGroupID).del().transacting(trx)
+        })
+        .then(trx.commit)
+        .catch(trx.rollback);
+    })
+}
