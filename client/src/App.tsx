@@ -8,6 +8,8 @@ import ErrorBoundary from "react-error-boundary";
 import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "./Routes/routes"
 
+
+
 const App = ()=> {
   return (
     // <ErrorBoundary FallbackComponent={ErrorPage}> 

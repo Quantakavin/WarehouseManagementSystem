@@ -1,5 +1,5 @@
 import React, { lazy } from "react";
-import { Route, Routes } from "react-router-dom";
+import Demo from "../Pages/table";
 
 
 // const DashboardPage
@@ -8,16 +8,18 @@ import { Route, Routes } from "react-router-dom";
 // const RMAPage
 // cosnt BinLocationsPage
 
-const HomePage = import("../Pages/home");
+
+import { Router, RouteComponentProps } from "@reach/router";
+import table from "../Pages/table";
 
 
-const AppRoutes = () => {
-    return (
-            <Routes>
-               <Route path="/home">{HomePage}</Route>
+const App = () => (
+  <Router>
+    <RouterPage path="/" pageComponent={<table />} />
+  </Router>
+);
+export default App;
 
-            
-            </Routes>
-    );
-};
-export default AppRoutes;
+const RouterPage = (
+  props: { pageComponent: JSX.Element } & RouteComponentProps
+) => props
