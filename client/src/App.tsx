@@ -1,17 +1,25 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import "./App.css";
+import React from "react";
+import ErrorBoundary from "react-error-boundary";
+// import SuspenseFallback from  "./Components/suspense";
+// import Middlewares from "./Middlwares";
+// import ErrorPage from "./Components/error-page";
+import { BrowserRouter } from "react-router-dom";
+import AppRoutes from "./Routes/routes"
 
-import './App.css';
-
-
-
-
-function App() {
+const App = ()=> {
   return (
-    <div className="App">
-    
-  
+    // <ErrorBoundary FallbackComponent={ErrorPage}> 
+        // <Middlewares> 
+          <BrowserRouter>
+            {/* <Suspense fallback={<SuspenseFallback />}> */}
+              <AppRoutes />
+          </BrowserRouter>
+        // </Middlewares>
+    // </ErrorBoundary>
 
-    </div>
   );
-}
+};
 
 export default App;
