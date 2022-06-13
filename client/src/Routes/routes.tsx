@@ -1,12 +1,23 @@
-import React from "react";
-import { Route, Switch } from "react-router-dom";
+import React, { lazy } from "react";
+import { Route, Routes } from "react-router-dom";
 
 
+// const DashboardPage
+// const ProductsPage 
+// const TloansPage
+// const RMAPage
+// cosnt BinLocationsPage
 
-const AppRoutes = () => {}
+const HomePage = import("../Pages/home");
 
 
+const AppRoutes = () => {
+    return (
+            <Routes>
+               <Route path="/home">{HomePage}</Route>
 
-
-
+            
+            </Routes>
+    );
+};
 export default AppRoutes;
