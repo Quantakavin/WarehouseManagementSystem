@@ -44,7 +44,7 @@ exports.create = async (req, res) => {
       // Checking
   
       // Creating
-      const result = await rmaService.create({  });
+      const result = await rmaService.insert({  });
       if (!result) {
         return res.status(400).json({
           error: 'RMA Not Created!',
@@ -56,3 +56,21 @@ exports.create = async (req, res) => {
       console.log({ e });
     }
   };
+
+  module.exports.updateStatus = async (req, res) => {
+    const RmaStatusID = req.params.id;
+    const { RmaStatus } = req.body;
+    try {
+        const results = await rmaService.getByStatusID(RmaStatusID);
+        if (results.length > 0) {
+            const hash = await bcrypt.hash(password, 10);
+            await rmaService.updateStatus(
+                RmaStatus
+            );
+            return res.status(204).json({ message: 'RMA status updated successfully!' });
+        }
+        return res.status(404).json({ message: 'Cannot find rma with that status id' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
