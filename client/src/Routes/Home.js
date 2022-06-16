@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "../Pages/LandingPageLogin";
-// import Dashboard from "../Pages/Dashboards";
+import Dashboard from "../Pages/Dashboards";
 import Products from "../Pages/Products";
 // import Table from "../Pages/Products";
 // import TLoan from "../Pages/Tloan";
@@ -13,7 +13,7 @@ function Home() {
     <Router>
       <Routes>
         <Route path="/landingpage" element={<LandingPage />} />
-        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/products" element={<Products />} />
         {/* <Route path="/tloan" element={<TLoan />} />
         <Route path="/rma" element={<RMA />} />
