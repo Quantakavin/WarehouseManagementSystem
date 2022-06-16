@@ -22,5 +22,4 @@ function Home() {
     </Router>
   );
 }
-
 export default Home;
