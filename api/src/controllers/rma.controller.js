@@ -9,21 +9,21 @@ exports.getAllRMA = async (req, res) => {
   
       if (!result)
         return res.status(404).json({
-          error: 'No Posts Found!',
+          error: 'No RMA requests Found!',
         });
   
       return res.status(200).json({
         result,
       });
-    } catch (e) {
-      console.log({ e });
+    } catch (error) {
+      return res.status(500).json({ message: 'Internal Server Error!' });
     }
   };
 
   // Get RMA by RMA number
 exports.getByRMANO = async (req, res) => {
     const { RMANO } = req.params;
-    // Post
+  try{
     const rma = await rmaService.getByRMANO(RMANO);
     if (!post)
       return res.status(404).json({
@@ -33,6 +33,9 @@ exports.getByRMANO = async (req, res) => {
     return res.status(200).json({
       result,
     });
+    } catch (error) {
+      return res.status(500).json({ message: 'Internal Server Error!' });
+    }
   };
 
   // Create RMA
@@ -54,6 +57,7 @@ exports.create = async (req, res) => {
       return res.status(201).json({ result });
     } catch (e) {
       console.log({ e });
+      return res.status(500).send('Internal Server Error')
     }
   };
 
@@ -69,7 +73,7 @@ exports.create = async (req, res) => {
             );
             return res.status(204).json({ message: 'RMA status updated successfully!' });
         }
-        return res.status(404).json({ message: 'Cannot find rma with that status id' });
+        return res.status(404).json({ message: 'Cannot find RMA with that status id' });
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
