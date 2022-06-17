@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import Topbar from "../Components/TopBar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
 
@@ -63,11 +64,14 @@ function Products() {
   };
 
   return (
+    <>
+    <Topbar />
     <div className="App container mt-2 mb-3">
       <h1>Item Search</h1>
       <SearchbarDropdown options={options} onInputChange={onInputChange} />
       <button className="btn btn-primary">Search</button>
     </div>
+    </>
   );
 }
 
