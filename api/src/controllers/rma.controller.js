@@ -9,21 +9,21 @@ exports.getAllRMA = async (req, res) => {
   
       if (!result)
         return res.status(404).json({
-          error: 'No Posts Found!',
+          error: 'No RMA requests Found!',
         });
   
       return res.status(200).json({
         result,
       });
-    } catch (e) {
-      console.log({ e });
+    } catch (error) {
+      return res.status(500).json({ message: 'Internal Server Error!' });
     }
   };
 
   // Get RMA by RMA number
 exports.getByRMANO = async (req, res) => {
     const { RMANO } = req.params;
-    // Post
+  try{
     const rma = await rmaService.getByRMANO(RMANO);
     if (!post)
       return res.status(404).json({
@@ -33,6 +33,9 @@ exports.getByRMANO = async (req, res) => {
     return res.status(200).json({
       result,
     });
+    } catch (error) {
+      return res.status(500).json({ message: 'Internal Server Error!' });
+    }
   };
 
   // Create RMA
@@ -44,7 +47,7 @@ exports.create = async (req, res) => {
       // Checking
   
       // Creating
-      const result = await rmaService.create({  });
+      const result = await rmaService.insert({  });
       if (!result) {
         return res.status(400).json({
           error: 'RMA Not Created!',
@@ -54,5 +57,24 @@ exports.create = async (req, res) => {
       return res.status(201).json({ result });
     } catch (e) {
       console.log({ e });
+      return res.status(500).send('Internal Server Error')
     }
   };
+
+  module.exports.updateStatus = async (req, res) => {
+    const RmaStatusID = req.params.id;
+    const { RmaStatus } = req.body;
+    try {
+        const results = await rmaService.getByStatusID(RmaStatusID);
+        if (results.length > 0) {
+            const hash = await bcrypt.hash(password, 10);
+            await rmaService.updateStatus(
+                RmaStatus
+            );
+            return res.status(204).json({ message: 'RMA status updated successfully!' });
+        }
+        return res.status(404).json({ message: 'Cannot find RMA with that status id' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};

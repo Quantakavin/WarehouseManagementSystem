@@ -1,7 +1,15 @@
-module.exports.getByRMANO = async (email) => {
+const knex = require('../config/database');
+
+module.exports.getByRMANO = async (RMANo) => {
   //return knex.where('Email', email).select('UserID','Username','Password').from('User')
   const query = `SELECT * FROM Rma WHERE RMANo = ?`;
-  return knex.raw(query, [email]);
+  return knex.raw(query, [RMANo]);
+}
+
+module.exports.getByStatusID = async (RmaStatusID) => {
+  //return knex.where('Email', email).select('UserID','Username','Password').from('User')
+  const query = `SELECT * FROM Rma r LEFT JOIN RmaStatus s ON r.RmaStatusID = s.RmaStatusID WHERE r.RmaStatusID = ?`;
+  return knex.raw(query, [RmaStatusID]);
 }
 
 module.exports.getAll = async () => {
@@ -37,13 +45,13 @@ module.exports.insert = async (DateTime, company, customer, contactperson, conta
   });
 }
 
-module.exports.update = async (rmastatusID, status) => {
+module.exports.updateStatus = async (rmastatusID, status) => {
   return knex('RmaStatus').where('RmaStatusID', rmastatusID).update({
       RmaStatus: status
   });
 }
 
-module.exports.update = async (RMANo, instruction) => {
+module.exports.updateInstructions = async (RMANo, instruction) => {
   return knex('Rma').where('UserRMANo', RMANo).update({
       Instruction: instruction
   });
