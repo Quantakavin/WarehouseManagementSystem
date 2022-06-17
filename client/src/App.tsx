@@ -1,17 +1,20 @@
+import React from "react";
+import Login from "./pages/Login";
+import "./index.css";
+import {
+  Routes,
+  Route,
+} from "react-router-dom";
 
-import './App.css';
-import DataTable from './Components/testtable';
+const App: React.FC = () => { 
 
-
-
-function App() {
   return (
-    <div className="App">
-    
-    <DataTable />
-   
-
-    </div>
+    <>
+    <Routes>
+    <Route path="/" element={<Login />} />
+    <Route path="/login" element={<Login />} />
+    </Routes>
+    </>
   );
 }
 
