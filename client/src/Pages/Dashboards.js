@@ -1,5 +1,5 @@
-
-import NavBar from "../Components/Navbar";
+import Topbar from "../Components/TopBar";
+import Sidebar from "../Components/SideBar";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -95,7 +95,8 @@ function Dashboards() {
 
   return (
     <>
-     <NavBar />
+    <Topbar />
+     <Sidebar />
       <div className="container">
         <h1>Dashboard</h1>
         {/* <div className="row">

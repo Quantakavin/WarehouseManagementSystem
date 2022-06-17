@@ -11,13 +11,12 @@ function NavBar() {
       className="navbar"
     >
       {/* <Container fluid> */}
-        {/* <Navbar.Toggle aria-controls="navbar-dark-example" /> */}
-        {/* <Navbar.Collapse id="navbar-dark-example"> */}
-          <Nav className="nav">
-            <h3>ISDN Holdings</h3>
-        
-          </Nav>
-        {/* </Navbar.Collapse> */}
+      {/* <Navbar.Toggle aria-controls="navbar-dark-example" /> */}
+      {/* <Navbar.Collapse id="navbar-dark-example"> */}
+      <Nav className="nav">
+        <h3>ISDN Holdings</h3>
+      </Nav>
+      {/* </Navbar.Collapse> */}
       {/* </Container> */}
     </Navbar>
   );
