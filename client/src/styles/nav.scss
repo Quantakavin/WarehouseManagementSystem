@@ -1,12 +1,23 @@
+$primary-color: #0A2540;
+$outer-margin: 5%;
+
 .brand {
     font-weight: 600;
     @media screen and (min-width: 800px) {
-        margin-left: 10% !important;
+        margin-left: $outer-margin;
     }
 
 }
 nav a {
-    font-weight: 500;
+        color: $primary-color !important;
+        font-weight: 500;
+        margin-top: 5px;
+        margin-bottom: -5px;
+        margin-top: 5px;
+        margin-bottom: -5px;
+        &:hover {
+            color: #6c7c8c !important;
+        }
 }
 
 .navitems {
@@ -15,21 +26,20 @@ nav a {
     }
 }
 
-#navbarScrollingDropdown {
-    color: white !important;
-}
-
+@at-root
 .navlinks {
     @media screen and (min-width: 800px) {
-        margin-right: 10% !important;
+        margin-right: $outer-margin;
     }
 
 }
 
-.searchform {
-    @media screen and (min-width: 1000px) {
-        margin-left: 5% !important;
-        width: 40%;
-    }
-
+.profile {
+    display: flex;
+    flex-direction: row;
+    margin-left: 10px;
 }
+
+#navbarProfileDropdown::after {
+    display: none;
+ }
