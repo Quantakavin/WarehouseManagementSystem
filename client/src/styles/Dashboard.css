@@ -1,5 +1,4 @@
-
-.dashboard-container{
+.container{
     display: flex;
     margin-top: 5px;
     position: fixed;

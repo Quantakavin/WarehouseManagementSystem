@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import TopBar from "../components/header/TopBar";
-import SideBar from "../components/SideBar";
+import Topbar from "../components/header/TopBar";
+import Sidebar from "../components/SideBar";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
 
 const SearchbarDropdown = (props) => {
