@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import config from '../config/config';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import useTogglePasword from '../hooks/useTogglePassword';
+import { flexbox } from '@mui/system';
 
 interface FormValues {
   email: string,
@@ -19,6 +21,7 @@ interface FormValues {
 const Login = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
+  const {toggle, passwordType, showPassword} = useTogglePasword();
 
   const mutation = useMutation(async (formData: FormValues) => {
     return await axios.post(`http://localhost:5000/api/login`, formData, {
@@ -59,14 +62,14 @@ const Login = () => {
               <p className="formlabels">Password </p>
               <div className="flexcontainer">
                 <div style={{border: "solid 1px #d3d3d3", borderRadius: 15, display: "flex", flexDirection: "row", width: "85%", justifyContent: 'center', alignItems: 'center', marginBottom: 5 }}>
-                <input className="passwordfield" style={{flexGrow: 9}} type="password" {...register("password", { required: "Password cannot be empty", pattern: { value:  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$/i, message: "Password should be over 8 characters long with a mix of uppercase/lowercase letters and numbers" } })} />
-                <VisibilityIcon style={{ color: '#0A2540', flexGrow: 1 }}  />
+                <input className="passwordfield" style={{flexGrow: 11}} type={passwordType} {...register("password", { required: "Password cannot be empty", pattern: { value:  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$/i, message: "Password should be over 8 characters long with a mix of uppercase/lowercase letters and numbers" } })} />
+                <div style={{flexGrow: 1, paddingRight: 5}} className="flexcontainer" onClick={toggle}>{showPassword? <VisibilityIcon style={{ color: '#0A2540'}}  />:<VisibilityOffIcon style={{ color: '#0A2540'}}  />}</div>
                 </div>
               </div>
               <p className="errormsg">{errors.password?.message}</p>
             </div>
             {mutation.isError && axios.isAxiosError(mutation.error) ? <ErrorAlert error={mutation.error} /> : <></>}
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
+            <div className="flexcontainer" style={{ marginTop: 40 }}>
               <SubmitButton loading={mutation.isLoading} />
             </div>
           </form>
