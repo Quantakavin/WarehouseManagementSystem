@@ -1,4 +1,4 @@
-import TopBar from "../components/TopBar";
+import Topbar from "../components/header/TopBar";
 import Sidebar from "../components/SideBar";
 import { Card } from "react-bootstrap";
 import "../styles/Dashboard.css"
