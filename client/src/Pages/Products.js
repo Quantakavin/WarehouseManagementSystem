@@ -1,9 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import Topbar from "../components/header/TopBar";
-import SideBar from "../components/SideBar";
+import Sidebar from "../components/SideBar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
-import TopBar from "../components/TopBar";
 
 const SearchbarDropdown = (props) => {
   const { options, onInputChange } = props;
@@ -67,9 +66,9 @@ function Products() {
 
   return (
     <>
-    <TopBar />
-    <SideBar />
-    <h1>Item Search</h1>
+      <Topbar />
+      <Sidebar />
+      <h1>Item Search</h1>
     </>
   );
 }
