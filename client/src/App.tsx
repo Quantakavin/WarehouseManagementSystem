@@ -4,15 +4,14 @@ import React from "react";
 import Login from "./pages/Login";
 // import LandingPage from "./pages/LandingPageLogin";
 import Dashboard from "./pages/Dashboards";
-// import Products from "./pages/Products";
-import "./index.css";
-import "./App.css";
+import Products from "./pages/Products";
+
 import {
   Routes,
   Route,
 } from "react-router-dom";
-import TestPage from "./pages/TestPage";
-
+// import TopBar from "./components/TopBar";
+// import SideBar from "./components/SideBar";
 
 const App: React.FC = () => { 
 
@@ -22,8 +21,7 @@ const App: React.FC = () => {
     <Route path="/" element={<Login />} />
     <Route path="/login" element={<Login />} />
     <Route path="/dashboard" element={<Dashboard />} />
-    {/* <Route path="/products" element={<Products />} /> */}
-    <Route path="/test" element={<TestPage />} />
+    <Route path="/products" element={<Products />} />
     </Routes>
   );
 }
