@@ -3,6 +3,7 @@ import Topbar from "../components/header/TopBar";
 import SideBar from "../components/SideBar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
+import TopBar from "../components/TopBar";
 
 const SearchbarDropdown = (props) => {
   const { options, onInputChange } = props;
@@ -66,13 +67,9 @@ function Products() {
 
   return (
     <>
-    
-
-    <div className="App container mt-2 mb-4">
-      <h1>Item Search</h1>
-      <SearchbarDropdown options={options} onInputChange={onInputChange} />
-      <button className="btn btn-primary">Search</button>
-    </div>
+    <TopBar />
+    <SideBar />
+    <h1>Item Search</h1>
     </>
   );
 }

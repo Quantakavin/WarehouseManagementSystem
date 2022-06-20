@@ -23,11 +23,11 @@ export default function Sidebar() {
           <h3 className="sidebarTitle">Menu</h3>
           <ul className="sidebarList">
             <li className="sidebarListItem">
-              {/* <LineStyle className="sidebarIcon" /> */}
+            <Timeline className="sidebarIcon" />
               Dashboard
             </li>
             <li className="sidebarListItem">
-              {/* <Timeline className="sidebarIcon" /> */}
+            {/* <Timeline className="sidebarIcon" /> */}
               Products
             </li>
             <li className="sidebarListItem">

@@ -1,0 +1,16 @@
+.container{
+    display: flex;
+    margin-top: 10px;
+    position: fixed;
+ 
+}
+
+
+.dashboard{
+   flex: 4;
+   background-color: #e3e8ee;
+   height: 100vh;
+    
+}
+
+
