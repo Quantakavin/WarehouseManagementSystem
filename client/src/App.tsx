@@ -6,9 +6,13 @@ import LandingPage from "./pages/LandingPageLogin";
 import Dashboard from "./pages/Dashboards";
 import Products from "./pages/Products";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import TestPage from "./pages/TestPage";
 
 
+=======
+import "./index.css";
+>>>>>>> parent of eeced29 (styling for login and navbar)
 =======
 import "./index.css";
 >>>>>>> parent of eeced29 (styling for login and navbar)

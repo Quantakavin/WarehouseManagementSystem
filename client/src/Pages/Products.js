@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import TopBar from "../components/header/TopBar";
+=======
+import Topbar from "../components/TopBar";
+>>>>>>> parent of eeced29 (styling for login and navbar)
 =======
 import Topbar from "../components/TopBar";
 >>>>>>> parent of eeced29 (styling for login and navbar)
