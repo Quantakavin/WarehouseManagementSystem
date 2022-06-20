@@ -8,9 +8,9 @@
 
 
 .dashboard{
-   flex: 4;
+   display: flex;
+   flex: 2;
    background-color: #e3e8ee;
-   height: 100vh;
     
 }
 
@@ -23,8 +23,25 @@
 }
 
 .TLoanCard {
+    flex: 1;
     width: 20rem;
-    /* height: 20vh; */
-    margin-top: 30px;
+    height: 20vh;
+    margin-top: 40px;
+    margin-left: 40px;
+}
+
+.RMACard {
+    flex: 1;
+    width: 20rem;
+    height: 20vh;
+    margin-top: 40px;
+    margin-left: 40px;
+}
+
+.TLoanRMAstats {
+ 
+    width: 20rem;
+    height: 20vh;
+    margin-top: 40px;
     margin-left: 40px;
 }

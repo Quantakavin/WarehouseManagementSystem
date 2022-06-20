@@ -65,8 +65,8 @@ function Products() {
 
   return (
     <>
-      <Topbar />
-      <Sidebar />
+      <TopBar />
+      <SideBar />
       <h1>Item Search</h1>
     </>
   );
