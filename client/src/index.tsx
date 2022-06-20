@@ -8,7 +8,6 @@ import {
 } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from 'react-query'
 import reportWebVitals from './reportWebVitals';
-import './styles/main.scss';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);

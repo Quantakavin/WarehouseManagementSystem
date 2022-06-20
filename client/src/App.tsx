@@ -2,10 +2,7 @@ import TopBar from "./components/header/TopBar";
 import Sidebar from "./components/SideBar";
 import React from "react";
 import Login from "./pages/Login";
-import LandingPage from "./pages/LandingPageLogin";
-import Dashboard from "./pages/Dashboards";
-import Products from "./pages/Products";
-import TestPage from "./pages/TestPage";
+import "./index.css";
 import {
   Routes,
   Route,
@@ -20,10 +17,6 @@ const App: React.FC = () => {
     <Routes>
     <Route path="/" element={<Login />} />
     <Route path="/login" element={<Login />} />
-    <Route path="/landingpage" element={<LandingPage />} />
-    <Route path="/dashboard" element={<Dashboard />} />
-    <Route path="/products" element={<Products />} />
-    <Route path="/test" element={<TestPage />} />
     </Routes>
   );
 }
