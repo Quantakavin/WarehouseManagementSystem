@@ -1,77 +1,81 @@
+$primary-color: #0A2540;
 
-.formlogo {
-    padding-top: 50px;
-    @media screen and (max-width: 1200px) {
-      width: 25% !important;
-    }
-    @media screen and (min-width: 1200px) {
-      width: 20% !important;
-    }
+.formheader {
+  @media screen and (min-width: 800px) {
+    margin-left: 8% !important;
+    padding-bottom: 20px;
   }
-  .formcontainer {
-    margin-top: 150px;
-<<<<<<< HEAD
-    color: #0A2540;
-=======
-    color: $primary-color;
->>>>>>> parent of eeced29 (styling for login and navbar)
-    background-color: white !important;
-    
-      @media screen and (min-width: 800px) {
-        width: 60%;
-        margin-bottom: 27%;
-        padding-top: 30px;
-        padding-bottom: 30px;
-        border: 1px solid #d3d3d3;
-        border-radius: 10px;
-        margin-top: 30px;
-        padding:2%;
-      }
-      @media screen and (max-width: 800px) {
-        width: auto;
-        margin-left: -3%;
-        margin-right: -3%;
-        text-align: center;
-        padding-top: 15%;
-        padding-bottom: 20px;
-        height: 100%;
-      }
-      @media screen and (min-width: 1200px) {
-      width: 40% !important;
-      }
-    
-    }
-    
-    .formlabels {
-    @media screen and (min-width: 800px) {
-      margin-left: 8%;
-      font-weight: 500;
-    }
-    @media screen and (max-width: 800px) {
-      margin-left: 8%;
-      font-weight: 500;
-      text-align: left !important;
-    }
-    
-    }
-    
-    .formfield {
-    width: 85%;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    padding-left: 10px;
-    margin-bottom: 5px;
-    border: 1px solid #d3d3d3; 
-    border-radius: 15px; 
-<<<<<<< HEAD
-    color: #0A2540;
-=======
-    color: $primary-color;
->>>>>>> parent of eeced29 (styling for login and navbar)
-    }
-  
-    .registerlink {
-      @media screen and (min-width: 800px) {
-        margin-left: 10%;
-      }
-    }
+  font-weight: 700;
+}
+
+.formcontainer {
+  color: $primary-color;
+  background-color: white !important;
+
+  @media screen and (min-width: 800px) {
+    width: 60%;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border: 1px solid #d3d3d3;
+    border-radius: 10px;
+    margin-top: 80px;
+    padding: 2%;
+  }
+
+  @media screen and (max-width: 800px) {
+    width: auto;
+    min-width: 100%;
+    display:block;
+    text-align: center;
+    padding-top: 12%;
+    padding-bottom: 20px;
+    height: 100%;
+  }
+
+  @media screen and (min-width: 1200px) {
+    width: 40% !important;
+  }
+
+}
+
+.formlabels {
+  margin-left: 8%;
+  font-weight: 500;
+
+  @media screen and (max-width: 800px) {
+    text-align: left !important;
+  }
+
+}
+
+.formfield {
+  width: 85%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 10px;
+  margin-bottom: 5px;
+  border: 1px solid #d3d3d3;
+  border-radius: 15px;
+  color: $primary-color;
+}
+
+.passwordfield {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 10px;
+  border-width: 0px;
+  border-radius: 15px;
+  color: $primary-color;
+}
+
+.errormsg {
+  @media screen and (max-width: 800px) {
+    text-align: left !important;
+  }
+
+  color: red;
+  font-size: 0.85em;
+  margin-left: 8%;
+  margin-top: 5
+}
+

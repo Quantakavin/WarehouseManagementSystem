@@ -1,28 +1,27 @@
+$primary-color: #0A2540;
+$outer-margin: 5%;
+
 .brand {
     font-weight: 600;
-    @media screen and (min-width: 800px) {
-<<<<<<< HEAD
-        margin-left: 10% !important;
-=======
-        margin-left: $outer-margin;
->>>>>>> parent of eeced29 (styling for login and navbar)
-    }
-
+    margin-left: $outer-margin;
 }
-nav a {
-<<<<<<< HEAD
-    font-weight: 500;
-=======
+
+header {
+    position: sticky !important;
+    top: 0;
+    left:0;
+    width: 100%;
+}
+
+
+nav  {
+    height: 67px;
+    a {
         color: $primary-color !important;
         font-weight: 500;
-        margin-top: 5px;
-        margin-bottom: -5px;
-        margin-top: 5px;
-        margin-bottom: -5px;
         &:hover {
             color: #6c7c8c !important;
-        }
->>>>>>> parent of eeced29 (styling for login and navbar)
+        }}
 }
 
 .navitems {
@@ -31,40 +30,80 @@ nav a {
     }
 }
 
-<<<<<<< HEAD
-#navbarScrollingDropdown {
-    color: white !important;
-}
 
 .navlinks {
-    @media screen and (min-width: 800px) {
-        margin-right: 10% !important;
-=======
-@at-root
-.navlinks {
-    @media screen and (min-width: 800px) {
-        margin-right: $outer-margin;
->>>>>>> parent of eeced29 (styling for login and navbar)
-    }
-
+    margin-right: $outer-margin;
 }
 
-<<<<<<< HEAD
-.searchform {
-    @media screen and (min-width: 1000px) {
-        margin-left: 5% !important;
-        width: 40%;
-    }
-
+.navprofile {
+    flex-direction: row;
+    margin-left: 20px;
 }
-=======
+
+.navprofilename {
+    margin-top: 13%;
+    font-weight: 500;
+}
+
+.navprofiledivider {
+    width: 140px;
+    margin: 0;
+    color: #86898E;
+    height: 1px;
+}
+
+.navprofiledropdown {
+    background-color: white;
+    border: solid 1px #d3d3d3;
+    border-radius: 10px;
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    top: 50px;
+    right: 5%;
+    position: absolute;
+    a {
+        font-weight: 600;
+        font-size: 15px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        margin-left: 15px;
+        text-align: left !important;
+        color: $primary-color !important;
+        &:hover {
+            color: #6c7c8c !important;
+        }
+    }
+}
+
+.navcollapseddropdown {
+    background-color: #e3e8ee;
+    padding: 5px 10px;
+    border: solid 1px #d3d3d3;
+    flex-direction: column;
+    top: 100%;
+    position: absolute;
+    width: 100%;
+    a {
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 15px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        margin-left: 15px;
+        text-align: left !important;
+        color: $primary-color !important;
+        &:hover {
+            color: #6c7c8c !important;
+        }
+    }
+}
+
 .profile {
     display: flex;
     flex-direction: row;
     margin-left: 10px;
 }
 
-#navbarProfileDropdown::after {
-    display: none;
- }
->>>>>>> parent of eeced29 (styling for login and navbar)
+

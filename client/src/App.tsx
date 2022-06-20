@@ -2,13 +2,12 @@ import TopBar from "./components/header/TopBar";
 import Sidebar from "./components/SideBar";
 import React from "react";
 import Login from "./pages/Login";
-<<<<<<< HEAD
-=======
 import LandingPage from "./pages/LandingPageLogin";
 import Dashboard from "./pages/Dashboards";
 import Products from "./pages/Products";
->>>>>>> parent of eeced29 (styling for login and navbar)
-import "./index.css";
+import TestPage from "./pages/TestPage";
+
+
 import {
   Routes,
   Route,
@@ -23,12 +22,10 @@ const App: React.FC = () => {
     <Routes>
     <Route path="/" element={<Login />} />
     <Route path="/login" element={<Login />} />
-<<<<<<< HEAD
-=======
     <Route path="/landingpage" element={<LandingPage />} />
     <Route path="/dashboard" element={<Dashboard />} />
     <Route path="/products" element={<Products />} />
->>>>>>> parent of eeced29 (styling for login and navbar)
+    <Route path="/test" element={<TestPage />} />
     </Routes>
   );
 }

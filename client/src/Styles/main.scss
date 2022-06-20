@@ -1,0 +1,38 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+@import "nav.scss";
+@import "form.scss";
+
+.flexcontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100%;
+}
+
+.bluebackground {
+    background-color: #e3e8ee;
+    height: calc(100vh - 67px);
+    width: 100%;
+    overflow: auto;
+}
+
+.hideinmobile {
+    @media screen and (max-width: 800px) {
+        visibility: hidden;
+        display: none;
+    }
+}
+
+.hideindesktop {
+    @media screen and (min-width: 800px) {
+        visibility: hidden;
+        display: none;
+    }
+}

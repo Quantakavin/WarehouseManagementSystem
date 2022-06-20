@@ -1,11 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-<<<<<<< HEAD
 import TopBar from "../components/header/TopBar";
-=======
-import Topbar from "../components/TopBar";
->>>>>>> parent of eeced29 (styling for login and navbar)
 import SideBar from "../components/SideBar";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "../App.css";
 
 const SearchbarDropdown = (props) => {
   const { options, onInputChange } = props;

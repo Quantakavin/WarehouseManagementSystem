@@ -1,4 +1,4 @@
-import Topbar from "../components/TopBar";
+import TopBar from "../components/header/TopBar";
 import Sidebar from "../components/SideBar";
 import "../styles/Dashboard.css"
 import { Container } from 'react-bootstrap';
