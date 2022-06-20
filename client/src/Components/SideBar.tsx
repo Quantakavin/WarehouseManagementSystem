@@ -22,30 +22,48 @@ export default function Sidebar() {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Menu</h3>
           <ul className="sidebarList">
+            <Link to ="/dashboard" className="link">
             <li className="sidebarListItem">
-            <Timeline className="sidebarIcon" />
+            {/* <Timeline className="sidebarIcon" /> */}
               Dashboard
             </li>
+
+            </Link>
+            <Link to ="/products" className="link">
             <li className="sidebarListItem">
             {/* <Timeline className="sidebarIcon" /> */}
               Products
             </li>
+            </Link>
+
+            <Link to ="/tloans" className="link">
             <li className="sidebarListItem">
               {/* <TrendingUp className="sidebarIcon" /> */}
               T-Loans
             </li>
+            </Link>
+
+            <Link to ="/RMA" className="link">
             <li className="sidebarListItem">
               {/* <TrendingUp className="sidebarIcon" /> */}
               RMA
             </li>
+            </Link>
+
+            <Link to ="/usermanagement" className="link">
             <li className="sidebarListItem">
               {/* <TrendingUp className="sidebarIcon" /> */}
               User Managment
             </li>
+            </Link>
+
+
+            <Link to ="/binlocations" className="link">
             <li className="sidebarListItem">
               {/* <TrendingUp className="sidebarIcon" /> */}
               Bin Locations
             </li>
+            </Link>
           </ul>
         </div>
       </div>

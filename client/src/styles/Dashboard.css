@@ -39,7 +39,7 @@
 }
 
 .TLoanRMAstats {
- 
+    flex: 1;
     width: 20rem;
     height: 20vh;
     margin-top: 40px;

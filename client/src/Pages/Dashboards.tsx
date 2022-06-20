@@ -100,8 +100,9 @@ function Dashboards() {
       </header>
       <div className="dashboard-container">
         <Sidebar />
-
+        
         <div className="dashboard">
+          
           <Card className="TLoanCard">
             <Card.Body>
               <Card.Title>T-Loan Overview</Card.Title>
@@ -130,6 +131,7 @@ function Dashboards() {
             </Card.Body>
           </Card>
 
+    
           <Card className="TLoanRMAstats">
             <Card.Body>
               <Card.Title>T-Loan and RMA Statistic</Card.Title>
@@ -137,7 +139,7 @@ function Dashboards() {
             </Card.Body>
           </Card>
          
-
+        
          
         </div>
       </div>
