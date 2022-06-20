@@ -8,5 +8,9 @@
 
 .dashboard{
    flex: 4;
+   background-color: #e3e8ee;
+   height: 100vh;
     
 }
+
+

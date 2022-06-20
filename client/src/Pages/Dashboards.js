@@ -1,5 +1,6 @@
 import TopBar from "../components/TopBar";
 import Sidebar from "../components/SideBar";
+import { Card } from "react-bootstrap";
 import "../styles/Dashboard.css"
 import { Container } from 'react-bootstrap';
 import React, { useState, useEffect } from "react";
@@ -103,11 +104,12 @@ function Dashboards() {
       <Sidebar />
      
    
-      {/* <div style={{ backgroundColor: "#e3e8ee", height: "100vh", overflow: 'auto' }}> */}
-      <div className="dashboard">dashboard
-      </div>
-      </div>
- 
+     
+      <div className="dashboard">
+     
+    
+</div>
+    </div>
     </>
   );
 }

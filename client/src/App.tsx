@@ -6,7 +6,7 @@ import LandingPage from "./pages/LandingPageLogin";
 import Dashboard from "./pages/Dashboards";
 import Products from "./pages/Products";
 import "./index.css";
-import "./App.css";
+// import "./App.css";
 import {
   Routes,
   Route,
