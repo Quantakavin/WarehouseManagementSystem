@@ -1,12 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-<<<<<<< HEAD
 import TopBar from "../components/header/TopBar";
 import SideBar from "../components/SideBar";
-=======
-import Topbar from "../components/header/TopBar";
-import Sidebar from "../components/SideBar";
->>>>>>> 27815873878d21ef9384f6237eca6723d226f25c
-import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
 
 const SearchbarDropdown = (props) => {

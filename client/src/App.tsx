@@ -5,13 +5,11 @@ import Login from "./pages/Login";
 import LandingPage from "./pages/LandingPageLogin";
 import Dashboard from "./pages/Dashboards";
 import Products from "./pages/Products";
-import "./index.css";
-// import "./App.css";
+
 import {
   Routes,
   Route,
 } from "react-router-dom";
-import TestPage from "./pages/TestPage";
 // import TopBar from "./components/TopBar";
 // import SideBar from "./components/SideBar";
 
@@ -25,7 +23,6 @@ const App: React.FC = () => {
     <Route path="/landingpage" element={<LandingPage />} />
     <Route path="/dashboard" element={<Dashboard />} />
     <Route path="/products" element={<Products />} />
-    <Route path="/test" element={<TestPage />} />
     </Routes>
   );
 }
