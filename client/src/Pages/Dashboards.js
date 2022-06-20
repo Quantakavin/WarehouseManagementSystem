@@ -1,5 +1,7 @@
 import Topbar from "../components/header/TopBar";
 import Sidebar from "../components/SideBar";
+import "../styles/Dashboard.css"
+import { Container } from 'react-bootstrap';
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -33,12 +35,10 @@ ChartJS.register(
 
 
 function Dashboards() {
-
   // const [top10sales, settop10sales] = useState([]);
   // const [html, sethtml] = useState([]);
   // const [bestseller, setbestseller] = useState([]);
   // const [top10saleslabel, settop10saleslabel] = useState([]);
- 
 
   // let barcharttitle = {
   //   responsive: true,
@@ -93,21 +93,22 @@ function Dashboards() {
   //     });
   // }, []);
 
-  return (
+  return ( 
     <>
-    <Topbar />
-     <Sidebar />
+      <header>
+        <TopBar />
+      
+      </header>
       <div className="container">
-        <h1>Dashboard</h1>
-        {/* <div className="row">
-          <div className="col-sm-2"></div>
-          <div className="col-md-3">{html}</div>
-          <div className="col-sm-2"></div>
-          <div className="col-sm-4">{bestseller}</div>
-          <div className="col-sm-1"></div>
-        </div> */}
+      <Sidebar />
+     
+   
+      {/* <div style={{ backgroundColor: "#e3e8ee", height: "100vh", overflow: 'auto' }}> */}
+      <div className="dashboard">dashboard
       </div>
-      </>
+      </div>
+ 
+    </>
   );
 }
 

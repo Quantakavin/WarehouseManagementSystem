@@ -28,6 +28,8 @@ export default function Sidebar() {
             </li>
             <li className="sidebarListItem">
               {/* <Timeline className="sidebarIcon" /> */}
+              
+
               Products
             </li>
             <li className="sidebarListItem">
