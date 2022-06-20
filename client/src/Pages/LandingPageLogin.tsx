@@ -35,23 +35,23 @@ function LandingPage() {
 
   return (
     <div className="maincontainer">
-      <div class="container-fluid">
-        <div class="row no-gutter">
-          <div class="col-md-6 d-none d-md-flex bg-image"></div>
+      <div className="container-fluid">
+        <div className="row no-gutter">
+          <div className="col-md-6 d-none d-md-flex bg-image"></div>
 
-          <div class="col-md-6 bg-light">
-            <div class="login d-flex align-items-center py-5">
-              <div class="container">
-                <div class="row">
-                  <div class="col-lg-10 col-xl-7 mx-auto">
-                    <h3 class="display-2">ISDN Holdings</h3>
-                    <h3 class="display-6">WMS System</h3>
+          <div className="col-md-6 bg-light">
+            <div className="login d-flex align-items-center py-5">
+              <div className="container">
+                <div className="row">
+                  <div className="col-lg-10 col-xl-7 mx-auto">
+                    <h3 className="display-2">ISDN Holdings</h3>
+                    <h3 className="display-6">WMS System</h3>
                     <form
                       className="login-form"
                       noValidate
                       onSubmit={handleSubmit(onSubmit)}
                     >
-                      <div class="form-group mb-1">
+                      <div className="form-group mb-1">
                         <input
                           id="inputEmployeeID"
                           type="email"
@@ -63,7 +63,7 @@ function LandingPage() {
                           class="form-control rounded-pill border-0 shadow-sm px-4"
                         />
                       </div>
-                      <div class="form-group mb-1">
+                      <div className="form-group mb-1">
                         <input
                           id="inputPassword"
                           type="password"
@@ -71,13 +71,13 @@ function LandingPage() {
                           {...register("password", {
                             required: "Please enter your Password.",
                           })}
-                          class="form-control rounded-pill border-0 shadow-sm px-4 text-primary"
+                          className="form-control rounded-pill border-0 shadow-sm px-4 text-primary"
                         />
                       </div>
 
                       <button
                         type="submit"
-                        class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm"
+                        className="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm"
                       >
                         Log in
                       </button>
