@@ -1,4 +1,4 @@
-import Topbar from "../components/header/TopBar";
+import TopBar from "../components/header/TopBar";
 import Sidebar from "../components/SideBar";
 import { Card } from "react-bootstrap";
 import "../styles/Dashboard.css"
@@ -100,7 +100,7 @@ function Dashboards() {
         <TopBar />
       
       </header>
-      <div className="container">
+      <div className="dashboard-container">
       <Sidebar />
      
    
