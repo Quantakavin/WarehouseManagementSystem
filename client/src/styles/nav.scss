@@ -1,12 +1,28 @@
 .brand {
     font-weight: 600;
     @media screen and (min-width: 800px) {
+<<<<<<< HEAD
         margin-left: 10% !important;
+=======
+        margin-left: $outer-margin;
+>>>>>>> parent of eeced29 (styling for login and navbar)
     }
 
 }
 nav a {
+<<<<<<< HEAD
     font-weight: 500;
+=======
+        color: $primary-color !important;
+        font-weight: 500;
+        margin-top: 5px;
+        margin-bottom: -5px;
+        margin-top: 5px;
+        margin-bottom: -5px;
+        &:hover {
+            color: #6c7c8c !important;
+        }
+>>>>>>> parent of eeced29 (styling for login and navbar)
 }
 
 .navitems {
@@ -15,6 +31,7 @@ nav a {
     }
 }
 
+<<<<<<< HEAD
 #navbarScrollingDropdown {
     color: white !important;
 }
@@ -22,10 +39,17 @@ nav a {
 .navlinks {
     @media screen and (min-width: 800px) {
         margin-right: 10% !important;
+=======
+@at-root
+.navlinks {
+    @media screen and (min-width: 800px) {
+        margin-right: $outer-margin;
+>>>>>>> parent of eeced29 (styling for login and navbar)
     }
 
 }
 
+<<<<<<< HEAD
 .searchform {
     @media screen and (min-width: 1000px) {
         margin-left: 5% !important;
@@ -33,3 +57,14 @@ nav a {
     }
 
 }
+=======
+.profile {
+    display: flex;
+    flex-direction: row;
+    margin-left: 10px;
+}
+
+#navbarProfileDropdown::after {
+    display: none;
+ }
+>>>>>>> parent of eeced29 (styling for login and navbar)
