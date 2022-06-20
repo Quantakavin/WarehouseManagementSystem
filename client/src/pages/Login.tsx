@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import axios, { AxiosPromise, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { Container } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
-import '../styles/form.scss';
-import TopBar from '../components/TopBar';
-import SubmitButton from '../components/SubmitButton';
-import ErrorAlert from '../components/ErrorAlert';
+import TopBar from '../components/header/TopBar';
+import SubmitButton from '../components/form/SubmitButton';
+import ErrorAlert from '../components/form/ErrorAlert';
 import { useMutation } from 'react-query';
 import { useNavigate } from "react-router-dom";
 import config from '../config/config';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 interface FormValues {
   email: string,
@@ -35,7 +36,7 @@ const Login = () => {
   })
 
   const onSubmit = (data: FormValues) => {
-    mutation.mutate(data, { onSuccess: () => navigate("/userhome") })
+    mutation.mutate(data, { onSuccess: () => navigate("/dashboard") })
   }
 
   return (
@@ -43,25 +44,26 @@ const Login = () => {
       <header>
         <TopBar />
       </header>
-      <div style={{ backgroundColor: "#e3e8ee", height: "100vh", overflow: 'auto' }}>
-        <Container className="formlogo d-none d-sm-block">
-        </Container>
+      <div className="bluebackground">
         <Container className="formcontainer shadow">
-          <h2 style={{ marginLeft: '8%', paddingBottom: 20, fontWeight: 700 }}>Login to your account</h2>
+          <h2 className="formheader">Login to your account</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
               <p className="formlabels">Email Address </p>
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <div className="flexcontainer">
                 <input className="formfield" type="email" {...register("email", { required: "Email cannot be empty", pattern: { value: /^\S+@\S+\.\S+$/i, message: "Please enter a valid email" } })} />
               </div>
-              <p style={{ color: "red", fontSize: "0.85em", marginLeft: "8%", marginTop: 5 }}>{errors.email?.message}</p>
+              <p className="errormsg">{errors.email?.message}</p>
             </div>
             <div>
               <p className="formlabels">Password </p>
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <input className="formfield" type="password" {...register("password", { required: "Password cannot be empty", pattern: { value:  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$/i, message: "Password should be over 8 characters long with a mix of uppercase/lowercase letters and numbers" } })} />
+              <div className="flexcontainer">
+                <div style={{border: "solid 1px #d3d3d3", borderRadius: 15, display: "flex", flexDirection: "row", width: "85%", justifyContent: 'center', alignItems: 'center', marginBottom: 5 }}>
+                <input className="passwordfield" style={{flexGrow: 9}} type="password" {...register("password", { required: "Password cannot be empty", pattern: { value:  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$/i, message: "Password should be over 8 characters long with a mix of uppercase/lowercase letters and numbers" } })} />
+                <VisibilityIcon style={{ color: '#0A2540', flexGrow: 1 }}  />
+                </div>
               </div>
-              <p style={{ color: "red", fontSize: "0.85em", marginLeft: "8%", marginTop: 5 }}>{errors.password?.message}</p>
+              <p className="errormsg">{errors.password?.message}</p>
             </div>
             {mutation.isError && axios.isAxiosError(mutation.error) ? <ErrorAlert error={mutation.error} /> : <></>}
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>

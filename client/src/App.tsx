@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import LandingPage from "./pages/LandingPageLogin";
 import Dashboard from "./pages/Dashboards";
 import Products from "./pages/Products";
-import "./index.css";
+import TestPage from "./pages/TestPage";
 import {
   Routes,
   Route,
@@ -19,6 +19,7 @@ const App: React.FC = () => {
     <Route path="/landingpage" element={<LandingPage />} />
     <Route path="/dashboard" element={<Dashboard />} />
     <Route path="/products" element={<Products />} />
+    <Route path="/test" element={<TestPage />} />
     </Routes>
     </>
   );
