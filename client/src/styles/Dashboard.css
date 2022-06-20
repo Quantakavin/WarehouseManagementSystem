@@ -1,0 +1,12 @@
+.container{
+    display: flex;
+    margin-top: 10px;
+    position: fixed;
+ 
+}
+
+
+.dashboard{
+   flex: 4;
+    
+}
