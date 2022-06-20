@@ -15,33 +15,28 @@
 }
 
 .Title {
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 30px;
+    font-weight: 600;
     accent-color: #0A2540;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-left: 20px;
 }
 
 .TLoanCard {
-    flex: 1;
+   
     width: 20rem;
     height: 20vh;
-    margin-top: 40px;
+    margin-top: 100px;
     margin-left: 40px;
 }
 
 .RMACard {
-    flex: 1;
+   
     width: 20rem;
     height: 20vh;
-    margin-top: 40px;
+    margin-top: 100px;
     margin-left: 40px;
+    margin-right: 40px;
+    
 }
 
-.TLoanRMAstats {
-    flex: 1;
-    width: 20rem;
-    height: 20vh;
-    margin-top: 40px;
-    margin-left: 40px;
-}

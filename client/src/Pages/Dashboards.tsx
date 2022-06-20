@@ -102,7 +102,7 @@ function Dashboards() {
         <Sidebar />
         
         <div className="dashboard">
-          
+          {/* <h1 className="Title">Dashboard</h1> */}
           <Card className="TLoanCard">
             <Card.Body>
               <Card.Title>T-Loan Overview</Card.Title>
@@ -132,12 +132,6 @@ function Dashboards() {
           </Card>
 
     
-          <Card className="TLoanRMAstats">
-            <Card.Body>
-              <Card.Title>T-Loan and RMA Statistic</Card.Title>
-              
-            </Card.Body>
-          </Card>
          
         
          
