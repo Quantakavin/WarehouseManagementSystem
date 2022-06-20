@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import TopBar from "../components/header/TopBar";
+=======
+import Topbar from "../components/TopBar";
+>>>>>>> parent of eeced29 (styling for login and navbar)
 import Sidebar from "../components/SideBar";
 import "../styles/Dashboard.css"
 import { Container } from 'react-bootstrap';

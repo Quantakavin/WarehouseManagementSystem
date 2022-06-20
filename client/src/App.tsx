@@ -5,9 +5,13 @@ import Login from "./pages/Login";
 import LandingPage from "./pages/LandingPageLogin";
 import Dashboard from "./pages/Dashboards";
 import Products from "./pages/Products";
+<<<<<<< HEAD
 import TestPage from "./pages/TestPage";
 
 
+=======
+import "./index.css";
+>>>>>>> parent of eeced29 (styling for login and navbar)
 import {
   Routes,
   Route,
@@ -25,7 +29,6 @@ const App: React.FC = () => {
     <Route path="/landingpage" element={<LandingPage />} />
     <Route path="/dashboard" element={<Dashboard />} />
     <Route path="/products" element={<Products />} />
-    <Route path="/test" element={<TestPage />} />
     </Routes>
   );
 }
