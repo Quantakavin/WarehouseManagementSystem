@@ -24,14 +24,14 @@ export default function Sidebar() {
           <ul className="sidebarList">
             {/* <Link to ="/dashboard" className="link"> */}
             <li className="sidebarListItem">
-            {/* <Timeline className="sidebarIcon" /> */}
+              {/* <Timeline className="sidebarIcon" /> */}
               Dashboard
             </li>
 
             {/* </Link> */}
             {/* <Link to ="/products" className="link"> */}
             <li className="sidebarListItem">
-            {/* <Timeline className="sidebarIcon" /> */}
+              {/* <Timeline className="sidebarIcon" /> */}
               Products
             </li>
             {/* </Link> */}
@@ -56,7 +56,6 @@ export default function Sidebar() {
               User Management
             </li>
             {/* </Link> */}
-
 
             {/* <Link to ="/binlocations" className="link"> */}
             <li className="sidebarListItem">
