@@ -34,7 +34,18 @@ function Dashboards() {
             </Card.Body>
           </Card>
 
-          <Card className="RMACard">
+          {/* <Card className="TLoanCard2">
+            <Card.Body>
+              <Card.Title>T-Loan Overview</Card.Title>
+              <br></br>
+              <Card.Text>Current</Card.Text>
+              <Card.Text>Drafts</Card.Text>
+              <Card.Text>Pending</Card.Text>
+              <Card.Text>Extension</Card.Text>
+            </Card.Body>
+          </Card> */}
+
+           <Card className="RMACard">
             <Card.Body>
               <Card.Title>Current T-Loan and RMA Statistic</Card.Title>
               <Card.Text>Tloan Requests Made</Card.Text>
@@ -42,10 +53,12 @@ function Dashboards() {
               <Chart title={undefined} dataKey={undefined} grid={undefined} />
            
             </Card.Body>
-          </Card>
+          </Card> 
        
         </div>
-      
+
+       
+
 
       </div>
     </>

@@ -45,12 +45,10 @@ function Charts({ title, dataKey, grid }) {
 
   return (
     <>
-      <ResponsiveContainer width="100%" aspect={4 / 1}>
+      <ResponsiveContainer width="100%" aspect={5 / 1}>
         <LineChart data={data}>
           <XAxis dataKey="name" stroke="#5550bd" />
           <YAxis></YAxis>
-         
-
           <Line type="monotone" dataKey="request" stroke="#5550bd" />
           <Tooltip />{dataKey}
           {grid && <CartesianGrid stroke="#e0dfdf" strokeDasharray="5 5" />}
