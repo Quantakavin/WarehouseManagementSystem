@@ -3,30 +3,24 @@ import TopBar from "../components/header/TopBar";
 import SideBar from "../components/SideBar";
 // import "../App.css";
 import "../styles/Products.css";
-import Table from "../components/table/tables"
+import Table from "../components/table/tables";
 import ProductSearchBar from "../components/search/SearchBar";
 
-
-
 function Products() {
-  
   return (
     <>
-     <header>
-      <TopBar />
-     </header>
-     <div className="product-container">
+      <header>
+        <TopBar />
+      </header>
+      <div className="product-container">
+        <SideBar />
 
-      <SideBar />
-      
-      <div className="product">
-        
-        <div className="Table">
-        <Table />
+        <div className="product">
+          <div className="Table">
+            <Table />
+          </div>
         </div>
       </div>
-      </div>
-     
     </>
   );
 }

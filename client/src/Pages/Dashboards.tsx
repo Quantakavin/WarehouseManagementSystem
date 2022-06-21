@@ -100,41 +100,26 @@ function Dashboards() {
       </header>
       <div className="dashboard-container">
         <Sidebar />
-        
+
         <div className="dashboard">
-          {/* <h1 className="Title">Dashboard</h1> */}
+          <h1 className="Title">Dashboard</h1>
           <Card className="TLoanCard">
             <Card.Body>
               <Card.Title>T-Loan Overview</Card.Title>
-              
-            
-              <Card.Text>
-              Current
-              </Card.Text>
-              <Card.Text>
-              Drafts
-              </Card.Text>
-            </Card.Body>
-          </Card>
-          
-          <Card className="RMACard">
-            <Card.Body>
-              <Card.Title>RMA Overview</Card.Title>
-              
-            
-              <Card.Text>
-              Current
-              </Card.Text>
-              <Card.Text>
-              Drafts
-              </Card.Text>
+              <br></br>
+              <Card.Text>Current</Card.Text>
+              <Card.Text>Drafts</Card.Text>
+              <Card.Text>Pending</Card.Text>
+              <Card.Text>Extension</Card.Text>
+
             </Card.Body>
           </Card>
 
-    
-         
-        
-         
+          <Card className="RMACard">
+            <Card.Body>
+              <Card.Title>Current T-Loan and RMA Statistic</Card.Title>
+            </Card.Body>
+          </Card>
         </div>
       </div>
     </>
