@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const user = require('../services/userService');
 const notificationGroup = require('../services/notificationGroupService');
 const config = require('../config/config');
+const redisClient = require('../config/caching');
 
 module.exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
@@ -35,7 +36,13 @@ module.exports.loginUser = async (req, res) => {
 
 module.exports.getAllUsers = async (req, res) => {
     try {
+        const users = await redisClient.get('users');
+        if (users !== null) {
+            const redisresults = JSON.parse(users);
+            return res.status(200).json(redisresults);
+        }
         const results = await user.getAll();
+        redisClient.set('users', JSON.stringify(results[0]));
         return res.status(200).json(results[0]);
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error!' });
@@ -45,6 +52,11 @@ module.exports.getAllUsers = async (req, res) => {
 module.exports.getUserById = async (req, res) => {
     const userID = req.params.id;
     try {
+        const reqUser = await redisClient.get(`user#${userID}`);
+        if (reqUser !== null) {
+            const redisresults = JSON.parse(reqUser);
+            return res.status(200).json(redisresults);
+        }
         let output = [];
         const results = await user.getByID(userID);
         if (results[0].length > 0) {
@@ -53,6 +65,7 @@ module.exports.getUserById = async (req, res) => {
             if (results2.length > 0) {
                 [output[0].NotificationGroups] = results2;
             }
+            redisClient.set(`user#${userID}`, JSON.stringify(output));
             return res.status(200).send(output);
         }
         return res.status(404).json({ message: 'Cannot find user with that id' });
@@ -79,6 +92,7 @@ module.exports.createUser = async (req, res) => {
     try {
         const hash = await bcrypt.hash(password, 10);
         await user.insert(name, email, hash, mobileno, company, usergroup, notigroups);
+        redisClient.del('users');
         return res.status(201).json({ message: 'User created successfully!' });
     } catch (error) {
         if (error.code === 'ER_DUP_ENTRY') {
@@ -106,6 +120,7 @@ module.exports.updateUser = async (req, res) => {
                 active,
                 notigroups
             );
+            redisClient.del(`user#${userID}`);
             return res.status(204).json({ message: 'User updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find user with that id' });

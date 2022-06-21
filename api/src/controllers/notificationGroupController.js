@@ -1,9 +1,16 @@
 const user = require('../services/userService');
 const notificationGroup = require('../services/notificationGroupService');
+const redisClient = require('../config/caching');
 
 module.exports.getAllNotificationGroups = async (req, res) => {
     try {
+        const notificationGroups = await redisClient.get('notificationGroups');
+        if (notificationGroups !== null) {
+            const redisresults = JSON.parse(notificationGroups);
+            return res.status(200).json(redisresults);
+        }
         const results = await notificationGroup.getAll();
+        redisClient.set('notificationGroups', JSON.stringify(results[0]));
         return res.status(200).json(results[0]);
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error!' });
@@ -13,6 +20,13 @@ module.exports.getAllNotificationGroups = async (req, res) => {
 module.exports.getNotificationGroupById = async (req, res) => {
     const notificationGroupID = req.params.id;
     try {
+        const reqNotificationGroup = await redisClient.get(
+            `notificationGroup#${notificationGroupID}`
+        );
+        if (reqNotificationGroup !== null) {
+            const redisresults = JSON.parse(reqNotificationGroup);
+            return res.status(200).json(redisresults);
+        }
         let output = [];
         const results = await notificationGroup.getByID(notificationGroupID);
         if (results[0].length > 0) {
@@ -21,6 +35,7 @@ module.exports.getNotificationGroupById = async (req, res) => {
             if (results2.length > 0) {
                 [output[0].Features] = results2;
             }
+            redisClient.set(`notificationGroup#${notificationGroupID}`, JSON.stringify(output));
             return res.status(200).send(output);
         }
         return res.status(404).json({ message: 'Cannot find notification group with that id' });
@@ -46,6 +61,7 @@ module.exports.createNotificationGroup = async (req, res) => {
     const { name, description, company, notifications } = req.body;
     try {
         await notificationGroup.insert(name, description, company, notifications);
+        redisClient.del('notificationGroups');
         return res.status(201).json({ message: 'Notification Group created successfully!' });
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error!' });
@@ -65,6 +81,7 @@ module.exports.updateNotificationGroup = async (req, res) => {
                 company,
                 notifications
             );
+            redisClient.del(`notificationGroups${notificationGroupID}`);
             return res.status(200).json({ message: 'Notification Group updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find Notification Group with that id' });
@@ -81,6 +98,7 @@ module.exports.deleteNotificationGroup = async (req, res) => {
             const results2 = await user.getByNotificationGroup(notificationGroupID);
             if (results2[0][0].Count === 0) {
                 await notificationGroup.delete(notificationGroupID);
+                redisClient.del('notificationGroups');
                 return res
                     .status(200)
                     .json({ message: 'Notification Group deleted successfully!' });
