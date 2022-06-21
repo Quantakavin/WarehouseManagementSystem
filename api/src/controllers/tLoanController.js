@@ -48,4 +48,77 @@ module.exports.newLoan = async (req, res) => {
     }
 }
 
+module.exports.loanExtension = async ( req , res ) => {
+    const {id,duration,reason} = req.body
+    try{
+        const results = await TLoan.extension(id,duration,reason)
+        if(results.length > 0){
+            return res.status(200).send('Extension Request Submitted!').json(results[0])
+        }else{
+            return res.status(500).send('Extension Request Unsuccessful!')
+        }
+    }
+    catch(error){
+        return res.status(500).send('Internal Server Error')
+    }
+}
 
+module.exports.currentLoan = async (req, res) => {
+    try {
+        const results = await TLoan.getCurrent()
+        if(results.length > 0) {
+            return res.status(200).json(results[0])
+        } else {
+            return res.status(404).send('You have not made any TLoans')
+        }
+    }
+    catch(error) {
+        console.log(error)
+        return res.status(500).send('Internal Server Error')
+    }
+}
+
+module.exports.draftLoan = async (req, res) => {
+    try {
+        const results = await TLoan.getDraft()
+        if(results.length > 0) {
+            return res.status(200).json(results[0])
+        } else {
+            return res.status(404).send('You have not made any TLoans')
+        }
+    }
+    catch(error) {
+        console.log(error)
+        return res.status(500).send('Internal Server Error')
+    }
+}
+
+module.exports.historyLoan = async (req, res) => {
+    try {
+        const results = await TLoan.getHistory()
+        if(results.length > 0) {
+            return res.status(200).json(results[0])
+        } else {
+            return res.status(404).send('You have not made any TLoans')
+        }
+    }
+    catch(error) {
+        console.log(error)
+        return res.status(500).send('Internal Server Error')
+    }
+}
+
+module.exports.pendingLoan = async (req, res) => {
+    try {
+        const results = await TLoan.getPending()
+        if(results.length > 0) {
+            return res.status(200).json(results[0])
+        } else {
+            return res.status(404).send('You have not made any TLoans')
+        }
+    }
+    catch(error) {
+        console.log(error)
+        return res.status(500).send('Internal Server Error')
+    }
+}
