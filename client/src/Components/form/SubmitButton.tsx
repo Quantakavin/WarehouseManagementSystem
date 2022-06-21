@@ -1,9 +1,20 @@
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Spinner } from 'react-bootstrap';
 import { motion } from "framer-motion";
 
-const Button = styled(motion.button)<{$loading: boolean}>`
-width: 85%; 
+interface ButtonProps {
+    $loading: boolean;
+    $multipartform: boolean;
+}
+
+interface SubmitButtonProps {
+    loading: boolean;
+    multipart: boolean;
+}
+
+const Button = styled(motion.button)<ButtonProps>`
+width: ${props => props.$multipartform ? 20 : 85}%; 
 padding-top: 8px; 
 padding-bottom: 8px; 
 margin-bottom: 10px; 
@@ -16,13 +27,9 @@ color: white;
 opacity: ${props => props.$loading ? 0.5 : 1}
 `;
 
-interface ButtonProps {
-    loading: boolean
-}
-
-const SubmitButton = ({loading}: ButtonProps) => {
+const SubmitButton: React.FC<SubmitButtonProps> = ({loading, multipart}) => {
     return(
-    <Button whileHover={{scale: 1.05}} whileTap={{scale: 0.95}} $loading={loading} type="submit" disabled={loading}>
+    <Button whileHover={{scale: 1.05}} whileTap={{scale: 0.95}} $loading={loading} $multipartform={multipart} type="submit" disabled={loading}>
         {!loading? 'Continue': <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true"/>}
     </Button>
     )

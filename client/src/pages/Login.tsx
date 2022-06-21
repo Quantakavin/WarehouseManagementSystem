@@ -12,13 +12,14 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import useTogglePasword from '../hooks/useTogglePassword';
 import { flexbox } from '@mui/system';
+import FormField from '../components/form/FormField';
 
 interface FormValues {
   email: string,
   password: string
 }
 
-const Login = () => {
+const Login: React.FC = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
   const {toggle, passwordType, showPassword} = useTogglePasword();
@@ -44,7 +45,7 @@ const Login = () => {
 
   return (
     <>
-      <header>
+      <header> 
         <TopBar />
       </header>
       <div className="bluebackground">
@@ -70,7 +71,7 @@ const Login = () => {
             </div>
             {mutation.isError && axios.isAxiosError(mutation.error) ? <ErrorAlert error={mutation.error} /> : <></>}
             <div className="flexcontainer" style={{ marginTop: 40 }}>
-              <SubmitButton loading={mutation.isLoading} />
+              <SubmitButton loading={mutation.isLoading} multipart={false} />
             </div>
           </form>
         </Container>

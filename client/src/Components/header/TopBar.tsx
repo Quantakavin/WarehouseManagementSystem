@@ -84,24 +84,24 @@ const TopBar = () => {
 
   const LoggedOutLinks = (
     <div className="hideinmobile">
-    <a href="/login">
-      <LoginButton whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>Login</LoginButton>
-    </a>
+      <a href="/login">
+        <LoginButton whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>Login</LoginButton>
+      </a>
     </div>
   )
 
   const MobileNavLinks = (
     <>
-    <div className="navcollapseddropdown flexcontainer hideindesktop">
-      {localStorage.getItem("user_id") !== null ?
-      <>
-      <a href='#'>Notifications</a>
-      <a href='#'>Profile</a>
-      <a href='#'>Settings</a>
-      <a href='#' onClick={() => logout()}>Logout</a>
-      </>
-      : <a href="/login">Login</a>}
-    </div>
+      <div className="navcollapseddropdown flexcontainer hideindesktop">
+        {localStorage.getItem("user_id") !== null ?
+          <>
+            <a href='#'>Notifications</a>
+            <a href='#'>Profile</a>
+            <a href='#'>Settings</a>
+            <a href='#' onClick={() => logout()}>Logout</a>
+          </>
+          : <a href="/login">Login</a>}
+      </div>
     </>
   )
 
@@ -113,33 +113,30 @@ const TopBar = () => {
 
   return (
     <>
-    <Navbar className="shadow-sm" variant="light" expand="lg">
-      <Container fluid>
-        <a className="brand" href="/"><img
-          alt="ISDN Logo"
-          src={navbarbrand}
-          width="130"
-          height="40"
-          className="d-inline-block align-top"
-          style={{ marginRight: 10 }}
-        /></a>
-        <Nav
-          className="navlinks"
-
-        >
-          {localStorage.getItem("token") === null ?
-            <>{LoggedOutLinks}</> : <>{LoggedInLinks}</>
-          }
-          <div className="hideindesktop">
-            {showNavDropdown ? 
-            <CloseIcon type="button" onClick = {() => setShowNavDropdown(false)}/> 
-            : 
-            <MenuIcon type="button" onClick = {() => setShowNavDropdown(true)}/>}
-          </div>
-        </Nav>
-      </Container>
-      {showNavDropdown ? <>{MobileNavLinks}</>:<></>}
-    </Navbar>
+      <Navbar className="shadow-sm" variant="light" expand="lg">
+        <Container fluid>
+          <a className="brand" href="/"><img
+            alt="ISDN Logo"
+            src={navbarbrand}
+            width="130"
+            height="40"
+            className="d-inline-block align-top"
+            style={{ marginRight: 10 }}
+          /></a>
+          <Nav className="navlinks">
+            {localStorage.getItem("token") === null ?
+              <>{LoggedOutLinks}</> : <>{LoggedInLinks}</>
+            }
+            <div className="hideindesktop">
+              {showNavDropdown ?
+                <CloseIcon type="button" onClick={() => setShowNavDropdown(false)} />
+                :
+                <MenuIcon type="button" onClick={() => setShowNavDropdown(true)} />}
+            </div>
+          </Nav>
+        </Container>
+        {showNavDropdown ? <>{MobileNavLinks}</> : <></>}
+      </Navbar>
     </>
   )
 }

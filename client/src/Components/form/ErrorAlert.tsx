@@ -15,7 +15,7 @@ interface ErrorProps {
     error: AxiosError
 }
 
-const ErrorAlert = ({error}: ErrorProps) => {
+const ErrorAlert: React.FC<ErrorProps> = ({error}) => {
     const [close, setClose] = useState<boolean>(false);
     const response = error.response as AxiosResponse;
 
