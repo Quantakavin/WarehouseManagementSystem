@@ -28,6 +28,8 @@
     "nodemon": "^2.0.16",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
+    "reach": "^1.0.1",
+    "react": "^18.2.0",
     "redis": "^4.1.0",
     "socket.io": "^4.5.1",
     "validator": "^13.7.0",
