@@ -61,17 +61,29 @@ exports.create = async (req, res) => {
     }
   };
 
-  module.exports.updateProductReceived = async (req, res) => {
+  module.exports.updateRmaAccepted = async (req, res) => {
     const rmaNo = req.params.id;
-    const { RmaStatusID } = req.body;
     try {
         const results = await rmaService.getByRMANO(rmaNo);
         if (results.length > 0) {
-            const hash = await bcrypt.hash(password, 10);
+            await rmaService.updateRmaAccepted(rmaNo);
+            return res.status(204).json({ message: 'RMA status updated successfully!' });
+        }
+        return res.status(404).json({ message: 'Cannot find RMA with that number' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
+  module.exports.updateProductReceived = async (req, res) => {
+    const rmaNo = req.params.id;
+    try {
+        const results = await rmaService.getByRMANO(rmaNo);
+        if (results.length > 0) {
             await rmaService.updateProductReceived(rmaNo);
             return res.status(204).json({ message: 'RMA status updated successfully!' });
         }
-        return res.status(404).json({ message: 'Cannot find RMA with that status id' });
+        return res.status(404).json({ message: 'Cannot find RMA with that number' });
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
@@ -82,15 +94,13 @@ exports.create = async (req, res) => {
     try {
         const results = await rmaService.getByStatusID(RmaStatusID);
         if (results.length > 0) {
-            const hash = await bcrypt.hash(password, 10);
             await rmaService.updateInstructions(
                 RMANo,
-                Instructions,
-                RmaStatus
+                Instructions
             );
             return res.status(204).json({ message: 'RMA status updated successfully!' });
         }
-        return res.status(404).json({ message: 'Cannot find RMA with that status id' });
+        return res.status(404).json({ message: 'Cannot find RMA with that number' });
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
