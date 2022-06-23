@@ -2,9 +2,9 @@ import TopBar from "./components/header/TopBar";
 import Sidebar from "./components/SideBar";
 import React from "react";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboards";
-import Products from "./pages/Products";
-import BinLocations from "./pages/BinLocations";
+import Dashboard from "./pages/dasboards/Dashboards";
+import Products from "./pages/products/Products";
+import BinLocations from "./pages/binlocations/BinLocations";
 import { Routes, Route } from "react-router-dom";
 
 const App: React.FC = () => {
