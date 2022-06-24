@@ -13,6 +13,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import useTogglePasword from '../hooks/useTogglePassword';
 import { flexbox } from '@mui/system';
 import FormField from '../components/form/FormField';
+import {EmailValidation, PasswordValidation} from '../utils/FormValidation';
 
 interface FormValues {
   email: string,
@@ -22,8 +23,7 @@ interface FormValues {
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
-  const {toggle, passwordType, showPassword} = useTogglePasword();
-
+  
   const mutation = useMutation(async (formData: FormValues) => {
     return await axios.post(`http://localhost:5000/api/login`, formData, {
       headers: {
@@ -42,7 +42,7 @@ const Login: React.FC = () => {
   const onSubmit = (data: FormValues) => {
     mutation.mutate(data, { onSuccess: () => navigate("/dashboard") })
   }
-
+  
   return (
     <>
       <header> 
@@ -52,6 +52,7 @@ const Login: React.FC = () => {
         <Container className="formcontainer shadow">
           <h2 className="formheader">Login to your account</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
+            {/*
             <div>
               <p className="formlabels">Email Address </p>
               <div className="flexcontainer">
@@ -59,6 +60,7 @@ const Login: React.FC = () => {
               </div>
               <p className="errormsg">{errors.email?.message}</p>
             </div>
+
             <div>
               <p className="formlabels">Password </p>
               <div className="flexcontainer">
@@ -69,8 +71,12 @@ const Login: React.FC = () => {
               </div>
               <p className="errormsg">{errors.password?.message}</p>
             </div>
+  */}
+            <FormField label="Email Address" name="email" type="email" register={register} errormsg={errors.email?.message} rules={EmailValidation}/>
+            <FormField label="Password" name="password" type="password" register={register} errormsg={errors.password?.message} rules={PasswordValidation}/>
+
             {mutation.isError && axios.isAxiosError(mutation.error) ? <ErrorAlert error={mutation.error} /> : <></>}
-            <div className="flexcontainer" style={{ marginTop: 40 }}>
+            <div className="flexcontainer" style={{ marginTop: 20}}>
               <SubmitButton loading={mutation.isLoading} multipart={false} />
             </div>
           </form>

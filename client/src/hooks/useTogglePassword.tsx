@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const useTogglePassword = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
-    const [passwordType, setPasswordType] = useState<string>("password");
+    const [passwordType, setPasswordType] = useState<'password' | 'text'>("password");
     const toggle = () => {
         setShowPassword(!showPassword);
         if (passwordType === "password") {

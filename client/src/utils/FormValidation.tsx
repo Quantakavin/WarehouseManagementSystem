@@ -1,0 +1,2 @@
+export const EmailValidation = {required: 'You must enter your email address', pattern: { value: /^\S+@\S+\.\S+$/i, message: "Please enter a valid email" }};
+export const PasswordValidation = {required: 'Password cannot be empty', pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$/i, message: "Password should be over 8 characters long with a mix of uppercase/lowercase letters and numbers" }};
