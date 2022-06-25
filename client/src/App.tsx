@@ -2,9 +2,6 @@ import TopBar from "./components/header/TopBar";
 import Sidebar from "./components/SideBar";
 import React from "react";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboards";
-import Products from "./pages/Products";
-import BinLocations from "./pages/BinLocations";
 import AddUser from "./pages/users/AddUser";
 import EditUser from "./pages/users/EditUser";
 import Users from "./pages/users/Users";
@@ -17,6 +14,9 @@ import AddNotificationGroup from "./pages/notificationgroups/AddNotificationGrou
 import EditNotificationGroup from "./pages/notificationgroups/EditNotificationGroup";
 import NotificationGroups from "./pages/notificationgroups/NotificationGroups";
 import ViewNotificationGroup from "./pages/notificationgroups/ViewNotificationGroup";
+import Dashboard from "./pages/dasboards/Dashboards";
+import Products from "./pages/products/Products";
+import BinLocations from "./pages/binlocations/BinLocations";
 import { Routes, Route } from "react-router-dom";
 
 const App: React.FC = () => {

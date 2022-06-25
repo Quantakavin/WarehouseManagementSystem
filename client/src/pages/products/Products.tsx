@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import TopBar from "../components/header/TopBar";
-import SideBar from "../components/SideBar";
+import TopBar from "../../components/header/TopBar";
+import SideBar from "../../components/SideBar";
 // import "../App.css";
-import "../styles/Products.css";
-import Table from "../components/table/tables";
-import ProductSearchBar from "../components/search/SearchBar";
+import "../styles/Products.scss";
+import Table from "../../components/table/tables";
+import ProductSearchBar from "../../components/search/SearchBar";
 
 function Products() {
   return (

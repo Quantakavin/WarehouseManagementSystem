@@ -40,19 +40,47 @@ module.exports.insert = async (DateTime, company, customer, contactperson, conta
       SupplierRMA: invoice,
       SalesmanID: salesmanid,
       SupplierRma: supplierrma,
-      RmaStatusID: rmastatusid,
+      RmaStatusID: 1,
       Instruction: instruction
   });
 }
 
-module.exports.updateStatus = async (rmastatusID, status) => {
-  return knex('RmaStatus').where('RmaStatusID', rmastatusID).update({
-      RmaStatus: status
+module.exports.updateRmaAccepted = async (rmaNo) => {
+  return knex.transaction((trx) => {
+      knex('Rma')
+          .where('RMANo', rmaNo)
+          .update({
+              RmaStatusID: 2,
+          })
+          .transacting(trx)
+          .then(trx.commit)
+          .catch(trx.rollback);
   });
-}
+};
 
-module.exports.updateInstructions = async (RMANo, instruction) => {
-  return knex('Rma').where('UserRMANo', RMANo).update({
-      Instruction: instruction
+module.exports.updateProductReceived = async (rmaNo) => {
+  return knex.transaction((trx) => {
+      knex('Rma')
+          .where('RMANo', rmaNo)
+          .update({
+              RmaStatusID: 3,
+          })
+          .transacting(trx)
+          .then(trx.commit)
+          .catch(trx.rollback);
   });
+};
+
+module.exports.updateRmaInstructions = async (rmaNo, instruction) => {
+  return knex.transaction((trx) => {
+    knex('Rma')
+        .where('RMANo', rmaNo)
+        .update({
+            Instruction: instruction,
+            RmaStatusID: 4,
+        })
+        .transacting(trx)
+        .then(trx.commit)
+        .catch(trx.rollback);
+});
 }
