@@ -14,7 +14,7 @@ import AddNotificationGroup from "./pages/notificationgroups/AddNotificationGrou
 import EditNotificationGroup from "./pages/notificationgroups/EditNotificationGroup";
 import NotificationGroups from "./pages/notificationgroups/NotificationGroups";
 import ViewNotificationGroup from "./pages/notificationgroups/ViewNotificationGroup";
-import Dashboard from "./pages/dasboards/Dashboards";
+import Dashboard from "./pages/dashboards/Dashboards";
 import Products from "./pages/products/Products";
 import BinLocations from "./pages/binlocations/BinLocations";
 import { Routes, Route } from "react-router-dom";
@@ -30,7 +30,6 @@ const App: React.FC = () => {
       <Route path="/adduser" element={<AddUser />} />
       <Route path="/addusergroup" element={<AddUserGroup />} />
       <Route path="/addnotificationgroup" element={<AddNotificationGroup />} />
-
     </Routes>
   );
 };

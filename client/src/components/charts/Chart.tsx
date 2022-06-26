@@ -1,4 +1,4 @@
-import "../../styles/chart.css";
+import "../../styles/chart.scss";
 import {
   LineChart,
   Line,
@@ -14,7 +14,7 @@ function Charts({ title, dataKey, grid }) {
   const data = [
     {
       name: "Jan",
-      request: 4000,
+      request: 2000,
     },
     {
       name: "Feb",
@@ -45,7 +45,8 @@ function Charts({ title, dataKey, grid }) {
 
   return (
     <>
-      <ResponsiveContainer width="100%" aspect={5 / 1}>
+    <div className="chart">
+      <ResponsiveContainer width="100%" aspect={4 / 1}>
         <LineChart data={data}>
           <XAxis dataKey="name" stroke="#5550bd" />
           <YAxis></YAxis>
@@ -54,6 +55,7 @@ function Charts({ title, dataKey, grid }) {
           {grid && <CartesianGrid stroke="#e0dfdf" strokeDasharray="5 5" />}
         </LineChart>
       </ResponsiveContainer>
+      </div>
     </>
   );
 }
