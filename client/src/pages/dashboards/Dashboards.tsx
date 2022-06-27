@@ -15,9 +15,6 @@ function Dashboards() {
   
   return (
     <>
-      <header>
-        <TopBar />
-      </header>
       <div className="dashboard-container">
         <Sidebar />
 
