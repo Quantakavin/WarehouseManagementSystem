@@ -11,32 +11,44 @@ const Input = styled.input<{ $password: boolean }>`
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 10px;
-margin-bottom: 5px;
 border: 1px solid #d3d3d3;
 border-radius: ${props => props.$password ? "15px 0 0 15px" : "15px"};
 flex-grow: ${props => props.$password ? 11 : 1};
 color: #0A2540; 
 `;
 
-
-interface FormFieldProps<TFieldValues> {
+interface FormFieldProps<IFormValues> {
     label: string;
     name: string;
     errormsg?: string;
     type: allowedInputs;
-    register?: UseFormRegister<TFieldValues>;
+    register?: UseFormRegister<IFormValues>;
     rules?: RegisterOptions;
 }
 
 const FormField: React.FC<FormFieldProps<any>> = ({ label, name, errormsg, type, register, rules }) => {
 
+
     const { toggle, passwordType, showPassword } = useTogglePasword();
+    let field = null;
+
+    if (type === "password") {
+        field =
+            <>
+                <Input $password={true} type={passwordType} {...(register && register(name, rules))} />
+                <div className="passwordicon flexcontainer" onClick={toggle}>{showPassword ? <VisibilityIcon style={{ color: '#0A2540' }} /> : <VisibilityOffIcon style={{ color: '#0A2540' }} />}</div>
+            </>
+    } else {
+        field =
+            <>
+                <Input $password={false} type={type} {...(register && register(name, rules))} />
+            </>
+    }
     return (
-        <div style={{display: "flex", flexDirection: "column"}}>
+        <div style={{ display: "flex", flexDirection: "column" }}>
             <p className="formlabels"> {label} </p>
-            <div className="formfieldcontainer" style={{alignSelf: "center"}}>
-                <Input $password={type==="password"} type={type === "password" ? passwordType : type} {...(register && register(name, rules))} />
-                {type === "password" ? <div className="passwordicon flexcontainer" onClick={toggle}>{showPassword ? <VisibilityIcon style={{ color: '#0A2540' }} /> : <VisibilityOffIcon style={{ color: '#0A2540' }} />}</div> : <></>}
+            <div className="formfieldcontainer" style={{ alignSelf: "center" }}>
+                {field}
             </div>
             <p className="errormsg">{errormsg}</p>
         </div>

@@ -88,13 +88,17 @@ module.exports.getUserByName = async (req, res) => {
 };
 
 module.exports.createUser = async (req, res) => {
-    const { name, email, password, mobileno, company, usergroup, notigroups } = req.body;
+    const { name, email, password, mobileno, company, usergroup, notificationgroups } = req.body;
     try {
+        const notigroups = notificationgroups.map((group) => {
+            return JSON.parse(group)
+        })
         const hash = await bcrypt.hash(password, 10);
         await user.insert(name, email, hash, mobileno, company, usergroup, notigroups);
         redisClient.del('users');
         return res.status(201).json({ message: 'User created successfully!' });
     } catch (error) {
+        console.log(error);
         if (error.code === 'ER_DUP_ENTRY') {
             return res.status(422).json({ message: 'User with that email already exists' });
         }
@@ -104,8 +108,11 @@ module.exports.createUser = async (req, res) => {
 
 module.exports.updateUser = async (req, res) => {
     const userID = req.params.id;
-    const { name, email, password, mobileno, company, usergroup, active, notigroups } = req.body;
+    const { name, email, password, mobileno, company, usergroup, active, notificationgroups } = req.body;
     try {
+        const notigroups = notificationgroups.map((group) => {
+            return JSON.parse(group)
+        })
         const results = await user.getByID(userID);
         if (results.length > 0) {
             const hash = await bcrypt.hash(password, 10);

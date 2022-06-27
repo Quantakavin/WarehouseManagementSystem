@@ -1,7 +1,7 @@
 import TopBar from "../../components/header/TopBar";
 import Sidebar from "../../components/SideBar";
 import { Card } from "react-bootstrap";
-import "../styles/Dashboard.scss";
+import "../../styles/Dashboard.scss";
 import { Container } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 import axios from "axios";

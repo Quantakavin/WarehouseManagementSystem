@@ -24,7 +24,6 @@ $primary-color: #0A2540;
     padding-bottom: 40px;
     border: 1px solid #d3d3d3;
     border-radius: 10px;
-    margin-top: 80px;
     padding: 2%;
   }
 
@@ -35,11 +34,42 @@ $primary-color: #0A2540;
     text-align: center;
     padding-top: 12%;
     padding-bottom: 20px;
-    height: 100%;
+    height: auto;
+    min-height: 100%;
   }
 
   @media screen and (min-width: 1200px) {
     width: 40% !important;
+  }
+
+}
+
+.multiformcontainer {
+  color: $primary-color;
+  background-color: white !important;
+
+  @media screen and (min-width: 800px) {
+    width: 70%;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    border: 1px solid #d3d3d3;
+    border-radius: 10px;
+    padding: 2%;
+  }
+
+  @media screen and (max-width: 800px) {
+    width: auto;
+    min-width: 100%;
+    display:block;
+    text-align: center;
+    padding-top: 12%;
+    padding-bottom: 20px;
+    height: auto;
+    min-height: 100%;
+  }
+
+  @media screen and (min-width: 1200px) {
+    width: 50% !important;
   }
 
 }
@@ -92,7 +122,6 @@ $primary-color: #0A2540;
   height: 100%;
   padding-top: 8px;
   padding-bottom: 8px;
-  margin-bottom: 5px;
   padding-right: 2px;
 }
 
@@ -105,4 +134,62 @@ $primary-color: #0A2540;
   font-size: 0.85em;
   margin-left: 8%;
   margin-top: 5px;
+}
+
+select {
+  appearance:none !important;
+  -moz-appearance:none !important;;
+  -webkit-appearance:none !important;
+  -ms-appearance: none !important;;
+  background-image: url('data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" xml:space="preserve"><path d="M7.41,8.59L12,13.17l4.59-4.58L18,10l-6,6l-6-6L7.41,8.59z"/><path fill="none" d="M0,0h24v24H0V0z"/></svg>');
+  background-position: center right;
+  background-repeat: no-repeat;
+}
+
+.formselect {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 10px;
+  border: 1px solid #d3d3d3;
+  border-radius: 15px;
+  flex-grow: 1;
+  color: #0A2540; 
+}
+
+.alertdiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20;
+  margin-bottom: -20;
+}
+
+.formnavigationcontainer {
+  margin-top: 25px;
+  display: flex;
+  padding-right: 10%;
+  padding-left: 10%;
+  justify-content: space-between;
+}
+
+.formnavigation {
+  color: $primary-color;
+  margin-right: auto;
+  text-decoration: underline;
+  font-weight: 700;
+  background:none;
+  border:none;
+}
+
+.nextbutton {
+  margin-left: auto;
+  width: 25%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-weight: 700;
+  border-radius: 25px;
+  border: solid 1px $primary-color;
+  background-color: $primary-color;
+  font-size: 23;
+  color: white;
 }

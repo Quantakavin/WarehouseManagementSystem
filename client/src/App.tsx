@@ -1,7 +1,7 @@
 import TopBar from "./components/header/TopBar";
 import Sidebar from "./components/SideBar";
 import React from "react";
-import Login from "./pages/Login";
+import Login from "./pages/users/Login";
 import AddUser from "./pages/users/AddUser";
 import EditUser from "./pages/users/EditUser";
 import Users from "./pages/users/Users";
@@ -21,6 +21,11 @@ import { Routes, Route } from "react-router-dom";
 
 const App: React.FC = () => {
   return (
+    <>
+    <header>
+      <TopBar />
+    </header>
+    <div className="bluebackground">
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
@@ -30,8 +35,9 @@ const App: React.FC = () => {
       <Route path="/adduser" element={<AddUser />} />
       <Route path="/addusergroup" element={<AddUserGroup />} />
       <Route path="/addnotificationgroup" element={<AddNotificationGroup />} />
-
     </Routes>
+    </div>
+    </>
   );
 };
 
