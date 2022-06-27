@@ -1,39 +1,54 @@
 const knex = require('../config/database');
 
-// T-Loan Overview 
+// T-Loan Overview
+
+// Approved TLoans
 module.exports.getCurrentTLoans = async () => {
-    const query = `SELECT * FROM TLoan`;
+    const query = `SELECT * FROM TLoan WHERE TLoanStatusID = "3"`;
     return knex.raw(query);
 };
 
+// Pending TLoans
 module.exports.getPendingTLoans = async () => {
-    const query = ``;
+    const query = `SELECT * FROM TLoan WHERE TLoanStatusID = "4"`;
     return knex.raw(query);
 };
 
+// Draft TLoans
 module.exports.getDraftTLoans = async () => {
-    const query = ``;
+    const query = `SELECT * FROM TLoan WHERE TLoanStatusID = "1"`;
     return knex.raw(query);
 };
 
+// Extended TLoans
 module.exports.getExtendedTLoans = async () => {
-    const query = ``;
+    const query = `SELECT * FROM TLoanExtension`;
     return knex.raw(query);
 };
 
-// RMA Overview  
+// RMA Overview
+
+// Approved RMAs
 module.exports.getCurrentRMAs = async () => {
-    const query = `SELECT * FROM Rma`;
+    const query = `SELECT * FROM Rma WHERE RMAStatusID = "2"`;
     return knex.raw(query);
 };
 
+// Pending RMAs
 module.exports.getPendingRMAs = async () => {
-    const query = ``;
+    const query = `SELECT * FROM Rma WHERE RMAStatusID = "1" `;
     return knex.raw(query);
 };
 
+// Rejected RMAs
 module.exports.getRejectedRMAs = async () => {
-    const query = ``;
+    const query = `SELECT * FROM Rma WHERE RMAStatusID = "3"`;
+    return knex.raw(query);
+};
+
+// Closed RMAs
+module.exports.getClosedRMAs = async () => {
+    const query = `SELECT * FROM Rma WHERE RMAStatusID = "5"`;
     return knex.raw(query);
 };
 
@@ -42,7 +57,3 @@ module.exports.getTLoanRMAStats = async () => {
     const query = ``;
     return knex.raw(query);
 };
-
-
-
-
