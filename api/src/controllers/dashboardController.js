@@ -5,7 +5,7 @@ const redisClient = require('../config/caching');
 // T-Loan Overview
 module.exports.currentTLoans = async (req, res) => {
     try {
-        const CurrentTLoans = await redisClient.get('CurrenTLoans');
+        const CurrentTLoans = await redisClient.get('CurretTLoans');
         if (CurrentTLoans !== null) {
             const redisresults = JSON.parse(CurrentTLoans);
             return res.status(200).json(redisresults);
