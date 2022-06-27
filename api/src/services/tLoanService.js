@@ -25,7 +25,7 @@ module.exports.createTLoan = async (type, company, number, name, purpose, applic
 }
 
 module.exports.getLoanByNumber = async(TLoanNumber) => {
-  const query = `SELECT * FROM TLoan where TLoanID = ?`
+  const query = `SELECT * FROM TLoan where TLoanNumber = ?`
   return knex.raw(query, [TLoanNumber])
 }
 
