@@ -1,10 +1,16 @@
 const dashboard = require('../services/dashboardService');
+
 const redisClient = require('../config/caching');
 
 // T-Loan Overview
 module.exports.currentTLoans = async (req, res) => {
     try {
-        const results = await TLoan.getCurrentTLoans();
+        const CurrentTLoans = await redisClient.get('CurrenTLoans');
+        if (CurrentTLoans !== null) {
+            const redisresults = JSON.parse(CurrentTLoans);
+            return res.status(200).json(redisresults);
+        }
+        const results = await dashboard.getCurrentTLoans();
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -18,7 +24,7 @@ module.exports.currentTLoans = async (req, res) => {
 
 module.exports.PendingTLoans = async (req, res) => {
     try {
-        const results = await TLoan.getPendingTLoans();
+        const results = await dashboard.getPendingTLoans();
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -32,7 +38,7 @@ module.exports.PendingTLoans = async (req, res) => {
 
 module.exports.DraftTLoans = async (req, res) => {
     try {
-        const results = await TLoan.getDraftTLoans();
+        const results = await dashboard.getDraftTLoans();
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -46,7 +52,7 @@ module.exports.DraftTLoans = async (req, res) => {
 
 module.exports.ExtendedTLoans = async (req, res) => {
     try {
-        const results = await TLoan.getExtendedTLoans();
+        const results = await dashboard.getExtendedTLoans();
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -62,7 +68,7 @@ module.exports.ExtendedTLoans = async (req, res) => {
 
 module.exports.currentRMAs = async (req, res) => {
     try {
-        const results = await TLoan.getCurrentRMAs();
+        const results = await dashboard.getCurrentRMAs();
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -76,7 +82,7 @@ module.exports.currentRMAs = async (req, res) => {
 
 module.exports.pendingRMAs = async (req, res) => {
     try {
-        const results = await TLoan.getPendingRMAs();
+        const results = await dashboard.getPendingRMAs();
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -90,7 +96,7 @@ module.exports.pendingRMAs = async (req, res) => {
 
 module.exports.rejectedRMAs = async (req, res) => {
     try {
-        const results = await TLoan.getRejectedRMAs();
+        const results = await dashboard.getRejectedRMAs();
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -104,7 +110,8 @@ module.exports.rejectedRMAs = async (req, res) => {
 
 module.exports.closedRMAs = async (req, res) => {
     try {
-        const results = await TLoan.getClosedRMAs();
+        const results = await dashboard.getClosedRMAs();
+
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -120,7 +127,7 @@ module.exports.closedRMAs = async (req, res) => {
 
 module.exports.TLoanRMAStats = async (req, res) => {
     try {
-        const results = await TLoan.getTLoanRMAStats();
+        const results = await dashboard.getTLoanRMAStats();
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
