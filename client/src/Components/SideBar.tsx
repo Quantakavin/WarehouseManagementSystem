@@ -1,4 +1,4 @@
-import "../styles/SideBar.css";
+import "../styles/SideBar.scss";
 import {
   LineStyle,
   Timeline,
@@ -22,19 +22,20 @@ export default function Sidebar() {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Menu</h3>
           <ul className="sidebarList">
-            {/* <Link to ="/dashboard" className="link"> */}
+            <Link to ="/dashboard" className="link">
             <li className="sidebarListItem">
               {/* <Timeline className="sidebarIcon" /> */}
               Dashboard
             </li>
+            </Link>
 
             {/* </Link> */}
-            {/* <Link to ="/products" className="link"> */}
+            <Link to ="/products" className="link">
             <li className="sidebarListItem">
               {/* <Timeline className="sidebarIcon" /> */}
               Products
             </li>
-            {/* </Link> */}
+            </Link>
 
             {/* <Link to ="/tloans" className="link"> */}
             <li className="sidebarListItem">

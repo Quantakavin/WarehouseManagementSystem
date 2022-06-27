@@ -21,6 +21,10 @@ html, body {
     height: calc(100vh - 67px);
     width: 100%;
     overflow: auto;
+    @media screen and (min-width: 800px) {
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
 }
 
 .hideinmobile {

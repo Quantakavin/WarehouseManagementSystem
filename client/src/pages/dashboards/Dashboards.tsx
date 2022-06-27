@@ -1,11 +1,11 @@
-import TopBar from "../components/header/TopBar";
-import Sidebar from "../components/SideBar";
+import TopBar from "../../components/header/TopBar";
+import Sidebar from "../../components/SideBar";
 import { Card } from "react-bootstrap";
-import "../styles/Dashboard.css";
+import "../../styles/Dashboard.scss";
 import { Container } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Chart from "../components/charts/Chart";
+import Chart from "../../components/charts/Chart";
 
 
 
@@ -15,9 +15,6 @@ function Dashboards() {
   
   return (
     <>
-      <header>
-        <TopBar />
-      </header>
       <div className="dashboard-container">
         <Sidebar />
 
