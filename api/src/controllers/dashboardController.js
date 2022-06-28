@@ -12,6 +12,7 @@ module.exports.currentTLoans = async (req, res) => {
         }
         const results = await dashboard.getCurrentTLoans();
         if (results.length > 0) {
+            console.log('endpoint working');
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('There is no incoming TLoans');

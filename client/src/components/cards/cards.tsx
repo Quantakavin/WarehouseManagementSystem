@@ -1,7 +1,20 @@
 import "./cards.scss";
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
+import axios, { AxiosResponse } from "axios";
+
+
+// API 
+import GetLoansOverview from "../../api/dashboard/GetLoansOverview";
+import GetRMAsOverview from "../../api/dashboard/GetRMAsOverview";
+import GetTLoanRMAChart from "../../api/dashboard/GetTLoanRMAChart";
+
+
+
 
 function cards() {
+
+
+
   return (
     <div className="featured">
       <div className="featuredItem">   

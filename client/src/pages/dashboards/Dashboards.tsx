@@ -7,9 +7,15 @@ import Chart from "../../components/charts/Chart";
 import Cards from "../../components/cards/cards";
 
 function Dashboards() {
+  
+
+
   return (
     <>
+      
       <div className="home">
+      <h1 className='homeTitle'>Dashboard</h1>
+
         <Cards />
         <Chart title={undefined} dataKey={undefined} grid={undefined} />
         </div>
