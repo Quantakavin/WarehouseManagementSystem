@@ -3,26 +3,59 @@ import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import config from "../../config/config";
-
-// API
 import GetLoansOverview from "../../api/dashboard/GetLoansOverview";
 import GetRMAsOverview from "../../api/dashboard/GetRMAsOverview";
 import GetTLoanRMAChart from "../../api/dashboard/GetTLoanRMAChart";
-import { current } from "@reduxjs/toolkit";
 
 function cards() {
   const [CurrentTloans, setCurrentTloans] = useState([]);
+  const [PendingTloans, setPendingTloans] = useState([]);
+  const [DraftTloans, setDraftTloans] = useState([]);
+  const [ExtendedTloans, setExtenddedTloans] = useState([]);
+  
 
+  // getcurrentTloans
   const getcurentTloans = async () => {
-    const response = await axios
-      .get(`${config.baseURL}/getcurentTloans`)
+    const response = await axios.get(`${config.baseURL}/getcurentTloans`);
 
-    setCurrentTloans(response.data)
-     
+    setCurrentTloans(response.data);
   };
 
   useEffect(() => {
     getcurentTloans();
+  }, []);
+
+  // getpendingTloans
+  const getpendingTloans = async () => {
+    const response = await axios.get(`${config.baseURL}/getpendingTloans`);
+
+    setPendingTloans(response.data);
+  };
+
+  useEffect(() => {
+    getpendingTloans();
+  }, []);
+
+  // getdraftTloans
+  const getdraftTloans = async () => {
+    const response = await axios.get(`${config.baseURL}/getdraftTloans`);
+
+    setDraftTloans(response.data);
+  };
+
+  useEffect(() => {
+    getdraftTloans();
+  }, []);
+
+  // getextendedTloans
+  const getextendedTloans = async () => {
+    const response = await axios.get(`${config.baseURL}/getpendingTloans`);
+
+    setPendingTloans(response.data);
+  };
+
+  useEffect(() => {
+    getextendedTloans();
   }, []);
 
   return (
