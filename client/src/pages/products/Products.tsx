@@ -3,7 +3,7 @@ import TopBar from "../../components/header/TopBar";
 import SideBar from "../../components/SideBar";
 // import "../App.css";
 import "../../styles/Products.scss";
-import Table from "../../components/table/tables";
+import Table from "../../components/table/Tables";
 import ProductSearchBar from "../../components/search/SearchBar";
 
 function Products() {
