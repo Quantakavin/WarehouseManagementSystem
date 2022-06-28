@@ -58,12 +58,25 @@ module.exports.updateRmaAccepted = async (rmaNo) => {
   });
 };
 
-module.exports.updateProductReceived = async (rmaNo) => {
+module.exports.updateRmaRejected = async (rmaNo) => {
   return knex.transaction((trx) => {
       knex('Rma')
           .where('RMANo', rmaNo)
           .update({
               RmaStatusID: 3,
+          })
+          .transacting(trx)
+          .then(trx.commit)
+          .catch(trx.rollback);
+  });
+};
+
+module.exports.updateProductReceived = async (rmaNo) => {
+  return knex.transaction((trx) => {
+      knex('Rma')
+          .where('RMANo', rmaNo)
+          .update({
+              RmaStatusID: 4,
           })
           .transacting(trx)
           .then(trx.commit)
@@ -77,7 +90,20 @@ module.exports.updateRmaInstructions = async (rmaNo, instruction) => {
         .where('RMANo', rmaNo)
         .update({
             Instruction: instruction,
-            RmaStatusID: 4,
+            RmaStatusID: 5,
+        })
+        .transacting(trx)
+        .then(trx.commit)
+        .catch(trx.rollback);
+});
+}
+
+module.exports.updateRmaCOA = async (rmaNo, actiontaken) => {
+  return knex.transaction((trx) => {
+    knex('Rma')
+        .where('RMANo', rmaNo)
+        .update({
+            CourseOfAction: actiontaken,
         })
         .transacting(trx)
         .then(trx.commit)

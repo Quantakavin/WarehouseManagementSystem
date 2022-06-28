@@ -58,3 +58,4 @@ module.exports.getHistory = async () => {
   const query = `SELECT * FROM TLoan where TLoanStatusID = "8"`;
   return knex.raw(query);
 }
+

@@ -1,11 +1,18 @@
 const TLoan = require('../services/tLoanService')
+const redisClient = require('../config/caching');
 
 module.exports.searchLoan = async (req, res) => {
     let TLoanNumber = req.params.number
     try {
-        let results = await TLoan.getLoanByNumber(TLoanNumber)
+        const searchTLoan = await redisClient.get(`TLoan#${TLoanNumber}`);
+        if (searchTLoan !== null) {
+            const redisresults = JSON.parse(searchTLoan);
+            return res.status(200).json(redisresults);
+        }
+        const results = await TLoan.getLoanByNumber(TLoanNumber)
+        redisClient.set(`TLoan#${TLoanNumber}`,  JSON.stringify(results[0]))
         if(results.length > 0) {
-            return res.status(200).send(results[0])
+            return res.status(200).json(results[0])
         } else {
             return res.status(404).send('Does Not Exist')       
         }
@@ -18,7 +25,13 @@ module.exports.searchLoan = async (req, res) => {
 
 module.exports.allLoan = async (req, res) => {
     try {
+        const TLoans = await redisClient.get('TLoans');
+        if (TLoans !== null) {
+            const redisresults = JSON.parse(TLoans);
+            return res.status(200).json(redisresults);
+        }
         const results = await TLoan.getAll()
+        redisClient.set('TLoans', JSON.stringify(results[0]));
         if(results.length > 0) {
             return res.status(200).json(results[0])
         } else {
@@ -121,4 +134,16 @@ module.exports.pendingLoan = async (req, res) => {
         console.log(error)
         return res.status(500).send('Internal Server Error')
     }
+}
+
+module.exports.acceptLoan = async(req , res) =>{
+
+}
+
+module.exports.rejectLoan = async(req , res) =>{
+
+}
+
+module.exports.pickingLoan = async(req , res) =>{
+
 }

@@ -1,10 +1,20 @@
 import React from 'react'
 import Chart from '../../components/charts/Chart'
+import Sidebar from '../../components/SideBar'
+import  '../../styles/BinLocation.scss'
 
 
 function BinLocations() {
   return (
-    <Chart title={undefined} dataKey={undefined} grid={undefined} />
+    <>
+    <div className='binlocation'> 
+    <h1 className='binlocationTitle'>Warehouse Visualisation</h1>
+     
+    </div>
+
+    
+    </>
+   
   )
 }
 
