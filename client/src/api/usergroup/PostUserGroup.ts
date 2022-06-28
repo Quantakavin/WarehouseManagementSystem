@@ -1,8 +1,8 @@
 import axios from "axios";
 import config from "../../config/config";
 
-const PostUser = async (formData) => {
-  const result = await axios.post(`${config.baseURL}/user`, formData, {
+const PostUserGroup = async (formData) => {
+  const result = await axios.post(`${config.baseURL}/usergroup`, formData, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -11,4 +11,4 @@ const PostUser = async (formData) => {
   return result;
 };
 
-export default PostUser;
+export default PostUserGroup;

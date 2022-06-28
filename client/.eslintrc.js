@@ -23,6 +23,13 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
-    "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }]
+    "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }],
+    "react/function-component-definition": [
+      2,
+      {
+        namedComponents: "arrow-function",
+      },
+    ],
+    "react/require-default-props": "off"
   },
 };
