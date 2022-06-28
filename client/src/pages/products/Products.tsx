@@ -9,9 +9,6 @@ import ProductSearchBar from "../../components/search/SearchBar";
 function Products() {
   return (
     <>
-      <header>
-        <TopBar />
-      </header>
       <div className="product-container">
         <SideBar />
 

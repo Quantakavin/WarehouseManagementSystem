@@ -1,5 +1,5 @@
-import * as THREE from "./three.js-master/build/three.module.js";
-import { GLTFLoader } from "./three/examples/jsm/loaders/GLTFLoader.js";
+import * as THREE from "./three.js-master/build/three.module.js.js";
+import { GLTFLoader } from "./three/examples/jsm/loaders/GLTFLoader.js.js";
 
 const canvas = document.querySelector(".webgl");
 const scene = new THREE.Scene();
