@@ -1,5 +1,5 @@
 import React from "react";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { Container } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
@@ -7,7 +7,10 @@ import { useNavigate } from "react-router-dom";
 import SubmitButton from "../../components/form/SubmitButton";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormField from "../../components/form/FormField";
-import { EmailValidation, PasswordValidation } from "../../utils/FormValidation";
+import {
+  EmailValidation,
+  PasswordValidation,
+} from "../../utils/FormValidation";
 import LoginUser from "../../api/user/LoginUser";
 
 interface FormValues {
@@ -23,17 +26,14 @@ const Login: React.FC = () => {
     formState: { errors },
   } = useForm<FormValues>();
 
-  const mutation = useMutation(
-    LoginUser,
-    {
-      onSuccess: (data) => {
-        const { token, id, name } = data.data;
-        localStorage.setItem("token", token);
-        localStorage.setItem("user_id", id);
-        localStorage.setItem("username", name);
-      },
-    }
-  );
+  const mutation = useMutation(LoginUser, {
+    onSuccess: (data) => {
+      const { token, id, name } = data.data;
+      localStorage.setItem("token", token);
+      localStorage.setItem("user_id", id);
+      localStorage.setItem("username", name);
+    },
+  });
 
   const onSubmit = (data: FormValues) => {
     mutation.mutate(data, { onSuccess: () => navigate("/dashboard") });
@@ -62,11 +62,13 @@ const Login: React.FC = () => {
 
         {mutation.isError && axios.isAxiosError(mutation.error) ? (
           <ErrorAlert error={mutation.error} />
-        ) : (
-          <></>
-        )}
+        ) : null}
         <div className="flexcontainer" style={{ marginTop: 20 }}>
-          <SubmitButton text="Continue" loading={mutation.isLoading} multipart={false} />
+          <SubmitButton
+            text="Continue"
+            loading={mutation.isLoading}
+            multipart={false}
+          />
         </div>
       </form>
     </Container>

@@ -13,7 +13,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import defaultprofile from "../../assets/defaultprofile.png";
 import navbarbrand from "../../assets/navbarbrand.png";
 
-function TopBar() {
+const TopBar: React.FC = () => {
   const navigate = useNavigate();
   const [showNavDropdown, setShowNavDropdown] = useState<boolean>(false);
   const [showProfileDropdown, setShowProfileDropdown] =
@@ -148,5 +148,5 @@ function TopBar() {
       {showNavDropdown ? MobileNavLinks : null}
     </Navbar>
   );
-}
+};
 export default TopBar;

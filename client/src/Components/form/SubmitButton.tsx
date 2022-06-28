@@ -29,7 +29,11 @@ const Button = styled(motion.button)<ButtonProps>`
   opacity: ${(props) => (props.$loading ? 0.5 : 1)};
 `;
 
-const SubmitButton: React.FC<SubmitButtonProps> = ({ loading, multipart, text }) => {
+const SubmitButton: React.FC<SubmitButtonProps> = ({
+  loading,
+  multipart,
+  text,
+}) => {
   return (
     <Button
       whileHover={{ scale: 1.05 }}

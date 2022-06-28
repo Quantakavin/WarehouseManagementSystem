@@ -9,6 +9,7 @@ import ErrorAlert from '../../components/form/ErrorAlert';
 import { Container } from 'react-bootstrap';
 import FormField from '../../components/form/FormField';
 import {NameValidation} from '../../utils/FormValidation';
+import PostUserGroup from "../../api/usergroup/PostUserGroup";
 
 interface FormValues {
     name: string,
@@ -19,14 +20,7 @@ const AddUserGroup: React.FC = () => {
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
   
-    const mutation = useMutation(async (formData: FormValues) => {
-      return await axios.post(`http://localhost:5000/api/usergroup`, formData, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}` 
-        }
-      })
-    })
+    const mutation = useMutation(PostUserGroup)
   
     const onSubmit = (data: FormValues) => {
       mutation.mutate(data, { onSuccess: () => navigate("/users") })
