@@ -13,7 +13,7 @@ module.exports.currentTLoans = async (req, res) => {
         const results = await dashboard.getCurrentTLoans();
         if (results.length > 0) {
             console.log('endpoint working');
-            return res.status(200).json(results[0]);
+            return res.status(200).json(results[0]+'test');
         } else {
             return res.status(404).send('There is no incoming TLoans');
         }
@@ -29,7 +29,7 @@ module.exports.PendingTLoans = async (req, res) => {
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
-            return res.status(404).send('There is no pendding TLoans');
+            return res.status(404).send('There is no pending TLoans');
         }
     } catch (error) {
         console.log(error);
