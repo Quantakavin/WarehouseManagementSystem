@@ -12,7 +12,6 @@ function cards() {
   const [PendingTloans, setPendingTloans] = useState([]);
   const [DraftTloans, setDraftTloans] = useState([]);
   const [ExtendedTloans, setExtenddedTloans] = useState([]);
-  
 
   // getcurrentTloans
   const getcurentTloans = async () => {
@@ -65,15 +64,15 @@ function cards() {
         <div>
           <div>
             <span className="Current">Current</span>
-            <h1 className="Current">{CurrentTloans}</h1>
+            <h1 className="Current">{CurrentTloans.length}</h1>
           </div>
           <div>
             <span className="Drafts">Drafts</span>
-            <h1 className="Current"></h1>
+            <h1 className="Current">{DraftTloans.length}</h1>
           </div>
           <div>
             <span className="Current">Pending</span>
-            <h1 className="Current"></h1>
+            <h1 className="Current">{PendingTloans.length}</h1>
           </div>
           <div>
             <span className="Current">On-Extension</span>
