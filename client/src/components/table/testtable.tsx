@@ -1,6 +1,15 @@
 import React from "react";
 import axios from "axios";
 import "../table/testtable.scss";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
+
 
 const TestTable = ({ data, column }) => {
   return (
@@ -14,7 +23,7 @@ const TestTable = ({ data, column }) => {
       </thead>
       <tbody>
         {data.map((item, index) => (
-          <TableRow item={item} column={column} />
+          <TableRows item={item} column={column} />
         ))}
       </tbody>
     </table>
@@ -22,7 +31,7 @@ const TestTable = ({ data, column }) => {
 };
 
 const TableHeadItem = ({ item }) => <th>{item.heading}</th>;
-const TableRow = ({ item, column }) => (
+const TableRows = ({ item, column }) => (
   <tr>
     {column.map((columnItem, index) => {
       if (columnItem.value.includes(".")) {
