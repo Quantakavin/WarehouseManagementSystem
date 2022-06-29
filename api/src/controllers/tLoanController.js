@@ -153,8 +153,131 @@ module.exports.pendingLoan = async (req, res) => {
     }
 };
 
-module.exports.acceptLoan = async (req, res) => {};
 
-module.exports.rejectLoan = async (req, res) => {};
 
-module.exports.pickingLoan = async (req, res) => {};
+module.exports.approveLoan = async(req , res) =>{
+    const {number} = req.body
+    try{
+        const results = await TLoan.approveLoan(number)
+        if(results.length > 0) {
+            return res.status(200).json(results[0])
+        } else {
+            return res.status(500).send('Status failed to Update')
+        }
+    }
+    catch(error){
+        console.log(error)
+        return res.status(500).send('Internal Server Error')
+
+    }
+
+}
+
+module.exports.rejectLoan = async(req , res) =>{
+    const {number} = req.body
+    try{
+        const results = await TLoan.rejectLoan(number)
+        if(results.length > 0) {
+            return res.status(200).json(results[0])
+        } else {
+            return res.status(500).send('Status failed to Update')
+        }
+    }
+    catch(error){
+        console.log(error)
+        return res.status(500).send('Internal Server Error')
+
+    }
+
+
+}
+
+module.exports.pickingLoan = async(req , res) =>{
+    const {number} = req.body
+    try{
+        const results = await TLoan.pickLoan(number)
+        if(results.length > 0) {
+            return res.status(200).json(results[0])
+        } else {
+            return res.status(500).send('Status failed to Update')
+        }
+    }
+    catch(error){
+        console.log(error)
+        return res.status(500).send('Internal Server Error')
+
+    }
+
+}
+
+module.exports.issuedLoan = async(req , res) =>{
+    const {number} = req.body
+    try{
+        const results = await TLoan.issuedLoan(number)
+        if(results.length > 0) {
+            return res.status(200).json(results[0])
+        } else {
+            return res.status(500).send('Status failed to Update')
+        }
+    }
+    catch(error){
+        console.log(error)
+        return res.status(500).send('Internal Server Error')
+
+    }
+
+}
+
+module.exports.dueLoan = async(req , res) =>{
+    const {number} = req.body
+    try{
+        const results = await TLoan.dueLoan(number)
+        if(results.length > 0) {
+            return res.status(200).json(results[0])
+        } else {
+            return res.status(500).send('Status failed to Update')
+        }
+    }
+    catch(error){
+        console.log(error)
+        return res.status(500).send('Internal Server Error')
+
+    }
+
+}
+
+module.exports.readyLoan = async(req , res) =>{
+    const {number} = req.body
+    try{
+        const results = await TLoan.readyLoan(number)
+        if(results.length > 0) {
+            return res.status(200).json(results[0])
+        } else {
+            return res.status(500).send('Status failed to Update')
+        }
+    }
+    catch(error){
+        console.log(error)
+        return res.status(500).send('Internal Server Error')
+
+    }
+
+}
+
+module.exports.draftLoan = async(req , res) =>{
+    const {number} = req.body
+    try{
+        const results = await TLoan.draftLoan(number)
+        if(results.length > 0) {
+            return res.status(200).json(results[0])
+        } else {
+            return res.status(500).send('Status failed to Update')
+        }
+    }
+    catch(error){
+        console.log(error)
+        return res.status(500).send('Internal Server Error')
+
+    }
+
+}
