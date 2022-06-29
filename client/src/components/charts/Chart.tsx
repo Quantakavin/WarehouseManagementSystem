@@ -8,6 +8,7 @@ import {
   ResponsiveContainer,
   YAxis,
 } from "recharts";
+import { Title } from "react-bootstrap/lib/Modal";
 
 
 function Charts({ title, dataKey, grid }) {
@@ -48,6 +49,7 @@ function Charts({ title, dataKey, grid }) {
     <div className="chart">
       <ResponsiveContainer width="100%" aspect={4 / 1}>
         <LineChart data={data}>
+    
           <XAxis dataKey="name" stroke="#5550bd" />
           <YAxis></YAxis>
           <Line type="monotone" dataKey="request" stroke="#5550bd" />
