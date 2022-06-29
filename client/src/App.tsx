@@ -16,28 +16,33 @@ import NotificationGroups from "./pages/notificationgroups/NotificationGroups";
 import ViewNotificationGroup from "./pages/notificationgroups/ViewNotificationGroup";
 import Dashboard from "./pages/dashboards/Dashboards";
 import Products from "./pages/products/Products";
+import TesstProducts from "./pages/products/TesstProducts";
 import BinLocations from "./pages/binlocations/BinLocations";
 import { Routes, Route } from "react-router-dom";
 
 const App: React.FC = () => {
   return (
     <>
-    <header>
-      <TopBar />
-    </header>
-    <div className="bluebackground">
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/products" element={<Products />} />
-      <Route path="/binlocations" element={<BinLocations />} />
-      <Route path="/adduser" element={<AddUser />} />
-      <Route path="/edituser/:id" element={<EditUser />} />
-      <Route path="/addusergroup" element={<AddUserGroup />} />
-      <Route path="/addnotificationgroup" element={<AddNotificationGroup />} />
-    </Routes>
-    </div>
+      <header>
+        <TopBar />
+      </header>
+      <div className="bluebackground">
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/testproducts" element={<TesstProducts />} />
+          <Route path="/binlocations" element={<BinLocations />} />
+          <Route path="/adduser" element={<AddUser />} />
+          <Route path="/edituser/:id" element={<EditUser />} />
+          <Route path="/addusergroup" element={<AddUserGroup />} />
+          <Route
+            path="/addnotificationgroup"
+            element={<AddNotificationGroup />}
+          />
+        </Routes>
+      </div>
     </>
   );
 };
