@@ -88,19 +88,16 @@ module.exports.rejectLoan = async (number) => {
 
 
 module.exports.pickLoan = async (number) => {
-  return knex('TLoan').update({
-    TLoanStatusID: 5
-  }).where('TLoanNumber', number)
-  // transaction((trx) => {
-  //     knex('TLoan')
-  //         .where('TLoanNumber', number)
-  //         .update({
-  //             TLoanStatusID: 5,
-  //         })
-  //         .transacting(trx)
-  //         .then(trx.commit)
-  //         .catch(trx.rollback);
-  // });
+  return knex.transaction((trx) => {
+      knex('TLoan')
+          .where('TLoanNumber', number)
+          .update({
+              TLoanStatusID: 5,
+          })
+          .transacting(trx)
+          .then(trx.commit)
+          .catch(trx.rollback);
+  });
 };
 
 
