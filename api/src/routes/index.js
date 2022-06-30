@@ -7,7 +7,7 @@ const productRoutes = require('./productRoutes');
 const notificationGroupRoutes = require('./notificationGroupRoutes');
 const tloanRoutes = require('./tLoanRoutes');
 const dashboardRoutes = require('./dashboardRoutes');
-// const binRoutes = require('./binRoutes');
+const binRoutes = require('./binRoutes');
 
 //router.use(rmaRoute);
 router.use(companyRoute);
@@ -17,6 +17,6 @@ router.use(productRoutes);
 router.use(notificationGroupRoutes);
 router.use(tloanRoutes);
 router.use(dashboardRoutes);
-// router.use(binRoutes);
+router.use(binRoutes);
 
 module.exports = router;
