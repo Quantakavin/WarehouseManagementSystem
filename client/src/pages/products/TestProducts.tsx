@@ -25,6 +25,7 @@ function TestProducts() {
 
   return (
     <div className="App">
+      <ProductSearchBar></ProductSearchBar>
       <TestTable data={dataTable} column={column} />
     </div>
   );

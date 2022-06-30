@@ -3,7 +3,7 @@ import TopBar from "../../components/header/TopBar";
 import SideBar from "../../components/SideBar";
 // import "../App.css";
 import "../../styles/Products.scss";
-import Table from "../../components/table/tables";
+// import Table from "../../components/table/tables";
 import ProductSearchBar from "../../components/search/SearchBar";
 import TestTable from "../../components/table/testtable";
 import axios from "axios";
