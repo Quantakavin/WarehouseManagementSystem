@@ -49,10 +49,10 @@ const EditUser: React.FC = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<FormValues>({mode: "all"});
-  const UserQuery = useQuery(`user${params.id}`, GetUser(params.id));
-  const companiesQuery = useQuery("companies", GetCompanies());
-  const userGroupsQuery = useQuery("usergroups", GetUserGroups());
-  const notiGroupsQuery = useQuery("notificationgroups", GetNotificationGroups());
+  const UserQuery = useQuery([`user${params.id}`, params.id],() => GetUser(params.id));
+  const companiesQuery = useQuery("companies", GetCompanies);
+  const userGroupsQuery = useQuery("usergroups", GetUserGroups);
+  const notiGroupsQuery = useQuery("notificationgroups", GetNotificationGroups);
 
   useEffect(() => {
     if (!UserQuery.error && !UserQuery.isLoading) {
@@ -64,6 +64,7 @@ const EditUser: React.FC = () => {
     if (!companiesQuery.error && !companiesQuery.isLoading) {
       companiesQuery.data.data.forEach((company: Company) => {
         companies.push({
+          id: company.CompanyID,
           text: company.CompanyName,
           value: company.CompanyID,
         });
@@ -75,6 +76,7 @@ const EditUser: React.FC = () => {
     if (!userGroupsQuery.error && !userGroupsQuery.isLoading) {
       userGroupsQuery.data.data.forEach((usergroup: UserGroup) => {
         usergroups.push({
+          id: usergroup.UserGroupID,
           text: usergroup.UserGroupName,
           value: usergroup.UserGroupID,
         });
@@ -86,6 +88,7 @@ const EditUser: React.FC = () => {
     if (!notiGroupsQuery.error && !notiGroupsQuery.isLoading) {
       notiGroupsQuery.data.data.forEach((notigroup: NotiGroup) => {
         notigroups.push({
+          id: notigroup.NotiGroupID,
           text: notigroup.NotiGroupName,
           value: JSON.stringify({ NotiGroupID: notigroup.NotiGroupID }),
         });
@@ -94,10 +97,10 @@ const EditUser: React.FC = () => {
     setNotiGroupOptions(notigroups);
   }, [companiesQuery.data, userGroupsQuery.data, notiGroupsQuery.data]);
 
-  const mutation = useMutation(UpdateUser(params.id));
+  const mutation = useMutation((data: FormValues) => UpdateUser(data, params.id));
 
   const onSubmit = (data: FormValues) => {
-    mutation.mutate(data, { onSuccess: () => navigate("/users") });
+    mutation.mutate(data , { onSuccess: () => navigate("/users") });
   };
 
   const nextStep = () => {
@@ -142,7 +145,6 @@ const EditUser: React.FC = () => {
         name="password"
         type="password"
         register={register}
-        defaultvalue = {user ? user.Password : ''}
         errormsg={errors.password?.message}
         rules={PasswordValidation}
       />

@@ -37,8 +37,8 @@ const SelectDropdown: React.FC<SelectProps<any>> = ({
           <option value="" disabled hidden>
             {defaultoption}
           </option>
-          {options.map(({ text, value }) => (
-            <option value={value}>{text}</option>
+          {options.map(({ id, text, value }) => (
+            <option key={id} value={value}>{text}</option>
           ))}
         </select>
       </div>

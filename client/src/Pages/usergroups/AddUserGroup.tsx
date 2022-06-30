@@ -9,7 +9,7 @@ import ErrorAlert from '../../components/form/ErrorAlert';
 import { Container } from 'react-bootstrap';
 import FormField from '../../components/form/FormField';
 import {NameValidation} from '../../utils/FormValidation';
-import PostUserGroup from "../../api/usergroup/PostUserGroup";
+import { PostUserGroup } from "../../api/UserGroupDB";
 
 interface FormValues {
     name: string,
