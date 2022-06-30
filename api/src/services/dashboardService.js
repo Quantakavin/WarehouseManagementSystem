@@ -53,7 +53,10 @@ module.exports.getClosedRMAs = async () => {
 };
 
 // Current T-Loan and RMA Statistic
+
+// Get Total Request Made from TLoan and RMA
 module.exports.getTLoanRMAStats = async () => {
-    const query = ``;
+    const query = `select (select count(TLoanNumber) from TLoan) as TLoanRequests,
+    (select count(RmaNo) from Rma) as RMARequest`;
     return knex.raw(query);
 };

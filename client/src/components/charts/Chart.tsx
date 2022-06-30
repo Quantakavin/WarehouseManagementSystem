@@ -13,6 +13,7 @@ import { useState } from "react";
 
 function Charts({ title, dataKey, grid }) {
   const [error, setError] = useState(null);
+  
 
   const data = [
     {
