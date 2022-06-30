@@ -1,7 +1,7 @@
 const knex = require('../config/database');
 
 module.exports.getAll = async () => {
-    const query = `SELECT ItemNo, ItemName, BatchNo, Brand, Quantity FROM BinProduct`;
+    const query = `SELECT ItemNo, ItemName, BatchNo, Brand, Quantity FROM BinProduct LIMIT 10`;
     return knex.raw(query);
 };
 
