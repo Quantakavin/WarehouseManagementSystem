@@ -9,6 +9,7 @@ import SubmitButton from "../../components/form/SubmitButton";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormField from "../../components/form/FormField";
 import SelectDropdown from "../../components/form/SelectDropdown";
+import Dialog from '@mui/material/Dialog';
 import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/Check';
 import {
@@ -57,15 +58,16 @@ const AddUser: React.FC = () => {
   // const userGroupsQuery = useQuery("usergroups", GetUserGroups);
   // const notiGroupsQuery = useQuery("notificationgroups", GetNotificationGroups);
 
-  const companiesQuery = useQuery("companies", GetCompanies());
-  const userGroupsQuery = useQuery("usergroups", GetUserGroups());
-  const notiGroupsQuery = useQuery("notificationgroups", GetNotificationGroups());
+  const companiesQuery = useQuery("companies", GetCompanies);
+  const userGroupsQuery = useQuery("usergroups", GetUserGroups);
+  const notiGroupsQuery = useQuery("notificationgroups", GetNotificationGroups);
 
   useEffect(() => {
     const companies: Option[] = [];
     if (!companiesQuery.error && !companiesQuery.isLoading) {
       companiesQuery.data.data.forEach((company: Company) => {
         companies.push({
+          id: company.CompanyID,
           text: company.CompanyName,
           value: company.CompanyID,
         });
@@ -77,6 +79,7 @@ const AddUser: React.FC = () => {
     if (!userGroupsQuery.error && !userGroupsQuery.isLoading) {
       userGroupsQuery.data.data.forEach((usergroup: UserGroup) => {
         usergroups.push({
+          id: usergroup.UserGroupID,
           text: usergroup.UserGroupName,
           value: usergroup.UserGroupID,
         });
@@ -88,6 +91,7 @@ const AddUser: React.FC = () => {
     if (!notiGroupsQuery.error && !notiGroupsQuery.isLoading) {
       notiGroupsQuery.data.data.forEach((notigroup: NotiGroup) => {
         notigroups.push({
+          id: notigroup.NotiGroupID,
           text: notigroup.NotiGroupName,
           value: JSON.stringify({ NotiGroupID: notigroup.NotiGroupID }),
         });
@@ -96,7 +100,7 @@ const AddUser: React.FC = () => {
     setNotiGroupOptions(notigroups);
   }, [companiesQuery.data, userGroupsQuery.data, notiGroupsQuery.data]);
 
-  const mutation = useMutation(PostUser());
+  const mutation = useMutation(PostUser);
 
   const onSubmit = (data: FormValues) => {
     mutation.mutate(data, { onSuccess: () => navigate("/users") });

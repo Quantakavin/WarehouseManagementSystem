@@ -27,7 +27,7 @@ const Login: React.FC = () => {
     formState: { errors },
   } = useForm<FormValues>({mode: "all"});
 
-  const mutation = useMutation(LoginUser(), { 
+  const mutation = useMutation(LoginUser, { 
     onSuccess: (data) => {
       const { token, id, name } = data.data;
       localStorage.setItem("token", token);

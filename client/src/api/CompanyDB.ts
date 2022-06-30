@@ -1,8 +1,8 @@
 import axios from "axios";
 import config from "../config/config";
 
-export const GetCompanies = () => {
-  return async () => await axios.get(`${config.baseURL}/companies`, {
+export const GetCompanies = async () => {
+  return await axios.get(`${config.baseURL}/companies`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
