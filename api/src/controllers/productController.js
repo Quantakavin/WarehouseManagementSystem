@@ -29,40 +29,19 @@ module.exports.getProductByItemNo = async (req, res) => {
     };
 };
 
-// Search products by item name
-// module.exports.searchProductsByItemName = async (req, res) => {
-//     const itemName = req.body.itemName;
-//     try {
-//         const result = await productService.searchProductsByItemName(itemName);
-//         if (result.length > 0) {
-//             return res.status(200).send(result[0]);
-//         } else {
-//             return res.status(404).send('Cannot find product(s)!');
-//         }
-//     } catch (error) {
-//         return res.status(500).json({
-//             message: 'Internal Server Error!'
-//         });
-//     };
-// };
-
 // Search and filter products
 module.exports.searchFilterProducts = async (req, res) => {
-    const itemName = req.body.itemName;
-    const itemCode = req.body.itemCode;
-    const binTag = req.body.binTag;
-    const batchNo = req.body.batchNo;
-    const brand = req.body.brand;
-    const warehouseCode = req.body.warehouseCode;
+    const { itemName, itemCode, binTag, batchNo, brand, warehouseCode } = req.body;
     try {
         const result = await productService.searchFilter(itemName, itemCode, binTag, batchNo, brand, warehouseCode);
         if (result.length > 0) {
-            return res.status(200).send("test");
+            return res.status(200).send(result[0]);
         } else {
             return res.status(404).send('Cannot find product(s)!');
         }
     } catch (error) {
-        return res.status(500).json({
+        console.log(error);
+        return res.status(500).send({
             message: 'Internal Server Error!'
         });
     };
