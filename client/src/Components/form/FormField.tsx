@@ -20,6 +20,7 @@ const Input = styled.input<{ $password: boolean }>`
 interface FormFieldProps<IFormValues> {
   label: string;
   name: string;
+  defaultvalue?: string;
   errormsg?: string;
   type: AllowedInputs;
   register?: UseFormRegister<IFormValues>;
@@ -29,10 +30,11 @@ interface FormFieldProps<IFormValues> {
 const FormField: React.FC<FormFieldProps<any>> = ({
   label,
   name,
+  defaultvalue,
   errormsg,
   type,
   register,
-  rules,
+  rules
 }) => {
   const { toggle, passwordType, showPassword } = useTogglePasword();
   let field = null;
@@ -43,6 +45,7 @@ const FormField: React.FC<FormFieldProps<any>> = ({
         <Input
           $password
           type={passwordType}
+          defaultValue = {defaultvalue}
           {...(register && register(name, rules))}
         />
         <div className="passwordicon flexcontainer" onClick={toggle}>
@@ -59,6 +62,7 @@ const FormField: React.FC<FormFieldProps<any>> = ({
       <Input
         $password={false}
         type={type}
+        defaultValue = {defaultvalue}
         {...(register && register(name, rules))}
       />
     );

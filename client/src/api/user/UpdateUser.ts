@@ -1,8 +1,8 @@
 import axios from "axios";
 import config from "../../config/config";
 
-const PostUser = (formData) => {
-  return axios.post(`${config.baseURL}/user`, formData, {
+const UpdateUser = (formData, id: number) => {
+  return axios.put(`${config.baseURL}/user/${id}`, formData, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -10,4 +10,4 @@ const PostUser = (formData) => {
   });
 };
 
-export default PostUser;
+export default UpdateUser;
