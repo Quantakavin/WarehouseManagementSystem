@@ -9,6 +9,8 @@ import SubmitButton from "../../components/form/SubmitButton";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormField from "../../components/form/FormField";
 import SelectDropdown from "../../components/form/SelectDropdown";
+import Alert from '@mui/material/Alert';
+import CheckIcon from '@mui/icons-material/Check';
 import {
   SelectValidation,
   EmailValidation,
@@ -17,10 +19,16 @@ import {
   PasswordValidation,
 } from "../../utils/FormValidation";
 import { Option, Company, UserGroup, NotiGroup } from "../../utils/CommonTypes";
-import GetCompanies from "../../api/company/GetCompanies";
-import GetUserGroups from "../../api/usergroup/GetUserGroups";
-import GetNotificationGroups from "../../api/notificationgroup/GetNotificationGroups";
-import PostUser from "../../api/user/PostUser";
+// import GetCompanies from "../../api/company/GetCompanies";
+// import GetUserGroups from "../../api/usergroup/GetUserGroups";
+// import GetNotificationGroups from "../../api/notificationgroup/GetNotificationGroups";
+// import PostUser from "../../api/user/PostUser";
+
+import { GetCompanies } from "../../api/CompanyDB";
+import { GetUserGroups } from "../../api/UserGroupDB";
+import { GetNotificationGroups } from "../../api/NotificationGroupDB";
+import { PostUser } from "../../api/UserDB";
+
 
 interface FormValues {
   name: string;
@@ -37,6 +45,7 @@ const AddUser: React.FC = () => {
   const [userGroupOptions, setUserGroupOptions] = useState<Option[]>([]);
   const [notiGroupOptions, setNotiGroupOptions] = useState<Option[]>([]);
   const [step, setStep] = useState<number>(1);
+  const [success, setSuccess] = useState<boolean>(true);
   const navigate = useNavigate();
   const {
     register,
@@ -44,14 +53,18 @@ const AddUser: React.FC = () => {
     formState: { errors, isValid },
   } = useForm<FormValues>({mode: "all"});
 
-  const companyQuery = useQuery("companies", GetCompanies);
-  const userGroupQuery = useQuery("usergroups", GetUserGroups);
-  const notiGroupQuery = useQuery("notificationgroups", GetNotificationGroups);
+  // const companiesQuery = useQuery("companies", GetCompanies);
+  // const userGroupsQuery = useQuery("usergroups", GetUserGroups);
+  // const notiGroupsQuery = useQuery("notificationgroups", GetNotificationGroups);
+
+  const companiesQuery = useQuery("companies", GetCompanies());
+  const userGroupsQuery = useQuery("usergroups", GetUserGroups());
+  const notiGroupsQuery = useQuery("notificationgroups", GetNotificationGroups());
 
   useEffect(() => {
     const companies: Option[] = [];
-    if (!companyQuery.error && !companyQuery.isLoading) {
-      companyQuery.data.data.forEach((company: Company) => {
+    if (!companiesQuery.error && !companiesQuery.isLoading) {
+      companiesQuery.data.data.forEach((company: Company) => {
         companies.push({
           text: company.CompanyName,
           value: company.CompanyID,
@@ -61,8 +74,8 @@ const AddUser: React.FC = () => {
     setCompanyOptions(companies);
 
     const usergroups: Option[] = [];
-    if (!userGroupQuery.error && !userGroupQuery.isLoading) {
-      userGroupQuery.data.data.forEach((usergroup: UserGroup) => {
+    if (!userGroupsQuery.error && !userGroupsQuery.isLoading) {
+      userGroupsQuery.data.data.forEach((usergroup: UserGroup) => {
         usergroups.push({
           text: usergroup.UserGroupName,
           value: usergroup.UserGroupID,
@@ -72,8 +85,8 @@ const AddUser: React.FC = () => {
     setUserGroupOptions(usergroups);
 
     const notigroups: Option[] = [];
-    if (!notiGroupQuery.error && !notiGroupQuery.isLoading) {
-      notiGroupQuery.data.data.forEach((notigroup: NotiGroup) => {
+    if (!notiGroupsQuery.error && !notiGroupsQuery.isLoading) {
+      notiGroupsQuery.data.data.forEach((notigroup: NotiGroup) => {
         notigroups.push({
           text: notigroup.NotiGroupName,
           value: JSON.stringify({ NotiGroupID: notigroup.NotiGroupID }),
@@ -81,9 +94,9 @@ const AddUser: React.FC = () => {
       });
     }
     setNotiGroupOptions(notigroups);
-  }, [companyQuery.data, userGroupQuery.data, notiGroupQuery.data]);
+  }, [companiesQuery.data, userGroupsQuery.data, notiGroupsQuery.data]);
 
-  const mutation = useMutation(PostUser);
+  const mutation = useMutation(PostUser());
 
   const onSubmit = (data: FormValues) => {
     mutation.mutate(data, { onSuccess: () => navigate("/users") });
@@ -190,6 +203,7 @@ const AddUser: React.FC = () => {
   );
 
   return (
+    <>
     <Container className="multiformcontainer shadow">
       <h2 className="formheader">Create User</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -197,6 +211,7 @@ const AddUser: React.FC = () => {
         {StepTwo}
       </form>
     </Container>
+    </>
   );
 };
 export default AddUser;

@@ -11,7 +11,8 @@ import {
   EmailValidation,
   PasswordValidation,
 } from "../../utils/FormValidation";
-import LoginUser from "../../api/user/LoginUser";
+//import LoginUser from "../../api/user/LoginUser";
+import {LoginUser}  from "../../api/UserDB";
 
 interface FormValues {
   email: string;
@@ -24,9 +25,9 @@ const Login: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({mode: "all"});
 
-  const mutation = useMutation(LoginUser, {
+  const mutation = useMutation(LoginUser(), { 
     onSuccess: (data) => {
       const { token, id, name } = data.data;
       localStorage.setItem("token", token);

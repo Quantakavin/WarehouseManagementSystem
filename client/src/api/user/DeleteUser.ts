@@ -1,12 +1,12 @@
 import axios from "axios";
 import config from "../../config/config";
 
-const GetNotificationGroups = () => {
-  return axios.get(`${config.baseURL}/notificationgroups`, {
+const DeleteUser = (id: number) => {
+  return axios.delete(`${config.baseURL}/user/${id}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
 };
 
-export default GetNotificationGroups;
+export default DeleteUser;
