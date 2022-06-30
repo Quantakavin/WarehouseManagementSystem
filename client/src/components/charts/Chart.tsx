@@ -9,9 +9,11 @@ import {
   YAxis,
 } from "recharts";
 import { Title } from "react-bootstrap/lib/Modal";
-
+import { useState } from "react";
 
 function Charts({ title, dataKey, grid }) {
+  const [error, setError] = useState(null);
+
   const data = [
     {
       name: "Jan",
@@ -28,7 +30,6 @@ function Charts({ title, dataKey, grid }) {
     {
       name: "April",
       request: 2780,
-  
     },
     {
       name: "May",
@@ -46,17 +47,17 @@ function Charts({ title, dataKey, grid }) {
 
   return (
     <>
-    <div className="chart">
-      <ResponsiveContainer width="100%" aspect={4 / 1}>
-        <LineChart data={data}>
-    
-          <XAxis dataKey="name" stroke="#5550bd" />
-          <YAxis></YAxis>
-          <Line type="monotone" dataKey="request" stroke="#5550bd" />
-          <Tooltip />{dataKey}
-          {grid && <CartesianGrid stroke="#e0dfdf" strokeDasharray="5 5" />}
-        </LineChart>
-      </ResponsiveContainer>
+      <div className="chart">
+        <ResponsiveContainer width="100%" aspect={4 / 1}>
+          <LineChart data={data}>
+            <XAxis dataKey="name" stroke="#5550bd" />
+            <YAxis></YAxis>
+            <Line type="monotone" dataKey="request" stroke="#5550bd" />
+            <Tooltip />
+            {dataKey}
+            {grid && <CartesianGrid stroke="#e0dfdf" strokeDasharray="5 5" />}
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </>
   );
