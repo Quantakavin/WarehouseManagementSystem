@@ -35,6 +35,7 @@ const App: React.FC = () => {
           <Route path="/testproducts" element={<TesstProducts />} />
           <Route path="/binlocations" element={<BinLocations />} />
           <Route path="/adduser" element={<AddUser />} />
+          <Route path="/user/:id" element={<ViewUser />} />
           <Route path="/edituser/:id" element={<EditUser />} />
           <Route path="/addusergroup" element={<AddUserGroup />} />
           <Route
