@@ -10,59 +10,60 @@ module.exports.getByItemNo = async (itemNo) => {
     return knex.raw(query, [itemNo]);
 };
 
-// module.exports.searchByItemName = async (itemName) => {
-//     var itemName = '%' + itemName + '%';
-//     const query = `SELECT ItemNo, ItemName, BatchNo, Brand, Quantity FROM BinProduct WHERE ItemName LIKE ?`;
-//     return knex.raw(query, [itemName]);
-// };
-
 module.exports.searchFilter = async (itemName, itemCode, binTag, batchNo, brand, warehouseCode) => {
     var string = ``;
+    var list = [];
     var counter = 0;
-    if (itemName != "") {
-        string += `ItemName LIKE ?`
+    if (itemName) {
+        string += `ItemName LIKE ?`;
+        list.push('%' + itemName + '%');
         counter++;
     }
-    if (itemCode != "") {
+    if (itemCode) {
         if (counter > 0) {
-            string += ` ItemNo = ?`;
-        } else {
             string += ` AND ItemNo = ?`;
+        } else {
+            string += ` ItemNo = ?`;
         }
+        list.push(itemCode);
         counter++;
     }
-    if (binTag != "") {
+    if (binTag) {
         if (counter > 0) {
-            string += ` BinID = ?`;
-        } else {
             string += ` AND BinID = ?`;
+        } else {
+            string += ` BinID = ?`;
         }
+        list.push(binTag);
         counter++;
     }
-    if (batchNo != "") {
+    if (batchNo) {
         if (counter > 0) {
-            string += ` BatchNo = ?`;
-        } else {
             string += ` AND BatchNo = ?`;
+        } else {
+            string += ` BatchNo = ?`;
         }
+        list.push(batchNo);
         counter++;
     }
-    if (brand != "") {
+    if (brand) {
         if (counter > 0) {
-            string += ` Brand = ?`;
-        } else {
             string += ` AND Brand = ?`;
+        } else {
+            string += ` Brand = ?`;
         }
+        list.push(brand);
         counter++;
     }
-    if (warehouseCode != "") {
+    if (warehouseCode) {
         if (counter > 0) {
-            string += ` WarehouseCode = ?`;
-        } else {
             string += ` AND WarehouseCode = ?`;
+        } else {
+            string += ` WarehouseCode = ?`;
         }
+        list.push(warehouseCode);
         counter++;
     }
     const query = `SELECT ItemNo, ItemName, BatchNo, Brand, Quantity FROM BinProduct WHERE ` + string;
-    return knex.raw(query, ['%' + itemName + '%', itemCode, binTag, batchNo, brand, warehouseCode]);
+    return knex.raw(query, list);
 };

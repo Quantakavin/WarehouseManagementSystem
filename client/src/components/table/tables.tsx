@@ -28,11 +28,7 @@ export default function BasicTable() {
       for(let i=0; i < data.length; i++){
         rows.push(createData(data[i].ItemNo, data[i].ItemName, data[i].BatchNo, data[i].Brand, data[i].Quantity, ':'));
       }
-      console.log(rows);
     });
-
-    console.log(rows);
-
     return rows;
   }
   

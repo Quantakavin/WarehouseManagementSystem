@@ -20,6 +20,7 @@ module.exports = {
     "prettier/prettier": "error"
   },
 
+<<<<<<< HEAD
   //  prettier: disabler,
   // root: true,
   // extends: '@react-native-community',
@@ -27,4 +28,12 @@ module.exports = {
   //   'prettier/prettier': 0,
   // },
   
+=======
+  prettier: disabler,
+  root: true,
+  extends: '@react-native-community',
+  rules: {
+    'prettier/prettier': 0,
+  },
+>>>>>>> a201cd595d4660f068d5f122fd418f700a4b13ec
 };
