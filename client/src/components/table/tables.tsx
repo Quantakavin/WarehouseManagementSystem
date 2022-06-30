@@ -1,4 +1,5 @@
 import * as React from 'react';
+import axios from "axios";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,40 +7,42 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-
-
-function createData(
-  ItemName: string,
-  BatchNumber: number,
-  Brand: number,
-  AvailableQuantity: number,
-  Action: number,
-) {
-  return { ItemName, BatchNumber, Brand, AvailableQuantity, Action };
-}
-
-//ROWS
-const rows = [
-  createData('Test', 159, 6.0, 24, 4.0),
-  createData('Test', 237, 9.0, 37, 4.3),
-  createData('Test', 262, 16.0, 24, 6.0),
-  createData('Test', 305, 3.7, 67, 4.3),
-  createData('Test', 356, 16.0, 49, 3.9),
-  createData('Test', 356, 16.0, 49, 3.9),
-  createData('Test', 356, 16.0, 49, 3.9),
-  createData('Test', 356, 16.0, 49, 3.9),
-  createData('Test', 356, 16.0, 49, 3.9),
-  createData('Test', 356, 16.0, 49, 3.9),
-];
+import GetAllProducts from "../../api/product/GetAllProducts";
 
 export default function BasicTable() {
-  return (
+  function createData(
+    ItemNumber: string,
+    ItemName: string,
+    BatchNumber: number,
+    Brand: number,
+    AvailableQuantity: number,
+    Action: string,
+  ) {
+    return { ItemNumber, ItemName, BatchNumber, Brand, AvailableQuantity, Action };
+  }
+
+  function createList() {
+    var rows = [];
+
+    GetAllProducts().then((data) => {
+      for(let i=0; i < data.length; i++){
+        rows.push(createData(data[i].ItemNo, data[i].ItemName, data[i].BatchNo, data[i].Brand, data[i].Quantity, ':'));
+      }
+      console.log(rows);
+    });
+
+    console.log(rows);
+
+    return rows;
+  }
   
+  return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 1050 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Item Name</TableCell>
+            <TableCell align="center" hidden>Item Number</TableCell>
+            <TableCell align="center">Item Name</TableCell>
             <TableCell align="center">Batch Number</TableCell>
             <TableCell align="center">Brand</TableCell>
             <TableCell align="center">Available Quantity</TableCell>
@@ -48,14 +51,15 @@ export default function BasicTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {createList().map((row) => (
             <TableRow
               key={row.ItemName}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
-                {row.ItemName}
+              <TableCell component="th" scope="row" align="center" hidden>
+                {row.ItemNumber}
               </TableCell>
+              <TableCell align="center">{row.ItemName}</TableCell>
               <TableCell align="center">{row.BatchNumber}</TableCell>
               <TableCell align="center">{row.Brand}</TableCell>
               <TableCell align="center">{row.AvailableQuantity}</TableCell>

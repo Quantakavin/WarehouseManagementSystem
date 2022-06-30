@@ -4,6 +4,8 @@ const notificationGroupController = require('./notificationGroupController');
 const productController = require('./productController');
 const tLoanController = require('./tLoanController');
 const rmaController = require('./rma.controller');
+const dashboardController = require('./dashboardController');
+const binsController = require('./binsController');
 
 module.exports = {
     userController,
@@ -11,5 +13,7 @@ module.exports = {
     notificationGroupController,
     productController,
     tLoanController,
-    rmaController
+    rmaController,
+    dashboardController,
+    binsController
 };

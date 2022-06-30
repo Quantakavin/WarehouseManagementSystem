@@ -12,11 +12,11 @@ module.exports.getAllProducts = async (req, res) => {
     };
 };
 
-// Get product by item name
-module.exports.getProductByItemName = async (req, res) => {
-    const itemName = req.params.itemName;
+// Get product by item number
+module.exports.getProductByItemNo = async (req, res) => {
+    const itemNo = req.params.itemNo;
     try {
-        const result = await productService.getProductByItemName(itemName);
+        const result = await productService.getByItemNo(itemNo);
         if (result.length > 0) {
             return res.status(200).send(result[0]);
         } else {
@@ -46,8 +46,8 @@ module.exports.getProductByItemName = async (req, res) => {
 //     };
 // };
 
-// Serach products
-module.exports.searchProducts = async (req, res) => {
+// Search and filter products
+module.exports.searchFilterProducts = async (req, res) => {
     const itemName = req.body.itemName;
     const itemCode = req.body.itemCode;
     const binTag = req.body.binTag;
@@ -55,9 +55,9 @@ module.exports.searchProducts = async (req, res) => {
     const brand = req.body.brand;
     const warehouseCode = req.body.warehouseCode;
     try {
-        const result = await productService.searchProducts(itemName, itemCode, binTag, batchNo, brand, warehouseCode);
+        const result = await productService.searchFilter(itemName, itemCode, binTag, batchNo, brand, warehouseCode);
         if (result.length > 0) {
-            return res.status(200).send(result[0]);
+            return res.status(200).send("test");
         } else {
             return res.status(404).send('Cannot find product(s)!');
         }

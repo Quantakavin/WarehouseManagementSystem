@@ -8,11 +8,16 @@ import GetRMAsOverview from "../../api/dashboard/GetRMAsOverview";
 import GetTLoanRMAChart from "../../api/dashboard/GetTLoanRMAChart";
 
 function cards() {
+  // T-Loan
   const [CurrentTloans, setCurrentTloans] = useState([]);
   const [PendingTloans, setPendingTloans] = useState([]);
   const [DraftTloans, setDraftTloans] = useState([]);
   const [ExtendedTloans, setExtenddedTloans] = useState([]);
-  
+
+  // RMA
+  const [RequestedRMAs, setRequesteddRMAs] = useState([]);
+  const [PendingRMAs, setPendingRMAs] = useState([]);
+  const [ClosedRMAs, setClosedRMAs] = useState([]);
 
   // getcurrentTloans
   const getcurentTloans = async () => {
@@ -58,6 +63,39 @@ function cards() {
     getextendedTloans();
   }, []);
 
+  // getrequestedRMAs
+  const getrequestedRMAs = async () => {
+    const response = await axios.get(`${config.baseURL}/getcurrentRMAs`);
+
+    setRequesteddRMAs(response.data);
+  };
+
+  useEffect(() => {
+    getrequestedRMAs();
+  }, []);
+
+  // getpendingRMAs
+  const getpendingdRMAs = async () => {
+    const response = await axios.get(`${config.baseURL}/getpendingRMAs`);
+
+    setPendingRMAs(response.data);
+  };
+
+  useEffect(() => {
+    getpendingdRMAs();
+  }, []);
+
+  // getclosedRMAs
+  const getclosedRMAs = async () => {
+    const response = await axios.get(`${config.baseURL}/getcloseRMAs`);
+
+    setClosedRMAs(response.data);
+  };
+
+  useEffect(() => {
+    getclosedRMAs();
+  }, []);
+
   return (
     <div className="featured">
       <div className="featuredItem">
@@ -65,15 +103,15 @@ function cards() {
         <div>
           <div>
             <span className="Current">Current</span>
-            <h1 className="Current">{CurrentTloans}</h1>
+            <h1 className="Current">{CurrentTloans.length}</h1>
           </div>
           <div>
             <span className="Drafts">Drafts</span>
-            <h1 className="Current"></h1>
+            <h1 className="Current">{DraftTloans.length}</h1>
           </div>
           <div>
             <span className="Current">Pending</span>
-            <h1 className="Current"></h1>
+            <h1 className="Current">{PendingTloans.length}</h1>
           </div>
           <div>
             <span className="Current">On-Extension</span>
@@ -87,15 +125,15 @@ function cards() {
         <div>
           <div>
             <span className="Current">Requested</span>
-            <h1 className="Current"></h1>
+            <h1 className="Current">{RequestedRMAs.length}</h1>
           </div>
           <div>
             <span className="Drafts">Pending</span>
-            <h1 className="Current"></h1>
+            <h1 className="Current">{PendingRMAs.length}</h1>
           </div>
           <div>
-            <span className="Current">Close</span>
-            <h1 className="Current"></h1>
+            <span className="Current">Closed</span>
+            <h1 className="Current">{ClosedRMAs.length}</h1>
           </div>
         </div>
       </div>

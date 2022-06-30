@@ -59,3 +59,100 @@ module.exports.getHistory = async () => {
   return knex.raw(query);
 }
 
+module.exports.approveLoan = async (number) => {
+  return knex.transaction((trx) => {
+      knex('TLoan')
+          .where('TLoanNumber', number)
+          .update({
+              TLoanStatusID: 3,
+          })
+          .transacting(trx)
+          .then(trx.commit)
+          .catch(trx.rollback);
+  });
+};
+
+//Add status to db
+module.exports.rejectLoan = async (number) => {
+  return knex.transaction((trx) => {
+      knex('TLoan')
+          .where('TLoanNumber', number)
+          .update({
+              TLoanStatusID: 9,
+          })
+          .transacting(trx)
+          .then(trx.commit)
+          .catch(trx.rollback);
+  });
+};
+
+
+module.exports.pickLoan = async (number) => {
+  return knex.transaction((trx) => {
+      knex('TLoan')
+          .where('TLoanNumber', number)
+          .update({
+              TLoanStatusID: 5,
+          })
+          .transacting(trx)
+          .then(trx.commit)
+          .catch(trx.rollback);
+  });
+};
+
+
+module.exports.issuedLoan = async (number) => {
+  return knex.transaction((trx) => {
+      knex('TLoan')
+          .where('TLoanNumber', number)
+          .update({
+              TLoanStatusID: 7,
+          })
+          .transacting(trx)
+          .then(trx.commit)
+          .catch(trx.rollback);
+  });
+};
+
+
+module.exports.dueLoan = async (number) => {
+  return knex.transaction((trx) => {
+      knex('TLoan')
+          .where('TLoanNumber', number)
+          .update({
+              TLoanStatusID: 8,
+          })
+          .transacting(trx)
+          .then(trx.commit)
+          .catch(trx.rollback);
+  });
+};
+
+
+module.exports.readyLoan = async (number) => {
+  return knex.transaction((trx) => {
+      knex('TLoan')
+          .where('TLoanNumber', number)
+          .update({
+              TLoanStatusID: 6,
+          })
+          .transacting(trx)
+          .then(trx.commit)
+          .catch(trx.rollback);
+  });
+};
+
+
+module.exports.draftLoan = async (number) => {
+  return knex.transaction((trx) => {
+      knex('TLoan')
+          .where('TLoanNumber', number)
+          .update({
+              TLoanStatusID: 1,
+          })
+          .transacting(trx)
+          .then(trx.commit)
+          .catch(trx.rollback);
+  });
+};
+
