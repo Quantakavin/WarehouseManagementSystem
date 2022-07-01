@@ -18,6 +18,7 @@ import Dashboard from "./pages/dashboards/Dashboards";
 import Products from "./pages/products/Products";
 import TesstProducts from "./pages/products/TestProducts";
 import BinLocations from "./pages/binlocations/BinLocations";
+import TLoan from "./pages/tloans/tloan"
 import { Routes, Route } from "react-router-dom";
 
 const App: React.FC = () => {
@@ -42,6 +43,7 @@ const App: React.FC = () => {
             path="/addnotificationgroup"
             element={<AddNotificationGroup />}
           />
+           <Route path="/tloan" element={<TLoan />} />
         </Routes>
       </div>
     </>
