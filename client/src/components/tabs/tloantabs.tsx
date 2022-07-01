@@ -20,10 +20,10 @@ export default function TLoanTabs() {
         // declare the async data fetching function
         const fetchData = async () => {
           // get the data from the api
-          const loan = await axios.get('https://localhost:5000/api/allLoan');
+          const loan = await axios.get('http://localhost:5000/api/tloan');
          
           setLoan(loan.data)
-          console.log(setLoan)
+          console.log(loan.data)
         }
       
         // call the function
