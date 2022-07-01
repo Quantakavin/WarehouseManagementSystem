@@ -21,11 +21,11 @@ function TestProducts() {
     { heading: "Batch Number", value: "BatchNo" },
     { heading: "Brand", value: "Brand" },
     { heading: "Available Quantity", value: "Quantity" },
+    { heading: "Available Quantity", value: "Quantity" },
   ];
 
   return (
     <div className="App">
-      <ProductSearchBar></ProductSearchBar>
       <TestTable data={dataTable} column={column} />
     </div>
   );
