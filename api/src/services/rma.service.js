@@ -16,20 +16,6 @@ module.exports.getAll = async () => {
   const query = `SELECT * FROM Rma`;
   return knex.raw(query);
 }
-
-  exports.getByRMANO = async (RMANO) => {
-    try {
-      //stored procedure to get RMA matching rmano
-  
-      const result = await connection.query(query);
-      if (!result) return null;
-  
-      return result.rows[0];
-    } catch (e) {
-      console.log({ e });
-      return null;
-    }
-  };
   
 module.exports.insert = async (DateTime, company, customer, contactperson, contactno, rmano, supplierrma, salesmanid, rmastatusid, instruction,) => {
   return knex('Rma').insert({
