@@ -4,6 +4,7 @@ import { Container } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
+import FormContainer from "../../components/form/FormContainer";
 import SubmitButton from "../../components/form/SubmitButton";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormField from "../../components/form/FormField";
@@ -13,6 +14,7 @@ import {
 } from "../../utils/FormValidation";
 //import LoginUser from "../../api/user/LoginUser";
 import {LoginUser}  from "../../api/UserDB";
+
 
 interface FormValues {
   email: string;
@@ -41,9 +43,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <Container className="formcontainer shadow">
-      <h2 className="formheader">Login to your account</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <FormContainer header="Login to your account" multistep={false} handleSubmit={handleSubmit} onSubmit={onSubmit}>
         <FormField
           label="Email Address"
           name="email"
@@ -71,8 +71,7 @@ const Login: React.FC = () => {
             multipart={false}
           />
         </div>
-      </form>
-    </Container>
+    </FormContainer>
   );
 };
 

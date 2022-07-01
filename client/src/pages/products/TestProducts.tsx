@@ -5,7 +5,7 @@ import axios from "axios";
 // import "../App.css";
 import "../../styles/Products.scss";
 import TestTable from "../../components/table/testtable";
-import ProductSearchBar from "../../components/search/SearchBar";
+//import ProductSearchBar from "../../components/search/SearchBar";
 
 function TestProducts() {
   const [dataTable, setDataTable] = useState([]);
@@ -25,7 +25,7 @@ function TestProducts() {
 
   return (
     <div className="App">
-      <ProductSearchBar></ProductSearchBar>
+      {/* <ProductSearchBar></ProductSearchBar> */}
       <TestTable data={dataTable} column={column} />
     </div>
   );

@@ -4,6 +4,8 @@ import { Container } from "react-bootstrap";
 import { useNavigate, useParams, useRoutes } from "react-router-dom";
 import { useQuery } from "react-query";
 import { GetUser } from "../../api/UserDB";
+import CardField from "../../components/cards/CardField";
+import CardContainer from "../../components/cards/CardContainer";
 
 const ViewUser: React.FC = () => {
     const params = useParams();
@@ -29,26 +31,12 @@ const ViewUser: React.FC = () => {
         })
 
         return(
-        <Container className="cardcontainer shadow">
-        <h2 className="cardheader">{user.Username}</h2>
-        <p className="cardsubheading">{user.UserGroupName}</p>
-        <div className="flexcontainer cardfield">
-            <p className="cardfieldlabel">Company:</p>
-            <p className="cardfieldvalue">{user.CompanyName}</p>
-        </div>
-        <div className="flexcontainer cardfield">
-            <p className="cardfieldlabel">Email:</p>
-            <p className="cardfieldvalue">{user.Email}</p>
-        </div>
-        <div className="flexcontainer cardfield">
-            <p className="cardfieldlabel">Phone No:</p>
-            <p className="cardfieldvalue">{user.MobileNo}</p>
-        </div>
-        <div className="flexcontainer cardfield">
-            <p className="cardfieldlabel">Notification Groups:</p>
-            <p className="cardfieldvalue">{notigroups}</p>
-        </div>
-        </Container>
+        <CardContainer header={user.Username} subheading={user.UserGroupName}>
+        <CardField label="Company:" value = {user.CompanyName} />
+        <CardField label="Email:" value = {user.Email} />
+        <CardField label="Phone No:" value = {user.MobileNo} />
+        <CardField label="Notification Groups:" value = {notigroups} />
+        </CardContainer>
         )
     }
 }

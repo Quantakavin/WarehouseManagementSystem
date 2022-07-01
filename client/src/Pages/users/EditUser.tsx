@@ -5,6 +5,7 @@ import { useMutation, useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import FormContainer from "../../components/form/FormContainer";
 import SubmitButton from "../../components/form/SubmitButton";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormField from "../../components/form/FormField";
@@ -207,15 +208,10 @@ const EditUser: React.FC = () => {
   );
 
   return (
-    <>
-    <Container className="multiformcontainer shadow">
-      <h2 className="formheader">Edit User</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <FormContainer header="Edit User" multistep={true} handleSubmit={handleSubmit} onSubmit={onSubmit}>
         {StepOne}
         {StepTwo}
-      </form>
-    </Container>
-    </>
+    </FormContainer>
   );
 };
 export default EditUser;
