@@ -39,28 +39,22 @@ exports.getByRMANO = async (req, res) => {
 // Create RMA
 module.exports.newRMA = async (req, res) => {
     const {
-        DateTime,
         company,
-        customer,
         contactperson,
         contactno,
         rmano,
-        supplierrma,
+        invoice,
         salesmanid,
-        rmastatusid,
         instruction
     } = req.body;
     try {
         const results = await rmaService.insertRMA(
-            DateTime,
             company,
-            customer,
             contactperson,
             contactno,
             rmano,
-            supplierrma,
+            invoice,
             salesmanid,
-            rmastatusid,
             instruction
         );
         if (results.length > 0) {
@@ -69,7 +63,6 @@ module.exports.newRMA = async (req, res) => {
         }
         return res.status(500).send('Could Not Create The RMA');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };

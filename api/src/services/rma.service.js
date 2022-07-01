@@ -18,12 +18,11 @@ module.exports.getAll = async () => {
 };
 
 module.exports.insertRMA = async (
-    DateTime,
     company,
     contactperson,
     contactno,
     rmano,
-    supplierrma,
+    invoice,
     salesmanid,
     instruction
 ) => {
@@ -34,7 +33,6 @@ module.exports.insertRMA = async (
         RMANo: rmano,
         SupplierRMA: invoice,
         SalesmanID: salesmanid,
-        SupplierRma: supplierrma,
         RmaStatusID: 1,
         Instruction: instruction
     });
