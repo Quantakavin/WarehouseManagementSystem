@@ -3,11 +3,11 @@ const { rmaController } = require('../controllers');
 
 router.get('/RMA', rmaController.getAllRMA());
 router.get('/RMA/:RMANo', rmaController.getByRMANO());
-router.post('/', rmaController.create());
-router.put('/RMA/accept',rmaController.updateRmaAccepted)
-router.put('/RMA/reject',rmaController.updateRmaRejected)
-router.put('/RMA/receive',rmaController.updateProductReceived)
-router.put('/RMA/verify',rmaController.updateInstructions)
-router.put('/RMA/COA',rmaController.updateRmaCOA)
+router.post('/newRMA', rmaController.create());
+router.put('/RMA/accept/:RMANo',rmaController.updateRmaAccepted)
+router.put('/RMA/reject/:RMANo',rmaController.updateRmaRejected)
+router.put('/RMA/receive/:RMANo',rmaController.updateProductReceived)
+router.put('/RMA/verify/:RMANo',rmaController.updateInstructions)
+router.put('/RMA/COA/:RMANo',rmaController.updateRmaCOA)
 
 module.exports = router;
