@@ -124,7 +124,7 @@ module.exports.updateInstructions = async (req, res) => {
     }
 };
 
-module.exports.updateInstructions = async (req, res) => {
+module.exports.updateRmaCOA = async (req, res) => {
     const RMANo = req.params;
     const { actionTaken } = req.body;
     try {
