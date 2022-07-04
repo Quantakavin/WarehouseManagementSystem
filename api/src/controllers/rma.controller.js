@@ -152,7 +152,7 @@ module.exports.newRMA = async (req, res) => {
 };
 
 module.exports.updateRmaAccepted = async (req, res) => {
-    const RMANo = req.params.id;
+    const { RMANo } = req.params;
     try {
         const results = await rmaService.getByRMANo(RMANo);
         if (results.length > 0) {
@@ -166,7 +166,7 @@ module.exports.updateRmaAccepted = async (req, res) => {
 };
 
 module.exports.updateRmaRejected = async (req, res) => {
-    const RMANo = req.params.id;
+    const { RMANo } = req.params;
     try {
         const results = await rmaService.getByRMANo(RMANo);
         if (results.length > 0) {
@@ -179,12 +179,12 @@ module.exports.updateRmaRejected = async (req, res) => {
     }
 };
 
-module.exports.updateProductReceived = async (req, res) => {
-    const RMANo = req.params.id;
+module.exports.updateRmaReceived = async (req, res) => {
+    const { RMANo } = req.params;
     try {
-        const results = await rmaService.getByRMANO(RMANo);
+        const results = await rmaService.getByRMANo(RMANo);
         if (results.length > 0) {
-            await rmaService.updateProductReceived(RMANo);
+            await rmaService.updateRMAReceived(RMANo);
             return res.status(204).json({ message: 'RMA status updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
@@ -193,11 +193,11 @@ module.exports.updateProductReceived = async (req, res) => {
     }
 };
 
-module.exports.updateInstructions = async (req, res) => {
-    const RMANo = req.params.id;
+module.exports.updateRmaInstructions = async (req, res) => {
+    const { RMANo } = req.params;
     const { instructions } = req.body;
     try {
-        const results = await rmaService.getByRMANO(RMANo);
+        const results = await rmaService.getByRMANo(RMANo);
         if (results.length > 0) {
             await rmaService.updateRmaInstructions(RMANo, instructions);
             return res.status(204).json({ message: 'RMA status updated successfully!' });
@@ -209,12 +209,12 @@ module.exports.updateInstructions = async (req, res) => {
 };
 
 module.exports.updateRmaCOA = async (req, res) => {
-    const RMANo = req.params;
-    const { actionTaken } = req.body;
+    const { RMANo } = req.params;
+    const { COA } = req.body;
     try {
-        const results = await rmaService.getByRMANO(RMANo);
+        const results = await rmaService.getByRMANo(RMANo);
         if (results.length > 0) {
-            await rmaService.updateRmaCOA(RMANo, actionTaken);
+            await rmaService.updateRmaCOA(RMANo, COA);
             return res.status(204).json({ message: 'RMA status updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
