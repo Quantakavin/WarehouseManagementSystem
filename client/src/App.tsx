@@ -20,7 +20,6 @@ import TesstProducts from "./pages/products/TestProducts";
 import BinLocations from "./pages/binlocations/BinLocations";
 import TLoan from "./pages/tloans/tloan"
 import RMA from "./pages/rma/rma"
-import createRma from "./pages/rma/createRma";
 import { Routes, Route } from "react-router-dom";
 
 const App: React.FC = () => {
@@ -44,7 +43,7 @@ const App: React.FC = () => {
           <Route path="/addnotificationgroup" element={<AddNotificationGroup />} />
           <Route path="/tloan" element={<TLoan />} />
           <Route path="/rma" element={<RMA />} />
-          <Route path="/rma" element={<createRma />} />
+          <Route path="/createRMA" element={<createRma />} />
         </Routes>
       </div>
     </>
