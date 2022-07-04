@@ -3,22 +3,18 @@ import { Container } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Sidebar from "../../components/SideBar";
-import Chart from "../../components/charts/Chart";
+import Charts from "../../components/charts/Chart";
 import Cards from "../../components/cards/cards";
 
 function Dashboards() {
-  
   return (
     <>
-      
       <div className="home">
-      <h1 className='homeTitle'>Dashboard</h1>
-    
- 
+        <h1 className="homeTitle">Dashboard</h1>
 
         <Cards />
-        <Chart title={undefined} dataKey={undefined} grid={undefined} />
-        </div>
+        <Charts title={undefined} dataKey={undefined} grid={undefined} />
+      </div>
     </>
   );
 }
