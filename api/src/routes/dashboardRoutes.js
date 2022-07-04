@@ -13,7 +13,8 @@ router.get('/getpendingRMAs', dashboardController.pendingRMAs);
 router.get('/getrejectedRMAs', dashboardController.rejectedRMAs);
 router.get('/getclosedRMAs', dashboardController.closedRMAs);
 
-// Current T-Loan RMA Statistic
-router.get('/getTloanRMMAStats', dashboardController.TLoanRMAStats);
+// Current T-Loan and RMA Statistic
+router.get('/getTloanStats', dashboardController.TLoanCurrentStats);
+router.get('/getRMAStats', dashboardController.RMACurrentStats);
 
 module.exports = router;
