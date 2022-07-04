@@ -18,15 +18,15 @@ interface FormValues {
     contactno: number
 }
 
-const createRma: React.FC = () => {
-    const navigate = useNavigate();
-    const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
-  
-    const mutation = useMutation(PostRMA)
-  
-    const onSubmit = (data: FormValues) => {
-      mutation.mutate(data, { onSuccess: () => navigate("/rma") })
-    }
+const CreateRMA: React.FC = () => {
+  const navigate = useNavigate();
+  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
+
+  const mutation = useMutation(PostRMA)
+
+  const onSubmit = (data: FormValues) => {
+    mutation.mutate(data, { onSuccess: () => navigate("/rma") })
+  }
 
     
     return(
@@ -47,4 +47,4 @@ const createRma: React.FC = () => {
         </>
     )
 }
-export default createRma;
+export default CreateRMA;
