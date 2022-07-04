@@ -22,6 +22,7 @@ import RMA from "./pages/rma/rma"
 import CreateRMA from "./pages/rma/createRma"
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from './app/hooks'
+import { selectName } from './app/reducers/CurrentUserSlice';
 
 interface ProtectedRouteProps {
   loginpage: boolean;
@@ -46,8 +47,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({loginpage}) => {
 
 const App: React.FC = () => {
 
-  const name = useAppSelector((state) => state.currentUser.name)
-  console.log("hi ", name)
+  console.log(useAppSelector(selectName))
 
   return (
     <>

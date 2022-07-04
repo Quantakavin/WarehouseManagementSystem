@@ -3,10 +3,11 @@ import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { store } from "./app/store";
+import { store, persistor } from "./app/store";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./styles/main.scss";
+import { PersistGate } from 'redux-persist/integration/react'
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -15,11 +16,13 @@ const queryClient = new QueryClient();
 
 root.render(
   <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
     <Router>
       <QueryClientProvider client={queryClient}>
         <App />
       </QueryClientProvider>
     </Router>
+    </PersistGate>
   </Provider>
 );
 

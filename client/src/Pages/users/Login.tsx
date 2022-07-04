@@ -14,7 +14,7 @@ import {
 } from "../../utils/FormValidation";
 //import LoginUser from "../../api/user/LoginUser";
 import {LoginUser}  from "../../api/UserDB";
-import { login } from '../../app/reducers/CurrentUserSlice'
+import { setUser } from '../../app/reducers/CurrentUserSlice'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 
 
@@ -38,7 +38,7 @@ const Login: React.FC = () => {
       localStorage.setItem("token", token);
       localStorage.setItem("user_id", id);
       localStorage.setItem("username", name);
-      dispatch(login({
+      dispatch(setUser({
         id: id, role: usergroup, name: name
       }))
       return navigate("/dashboard", { replace: true })
