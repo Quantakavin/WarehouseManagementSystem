@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const knex = require('../config/database');
 
 // T-Loan Overview
@@ -54,9 +55,18 @@ module.exports.getClosedRMAs = async () => {
 
 // Current T-Loan and RMA Statistic
 
-// Get Total Request Made from TLoan and RMA
-module.exports.getTLoanRMAStats = async () => {
-    const query = `select (select count(TLoanNumber) from TLoan) as TLoanRequests,
-    (select count(RmaNo) from Rma) as RMARequest`;
+// Get Total TLoan Request, Month WHERE Status = 3
+module.exports.getTLoanCurrentStats = async () => {
+    const query = `SELECT COUNT(TLoanNumber) AS RequestMade,  EXTRACT(MONTH FROM TLoan.ApplicationDate) as MonthNumber FROM TLoan WHERE TLoanStatusID = "3"  GROUP BY MonthNumber`;
+    // const query = `select (select count(TLoanNumber) from TLoan) as TLoanRequests,
+    // (select count(RmaNo) from Rma) as RMARequest`;
+    return knex.raw(query);
+};
+
+// Get Total RMA Request, Month WHERE Status = 2
+module.exports.getRMACurrentStats = async () => {
+    const query = `SELECT COUNT(RmaNo),  EXTRACT(MONTH FROM DateTime ) as MonthNumber FROM Rma WHERE RmaStatusID = "2" GROUP BY MonthNumber`;
+    // const query = `select (select count(TLoanNumber) from TLoan) as TLoanRequests,
+    // (select count(RmaNo) from Rma) as RMARequest`;
     return knex.raw(query);
 };

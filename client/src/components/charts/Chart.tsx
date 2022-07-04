@@ -9,11 +9,11 @@ import {
   YAxis,
 } from "recharts";
 import { Title } from "react-bootstrap/lib/Modal";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import config from "../../config/config";
+import { useState } from "react";
+
 function Charts({ title, dataKey, grid }) {
-  const [TloansRMARequest, setTloansRMARequest] = useState([]);
+  const [error, setError] = useState(null);
+  
 
   const data = [
     {
@@ -45,21 +45,6 @@ function Charts({ title, dataKey, grid }) {
       request: 3490,
     },
   ];
-
-  useEffect(() => {}, []);
-
-  // Get Total Request Made from TLoan and RMA
-  const getTloansRMARequest = async () => {
-    const response = await axios.get(`${config.baseURL}/getTloanRMMAStats`);
-
-    console.log(response.data[0].TLoanRequests);
-    data.push(response.data[0].TLoanRequests);
-    console.log(data);
-  };
-
-  useEffect(() => {
-    getTloansRMARequest();
-  }, []);
 
   return (
     <>

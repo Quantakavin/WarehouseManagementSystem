@@ -20,3 +20,14 @@ export interface NotiGroup {
     NotiGroupName: string;
     NotiGroupDesc: string;
 };
+
+export interface RMA {
+    CompanyID: number;
+    ContactPerson: string;
+    ContactNo: number;
+    RMANo: string;
+    SupplierRMA: string;
+    SalesmanID: string;
+    RmaStatusID: number;
+    Instruction: string;
+}

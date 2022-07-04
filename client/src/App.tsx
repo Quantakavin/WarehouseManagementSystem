@@ -16,9 +16,10 @@ import NotificationGroups from "./pages/notificationgroups/NotificationGroups";
 import ViewNotificationGroup from "./pages/notificationgroups/ViewNotificationGroup";
 import Dashboard from "./pages/dashboards/Dashboards";
 import Products from "./pages/products/Products";
-import TesstProducts from "./pages/products/TestProducts";
 import BinLocations from "./pages/binlocations/BinLocations";
 import TLoan from "./pages/tloans/tloan"
+import RMA from "./pages/rma/rma"
+import CreateRMA from "./pages/rma/createRma"
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from './app/hooks'
 
@@ -62,7 +63,6 @@ const App: React.FC = () => {
           <Route element={<ProtectedRoute loginpage={false}/>}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/products" element={<Products />} />
-            <Route path="/testproducts" element={<TesstProducts />} />
             <Route path="/binlocations" element={<BinLocations />} />
             <Route path="/adduser" element={<AddUser />} />
             <Route path="/user/:id" element={<ViewUser />} />
@@ -71,6 +71,9 @@ const App: React.FC = () => {
             <Route path="/addusergroup" element={<AddUserGroup />} />
             <Route path="/addnotificationgroup" element={<AddNotificationGroup />} />
             <Route path="/tloan" element={<TLoan />} />
+            <Route path="/tloan" element={<TLoan />} />
+            <Route path="/rma" element={<RMA />} />
+            <Route path="/createRma" element={<CreateRMA />} />
           </Route>
         </Routes>
       </div>

@@ -1,15 +1,15 @@
 import React from 'react'
 import BasicTable from '../../components/table/Table'
-import TLoanTabs from '../../components/tabs/tloantabs'
 import SideBar from '../../components/SideBar'
+import RMATabs from '../../components/tabs/rmatabs'
 
-function tloan() {
+function rma() {
   return (
     <div>
       {/* <SideBar/> */}
-    <TLoanTabs/>
+    <RMATabs/>
     </div>
   )
 }
 
-export default tloan
+export default rma

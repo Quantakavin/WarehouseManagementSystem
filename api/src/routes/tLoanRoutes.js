@@ -3,19 +3,19 @@ const router = require('express').Router();
 const TLoanController = require('../controllers/tloanController');
 
 router.get('/tloan', TLoanController.allLoan);
-router.post('/newloan', TLoanController.newLoan);
+router.post('/tloan/newloan', TLoanController.newLoan);
 router.get('/tloans/:number', TLoanController.searchLoan);
-router.post('/tloanextension', TLoanController.loanExtension)
-router.get('/current', TLoanController.currentLoan);
-router.get('/draft', TLoanController.draftLoan);
-router.get('/history', TLoanController.historyLoan);
-router.get('/pending', TLoanController.pendingLoan);
-router.put('/ready',TLoanController.readyLoan)
-router.put('/approve',TLoanController.approveLoan)
-router.put('/reject',TLoanController.rejectLoan)
-router.put('/due',TLoanController.dueLoan)
-router.put('/draft',TLoanController.draftLoan)
-router.put('/issued',TLoanController.issuedLoan)
-router.put('/picking',TLoanController.pickingLoan)
+router.post('/tloan/tloanextension', TLoanController.loanExtension)
+router.get('/tloan/current', TLoanController.currentLoan);
+router.get('/tloan/draft', TLoanController.draftLoan);
+router.get('/tloan/history', TLoanController.historyLoan);
+router.get('/tloan/pending', TLoanController.pendingLoan);
+router.put('/tloan/ready',TLoanController.readyLoan)
+router.put('/tloan/approve',TLoanController.approveLoan)
+router.put('/tloan/reject',TLoanController.rejectLoan)
+router.put('/tloan/due',TLoanController.dueLoan)
+router.put('/tloan/draft',TLoanController.draftLoan)
+router.put('/tloan/issued',TLoanController.issuedLoan)
+router.put('/tloan/picking',TLoanController.pickingLoan)
 
 module.exports = router;

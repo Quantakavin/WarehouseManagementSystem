@@ -1,7 +1,7 @@
 const { rmaService } = require('../services');
 
 // Get RMA
-exports.getAllRMA = async (req, res) => {
+module.exports.getAllRMA = async (req, res) => {
     try {
         const result = await rmaService.getAllRMA();
 
@@ -18,11 +18,97 @@ exports.getAllRMA = async (req, res) => {
     }
 };
 
+module.exports.getMyRMA = async (req, res) => {
+    const { SalesmanID } = req.params;
+    try {
+        const result = await rmaService.getSalesmanRMA(SalesmanID);
+
+        if (!result)
+            return res.status(404).json({
+                error: 'You have no RMA requests!'
+            });
+
+        return res.status(200).json({
+            result
+        });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
+module.exports.getPendingRMA = async (req, res) => {
+    try {
+        const result = await rmaService.getPendingRMA();
+
+        if (!result)
+            return res.status(404).json({
+                error: 'No RMA requests Found!'
+            });
+
+        return res.status(200).json({
+            result
+        });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
+module.exports.getAcceptedRMA = async (req, res) => {
+    try {
+        const result = await rmaService.getAcceptedRMA();
+
+        if (!result)
+            return res.status(404).json({
+                error: 'No RMA requests Found!'
+            });
+
+        return res.status(200).json({
+            result
+        });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
+module.exports.getReceivedRMA = async (req, res) => {
+    try {
+        const result = await rmaService.getReceivedRMA();
+
+        if (!result)
+            return res.status(404).json({
+                error: 'No RMA requests Found!'
+            });
+
+        return res.status(200).json({
+            result
+        });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
+module.exports.getVerifiedRMA = async (req, res) => {
+    try {
+        const result = await rmaService.getVerifiedRMA();
+
+        if (!result)
+            return res.status(404).json({
+                error: 'No RMA requests Found!'
+            });
+
+        return res.status(200).json({
+            result
+        });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
 // Get RMA by RMA number
-exports.getByRMANO = async (req, res) => {
+module.exports.getByRMANo = async (req, res) => {
     const { RMANo } = req.params;
     try {
-        const result = await rmaService.getByRMANO(RMANo);
+        const result = await rmaService.getByRMANo(RMANo);
         if (!result)
             return res.status(404).json({
                 error: `RMA ${RMANo} Not Found!`
@@ -42,7 +128,6 @@ module.exports.newRMA = async (req, res) => {
         company,
         contactperson,
         contactno,
-        rmano,
         invoice,
         salesmanid,
         instruction
@@ -52,7 +137,6 @@ module.exports.newRMA = async (req, res) => {
             company,
             contactperson,
             contactno,
-            rmano,
             invoice,
             salesmanid,
             instruction
@@ -68,7 +152,7 @@ module.exports.newRMA = async (req, res) => {
 };
 
 module.exports.updateRmaAccepted = async (req, res) => {
-    const RMANo = req.params.id;
+    const { RMANo } = req.params;
     try {
         const results = await rmaService.getByRMANo(RMANo);
         if (results.length > 0) {
@@ -82,7 +166,7 @@ module.exports.updateRmaAccepted = async (req, res) => {
 };
 
 module.exports.updateRmaRejected = async (req, res) => {
-    const RMANo = req.params.id;
+    const { RMANo } = req.params;
     try {
         const results = await rmaService.getByRMANo(RMANo);
         if (results.length > 0) {
@@ -95,12 +179,12 @@ module.exports.updateRmaRejected = async (req, res) => {
     }
 };
 
-module.exports.updateProductReceived = async (req, res) => {
-    const RMANo = req.params.id;
+module.exports.updateRmaReceived = async (req, res) => {
+    const { RMANo } = req.params;
     try {
-        const results = await rmaService.getByRMANO(RMANo);
+        const results = await rmaService.getByRMANo(RMANo);
         if (results.length > 0) {
-            await rmaService.updateProductReceived(RMANo);
+            await rmaService.updateRMAReceived(RMANo);
             return res.status(204).json({ message: 'RMA status updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
@@ -109,11 +193,11 @@ module.exports.updateProductReceived = async (req, res) => {
     }
 };
 
-module.exports.updateInstructions = async (req, res) => {
-    const RMANo = req.params.id;
+module.exports.updateRmaInstructions = async (req, res) => {
+    const { RMANo } = req.params;
     const { instructions } = req.body;
     try {
-        const results = await rmaService.getByRMANO(RMANo);
+        const results = await rmaService.getByRMANo(RMANo);
         if (results.length > 0) {
             await rmaService.updateRmaInstructions(RMANo, instructions);
             return res.status(204).json({ message: 'RMA status updated successfully!' });
@@ -124,13 +208,13 @@ module.exports.updateInstructions = async (req, res) => {
     }
 };
 
-module.exports.updateInstructions = async (req, res) => {
-    const RMANo = req.params;
-    const { actionTaken } = req.body;
+module.exports.updateRmaCOA = async (req, res) => {
+    const { RMANo } = req.params;
+    const { COA } = req.body;
     try {
-        const results = await rmaService.getByRMANO(RMANo);
+        const results = await rmaService.getByRMANo(RMANo);
         if (results.length > 0) {
-            await rmaService.updateRmaCOA(RMANo, actionTaken);
+            await rmaService.updateRmaCOA(RMANo, COA);
             return res.status(204).json({ message: 'RMA status updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
