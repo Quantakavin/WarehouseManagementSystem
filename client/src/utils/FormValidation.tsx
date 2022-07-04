@@ -4,3 +4,4 @@ export const UsernameValidation = {required: 'Username cannot be empty'};
 export const NameValidation = {required: 'Name cannot be empty'};
 export const PhoneNoValidation = {required: 'Mobile no cannot be empty', pattern: { value: /^[6|8|9]\d{7}|\+65\s?[6|8|9]\d{7}|\(\+?65\)\s?[6|8|9]\d{7}$/i, message: "Please enter a valid mobile no" }};
 export const SelectValidation = {required: 'Please select at least one option'};
+export const CompanyValidation = {required: 'Company name cannot be empty'};

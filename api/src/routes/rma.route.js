@@ -1,7 +1,11 @@
 const router = require('express').Router();
 const { rmaController } = require('../controllers');
 
-router.get('/RMA', rmaController.getAllRMA());
+router.get('/myRMA', rmaController.getMyRMA());
+router.get('/pendingRMA', rmaController.getAllRMA());
+router.get('/acceptedRMA', rmaController.getAcceptedRMA());
+router.get('/receivedRMA', rmaController.getReceivedRMA());
+router.get('/verifiedRMA', rmaController.getVerifiedRMA());
 router.get('/RMA/:RMANo', rmaController.getByRMANO());
 router.post('/newRMA', rmaController.create());
 router.put('/RMA/accept/:RMANo',rmaController.updateRmaAccepted)
