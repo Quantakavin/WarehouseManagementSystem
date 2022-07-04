@@ -1,17 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import TopBar from "../../components/header/TopBar";
 import SideBar from "../../components/SideBar";
+import axios from "axios";
 // import "../App.css";
 import "../../styles/Products.scss";
-// import Table from "../../components/table/tables";
-// import ProductSearchBar from "../../components/search/SearchBar";
-import TestTable from "../../components/table/testtable";
-import axios from "axios";
-
+import Table from "../../components/table/Table";
+//import ProductSearchBar from "../../components/search/SearchBar";
 
 function Products() {
-
-const [dataTable, setDataTable] = useState([]);
+  const [dataTable, setDataTable] = useState([]);
 
   useEffect(() => {
     axios("http://localhost:5000/api/products")
@@ -24,6 +21,7 @@ const [dataTable, setDataTable] = useState([]);
     { heading: "Batch Number", value: "BatchNo" },
     { heading: "Brand", value: "Brand" },
     { heading: "Available Quantity", value: "Quantity" },
+    // { heading: "Action", value: ":" },
   ];
 
   return (
@@ -33,7 +31,7 @@ const [dataTable, setDataTable] = useState([]);
 
         <div className="product">
           <div className="Table">
-           <TestTable data={dataTable} column={column} />
+           <Table data={dataTable} column={column} />
           </div>
         </div>
       </div>

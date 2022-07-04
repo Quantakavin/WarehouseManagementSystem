@@ -16,7 +16,6 @@ import NotificationGroups from "./pages/notificationgroups/NotificationGroups";
 import ViewNotificationGroup from "./pages/notificationgroups/ViewNotificationGroup";
 import Dashboard from "./pages/dashboards/Dashboards";
 import Products from "./pages/products/Products";
-import TesstProducts from "./pages/products/TestProducts";
 import BinLocations from "./pages/binlocations/BinLocations";
 import TLoan from "./pages/tloans/tloan"
 import RMA from "./pages/rma/rma"
@@ -35,7 +34,6 @@ const App: React.FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/testproducts" element={<TesstProducts />} />
           <Route path="/binlocations" element={<BinLocations />} />
           <Route path="/adduser" element={<AddUser />} />
           <Route path="/user/:id" element={<ViewUser />} />

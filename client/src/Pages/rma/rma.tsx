@@ -1,5 +1,5 @@
 import React from 'react'
-import BasicTable from '../../components/table/tables'
+import BasicTable from '../../components/table/Table'
 import SideBar from '../../components/SideBar'
 import RMATabs from '../../components/tabs/rmatabs'
 
