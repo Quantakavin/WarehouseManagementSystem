@@ -1,7 +1,7 @@
 const { rmaService } = require('../services');
 
 // Get RMA
-exports.getAllRMA = async (req, res) => {
+module.exports.getAllRMA = async (req, res) => {
     try {
         const result = await rmaService.getAllRMA();
 
@@ -18,7 +18,7 @@ exports.getAllRMA = async (req, res) => {
     }
 };
 
-exports.getMyRMA = async (req, res) => {
+module.exports.getMyRMA = async (req, res) => {
     const { SalesmanID } = req.params;
     try {
         const result = await rmaService.getSalesmanRMA(SalesmanID);
@@ -36,7 +36,7 @@ exports.getMyRMA = async (req, res) => {
     }
 };
 
-exports.getPendingRMA = async (req, res) => {
+module.exports.getPendingRMA = async (req, res) => {
     try {
         const result = await rmaService.getPendingRMA();
 
@@ -53,7 +53,7 @@ exports.getPendingRMA = async (req, res) => {
     }
 };
 
-exports.getAcceptedRMA = async (req, res) => {
+module.exports.getAcceptedRMA = async (req, res) => {
     try {
         const result = await rmaService.getAcceptedRMA();
 
@@ -70,7 +70,7 @@ exports.getAcceptedRMA = async (req, res) => {
     }
 };
 
-exports.getReceivedRMA = async (req, res) => {
+module.exports.getReceivedRMA = async (req, res) => {
     try {
         const result = await rmaService.getReceivedRMA();
 
@@ -87,7 +87,7 @@ exports.getReceivedRMA = async (req, res) => {
     }
 };
 
-exports.getVerifiedRMA = async (req, res) => {
+module.exports.getVerifiedRMA = async (req, res) => {
     try {
         const result = await rmaService.getVerifiedRMA();
 
@@ -105,10 +105,10 @@ exports.getVerifiedRMA = async (req, res) => {
 };
 
 // Get RMA by RMA number
-exports.getByRMANO = async (req, res) => {
+module.exports.getByRMANo = async (req, res) => {
     const { RMANo } = req.params;
     try {
-        const result = await rmaService.getByRMANO(RMANo);
+        const result = await rmaService.getByRMANo(RMANo);
         if (!result)
             return res.status(404).json({
                 error: `RMA ${RMANo} Not Found!`
