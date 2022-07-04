@@ -11,7 +11,7 @@ interface FormContainerProps<T> {
     onSubmit: (data: T) => void;
 }
 
-const FormContainer: React.FC<FormContainerProps<any>> = ({children, header, multistep, handleSubmit, onSubmit}) => {
+const FormContainer = <T,>({children, header, multistep, handleSubmit, onSubmit } : FormContainerProps<T>) => {
 
     return (
         <Container className={multistep? "multiformcontainer shadow":"formcontainer shadow"}>

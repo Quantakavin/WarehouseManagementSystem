@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { UseFormRegister, RegisterOptions } from "react-hook-form";
+import { UseFormRegister, RegisterOptions, Path } from "react-hook-form";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import useTogglePasword from "../../hooks/useTogglePassword";
@@ -17,17 +17,17 @@ const Input = styled.input<{ $password: boolean }>`
   color: #0a2540;
 `;
 
-interface FormFieldProps<IFormValues> {
+interface FormFieldProps<T> {
   label: string;
-  name: string;
+  name: Path<T>;
   defaultvalue?: string;
   errormsg?: string;
   type: AllowedInputs;
-  register?: UseFormRegister<IFormValues>;
+  register?: UseFormRegister<T>;
   rules?: RegisterOptions;
 }
 
-const FormField: React.FC<FormFieldProps<any>> = ({
+const FormField = <T,>({
   label,
   name,
   defaultvalue,
@@ -35,7 +35,7 @@ const FormField: React.FC<FormFieldProps<any>> = ({
   type,
   register,
   rules
-}) => {
+} : FormFieldProps<T>) => {
   const { toggle, passwordType, showPassword } = useTogglePasword();
   let field = null;
 

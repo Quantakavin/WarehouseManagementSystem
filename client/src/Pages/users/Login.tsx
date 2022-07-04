@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { Container } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
@@ -14,6 +14,8 @@ import {
 } from "../../utils/FormValidation";
 //import LoginUser from "../../api/user/LoginUser";
 import {LoginUser}  from "../../api/UserDB";
+import { login } from '../../app/reducers/CurrentUserSlice'
+import { useAppSelector, useAppDispatch } from '../../app/hooks'
 
 
 interface FormValues {
@@ -23,6 +25,7 @@ interface FormValues {
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -31,15 +34,19 @@ const Login: React.FC = () => {
 
   const mutation = useMutation(LoginUser, { 
     onSuccess: (data) => {
-      const { token, id, name } = data.data;
+      const { token, id, name, usergroup } = data.data;
       localStorage.setItem("token", token);
       localStorage.setItem("user_id", id);
       localStorage.setItem("username", name);
+      dispatch(login({
+        id: id, role: usergroup, name: name
+      }))
+      return navigate("/dashboard", { replace: true })
     },
   });
 
   const onSubmit = (data: FormValues) => {
-    mutation.mutate(data, { onSuccess: () => navigate("/dashboard") });
+    mutation.mutate(data);
   };
 
   return (

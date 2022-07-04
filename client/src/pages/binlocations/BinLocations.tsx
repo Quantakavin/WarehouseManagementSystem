@@ -6,7 +6,7 @@ import { Canvas, useLoader, useFrame } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { softShadows, OrbitControls, Environment } from '@react-three/drei'
 import BinsGrouped from "../../components/3Dmodels/Binsgrouped";
-
+import Rackrow from "../../components/3Dmodels/Rackrow";
 
 function Box(props: JSX.IntrinsicElements['mesh']) {
   const mesh = useRef<THREE.Mesh>(null!)
@@ -41,7 +41,7 @@ function BinLocations() {
     <pointLight position={[10, 10, 10]} />
     <OrbitControls />
     <Suspense fallback={null}>
-      <BinsGrouped />
+      <Rackrow />
     </Suspense>
 
     {/* <Suspense fallback={<p>Hi</p>}>

@@ -11,7 +11,6 @@ import config from "../config/config";
 //   };
   
   export const LoginUser = async (formData) => {
-    console.log("form is ", formData)
     return await axios.post(`${config.baseURL}/login`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",

@@ -2,8 +2,10 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const cookieParser = require("cookie-parser");
 const formData = require('express-form-data');
 const routes = require('./src/routes/index');
+const config = require('./src/config/config')
 
 const app = express();
 app.use('*', cors());
@@ -23,6 +25,8 @@ app.use(formData.union());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cookieParser(config.cookiesecret));
 
 app.use('/api', routes);
 

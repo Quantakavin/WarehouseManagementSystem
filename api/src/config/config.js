@@ -8,5 +8,7 @@ module.exports = {
     dbuser: process.env.DBUSER,
     dbpassword: process.env.DBPASSWORD,
     JWTKey: process.env.JWTKEY,
-    environment: process.env.NODE_ENV
+    environment: process.env.NODE_ENV,
+    refreshtokensecret: process.env.REFRESH_TOKEN_SECRET,
+    cookiesecret: process.env.COOKIE_SECRET
 };
