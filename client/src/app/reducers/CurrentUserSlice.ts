@@ -32,7 +32,11 @@ export const currentUserSlice = createSlice({
         state.isAuthenticated = true;
     },
     removeUser: state => {
-        state = initialState;
+      state.id = null;
+      // state.token = action.payload.token;
+      state.name = null;
+      state.role = null;
+      state.isAuthenticated = false;
     },
   }
 })
@@ -41,5 +45,7 @@ export const { setUser, removeUser } = currentUserSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectName = (state: RootState) => state.currentUser.name
+export const selectRole= (state: RootState) => state.currentUser.role
+export const selectIsAuthenticated = (state: RootState) => state.currentUser.isAuthenticated
 
 export default currentUserSlice.reducer

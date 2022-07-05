@@ -2,7 +2,7 @@ import "../../styles/Dashboard.scss";
 import { Container } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Sidebar from "../../components/SideBar";
+import Sidebar from "../../components/sidebar/SideBar";
 import Charts from "../../components/charts/Chart";
 import Cards from "../../components/cards/cards";
 

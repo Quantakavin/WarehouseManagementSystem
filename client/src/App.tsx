@@ -1,5 +1,5 @@
 import TopBar from "./components/header/TopBar";
-import Sidebar from "./components/SideBar";
+import Sidebar from "./components/sidebar/SideBar";
 import React from "react";
 import Login from "./pages/users/Login";
 import AddUser from "./pages/users/AddUser";
@@ -22,7 +22,7 @@ import RMA from "./pages/rma/rma"
 import CreateRMA from "./pages/rma/createRma"
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from './app/hooks'
-import { selectName } from './app/reducers/CurrentUserSlice';
+import { selectIsAuthenticated, selectName } from './app/reducers/CurrentUserSlice';
 
 interface ProtectedRouteProps {
   loginpage: boolean;
@@ -47,14 +47,19 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({loginpage}) => {
 
 const App: React.FC = () => {
 
-  console.log(useAppSelector(selectName))
+  const isAuthenticated = useAppSelector(selectIsAuthenticated)
+  console.log(isAuthenticated)
 
   return (
     <>
       <header>
         <TopBar />
       </header>
-      <div className="bluebackground">
+      <div className="flexcontainer" style={{flexDirection: "row"}}>
+
+      {isAuthenticated ? <Sidebar/> : null}
+      <div className="bluebackground" style={{flex: 5}}> 
+
         <Routes>
           <Route element={<ProtectedRoute loginpage={true}/>}>
             <Route path="/login" element={<Navigate replace to="/" />} />
@@ -76,6 +81,7 @@ const App: React.FC = () => {
             <Route path="/createRma" element={<CreateRMA />} />
           </Route>
         </Routes>
+      </div>
       </div>
     </>
   );

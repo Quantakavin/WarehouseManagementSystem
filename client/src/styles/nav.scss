@@ -116,6 +116,32 @@ nav  {
 
 .sidebar {
     height: calc(100vh - 67px);
-    flex: 1;
     background-color: $primary-color;
+    padding: 10px;
+    flex: 1;
+    @media screen and (max-width: 800px) {
+        display: none;
+        visibility: hidden;
+    }
+}
+
+.sidebarprofile {
+    color: #BFC3CB;
+    flex-direction: row;
+    margin-left: 5%;
+    margin-bottom: -8px;
+}
+
+.sidebartabcontainer {
+    color: #BFC3CB;
+    border: solid 1px transparent;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.sidebartabcontainer:hover {
+    background-color: #3F4D65;
 }
