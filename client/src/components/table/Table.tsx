@@ -33,7 +33,7 @@ const TableRows = ({ item, column }) => (
   <tr>
     {column.map((columnItem, index) => {
       if (columnItem.value.includes(".")) {
-        const itemSplit = columnItem.value.split("."); //['address', 'city']
+        const itemSplit = columnItem.value.split(".");
         return <td>{item[itemSplit[0]][itemSplit[1]]}</td>;
       }
 

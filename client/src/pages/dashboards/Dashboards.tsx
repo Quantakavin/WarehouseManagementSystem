@@ -10,6 +10,7 @@ function Dashboards() {
   return (
     <>
       <div className="home">
+        <br></br>
         <h1 className="homeTitle">Dashboard</h1>
 
         <Cards />

@@ -1,13 +1,13 @@
 const knex = require('../config/database');
 
-module.exports.getAll = async () => {
-    const query = `SELECT ItemNo, ItemName, BatchNo, Brand, Quantity FROM BinProduct LIMIT 10`;
-    return knex.raw(query);
+module.exports.getAll = async (offsetNo) => {
+    const query = `SELECT BinProductPK, ItemName, BatchNo, Brand, Quantity FROM BinProduct LIMIT 10 OFFSET ?`;
+    return knex.raw(query, [parseInt(offsetNo)]);
 };
 
-module.exports.getByItemNo = async (itemNo) => {
-    const query = `SELECT * FROM BinProduct WHERE ItemNo = ?`;
-    return knex.raw(query, [itemNo]);
+module.exports.getByPrimaryKey = async (binProductPK) => {
+    const query = `SELECT * FROM BinProduct WHERE BinProductPK = ?`;
+    return knex.raw(query, [binProductPK]);
 };
 
 module.exports.searchFilter = async (itemName, itemCode, binTag, batchNo, brand, warehouseCode) => {
