@@ -1,9 +1,8 @@
+import axios from "axios";
 import React, { useState, useRef, useEffect } from "react";
+import "../../styles/Products.scss";
 import TopBar from "../../components/header/TopBar";
 import SideBar from "../../components/SideBar";
-import axios from "axios";
-// import "../App.css";
-import "../../styles/Products.scss";
 import Table from "../../components/table/Table";
 import SearchBar from "material-ui-search-bar";
 //import ProductSearchBar from "../../components/search/SearchBar";
@@ -13,17 +12,23 @@ function Products() {
   const [q, setQ] = useState("");
 
   useEffect(() => {
-    axios("http://localhost:5000/api/products")
-      .then((res) => setDataTable(res.data))
-      .catch((err) => console.log(err));
+    axios.post('http://localhost:5000/api/products', {
+      offsetNo: 10
+    })
+    .then((response) => 
+      setDataTable(response.data))
+    .catch((error) => 
+      console.log(error)
+    );
   }, []);
 
   const column = [
+    { value: "BinProductPK"},
     { heading: "Item Name", value: "ItemName" },
     { heading: "Batch Number", value: "BatchNo" },
     { heading: "Brand", value: "Brand" },
     { heading: "Available Quantity", value: "Quantity" },
-    // { heading: "Action", value: ":" },
+    { heading: "Action", value: ":" },
   ];
 
   // Search Rows filter by Item Name and Branc
