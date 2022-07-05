@@ -222,3 +222,29 @@ module.exports.updateRmaCOA = async (req, res) => {
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
+
+module.exports.getRMADetails = async (req, res) => {
+    const RMANo = req.params;
+    try {
+        const reqRma = await redisClient.get(`rma#${RMANo}`);
+        if (reqUser !== null) {
+            const redisresults = JSON.parse(reqRma);
+            return res.status(200).json(redisresults);
+        }
+        let output = [];
+        const results = await rmaService.getByRMANo(RMANo);
+        const RmaID = results.data.RmaID;
+        if (results[0].length > 0) {
+            [output] = results;
+            const results2 = await rmaService.getRMAProduct(RmaID);
+            if (results2.length > 0) {
+                [output[0].NotificationGroups] = results2;
+            }
+            redisClient.set(`rma#${RMANo}`, JSON.stringify(output));
+            return res.status(200).send(output);
+        }
+        return res.status(404).json({ message: 'Cannot find the details of this RMA!' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
