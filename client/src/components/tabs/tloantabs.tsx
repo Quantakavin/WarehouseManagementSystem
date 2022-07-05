@@ -13,18 +13,18 @@ import Paper from '@mui/material/Paper';
 
 export default function TLoanTabs() {
   
-      const [draft, setDraft] = useState([]);
-      const [newDraft, setNewDraft] = useState([]);
+      const [loan, setLoan] = useState([]);
+      const [newLoan, setNewLoan] = useState([]);
       const [group, setGroup] = useState([])
 
       useEffect(() => {
         // declare the async data fetching function
         const fetchData = async () => {
           // get the data from the api
-          const draft = await axios.get('http://localhost:5000/api/tloan/pending');
+          const loan = await axios.get('http://localhost:5000/api/tloan');
          
-          setDraft(draft.data)
-          console.log(draft.data)
+          setLoan(loan.data)
+          console.log(loan.data)
         
         }
         // call the function
@@ -38,38 +38,43 @@ export default function TLoanTabs() {
       useEffect(()=> {
 
        
-          let newDraft = draft
-          setNewDraft(newDraft)
+          let newLoan = loan
+          setNewLoan(newLoan)
         
-      },[draft])
+      },[loan])
 
-    
+      useEffect( () => {
+        let group = newLoan.reduce((r, a) => {
+            r[a.TLoanStatusID] = [...r[a.TLoanStatusID] || [], a];
+            return r
+        }, {})
+
+        setGroup(group)
+        console.log(group)
+
+    }, [newLoan])
      
       const getData = () => {
-        let data = {...newDraft}
+        let data = {...group}
         let html = []
 
         for(const [key, value] of Object.entries(data)) {
             html.push(
                 <div className='container'>
-                    <div key="draftObject" >{key && value && value.length > 0
-                    ? value.map(drafts => {
-                        const { TLoanID, TLoanNumber, RequiredDate} =drafts
+                    <div >{key && value && value.length > 0
+                    ? value.map(loans => {
+                        const { TLoanNumber, RequiredDate} = loans
                         return (
-                                   <TableBody key="tbody">
-                                      <TableRow key="trow2" >
-                                      
-                                          <TableCell align="center" key="cell1">{TLoanNumber}</TableCell>
-                                          {/* <TableCell align="center">{RequiredDate}</TableCell>
-                                          <TableCell align="center"></TableCell>
-                                          <TableCell align="center"></TableCell>
-                                          <TableCell align="center"></TableCell>
-                                          <TableCell align="center"></TableCell> */}
-                                          
-                                        </TableRow>
-                                    
-                                    </TableBody>    
-                               
+                            <div className="" key={TLoanNumber}>
+                                    <div>
+                                        <strong>{TLoanNumber}</strong>
+                                    </div>
+                                    <div className=''>
+                                        <strong>${RequiredDate}</strong>  
+                                    </div>
+
+                                  
+                                </div>
                             
                         )
                     })
@@ -93,12 +98,12 @@ export default function TLoanTabs() {
             <Tab>History</Tab>
             </TabList>
 
-            <TabPanel key="cwehie">
+            <TabPanel>
             
-            <TableContainer component={Paper}>
+            {/* <TableContainer component={Paper}>
       <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-        <TableHead key="thead">
-          <TableRow key="trow">
+        <TableHead>
+          <TableRow>
             <TableCell align="center">Loan No.</TableCell>
             <TableCell align="center">Start Date</TableCell>
             <TableCell align="center">End Date</TableCell>
@@ -108,13 +113,24 @@ export default function TLoanTabs() {
             
           </TableRow>
         </TableHead>
-           
-              {getData()}
+        <TableBody>
+          <TableRow >
           
+              <TableCell align="center">{getData}</TableCell>
+              <TableCell align="center"></TableCell>
+              <TableCell align="center"></TableCell>
+              <TableCell align="center"></TableCell>
+              <TableCell align="center"></TableCell>
+              <TableCell align="center"></TableCell>
+              
+            </TableRow>
         
+        </TableBody>
       </Table>
-    </TableContainer>
-           
+    </TableContainer> */}
+            <div key="current">
+              {getData()}
+            </div>
      
             </TabPanel>
             <TabPanel>

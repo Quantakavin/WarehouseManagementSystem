@@ -9,32 +9,48 @@ import {
   YAxis,
 } from "recharts";
 import { Title } from "react-bootstrap/lib/Modal";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import config from "../../config/config";
+import { useState } from "react";
 
 function Charts({ title, dataKey, grid }) {
-  const [tloan, setTloan] = useState([]);
+  const [error, setError] = useState(null);
+  
 
-  useEffect(() => {}, []);
-
-  // Get Total Request Made from TLoan
-  const getTloansRMARequest = async () => {
-    const response = await axios.get(`${config.baseURL}/getTloanStats`);
-
-    setTloan(response.data);
-    console.log(tloan);
-  };
-
-  useEffect(() => {
-    getTloansRMARequest();
-  }, []);
+  const data = [
+    {
+      name: "Jan",
+      request: 2000,
+    },
+    {
+      name: "Feb",
+      request: 3000,
+    },
+    {
+      name: "March",
+      request: 2000,
+    },
+    {
+      name: "April",
+      request: 2780,
+    },
+    {
+      name: "May",
+      request: 1890,
+    },
+    {
+      name: "June",
+      request: 2390,
+    },
+    {
+      name: "July",
+      request: 3490,
+    },
+  ];
 
   return (
     <>
       <div className="chart">
         <ResponsiveContainer width="100%" aspect={4 / 1}>
-          <LineChart data={tloan}>
+          <LineChart data={data}>
             <XAxis dataKey="name" stroke="#5550bd" />
             <YAxis></YAxis>
             <Line type="monotone" dataKey="request" stroke="#5550bd" />
