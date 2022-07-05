@@ -127,6 +127,7 @@ module.exports.closedRMAs = async (req, res) => {
 
 module.exports.TLoanCurrentStats = async (req, res) => {
     try {
+        console.log('called');
         const results = await dashboard.getTLoanCurrentStats();
         if (results.length > 0) {
             return res.status(200).json(results[0]);

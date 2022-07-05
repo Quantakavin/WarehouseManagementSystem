@@ -57,7 +57,7 @@ module.exports.getClosedRMAs = async () => {
 
 // Get Total TLoan Request, Month WHERE Status = 3
 module.exports.getTLoanCurrentStats = async () => {
-    const query = `SELECT COUNT(TLoanNumber) AS RequestMade,  EXTRACT(MONTH FROM TLoan.ApplicationDate) as MonthNumber FROM TLoan WHERE TLoanStatusID = "3"  GROUP BY MonthNumber`;
+    const query = `SELECT COUNT(TLoanNumber) AS Requests,  EXTRACT(MONTH FROM TLoan.ApplicationDate) as Month FROM TLoan WHERE TLoanStatusID = "3"  GROUP BY Month`;
     // const query = `select (select count(TLoanNumber) from TLoan) as TLoanRequests,
     // (select count(RmaNo) from Rma) as RMARequest`;
     return knex.raw(query);
@@ -65,7 +65,7 @@ module.exports.getTLoanCurrentStats = async () => {
 
 // Get Total RMA Request, Month WHERE Status = 2
 module.exports.getRMACurrentStats = async () => {
-    const query = `SELECT COUNT(RmaNo),  EXTRACT(MONTH FROM DateTime ) as MonthNumber FROM Rma WHERE RmaStatusID = "2" GROUP BY MonthNumber`;
+    const query = `SELECT COUNT(RmaNo) AS Requests,  EXTRACT(MONTH FROM DateTime ) as Month FROM Rma WHERE RmaStatusID = "2" GROUP BY Month`;
     // const query = `select (select count(TLoanNumber) from TLoan) as TLoanRequests,
     // (select count(RmaNo) from Rma) as RMARequest`;
     return knex.raw(query);
