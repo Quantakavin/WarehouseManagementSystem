@@ -10,6 +10,11 @@ module.exports.getSalesmanRMA = async (SalesmanID) => {
     return knex.raw(query, [SalesmanID]);
 };
 
+module.exports.getRMAProducts = async (RmaID) => {
+    const query = `SELECT * FROM RmaProduct WHERE RmaID = ?`;
+    return knex.raw(query, [RMANo])
+}
+
 module.exports.getAllRMA = async () => {
     const query = `SELECT * FROM Rma`;
     return knex.raw(query);
