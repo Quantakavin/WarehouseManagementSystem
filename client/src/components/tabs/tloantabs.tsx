@@ -15,6 +15,7 @@ export default function TLoanTabs() {
   
       const [loan, setLoan] = useState([]);
       const [newLoan, setNewLoan] = useState([]);
+      const [group, setGroup] = useState([])
 
       useEffect(() => {
         // declare the async data fetching function
@@ -24,27 +25,71 @@ export default function TLoanTabs() {
          
           setLoan(loan.data)
           console.log(loan.data)
+        
         }
-      
         // call the function
         fetchData()
           // make sure to catch any error
           .catch(console.error);;
       }, [])
 
-      useEffect(() => {
+     
+    
+      useEffect(()=> {
 
-        const newLoan =loan.map(
-            ({ }) => ({
-               
-            })
-        )
-        setNewLoan(newLoan)
+       
+          let newLoan = loan
+          setNewLoan(newLoan)
+        
+      },[loan])
 
-    }, [loan])
+      useEffect( () => {
+        let group = newLoan.reduce((r, a) => {
+            r[a.TLoanStatusID] = [...r[a.TLoanStatusID] || [], a];
+            return r
+        }, {})
+
+        setGroup(group)
+        console.log(group)
+
+    }, [newLoan])
+     
+      const getData = () => {
+        let data = {...group}
+        let html = []
+
+        for(const [key, value] of Object.entries(data)) {
+            html.push(
+                <div className='container'>
+                    <div >{key && value && value.length > 0
+                    ? value.map(loans => {
+                        const { TLoanNumber, RequiredDate} = loans
+                        return (
+                            <div className="" key={TLoanNumber}>
+                                    <div>
+                                        <strong>{TLoanNumber}</strong>
+                                    </div>
+                                    <div className=''>
+                                        <strong>${RequiredDate}</strong>  
+                                    </div>
+
+                                  
+                                </div>
+                            
+                        )
+                    })
+                    : "Loading..."}</div>
+                </div>
+            )
+        }
+
+        return html
+    }
+    
 
    
    return(
+      
         <Tabs>
             <TabList>
             <Tab>Current</Tab>
@@ -54,7 +99,8 @@ export default function TLoanTabs() {
             </TabList>
 
             <TabPanel>
-            <TableContainer component={Paper}>
+            
+            {/* <TableContainer component={Paper}>
       <Table sx={{ minWidth: 1050 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -69,9 +115,8 @@ export default function TLoanTabs() {
         </TableHead>
         <TableBody>
           <TableRow >
-              <TableCell component="th" scope="row" align="center" hidden>
-               
-              </TableCell>
+          
+              <TableCell align="center">{getData}</TableCell>
               <TableCell align="center"></TableCell>
               <TableCell align="center"></TableCell>
               <TableCell align="center"></TableCell>
@@ -82,18 +127,24 @@ export default function TLoanTabs() {
         
         </TableBody>
       </Table>
-    </TableContainer>
+    </TableContainer> */}
+            <div key="current">
+              {getData()}
+            </div>
+     
+            </TabPanel>
+            <TabPanel>
+            <h2>Any content 2</h2>
+            </TabPanel>
+            <TabPanel>
+            <h2>Any content 2</h2>
+            </TabPanel>
+            <TabPanel>
+            <h2>Any content 2</h2>
+            </TabPanel>
 
-            </TabPanel>
-            <TabPanel>
-            <h2>Any content 2</h2>
-            </TabPanel>
-            <TabPanel>
-            <h2>Any content 2</h2>
-            </TabPanel>
-            <TabPanel>
-            <h2>Any content 2</h2>
-            </TabPanel>
+           
         </Tabs>
+      
    )
 };
