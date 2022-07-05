@@ -5,6 +5,7 @@ import axios from "axios";
 // import "../App.css";
 import "../../styles/Products.scss";
 import Table from "../../components/table/Table";
+import SearchBar from "material-ui-search-bar";
 //import ProductSearchBar from "../../components/search/SearchBar";
 
 function Products() {
@@ -25,9 +26,13 @@ function Products() {
     // { heading: "Action", value: ":" },
   ];
 
-  // Search Rows
+  // Search Rows filter by Item Name and Branc
   function search(rows) {
-    return rows.filter((row) => row.ItemName.toLowerCase().indexOf(q) > -1);
+    return rows.filter(
+      (row) =>
+        row.ItemName.toLowerCase().indexOf(q) > -1 ||
+        row.Brand.toLowerCase().indexOf(q) > -1
+    );
   }
 
   return (
@@ -42,6 +47,7 @@ function Products() {
               value={q}
               onChange={(e) => setQ(e.target.value)}
             />
+
             <Table data={search(dataTable)} column={column} />
           </div>
         </div>
