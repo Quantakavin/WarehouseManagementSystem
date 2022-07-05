@@ -17,7 +17,6 @@ function Charts({ title, dataKey, grid }) {
   const [error, setError] = useState(null);
   const [tloan, setTloan] = useState([]);
 
-  useEffect(() => {}, []);
   // Get Total Request Made from TLoan
   const getTloansRMARequest = async () => {
     const response = await axios.get(`${config.baseURL}/getTloanStats`);
@@ -33,11 +32,14 @@ function Charts({ title, dataKey, grid }) {
   return (
     <>
       <div className="chart">
+      <h4 style={{ textAlign: "left" }}>Current T-Loan Requests</h4>
+      <br></br>
         <ResponsiveContainer width="100%" aspect={4 / 1}>
+      
           <LineChart data={tloan}>
-            <XAxis dataKey="name" stroke="#5550bd" />
+            <XAxis dataKey="Month" stroke="#5550bd" />
             <YAxis></YAxis>
-            <Line type="monotone" dataKey="request" stroke="#5550bd" />
+            <Line type="monotone" dataKey="Requests" stroke="#5550bd" />
             <Tooltip />
             {dataKey}
             {grid && <CartesianGrid stroke="#e0dfdf" strokeDasharray="5 5" />}
