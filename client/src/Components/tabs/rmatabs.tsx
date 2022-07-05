@@ -12,7 +12,7 @@ import Paper from '@mui/material/Paper';
 
 
 export default function RMATabs() {
-  
+      const [role] = useState([]);
       const [rma, setRma] = useState([]);
       const [newRma, setNewRma] = useState([]);
 
@@ -42,19 +42,48 @@ export default function RMATabs() {
         setNewRma(newRma)
 
     }, [rma])
+    
+    return(
+      <Tabs>
+          <TabList>
+          <Tab>Applied</Tab>
+          <Tab>Approved</Tab>
+          <Tab>Received </Tab>
+          <Tab>Verified</Tab>
+          </TabList>
 
-   
-   return(
-        <Tabs>
-            <TabList>
-            <Tab>Applied</Tab>
-            <Tab>Approved</Tab>
-            <Tab>Received </Tab>
-            <Tab>Verified</Tab>
-            </TabList>
-
-            <TabPanel>
-              <TableContainer component={Paper}>
+          <TabPanel>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 1050 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="center">RMA No.</TableCell>
+                    <TableCell align="center">Date Applied</TableCell>
+                    <TableCell align="center">Company Name</TableCell>
+                    <TableCell align="center">Customer Email</TableCell>
+                    <TableCell align="center">Actions</TableCell>
+                    
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow >
+                      <TableCell component="th" scope="row" align="center" hidden>
+                      
+                      </TableCell>
+                      <TableCell align="center"></TableCell>
+                      <TableCell align="center"></TableCell>
+                      <TableCell align="center"></TableCell>
+                      <TableCell align="center"></TableCell>
+                      <TableCell align="center"></TableCell>
+                      
+                    </TableRow>
+                
+                </TableBody>
+              </Table>
+           </TableContainer>
+          </TabPanel>
+          <TabPanel>
+            <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 1050 }} aria-label="simple table">
                   <TableHead>
                     <TableRow>
@@ -81,98 +110,356 @@ export default function RMATabs() {
                   
                   </TableBody>
                 </Table>
-             </TableContainer>
-            </TabPanel>
-            <TabPanel>
-              <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell align="center">RMA No.</TableCell>
-                        <TableCell align="center">Date Applied</TableCell>
-                        <TableCell align="center">Company Name</TableCell>
-                        <TableCell align="center">Customer Email</TableCell>
-                        <TableCell align="center">Actions</TableCell>
+            </TableContainer>
+          </TabPanel>
+          <TabPanel>
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 1050 }} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center">RMA No.</TableCell>
+                      <TableCell align="center">Date Applied</TableCell>
+                      <TableCell align="center">Company Name</TableCell>
+                      <TableCell align="center">Customer Email</TableCell>
+                      <TableCell align="center">Actions</TableCell>
+                      
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow >
+                        <TableCell component="th" scope="row" align="center" hidden>
+                        
+                        </TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center"></TableCell>
                         
                       </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      <TableRow >
-                          <TableCell component="th" scope="row" align="center" hidden>
-                          
-                          </TableCell>
-                          <TableCell align="center"></TableCell>
-                          <TableCell align="center"></TableCell>
-                          <TableCell align="center"></TableCell>
-                          <TableCell align="center"></TableCell>
-                          <TableCell align="center"></TableCell>
-                          
-                        </TableRow>
-                    
-                    </TableBody>
-                  </Table>
-              </TableContainer>
-            </TabPanel>
-            <TabPanel>
-              <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell align="center">RMA No.</TableCell>
-                        <TableCell align="center">Date Applied</TableCell>
-                        <TableCell align="center">Company Name</TableCell>
-                        <TableCell align="center">Customer Email</TableCell>
-                        <TableCell align="center">Actions</TableCell>
+                  
+                  </TableBody>
+                </Table>
+            </TableContainer>
+          </TabPanel>
+          <TabPanel>
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 1050 }} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center">RMA No.</TableCell>
+                      <TableCell align="center">Date Applied</TableCell>
+                      <TableCell align="center">Company Name</TableCell>
+                      <TableCell align="center">Customer Email</TableCell>
+                      <TableCell align="center">Actions</TableCell>
+                      
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow >
+                        <TableCell component="th" scope="row" align="center" hidden>
+                        
+                        </TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center"></TableCell>
                         
                       </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      <TableRow >
-                          <TableCell component="th" scope="row" align="center" hidden>
-                          
-                          </TableCell>
-                          <TableCell align="center"></TableCell>
-                          <TableCell align="center"></TableCell>
-                          <TableCell align="center"></TableCell>
-                          <TableCell align="center"></TableCell>
-                          <TableCell align="center"></TableCell>
-                          
-                        </TableRow>
+                  
+                  </TableBody>
+                </Table>
+            </TableContainer>
+          </TabPanel>
+      </Tabs>
+    ) 
+   
+
+  //  switch (role) {
+  //   case 'Sales Manager':
+  //         <Tabs>
+  //         <TabList>
+  //         <Tab>Applied</Tab>
+  //         <Tab>Approved</Tab>
+  //         <Tab>Received </Tab>
+  //         <Tab>Verified</Tab>
+  //         </TabList>
+
+  //         <TabPanel>
+  //           <TableContainer component={Paper}>
+  //             <Table sx={{ minWidth: 1050 }} aria-label="simple table">
+  //               <TableHead>
+  //                 <TableRow>
+  //                   <TableCell align="center">RMA No.</TableCell>
+  //                   <TableCell align="center">Date Applied</TableCell>
+  //                   <TableCell align="center">Company Name</TableCell>
+  //                   <TableCell align="center">Customer Email</TableCell>
+  //                   <TableCell align="center">Actions</TableCell>
                     
-                    </TableBody>
-                  </Table>
-              </TableContainer>
-            </TabPanel>
-            <TabPanel>
-              <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell align="center">RMA No.</TableCell>
-                        <TableCell align="center">Date Applied</TableCell>
-                        <TableCell align="center">Company Name</TableCell>
-                        <TableCell align="center">Customer Email</TableCell>
-                        <TableCell align="center">Actions</TableCell>
+  //                 </TableRow>
+  //               </TableHead>
+  //               <TableBody>
+  //                 <TableRow >
+  //                     <TableCell component="th" scope="row" align="center" hidden>
+                      
+  //                     </TableCell>
+  //                     <TableCell align="center"></TableCell>
+  //                     <TableCell align="center"></TableCell>
+  //                     <TableCell align="center"></TableCell>
+  //                     <TableCell align="center"></TableCell>
+  //                     <TableCell align="center"></TableCell>
+                      
+  //                   </TableRow>
+                
+  //               </TableBody>
+  //             </Table>
+  //         </TableContainer>
+  //         </TabPanel>
+  //         <TabPanel>
+  //           <TableContainer component={Paper}>
+  //               <Table sx={{ minWidth: 1050 }} aria-label="simple table">
+  //                 <TableHead>
+  //                   <TableRow>
+  //                     <TableCell align="center">RMA No.</TableCell>
+  //                     <TableCell align="center">Date Applied</TableCell>
+  //                     <TableCell align="center">Company Name</TableCell>
+  //                     <TableCell align="center">Customer Email</TableCell>
+  //                     <TableCell align="center">Actions</TableCell>
+                      
+  //                   </TableRow>
+  //                 </TableHead>
+  //                 <TableBody>
+  //                   <TableRow >
+  //                       <TableCell component="th" scope="row" align="center" hidden>
                         
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      <TableRow >
-                          <TableCell component="th" scope="row" align="center" hidden>
-                          
-                          </TableCell>
-                          <TableCell align="center"></TableCell>
-                          <TableCell align="center"></TableCell>
-                          <TableCell align="center"></TableCell>
-                          <TableCell align="center"></TableCell>
-                          <TableCell align="center"></TableCell>
-                          
-                        </TableRow>
-                    
-                    </TableBody>
-                  </Table>
-              </TableContainer>
-            </TabPanel>
-        </Tabs>
-   )
+  //                       </TableCell>
+  //                       <TableCell align="center"></TableCell>
+  //                       <TableCell align="center"></TableCell>
+  //                       <TableCell align="center"></TableCell>
+  //                       <TableCell align="center"></TableCell>
+  //                       <TableCell align="center"></TableCell>
+                        
+  //                     </TableRow>
+                  
+  //                 </TableBody>
+  //               </Table>
+  //           </TableContainer>
+  //         </TabPanel>
+  //         <TabPanel>
+  //           <TableContainer component={Paper}>
+  //               <Table sx={{ minWidth: 1050 }} aria-label="simple table">
+  //                 <TableHead>
+  //                   <TableRow>
+  //                     <TableCell align="center">RMA No.</TableCell>
+  //                     <TableCell align="center">Date Applied</TableCell>
+  //                     <TableCell align="center">Company Name</TableCell>
+  //                     <TableCell align="center">Customer Email</TableCell>
+  //                     <TableCell align="center">Actions</TableCell>
+                      
+  //                   </TableRow>
+  //                 </TableHead>
+  //                 <TableBody>
+  //                   <TableRow >
+  //                       <TableCell component="th" scope="row" align="center" hidden>
+                        
+  //                       </TableCell>
+  //                       <TableCell align="center"></TableCell>
+  //                       <TableCell align="center"></TableCell>
+  //                       <TableCell align="center"></TableCell>
+  //                       <TableCell align="center"></TableCell>
+  //                       <TableCell align="center"></TableCell>
+                        
+  //                     </TableRow>
+                  
+  //                 </TableBody>
+  //               </Table>
+  //           </TableContainer>
+  //         </TabPanel>
+  //         <TabPanel>
+  //           <TableContainer component={Paper}>
+  //               <Table sx={{ minWidth: 1050 }} aria-label="simple table">
+  //                 <TableHead>
+  //                   <TableRow>
+  //                     <TableCell align="center">RMA No.</TableCell>
+  //                     <TableCell align="center">Date Applied</TableCell>
+  //                     <TableCell align="center">Company Name</TableCell>
+  //                     <TableCell align="center">Customer Email</TableCell>
+  //                     <TableCell align="center">Actions</TableCell>
+                      
+  //                   </TableRow>
+  //                 </TableHead>
+  //                 <TableBody>
+  //                   <TableRow >
+  //                       <TableCell component="th" scope="row" align="center" hidden>
+                        
+  //                       </TableCell>
+  //                       <TableCell align="center"></TableCell>
+  //                       <TableCell align="center"></TableCell>
+  //                       <TableCell align="center"></TableCell>
+  //                       <TableCell align="center"></TableCell>
+  //                       <TableCell align="center"></TableCell>
+                        
+  //                     </TableRow>
+                  
+  //                 </TableBody>
+  //               </Table>
+  //           </TableContainer>
+  //         </TabPanel>
+  //         </Tabs>
+  //       break;
+  //   case 'Sales Engineer':
+  //     <Tabs>
+  //     <TabList>
+  //     <Tab>Applied</Tab>
+  //     </TabList>
+
+  //     <TabPanel>
+  //       <TableContainer component={Paper}>
+  //         <Table sx={{ minWidth: 1050 }} aria-label="simple table">
+  //           <TableHead>
+  //             <TableRow>
+  //               <TableCell align="center">RMA No.</TableCell>
+  //               <TableCell align="center">Date Applied</TableCell>
+  //               <TableCell align="center">Company Name</TableCell>
+  //               <TableCell align="center">Customer Email</TableCell>
+  //               <TableCell align="center">Actions</TableCell>
+                
+  //             </TableRow>
+  //           </TableHead>
+  //           <TableBody>
+  //             <TableRow >
+  //                 <TableCell component="th" scope="row" align="center" hidden>
+                  
+  //                 </TableCell>
+  //                 <TableCell align="center"></TableCell>
+  //                 <TableCell align="center"></TableCell>
+  //                 <TableCell align="center"></TableCell>
+  //                 <TableCell align="center"></TableCell>
+  //                 <TableCell align="center"></TableCell>
+                  
+  //               </TableRow>
+            
+  //           </TableBody>
+  //         </Table>
+  //     </TableContainer>
+  //     </TabPanel>
+  //     </Tabs>
+  //       break;
+  //   case 'Warehouse Worker':
+  //     <Tabs>
+  //     <TabList>
+  //     <Tab>Approved</Tab>
+  //     </TabList>
+
+  //     <TabPanel>
+  //       <TableContainer component={Paper}>
+  //         <Table sx={{ minWidth: 1050 }} aria-label="simple table">
+  //           <TableHead>
+  //             <TableRow>
+  //               <TableCell align="center">RMA No.</TableCell>
+  //               <TableCell align="center">Date Applied</TableCell>
+  //               <TableCell align="center">Company Name</TableCell>
+  //               <TableCell align="center">Customer Email</TableCell>
+  //               <TableCell align="center">Actions</TableCell>
+                
+  //             </TableRow>
+  //           </TableHead>
+  //           <TableBody>
+  //             <TableRow >
+  //                 <TableCell component="th" scope="row" align="center" hidden>
+                  
+  //                 </TableCell>
+  //                 <TableCell align="center"></TableCell>
+  //                 <TableCell align="center"></TableCell>
+  //                 <TableCell align="center"></TableCell>
+  //                 <TableCell align="center"></TableCell>
+  //                 <TableCell align="center"></TableCell>
+                  
+  //               </TableRow>
+            
+  //           </TableBody>
+  //         </Table>
+  //     </TableContainer>
+  //     </TabPanel>
+  //     </Tabs>
+  //       break;
+  //   case 'Technical Staff':
+  //     <Tabs>
+  //     <TabList>
+  //     <Tab>Received </Tab>
+  //     </TabList>
+
+  //     <TabPanel>
+  //       <TableContainer component={Paper}>
+  //         <Table sx={{ minWidth: 1050 }} aria-label="simple table">
+  //           <TableHead>
+  //             <TableRow>
+  //               <TableCell align="center">RMA No.</TableCell>
+  //               <TableCell align="center">Date Applied</TableCell>
+  //               <TableCell align="center">Company Name</TableCell>
+  //               <TableCell align="center">Customer Email</TableCell>
+  //               <TableCell align="center">Actions</TableCell>
+                
+  //             </TableRow>
+  //           </TableHead>
+  //           <TableBody>
+  //             <TableRow >
+  //                 <TableCell component="th" scope="row" align="center" hidden>
+                  
+  //                 </TableCell>
+  //                 <TableCell align="center"></TableCell>
+  //                 <TableCell align="center"></TableCell>
+  //                 <TableCell align="center"></TableCell>
+  //                 <TableCell align="center"></TableCell>
+  //                 <TableCell align="center"></TableCell>
+                  
+  //               </TableRow>
+            
+  //           </TableBody>
+  //         </Table>
+  //     </TableContainer>
+  //     </TabPanel>
+  //     </Tabs>
+  //       break;
+  //   case 'Sales Admin':
+  //     <Tabs>
+  //     <TabList>
+  //     <Tab>Verified</Tab>
+  //     </TabList>
+
+  //     <TabPanel>
+  //       <TableContainer component={Paper}>
+  //         <Table sx={{ minWidth: 1050 }} aria-label="simple table">
+  //           <TableHead>
+  //             <TableRow>
+  //               <TableCell align="center">RMA No.</TableCell>
+  //               <TableCell align="center">Date Applied</TableCell>
+  //               <TableCell align="center">Company Name</TableCell>
+  //               <TableCell align="center">Customer Email</TableCell>
+  //               <TableCell align="center">Actions</TableCell>
+                
+  //             </TableRow>
+  //           </TableHead>
+  //           <TableBody>
+  //             <TableRow >
+  //                 <TableCell component="th" scope="row" align="center" hidden>
+                  
+  //                 </TableCell>
+  //                 <TableCell align="center"></TableCell>
+  //                 <TableCell align="center"></TableCell>
+  //                 <TableCell align="center"></TableCell>
+  //                 <TableCell align="center"></TableCell>
+  //                 <TableCell align="center"></TableCell>
+                  
+  //               </TableRow>
+            
+  //           </TableBody>
+  //         </Table>
+  //     </TableContainer>
+  //     </TabPanel>
+  //     </Tabs>
+  //       break;
+  //   }
+   
 };
