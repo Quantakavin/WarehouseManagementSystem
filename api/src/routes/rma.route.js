@@ -7,6 +7,7 @@ router.get('/acceptedRMA', rmaController.getAcceptedRMA);
 router.get('/receivedRMA', rmaController.getReceivedRMA);
 router.get('/verifiedRMA', rmaController.getVerifiedRMA);
 router.get('/RMA/:RMANo', rmaController.getByRMANo);
+router.get('/RMADetails/:RMANo', rmaController.getRMADetails);
 router.post('/newRMA', rmaController.newRMA);
 router.put('/acceptRMA/:RMANo',rmaController.updateRmaAccepted)
 router.put('/rejectRMA/:RMANo',rmaController.updateRmaRejected)

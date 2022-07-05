@@ -54,44 +54,124 @@ export default function RMATabs() {
             </TabList>
 
             <TabPanel>
-            <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="center">RMA No.</TableCell>
-            <TableCell align="center">Date Applied</TableCell>
-            <TableCell align="center">Company Name</TableCell>
-            <TableCell align="center">Customer Email</TableCell>
-            <TableCell align="center">Actions</TableCell>
-            
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow >
-              <TableCell component="th" scope="row" align="center" hidden>
-               
-              </TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              
-            </TableRow>
-        
-        </TableBody>
-      </Table>
-    </TableContainer>
-
+              <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 1050 }} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center">RMA No.</TableCell>
+                      <TableCell align="center">Date Applied</TableCell>
+                      <TableCell align="center">Company Name</TableCell>
+                      <TableCell align="center">Customer Email</TableCell>
+                      <TableCell align="center">Actions</TableCell>
+                      
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow >
+                        <TableCell component="th" scope="row" align="center" hidden>
+                        
+                        </TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center"></TableCell>
+                        
+                      </TableRow>
+                  
+                  </TableBody>
+                </Table>
+             </TableContainer>
             </TabPanel>
             <TabPanel>
-            <h2>Any content 2</h2>
+              <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 1050 }} aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="center">RMA No.</TableCell>
+                        <TableCell align="center">Date Applied</TableCell>
+                        <TableCell align="center">Company Name</TableCell>
+                        <TableCell align="center">Customer Email</TableCell>
+                        <TableCell align="center">Actions</TableCell>
+                        
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow >
+                          <TableCell component="th" scope="row" align="center" hidden>
+                          
+                          </TableCell>
+                          <TableCell align="center"></TableCell>
+                          <TableCell align="center"></TableCell>
+                          <TableCell align="center"></TableCell>
+                          <TableCell align="center"></TableCell>
+                          <TableCell align="center"></TableCell>
+                          
+                        </TableRow>
+                    
+                    </TableBody>
+                  </Table>
+              </TableContainer>
             </TabPanel>
             <TabPanel>
-            <h2>Any content 2</h2>
+              <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 1050 }} aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="center">RMA No.</TableCell>
+                        <TableCell align="center">Date Applied</TableCell>
+                        <TableCell align="center">Company Name</TableCell>
+                        <TableCell align="center">Customer Email</TableCell>
+                        <TableCell align="center">Actions</TableCell>
+                        
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow >
+                          <TableCell component="th" scope="row" align="center" hidden>
+                          
+                          </TableCell>
+                          <TableCell align="center"></TableCell>
+                          <TableCell align="center"></TableCell>
+                          <TableCell align="center"></TableCell>
+                          <TableCell align="center"></TableCell>
+                          <TableCell align="center"></TableCell>
+                          
+                        </TableRow>
+                    
+                    </TableBody>
+                  </Table>
+              </TableContainer>
             </TabPanel>
             <TabPanel>
-            <h2>Any content 2</h2>
+              <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 1050 }} aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="center">RMA No.</TableCell>
+                        <TableCell align="center">Date Applied</TableCell>
+                        <TableCell align="center">Company Name</TableCell>
+                        <TableCell align="center">Customer Email</TableCell>
+                        <TableCell align="center">Actions</TableCell>
+                        
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow >
+                          <TableCell component="th" scope="row" align="center" hidden>
+                          
+                          </TableCell>
+                          <TableCell align="center"></TableCell>
+                          <TableCell align="center"></TableCell>
+                          <TableCell align="center"></TableCell>
+                          <TableCell align="center"></TableCell>
+                          <TableCell align="center"></TableCell>
+                          
+                        </TableRow>
+                    
+                    </TableBody>
+                  </Table>
+              </TableContainer>
             </TabPanel>
         </Tabs>
    )

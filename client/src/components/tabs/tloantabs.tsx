@@ -13,38 +13,78 @@ import Paper from '@mui/material/Paper';
 
 export default function TLoanTabs() {
   
-      const [loan, setLoan] = useState([]);
-      const [newLoan, setNewLoan] = useState([]);
+      const [draft, setDraft] = useState([]);
+      const [newDraft, setNewDraft] = useState([]);
+      const [group, setGroup] = useState([])
 
       useEffect(() => {
         // declare the async data fetching function
         const fetchData = async () => {
           // get the data from the api
-          const loan = await axios.get('http://localhost:5000/api/tloan');
+          const draft = await axios.get('http://localhost:5000/api/tloan/pending');
          
-          setLoan(loan.data)
-          console.log(loan.data)
+          setDraft(draft.data)
+          console.log(draft.data)
+        
         }
-      
         // call the function
         fetchData()
           // make sure to catch any error
           .catch(console.error);;
       }, [])
 
-      useEffect(() => {
+     
+    
+      useEffect(()=> {
 
-        const newLoan =loan.map(
-            ({ }) => ({
-               
-            })
-        )
-        setNewLoan(newLoan)
+       
+          let newDraft = draft
+          setNewDraft(newDraft)
+        
+      },[draft])
 
-    }, [loan])
+    
+     
+      const getData = () => {
+        let data = {...newDraft}
+        let html = []
+
+        for(const [key, value] of Object.entries(data)) {
+            html.push(
+                <div className='container'>
+                    <div key="draftObject" >{key && value && value.length > 0
+                    ? value.map(drafts => {
+                        const { TLoanID, TLoanNumber, RequiredDate} =drafts
+                        return (
+                                   <TableBody key="tbody">
+                                      <TableRow key="trow2" >
+                                      
+                                          <TableCell align="center" key="cell1">{TLoanNumber}</TableCell>
+                                          {/* <TableCell align="center">{RequiredDate}</TableCell>
+                                          <TableCell align="center"></TableCell>
+                                          <TableCell align="center"></TableCell>
+                                          <TableCell align="center"></TableCell>
+                                          <TableCell align="center"></TableCell> */}
+                                          
+                                        </TableRow>
+                                    
+                                    </TableBody>    
+                               
+                            
+                        )
+                    })
+                    : "Loading..."}</div>
+                </div>
+            )
+        }
+
+        return html
+    }
+    
 
    
    return(
+      
         <Tabs>
             <TabList>
             <Tab>Current</Tab>
@@ -53,11 +93,12 @@ export default function TLoanTabs() {
             <Tab>History</Tab>
             </TabList>
 
-            <TabPanel>
+            <TabPanel key="cwehie">
+            
             <TableContainer component={Paper}>
       <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
+        <TableHead key="thead">
+          <TableRow key="trow">
             <TableCell align="center">Loan No.</TableCell>
             <TableCell align="center">Start Date</TableCell>
             <TableCell align="center">End Date</TableCell>
@@ -67,33 +108,27 @@ export default function TLoanTabs() {
             
           </TableRow>
         </TableHead>
-        <TableBody>
-          <TableRow >
-              <TableCell component="th" scope="row" align="center" hidden>
-               
-              </TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              
-            </TableRow>
+           
+              {getData()}
+          
         
-        </TableBody>
       </Table>
     </TableContainer>
+           
+     
+            </TabPanel>
+            <TabPanel>
+            <h2>Any content 2</h2>
+            </TabPanel>
+            <TabPanel>
+            <h2>Any content 2</h2>
+            </TabPanel>
+            <TabPanel>
+            <h2>Any content 2</h2>
+            </TabPanel>
 
-            </TabPanel>
-            <TabPanel>
-            <h2>Any content 2</h2>
-            </TabPanel>
-            <TabPanel>
-            <h2>Any content 2</h2>
-            </TabPanel>
-            <TabPanel>
-            <h2>Any content 2</h2>
-            </TabPanel>
+           
         </Tabs>
+      
    )
 };
