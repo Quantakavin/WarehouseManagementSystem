@@ -5,10 +5,12 @@ import axios from "axios";
 // import "../App.css";
 import "../../styles/Products.scss";
 import Table from "../../components/table/Table";
+import SearchBar from "material-ui-search-bar";
 //import ProductSearchBar from "../../components/search/SearchBar";
 
 function Products() {
   const [dataTable, setDataTable] = useState([]);
+  const [q, setQ] = useState("");
 
   useEffect(() => {
     axios("http://localhost:5000/api/products")
@@ -24,6 +26,15 @@ function Products() {
     // { heading: "Action", value: ":" },
   ];
 
+  // Search Rows filter by Item Name and Branc
+  function search(rows) {
+    return rows.filter(
+      (row) =>
+        row.ItemName.toLowerCase().indexOf(q) > -1 ||
+        row.Brand.toLowerCase().indexOf(q) > -1
+    );
+  }
+
   return (
     <>
       <div className="product-container">
@@ -31,7 +42,13 @@ function Products() {
 
         <div className="product">
           <div className="Table">
-           <Table data={dataTable} column={column} />
+            <input
+              type="text"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+            />
+
+            <Table data={search(dataTable)} column={column} />
           </div>
         </div>
       </div>
