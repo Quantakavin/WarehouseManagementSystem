@@ -1,7 +1,7 @@
 const knex = require('../config/database');
 
 module.exports.getAll = async (offsetNo) => {
-    const query = `SELECT BinProductPK, ItemName, BatchNo, Brand, Quantity FROM BinProduct LIMIT 10 OFFSET ?`;
+    const query = `SELECT BinProductPK, ItemName, BatchNo, Brand, Quantity FROM BinProduct LIMIT 100 OFFSET ?`;
     return knex.raw(query, [parseInt(offsetNo)]);
 };
 
@@ -64,6 +64,12 @@ module.exports.searchFilter = async (itemName, itemCode, binTag, batchNo, brand,
         list.push(warehouseCode);
         counter++;
     }
-    const query = `SELECT ItemNo, ItemName, BatchNo, Brand, Quantity FROM BinProduct WHERE ` + string;
+    const query =
+        `SELECT ItemNo, ItemName, BatchNo, Brand, Quantity FROM BinProduct WHERE ` + string;
     return knex.raw(query, list);
+};
+
+module.exports.getAllTest = async (offsetNo) => {
+    const query = `SELECT BinProductPK, ItemName, BatchNo, Brand, Quantity FROM BinProduct`;
+    return knex.raw(query);
 };

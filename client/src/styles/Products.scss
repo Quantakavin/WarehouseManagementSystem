@@ -14,3 +14,15 @@
 .Table {
     margin: 40px;
 }
+
+.pageNumbers {
+    list-style: none;
+    display: flex;
+   
+    
+}
+
+.pageNumbers li {
+    padding: 10px;
+    cursor: pointer;
+}
