@@ -13,6 +13,8 @@ function Products() {
   const [dataTable, setDataTable] = useState([]);
   const [currentPage, setcurrentPage] = useState(1);
   const [itemsPerPage, setitemPerPage] = useState(10);
+  const [q, setQ] = useState("");
+
 
   const handleClick = (e) => {
     setcurrentPage(Number(e.target.id));
@@ -35,7 +37,7 @@ function Products() {
     );
   });
 
-  // const [q, setQ] = useState("");
+
 
   useEffect(() => {
     axios
@@ -55,27 +57,27 @@ function Products() {
     { heading: "Action", value: ":" },
   ];
 
-  // // Search Rows filter by Item Name and Branc
-  // function search(rows) {
-  //   return rows.filter(
-  //     (row) =>
-  //       row.ItemName.toLowerCase().indexOf(q) > -1 ||
-  //       row.Brand.toLowerCase().indexOf(q) > -1
-  //   );
-  // }
+  // Search Rows filter by Item Name and Branc
+  function search(rows) {
+    return rows.filter(
+      (row) =>
+        row.ItemName.toLowerCase().indexOf(q) > -1 ||
+        row.Brand.toLowerCase().indexOf(q) > -1
+    );
+  }
 
   return (
     <>
       <div className="product-container">
         <div className="product">
           <div className="Table">
-            {/* <input
+            <input
               type="text"
               value={q}
               onChange={(e) => setQ(e.target.value)}
-            /> */}
+            />
 
-            <Table data={currentItems} column={column} />
+            <Table data={search(currentItems)} column={column} />
             <ul className="pageNumbers">{renderPageNumbers}</ul>
           </div>
         </div>
