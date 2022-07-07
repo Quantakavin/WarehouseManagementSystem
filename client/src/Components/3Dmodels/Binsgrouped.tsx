@@ -40,11 +40,18 @@ type GLTFResult = GLTF & {
   }
 }
 
-export default function Model({ ...props }: JSX.IntrinsicElements['group']) {
+interface ModelProps {
+  id: number;
+  initialX: number;
+  initialY: number;
+  initialZ: number;
+}
+
+const Model: React.FC = () => {
   const group = useRef<THREE.Group>()
   const { nodes, materials } = useGLTF('/binsgrouped.glb') as GLTFResult
   return (
-    <group ref={group} {...props} dispose={null}>
+    <group ref={group}  dispose={null}>
       <group position={[0.37, 5.94, -0.98]} rotation={[1.89, 0.88, -2.05]}>
         <pointLight intensity={1000} decay={2} rotation={[-Math.PI / 2, 0, 0]} />
       </group>
@@ -76,5 +83,6 @@ export default function Model({ ...props }: JSX.IntrinsicElements['group']) {
     </group>
   )
 }
+export default Model;
 
 useGLTF.preload('/binsgrouped.glb')

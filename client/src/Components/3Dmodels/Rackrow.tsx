@@ -6,6 +6,9 @@ import * as THREE from 'three'
 import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
+import { YAxisProps } from 'recharts'
+import { motion } from 'framer-motion-3d'
+import Bin from "./Bin";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -113,11 +116,18 @@ type GLTFResult = GLTF & {
   materials: {}
 }
 
-export default function Model({ ...props }: JSX.IntrinsicElements['group']) {
+interface ModelProps {
+  id: string;
+  position: [x: number, y:  number, z: number];
+}
+
+const Model: React.FC<ModelProps> = ({id, position}) => {
   const group = useRef<THREE.Group>()
   const { nodes, materials } = useGLTF('/rackrow.gltf') as GLTFResult
-  return (
-    <group ref={group} {...props} dispose={null}>
+  return ( 
+    <group ref={group} dispose={null} position={position}>      
+      <Bin position={[3.5, -0.5, 8]} binid="B03" areaid="A03" levelid="L01" sectionid="S01" />
+      <Bin position={[3.5, 1.5, 8]} binid="B03" areaid="A03" levelid="L01" sectionid="S01" />
       <mesh geometry={nodes.Cube006.geometry} material={nodes.Cube006.material} position={[-7.5, 0.5, -2]} scale={[0.15, 11.5, 0.15]} />
       <mesh geometry={nodes.Cube.geometry} material={nodes.Cube.material} position={[2.5, -6, 0.01]} scale={[0.16, 0.14, 2]} />
       <mesh geometry={nodes.Cube007.geometry} material={nodes.Cube007.material} position={[2.5, -10, 0.01]} scale={[0.16, 0.14, 2]} />
@@ -223,3 +233,5 @@ export default function Model({ ...props }: JSX.IntrinsicElements['group']) {
 }
 
 useGLTF.preload('/rackrow.gltf')
+
+export default Model;
