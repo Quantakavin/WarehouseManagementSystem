@@ -1,3 +1,4 @@
+const { parse } = require('dotenv');
 const { rmaService } = require('../services');
 
 // Get RMA
@@ -8,6 +9,92 @@ module.exports.getAllRMA = async (req, res) => {
         if (!result)
             return res.status(404).json({
                 error: 'No RMA requests Found!'
+            });
+
+        return res.status(200).json({
+            result
+        });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
+module.exports.getRMAProducts = async (req, res) => {
+    const { RmaID } = req.params;
+    try {
+        const result = await rmaService.getRMAProducts(RmaID);
+
+        if (!result)
+            return res.status(404).json({
+                error: 'No RMA requests Found!'
+            });
+
+        return res.status(200).json({
+            result
+        });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
+// module.exports.getRMADetails = async (req, res) => {
+//     const RMANo = req.params;
+//     try {
+//         const reqRma = await redisClient.get(`rma#${RMANo}`);
+//         if (reqUser !== null) {
+//             const redisresults = JSON.parse(reqRma);
+//             return res.status(200).json(redisresults);
+//         }
+//         let output = [];
+//         const results = await rmaService.getByRMANo(RMANo);
+//         const RmaID = results.data.RmaID;
+//         if (results[0].length > 0) {
+//             [output] = results;
+//             const results2 = await rmaService.getRMAProduct(RmaID);
+//             if (results2.length > 0) {
+//                 [output[0].rma] = results2;
+//             }
+//             redisClient.set(`rma#${RMANo}`, JSON.stringify(output));
+//             return res.status(200).send(output);
+//         }
+//         return res.status(404).json({ message: 'Cannot find the details of this RMA!' });
+//     } catch (error) {
+//         return res.status(500).json({ message: 'Internal Server Error!' });
+//     }
+// };
+
+module.exports.getRMADetails = async (req, res) => {
+    const { RMANo } = req.params;
+    try {
+        const result = await rmaService.getByRMANo(RMANo);
+        const parsed = JSON.parse(result)
+        alert(parsed.RmaID)
+        // results1
+        // const RmaID = results1.data.RmaID;
+        // RmaID
+        // const results2 = await rmaService.getRMAProducts(RmaID);
+        // results2
+        // const resultFinal = results1 + results2;
+        if (!result)
+            return res.status(404).json({
+                error: `RMA ${RMANo} Not Found!`
+            });
+
+        return res.status(200).json({
+            result
+        });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
+module.exports.getByRMANo = async (req, res) => {
+    const { RMANo } = req.params;
+    try {
+        const result = await rmaService.getByRMANo(RMANo);
+        if (!result)
+            return res.status(404).json({
+                error: `RMA ${RMANo} Not Found!`
             });
 
         return res.status(200).json({
@@ -218,32 +305,6 @@ module.exports.updateRmaCOA = async (req, res) => {
             return res.status(204).json({ message: 'RMA status updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
-    } catch (error) {
-        return res.status(500).json({ message: 'Internal Server Error!' });
-    }
-};
-
-module.exports.getRMADetails = async (req, res) => {
-    const RMANo = req.params;
-    try {
-        const reqRma = await redisClient.get(`rma#${RMANo}`);
-        if (reqUser !== null) {
-            const redisresults = JSON.parse(reqRma);
-            return res.status(200).json(redisresults);
-        }
-        let output = [];
-        const results = await rmaService.getByRMANo(RMANo);
-        const RmaID = results.data.RmaID;
-        if (results[0].length > 0) {
-            [output] = results;
-            const results2 = await rmaService.getRMAProduct(RmaID);
-            if (results2.length > 0) {
-                [output[0].NotificationGroups] = results2;
-            }
-            redisClient.set(`rma#${RMANo}`, JSON.stringify(output));
-            return res.status(200).send(output);
-        }
-        return res.status(404).json({ message: 'Cannot find the details of this RMA!' });
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
