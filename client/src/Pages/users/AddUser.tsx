@@ -5,14 +5,14 @@ import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import Dialog from "@mui/material/Dialog";
+import Alert from "@mui/material/Alert";
+import CheckIcon from "@mui/icons-material/Check";
 import FormContainer from "../../components/form/FormContainer";
 import SubmitButton from "../../components/form/SubmitButton";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormField from "../../components/form/FormField";
 import SelectDropdown from "../../components/form/SelectDropdown";
-import Dialog from '@mui/material/Dialog';
-import Alert from '@mui/material/Alert';
-import CheckIcon from '@mui/icons-material/Check';
 import {
   SelectValidation,
   EmailValidation,
@@ -30,7 +30,6 @@ import { GetCompanies } from "../../api/CompanyDB";
 import { GetUserGroups } from "../../api/UserGroupDB";
 import { GetNotificationGroups } from "../../api/NotificationGroupDB";
 import { PostUser } from "../../api/UserDB";
-
 
 interface FormValues {
   name: string;
@@ -53,7 +52,7 @@ const AddUser: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<FormValues>({mode: "all"});
+  } = useForm<FormValues>({ mode: "all" });
 
   // const companiesQuery = useQuery("companies", GetCompanies);
   // const userGroupsQuery = useQuery("usergroups", GetUserGroups);
@@ -208,9 +207,14 @@ const AddUser: React.FC = () => {
   );
 
   return (
-    <FormContainer header="Create User" multistep={true} handleSubmit={handleSubmit} onSubmit={onSubmit}>
-        {StepOne}
-        {StepTwo}
+    <FormContainer
+      header="Create User"
+      multistep
+      handleSubmit={handleSubmit}
+      onSubmit={onSubmit}
+    >
+      {StepOne}
+      {StepTwo}
     </FormContainer>
   );
 };

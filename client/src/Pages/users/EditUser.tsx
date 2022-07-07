@@ -5,13 +5,13 @@ import { useMutation, useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import Alert from "@mui/material/Alert";
+import CheckIcon from "@mui/icons-material/Check";
 import FormContainer from "../../components/form/FormContainer";
 import SubmitButton from "../../components/form/SubmitButton";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormField from "../../components/form/FormField";
 import SelectDropdown from "../../components/form/SelectDropdown";
-import Alert from '@mui/material/Alert';
-import CheckIcon from '@mui/icons-material/Check';
 import {
   SelectValidation,
   EmailValidation,
@@ -24,7 +24,6 @@ import { GetCompanies } from "../../api/CompanyDB";
 import { GetUserGroups } from "../../api/UserGroupDB";
 import { GetNotificationGroups } from "../../api/NotificationGroupDB";
 import { UpdateUser, GetUser } from "../../api/UserDB";
-
 
 interface FormValues {
   name: string;
@@ -49,17 +48,19 @@ const EditUser: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<FormValues>({mode: "all"});
-  const UserQuery = useQuery([`user${params.id}`, params.id],() => GetUser(params.id));
+  } = useForm<FormValues>({ mode: "all" });
+  const UserQuery = useQuery([`user${params.id}`, params.id], () =>
+    GetUser(params.id)
+  );
   const companiesQuery = useQuery("companies", GetCompanies);
   const userGroupsQuery = useQuery("usergroups", GetUserGroups);
   const notiGroupsQuery = useQuery("notificationgroups", GetNotificationGroups);
 
   useEffect(() => {
     if (!UserQuery.error && !UserQuery.isLoading) {
-      setUser(UserQuery.data.data[0])
+      setUser(UserQuery.data.data[0]);
     }
-    console.log("user is ", user)
+    console.log("user is ", user);
 
     const companies: Option[] = [];
     if (!companiesQuery.error && !companiesQuery.isLoading) {
@@ -98,10 +99,12 @@ const EditUser: React.FC = () => {
     setNotiGroupOptions(notigroups);
   }, [companiesQuery.data, userGroupsQuery.data, notiGroupsQuery.data]);
 
-  const mutation = useMutation((data: FormValues) => UpdateUser(data, params.id));
+  const mutation = useMutation((data: FormValues) =>
+    UpdateUser(data, params.id)
+  );
 
   const onSubmit = (data: FormValues) => {
-    mutation.mutate(data , { onSuccess: () => navigate("/users") });
+    mutation.mutate(data, { onSuccess: () => navigate("/users") });
   };
 
   const nextStep = () => {
@@ -119,7 +122,7 @@ const EditUser: React.FC = () => {
         name="name"
         type="text"
         register={register}
-        defaultvalue = {user ? user.Username : ''}
+        defaultvalue={user ? user.Username : ""}
         errormsg={errors.name?.message}
         rules={UsernameValidation}
       />
@@ -128,7 +131,7 @@ const EditUser: React.FC = () => {
         name="email"
         type="email"
         register={register}
-        defaultvalue = {user ? user.Email : ''}
+        defaultvalue={user ? user.Email : ""}
         errormsg={errors.email?.message}
         rules={EmailValidation}
       />
@@ -137,7 +140,7 @@ const EditUser: React.FC = () => {
         name="mobileno"
         type="text"
         register={register}
-        defaultvalue = {user ? user.MobileNo : ''}
+        defaultvalue={user ? user.MobileNo : ""}
         errormsg={errors.mobileno?.message}
         rules={PhoneNoValidation}
       />
@@ -208,9 +211,14 @@ const EditUser: React.FC = () => {
   );
 
   return (
-    <FormContainer header="Edit User" multistep={true} handleSubmit={handleSubmit} onSubmit={onSubmit}>
-        {StepOne}
-        {StepTwo}
+    <FormContainer
+      header="Edit User"
+      multistep
+      handleSubmit={handleSubmit}
+      onSubmit={onSubmit}
+    >
+      {StepOne}
+      {StepTwo}
     </FormContainer>
   );
 };

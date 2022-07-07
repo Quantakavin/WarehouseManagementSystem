@@ -1,2 +1,2 @@
-const auth = () => {}
+const auth = () => {};
 export default auth;

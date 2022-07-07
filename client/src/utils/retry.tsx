@@ -1,2 +1,2 @@
-const retry = () => {}
+const retry = () => {};
 export default retry;

@@ -12,11 +12,10 @@ import {
   EmailValidation,
   PasswordValidation,
 } from "../../utils/FormValidation";
-//import LoginUser from "../../api/user/LoginUser";
-import {LoginUser}  from "../../api/UserDB";
-import { setUser } from '../../app/reducers/CurrentUserSlice'
-import { useAppSelector, useAppDispatch } from '../../app/hooks'
-
+// import LoginUser from "../../api/user/LoginUser";
+import { LoginUser } from "../../api/UserDB";
+import { setUser } from "../../app/reducers/CurrentUserSlice";
+import { useAppSelector, useAppDispatch } from "../../app/hooks";
 
 interface FormValues {
   email: string;
@@ -30,18 +29,22 @@ const Login: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({mode: "all"});
+  } = useForm<FormValues>({ mode: "all" });
 
-  const mutation = useMutation(LoginUser, { 
+  const mutation = useMutation(LoginUser, {
     onSuccess: (data) => {
       const { token, id, name, usergroup } = data.data;
       localStorage.setItem("token", token);
       localStorage.setItem("user_id", id);
       localStorage.setItem("username", name);
-      dispatch(setUser({
-        id: id, role: usergroup, name: name
-      }))
-      return navigate("/dashboard", { replace: true })
+      dispatch(
+        setUser({
+          id,
+          role: usergroup,
+          name,
+        })
+      );
+      return navigate("/dashboard", { replace: true });
     },
   });
 
@@ -50,34 +53,39 @@ const Login: React.FC = () => {
   };
 
   return (
-    <FormContainer header="Login to your account" multistep={false} handleSubmit={handleSubmit} onSubmit={onSubmit}>
-        <FormField
-          label="Email Address"
-          name="email"
-          type="email"
-          register={register}
-          errormsg={errors.email?.message}
-          rules={EmailValidation}
-        />
-        <FormField
-          label="Password"
-          name="password"
-          type="password"
-          register={register}
-          errormsg={errors.password?.message}
-          rules={PasswordValidation}
-        />
+    <FormContainer
+      header="Login to your account"
+      multistep={false}
+      handleSubmit={handleSubmit}
+      onSubmit={onSubmit}
+    >
+      <FormField
+        label="Email Address"
+        name="email"
+        type="email"
+        register={register}
+        errormsg={errors.email?.message}
+        rules={EmailValidation}
+      />
+      <FormField
+        label="Password"
+        name="password"
+        type="password"
+        register={register}
+        errormsg={errors.password?.message}
+        rules={PasswordValidation}
+      />
 
-        {mutation.isError && axios.isAxiosError(mutation.error) ? (
-          <ErrorAlert error={mutation.error} />
-        ) : null}
-        <div className="flexcontainer" style={{ marginTop: 20 }}>
-          <SubmitButton
-            text="Continue"
-            loading={mutation.isLoading}
-            multipart={false}
-          />
-        </div>
+      {mutation.isError && axios.isAxiosError(mutation.error) ? (
+        <ErrorAlert error={mutation.error} />
+      ) : null}
+      <div className="flexcontainer" style={{ marginTop: 20 }}>
+        <SubmitButton
+          text="Continue"
+          loading={mutation.isLoading}
+          multipart={false}
+        />
+      </div>
     </FormContainer>
   );
 };

@@ -90,7 +90,7 @@ const TopBar: React.FC = () => {
     <div className="hideinmobile">
       <a href="/login">
         <motion.button
-          className="navbutton"
+          className="mainbutton"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >

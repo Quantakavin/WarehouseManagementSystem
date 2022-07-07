@@ -7,6 +7,7 @@ $primary-color: #0A2540;
     @media screen and (min-width: 800px) {
       width: 80%;
       padding-top: 40px;
+      margin-top: 60px;
       padding-bottom: 40px;
       border: 1px solid #d3d3d3;
       border-radius: 10px;
@@ -34,6 +35,7 @@ $primary-color: #0A2540;
     margin-top: 10px;
     font-weight: 700;
     padding-bottom: 10px;
+    text-transform: capitalize;
     @media screen and (min-width: 800px) {
       margin-left: 8% !important;
     }
@@ -73,4 +75,12 @@ $primary-color: #0A2540;
         flex: 5;
         text-align: left;
     }
+}
+
+.cardbackbutton {
+  color: $primary-color;
+  margin-right: auto;
+  font-weight: 700;
+  background:none;
+  border:none;
 }

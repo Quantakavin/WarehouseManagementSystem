@@ -9,7 +9,7 @@ module.exports.getByEmail = async (email) => {
 };
 
 module.exports.getAll = async () => {
-    const query = `SELECT u.UserID, u.Username, u.Email, c.CompanyName, g.UserGroupName, IFNULL(u.MobileNo, 'NULL') 'MobileNo' FROM User u LEFT JOIN Company c ON u.CompanyID = c.CompanyID LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID`;
+    const query = `SELECT u.UserID 'ID', u.Username, u.Email 'Email Address', c.CompanyName 'Company', g.UserGroupName 'User Group', IFNULL(u.MobileNo, 'NULL') 'Phone No' FROM User u LEFT JOIN Company c ON u.CompanyID = c.CompanyID LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID`;
     return knex.raw(query);
 };
 
