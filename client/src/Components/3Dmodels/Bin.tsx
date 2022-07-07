@@ -15,18 +15,18 @@ type GLTFResult = GLTF & {
 }
 
 interface ModelProps {
-  areaid: string;
-  binid: string;
-  sectionid: string;
-  levelid: string;
+  areatag: string;
+  racktag: string;
+  leveltag: string;
+  sectiontag: string;
 
   position: [x: number, y:  number, z: number];
 }
 
-const Model: React.FC<ModelProps> = ({areaid, binid, sectionid, levelid, position}) => {
+const Model: React.FC<ModelProps> = ({areatag, racktag, leveltag, sectiontag, position}) => {
   const group = useRef<THREE.Group>()
   const { nodes, materials } = useGLTF('/box.glb') as GLTFResult
-  const bintag = areaid + "-" + levelid + "-" + sectionid + "-" + levelid;
+  const bintag = areatag + "-" + racktag + "-" + leveltag + "-" + sectiontag;
   return (
     <group onClick={() => {alert(bintag)}} ref={group} dispose={null} position={position} scale={[2.5, 2.5, 2.5]}>
       <mesh geometry={nodes.Cube024.geometry} material={nodes.Cube024.material} position={[-1.42, 0.55, -3.13]} scale={[0.85, 0.29, 0.51]} />

@@ -21,6 +21,7 @@ import BinLocations from "./pages/binlocations/BinLocations";
 import TLoan from "./pages/tloans/tloan";
 import RMA from "./pages/rma/rma";
 import CreateRMA from "./pages/rma/createRma";
+import Sidebar2 from "./components/sidebar/Sidebar2";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "./app/hooks";
 import {

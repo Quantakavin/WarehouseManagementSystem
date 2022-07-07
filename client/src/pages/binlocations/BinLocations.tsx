@@ -64,9 +64,9 @@ function BinLocations() {
     <pointLight position={[10, 10, 10]} />
     <OrbitControls/>
     <Suspense fallback={null}>
-      <Rackrow position={[0,0,0]} id="A01" />
-      <Rackrow position={[20,0,0]} id="A02" />
-      <Rackrow position={[40,0,0]} id="A03" />
+      <Rackrow position={[0,0,0]} areatag="A01" racktag="R01"/>
+      <Rackrow position={[20,0,0]} areatag="A01" racktag="R02"/>
+      <Rackrow position={[40,0,0]} areatag="A01" racktag="R03"/>
       <Floor />
     </Suspense>
 
