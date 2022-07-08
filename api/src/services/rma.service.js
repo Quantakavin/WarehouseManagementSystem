@@ -1,7 +1,20 @@
 const knex = require('../config/database');
 
 module.exports.getByRMANo = async (RMANo) => {
-    const query = `SELECT * FROM Rma WHERE RMANo = ?`;
+    const query = `SELECT RmaID, 
+    DateTime, 
+    CompanyID, 
+    Customer , 
+    ContactPerson, 
+    ContactNo,
+    RMANo, 
+    Supplier, 
+    SupplierRma, 
+    SalesmanID, 
+    RmaStatusID, 
+    Instruction, 
+    CourseOfAction 
+    FROM Rma WHERE RMANo = ?`;
     return knex.raw(query, [RMANo]);
 };
 
