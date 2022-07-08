@@ -71,7 +71,7 @@ export default function TLoanTabs() {
                                         <strong>{TLoanNumber}</strong>
                                     </div>
                                     <div className=''>
-                                        <strong>${RequiredDate}</strong>  
+                                        <strong>{RequiredDate}</strong>  
                                     </div>
 
                                     <div>
