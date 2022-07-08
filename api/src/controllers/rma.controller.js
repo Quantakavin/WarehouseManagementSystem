@@ -1,5 +1,7 @@
 const { parse } = require('dotenv');
 const { rmaService } = require('../services');
+const config = require('../config/config');
+const redisClient = require('../config/caching');
 
 // Get RMA
 module.exports.getAllRMA = async (req, res) => {
@@ -37,53 +39,30 @@ module.exports.getRMAProducts = async (req, res) => {
     }
 };
 
-// module.exports.getRMADetails = async (req, res) => {
-//     const RMANo = req.params;
-//     try {
-//         const reqRma = await redisClient.get(`rma#${RMANo}`);
-//         if (reqUser !== null) {
-//             const redisresults = JSON.parse(reqRma);
-//             return res.status(200).json(redisresults);
-//         }
-//         let output = [];
-//         const results = await rmaService.getByRMANo(RMANo);
-//         const RmaID = results.data.RmaID;
-//         if (results[0].length > 0) {
-//             [output] = results;
-//             const results2 = await rmaService.getRMAProduct(RmaID);
-//             if (results2.length > 0) {
-//                 [output[0].rma] = results2;
-//             }
-//             redisClient.set(`rma#${RMANo}`, JSON.stringify(output));
-//             return res.status(200).send(output);
-//         }
-//         return res.status(404).json({ message: 'Cannot find the details of this RMA!' });
-//     } catch (error) {
-//         return res.status(500).json({ message: 'Internal Server Error!' });
-//     }
-// };
-
 module.exports.getRMADetails = async (req, res) => {
     const { RMANo } = req.params;
     try {
-        const result = await rmaService.getByRMANo(RMANo);
-        const parsed = JSON.parse(result)
-        alert(parsed.RmaID)
-        // results1
-        // const RmaID = results1.data.RmaID;
-        // RmaID
-        // const results2 = await rmaService.getRMAProducts(RmaID);
-        // results2
-        // const resultFinal = results1 + results2;
-        if (!result)
-            return res.status(404).json({
-                error: `RMA ${RMANo} Not Found!`
-            });
-
-        return res.status(200).json({
-            result
-        });
+        const reqRMA = await redisClient.get(`rma#${RMANo}`);
+        if (reqRMA !== null) {
+            const redisresults = JSON.parse(reqRMA);
+            return res.status(200).json(redisresults);
+        }
+        let output = [];
+        const results = await rmaService.getByRMANo(RMANo);
+        if (results[0].length > 0) {
+            [output] = results;
+            const IDOfRMA = results[0][0].RmaID;
+            const results2 = await rmaService.getRMAProducts(IDOfRMA);
+            console.log(output);
+            if (results2.length > 0) {
+                [output[0].RMAProducts] = results2;
+            }
+            redisClient.set(`rma#${RMANo}`, JSON.stringify(output));
+            return res.status(200).send(output);
+        }
+        return res.status(404).json({ message: 'Cannot find user with that id' });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
