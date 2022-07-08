@@ -11,7 +11,9 @@ module.exports.loginUser = async (req, res) => {
     try {
         const results = await user.getByEmail(email);
         if (results[0].length > 0) {
-            if (bcrypt.compareSync(password, results[0][0].Password) === true) {
+            if (results[0][0].Active !== 'Y') {
+                return res.status(401).json({ message: 'Your account has been inactivated' });
+            } else if (bcrypt.compareSync(password, results[0][0].Password) === true) {
                 const data = {
                     id: results[0][0].UserID,
                     name: results[0][0].Username,
@@ -35,16 +37,24 @@ module.exports.loginUser = async (req, res) => {
 };
 
 module.exports.getAllUsers = async (req, res) => {
+    // try {
+    //     const users = await redisClient.get('users');
+    //     if (users !== null) {
+    //         const redisresults = JSON.parse(users);
+    //         return res.status(200).json(redisresults);
+    //     }
+    //     const results = await user.getAll();
+    //     redisClient.set('users', JSON.stringify(results[0]));
+    //     return res.status(200).json(results[0]);
+    // } catch (error) {
+    //     return res.status(500).json({ message: 'Internal Server Error!' });
+    // }
+    const { limit, page } = req.query;
     try {
-        const users = await redisClient.get('users');
-        if (users !== null) {
-            const redisresults = JSON.parse(users);
-            return res.status(200).json(redisresults);
-        }
-        const results = await user.getAll();
-        redisClient.set('users', JSON.stringify(results[0]));
+        const results = await user.getAll(limit, page);
         return res.status(200).json(results[0]);
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };

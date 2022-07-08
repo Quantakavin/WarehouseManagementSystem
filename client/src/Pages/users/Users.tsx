@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios, { AxiosResponse } from "axios";
-import { Container } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 import { useNavigate, useParams, useRoutes } from "react-router-dom";
 import { useQuery, useInfiniteQuery } from "react-query";
 import Table from "@mui/material/Table";
@@ -23,8 +23,6 @@ import PageviewIcon from '@mui/icons-material/Pageview';
 import ActionMenu from "../../components/table/ActionMenu";
 
 const Users: React.FC = () => {
-  const navigate = useNavigate();
-  const [userList, setUserList] = useState<any>([]);
   const headers = [
     "ID",
     "Username",
@@ -34,10 +32,11 @@ const Users: React.FC = () => {
     "Phone No",
     "Action",
   ];
-  const UsersQuery = useQuery(`users`, () => GetAllUsers(),
+  const UsersQuery = useInfiniteQuery(`users`, GetAllUsers,
     {
-      onSuccess: (data) => {
-        setUserList(data.data);
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
+        return undefined;
       }
     });
 
@@ -63,36 +62,45 @@ const Users: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {userList.map((row) => (
-                  <TableRow
-                    key={row.ID}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell sx={{ color: "#0A2540" }} align="left">
-                      {row.ID}
-                    </TableCell>
-                    <TableCell sx={{ color: "#0A2540" }} align="left">
-                      {row.Username}
-                    </TableCell>
-                    <TableCell sx={{ color: "#0A2540" }} align="left">
-                      {row["Email Address"]}
-                    </TableCell>
-                    <TableCell sx={{ color: "#0A2540" }} align="left">
-                      {row.Company}
-                    </TableCell>
-                    <TableCell sx={{ color: "#0A2540" }} align="left">
-                      {row["User Group"]}
-                    </TableCell>
-                    <TableCell sx={{ color: "#0A2540" }} align="left">
-                      {row["Phone No"]}
-                    </TableCell>
-                    <ActionMenu id={row.ID} />
-                  </TableRow>
+                {UsersQuery.data.pages.map((group, i) => (
+                  <React.Fragment key={i}>
+                    {group.response.data.map(row => (
+                      <TableRow
+                        key={row.ID}
+                        sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                      >
+                        <TableCell sx={{ color: "#0A2540" }} align="left">
+                          {row.ID}
+                        </TableCell>
+                        <TableCell sx={{ color: "#0A2540" }} align="left">
+                          {row.Username}
+                        </TableCell>
+                        <TableCell sx={{ color: "#0A2540" }} align="left">
+                          {row["Email Address"]}
+                        </TableCell>
+                        <TableCell sx={{ color: "#0A2540" }} align="left">
+                          {row.Company}
+                        </TableCell>
+                        <TableCell sx={{ color: "#0A2540" }} align="left">
+                          {row["User Group"]}
+                        </TableCell>
+                        <TableCell sx={{ color: "#0A2540" }} align="left">
+                          {row["Phone No"]}
+                        </TableCell>
+                        <ActionMenu id={row.ID} />
+                      </TableRow>
+                    ))}
+
+                  </React.Fragment>
                 ))}
               </TableBody>
             </Table>
             <div className="flexcontainer" style={{ width: "100%" }}>
-              <button className="buttonremovestyling" style={{ fontSize: 15, fontWeight: 500, color: "#0A2540", marginTop: 20, marginBottom: 20 }}><AddCircleOutlineIcon /> Click to Load More</button>
+              {UsersQuery.hasNextPage ? <>
+                {UsersQuery.isFetchingNextPage ? <Spinner animation="border" style={{color: "#0A2540", marginTop: 20, marginBottom: 20}} />:
+                <button onClick={() => UsersQuery.fetchNextPage()} className="buttonremovestyling" style={{ fontSize: 15, fontWeight: 500, color: "#0A2540", marginTop: 20, marginBottom: 20 }}><AddCircleOutlineIcon /> Click to Load More</button>
+              }</>: <p style={{color: "#0A2540", marginTop: 20, marginBottom: 20, fontWeight: 500}}>No more results</p>
+              }
             </div>
           </TableContainer>
         </Container>

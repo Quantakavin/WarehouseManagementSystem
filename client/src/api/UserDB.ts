@@ -27,12 +27,13 @@ export const GetUser = async (id: string) => {
     });
   };
 
-export const GetAllUsers = async () => {
-    return await axios.get(`${config.baseURL}/users`, {
+export const GetAllUsers = async ({pageParam = 0}) => {
+    const response = await axios.get(`${config.baseURL}/users?limit=5&page=${pageParam * 5}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
+    return {response, nextPage: pageParam + 1, totalPages: Math.ceil(response.data[0].full_count/5)}
   };
   
 export const PostUser = async (formData) => {

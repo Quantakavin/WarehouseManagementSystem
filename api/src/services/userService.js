@@ -4,13 +4,13 @@ const knex = require('../config/database');
 
 module.exports.getByEmail = async (email) => {
     // return knex.where('Email', email).select('UserID','Username','Password').from('User')
-    const query = `SELECT u.UserID, u.Username, u.Password, g.UserGroupName FROM User u LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID WHERE u.Email = ?`;
+    const query = `SELECT u.Active, u.UserID, u.Username, u.Password, g.UserGroupName FROM User u LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID WHERE u.Email = ?`;
     return knex.raw(query, [email]);
 };
 
-module.exports.getAll = async () => {
-    const query = `SELECT u.UserID 'ID', u.Username, u.Email 'Email Address', c.CompanyName 'Company', g.UserGroupName 'User Group', IFNULL(u.MobileNo, 'NULL') 'Phone No' FROM User u LEFT JOIN Company c ON u.CompanyID = c.CompanyID LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID`;
-    return knex.raw(query);
+module.exports.getAll = async (limit, page) => {
+    const query = `SELECT u.UserID 'ID', u.Username, u.Email 'Email Address', c.CompanyName 'Company', g.UserGroupName 'User Group', IFNULL(u.MobileNo, 'NULL') 'Phone No', count(UserID) OVER() AS full_count FROM User u LEFT JOIN Company c ON u.CompanyID = c.CompanyID LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID LIMIT ? OFFSET ?`;
+    return knex.raw(query, [Number(limit), Number(page)]);
 };
 
 module.exports.getByID = async (userID) => {
