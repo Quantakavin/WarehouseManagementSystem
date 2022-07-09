@@ -60,7 +60,7 @@ module.exports.getRMADetails = async (req, res) => {
                 [output[0].RMAProducts] = results2;
             }
             redisClient.set(`rma#${RMANo}`, JSON.stringify(output));
-            return res.status(200).send(output);
+            return res.status(200).send(output[0]);
         }
         return res.status(404).json({ message: 'Cannot find RMA with that RMA No.!' });
     } catch (error) {
@@ -193,37 +193,38 @@ module.exports.getVerifiedRMA = async (req, res) => {
 module.exports.newRMA = async (req, res) => {
     const {
         contactperson,
+        contactno,
+        rmano,
+        salesmanid,
         contactemail,
         company,
-        contactno,
-        salesmanid,
-        itemcode,
-        invoiceno,
-        dono,
-        dateofpurchase,
-        reasonforreturn,
+        products
+        // itemcode,
+        // invoiceno,
+        // dono,
+        // dateofpurchase,
+        // reasonforreturn
     } = req.body;
     try {
-        const resultsrma = await rmaService.insertRMA(
+        const rmaProducts = products.map((product) => {
+            return product
+        })
+        const resultsrma = await rmaService.insertRMAData(
             contactperson,
+            contactno,
+            rmano,
+            salesmanid,
             contactemail,
             company,
-            contactno,
-            salesmanid
+            rmaProducts
         );
-        const resultsproduct = await rmaService.insertRMAProducts(
-            itemcode,
-            invoiceno,
-            dono,
-            dateofpurchase,
-            reasonforreturn,
-        )
-        if (resultsrma.length > 0 && resultsproduct.length > 0 ) {
+        if (resultsrma.length > 0) {
             // console.log(results)
-            return res.status(200).json(results[0]);
+            return res.status(200).json(resultsrma);
         }
         return res.status(500).send('Could Not Create The RMA');
     } catch (error) {
+        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -270,20 +271,19 @@ module.exports.updateRmaReceived = async (req, res) => {
     }
 };
 
-// module.exports.updateRmaInstructions = async (req, res) => {
-//     const { RMANo } = req.params;
-//     const { instructions } = req.body;
-//     try {
-//         const results = await rmaService.getByRMANo(RMANo);
-//         if (results.length > 0) {
-//             await rmaService.updateRmaInstructions(RMANo, instructions);
-//             return res.status(204).json({ message: 'RMA status updated successfully!' });
-//         }
-//         return res.status(404).json({ message: 'Cannot find RMA with that number' });
-//     } catch (error) {
-//         return res.status(500).json({ message: 'Internal Server Error!' });
-//     }
-// };
+module.exports.updateRmaInstructions = async (req, res) => {
+    const {
+        RMANo,
+        products
+    } = req.body;
+    try {
+        const resultsrma = await rmaService.updateRmaInstructions(RMANo, products);
+        return res.status(200).json(resultsrma);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
 
 // module.exports.updateRmaCOA = async (req, res) => {
 //     const { RMANo } = req.params;
