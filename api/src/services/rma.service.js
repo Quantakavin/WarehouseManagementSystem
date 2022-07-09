@@ -1,20 +1,23 @@
 const knex = require('../config/database');
 
+// module.exports.getByRMANo = async (RMANo) => {
+//     const query = `SELECT RmaID, 
+//                    DateTime, 
+//                    CompanyID, 
+//                    ContactPerson, 
+//                    RMANo, 
+//                    Supplier, 
+//                    SupplierRma, 
+//                    SalesmanID, 
+//                    RmaStatusID, 
+//                    Instruction, 
+//                    CourseOfAction 
+//                    FROM Rma WHERE RMANo = ?`;
+//     return knex.raw(query, [RMANo]);
+// };
+
 module.exports.getByRMANo = async (RMANo) => {
-    const query = `SELECT RmaID, 
-    DateTime, 
-    CompanyID, 
-    Customer , 
-    ContactPerson, 
-    ContactNo,
-    RMANo, 
-    Supplier, 
-    SupplierRma, 
-    SalesmanID, 
-    RmaStatusID, 
-    Instruction, 
-    CourseOfAction 
-    FROM Rma WHERE RMANo = ?`;
+    const query = `SELECT * FROM Rma WHERE RMANo = ?`;
     return knex.raw(query, [RMANo]);
 };
 
@@ -54,23 +57,35 @@ module.exports.getVerifiedRMA = async () => {
 };
 
 module.exports.insertRMA = async (
-    company,
     contactperson,
+    contactemail,
+    company,
     contactno,
-    RMANo,
-    invoice,
-    salesmanid,
-    instruction
+    salesmanid
 ) => {
     return knex('Rma').insert({
         CompanyID: company,
         ContactPerson: contactperson,
+        CustomerEmail: contactemail,
         ContactNo: contactno,
-        RMANo: RMANo,
-        SupplierRMA: invoice,
         SalesmanID: salesmanid,
-        RmaStatusID: 1,
-        Instruction: instruction
+        RmaStatusID: 1
+    });
+};
+
+module.exports.insertRMAProducts = async (
+    itemcode,
+    invoiceno,
+    dono,
+    dateofpurchase,
+    reasonforreturn
+) => {
+    return knex('RmaProduct').insert({
+        itemcode,
+        invoiceno,
+        dono,
+        dateofpurchase,
+        reasonforreturn
     });
 };
 
