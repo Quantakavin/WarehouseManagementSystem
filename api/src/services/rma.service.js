@@ -64,7 +64,7 @@ module.exports.insertRMA = async (
     salesmanid
 ) => {
     return knex('Rma').insert({
-        CompanyID: company,
+        Company: company,
         ContactPerson: contactperson,
         CustomerEmail: contactemail,
         ContactNo: contactno,

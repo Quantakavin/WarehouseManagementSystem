@@ -28,7 +28,7 @@ export default function RMATabs() {
       const receivedrma = await axios.get("http://localhost:5000/api/receivedRMA");
       const verifiedrma = await axios.get("http://localhost:5000/api/verifiedRMA");
 
-      setRma(approvedrma.data);
+      setRma(appliedrma.data);
       // console.log(rma.data);
     };
 
