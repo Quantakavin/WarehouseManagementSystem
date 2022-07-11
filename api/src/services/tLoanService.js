@@ -76,7 +76,7 @@ module.exports.extension = async(id,duration,reason) => {
 
 
 module.exports.getCurrent = async () => {
-  const query = `SELECT * FROM TLoan where TLoanStatusID = "3"`;
+  const query = `SELECT * FROM TLoan where TLoanStatusID IN (3,5,6,7)`;
   return knex.raw(query);
 }
 
