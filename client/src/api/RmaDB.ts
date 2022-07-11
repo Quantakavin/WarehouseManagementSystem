@@ -35,7 +35,7 @@ export const PostRMA = async (formData) => {
   };
 
   export const AcceptRMA = async (RMANo: number) => {
-    return await axios.put(`${config.baseURL}/user/${RMANo}`, {
+    return await axios.put(`${config.baseURL}/acceptRMA/${RMANo}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -44,7 +44,7 @@ export const PostRMA = async (formData) => {
   };
 
   export const RejectRMA = async (RMANo: number) => {
-    return await axios.put(`${config.baseURL}/user/${RMANo}`, {
+    return await axios.put(`${config.baseURL}/rejectRMA/${RMANo}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -53,7 +53,7 @@ export const PostRMA = async (formData) => {
   };
 
   export const ReceiveRMA = async (RMANo: number) => {
-    return await axios.put(`${config.baseURL}/RMA/reject/${RMANo}`, {
+    return await axios.put(`${config.baseURL}/receiveRMA/${RMANo}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -62,7 +62,7 @@ export const PostRMA = async (formData) => {
   };
 
   export const VerifyRMA = async (formData, RMANo: number) => {
-    return await axios.put(`${config.baseURL}/RMA/verify/${RMANo}`, formData, {
+    return await axios.put(`${config.baseURL}/verifyRMA/${RMANo}`, formData, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -71,7 +71,7 @@ export const PostRMA = async (formData) => {
   };
 
   export const UpdateCOA = async (formData, RMANo: number) => {
-    return await axios.put(`${config.baseURL}/RMA/COA/${RMANo}`, formData, {
+    return await axios.put(`${config.baseURL}/COARMA/${RMANo}`, formData, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,

@@ -30,6 +30,7 @@ export default function tloanDisplay() {
     const getData = () => {
 
       let html = []
+      console.log(loans)
 
       html.push(
       loans.map((loan)=>{
