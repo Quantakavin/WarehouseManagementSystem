@@ -52,12 +52,15 @@ module.exports.newLoan = async (req, res) => {
         applicationdate,
         duration,
         requireddate,
-        status,
         pick,
-        remarks
-    } = req.body;
+        remarks,
+        items
+     } = req.body;
     try {
-        const results = await TLoan.createTLoan(
+        const tloanItems = items.map((item) => {
+            return item
+        })
+         await TLoan.createTLoan(
             type,
             company,
             number,
@@ -66,16 +69,12 @@ module.exports.newLoan = async (req, res) => {
             applicationdate,
             duration,
             requireddate,
-            status,
             pick,
-            remarks
+            remarks, 
+            tloanItems           
         );
-        if (results.length > 0) {
-            //console.log(results)
-            return res.status(200).json(results[0]);
-        } else {
-            return res.status(500).send('Could Not Make The Loan');
-        }
+       
+            return res.status(201).send('TLoan created successfully!');
     } catch (error) {
         console.log(error);
         return res.status(500).send('Internal Server Error');

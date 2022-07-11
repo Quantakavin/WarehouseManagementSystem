@@ -1,6 +1,6 @@
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-import { useEffect, useState } from 'react';
+import React , { useEffect, useState } from 'react';
 import axios from 'axios';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,23 +9,34 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import SubmitButton from '../form/SubmitButton';
+import { useQuery, useInfiniteQuery } from "react-query";
 
+import ActionMenu from "../../components/table/ActionMenu";
 
-export default function TLoanTabs() {
+const TLoanTabs : React.FC = () => {
   
-      const [loan, setLoan] = useState([]);
-      const [newLoan, setNewLoan] = useState([]);
-      const [group, setGroup] = useState([])
+      const [current, setCurrent] = useState([]);
+      const [pending, setPending] = useState([]);
+      const [draft, setDraft] = useState([]);
+      const [history, setHistory] = useState([]);
 
       useEffect(() => {
         // declare the async data fetching function
         const fetchData = async () => {
           // get the data from the api
-          const loan = await axios.get('http://localhost:5000/api/tloan');
+          const current = await axios.get('http://localhost:5000/api/tloan/current');
+          const pending = await axios.get('http://localhost:5000/api/tloan/current');
+          const draft = await axios.get('http://localhost:5000/api/tloan/current');
+          const history= await axios.get('http://localhost:5000/api/tloan/current');
+
          
-          setLoan(loan.data)
-          console.log(loan.data)
+          setCurrent(current.data)
+          setPending(pending.data)
+          setDraft(draft.data)
+          setHistory(history.data)
+          
         
         }
         // call the function
@@ -34,67 +45,109 @@ export default function TLoanTabs() {
           .catch(console.error);;
       }, [])
 
-     
+        const columnName =[ 
+          "Loan No.",
+          "Start Date",
+          "End Date",
+          "Company Name",
+          "Customer Email",
+          "Actions"
+
+        ]
+
+        // const LoansQuery = useInfiniteQuery('loans', current,
+        // {
+        //   getNextPageParam: (lastPage, pages) => {
+        //     if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
+        //     return undefined;
+        //   }
+        // });
     
-      useEffect(()=> {
-
-       
-          let newLoan = loan
-          setNewLoan(newLoan)
-        
-      },[loan])
-
-      useEffect( () => {
-        let group = newLoan.reduce((r, a) => {
-            r[a.TLoanStatusID] = [...r[a.TLoanStatusID] || [], a];
-            return r
-        }, {})
-
-        setGroup(group)
-        console.log(group)
-
-    }, [newLoan])
-     
-      const getData = () => {
-        let data = {...group}
+      const getCurrent = () => {
         let html = []
-
-        for(const [key, value] of Object.entries(data)) {
             html.push(
                 <div className='container'>
-                    <div >{key && value && value.length > 0
-                    ? value.map(loans => {
-                        const { TLoanNumber, RequiredDate} = loans
-                        return (
-                            <div className="" key={TLoanNumber}>
+                    
+                       
+                          <div className="" key="id">
+                            <TableContainer component={Paper}>
+                            <Table aria-label="simple table">
+                              <TableHead>
+                                <TableRow>
+                                  {columnName.map((col) => (
+                                    <TableCell
+                                      sx={{ color: "#86898E", fontWeight: 500 }}
+                                      className="tableheader"
+                                    >
+                                      {col}
+                                    </TableCell>
+                                  ))}
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <div >{current.length > 0
+                                  ? current.map((loans => {
+                                      const {TLoanNumber} = loans
+                                    return(
                                     <div>
-                                        <strong>{TLoanNumber}</strong>
-                                    </div>
-                                    <div className=''>
-                                        <strong>${RequiredDate}</strong>  
-                                    </div>
+                                  <TableRow  key={TLoanNumber} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                                    <TableCell sx={{ color: "#0A2540" }} align="left">
+                                                {TLoanNumber}
+                                    </TableCell>
+                                    <TableCell sx={{ color: "#0A2540" }} align="left">
+                                                {TLoanNumber}
+                                    </TableCell>
+                                    <TableCell sx={{ color: "#0A2540" }} align="left">
+                                                {TLoanNumber}
+                                    </TableCell>
+                                    <TableCell sx={{ color: "#0A2540" }} align="left">
+                                                {TLoanNumber}
+                                    </TableCell>
+                                    <TableCell sx={{ color: "#0A2540" }} align="left">
+                                              {TLoanNumber}
+                                    </TableCell>
+                                    <ActionMenu id={TLoanNumber} />
 
+                                    </TableRow>
+                                
+                                </div>
+                                  )}))
+                                  
+                                  : "Loading..." }</div> 
+                                  
+                              </TableBody>
+                            </Table>
+                          
+                          </TableContainer>
+                        
+                                    {/* 
                                     <div>
                                      <Link to={"/tloanDetails/" + loans.TLoanNumber}>View More</Link>
-                                    </div>
-
-                                  
-                                </div>
-                            
-                        )
-                    })
-                    : "Loading..."}</div>
+                                    </div>                 */}
+                                </div>                            
+                        
                 </div>
             )
-        }
-
         return html
     }
     
+    const applyLoan = () => {
+      let navigate = useNavigate();
 
+      async function apply(event) {
+        event.preventDefault();
+        await SubmitButton(event.target);
+        navigate("/newtloan", { replace: true });
+    }
+    return   (
+    <button onClick={apply}>
+    Apply new TLoan
+    </button>
+    )
+  }
    
    return(
-      
+      <div>
         <Tabs>
             <TabList>
             <Tab>Current</Tab>
@@ -105,36 +158,9 @@ export default function TLoanTabs() {
 
             <TabPanel>
             
-            {/* <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="center">Loan No.</TableCell>
-            <TableCell align="center">Start Date</TableCell>
-            <TableCell align="center">End Date</TableCell>
-            <TableCell align="center">Company Name</TableCell>
-            <TableCell align="center">Customer Email</TableCell>
-            <TableCell align="center">Actions</TableCell>
             
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow >
-          
-              <TableCell align="center">{getData}</TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              
-            </TableRow>
-        
-        </TableBody>
-      </Table>
-    </TableContainer> */}
             <div key="current">
-              {getData()}
+              {getCurrent()}
             </div>
      
             </TabPanel>
@@ -150,6 +176,11 @@ export default function TLoanTabs() {
 
            
         </Tabs>
+    
+        {applyLoan()}
+        </div>
       
    )
 };
+
+export default TLoanTabs

@@ -1,5 +1,21 @@
 const knex = require('../config/database');
 
+// module.exports.getByRMANo = async (RMANo) => {
+//     const query = `SELECT RmaID,
+//                    DateTime,
+//                    CompanyID,
+//                    ContactPerson,
+//                    RMANo,
+//                    Supplier,
+//                    SupplierRma,
+//                    SalesmanID,
+//                    RmaStatusID,
+//                    Instruction,
+//                    CourseOfAction
+//                    FROM Rma WHERE RMANo = ?`;
+//     return knex.raw(query, [RMANo]);
+// };
+
 module.exports.getByRMANo = async (RMANo) => {
     const query = `SELECT * FROM Rma WHERE RMANo = ?`;
     return knex.raw(query, [RMANo]);
@@ -12,8 +28,8 @@ module.exports.getSalesmanRMA = async (SalesmanID) => {
 
 module.exports.getRMAProducts = async (RmaID) => {
     const query = `SELECT * FROM RmaProduct WHERE RmaID = ?`;
-    return knex.raw(query, [RmaID])
-}
+    return knex.raw(query, [RmaID]);
+};
 
 module.exports.getAllRMA = async () => {
     const query = `SELECT * FROM Rma`;
@@ -40,24 +56,68 @@ module.exports.getVerifiedRMA = async () => {
     return knex.raw(query);
 };
 
-module.exports.insertRMA = async (
-    company,
+module.exports.insertRMA = async (contactperson, contactemail, company, contactno, salesmanid) => {
+    return knex('Rma').insert({
+        Company: company,
+        ContactPerson: contactperson,
+        CustomerEmail: contactemail,
+        ContactNo: contactno,
+        SalesmanID: salesmanid,
+        RmaStatusID: 1
+    });
+};
+
+module.exports.insertRMAProducts = async (
+    itemcode,
+    invoiceno,
+    dono,
+    dateofpurchase,
+    reasonforreturn
+) => {
+    return knex('RmaProduct').insert({
+        itemcode,
+        invoiceno,
+        dono,
+        dateofpurchase,
+        reasonforreturn
+    });
+};
+
+module.exports.insertRMAData = async (
     contactperson,
     contactno,
-    RMANo,
-    invoice,
+    rmano,
     salesmanid,
-    instruction
+    contactemail,
+    company,
+    rmaProducts
 ) => {
-    return knex('Rma').insert({
-        CompanyID: company,
-        ContactPerson: contactperson,
-        ContactNo: contactno,
-        RMANo: RMANo,
-        SupplierRMA: invoice,
-        SalesmanID: salesmanid,
-        RmaStatusID: 1,
-        Instruction: instruction
+    return knex.transaction((trx) => {
+        knex.insert(
+            {
+                Company: company,
+                ContactPerson: contactperson,
+                CustomerEmail: contactemail,
+                ContactNo: contactno,
+                SalesmanID: salesmanid,
+                RmaStatusID: 1,
+                RMANo: rmano
+            },
+            'RmaID'
+        )
+            .into('Rma')
+            .transacting(trx)
+            .then((RmaID) => {
+                if (rmaProducts.length > 0) {
+                    rmaProducts.forEach((product) => {
+                        [product.RmaID] = RmaID; // eslint-disable-line no-param-reassign
+                    });
+                    return knex('RmaProduct').insert(rmaProducts).transacting(trx);
+                }
+                return null;
+            })
+            .then(trx.commit)
+            .catch(trx.rollback);
     });
 };
 
@@ -100,15 +160,66 @@ module.exports.updateRMAReceived = async (RMANo) => {
     });
 };
 
-module.exports.updateRmaInstructions = async (RMANo, instructions) => {
+// module.exports.updateRmaInstructions = async (RMANo, products) => {
+//     return knex.transaction((trx) => {
+//         knex('Rma')
+//             .where('RMANo', RMANo)
+//             .update({
+//                 RmaStatusID: 5
+//             })
+//             .transacting(trx)
+//             .then(() => {
+//                 products.map(product => {
+//                     console.log(product.RmaProductPK + " " + product.instructions)
+//                     return knex('RmaProduct')
+//                     .where('RmaProductPK', product.RmaProductPK)
+//                     .update({Instructions: product.instructions}).transacting(trx)
+//                 })
+//                 // for (let i = 0; i < products.length; i++) {
+//                 //     console.log(products[i].RmaProductPK + " " + products[i].instructions)
+//                 //         return knex('RmaProduct')
+//                 //         .where('RmaProductPK', products[i].RmaProductPK)
+//                 //         .update({
+//                 //             Instructions: products[i].instructions
+//                 //         })
+//                 //         .transacting(trx)
+//                 //         console.log("called")
+//                 // }
+
+//             })
+//             .then(trx.commit)
+//             .catch(trx.rollback);
+//     });
+// };
+
+module.exports.updateRmaInstructions = async (RMANo, products) => {
     return knex.transaction((trx) => {
         knex('Rma')
             .where('RMANo', RMANo)
             .update({
-                Instruction: instructions,
                 RmaStatusID: 5
             })
             .transacting(trx)
+            .then(() => {
+                products.forEach((product) => {
+                    console.log(`${product.RmaProductPK} ${product.instructions}`);
+                    return knex('RmaProduct')
+                        .where('RmaProductPK', product.RmaProductPK)
+                        .update({ Instructions: product.instructions })
+                        .transacting(trx);
+                });
+                // for (let i = 0; i < products.length; i++) {
+                //     console.log(products[i].RmaProductPK + " " + products[i].instructions)
+                //         return knex('RmaProduct')
+                //         .where('RmaProductPK', products[i].RmaProductPK)
+                //         .insert(
+                //             {
+                //             Instructions: products[i].instructions
+                //             }
+                //         )
+                //         .transacting(trx)
+                // }
+            })
             .then(trx.commit)
             .catch(trx.rollback);
     });
