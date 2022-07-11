@@ -2,20 +2,38 @@ const user = require('../services/userService');
 const notificationGroup = require('../services/notificationGroupService');
 const redisClient = require('../config/caching');
 
+
 module.exports.getAllNotificationGroups = async (req, res) => {
+    const { limit, page } = req.query;
     try {
-        const notificationGroups = await redisClient.get('notificationGroups');
+        const notificationGroups = await redisClient.get(`notificationGroups?limit=${limit}&page=${page}`);
         if (notificationGroups !== null) {
             const redisresults = JSON.parse(notificationGroups);
             return res.status(200).json(redisresults);
         }
-        const results = await notificationGroup.getAll();
-        redisClient.set('notificationGroups', JSON.stringify(results[0]));
+        const results = await notificationGroup.getAll(limit, page);
+        redisClient.set(`notificationGroups?limit=${limit}&page=${page}`, JSON.stringify(results[0]));
         return res.status(200).json(results[0]);
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
+
+// module.exports.getAllNotificationGroups = async (req, res) => {
+//     try {
+//         const notificationGroups = await redisClient.get('notificationGroups');
+//         if (notificationGroups !== null) {
+//             const redisresults = JSON.parse(notificationGroups); 
+//             return res.status(200).json(redisresults);
+//         }
+//         const results = await notificationGroup.getAll();
+//         redisClient.set('notificationGroups', JSON.stringify(results[0]));
+//         return res.status(200).json(results[0]);
+//     } catch (error) {
+//         return res.status(500).json({ message: 'Internal Server Error!' });
+//     }
+// };
 
 module.exports.getNotificationGroupById = async (req, res) => {
     const notificationGroupID = req.params.id;

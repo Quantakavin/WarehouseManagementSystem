@@ -37,26 +37,27 @@ module.exports.loginUser = async (req, res) => {
 };
 
 module.exports.getAllUsers = async (req, res) => {
-    // try {
-    //     const users = await redisClient.get('users');
-    //     if (users !== null) {
-    //         const redisresults = JSON.parse(users);
-    //         return res.status(200).json(redisresults);
-    //     }
-    //     const results = await user.getAll();
-    //     redisClient.set('users', JSON.stringify(results[0]));
-    //     return res.status(200).json(results[0]);
-    // } catch (error) {
-    //     return res.status(500).json({ message: 'Internal Server Error!' });
-    // }
     const { limit, page } = req.query;
     try {
+        const users = await redisClient.get(`users?limit=${limit}&page=${page}`);
+        if (users !== null) {
+            const redisresults = JSON.parse(users);
+            return res.status(200).json(redisresults);
+        }
         const results = await user.getAll(limit, page);
+        redisClient.set(`users?limit=${limit}&page=${page}`, JSON.stringify(results[0]));
         return res.status(200).json(results[0]);
     } catch (error) {
         console.log(error)
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
+    // try {
+    //     const results = await user.getAll(limit, page);
+    //     return res.status(200).json(results[0]);
+    // } catch (error) {
+    //     console.log(error)
+    //     return res.status(500).json({ message: 'Internal Server Error!' });
+    // }
 };
 
 module.exports.getUserById = async (req, res) => {

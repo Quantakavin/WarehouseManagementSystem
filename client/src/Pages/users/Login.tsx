@@ -16,6 +16,8 @@ import {
 import { LoginUser } from "../../api/UserDB";
 import { setUser } from "../../app/reducers/CurrentUserSlice";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
+import { ChangeTab } from '../../app/reducers/SidebarSlice';
+
 
 interface FormValues {
   email: string;
@@ -44,6 +46,7 @@ const Login: React.FC = () => {
           name,
         })
       );
+      dispatch(ChangeTab({currenttab: "Dashboard"} ))
       return navigate("/dashboard", { replace: true });
     },
   });

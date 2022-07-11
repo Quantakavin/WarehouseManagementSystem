@@ -31,3 +31,10 @@ export interface RMA {
   RmaStatusID: number;
   Instruction: string;
 }
+
+export type ActionMenuItem = { 
+  name: string, 
+  url?: string, 
+  icon: React.ReactNode, 
+  delete: boolean 
+};

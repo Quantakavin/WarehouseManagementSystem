@@ -1,8 +1,8 @@
 const knex = require('../config/database');
 
-module.exports.getAll = async () => {
-    const query = `SELECT UserGroupID, UserGroupName, UserGroupDesc FROM UserGroup`;
-    return knex.raw(query);
+module.exports.getAll = async (limit, page) => {
+    const query = `SELECT UserGroupID, UserGroupName, UserGroupDesc, count(UserGroupID) OVER() AS full_count FROM UserGroup LIMIT ? OFFSET ?`;
+    return knex.raw(query, [Number(limit), Number(page)]);
 };
 
 module.exports.getByID = async (userGroupID) => {

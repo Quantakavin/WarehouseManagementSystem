@@ -12,9 +12,9 @@ module.exports.assignToUser = async (userid, notigroupid) => {
     });
 };
 
-module.exports.getAll = async () => {
-    const query = `SELECT NotiGroupID, NotiGroupName, NotiGroupDesc FROM NotiGroup`;
-    return knex.raw(query);
+module.exports.getAll = async (limit, page) => {
+    const query = `SELECT NotiGroupID, NotiGroupName, NotiGroupDesc, count(NotiGroupID) OVER() AS full_count FROM NotiGroup LIMIT ? OFFSET ?`;
+    return knex.raw(query, [Number(limit), Number(page)]);
 };
 
 module.exports.getByID = async (notiGroupID) => {

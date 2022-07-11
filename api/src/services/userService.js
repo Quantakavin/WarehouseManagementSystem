@@ -9,7 +9,7 @@ module.exports.getByEmail = async (email) => {
 };
 
 module.exports.getAll = async (limit, page) => {
-    const query = `SELECT u.UserID 'ID', u.Username, u.Email 'Email Address', c.CompanyName 'Company', g.UserGroupName 'User Group', IFNULL(u.MobileNo, 'NULL') 'Phone No', count(UserID) OVER() AS full_count FROM User u LEFT JOIN Company c ON u.CompanyID = c.CompanyID LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID LIMIT ? OFFSET ?`;
+    const query = `SELECT u.UserID, u.Username, u.Email, c.CompanyName, g.UserGroupName, IFNULL(u.MobileNo, 'NULL') 'MobileNo', count(UserID) OVER() AS full_count FROM User u LEFT JOIN Company c ON u.CompanyID = c.CompanyID LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID LIMIT ? OFFSET ?`;
     return knex.raw(query, [Number(limit), Number(page)]);
 };
 

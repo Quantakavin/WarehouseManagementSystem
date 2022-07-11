@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios, { AxiosResponse } from "axios";
-import { Container, Spinner } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import { useNavigate, useParams, useRoutes } from "react-router-dom";
 import { useQuery, useInfiniteQuery } from "react-query";
 import Table from "@mui/material/Table";
@@ -10,17 +10,16 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Divider, ListItemIcon, ListItemText, MenuItem, MenuList, TableFooter, TablePagination, Typography } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import CardContainer from "../../components/cards/CardContainer";
-import CardField from "../../components/cards/CardField";
+import { CircularProgress, Container } from "@mui/material";
 import { GetAllUsers } from "../../api/UserDB";
-import { ContentCut, ContentCopy, ContentPaste, Cloud } from "@mui/icons-material";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import PageviewIcon from '@mui/icons-material/Pageview';
 import ActionMenu from "../../components/table/ActionMenu";
+import LoadMoreButton from "../../components/table/LoadMoreButton";
+import SearchBarUpdated from "../../components/search/SearchBarUpdated";
+import TableNew from "../../components/table/TableNew";
 
 const Users: React.FC = () => {
   const headers = [
@@ -40,72 +39,98 @@ const Users: React.FC = () => {
       }
     });
 
+  const ActionMenu = (id: string) => {
+    return (
+      [
+        {
+          name: "View Details",
+          url: `/user/${id}`,
+          icon: <PageviewIcon fontSize="small" />,
+          delete: false
+        },
+        {
+          name: "Edit Details",
+          url: `/edituser/${id}`,
+          icon: <ModeEditOutlineIcon fontSize="small" />,
+          delete: false
+        },
+        {
+          name: "Delete",
+          icon: <DeleteOutlineIcon fontSize="small" />,
+          delete: true
+        },
+      ]
+    )
+  }
+
   return (
     <>
       <h2 className="pagetitle"> All Users </h2>
+      <SearchBarUpdated />
 
       {UsersQuery.isLoading || UsersQuery.isError ? null :
-
-        <Container style={{ width: "95%", marginTop: 50 }}>
-          <TableContainer component={Paper}>
-            <Table aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  {headers.map((header) => (
-                    <TableCell
-                      sx={{ color: "#86898E", fontWeight: 500 }}
-                      className="tableheader"
-                    >
-                      {header}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {UsersQuery.data.pages.map((group, i) => (
-                  <React.Fragment key={i}>
-                    {group.response.data.map(row => (
-                      <TableRow
-                        key={row.ID}
-                        sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                      >
-                        <TableCell sx={{ color: "#0A2540" }} align="left">
-                          {row.ID}
-                        </TableCell>
-                        <TableCell sx={{ color: "#0A2540" }} align="left">
-                          {row.Username}
-                        </TableCell>
-                        <TableCell sx={{ color: "#0A2540" }} align="left">
-                          {row["Email Address"]}
-                        </TableCell>
-                        <TableCell sx={{ color: "#0A2540" }} align="left">
-                          {row.Company}
-                        </TableCell>
-                        <TableCell sx={{ color: "#0A2540" }} align="left">
-                          {row["User Group"]}
-                        </TableCell>
-                        <TableCell sx={{ color: "#0A2540" }} align="left">
-                          {row["Phone No"]}
-                        </TableCell>
-                        <ActionMenu id={row.ID} />
-                      </TableRow>
-                    ))}
-
-                  </React.Fragment>
-                ))}
-              </TableBody>
-            </Table>
-            <div className="flexcontainer" style={{ width: "100%" }}>
-              {UsersQuery.hasNextPage ? <>
-                {UsersQuery.isFetchingNextPage ? <Spinner animation="border" style={{color: "#0A2540", marginTop: 20, marginBottom: 20}} />:
-                <button onClick={() => UsersQuery.fetchNextPage()} className="buttonremovestyling" style={{ fontSize: 15, fontWeight: 500, color: "#0A2540", marginTop: 20, marginBottom: 20 }}><AddCircleOutlineIcon /> Click to Load More</button>
-              }</>: <p style={{color: "#0A2540", marginTop: 20, marginBottom: 20, fontWeight: 500}}>No more results</p>
-              }
-            </div>
-          </TableContainer>
-        </Container>
+      <>
+        <TableNew headers={headers} pages={UsersQuery.data.pages} query={UsersQuery} menu={ActionMenu} />
+        </>
       }
     </>
-  );
+  )
+
+
+
+// <TableBody>
+// {UsersQuery.data.pages.map((group, i) => (
+//   <React.Fragment key={i}>
+//     {group.response.data.map(row => (
+//       <TableRow
+//         key={row.ID}
+//         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+//       >
+//         <TableCell sx={{ color: "#0A2540" }} align="left">
+//           {row.ID}
+//         </TableCell>
+//         <TableCell sx={{ color: "#0A2540" }} align="left">
+//           {row.Username}
+//         </TableCell>
+//         <TableCell sx={{ color: "#0A2540" }} align="left">
+//           {row["Email Address"]}
+//         </TableCell>
+//         <TableCell sx={{ color: "#0A2540" }} align="left">
+//           {row.Company}
+//         </TableCell>
+//         <TableCell sx={{ color: "#0A2540" }} align="left">
+//           {row["User Group"]}
+//         </TableCell>
+//         <TableCell sx={{ color: "#0A2540" }} align="left">
+//           {row["Phone No"]}
+//         </TableCell>
+//         <ActionMenu
+//           items={[
+//             {
+//               name: "View Details",
+//               url: `/user/${row.ID}`,
+//               icon: <PageviewIcon fontSize="small" />,
+//               delete: false
+//             },
+//             {
+//               name: "Edit Details",
+//               url: `/edituser/${row.ID}`,
+//               icon: <ModeEditOutlineIcon fontSize="small" />,
+//               delete: false
+//             },
+//             {
+//               name: "Delete",
+//               icon: <DeleteOutlineIcon fontSize="small" />,
+//               delete: true
+//             },
+//           ]}
+//         />
+//       </TableRow>
+//     ))}
+
+//   </React.Fragment>
+// ))}
+// </TableBody>
+
 };
 export default Users;

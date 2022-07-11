@@ -11,7 +11,7 @@ module.exports = {
 
   development: {
     client: 'mysql',
-    debug: true,
+    // debug: true,
     connection: {
       host : process.env.DBHOST,
       port : 3307,
