@@ -7,21 +7,57 @@ module.exports.getAll = async () => {
   return knex.raw(query);
 }
 
-module.exports.createTLoan = async (type, company, number, name, purpose, applicationdate, duration, requireddate, status, pick, remarks) => {
-  return knex('TLoan').insert({
-    TLoanTypeID: type,
-    CompanyID: company,
-    TLoanNumber: number,
-    Requestor: name,
-    Purpose: purpose,
-    ApplicationDate: applicationdate,
-    Duration: duration,
-    RequiredDate: requireddate,
-    TLoanStatusID: status,
-    PickStatusID: pick,
-    Remarks: remarks
-  })
+module.exports.tloanOutItem = async (
+  itemno,
+  itemname,
+  quantity
+) => {
+  return knex('TLoanOutItem').insert({
+    itemno,
+    itemname,
+    quantity
+  });
+};
 
+// module.exports.tloanOutItemBatch = async (
+//   itemno,
+//   itemname,
+//   quantity
+// ) => {
+//   return knex('TLoanOutItem').insert({
+//     itemno,
+//     itemname,
+//     quantity
+//   });
+// };
+
+
+module.exports.createTLoan = async (type, company, number, name, purpose, applicationdate, duration, requireddate, pick, remarks, tloanItems, tloanBatch) => {
+  knex.transaction(function(trx) {
+   
+    knex.insert({
+      TLoanTypeID: type,
+      CompanyID: company,
+      TLoanNumber: number,
+      Requestor: name,
+      Purpose: purpose,
+      ApplicationDate: applicationdate,
+      Duration: duration,
+      RequiredDate: requireddate,
+      TLoanStatusID: 4,
+      PickStatusID: pick,
+      Remarks: remarks
+    }, 'TLoanID')
+    .into('TLoan')
+    .transacting(trx)
+    .then(function(ids) {
+      tloanItems.forEach((item) =>  item.TLoanID = ids[0] ) 
+      return knex('TLoanOutItem').insert(tloanItems).transacting(trx);
+      })
+      
+      .then(trx.commit)
+      .catch(trx.rollback)
+  })
 }
 
 module.exports.getLoanByNumber = async(TLoanNumber) => {
@@ -155,4 +191,5 @@ module.exports.draftLoan = async (number) => {
           .catch(trx.rollback);
   });
 };
+
 

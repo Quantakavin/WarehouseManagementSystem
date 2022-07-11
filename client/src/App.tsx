@@ -24,6 +24,7 @@ import CreateRMA from "./pages/rma/createRma";
 import Sidebar2 from "./components/sidebar/Sidebar2";
 import TLoanDisplay from "./components/display/tloanDisplay"
 import RmaDisplay from "./components/display/rmaDisplay"
+import NewTLoan from "./pages/tloans/newtloan"
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "./app/hooks";
 import {
@@ -89,6 +90,7 @@ const App: React.FC = () => {
               <Route path="/createRma" element={<CreateRMA />} />
               <Route path="/RMADetails/:RMANo" element={<RmaDisplay/>} />
               <Route path="/tloanDetails/:TLoanNumber" element={<TLoanDisplay/>} />
+              <Route path="/newtloan" element={<NewTLoan/>} />
             </Route>
           </Routes>
         </div>

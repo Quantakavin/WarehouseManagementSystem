@@ -9,7 +9,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import SubmitButton from '../form/SubmitButton';
 
 
 export default function TLoanTabs() {
@@ -91,10 +92,23 @@ export default function TLoanTabs() {
         return html
     }
     
+    const applyLoan = () => {
+      let navigate = useNavigate();
 
+      async function apply(event) {
+        event.preventDefault();
+        await SubmitButton(event.target);
+        navigate("/newtloan", { replace: true });
+    }
+    return   (
+    <button onClick={apply}>
+    Apply new TLoan
+    </button>
+    )
+  }
    
    return(
-      
+      <div>
         <Tabs>
             <TabList>
             <Tab>Current</Tab>
@@ -150,6 +164,9 @@ export default function TLoanTabs() {
 
            
         </Tabs>
+    
+        {applyLoan()}
+        </div>
       
    )
 };
