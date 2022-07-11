@@ -1,658 +1,380 @@
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import "react-tabs/style/react-tabs.css";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { useAppSelector } from "../../app/hooks";
-import { Link } from 'react-router-dom'
-
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { Link, useNavigate } from 'react-router-dom'
+import SubmitButton from '../form/SubmitButton';
+import ActionMenu from "../../components/table/ActionMenu";
 
 export default function RMATabs() {
-  const role = useAppSelector((state) => state.currentUser.role);
-  const [rma, setRma] = useState([]);
-  const [newRma, setNewRma] = useState([]);
-  const [group, setGroup] = useState([])
+  const [pending, setPending] = useState([]);
+  const [approved, setApproved] = useState([]);
+  const [received, setReceived] = useState([]);
+  const [verified, setVerified] = useState([]);
 
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const appliedrma = await axios.get("http://localhost:5000/api/pendingRMA");
-      const approvedrma = await axios.get("http://localhost:5000/api/acceptedRMA");
-      const receivedrma = await axios.get("http://localhost:5000/api/receivedRMA");
-      const verifiedrma = await axios.get("http://localhost:5000/api/verifiedRMA");
+      const pending = await axios.get('http://localhost:5000/api/pendingRMA');
+      const approved = await axios.get('http://localhost:5000/api/approvedRMA');
+      const received = await axios.get('http://localhost:5000/api/receivedRMA');
+      const verified = await axios.get('http://localhost:5000/api/verifiedRMA');
 
-      setRma(appliedrma.data);
-      // console.log(rma.data);
-    };
-
+      setPending(pending.data)
+      setApproved(approved.data)
+      setReceived(received.data)
+      setVerified(verified.data)
+    }
     // call the function
     fetchData()
       // make sure to catch any error
-      .catch(console.error);
-  }, []);
+      .catch(console.error);;
+  }, [])
 
-  useEffect(() => {
-    const newRma = rma
-    setNewRma(newRma);
-  }, [rma]);
+    const columnName =[ 
+      "RMA No.",
+      "DateTime",
+      "Company Name",
+      "Customer Email",
+      "Actions"
+    ]
 
-  useEffect( () => {
-    let group = newRma.reduce((r, a) => {
-        r[a.RmaStatusID] = [...r[a.RmaStatusID] || [], a];
-        return r
-    }, {})
+    // const RMAsQuery = useInfiniteQuery('RMAs', pending,
+    // {
+    //   getNextPageParam: (lastPage, pages) => {
+    //     if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
+    //     return undefined;
+    //   }
+    // });
 
-    setGroup(group)
-    console.log(group)
-
-}, [newRma])
- 
-  const getData = () => {
-    let data = {...group}
+  const getPending = () => {
     let html = []
-
-    for(const [key, value] of Object.entries(data)) {
         html.push(
             <div className='container'>
-                <div >{key && value && value.length > 0
-                ? value.map(rma => {
-                    const { RMANo, DateTime, RmaStatusID} = rma
-                    return (
-                        <div className="" key={RmaStatusID}>
+                
+                   
+                      <div className="" key="id">
+                        <TableContainer component={Paper}>
+                        <Table aria-label="simple table">
+                          <TableHead>
+                            <TableRow>
+                              {columnName.map((col) => (
+                                <TableCell
+                                  sx={{ color: "#86898E", fontWeight: 500 }}
+                                  className="tableheader"
+                                >
+                                  {col}
+                                </TableCell>
+                              ))}
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            <div >{pending.length > 0
+                              ? pending.map((rma => {
+                                  const {RMANo, DateTime, Company, CustomerEmail} = rma
+                                return(
                                 <div>
-                                    <strong>{RMANo}</strong>
-                                </div>
-                                <div className=''>
-                                    <strong>{DateTime}</strong>  
-                                </div>
-
+                              <TableRow  key={RMANo} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                                <TableCell sx={{ color: "#0A2540" }} align="left">
+                                            {RMANo}
+                                </TableCell>
+                                <TableCell sx={{ color: "#0A2540" }} align="left">
+                                            {DateTime}
+                                </TableCell>
+                                <TableCell sx={{ color: "#0A2540" }} align="left">
+                                            {RMANo}
+                                </TableCell>
+                                <TableCell sx={{ color: "#0A2540" }} align="left">
+                                            {Company}
+                                </TableCell>
+                                <TableCell sx={{ color: "#0A2540" }} align="left">
+                                          {CustomerEmail}
+                                </TableCell>
+                                <ActionMenu id={RMANo} />
+                                </TableRow>
+                            </div>
+                              )}))
+                              
+                              : "Loading..." }</div> 
+                              
+                          </TableBody>
+                        </Table>
+                      
+                      </TableContainer>
+                    
+                                {/* 
                                 <div>
                                  <Link to={"/RMADetails/" + rma.RMANo}>View More</Link>
-                                </div>
-
-                              
-                            </div>
-                        
-                    )
-                })
-                : "Loading..."}</div>
+                                </div>                 */}
+                            </div>                            
+                    
             </div>
         )
-    }
-
     return html
 }
-
-  switch (role) {
-    case "Admin":
-      return (
-        <Tabs>
-          <TabList>
-            <Tab>Applied</Tab>
-            <Tab>Approved</Tab>
-            <Tab>Received </Tab>
-            <Tab>Verified</Tab>
-          </TabList>
-
-          
-          <TabPanel>
-            
-            {/* <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="center">Loan No.</TableCell>
-            <TableCell align="center">Start Date</TableCell>
-            <TableCell align="center">End Date</TableCell>
-            <TableCell align="center">Company Name</TableCell>
-            <TableCell align="center">Customer Email</TableCell>
-            <TableCell align="center">Actions</TableCell>
-            
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow >
-          
-              <TableCell align="center">{getData}</TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
+const getApproved = () => {
+  let html = []
+      html.push(
+          <div className='container'>
               
-            </TableRow>
-        
-        </TableBody>
-      </Table>
-    </TableContainer> */}
-            <div key="applied">
-              {getData()}
-            </div>
-     
-            </TabPanel>
-          <TabPanel>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">RMA No.</TableCell>
-                    <TableCell align="center">Date Applied</TableCell>
-                    <TableCell align="center">Company Name</TableCell>
-                    <TableCell align="center">Customer Email</TableCell>
-                    <TableCell align="center">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="center"
-                      hidden
-                    />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-          <TabPanel>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">RMA No.</TableCell>
-                    <TableCell align="center">Date Applied</TableCell>
-                    <TableCell align="center">Company Name</TableCell>
-                    <TableCell align="center">Customer Email</TableCell>
-                    <TableCell align="center">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="center"
-                      hidden
-                    />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-          <TabPanel>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">RMA No.</TableCell>
-                    <TableCell align="center">Date Applied</TableCell>
-                    <TableCell align="center">Company Name</TableCell>
-                    <TableCell align="center">Customer Email</TableCell>
-                    <TableCell align="center">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="center"
-                      hidden
-                    />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-        </Tabs>
-      );
-    case "Sales Manager":
-      return (
-        <Tabs>
-          <TabList>
-            <Tab>Applied</Tab>
-            <Tab>Approved</Tab>
-            <Tab>Received </Tab>
-            <Tab>Verified</Tab>
-          </TabList>
+                 
+                    <div className="" key="id">
+                      <TableContainer component={Paper}>
+                      <Table aria-label="simple table">
+                        <TableHead>
+                          <TableRow>
+                            {columnName.map((col) => (
+                              <TableCell
+                                sx={{ color: "#86898E", fontWeight: 500 }}
+                                className="tableheader"
+                              >
+                                {col}
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          <div >{approved.length > 0
+                            ? approved.map((rma => {
+                                const {RMANo} = rma
+                              return(
+                              <div>
+                            <TableRow  key={RMANo} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                              <TableCell sx={{ color: "#0A2540" }} align="left">
+                                          {RMANo}
+                              </TableCell>
+                              <TableCell sx={{ color: "#0A2540" }} align="left">
+                                          {RMANo}
+                              </TableCell>
+                              <TableCell sx={{ color: "#0A2540" }} align="left">
+                                          {RMANo}
+                              </TableCell>
+                              <TableCell sx={{ color: "#0A2540" }} align="left">
+                                          {RMANo}
+                              </TableCell>
+                              <TableCell sx={{ color: "#0A2540" }} align="left">
+                                        {RMANo}
+                              </TableCell>
+                              <ActionMenu id={RMANo} />
 
-          <TabPanel>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">RMA No.</TableCell>
-                    <TableCell align="center">Date Applied</TableCell>
-                    <TableCell align="center">Company Name</TableCell>
-                    <TableCell align="center">Customer Email</TableCell>
-                    <TableCell align="center">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="center"
-                      hidden
-                    />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-          <TabPanel>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">RMA No.</TableCell>
-                    <TableCell align="center">Date Applied</TableCell>
-                    <TableCell align="center">Company Name</TableCell>
-                    <TableCell align="center">Customer Email</TableCell>
-                    <TableCell align="center">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="center"
-                      hidden
-                    />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-          <TabPanel>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">RMA No.</TableCell>
-                    <TableCell align="center">Date Applied</TableCell>
-                    <TableCell align="center">Company Name</TableCell>
-                    <TableCell align="center">Customer Email</TableCell>
-                    <TableCell align="center">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="center"
-                      hidden
-                    />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-          <TabPanel>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">RMA No.</TableCell>
-                    <TableCell align="center">Date Applied</TableCell>
-                    <TableCell align="center">Company Name</TableCell>
-                    <TableCell align="center">Customer Email</TableCell>
-                    <TableCell align="center">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="center"
-                      hidden
-                    />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-        </Tabs>
-      );
-    case "Sales Engineer":
-      return (
-        <Tabs>
-          <TabList>
-            <Tab>Applied</Tab>
-          </TabList>
-
-          <TabPanel>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">RMA No.</TableCell>
-                    <TableCell align="center">Date Applied</TableCell>
-                    <TableCell align="center">Company Name</TableCell>
-                    <TableCell align="center">Customer Email</TableCell>
-                    <TableCell align="center">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="center"
-                      hidden
-                    />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-        </Tabs>
-      );
-    case "Warehouse Worker":
-      return (
-        <Tabs>
-          <TabList>
-            <Tab>Approved</Tab>
-          </TabList>
-
-          <TabPanel>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">RMA No.</TableCell>
-                    <TableCell align="center">Date Applied</TableCell>
-                    <TableCell align="center">Company Name</TableCell>
-                    <TableCell align="center">Customer Email</TableCell>
-                    <TableCell align="center">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="center"
-                      hidden
-                    />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-        </Tabs>
-      );
-    case "Technical Staff":
-      return (
-        <Tabs>
-          <TabList>
-            <Tab>Received </Tab>
-          </TabList>
-
-          <TabPanel>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">RMA No.</TableCell>
-                    <TableCell align="center">Date Applied</TableCell>
-                    <TableCell align="center">Company Name</TableCell>
-                    <TableCell align="center">Customer Email</TableCell>
-                    <TableCell align="center">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="center"
-                      hidden
-                    />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-        </Tabs>
-      );
-    case "Sales Admin":
-      return (
-        <Tabs>
-          <TabList>
-            <Tab>Verified</Tab>
-          </TabList>
-
-          <TabPanel>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">RMA No.</TableCell>
-                    <TableCell align="center">Date Applied</TableCell>
-                    <TableCell align="center">Company Name</TableCell>
-                    <TableCell align="center">Customer Email</TableCell>
-                    <TableCell align="center">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="center"
-                      hidden
-                    />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-        </Tabs>
-      );
-    default:
-      return (
-        <Tabs>
-          <TabList>
-            <Tab>Applied</Tab>
-            <Tab>Approved</Tab>
-            <Tab>Received </Tab>
-            <Tab>Verified</Tab>
-          </TabList>
-
-          <TabPanel>
-            
-            {/* <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="center">Loan No.</TableCell>
-            <TableCell align="center">Start Date</TableCell>
-            <TableCell align="center">End Date</TableCell>
-            <TableCell align="center">Company Name</TableCell>
-            <TableCell align="center">Customer Email</TableCell>
-            <TableCell align="center">Actions</TableCell>
-            
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow >
-          
-              <TableCell align="center">{getData}</TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              
-            </TableRow>
-        
-        </TableBody>
-      </Table>
-    </TableContainer> */}
-            <div key="applied">
-              {getData()}
-            </div>
-     
-            </TabPanel>
-          <TabPanel>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">RMA No.</TableCell>
-                    <TableCell align="center">Date Applied</TableCell>
-                    <TableCell align="center">Company Name</TableCell>
-                    <TableCell align="center">Customer Email</TableCell>
-                    <TableCell align="center">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="center"
-                      hidden
-                    />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-          <TabPanel>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">RMA No.</TableCell>
-                    <TableCell align="center">Date Applied</TableCell>
-                    <TableCell align="center">Company Name</TableCell>
-                    <TableCell align="center">Customer Email</TableCell>
-                    <TableCell align="center">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="center"
-                      hidden
-                    />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-          <TabPanel>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">RMA No.</TableCell>
-                    <TableCell align="center">Date Applied</TableCell>
-                    <TableCell align="center">Company Name</TableCell>
-                    <TableCell align="center">Customer Email</TableCell>
-                    <TableCell align="center">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="center"
-                      hidden
-                    />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-        </Tabs>
-      );
-  }
+                              </TableRow>
+                          
+                          </div>
+                            )}))
+                            
+                            : "Loading..." }</div> 
+                            
+                        </TableBody>
+                      </Table>
+                    
+                    </TableContainer>
+                  
+                              {/* 
+                              <div>
+                               <Link to={"/RMADetails/" + rma.RMANo}>View More</Link>
+                              </div>                 */}
+                          </div>                            
+                  
+          </div>
+      )
+  return html
 }
+
+const getReceived = () => {
+  let html = []
+      html.push(
+          <div className='container'>
+              
+                 
+                    <div className="" key="id">
+                      <TableContainer component={Paper}>
+                      <Table aria-label="simple table">
+                        <TableHead>
+                          <TableRow>
+                            {columnName.map((col) => (
+                              <TableCell
+                                sx={{ color: "#86898E", fontWeight: 500 }}
+                                className="tableheader"
+                              >
+                                {col}
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          <div >{received.length > 0
+                            ? received.map((rma => {
+                                const {RMANo} = rma
+                              return(
+                              <div>
+                            <TableRow  key={RMANo} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                              <TableCell sx={{ color: "#0A2540" }} align="left">
+                                          {RMANo}
+                              </TableCell>
+                              <TableCell sx={{ color: "#0A2540" }} align="left">
+                                          {RMANo}
+                              </TableCell>
+                              <TableCell sx={{ color: "#0A2540" }} align="left">
+                                          {RMANo}
+                              </TableCell>
+                              <TableCell sx={{ color: "#0A2540" }} align="left">
+                                          {RMANo}
+                              </TableCell>
+                              <TableCell sx={{ color: "#0A2540" }} align="left">
+                                        {RMANo}
+                              </TableCell>
+                              <ActionMenu id={RMANo} />
+
+                              </TableRow>
+                          
+                          </div>
+                            )}))
+                            
+                            : "Loading..." }</div> 
+                            
+                        </TableBody>
+                      </Table>
+                    
+                    </TableContainer>
+                  
+                              {/* 
+                              <div>
+                               <Link to={"/RMADetails/" + rma.RMANo}>View More</Link>
+                              </div>                 */}
+                          </div>                            
+                  
+          </div>
+      )
+  return html
+}
+
+const getVerified = () => {
+  let html = []
+      html.push(
+          <div className='container'>
+              
+                 
+                    <div className="" key="id">
+                      <TableContainer component={Paper}>
+                      <Table aria-label="simple table">
+                        <TableHead>
+                          <TableRow>
+                            {columnName.map((col) => (
+                              <TableCell
+                                sx={{ color: "#86898E", fontWeight: 500 }}
+                                className="tableheader"
+                              >
+                                {col}
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          <div >{verified.length > 0
+                            ? verified.map((rma => {
+                                const {RMANo} = rma
+                              return(
+                              <div>
+                            <TableRow  key={RMANo} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                              <TableCell sx={{ color: "#0A2540" }} align="left">
+                                          {RMANo}
+                              </TableCell>
+                              <TableCell sx={{ color: "#0A2540" }} align="left">
+                                          {RMANo}
+                              </TableCell>
+                              <TableCell sx={{ color: "#0A2540" }} align="left">
+                                          {RMANo}
+                              </TableCell>
+                              <TableCell sx={{ color: "#0A2540" }} align="left">
+                                          {RMANo}
+                              </TableCell>
+                              <TableCell sx={{ color: "#0A2540" }} align="left">
+                                        {RMANo}
+                              </TableCell>
+                              <ActionMenu id={RMANo} />
+
+                              </TableRow>
+                          
+                          </div>
+                            )}))
+                            
+                            : "Loading..." }</div> 
+                            
+                        </TableBody>
+                      </Table>
+                    
+                    </TableContainer>
+                  
+                              {/* 
+                              <div>
+                               <Link to={"/RMADetails/" + rma.RMANo}>View More</Link>
+                              </div>                 */}
+                          </div>                            
+                  
+          </div>
+      )
+  return html
+}
+
+const applyLoan = () => {
+  let navigate = useNavigate();
+
+  async function apply(event) {
+    event.preventDefault();
+    await SubmitButton(event.target);
+    navigate("/createRMA", { replace: true });
+}
+return   (
+<button onClick={apply}>
+Apply new RMA
+</button>
+)
+}
+
+return(
+  <div>
+    <Tabs>
+        <TabList>
+        <Tab>Pending</Tab>
+        <Tab>Approved</Tab>
+        <Tab>Received </Tab>
+        <Tab>Verified</Tab>
+        </TabList>
+
+        <TabPanel>
+        <div key="pending">
+          {getPending()}
+        </div>
+        </TabPanel>
+        <TabPanel>
+        <div key="approved">
+          {getApproved()}
+        </div>
+        </TabPanel>
+        <TabPanel>
+        <div key="verified">
+          {getReceived()}
+        </div>
+        </TabPanel>
+        <TabPanel>
+        <div key="verified">
+          {getVerified()}
+        </div>
+        </TabPanel>
+
+       
+    </Tabs>
+
+    {applyLoan()}
+    </div>
+  
+)
+};
