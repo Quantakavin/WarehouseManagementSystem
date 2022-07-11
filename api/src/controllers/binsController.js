@@ -1,9 +1,9 @@
 const dashboard = require('../services/binsService');
 const redisClient = require('../config/caching');
 
-// Get Bin Location By BinID
 
-// Get Bin Infornation by BinID
+// Get Bin By Bin Tag
+
 
 // Get Bin Informmation Test
 module.exports.binInfo = async (req, res) => {
@@ -26,6 +26,10 @@ module.exports.binInfo = async (req, res) => {
     }
 };
 
-// Get Products in Bin By BinID
+// Get Bin By Product Brand
+
+
+// Get Bin By Item Name
+
 
 // Get Empty Bin List

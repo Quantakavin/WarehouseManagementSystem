@@ -10,19 +10,25 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useAppSelector } from "../../app/hooks";
+import { Link } from 'react-router-dom'
+
 
 export default function RMATabs() {
   const role = useAppSelector((state) => state.currentUser.role);
   const [rma, setRma] = useState([]);
   const [newRma, setNewRma] = useState([]);
+  const [group, setGroup] = useState([])
 
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const rma = await axios.get("http://localhost:5000/api/RMA");
+      const appliedrma = await axios.get("http://localhost:5000/api/pendingRMA");
+      const approvedrma = await axios.get("http://localhost:5000/api/acceptedRMA");
+      const receivedrma = await axios.get("http://localhost:5000/api/receivedRMA");
+      const verifiedrma = await axios.get("http://localhost:5000/api/verifiedRMA");
 
-      setRma(rma.data);
+      setRma(appliedrma.data);
       // console.log(rma.data);
     };
 
@@ -33,9 +39,56 @@ export default function RMATabs() {
   }, []);
 
   useEffect(() => {
-    const newRma = rma.map(({}) => ({}));
+    const newRma = rma
     setNewRma(newRma);
   }, [rma]);
+
+  useEffect( () => {
+    let group = newRma.reduce((r, a) => {
+        r[a.RmaStatusID] = [...r[a.RmaStatusID] || [], a];
+        return r
+    }, {})
+
+    setGroup(group)
+    console.log(group)
+
+}, [newRma])
+ 
+  const getData = () => {
+    let data = {...group}
+    let html = []
+
+    for(const [key, value] of Object.entries(data)) {
+        html.push(
+            <div className='container'>
+                <div >{key && value && value.length > 0
+                ? value.map(rma => {
+                    const { RMANo, DateTime, RmaStatusID} = rma
+                    return (
+                        <div className="" key={RmaStatusID}>
+                                <div>
+                                    <strong>{RMANo}</strong>
+                                </div>
+                                <div className=''>
+                                    <strong>{DateTime}</strong>  
+                                </div>
+
+                                <div>
+                                 <Link to={"/RMADetails/" + rma.RMANo}>View More</Link>
+                                </div>
+
+                              
+                            </div>
+                        
+                    )
+                })
+                : "Loading..."}</div>
+            </div>
+        )
+    }
+
+    return html
+}
 
   switch (role) {
     case "Admin":
@@ -48,36 +101,42 @@ export default function RMATabs() {
             <Tab>Verified</Tab>
           </TabList>
 
+          
           <TabPanel>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">RMA No.</TableCell>
-                    <TableCell align="center">Date Applied</TableCell>
-                    <TableCell align="center">Company Name</TableCell>
-                    <TableCell align="center">Customer Email</TableCell>
-                    <TableCell align="center">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="center"
-                      hidden
-                    />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
+            
+            {/* <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 1050 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell align="center">Loan No.</TableCell>
+            <TableCell align="center">Start Date</TableCell>
+            <TableCell align="center">End Date</TableCell>
+            <TableCell align="center">Company Name</TableCell>
+            <TableCell align="center">Customer Email</TableCell>
+            <TableCell align="center">Actions</TableCell>
+            
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow >
+          
+              <TableCell align="center">{getData}</TableCell>
+              <TableCell align="center"></TableCell>
+              <TableCell align="center"></TableCell>
+              <TableCell align="center"></TableCell>
+              <TableCell align="center"></TableCell>
+              <TableCell align="center"></TableCell>
+              
+            </TableRow>
+        
+        </TableBody>
+      </Table>
+    </TableContainer> */}
+            <div key="applied">
+              {getData()}
+            </div>
+     
+            </TabPanel>
           <TabPanel>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 1050 }} aria-label="simple table">
@@ -469,35 +528,40 @@ export default function RMATabs() {
           </TabList>
 
           <TabPanel>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 1050 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">RMA No.</TableCell>
-                    <TableCell align="center">Date Applied</TableCell>
-                    <TableCell align="center">Company Name</TableCell>
-                    <TableCell align="center">Customer Email</TableCell>
-                    <TableCell align="center">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="center"
-                      hidden
-                    />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                    <TableCell align="center" />
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
+            
+            {/* <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 1050 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell align="center">Loan No.</TableCell>
+            <TableCell align="center">Start Date</TableCell>
+            <TableCell align="center">End Date</TableCell>
+            <TableCell align="center">Company Name</TableCell>
+            <TableCell align="center">Customer Email</TableCell>
+            <TableCell align="center">Actions</TableCell>
+            
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow >
+          
+              <TableCell align="center">{getData}</TableCell>
+              <TableCell align="center"></TableCell>
+              <TableCell align="center"></TableCell>
+              <TableCell align="center"></TableCell>
+              <TableCell align="center"></TableCell>
+              <TableCell align="center"></TableCell>
+              
+            </TableRow>
+        
+        </TableBody>
+      </Table>
+    </TableContainer> */}
+            <div key="applied">
+              {getData()}
+            </div>
+     
+            </TabPanel>
           <TabPanel>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 1050 }} aria-label="simple table">

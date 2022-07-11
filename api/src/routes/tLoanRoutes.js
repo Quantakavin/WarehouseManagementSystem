@@ -18,4 +18,5 @@ router.put('/tloan/draft',TLoanController.draftLoan)
 router.put('/tloan/issued',TLoanController.issuedLoan)
 router.put('/tloan/picking',TLoanController.pickingLoan)
 
+
 module.exports = router;
