@@ -97,4 +97,55 @@ module.exports.ItemName = async (req, res) => {
     }
 };
 
+// Get Bin Location, Items, Item Compmany, Capacity by Bin Tag 
+module.exports.BinProducts = async (req, res) => {
+    let BinTag = req.params.BinTag;
+    try {
+        const searchBinTag = await redisClient.get(`BinTag#${BinTag}`);
+        if (searchBinTag !== null) {
+            const redisresults = JSON.parse(searchBinTag);
+            return res.status(200).json(redisresults);
+        }
+        const results = await bin.getBinByProductName(BinTag);
+        redisClient.set(`BinTag#${BinTag}`, JSON.stringify(results[0]));
+
+        if (results.length > 0) {
+            console.log('endpoint working');
+            console.log(results);
+            return res.status(200).json(results[0]);
+        } else {
+            return res.status(404).send('');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
+
+
+
 // Get Empty Bin List
+// module.exports.BinProducts = async (req, res) => {
+//     let BinTag = req.params.BinTag;
+//     try {
+//         const searchBinTag = await redisClient.get(`BinTag#${BinTag}`);
+//         if (searchBinTag !== null) {
+//             const redisresults = JSON.parse(searchBinTag);
+//             return res.status(200).json(redisresults);
+//         }
+//         const results = await bin.getBinByProductName(BinTag);
+//         redisClient.set(`BinTag#${BinTag}`, JSON.stringify(results[0]));
+
+//         if (results.length > 0) {
+//             console.log('endpoint working');
+//             console.log(results);
+//             return res.status(200).json(results[0]);
+//         } else {
+//             return res.status(404).send('');
+//         }
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).send('Internal Server Error');
+//     }
+// }

@@ -3,7 +3,7 @@ const knex = require('../config/database');
 
 // T-Loan Overview
 
-// Approved TLoans
+// Submitted TLoans
 module.exports.getCurrentTLoans = async () => {
     const query = `SELECT * FROM TLoan WHERE TLoanStatusID = "3"`;
     return knex.raw(query);
@@ -27,15 +27,27 @@ module.exports.getExtendedTLoans = async () => {
     return knex.raw(query);
 };
 
+// Approved TLoans
+
+// Rejected TLoans
+
+// Due TLoans
+
+// Ready TLoans
+
+// Picking TLoans
+
+// Issued TLoans
+
 // RMA Overview
 
-// Approved RMAs
+//  Accepted RMAs
 module.exports.getCurrentRMAs = async () => {
     const query = `SELECT * FROM Rma WHERE RMAStatusID = "2"`;
     return knex.raw(query);
 };
 
-// Pending RMAs
+// Incoming RMAs
 module.exports.getPendingRMAs = async () => {
     const query = `SELECT * FROM Rma WHERE RMAStatusID = "1" `;
     return knex.raw(query);
@@ -53,11 +65,15 @@ module.exports.getClosedRMAs = async () => {
     return knex.raw(query);
 };
 
+// Recieved RMAs
+
+// Verfied RMAs
+
 // Current T-Loan and RMA Statistic
 
 // Get Total TLoan Request, Month WHERE Status = 3
 module.exports.getTLoanCurrentStats = async () => {
-    const query = `SELECT COUNT(TLoanNumber) AS Requests,  MONTHNAME(ApplicationDate) as Month FROM TLoan WHERE TLoanStatusID = "3"  GROUP BY Month`;
+    const query = `SELECT COUNT(TLoanNumber) AS Requests,  MONTHNAME(ApplicationDate) as Month FROM TLoan WHERE TLoanStatusID = "3"  GROUP BY ApplicationDate`;
     // const query = `select (select count(TLoanNumber) from TLoan) as TLoanRequests,
     // (select count(RmaNo) from Rma) as RMARequest`;
     return knex.raw(query);
@@ -65,7 +81,7 @@ module.exports.getTLoanCurrentStats = async () => {
 
 // Get Total RMA Request, Month WHERE Status = 2
 module.exports.getRMACurrentStats = async () => {
-    const query = `SELECT COUNT(RmaNo) AS Requests,  MONTHNAME(DateTime) as Month FROM Rma WHERE RmaStatusID = "2" GROUP BY Month`;
+    const query = `SELECT COUNT(RmaNo) AS Requests,  MONTHNAME(DateTime) as Month FROM Rma WHERE RmaStatusID = "1" GROUP BY DateTime`;
     // const query = `select (select count(TLoanNumber) from TLoan) as TLoanRequests,
     // (select count(RmaNo) from Rma) as RMARequest`;
     return knex.raw(query);
