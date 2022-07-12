@@ -1,5 +1,12 @@
-import React from "react";
+import React from 'react'
 
 export default function NewTLoan() {
-  return <div>newtloan</div>;
+
+
+
+  return (
+    <div>newtloan</div>
+  )
 }
+
+

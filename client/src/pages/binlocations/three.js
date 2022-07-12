@@ -12,7 +12,7 @@ loader.load(
     console.log(gltf);
   },
   function (xhr) {
-    console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+    console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
   },
   function (error) {
     console.log("An error");
@@ -50,7 +50,7 @@ scene.add(camera); // add camera to scene
 
 // Renderer
 const Renderer = new THREE.WebGL1Renderer({
-  canvas,
+  canvas: canvas,
 });
 
 // Set size of renderer

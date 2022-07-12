@@ -2,79 +2,80 @@ import axios from "axios";
 import config from "../config/config";
 
 export const GetRMAByRMANo = async (id: string) => {
-  return axios.get(`${config.baseURL}/RMA/${id}`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
-};
+    return await axios.get(`${config.baseURL}/RMA/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  };
 
 export const GetAllRMA = async () => {
-  return axios.get(`${config.baseURL}/RMA`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
-};
+    return await axios.get(`${config.baseURL}/RMA`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  };
 
-export const GetRMADetails = async (RMANo: number) => {
-  return axios.get(`${config.baseURL}/RMADetails/${RMANo}`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
-};
-
+  export const GetRMADetails = async (RMANo: number) => {
+    return await axios.get(`${config.baseURL}/RMADetails/${RMANo}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  };
+  
 export const PostRMA = async (formData) => {
-  return axios.post(`${config.baseURL}/newRMA`, formData, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
-};
+    return await axios.post(`${config.baseURL}/newRMA`, formData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  };
 
-export const AcceptRMA = async (RMANo: number) => {
-  return axios.put(`${config.baseURL}/acceptRMA/${RMANo}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
-};
+  export const AcceptRMA = async (RMANo: number) => {
+    return await axios.put(`${config.baseURL}/acceptRMA/${RMANo}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  };
 
-export const RejectRMA = async (RMANo: number) => {
-  return axios.put(`${config.baseURL}/rejectRMA/${RMANo}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
-};
+  export const RejectRMA = async (RMANo: number) => {
+    return await axios.put(`${config.baseURL}/rejectRMA/${RMANo}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  };
 
-export const ReceiveRMA = async (RMANo: number) => {
-  return axios.put(`${config.baseURL}/receiveRMA/${RMANo}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
-};
+  export const ReceiveRMA = async (RMANo: number) => {
+    return await axios.put(`${config.baseURL}/receiveRMA/${RMANo}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  };
 
-export const VerifyRMA = async (formData, RMANo: number) => {
-  return axios.put(`${config.baseURL}/verifyRMA/${RMANo}`, formData, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
-};
+  export const VerifyRMA = async (formData, RMANo: number) => {
+    return await axios.put(`${config.baseURL}/verifyRMA/${RMANo}`, formData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  };
 
-export const UpdateCOA = async (formData, RMANo: number) => {
-  return axios.put(`${config.baseURL}/COARMA/${RMANo}`, formData, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
-};
+  export const UpdateCOA = async (formData, RMANo: number) => {
+    return await axios.put(`${config.baseURL}/COARMA/${RMANo}`, formData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  };
+  

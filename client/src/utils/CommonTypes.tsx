@@ -22,8 +22,6 @@ export interface NotiGroup {
 }
 
 export interface RMA {
-  RmaID: number;
-  DateTime: string;
   CompanyID: number;
   ContactPerson: string;
   ContactNo: number;
@@ -31,21 +29,12 @@ export interface RMA {
   SupplierRMA: string;
   SalesmanID: string;
   RmaStatusID: number;
-  CustomerEmail: string;
-  Company: string;
-  ItemCode: string;
-  InvoiceNo: string;
-  DoNo: string;
-  DateOfPurchase: string;
-  ReturnReason: string;
-  Instructions: string;
-  CourseOfAction: string;
-  RmaProductPK: number;
+  Instruction: string;
 }
 
-export type ActionMenuItem = {
-  name: string;
-  url?: string;
-  icon: React.ReactNode;
-  delete: boolean;
+export type ActionMenuItem = { 
+  name: string, 
+  url?: string, 
+  icon: React.ReactNode, 
+  delete: boolean 
 };

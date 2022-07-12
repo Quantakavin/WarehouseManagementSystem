@@ -1,94 +1,66 @@
-import * as React from "react";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import WarehouseIcon from "@mui/icons-material/Warehouse";
-import InventoryIcon from "@mui/icons-material/Inventory";
-import ArticleIcon from "@mui/icons-material/Article";
-import AssignmentReturnIcon from "@mui/icons-material/AssignmentReturn";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import PersonIcon from "@mui/icons-material/Person";
-import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
-import { selectCurrentTab } from "../../app/reducers/SidebarSlice";
-import SidebarLink from "./SidebarLink";
-import { selectRole, selectName } from "../../app/reducers/CurrentUserSlice";
-import { useAppSelector } from "../../app/hooks";
+import * as React from 'react';
 import defaultprofile from "../../assets/defaultprofile.png";
+import { useAppSelector } from '../../app/hooks'
+import { selectRole, selectName } from '../../app/reducers/CurrentUserSlice';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import WarehouseIcon from '@mui/icons-material/Warehouse';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import ArticleIcon from '@mui/icons-material/Article';
+import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
+import SidebarLink from './SidebarLink';
+import { selectCurrentTab } from '../../app/reducers/SidebarSlice';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import PersonIcon from '@mui/icons-material/Person';
+import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
 
-const Sidebar: React.FC = () => {
-  const username = useAppSelector(selectName);
-  const userrole = useAppSelector(selectRole);
-  const currenttab = useAppSelector(selectCurrentTab);
-  const usertabs = ["Users", "User Groups", "Notification Groups"];
+const Sidebar: React.FC = () => { 
 
-  return (
+  const username = useAppSelector(selectName)
+  const userrole = useAppSelector(selectRole)
+  const currenttab = useAppSelector(selectCurrentTab)
+  const usertabs = ["Users", "User Groups", "Notification Groups"]
+
+  return(
     <div className="sidebar">
       <div className="flexcontainer sidebarprofile">
-        <div style={{ flex: 1 }}>
-          <img
-            alt="ISDN Logo"
-            src={defaultprofile}
-            width="40"
-            height="40"
-            className="d-inline-block align-top"
-            style={{ marginRight: 10 }}
-          />
+        <div style={{flex: 1}}>
+        <img
+        alt="ISDN Logo"
+        src={defaultprofile} 
+        width="40"
+        height="40"
+        className="d-inline-block align-top"
+        style={{ marginRight: 10 }}
+      />
         </div>
-        <div style={{ flex: 3, marginTop: 8, marginBottom: -8 }}>
-          <p
-            style={{
-              fontSize: 18,
-              fontWeight: 500,
-              textTransform: "capitalize",
-            }}
-          >
-            {username}
-          </p>
-          <p style={{ fontSize: 12, fontWeight: 400, marginTop: -15 }}>
-            {userrole}
-          </p>
+        <div style={{flex: 3, marginTop: 8, marginBottom: -8}}>
+          <p style={{fontSize: 18, fontWeight: 500, textTransform: "capitalize"}}>{username}</p>
+          <p style={{fontSize:  12, fontWeight: 400, marginTop: -15}}>{userrole}</p>
         </div>
-      </div>
-      <hr className="solid" style={{ height: 2, color: "#A4AAB6" }} />
 
-      <p
-        style={{
-          color: "#BFC3CB",
-          fontSize: 12,
-          fontWeight: 400,
-          marginTop: 30,
-          marginBottom: 30,
-          marginLeft: "8%",
-        }}
-      >
-        MENU
-      </p>
-      <SidebarLink url="/dashboard" name="Dashboard" icon={<DashboardIcon />} />
-      <SidebarLink url="/products" name="Products" icon={<InventoryIcon />} />
-      <SidebarLink url="/Tloan" name="T-Loan" icon={<ArticleIcon />} />
-      <SidebarLink url="/RMA" name="RMA" icon={<AssignmentReturnIcon />} />
+      </div>
+      <hr className="solid" style={{height: 2, color: "#A4AAB6"}}/>
+
+      <p style={{color: "#BFC3CB", fontSize:  12, fontWeight: 400, marginTop: 30, marginBottom: 30, marginLeft: "8%"}}>MENU</p>
+      <SidebarLink url="/dashboard" name="Dashboard" icon = {<DashboardIcon />} />
+      <SidebarLink url="/products" name="Products" icon = {<InventoryIcon />} />
+      <SidebarLink url="/Tloan" name="T-Loan" icon = {<ArticleIcon />} />
+      <SidebarLink url="/RMA" name="RMA" icon = {<AssignmentReturnIcon />} />
       {/* <div className="sidebartabcontainer" style={{background: usertabs.includes(currenttab)? "#3F4D65": "transparent"}}>
       <button onClick={() => {}} className="buttonremovestyling" style={{flex: 1, marginLeft: "10%", marginTop: 8, marginBottom: 8, textAlign: "left"}}><PeopleAltIcon /> User Management</button>
       </div> */}
-      <SidebarLink url="/users" name="Users" icon={<PersonIcon />} />
-      <SidebarLink
-        url="/usergroups"
-        name="User Groups"
-        icon={<PeopleAltIcon />}
-      />
-      <SidebarLink
-        url="/notificationgroups"
-        name="Notification Groups"
-        icon={<NotificationAddIcon />}
-      />
-      <SidebarLink
-        url="/binlocations"
-        name="Bin Locations"
-        icon={<WarehouseIcon />}
-      />
+      <SidebarLink url="/users" name="Users" icon = {<PersonIcon />} />
+      <SidebarLink url="/usergroups" name="User Groups" icon = {<PeopleAltIcon />} />
+      <SidebarLink url="/notificationgroups" name="Notification Groups" icon = {<NotificationAddIcon />} />
+      <SidebarLink url="/binlocations" name="Bin Locations" icon = {<WarehouseIcon />} />
     </div>
-  );
-};
+  )
+}
 
 export default Sidebar;
+
+
+
 
 // import Box from '@mui/material/Box';
 // import Drawer from '@mui/material/Drawer';
@@ -183,6 +155,7 @@ export default Sidebar;
 //     </List>
 //   </Drawer>
 
+    
 //     // <div className="sidebar">
 //     //   <div className="sidebarWrapper">
 //     //     <div className="sidebarMenu">

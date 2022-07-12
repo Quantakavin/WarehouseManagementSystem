@@ -1,19 +1,20 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../../styles/Products.scss";
-import axios from "axios";
 import TopBar from "../../components/header/TopBar";
 import SideBar from "../../components/sidebar/SideBar";
+import axios from "axios";
 // import "../App.css";
 import "../../styles/Products.scss";
 import Table from "../../components/table/Table";
 // import SearchBar from "material-ui-search-bar";
-// import ProductSearchBar from "../../components/search/SearchBar";
+//import ProductSearchBar from "../../components/search/SearchBar";
 
-const Products = () => {
+function Products() {
   const [dataTable, setDataTable] = useState([]);
   const [currentPage, setcurrentPage] = useState(1);
   const [itemsPerPage, setitemPerPage] = useState(10);
   const [q, setQ] = useState("");
+
 
   const handleClick = (e) => {
     setcurrentPage(Number(e.target.id));
@@ -35,6 +36,8 @@ const Products = () => {
       </li>
     );
   });
+
+
 
   useEffect(() => {
     axios
@@ -64,17 +67,23 @@ const Products = () => {
   }
 
   return (
-    <div className="product-container">
-      <div className="product">
-        <div className="Table">
-          <input type="text" value={q} onChange={(e) => setQ(e.target.value)} />
+    <>
+      <div className="product-container">
+        <div className="product">
+          <div className="Table">
+            <input
+              type="text"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+            />
 
-          <Table data={search(currentItems)} column={column} />
-          <ul className="pageNumbers">{renderPageNumbers}</ul>
+            <Table data={search(currentItems)} column={column} />
+            <ul className="pageNumbers">{renderPageNumbers}</ul>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
-};
+}
 
 export default Products;
