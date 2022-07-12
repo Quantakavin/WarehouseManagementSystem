@@ -106,7 +106,7 @@ const TLoanTabs : React.FC = () => {
                                     <TableCell sx={{ color: "#0A2540" }} align="left">
                                               {TLoanNumber}
                                     </TableCell>
-                                    <ActionMenu id={TLoanNumber} />
+                                    {/* <ActionMenu id={TLoanNumber} /> */}
 
                                     </TableRow>
                                 
