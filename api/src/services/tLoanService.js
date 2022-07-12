@@ -76,7 +76,13 @@ module.exports.extension = async(id,duration,reason) => {
 
 
 module.exports.getCurrent = async () => {
-  const query = `SELECT * FROM TLoan where TLoanStatusID IN (3,5,6,7)`;
+  const query = `
+  SELECT TLoanNumber, 
+  DATE(ApplicationDate) ,
+  DATE(DATE_ADD(RequiredDate, INTERVAL duration DAY)),
+  CompanyID,
+  Requestor
+  FROM TLoan where TLoanStatusID IN (3,5,6,7);`;
   return knex.raw(query);
 }
 
