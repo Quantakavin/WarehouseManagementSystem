@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const binsController = require('../controllers/binsController');
 
-// Bin Informmation Test
 router.get('/getbinInformmation', binsController.binInfo);
+router.get('/bintag/:BinTag', binsController.binTag);
+router.get('/brand/:Brand', binsController.brand);
 
 module.exports = router;
