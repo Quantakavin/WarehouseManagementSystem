@@ -90,7 +90,7 @@ const App: React.FC = () => {
               <Route path="/tloan" element={<TLoan />} />
               <Route path="/rma" element={<RMA />} />
               <Route path="/createRma" element={<CreateRMA />} />
-              <Route path="/RMADetails/:RMANo" element={<RmaDisplay/>} />
+              <Route path="/rmaDetails/:RMANo" element={<RmaDisplay/>} />
               <Route path="/tloanDetails/:TLoanNumber" element={<TLoanDisplay/>} />
               <Route path="/newtloan" element={<NewTLoan/>} />
             </Route>
