@@ -1,7 +1,10 @@
-import React, { useState } from "react";
-import axios, { AxiosResponse } from "axios";
+import React, { useState } from 'react';
+import axios, { AxiosResponse } from 'axios';
 
 const EditUserGroup: React.FC = () => {
-  return <></>;
-};
+    return(
+        <>
+        </>
+    )
+}
 export default EditUserGroup;

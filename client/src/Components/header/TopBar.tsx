@@ -12,8 +12,8 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import defaultprofile from "../../assets/defaultprofile.png";
 import navbarbrand from "../../assets/navbarbrand.png";
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { removeUser } from "../../app/reducers/CurrentUserSlice";
+import { useAppSelector, useAppDispatch } from '../../app/hooks'
+import { removeUser } from '../../app/reducers/CurrentUserSlice'
 
 const TopBar: React.FC = () => {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ const TopBar: React.FC = () => {
 
   const logout = () => {
     setShowProfileDropdown(false);
-    dispatch(removeUser());
+    dispatch(removeUser())
     localStorage.clear();
     navigate("/");
   };

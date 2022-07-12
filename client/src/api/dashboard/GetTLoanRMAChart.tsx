@@ -1,8 +1,11 @@
 import axios from "axios";
 import config from "../../config/config";
 
-const GetTLoanRMAChart = () => {
-  return <div>GetTLoanRMAChart</div>;
-};
 
-export default GetTLoanRMAChart;
+function GetTLoanRMAChart() {
+  return (
+    <div>GetTLoanRMAChart</div>
+  )
+}
+
+export default GetTLoanRMAChart

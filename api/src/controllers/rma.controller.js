@@ -220,6 +220,7 @@ module.exports.newRMA = async (req, res) => {
             rmaProducts
         );
         if (resultsrma.length > 0) {
+            // console.log(results)
             return res.status(200).json(resultsrma);
         }
         return res.status(500).send('Could Not Create The RMA');
