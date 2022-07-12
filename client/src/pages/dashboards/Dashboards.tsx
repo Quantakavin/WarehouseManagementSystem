@@ -7,19 +7,17 @@ import Charts from "../../components/charts/Chart";
 import Cards from "../../components/cards/cards";
 import Chart2 from "../../components/charts/Chart2";
 
-function Dashboards() {
+const Dashboards = () => {
   return (
-    <>
-      <div className="home">
-        <br></br>
-        <h1 className="homeTitle">Dashboard</h1>
+    <div className="home">
+      <br />
+      <h1 className="homeTitle">Dashboard</h1>
 
-        <Cards />
-        <Charts title={undefined} dataKey={undefined} grid={undefined} />
-        <Chart2 title={undefined} dataKey={undefined} grid={undefined} />
-      </div>
-    </>
+      <Cards />
+      <Charts title={undefined} dataKey={undefined} grid={undefined} />
+      <Chart2 title={undefined} dataKey={undefined} grid={undefined} />
+    </div>
   );
-}
+};
 
 export default Dashboards;

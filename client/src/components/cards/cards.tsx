@@ -115,7 +115,7 @@ function cards() {
           </div>
           <div>
             <span className="Current">On-Extension</span>
-            <h1 className="Current"></h1>
+            <h1 className="Current" />
           </div>
         </div>
       </div>

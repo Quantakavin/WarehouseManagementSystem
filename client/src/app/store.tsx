@@ -1,17 +1,22 @@
-import { configureStore, createStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import { persistStore, persistReducer } from 'redux-persist'
-import CurrentUserReducer from './reducers/CurrentUserSlice';
-import SidebarReducer from './reducers/SidebarSlice';
-import RootReducer from './reducers/RootReducer';
-import storage from 'redux-persist/lib/storage';
+import {
+  configureStore,
+  createStore,
+  ThunkAction,
+  Action,
+} from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import CurrentUserReducer from "./reducers/CurrentUserSlice";
+import SidebarReducer from "./reducers/SidebarSlice";
+import RootReducer from "./reducers/RootReducer";
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage,
-  whitelist: ['currentUser', 'sidebar']
-}
+  whitelist: ["currentUser", "sidebar"],
+};
 
-const persistedReducer = persistReducer(persistConfig, RootReducer)
+const persistedReducer = persistReducer(persistConfig, RootReducer);
 
 // export const store = configureStore({
 //   // reducer: {
@@ -25,7 +30,7 @@ const persistedReducer = persistReducer(persistConfig, RootReducer)
 // });
 
 export const store = createStore(persistedReducer);
-export const persistor = persistStore(store)
+export const persistor = persistStore(store);
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof RootReducer>;

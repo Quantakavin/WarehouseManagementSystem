@@ -34,8 +34,8 @@ const FormField = <T,>({
   errormsg,
   type,
   register,
-  rules
-} : FormFieldProps<T>) => {
+  rules,
+}: FormFieldProps<T>) => {
   const { toggle, passwordType, showPassword } = useTogglePasword();
   let field = null;
 
@@ -45,7 +45,7 @@ const FormField = <T,>({
         <Input
           $password
           type={passwordType}
-          defaultValue = {defaultvalue}
+          defaultValue={defaultvalue}
           {...(register && register(name, rules))}
         />
         <div className="passwordicon flexcontainer" onClick={toggle}>
@@ -62,7 +62,7 @@ const FormField = <T,>({
       <Input
         $password={false}
         type={type}
-        defaultValue = {defaultvalue}
+        defaultValue={defaultvalue}
         {...(register && register(name, rules))}
       />
     );

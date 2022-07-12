@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import type { RootState } from '../../app/store'
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { RootState } from "../store";
 
 // Define a type for the slice state
 interface CurrentUserState {
@@ -16,36 +16,37 @@ const initialState: CurrentUserState = {
   name: null,
   // token: null,
   role: null,
-  isAuthenticated: false
-}
+  isAuthenticated: false,
+};
 
 export const currentUserSlice = createSlice({
-  name: 'currentUser',
+  name: "currentUser",
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<CurrentUserState>) => {
-        state.id = action.payload.id;
-        // state.token = action.payload.token;
-        state.name = action.payload.name;
-        state.role = action.payload.role;
-        state.isAuthenticated = true;
+      state.id = action.payload.id;
+      // state.token = action.payload.token;
+      state.name = action.payload.name;
+      state.role = action.payload.role;
+      state.isAuthenticated = true;
     },
-    removeUser: state => {
+    removeUser: (state) => {
       state.id = null;
       // state.token = action.payload.token;
       state.name = null;
       state.role = null;
       state.isAuthenticated = false;
     },
-  }
-})
+  },
+});
 
-export const { setUser, removeUser } = currentUserSlice.actions
+export const { setUser, removeUser } = currentUserSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectName = (state: RootState) => state.currentUser.name
-export const selectRole= (state: RootState) => state.currentUser.role
-export const selectIsAuthenticated = (state: RootState) => state.currentUser.isAuthenticated
+export const selectName = (state: RootState) => state.currentUser.name;
+export const selectRole = (state: RootState) => state.currentUser.role;
+export const selectIsAuthenticated = (state: RootState) =>
+  state.currentUser.isAuthenticated;
 
-export default currentUserSlice.reducer
+export default currentUserSlice.reducer;

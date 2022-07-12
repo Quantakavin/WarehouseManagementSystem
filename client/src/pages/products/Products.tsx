@@ -1,31 +1,29 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../../styles/Products.scss";
+import axios from "axios";
 import TopBar from "../../components/header/TopBar";
 import SideBar from "../../components/sidebar/SideBar";
-import axios from "axios";
 // import "../App.css";
 import "../../styles/Products.scss";
 import Table from "../../components/table/Table";
 // import SearchBar from "material-ui-search-bar";
-//import ProductSearchBar from "../../components/search/SearchBar";
+// import ProductSearchBar from "../../components/search/SearchBar";
 
-function Products() {
+const Products = () => {
   const [dataTable, setDataTable] = useState([]);
   const [q, setQ] = useState("");
 
   useEffect(() => {
-    axios.post('http://localhost:5000/api/products', {
-      offsetNo: 10
-    })
-    .then((response) => 
-      setDataTable(response.data))
-    .catch((error) => 
-      console.log(error)
-    );
+    axios
+      .post("http://localhost:5000/api/products", {
+        offsetNo: 10,
+      })
+      .then((response) => setDataTable(response.data))
+      .catch((error) => console.log(error));
   }, []);
 
   const column = [
-    { value: "BinProductPK"},
+    { value: "BinProductPK" },
     { heading: "Item Name", value: "ItemName" },
     { heading: "Batch Number", value: "BatchNo" },
     { heading: "Brand", value: "Brand" },
@@ -43,22 +41,16 @@ function Products() {
   }
 
   return (
-    <>
-      <div className="product-container">
-        <div className="product">
-          <div className="Table">
-            <input
-              type="text"
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-            />
+    <div className="product-container">
+      <div className="product">
+        <div className="Table">
+          <input type="text" value={q} onChange={(e) => setQ(e.target.value)} />
 
-            <Table data={search(dataTable)} column={column} />
-          </div>
+          <Table data={search(dataTable)} column={column} />
         </div>
       </div>
-    </>
+    </div>
   );
-}
+};
 
 export default Products;

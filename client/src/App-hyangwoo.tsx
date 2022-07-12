@@ -1,6 +1,7 @@
+import React from "react";
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import TopBar from "./components/header/TopBar";
 import Sidebar from "./components/sidebar/SideBar";
-import React from "react";
 import Login from "./pages/users/Login";
 import AddUser from "./pages/users/AddUser";
 import EditUser from "./pages/users/EditUser";
@@ -22,9 +23,8 @@ import TLoan from "./pages/tloans/tloan";
 import RMA from "./pages/rma/rma";
 import CreateRMA from "./pages/rma/createRma";
 import Sidebar2 from "./components/sidebar/Sidebar2";
-import TLoanDisplay from "./components/display/tloanDisplay"
-import RmaDisplay from "./components/display/rmaDisplay"
-import { Routes, Route, Navigate, Outlet } from "react-router-dom";
+import TLoanDisplay from "./components/display/tloanDisplay";
+import RmaDisplay from "./components/display/rmaDisplay";
 import { useAppSelector } from "./app/hooks";
 import {
   selectIsAuthenticated,
@@ -40,16 +40,13 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ loginpage }) => {
   if (loginpage) {
     if (token) {
       return <Navigate replace to="/dashboard" />;
-    } else {
-      return <Outlet />;
     }
-  } else {
-    if (!token) {
-      return <Navigate replace to="/" />;
-    } else {
-      return <Outlet />;
-    }
+    return <Outlet />;
   }
+  if (!token) {
+    return <Navigate replace to="/" />;
+  }
+  return <Outlet />;
 };
 
 const App: React.FC = () => {
@@ -65,7 +62,7 @@ const App: React.FC = () => {
         {isAuthenticated ? <Sidebar /> : null}
         <div className="bluebackground" style={{ flex: 5 }}>
           <Routes>
-            <Route element={<ProtectedRoute loginpage={true} />}>
+            <Route element={<ProtectedRoute loginpage />}>
               <Route path="/login" element={<Navigate replace to="/" />} />
               <Route path="/" element={<Login />} />
             </Route>
@@ -87,8 +84,11 @@ const App: React.FC = () => {
               <Route path="/tloan" element={<TLoan />} />
               <Route path="/rma" element={<RMA />} />
               <Route path="/createRma" element={<CreateRMA />} />
-              <Route path="/RMADetails/:RMANo" element={<RmaDisplay/>} />
-              <Route path="/tloanDetails/:TLoanNumber" element={<TLoanDisplay/>} />
+              <Route path="/RMADetails/:RMANo" element={<RmaDisplay />} />
+              <Route
+                path="/tloanDetails/:TLoanNumber"
+                element={<TLoanDisplay />}
+              />
             </Route>
           </Routes>
         </div>
