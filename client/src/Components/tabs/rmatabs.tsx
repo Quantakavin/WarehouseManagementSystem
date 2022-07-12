@@ -15,6 +15,9 @@ import { useAppSelector } from '../../app/hooks'
 import { selectRole } from '../../app/reducers/CurrentUserSlice';
 import ActionMenu from "../../components/table/ActionMenu";
 import { removeUser } from '../../app/reducers/CurrentUserSlice';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+import PageviewIcon from '@mui/icons-material/Pageview';
 
 export default function RMATabs() {
   const [pending, setPending] = useState([]);
