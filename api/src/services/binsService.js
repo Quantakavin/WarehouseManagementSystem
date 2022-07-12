@@ -13,7 +13,7 @@ module.exports.getBinByProductBrand = async (Brand) => {
 };
 
 // Get Bin By Item Name
-module.exports.getBinByProductName = async () => {
-    const query = `SELECT * FROM BinProduct WHERE ItemName =?`;
-    return knex.raw(query), [ItemName];
+module.exports.getBinByProductName = async (ItemName) => {
+    const query = `SELECT Bin.BinTag, Bin.BinID, BinProduct.ItemName FROM BinProduct LEFT JOIN Bin ON Bin.BinID = BinProduct.BinID WHERE ItemName LIKE ?`;
+    return knex.raw(query, [ItemName]);
 };
