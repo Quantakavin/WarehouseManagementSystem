@@ -8,13 +8,16 @@ import "../../styles/Products.scss";
 import Table from "../../components/table/Table";
 // import SearchBar from "material-ui-search-bar";
 //import ProductSearchBar from "../../components/search/SearchBar";
+import SearchBarUpdated from "../../components/search/SearchBarUpdated";
+import { Menu } from "@mui/material";
+import ActionMenu from "../../components/table/ActionMenu";
+
 
 function Products() {
   const [dataTable, setDataTable] = useState([]);
   const [currentPage, setcurrentPage] = useState(1);
   const [itemsPerPage, setitemPerPage] = useState(10);
   const [q, setQ] = useState("");
-
 
   const handleClick = (e) => {
     setcurrentPage(Number(e.target.id));
@@ -37,8 +40,6 @@ function Products() {
     );
   });
 
-
-
   useEffect(() => {
     axios
       .post("http://localhost:5000/api/products", {
@@ -49,12 +50,12 @@ function Products() {
   }, []);
 
   const column = [
-    { value: "BinProductPK" },
+    // { value: "BinProductPK" },
     { heading: "Item Name", value: "ItemName" },
     { heading: "Batch Number", value: "BatchNo" },
     { heading: "Brand", value: "Brand" },
     { heading: "Available Quantity", value: "Quantity" },
-    { heading: "Action", value: ":" },
+    // { heading: "Action", acessor: "actions" },
   ];
 
   // Search Rows filter by Item Name and Branc
@@ -66,18 +67,26 @@ function Products() {
     );
   }
 
+
+  
+
   return (
     <>
+    
+
       <div className="product-container">
         <div className="product">
           <div className="Table">
-            <input
-              type="text"
+          <h2 className="Table"> Product Search </h2>
+
+              <input
+              className="searchbar"
+              type="text" 
               value={q}
               onChange={(e) => setQ(e.target.value)}
             />
 
-            <Table data={search(currentItems)} column={column} />
+            <Table data={search(currentItems)} column={column}/>
             <ul className="pageNumbers">{renderPageNumbers}</ul>
           </div>
         </div>

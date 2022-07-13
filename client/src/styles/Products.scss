@@ -10,19 +10,28 @@
     width: 100%;
     
 }
+.pagetitle {
+    
+}
+
+.searchbar {
+    margin-bottom: 20px;
+}
 
 .Table {
     margin: 40px;
+    margin-left: 20px;
 }
 
 .pageNumbers {
     list-style: none;
     display: flex;
-   
+
     
 }
 
 .pageNumbers li {
     padding: 10px;
     cursor: pointer;
+    
 }

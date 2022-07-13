@@ -60,7 +60,7 @@ module.exports.searchFilterProducts = async (req, res) => {
 // Get all Products with Pagination
 module.exports.getAllProductsTest = async (req, res) => {
     try {
-        const result = await productService.getAllTestr();
+        const result = await productService.getAllTest();
         return res.status(200).send(result);
     } catch (error) {
         console.log(error);
