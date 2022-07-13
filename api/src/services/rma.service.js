@@ -40,7 +40,7 @@ module.exports.getSalesmanRMA = async (SalesmanID) => {
     return knex.raw(query, [SalesmanID]);
 };
 
-module.exports.getSalesmaAcceptedRMA = async (SalesmanID) => {
+module.exports.getSalesmanAcceptedRMA = async (SalesmanID) => {
     const query = ` SELECT r.RMANo, 
                     r.DateTime ,
                     c.CompanyName,

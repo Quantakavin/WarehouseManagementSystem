@@ -11,7 +11,7 @@ module.exports.getAllRMA = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await rmaService.getAllRMA();
-        redisClient.set('Rma', JSON.stringify(results[0]));
+        redisClient.set('allRMA', JSON.stringify(results[0]));
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -44,7 +44,7 @@ module.exports.getRMAProducts = async (req, res) => {
 module.exports.getRMADetails = async (req, res) => {
     const { RMANo } = req.params;
     try {
-        const reqRMA = await redisClient.get(`rma#${RMANo}`);
+        const reqRMA = await redisClient.get(`rmaDetails#${RMANo}`);
         if (reqRMA !== null) {
             const redisresults = JSON.parse(reqRMA);
             return res.status(200).json(redisresults);
@@ -60,7 +60,7 @@ module.exports.getRMADetails = async (req, res) => {
                 [output[0].RMAProducts] = results2;
                 output = output[0];
             }
-            redisClient.set(`rma#${RMANo}`, JSON.stringify(output));
+            redisClient.set(`rmaProductDetails#${RMANo}`, JSON.stringify(output));
             return res.status(200).send(output);
         }
         return res.status(404).json({ message: 'Cannot find RMA with that RMA No.!' });
@@ -73,7 +73,7 @@ module.exports.getRMADetails = async (req, res) => {
 module.exports.getByRMANo = async (req, res) => {
     const { RMANo } = req.params;
     try {
-        const reqRMA = await redisClient.get(`rma#${RMANo}`);
+        const reqRMA = await redisClient.get(`rmaByRMANo#${RMANo}`);
         let output = [];
         if (reqRMA !== null) {
             const redisresults = JSON.parse(reqRMA);
@@ -82,7 +82,7 @@ module.exports.getByRMANo = async (req, res) => {
         const results = await rmaService.getByRMANo(RMANo);
         if (results[0].length > 0) {
             [output] = results
-            redisClient.set(`rma#${RMANo}`, JSON.stringify(output[0]));
+            redisClient.set(`rmaByRMANo#${RMANo}`, JSON.stringify(output[0]));
             return res.status(200).send(output[0]);
         }
         return res.status(404).json({ message: 'Cannot find RMA with that RMA No.!' });
@@ -95,14 +95,14 @@ module.exports.getByRMANo = async (req, res) => {
 module.exports.getMyAcceptedRMA = async (req, res) => {
     const { SalesmanID } = req.params;
     try {
-        const reqRMA = await redisClient.get(`rma#${SalesmanID}`);
+        const reqRMA = await redisClient.get(`myAcceptedRMA#${SalesmanID}`);
         if (reqRMA !== null) {
             const redisresults = JSON.parse(reqRMA);
             return res.status(200).json(redisresults);
         }
         const results = await rmaService.getSalesmanAcceptedRMA(SalesmanID);
         if (results[0].length > 0) {
-            redisClient.set(`rma#${SalesmanID}`, JSON.stringify(results));
+            redisClient.set(`myAcceptedRMA#${SalesmanID}`, JSON.stringify(results));
             return res.status(200).send(results[0]);
         }
         return res.status(404).json({ message: 'Cannot find RMA requests under you!' });
@@ -115,14 +115,14 @@ module.exports.getMyAcceptedRMA = async (req, res) => {
 module.exports.getMyRejectedRMA = async (req, res) => {
     const { SalesmanID } = req.params;
     try {
-        const reqRMA = await redisClient.get(`rma#${SalesmanID}`);
+        const reqRMA = await redisClient.get(`myRejectedRMA#${SalesmanID}`);
         if (reqRMA !== null) {
             const redisresults = JSON.parse(reqRMA);
             return res.status(200).json(redisresults);
         }
         const results = await rmaService.getSalesmanRejectedRMA(SalesmanID);
         if (results[0].length > 0) {
-            redisClient.set(`rma#${SalesmanID}`, JSON.stringify(results));
+            redisClient.set(`myRejectedRMA#${SalesmanID}`, JSON.stringify(results));
             return res.status(200).send(results[0]);
         }
         return res.status(404).json({ message: 'Cannot find RMA requests under you!' });
