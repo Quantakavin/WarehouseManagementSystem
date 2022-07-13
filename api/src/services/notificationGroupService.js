@@ -12,10 +12,15 @@ module.exports.assignToUser = async (userid, notigroupid) => {
     });
 };
 
-module.exports.getAll = async (limit, page) => {
-    const query = `SELECT NotiGroupID, NotiGroupName, NotiGroupDesc, count(NotiGroupID) OVER() AS full_count FROM NotiGroup LIMIT ? OFFSET ?`;
-    return knex.raw(query, [Number(limit), Number(page)]);
+module.exports.getAll = async (pageSize, pageNo, sortColumn, sortOrder, name ) => {
+    const query = `Call sp_getAllNotiGroups(?,?,?,?,?)`;
+    return knex.raw(query, [Number(pageSize), Number(pageNo), sortColumn, sortOrder, name ]);
 };
+
+// module.exports.getAll = async (limit, page) => {
+//     const query = `SELECT NotiGroupID, NotiGroupName, NotiGroupDesc, count(NotiGroupID) OVER() AS full_count FROM NotiGroup LIMIT ? OFFSET ?`;
+//     return knex.raw(query, [Number(limit), Number(page)]);
+// };
 
 module.exports.getByID = async (notiGroupID) => {
     const query = `SELECT NotiGroupName, NotiGroupDesc FROM NotiGroup WHERE NotiGroupID = ?`;
