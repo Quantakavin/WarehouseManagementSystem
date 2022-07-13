@@ -110,7 +110,7 @@ module.exports.currentLoan = async (req, res) => {
     }
 };
 
-module.exports.draftLoan = async (req, res) => {
+module.exports.draftsLoan = async (req, res) => {
     try {
         const results = await TLoan.getDraft();
         if (results.length > 0) {

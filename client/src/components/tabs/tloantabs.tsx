@@ -1,14 +1,15 @@
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { Tab, Tabs } from '@mui/material';
+import {TabList, TabPanel } from '@mui/lab'; 
 import 'react-tabs/style/react-tabs.css';
 import React , { useEffect, useState } from 'react';
-import axios from 'axios';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+// import axios from 'axios';
+// import Table from '@mui/material/Table';
+// import TableBody from '@mui/material/TableBody';
+// import TableCell from '@mui/material/TableCell';
+// import TableContainer from '@mui/material/TableContainer';
+// import TableHead from '@mui/material/TableHead';
+// import TableRow from '@mui/material/TableRow';
+// import Paper from '@mui/material/Paper';
 import { Link, useNavigate } from 'react-router-dom'
 import SubmitButton from '../form/SubmitButton';
 import { useQuery, useInfiniteQuery } from "react-query";
@@ -16,7 +17,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import PageviewIcon from '@mui/icons-material/Pageview';
 import ActionMenu from "../../components/table/ActionMenu";
-import { GetCurrent } from '../../api/TLoanDB';
+import { GetCurrent, GetDraft, GetPending, GetHistory } from '../../api/TLoanDB';
 import TableNew from "../../components/table/TableNew";
 
 // const TLoanTabs : React.FC = () => {
@@ -237,6 +238,30 @@ const TLoanTabs: React.FC = () => {
       }
     });
 
+  const PendingQuery = useInfiniteQuery(`pending`, GetPending,
+    {
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
+        return undefined;
+      }
+    });
+
+  const DraftQuery = useInfiniteQuery(`draft`, GetDraft,
+    {
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
+        return undefined;
+      }
+    });
+
+  const HistoryQuery = useInfiniteQuery(`history`, GetHistory,
+    {
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
+        return undefined;
+      }
+    });
+
   const ActionMenu = (id: string) => {
     return (
       [
@@ -268,10 +293,10 @@ const TLoanTabs: React.FC = () => {
      
       <Tabs>
       <TabList>
-        <Tab>Current</Tab>
-        <Tab>Pending</Tab>
-        <Tab>Draft </Tab>
-        <Tab>History</Tab>
+        <Tab label="Current" />
+        <Tab label="Pending" />
+        <Tab label="Drafts" />
+        <Tab label="History" />
        </TabList>
 
        <TabPanel>
@@ -282,25 +307,25 @@ const TLoanTabs: React.FC = () => {
       }
       </TabPanel>
       <TabPanel>
-      {LoansQuery.isLoading || LoansQuery.isError ? null :
+      {PendingQuery.isLoading || PendingQuery.isError ? null :
       <>
-        <TableNew headers={headers} pages={LoansQuery.data.pages} query={LoansQuery} menu={ActionMenu} />
+        <TableNew headers={headers} pages={PendingQuery.data.pages} query={PendingQuery} menu={ActionMenu} />
         </>
       }
       </TabPanel>
       <TabPanel>
-      {LoansQuery.isLoading || LoansQuery.isError ? null :
+      {DraftQuery.isLoading || DraftQuery.isError ? null :
       <>
-        <TableNew headers={headers} pages={LoansQuery.data.pages} query={LoansQuery} menu={ActionMenu} />
+        <TableNew headers={headers} pages={DraftQuery.data.pages} query={DraftQuery} menu={ActionMenu} />
         </>
       }
       </TabPanel>
       <TabPanel>
-      {LoansQuery.isLoading || LoansQuery.isError ? null :
+      {HistoryQuery.isLoading || HistoryQuery.isError ? <><div className=''>No Loans bruh</div></> :
       <>
-        <TableNew headers={headers} pages={LoansQuery.data.pages} query={LoansQuery} menu={ActionMenu} />
+        <TableNew headers={headers} pages={HistoryQuery.data.pages} query={HistoryQuery} menu={ActionMenu} />
         </>
-      }
+      } 
       </TabPanel>
       </Tabs>
     </>

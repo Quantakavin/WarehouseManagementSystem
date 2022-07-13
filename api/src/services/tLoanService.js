@@ -77,27 +77,53 @@ module.exports.extension = async(id,duration,reason) => {
 
 module.exports.getCurrent = async () => {
   const query = `
-  SELECT TLoanNumber, 
-  DATE(ApplicationDate) ,
-  DATE(DATE_ADD(RequiredDate, INTERVAL duration DAY)),
-  CompanyID,
-  Requestor
-  FROM TLoan where TLoanStatusID IN (3,5,6,7);`;
+  SELECT t.TLoanNumber, 
+  DATE(t.RequiredDate) ,
+  DATE(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY)),
+  c.CompanyName,
+  t.Requestor,
+  count(t.TLoanNumber) OVER() AS full_count
+  FROM TLoan t, Company c where TLoanStatusID IN (3,5,6,7) AND 
+  t.CompanyID = c.CompanyID;;`;
   return knex.raw(query);
 }
 
 module.exports.getPending = async () => {
-  const query = `SELECT * FROM TLoan where TLoanStatusID = "4"`;
+  const query = `
+  SELECT t.TLoanNumber, 
+  DATE(t.RequiredDate) ,
+  DATE(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY)),
+  c.CompanyName,
+  t.Requestor,
+  count(t.TLoanNumber) OVER() AS full_count
+  FROM TLoan t, Company c where TLoanStatusID = "4" AND 
+  t.CompanyID = c.CompanyID;`;
   return knex.raw(query);
 }
 
 module.exports.getDraft = async () => {
-  const query = `SELECT * FROM TLoan where TLoanStatusID = "1"`;
+  const query = `
+  SELECT t.TLoanNumber, 
+  DATE(t.RequiredDate) ,
+  DATE(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY)),
+  c.CompanyName,
+  t.Requestor,
+  count(t.TLoanNumber) OVER() AS full_count
+  FROM TLoan t, Company c where TLoanStatusID = "1" AND 
+  t.CompanyID = c.CompanyID;`;
   return knex.raw(query);
 }
 
 module.exports.getHistory = async () => {
-  const query = `SELECT * FROM TLoan where TLoanStatusID = "8"`;
+  const query = `
+  SELECT t.TLoanNumber, 
+  DATE(t.RequiredDate) ,
+  DATE(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY)),
+  c.CompanyName,
+  t.Requestor,
+  count(t.TLoanNumber) OVER() AS full_count
+  FROM TLoan t, Company c where TLoanStatusID = "8" AND 
+  t.CompanyID = c.CompanyID;`;
   return knex.raw(query);
 }
 
