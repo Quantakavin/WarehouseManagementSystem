@@ -1,4 +1,4 @@
-import { Tab, Tabs, Box } from '@mui/material';
+import { Tab, Tabs, Box, Grow } from '@mui/material';
 import {TabList, TabPanel, TabContext } from '@mui/lab'; 
 import 'react-tabs/style/react-tabs.css';
 import React , { useEffect, useState } from 'react';
@@ -288,10 +288,10 @@ const TLoanTabs: React.FC = () => {
 
   const [value, setValue] = useState(0); // first tab
 
-  const handleChange = (_event, newValue) => {
+  const handleChange = ( _event, newValue) => {
    setValue(newValue);
   };
-
+ 
   return (
     <>
       <h2 className="pagetitle">TLoans </h2>
@@ -306,10 +306,14 @@ const TLoanTabs: React.FC = () => {
 
         sx={{
           "& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110},
+          "& button:active": { backgroundColor: "#063970", color:"white", width: 190, height: 110},
+          "& button.Mui-selected": { backgroundColor: "#063970", color:"white", width: 190, height: 110}
           
 
         }}
+        aria-label="basic tabs example"
        >
+       
         <Tab label="Current" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
         <Tab label="Pending" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2, height: 100, width: 180,}}/>
         <Tab label="Drafts" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2, height: 100, width: 180,}}/>
