@@ -16,8 +16,7 @@ import NotificationGroups from "./pages/notificationgroups/NotificationGroups";
 import ViewNotificationGroup from "./pages/notificationgroups/ViewNotificationGroup";
 import Dashboard from "./pages/dashboards/Dashboards";
 import Products from "./pages/products/Products";
-import TestProducts from "./pages/products/TestProducts";
-//import TestProductDetails from "./pages/products/ProductDetails"
+import ViewProduct from "./pages/products/ViewProduct";
 import BinLocations from "./pages/binlocations/BinLocations";
 import TLoan from "./pages/tloans/tloan";
 import RMA from "./pages/rma/rma";
@@ -74,8 +73,7 @@ const App: React.FC = () => {
             <Route element={<ProtectedRoute loginpage={false} />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
-              <Route path="/testproducts" element={<TestProducts />} />
-              {/* <Route path="/testproductdetails" element={<TestProductDetails />} /> */}
+              <Route path="/product/:id" element={<ViewProduct />} />
               <Route path="/binlocations" element={<BinLocations />} />
               <Route path="/adduser" element={<AddUser />} />
               <Route path="/user/:id" element={<ViewUser />} />

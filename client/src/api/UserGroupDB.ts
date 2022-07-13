@@ -1,9 +1,8 @@
 import axios from "axios";
 import config from "../config/config";
 
-
-export const GetUserGroups = async ({pageParam = 0}) => {
-  const response = await axios.get(`${config.baseURL}/usergroups?limit=5&page=${pageParam * 5}`, {
+export const GetUserGroups = async ({pageParam = 0, queryKey}) => {
+  const response = await axios.get(`${config.baseURL}/usergroups?pageSize=5&pageNo=${pageParam * 5}&sortColumn=${queryKey[1]}&sortOrder=${queryKey[2]}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
