@@ -15,10 +15,7 @@ export default function rmaDisplay() {
       const fetchData = async () => {
         // get the data from the api
         const rma = await axios.get(`http://localhost:5000/api/RMADetails/${RMANo}`);
-       
         setRma(rma.data)
-        
-      
       }
       // call the function
       fetchData()

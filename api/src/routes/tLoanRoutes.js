@@ -7,7 +7,7 @@ router.post('/tloan/newloan', TLoanController.newLoan);
 router.get('/tloans/:number', TLoanController.searchLoan);
 router.post('/tloan/tloanextension', TLoanController.loanExtension)
 router.get('/tloan/current', TLoanController.currentLoan);
-router.get('/tloan/draft', TLoanController.draftLoan);
+router.get('/tloan/drafts', TLoanController.draftsLoan);
 router.get('/tloan/history', TLoanController.historyLoan);
 router.get('/tloan/pending', TLoanController.pendingLoan);
 router.put('/tloan/ready',TLoanController.readyLoan)

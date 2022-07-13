@@ -11,20 +11,27 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Link, useNavigate } from 'react-router-dom'
 import SubmitButton from '../form/SubmitButton';
+import { useAppSelector } from '../../app/hooks'
+import { selectRole } from '../../app/reducers/CurrentUserSlice';
 import ActionMenu from "../../components/table/ActionMenu";
+import { removeUser } from '../../app/reducers/CurrentUserSlice';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+import PageviewIcon from '@mui/icons-material/Pageview';
 
 export default function RMATabs() {
   const [pending, setPending] = useState([]);
   const [approved, setApproved] = useState([]);
   const [received, setReceived] = useState([]);
   const [verified, setVerified] = useState([]);
+  const userrole = useAppSelector(selectRole)
 
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
       const pending = await axios.get('http://localhost:5000/api/pendingRMA');
-      const approved = await axios.get('http://localhost:5000/api/approvedRMA');
+      const approved = await axios.get('http://localhost:5000/api/acceptedRMA');
       const received = await axios.get('http://localhost:5000/api/receivedRMA');
       const verified = await axios.get('http://localhost:5000/api/verifiedRMA');
 
@@ -55,7 +62,7 @@ export default function RMATabs() {
     //   }
     // });
 
-  const getPending = () => {
+const getPending = () => {
     let html = []
         html.push(
             <div className='container'>
@@ -98,7 +105,7 @@ export default function RMATabs() {
                                 <TableCell sx={{ color: "#0A2540" }} align="left">
                                           {CustomerEmail}
                                 </TableCell>
-                                <ActionMenu id={RMANo} />
+                                {/* <ActionMenu id={RMANo} /> */}
                                 </TableRow>
                             </div>
                               )}))
@@ -144,26 +151,26 @@ const getApproved = () => {
                         <TableBody>
                           <div >{approved.length > 0
                             ? approved.map((rma => {
-                                const {RMANo} = rma
+                              const {RMANo, DateTime, Company, CustomerEmail} = rma
                               return(
                               <div>
                             <TableRow  key={RMANo} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                              <TableCell sx={{ color: "#0A2540" }} align="left">
-                                          {RMANo}
-                              </TableCell>
-                              <TableCell sx={{ color: "#0A2540" }} align="left">
-                                          {RMANo}
-                              </TableCell>
-                              <TableCell sx={{ color: "#0A2540" }} align="left">
-                                          {RMANo}
-                              </TableCell>
-                              <TableCell sx={{ color: "#0A2540" }} align="left">
-                                          {RMANo}
-                              </TableCell>
-                              <TableCell sx={{ color: "#0A2540" }} align="left">
-                                        {RMANo}
-                              </TableCell>
-                              <ActionMenu id={RMANo} />
+                            <TableCell sx={{ color: "#0A2540" }} align="left">
+                                            {RMANo}
+                                </TableCell>
+                                <TableCell sx={{ color: "#0A2540" }} align="left">
+                                            {DateTime}
+                                </TableCell>
+                                <TableCell sx={{ color: "#0A2540" }} align="left">
+                                            {RMANo}
+                                </TableCell>
+                                <TableCell sx={{ color: "#0A2540" }} align="left">
+                                            {Company}
+                                </TableCell>
+                                <TableCell sx={{ color: "#0A2540" }} align="left">
+                                          {CustomerEmail}
+                                </TableCell>
+                              {/* <ActionMenu id={RMANo} /> */}
 
                               </TableRow>
                           
@@ -212,26 +219,26 @@ const getReceived = () => {
                         <TableBody>
                           <div >{received.length > 0
                             ? received.map((rma => {
-                                const {RMANo} = rma
+                              const {RMANo, DateTime, Company, CustomerEmail} = rma
                               return(
                               <div>
                             <TableRow  key={RMANo} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                              <TableCell sx={{ color: "#0A2540" }} align="left">
-                                          {RMANo}
-                              </TableCell>
-                              <TableCell sx={{ color: "#0A2540" }} align="left">
-                                          {RMANo}
-                              </TableCell>
-                              <TableCell sx={{ color: "#0A2540" }} align="left">
-                                          {RMANo}
-                              </TableCell>
-                              <TableCell sx={{ color: "#0A2540" }} align="left">
-                                          {RMANo}
-                              </TableCell>
-                              <TableCell sx={{ color: "#0A2540" }} align="left">
-                                        {RMANo}
-                              </TableCell>
-                              <ActionMenu id={RMANo} />
+                            <TableCell sx={{ color: "#0A2540" }} align="left">
+                                            {RMANo}
+                                </TableCell>
+                                <TableCell sx={{ color: "#0A2540" }} align="left">
+                                            {DateTime}
+                                </TableCell>
+                                <TableCell sx={{ color: "#0A2540" }} align="left">
+                                            {RMANo}
+                                </TableCell>
+                                <TableCell sx={{ color: "#0A2540" }} align="left">
+                                            {Company}
+                                </TableCell>
+                                <TableCell sx={{ color: "#0A2540" }} align="left">
+                                          {CustomerEmail}
+                                </TableCell>
+                              {/* <ActionMenu id={RMANo} /> */}
 
                               </TableRow>
                           
@@ -280,26 +287,26 @@ const getVerified = () => {
                         <TableBody>
                           <div >{verified.length > 0
                             ? verified.map((rma => {
-                                const {RMANo} = rma
+                                const {RMANo, DateTime, Company, CustomerEmail} = rma
                               return(
                               <div>
                             <TableRow  key={RMANo} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                              <TableCell sx={{ color: "#0A2540" }} align="left">
-                                          {RMANo}
-                              </TableCell>
-                              <TableCell sx={{ color: "#0A2540" }} align="left">
-                                          {RMANo}
-                              </TableCell>
-                              <TableCell sx={{ color: "#0A2540" }} align="left">
-                                          {RMANo}
-                              </TableCell>
-                              <TableCell sx={{ color: "#0A2540" }} align="left">
-                                          {RMANo}
-                              </TableCell>
-                              <TableCell sx={{ color: "#0A2540" }} align="left">
-                                        {RMANo}
-                              </TableCell>
-                              <ActionMenu id={RMANo} />
+                            <TableCell sx={{ color: "#0A2540" }} align="left">
+                                            {RMANo}
+                                </TableCell>
+                                <TableCell sx={{ color: "#0A2540" }} align="left">
+                                            {DateTime}
+                                </TableCell>
+                                <TableCell sx={{ color: "#0A2540" }} align="left">
+                                            {RMANo}
+                                </TableCell>
+                                <TableCell sx={{ color: "#0A2540" }} align="left">
+                                            {Company}
+                                </TableCell>
+                                <TableCell sx={{ color: "#0A2540" }} align="left">
+                                          {CustomerEmail}
+                                </TableCell>
+                              {/* <ActionMenu id={RMANo} /> */}
 
                               </TableRow>
                           
@@ -332,6 +339,7 @@ const applyLoan = () => {
     await SubmitButton(event.target);
     navigate("/createRMA", { replace: true });
 }
+
 return   (
 <button onClick={apply}>
 Apply new RMA
@@ -339,42 +347,184 @@ Apply new RMA
 )
 }
 
-return(
-  <div>
-    <Tabs>
-        <TabList>
-        <Tab>Pending</Tab>
-        <Tab>Approved</Tab>
-        <Tab>Received </Tab>
-        <Tab>Verified</Tab>
-        </TabList>
+switch (userrole) { 
+      case "Sales Engineer": { 
+        return(
+          <div>
+            <Tabs>
+                <TabList>
+                <Tab>Pending</Tab>
+                </TabList>
+                <TabPanel>
+                <div key="pending">
+                  {getPending()}
+                </div>
+                </TabPanel>       
+            </Tabs>
 
-        <TabPanel>
-        <div key="pending">
-          {getPending()}
-        </div>
-        </TabPanel>
-        <TabPanel>
-        <div key="approved">
-          {getApproved()}
-        </div>
-        </TabPanel>
-        <TabPanel>
-        <div key="verified">
-          {getReceived()}
-        </div>
-        </TabPanel>
-        <TabPanel>
-        <div key="verified">
-          {getVerified()}
-        </div>
-        </TabPanel>
+          {applyLoan()}
+          </div>
+        )
+      } 
+      case "Sales Manager": { 
+        return(
+          <div>
+            <Tabs>
+                <TabList>
+                <Tab>Pending</Tab>
+                <Tab>Approved</Tab>
+                <Tab>Received </Tab>
+                <Tab>Verified</Tab>
+                </TabList>
 
-       
-    </Tabs>
+                <TabPanel>
+                <div key="pending">
+                  {getPending()}
+                </div>
+                </TabPanel>
+                <TabPanel>
+                <div key="approved">
+                  {getApproved()}
+                </div>
+                </TabPanel>
+                <TabPanel>
+                <div key="verified">
+                  {getReceived()}
+                </div>
+                </TabPanel>
+                <TabPanel>
+                <div key="verified">
+                  {getVerified()}
+                </div>
+                </TabPanel>
+            </Tabs>
+          {applyLoan()}
+          </div>
+        )
+      } 
+      case "Sales Admin": { 
+        return(
+        <div>
+          <Tabs>
+              <TabList>
+              <Tab>Verified</Tab>
+              </TabList>
+              <TabPanel>
+              <div key="verified">
+                {getVerified()}
+              </div>
+              </TabPanel>
+          </Tabs>
+          {applyLoan()}
+        </div>
+        )
+      } 
+      case "Warehouse Worker": { 
+        return(
+          <div>
+            <Tabs>
+                <TabList>
+                <Tab>Approved</Tab>
+                </TabList>
+                <TabPanel>
+                <div key="approved">
+                  {getApproved()}
+                </div>
+                </TabPanel>
+            </Tabs>
+            {applyLoan()}
+          </div>
+          )
+      } 
+      case "Technical Staff": { 
+        return(
+          <div>
+            <Tabs>
+                <TabList>
+                <Tab>Received</Tab>
+                </TabList>
+                <TabPanel>
+                <div key="received">
+                  {getReceived()}
+                </div>
+                </TabPanel>
+            </Tabs>
+            {applyLoan()}
+          </div>
+          ) 
+      } 
+      case "Admin": { 
+        return(
+          <div>
+            <Tabs>
+                <TabList>
+                <Tab>Pending</Tab>
+                <Tab>Approved</Tab>
+                <Tab>Received </Tab>
+                <Tab>Verified</Tab>
+                </TabList>
 
-    {applyLoan()}
-    </div>
-  
-)
+                <TabPanel>
+                <div key="pending">
+                  {getPending()}
+                </div>
+                </TabPanel>
+                <TabPanel>
+                <div key="approved">
+                  {getApproved()}
+                </div>
+                </TabPanel>
+                <TabPanel>
+                <div key="verified">
+                  {getReceived()}
+                </div>
+                </TabPanel>
+                <TabPanel>
+                <div key="verified">
+                  {getVerified()}
+                </div>
+                </TabPanel>
+            </Tabs>
+          {applyLoan()}
+          </div>
+          )
+      } 
+      default: { 
+        return(
+          <div>
+            <Tabs>
+                <TabList>
+                <Tab>Pending</Tab>
+                <Tab>Approved</Tab>
+                <Tab>Received </Tab>
+                <Tab>Verified</Tab>
+                </TabList>
+
+                <TabPanel>
+                <div key="pending">
+                  {getPending()}
+                </div>
+                </TabPanel>
+                <TabPanel>
+                <div key="approved">
+                  {getApproved()}
+                </div>
+                </TabPanel>
+                <TabPanel>
+                <div key="verified">
+                  {getReceived()}
+                </div>
+                </TabPanel>
+                <TabPanel>
+                <div key="verified">
+                  {getVerified()}
+                </div>
+                </TabPanel>
+            </Tabs>
+          {applyLoan()}
+          </div>
+        ) 
+      } 
+  } 
+
 };
