@@ -32,20 +32,38 @@ module.exports.getAllProducts = async (req, res) => {
 };
 
 // Get product by bin product primary key
+// module.exports.getProductByPrimaryKey = async (req, res) => {
+//     const binProductPK = req.params.binProductPK;
+//     try {
+//         const result = await productService.getByPrimaryKey(binProductPK);
+//         if (result.length > 0) {
+//             return res.status(200).send(result[0]);
+//         } else {
+//             return res.status(404).send('Cannot retrieve product!');
+//         }
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json({
+//             message: 'Internal Server Error!'
+//         });
+//     }
+// };
 module.exports.getProductByPrimaryKey = async (req, res) => {
-    const binProductPK = req.params.binProductPK;
+    const binProductPK = req.params.id;
     try {
-        const result = await productService.getByPrimaryKey(binProductPK);
-        if (result.length > 0) {
-            return res.status(200).send(result[0]);
-        } else {
-            return res.status(404).send('Cannot retrieve product!');
+        const products = await redisClient.get(`product#${binProductPK}`);
+        if (products !== null) {
+            const redisresults = JSON.parse(products);
+            return res.status(200).json(redisresults);
         }
+        const results = await productService.getByPrimaryKey(binProductPK);
+        if (results[0].length > 0) {
+            redisClient.set(`product#${binProductPK}`, JSON.stringify(results[0]));
+            return res.status(200).send(results[0]);
+        }
+        return res.status(404).json({ message: 'Cannot find product with that id' });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            message: 'Internal Server Error!'
-        });
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
