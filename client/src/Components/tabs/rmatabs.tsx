@@ -130,15 +130,15 @@ const Rmatabs: React.FC = () => {
             <h2 className="pagetitle">RMA requests </h2>
             <RmaSearch/>
            <TabContext value={value}>
-           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <TabList onChange={handleChange}>
-              <Tab label="Approved" value="1"/>
-              <Tab label="Rejected" value="2"/>
-            </TabList>
-            </Box>
-            
-      
-             <TabPanel value="1">
+           <Box sx={{ paddingLeft:10, marginTop: 3}}>
+            <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+            sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
+              <Tab label="Approved" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+              <Tab label="Rejected" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+              </Tabs>
+          </Box>
+          <Box sx={{marginTop:-5}}>
+          <TabPanel value="1">
             {myAcceptedRMAQuery.isLoading || myAcceptedRMAQuery.isError ? null :
             <>
               <TableNew headers={headers} pages={myAcceptedRMAQuery.data.pages} query={myAcceptedRMAQuery} menu={ActionMenu} />
@@ -152,6 +152,7 @@ const Rmatabs: React.FC = () => {
               </>
             }
             </TabPanel>
+          </Box>
             </TabContext>
           </>
           )
@@ -162,70 +163,75 @@ const Rmatabs: React.FC = () => {
             <h2 className="pagetitle">RMA requests </h2>
             <RmaSearch/>
         <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <TabList onChange={handleChange}>
-            <Tab label="Received" value="3"/>
-            </TabList>
-            </Box>
-            <TabPanel value="3">
+        <Box sx={{ paddingLeft:10, marginTop: 3}}>
+        <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+        sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
+            <Tab label="Received" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+        </Tabs>
+      </Box>
+      <Box sx={{marginTop:-5}}>
+      <TabPanel value="3">
             {ReceivedRMAQuery.isLoading || ReceivedRMAQuery.isError ? null :
             <>
             <TableNew headers={headers} pages={ReceivedRMAQuery.data.pages} query={ReceivedRMAQuery} menu={ActionMenu} />
             </>
             }
             </TabPanel>
+      </Box>
             </TabContext>
         </>
         )
     } 
     case "Sales Manager": { 
-        return(
-            <>
-            <h2 className="pagetitle">RMA requests </h2>
-            <RmaSearch/>
-           <TabContext value={value}>
-           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <TabList onChange={handleChange}>
-              <Tab label="Pending" value="1"/>
-              <Tab label="Approved" value="2"/>
-              <Tab label="Received" value="3"/>
-              <Tab label="Verified" value="4"/>
-            </TabList>
-            </Box>
-            
-      
-             <TabPanel value="1">
-            {PendingRMAQuery.isLoading || PendingRMAQuery.isError ? null :
-            <>
-              <TableNew headers={headers} pages={PendingRMAQuery.data.pages} query={PendingRMAQuery} menu={ActionMenu} />
-              </>
-            }
-            </TabPanel>
-            <TabPanel value="2">
-            {ApprovedRMAQuery.isLoading || ApprovedRMAQuery.isError ? null :
-            <>
-              <TableNew headers={headers} pages={ApprovedRMAQuery.data.pages} query={ApprovedRMAQuery} menu={ActionMenu} />
-              </>
-            }
-            </TabPanel>
-            <TabPanel value="3">
-            {ReceivedRMAQuery.isLoading || ReceivedRMAQuery.isError ? null :
-            <>
-              <TableNew headers={headers} pages={ReceivedRMAQuery.data.pages} query={ReceivedRMAQuery} menu={ActionMenu} />
-              </>
-            }
-            </TabPanel>
-            <TabPanel value="4">
-            {VerifiedRMAQuery.isLoading || VerifiedRMAQuery.isError ? <><div className=''>No Loans bruh</div></> :
-            <>
-              <TableNew headers={headers} pages={VerifiedRMAQuery.data.pages} query={VerifiedRMAQuery} menu={ActionMenu} />
-              </>
-            } 
-            </TabPanel>
-            
-            </TabContext>
+      return(
+        <>
+        <h2 className="pagetitle">RMA requests </h2>
+        <RmaSearch/>
+       <TabContext value={value}>
+       <Box sx={{ paddingLeft:10, marginTop: 3}}>
+        <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+        sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
+            <Tab label="Pending" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="Approved" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="Received" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="Verified" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+        </Tabs>
+      </Box>
+        
+  <Box sx={{marginTop:-5}}>
+         <TabPanel value="1">
+        {PendingRMAQuery.isLoading || PendingRMAQuery.isError ? null :
+        <>
+          <TableNew headers={headers} pages={PendingRMAQuery.data.pages} query={PendingRMAQuery} menu={ActionMenu} />
           </>
-          )
+        }
+        </TabPanel>
+        <TabPanel value="2">
+        {ApprovedRMAQuery.isLoading || ApprovedRMAQuery.isError ? null :
+        <>
+          <TableNew headers={headers} pages={ApprovedRMAQuery.data.pages} query={ApprovedRMAQuery} menu={ActionMenu} />
+          </>
+        }
+        </TabPanel>
+        <TabPanel value="3">
+        {ReceivedRMAQuery.isLoading || ReceivedRMAQuery.isError ? null :
+        <>
+          <TableNew headers={headers} pages={ReceivedRMAQuery.data.pages} query={ReceivedRMAQuery} menu={ActionMenu} />
+          </>
+        }
+        </TabPanel>
+        <TabPanel value="4">
+        {VerifiedRMAQuery.isLoading || VerifiedRMAQuery.isError ? <><div className=''>No Loans bruh</div></> :
+        <>
+          <TableNew headers={headers} pages={VerifiedRMAQuery.data.pages} query={VerifiedRMAQuery} menu={ActionMenu} />
+          </>
+        } 
+        </TabPanel>
+  </Box>
+        
+        </TabContext>
+      </>
+      )
     } 
     case "Sales Admin": { 
         return(
@@ -233,18 +239,22 @@ const Rmatabs: React.FC = () => {
             <h2 className="pagetitle">RMA requests </h2>
             <RmaSearch/>
            <TabContext value={value}>
-           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <TabList onChange={handleChange}>
-              <Tab label="Verified" value="4"/>
-            </TabList>
-            </Box>
-            <TabPanel value="4">
+           <Box sx={{ paddingLeft:10, marginTop: 3}}>
+        <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+        sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
+            <Tab label="Verified" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+        </Tabs>
+      </Box>
+      <Box sx={{marginTop:-5}}>
+      <TabPanel value="4">
             {VerifiedRMAQuery.isLoading || VerifiedRMAQuery.isError ? <><div className=''>No Loans bruh</div></> :
             <>
               <TableNew headers={headers} pages={VerifiedRMAQuery.data.pages} query={VerifiedRMAQuery} menu={ActionMenu} />
               </>
             } 
             </TabPanel>
+      </Box>
+
             </TabContext>
           </>
           )
@@ -255,11 +265,13 @@ const Rmatabs: React.FC = () => {
             <h2 className="pagetitle">RMA requests </h2>
             <RmaSearch/>
            <TabContext value={value}>
-           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <TabList onChange={handleChange}>
-              <Tab label="Received" value="3"/>
-            </TabList>
-            </Box>
+           <Box sx={{ paddingLeft:10, marginTop: 3}}>
+        <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+        sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
+            <Tab label="Received" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+        </Tabs>
+      </Box>
+      <Box sx={{marginTop:-5}}>
             <TabPanel value="3">
             {ReceivedRMAQuery.isLoading || ReceivedRMAQuery.isError ? null :
             <>
@@ -267,6 +279,7 @@ const Rmatabs: React.FC = () => {
               </>
             }
             </TabPanel>
+            </Box>
             </TabContext>
           </>
           )
@@ -277,16 +290,17 @@ const Rmatabs: React.FC = () => {
             <h2 className="pagetitle">RMA requests </h2>
             <RmaSearch/>
            <TabContext value={value}>
-           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <TabList onChange={handleChange}>
-              <Tab label="Pending" value="1"/>
-              <Tab label="Approved" value="2"/>
-              <Tab label="Received" value="3"/>
-              <Tab label="Verified" value="4"/>
-            </TabList>
-            </Box>
+           <Box sx={{ paddingLeft:10, marginTop: 3}}>
+            <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+            sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
+                <Tab label="Pending" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+                <Tab label="Approved" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+                <Tab label="Received" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+                <Tab label="Verified" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            </Tabs>
+          </Box>
             
-      
+      <Box sx={{marginTop:-5}}>
              <TabPanel value="1">
             {PendingRMAQuery.isLoading || PendingRMAQuery.isError ? null :
             <>
@@ -315,59 +329,62 @@ const Rmatabs: React.FC = () => {
               </>
             } 
             </TabPanel>
+      </Box>
             
             </TabContext>
           </>
           )
     } 
     default: { 
-        return(
-            <>
-            <h2 className="pagetitle">RMA requests </h2>
-            <RmaSearch/>
-           <TabContext value={value}>
-           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <TabList onChange={handleChange}>
-              <Tab label="Pending" value="1"/>
-              <Tab label="Approved" value="2"/>
-              <Tab label="Received" value="3"/>
-              <Tab label="Verified" value="4"/>
-            </TabList>
-            </Box>
-            
-      
-             <TabPanel value="1">
-            {PendingRMAQuery.isLoading || PendingRMAQuery.isError ? null :
-            <>
-              <TableNew headers={headers} pages={PendingRMAQuery.data.pages} query={PendingRMAQuery} menu={ActionMenu} />
-              </>
-            }
-            </TabPanel>
-            <TabPanel value="2">
-            {ApprovedRMAQuery.isLoading || ApprovedRMAQuery.isError ? null :
-            <>
-              <TableNew headers={headers} pages={ApprovedRMAQuery.data.pages} query={ApprovedRMAQuery} menu={ActionMenu} />
-              </>
-            }
-            </TabPanel>
-            <TabPanel value="3">
-            {ReceivedRMAQuery.isLoading || ReceivedRMAQuery.isError ? null :
-            <>
-              <TableNew headers={headers} pages={ReceivedRMAQuery.data.pages} query={ReceivedRMAQuery} menu={ActionMenu} />
-              </>
-            }
-            </TabPanel>
-            <TabPanel value="4">
-            {VerifiedRMAQuery.isLoading || VerifiedRMAQuery.isError ? <><div className=''>No Loans bruh</div></> :
-            <>
-              <TableNew headers={headers} pages={VerifiedRMAQuery.data.pages} query={VerifiedRMAQuery} menu={ActionMenu} />
-              </>
-            } 
-            </TabPanel>
-            
-            </TabContext>
+      return(
+        <>
+        <h2 className="pagetitle">RMA requests </h2>
+        <RmaSearch/>
+       <TabContext value={value}>
+       <Box sx={{ paddingLeft:10, marginTop: 3}}>
+        <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+        sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
+            <Tab label="Pending" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="Approved" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="Received" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="Verified" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+        </Tabs>
+      </Box>
+        
+  <Box sx={{marginTop:-5}}>
+         <TabPanel value="1">
+        {PendingRMAQuery.isLoading || PendingRMAQuery.isError ? null :
+        <>
+          <TableNew headers={headers} pages={PendingRMAQuery.data.pages} query={PendingRMAQuery} menu={ActionMenu} />
           </>
-          )
+        }
+        </TabPanel>
+        <TabPanel value="2">
+        {ApprovedRMAQuery.isLoading || ApprovedRMAQuery.isError ? null :
+        <>
+          <TableNew headers={headers} pages={ApprovedRMAQuery.data.pages} query={ApprovedRMAQuery} menu={ActionMenu} />
+          </>
+        }
+        </TabPanel>
+        <TabPanel value="3">
+        {ReceivedRMAQuery.isLoading || ReceivedRMAQuery.isError ? null :
+        <>
+          <TableNew headers={headers} pages={ReceivedRMAQuery.data.pages} query={ReceivedRMAQuery} menu={ActionMenu} />
+          </>
+        }
+        </TabPanel>
+        <TabPanel value="4">
+        {VerifiedRMAQuery.isLoading || VerifiedRMAQuery.isError ? <><div className=''>No Loans bruh</div></> :
+        <>
+          <TableNew headers={headers} pages={VerifiedRMAQuery.data.pages} query={VerifiedRMAQuery} menu={ActionMenu} />
+          </>
+        } 
+        </TabPanel>
+  </Box>
+        
+        </TabContext>
+      </>
+      )
     } 
 }
 
