@@ -3,6 +3,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ProductDetailsCard from "../../components/cards/ProductCard";
 
+
+
+
+
+
 function ProductDetails() {
   return (
     <>

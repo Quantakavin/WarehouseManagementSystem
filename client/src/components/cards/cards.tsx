@@ -37,9 +37,7 @@ function cards() {
     setPendingTloans(response.data);
   };
 
-  useEffect(() => {
-    getpendingTloans();
-  }, []);
+ I
 
   // getdraftTloans
   const getdraftTloans = async () => {
