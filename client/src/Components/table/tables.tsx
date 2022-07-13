@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import GetAllProducts from "../../api/product/GetAllProducts";
+import GetAllProducts from "../../api/ProductDB";
 
 export default function BasicTable() {
   function createData(

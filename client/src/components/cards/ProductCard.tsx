@@ -12,8 +12,8 @@ const [ItemDetails, setItemDetails] = useState([]);
 
 // Fetch Item Details Data 
 const getitemDetails = async () => {
-    const response = await axios.post(`${config.baseURL}/products`,  {
-    offsetNo: 10
+    const response = await axios.get(`${config.baseURL}/testproducts`,  {
+    // offsetNo: 10
 })
 .then((response) =>
     setItemDetails(response.data))
@@ -24,6 +24,12 @@ const getitemDetails = async () => {
   }, []);
 
 
+
+
+
+
+
+
   
 
 
@@ -31,6 +37,8 @@ const getitemDetails = async () => {
 
 
 
+
+  
 
 
 
@@ -42,7 +50,7 @@ const getitemDetails = async () => {
         <div>
           <div>
             <span className="ItemCode">Item Code</span>
-            <h1 className="ItemCode"></h1>
+            <h1 className="ItemCode">{ItemDetails}</h1>
           </div>
           <div>
             <span className="ItemName">Item Name</span>

@@ -1,16 +1,33 @@
 const productService = require('../services/productService');
+const redisClient = require('../config/caching');
 
 // Get all products
+// module.exports.getAllProducts = async (req, res) => {
+//     const { limit, offset } = req.query;
+//     try {
+//         const result = await productService.getAll(limit, offset);
+//         return res.status(200).send(result[0]);
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json({
+//             message: 'Internal Server Error!'
+//         });
+//     }
+// };
 module.exports.getAllProducts = async (req, res) => {
-    const { offsetNo } = req.body;
+    const { limit, page } = req.query;
     try {
-        const result = await productService.getAll(offsetNo);
-        return res.status(200).send(result[0]);
+        const products = await redisClient.get(`products?limit=${limit}&page=${page}`);
+        if (products !== null) {
+            const redisresults = JSON.parse(products);
+            return res.status(200).json(redisresults);
+        }
+        const results = await productService.getAll(limit, page);
+        redisClient.set(`products?limit=${limit}&page=${page}`, JSON.stringify(results[0]));
+        return res.status(200).json(results[0]);
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            message: 'Internal Server Error!'
-        });
+        console.log(error)
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -61,7 +78,8 @@ module.exports.searchFilterProducts = async (req, res) => {
 module.exports.getAllProductsTest = async (req, res) => {
     try {
         const result = await productService.getAllTest();
-        return res.status(200).send(result);
+        console.log(result[0]);
+        return res.status(200).send(result[0]);
     } catch (error) {
         console.log(error);
         return res.status(500).json({

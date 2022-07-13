@@ -1,64 +1,54 @@
-import React, { useState, useRef, useEffect } from "react";
-import "../../styles/Products.scss";
-import TopBar from "../../components/header/TopBar";
-import SideBar from "../../components/sidebar/SideBar";
-import axios from "axios";
-// import "../App.css";
-import "../../styles/Products.scss";
-import Table from "../../components/table/Table";
-// import SearchBar from "material-ui-search-bar";
-//import ProductSearchBar from "../../components/search/SearchBar";
+import React, { useState } from "react";
+import axios, { AxiosResponse } from "axios";
+import { useQuery, useInfiniteQuery } from "react-query";
+import { GetAllProducts } from "../../api/ProductDB";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+import PageviewIcon from '@mui/icons-material/Pageview';
+import SearchBarUpdated from "../../components/search/SearchBarUpdated";
+import TableNew from "../../components/table/TableNew";
 
-function Products() {
-  const [dataTable, setDataTable] = useState([]);
-  const [q, setQ] = useState("");
-
-  useEffect(() => {
-    axios.post('http://localhost:5000/api/products', {
-      offsetNo: 10
-    })
-    .then((response) => 
-      setDataTable(response.data))
-    .catch((error) => 
-      console.log(error)
-    );
-  }, []);
-
-  const column = [
-    { value: "BinProductPK"},
-    { heading: "Item Name", value: "ItemName" },
-    { heading: "Batch Number", value: "BatchNo" },
-    { heading: "Brand", value: "Brand" },
-    { heading: "Available Quantity", value: "Quantity" },
-    { heading: "Action", value: ":" },
+const Products: React.FC = () => {
+  const headers = [
+    "ID",
+    "Item Name",
+    "Batch Number",
+    "Brand",
+    "Avalible Quantity",
+    "Action",
   ];
+  const ProductsQuery = useInfiniteQuery(`products`, GetAllProducts,
+    {
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
+        return undefined;
+      }
+    });
 
-  // Search Rows filter by Item Name and Branc
-  function search(rows) {
-    return rows.filter(
-      (row) =>
-        row.ItemName.toLowerCase().indexOf(q) > -1 ||
-        row.Brand.toLowerCase().indexOf(q) > -1
-    );
+  const ActionMenu = (id: string) => {
+    return (
+      [
+        {
+          name: "View Details",
+          url: `/user/${id}`,
+          icon: <PageviewIcon fontSize="small" />,
+          delete: false
+        }
+      ]
+    )
   }
 
   return (
     <>
-      <div className="product-container">
-        <div className="product">
-          <div className="Table">
-            <input
-              type="text"
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-            />
+      <h2 className="pagetitle"> Item Search </h2>
+      <SearchBarUpdated />
 
-            <Table data={search(dataTable)} column={column} />
-          </div>
-        </div>
-      </div>
+      {ProductsQuery.isLoading || ProductsQuery.isError ? null :
+      <>
+        <TableNew headers={headers} pages={ProductsQuery.data.pages} query={ProductsQuery} menu={ActionMenu} />
+        </>
+      }
     </>
-  );
-}
-
+  )
+};
 export default Products;
