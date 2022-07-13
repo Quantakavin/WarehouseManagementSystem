@@ -37,7 +37,7 @@ function cards() {
     setPendingTloans(response.data);
   };
 
- I
+ 
 
   // getdraftTloans
   const getdraftTloans = async () => {

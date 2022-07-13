@@ -17,14 +17,15 @@ import ViewNotificationGroup from "./pages/notificationgroups/ViewNotificationGr
 import Dashboard from "./pages/dashboards/Dashboards";
 import Products from "./pages/products/Products";
 import TestProducts from "./pages/products/TestProducts";
+import TestProductDetails from "./pages/products/ProductDetails"
 import BinLocations from "./pages/binlocations/BinLocations";
 import TLoan from "./pages/tloans/tloan";
 import RMA from "./pages/rma/rma";
 import CreateRMA from "./pages/rma/createRma";
 import Sidebar2 from "./components/sidebar/Sidebar2";
-import TLoanDisplay from "./components/display/tloanDisplay"
-import RmaDisplay from "./components/display/rmaDisplay"
-import NewTLoan from "./pages/tloans/newtloan"
+import TLoanDisplay from "./components/display/tloanDisplay";
+import RmaDisplay from "./components/display/rmaDisplay";
+import NewTLoan from "./pages/tloans/newtloan";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "./app/hooks";
 import {
@@ -74,6 +75,7 @@ const App: React.FC = () => {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
               <Route path="/testproducts" element={<TestProducts />} />
+              <Route path="/testproductdetails" element={<TestProductDetails />} />
               <Route path="/binlocations" element={<BinLocations />} />
               <Route path="/adduser" element={<AddUser />} />
               <Route path="/user/:id" element={<ViewUser />} />
@@ -85,14 +87,20 @@ const App: React.FC = () => {
                 path="/addnotificationgroup"
                 element={<AddNotificationGroup />}
               />
-              <Route path="/notificationgroups" element={<NotificationGroups />} />
+              <Route
+                path="/notificationgroups"
+                element={<NotificationGroups />}
+              />
               <Route path="/tloan" element={<TLoan />} />
               <Route path="/tloan" element={<TLoan />} />
               <Route path="/rma" element={<RMA />} />
               <Route path="/createRma" element={<CreateRMA />} />
-              <Route path="/rmaDetails/:RMANo" element={<RmaDisplay/>} />
-              <Route path="/tloanDetails/:TLoanNumber" element={<TLoanDisplay/>} />
-              <Route path="/newtloan" element={<NewTLoan/>} />
+              <Route path="/rmaDetails/:RMANo" element={<RmaDisplay />} />
+              <Route
+                path="/tloanDetails/:TLoanNumber"
+                element={<TLoanDisplay />}
+              />
+              <Route path="/newtloan" element={<NewTLoan />} />
             </Route>
           </Routes>
         </div>

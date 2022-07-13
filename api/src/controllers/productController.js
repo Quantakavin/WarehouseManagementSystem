@@ -61,7 +61,8 @@ module.exports.searchFilterProducts = async (req, res) => {
 module.exports.getAllProductsTest = async (req, res) => {
     try {
         const result = await productService.getAllTest();
-        return res.status(200).send(result);
+        console.log(result[0]);
+        return res.status(200).send(result[0]);
     } catch (error) {
         console.log(error);
         return res.status(500).json({
