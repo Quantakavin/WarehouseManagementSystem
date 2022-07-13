@@ -8,13 +8,13 @@ import GetRMAsOverview from "../../api/dashboard/GetRMAsOverview";
 import GetTLoanRMAChart from "../../api/dashboard/GetTLoanRMAChart";
 
 function cards() {
-  // T-Loan
+  // T-Loan Overview
   const [CurrentTloans, setCurrentTloans] = useState([]);
   const [PendingTloans, setPendingTloans] = useState([]);
   const [DraftTloans, setDraftTloans] = useState([]);
   const [ExtendedTloans, setExtenddedTloans] = useState([]);
 
-  // RMA
+  // RMA Overview
   const [RequestedRMAs, setRequesteddRMAs] = useState([]);
   const [PendingRMAs, setPendingRMAs] = useState([]);
   const [ClosedRMAs, setClosedRMAs] = useState([]);
