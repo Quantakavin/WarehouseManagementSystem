@@ -1,5 +1,5 @@
-import { Tab, Tabs } from '@mui/material';
-import {TabList, TabPanel } from '@mui/lab'; 
+import { Tab, Tabs, Box } from '@mui/material';
+import {TabList, TabPanel, TabContext } from '@mui/lab'; 
 import 'react-tabs/style/react-tabs.css';
 import React , { useEffect, useState } from 'react';
 // import axios from 'axios';
@@ -285,49 +285,56 @@ const TLoanTabs: React.FC = () => {
       ]
     )
   }
+  const [value, setValue] = useState(0); // first tab
 
+  const handleChange = (_event, newValue) => {
+   setValue(newValue);
+  };
 
   return (
     <>
       <h2 className="pagetitle">TLoans </h2>
-     
-      <Tabs>
-      <TabList>
-        <Tab label="Current" />
-        <Tab label="Pending" />
-        <Tab label="Drafts" />
-        <Tab label="History" />
-       </TabList>
+     <TabContext value={value}>
+     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <TabList onChange={handleChange}>
+        <Tab label="Current" value="1"/>
+        <Tab label="Pending" value="2"/>
+        <Tab label="Drafts" value="3"/>
+        <Tab label="History" value="4"/>
+      </TabList>
+      </Box>
+      
 
-       <TabPanel>
+       <TabPanel value="1">
       {LoansQuery.isLoading || LoansQuery.isError ? null :
       <>
         <TableNew headers={headers} pages={LoansQuery.data.pages} query={LoansQuery} menu={ActionMenu} />
         </>
       }
       </TabPanel>
-      <TabPanel>
+      <TabPanel value="2">
       {PendingQuery.isLoading || PendingQuery.isError ? null :
       <>
         <TableNew headers={headers} pages={PendingQuery.data.pages} query={PendingQuery} menu={ActionMenu} />
         </>
       }
       </TabPanel>
-      <TabPanel>
+      <TabPanel value="3">
       {DraftQuery.isLoading || DraftQuery.isError ? null :
       <>
         <TableNew headers={headers} pages={DraftQuery.data.pages} query={DraftQuery} menu={ActionMenu} />
         </>
       }
       </TabPanel>
-      <TabPanel>
+      <TabPanel value="4">
       {HistoryQuery.isLoading || HistoryQuery.isError ? <><div className=''>No Loans bruh</div></> :
       <>
         <TableNew headers={headers} pages={HistoryQuery.data.pages} query={HistoryQuery} menu={ActionMenu} />
         </>
       } 
       </TabPanel>
-      </Tabs>
+      
+      </TabContext>
     </>
   )
 

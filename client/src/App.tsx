@@ -17,7 +17,7 @@ import ViewNotificationGroup from "./pages/notificationgroups/ViewNotificationGr
 import Dashboard from "./pages/dashboards/Dashboards";
 import Products from "./pages/products/Products";
 import TestProducts from "./pages/products/TestProducts";
-import TestProductDetails from "./pages/products/ProductDetails"
+//import TestProductDetails from "./pages/products/ProductDetails"
 import BinLocations from "./pages/binlocations/BinLocations";
 import TLoan from "./pages/tloans/tloan";
 import RMA from "./pages/rma/rma";
@@ -75,7 +75,7 @@ const App: React.FC = () => {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
               <Route path="/testproducts" element={<TestProducts />} />
-              <Route path="/testproductdetails" element={<TestProductDetails />} />
+              {/* <Route path="/testproductdetails" element={<TestProductDetails />} /> */}
               <Route path="/binlocations" element={<BinLocations />} />
               <Route path="/adduser" element={<AddUser />} />
               <Route path="/user/:id" element={<ViewUser />} />
