@@ -37,28 +37,32 @@ module.exports.loginUser = async (req, res) => {
 };
 
 module.exports.getAllUsers = async (req, res) => {
-    const { limit, page } = req.query;
+    const { pageSize=5, pageNo=0, sortColumn=null, sortOrder=null, name=null } = req.query;
     try {
-        const users = await redisClient.get(`users?limit=${limit}&page=${page}`);
-        if (users !== null) {
-            const redisresults = JSON.parse(users);
-            return res.status(200).json(redisresults);
-        }
-        const results = await user.getAll(limit, page);
-        redisClient.set(`users?limit=${limit}&page=${page}`, JSON.stringify(results[0]));
-        return res.status(200).json(results[0]);
+        const results = await user.getAll(pageSize, pageNo, sortColumn, sortOrder, name);
+        return res.status(200).json(results[0][0]);
     } catch (error) {
         console.log(error)
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
-    // try {
-    //     const results = await user.getAll(limit, page);
-    //     return res.status(200).json(results[0]);
-    // } catch (error) {
-    //     console.log(error)
-    //     return res.status(500).json({ message: 'Internal Server Error!' });
-    // }
-};
+}; 
+
+// module.exports.getAllUsers = async (req, res) => {
+//     const { limit, page } = req.query;
+//     try {
+//         const users = await redisClient.get(`users?limit=${limit}&page=${page}`);
+//         if (users !== null) {
+//             const redisresults = JSON.parse(users);
+//             return res.status(200).json(redisresults);
+//         }
+//         const results = await user.getAll(limit, page);
+//         redisClient.set(`users?limit=${limit}&page=${page}`, JSON.stringify(results[0]));
+//         return res.status(200).json(results[0]);
+//     } catch (error) {
+//         console.log(error)
+//         return res.status(500).json({ message: 'Internal Server Error!' });
+//     }
+// };
 
 module.exports.getUserById = async (req, res) => {
     const userID = req.params.id;

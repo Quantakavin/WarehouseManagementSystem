@@ -3,21 +3,32 @@ const userGroup = require('../services/userGroupService');
 const redisClient = require('../config/caching');
 
 module.exports.getAllUserGroups = async (req, res) => {
-    const { limit, page } = req.query;
+    const { pageSize=5, pageNo=0, sortColumn=null, sortOrder=null, name=null } = req.query;
     try {
-        const usergroups = await redisClient.get(`userGroups?limit=${limit}&page=${page}`);
-        if (usergroups !== null) {
-            const redisresults = JSON.parse(usergroups);
-            return res.status(200).json(redisresults);
-        }
-        const results = await userGroup.getAll(limit, page);
-        redisClient.set(`userGroups?limit=${limit}&page=${page}`, JSON.stringify(results[0]));
-        return res.status(200).json(results[0]);
+        const results = await userGroup.getAll(pageSize, pageNo, sortColumn, sortOrder, name);
+        return res.status(200).json(results[0][0]);
     } catch (error) {
         console.log(error)
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
-};
+}; 
+
+// module.exports.getAllUserGroups = async (req, res) => {
+//     const { limit, page } = req.query;
+//     try {
+//         const usergroups = await redisClient.get(`userGroups?limit=${limit}&page=${page}`);
+//         if (usergroups !== null) {
+//             const redisresults = JSON.parse(usergroups);
+//             return res.status(200).json(redisresults);
+//         }
+//         const results = await userGroup.getAll(limit, page);
+//         redisClient.set(`userGroups?limit=${limit}&page=${page}`, JSON.stringify(results[0]));
+//         return res.status(200).json(results[0]);
+//     } catch (error) {
+//         console.log(error)
+//         return res.status(500).json({ message: 'Internal Server Error!' });
+//     }
+// };
 
 // module.exports.getAllUserGroups = async (req, res) => {
 //     try {

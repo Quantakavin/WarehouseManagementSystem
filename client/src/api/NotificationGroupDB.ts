@@ -1,8 +1,8 @@
 import axios from "axios";
 import config from "../config/config";
 
-export const GetNotificationGroups = async ({pageParam = 0}) => {
-  const response = await axios.get(`${config.baseURL}/notificationgroups?limit=5&page=${pageParam * 5}`, {
+export const GetNotificationGroups = async ({pageParam = 0, queryKey}) => {
+  const response = await axios.get(`${config.baseURL}/notificationgroups?pageSize=5&pageNo=${pageParam * 5}&sortColumn=${queryKey[1]}&sortOrder=${queryKey[2]}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
