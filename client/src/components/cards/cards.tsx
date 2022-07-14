@@ -115,6 +115,7 @@ function cards() {
             <span className="Current">On-Extension</span>
             <h1 className="Current"></h1>
           </div>
+          <h1 className="Date"> Updated minutes ago </h1>
         </div>
       </div>
 
@@ -133,6 +134,11 @@ function cards() {
             <span className="Current">Closed</span>
             <h1 className="Current">{ClosedRMAs.length}</h1>
           </div>
+          <div>
+            <span className="Current">Closed</span>
+            <h1 className="Current"></h1>
+          </div>
+          <h1 className="Date"> Updated minutes ago </h1>
         </div>
       </div>
     </div>

@@ -16,6 +16,7 @@ import config from "../../config/config";
 function Charts({ title, dataKey, grid }) {
   const [error, setError] = useState(null);
   const [tloan, setTloan] = useState([]);
+  const [date, setDate] = useState(new Date());
 
   // Get Total Request Made from TLoan
   const getTloansRMARequest = async () => {
@@ -28,6 +29,15 @@ function Charts({ title, dataKey, grid }) {
   useEffect(() => {
     getTloansRMARequest();
   }, []);
+
+  useEffect(() => {
+    var timer = setInterval(() => setDate(new Date()), 1);
+
+    return function cleanup() {
+      clearInterval(timer);
+    };
+  }, []);
+
 
   return (
     <>
@@ -45,6 +55,7 @@ function Charts({ title, dataKey, grid }) {
             {grid && <CartesianGrid stroke="#e0dfdf" strokeDasharray="5 5" />}
           </LineChart>
         </ResponsiveContainer>
+            <h1 className="Date">Last Updated {date.toLocaleTimeString()}</h1>
       </div>
     </>
   );
