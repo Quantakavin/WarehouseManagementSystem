@@ -4,12 +4,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Sidebar from "../../components/sidebar/SideBar";
 import TLoanChart from "../../components/charts/Chart";
-import Cards from "../../components/cards/cards";
+import CardsManager from "../../components/cards/cardsManager";
 import RMAChart from "../../components/charts/Chart2";
 import { useAppSelector } from '../../app/hooks'
 import { selectRole } from '../../app/reducers/CurrentUserSlice';
 
-function Dashboards() {
+function DashboardManager() {
 
 
 // implement switch case
@@ -48,7 +48,7 @@ switch(userrole) {
           {localStorage.getItem("username")}'s Dashboard{""}
         </h1>
 
-        <Cards />
+        <CardsManager  />
         <TLoanChart title={undefined} dataKey={undefined} grid={undefined} />
         <RMAChart title={undefined} dataKey={undefined} grid={undefined} />
       </div>
@@ -56,4 +56,4 @@ switch(userrole) {
   );
 }
 
-export default Dashboards;
+export default DashboardManager;
