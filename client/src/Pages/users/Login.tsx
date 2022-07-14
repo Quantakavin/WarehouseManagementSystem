@@ -16,9 +16,8 @@ import {
 import { LoginUser } from "../../api/UserDB";
 import { setUser } from "../../app/reducers/CurrentUserSlice";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { ChangeTab } from '../../app/reducers/SidebarSlice';
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
-
 
 interface FormValues {
   email: string;
@@ -47,10 +46,10 @@ const Login: React.FC = () => {
           name,
         })
       );
-      dispatch(ChangeTab({currenttab: "Dashboard"} ))
+      dispatch(ChangeTab({ currenttab: "Dashboard" }));
       Toast.fire({
         icon: "success",
-        title: "Logged in successfully. As",
+        title: "Logged in successfully",
       });
       return navigate("/dashboard", { replace: true });
     },

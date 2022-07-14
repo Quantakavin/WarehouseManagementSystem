@@ -15,6 +15,7 @@ import EditNotificationGroup from "./pages/notificationgroups/EditNotificationGr
 import NotificationGroups from "./pages/notificationgroups/NotificationGroups";
 import ViewNotificationGroup from "./pages/notificationgroups/ViewNotificationGroup";
 import Dashboard from "./pages/dashboards/Dashboards";
+import DashboardManager from "./pages/dashboards/DashboardManager";
 import Products from "./pages/products/Products";
 import ViewProduct from "./pages/products/ViewProduct";
 import BinLocations from "./pages/binlocations/BinLocations";
@@ -72,7 +73,7 @@ const App: React.FC = () => {
             </Route>
             <Route element={<ProtectedRoute loginpage={false} />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              
+              <Route path="/dashboard/manager" element={<DashboardManager />} />
               <Route path="/products" element={<Products />} />
               <Route path="/product/:id" element={<ViewProduct />} />
               <Route path="/binlocations" element={<BinLocations />} />
