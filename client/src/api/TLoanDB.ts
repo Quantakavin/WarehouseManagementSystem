@@ -36,3 +36,12 @@ export const GetHistory = async ({pageParam = 0}) => {
     });
     return {response, nextPage: pageParam + 1, totalPages: Math.ceil(response.data[0].full_count/5)}
   };
+
+  export const GetDetails = async () => {
+    const response = await axios.get(`${config.baseURL}/tloan/:TLoanNumber`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return response
+  };
