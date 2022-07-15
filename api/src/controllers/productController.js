@@ -91,3 +91,18 @@ module.exports.searchFilterProducts = async (req, res) => {
         });
     }
 };
+
+// Get all products pagination
+module.exports.getAllProductsPag = async (req, res) => {
+    const { offsetNo } = req.body;
+    try {
+        const result = await productService.getAllpag(offsetNo);
+        return res.status(200).send(result[0]);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: 'Internal Server Error!'
+        });
+    };
+    
+};

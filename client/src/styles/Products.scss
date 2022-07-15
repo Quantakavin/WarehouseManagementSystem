@@ -14,7 +14,7 @@
     
 }
 
-.searchbar {
+.Search {
     margin-bottom: 20px;
 }
 
@@ -24,6 +24,7 @@
 }
 
 .pageNumbers {
+
     list-style: none;
     display: flex;
 
@@ -31,7 +32,9 @@
 }
 
 .pageNumbers li {
-    padding: 10px;
+    margin-left: 20px;
+    margin-top: 20px;
+    padding: 10px ;
     cursor: pointer;
     
 }

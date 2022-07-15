@@ -17,6 +17,7 @@ import ViewNotificationGroup from "./pages/notificationgroups/ViewNotificationGr
 import Dashboard from "./pages/dashboards/Dashboards";
 import DashboardManager from "./pages/dashboards/DashboardManager";
 import Products from "./pages/products/Products";
+import ProductsPag from "./pages/products/TestProducts";
 import ViewProduct from "./pages/products/ViewProduct";
 import BinLocations from "./pages/binlocations/BinLocations";
 import TLoan from "./pages/tloans/tloan";
@@ -75,6 +76,7 @@ const App: React.FC = () => {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/dashboard/manager" element={<DashboardManager />} />
               <Route path="/products" element={<Products />} />
+              <Route path="/productspag" element={<ProductsPag />} />
               <Route path="/product/:id" element={<ViewProduct />} />
               <Route path="/binlocations" element={<BinLocations />} />
               <Route path="/user/:id" element={<ViewUser />} />
@@ -88,7 +90,10 @@ const App: React.FC = () => {
                 path="/notificationgroups"
                 element={<NotificationGroups />}
               />
-              <Route path="/notificationgroup/:id" element={<ViewNotificationGroup />} />
+              <Route
+                path="/notificationgroup/:id"
+                element={<ViewNotificationGroup />}
+              />
               <Route
                 path="/addnotificationgroup"
                 element={<AddNotificationGroup />}

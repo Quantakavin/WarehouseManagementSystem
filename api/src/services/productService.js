@@ -68,3 +68,8 @@ module.exports.searchFilter = async (itemName, itemCode, binTag, batchNo, brand,
         `SELECT ItemNo, ItemName, BatchNo, Brand, Quantity FROM BinProduct WHERE ` + string;
     return knex.raw(query, list);
 };
+
+module.exports.getAllpag = async () => {
+    const query = `SELECT ItemNo, ItemName, BatchNo, Brand, Quantity FROM BinProduct LIMIT 100`;
+    return knex.raw(query);
+};
