@@ -6,7 +6,7 @@ module.exports.getAll = async (limit, page) => {
 };
 
 module.exports.getByPrimaryKey = async (binProductPK) => {
-    const query = `SELECT * FROM BinProduct WHERE BinProductPK = ?`;
+    const query = `SELECT p.*, b.BinTag2 FROM BinProduct p LEFT JOIN Bin b ON p.BinID = b.BinID WHERE p.BinProductPK = ?`;
     return knex.raw(query, [binProductPK]);
 };
 
@@ -67,9 +67,4 @@ module.exports.searchFilter = async (itemName, itemCode, binTag, batchNo, brand,
     const query =
         `SELECT ItemNo, ItemName, BatchNo, Brand, Quantity FROM BinProduct WHERE ` + string;
     return knex.raw(query, list);
-};
-
-module.exports.getAllTest = async (offsetNo) => {
-    const query = `SELECT ItemName, BatchNo, Brand, Quantity FROM BinProduct`;
-    return knex.raw(query);
 };
