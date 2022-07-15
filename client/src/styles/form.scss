@@ -233,13 +233,13 @@ select {
 .selectfield {
   color: #0A2540;
   flex-grow: 1;
-  border: solid 1px transparent;
+  border: solid 1px #d3d3d3;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
   .MuiOutlinedInput-root{
     font-size: 10px;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
   }
-  .MuiOutlinedInput-notchedOutline legend {
+  .MuiOutlinedInput-notchedOutline {
     display: none;
   }
 }

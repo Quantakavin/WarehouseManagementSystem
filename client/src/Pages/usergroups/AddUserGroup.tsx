@@ -164,10 +164,7 @@ const AddUserGroup: React.FC = () => {
             name="features"
             sx={{
               borderRadius: "15px",
-              paddingTop: "0px",
-              textOverflow: "ellipsis",
-              overflow: "hidden",
-              whiteSpace: "pre",
+              paddingTop: "0px"
             }}
             value={selectedFeatures}
             onChange={selectFeature}
