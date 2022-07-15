@@ -61,7 +61,24 @@ module.exports.createTLoan = async (type, company, number, name, purpose, applic
 }
 
 module.exports.getLoanByNumber = async(TLoanNumber) => {
-  const query = `SELECT * FROM TLoan where TLoanNumber = ?`
+  // const query = `SELECT t.TLoanNumber,DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
+  // DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
+  // c.CompanyName,
+  // t.Requestor, FROM TLoan t JOIN Company C WHERE t.TLoanNumber = ?, t.CompanyID = c.CompanyID`
+  const query = `   SELECT t.TLoanNumber,
+  DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
+  DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS 'EndDate',
+  c.CompanyName,
+  t.Requestor,
+  tl.ItemNo,
+  bp.BatchNo,
+  tl.Quantity
+ FROM TLoan t 
+ LEFT OUTER JOIN Company c ON t.CompanyID = c.CompanyID
+ LEFT OUTER JOIN TLoanOutItem tl ON t.TLoanID = tl.TLoanID 
+ LEFT JOIN BinProduct bp ON tl.ItemNo = bp.ItemNo 
+ WHERE t.TLoanNumber = ? 
+ `
   return knex.raw(query, [TLoanNumber])
 }
 
@@ -78,21 +95,21 @@ module.exports.extension = async(id,duration,reason) => {
 module.exports.getCurrent = async () => {
   const query = `
   SELECT t.TLoanNumber, 
-  DATE(t.RequiredDate) ,
-  DATE(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY)),
+  DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
+  DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,
   t.Requestor,
   count(t.TLoanNumber) OVER() AS full_count
   FROM TLoan t, Company c where TLoanStatusID IN (3,5,6,7) AND 
-  t.CompanyID = c.CompanyID;;`;
+  t.CompanyID = c.CompanyID;`;
   return knex.raw(query);
 }
 
 module.exports.getPending = async () => {
   const query = `
   SELECT t.TLoanNumber, 
-  DATE(t.RequiredDate) ,
-  DATE(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY)),
+  DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
+  DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,
   t.Requestor,
   count(t.TLoanNumber) OVER() AS full_count
@@ -102,23 +119,25 @@ module.exports.getPending = async () => {
 }
 
 module.exports.getDraft = async () => {
+  
   const query = `
   SELECT t.TLoanNumber, 
-  DATE(t.RequiredDate) ,
-  DATE(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY)),
+  DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
+  DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,
   t.Requestor,
   count(t.TLoanNumber) OVER() AS full_count
   FROM TLoan t, Company c where TLoanStatusID = "1" AND 
   t.CompanyID = c.CompanyID;`;
-  return knex.raw(query);
+  return knex.raw(query)
+  
 }
 
 module.exports.getHistory = async () => {
   const query = `
   SELECT t.TLoanNumber, 
-  DATE(t.RequiredDate) ,
-  DATE(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY)),
+  DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
+  DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,
   t.Requestor,
   count(t.TLoanNumber) OVER() AS full_count

@@ -7,7 +7,7 @@ import GetLoansOverview from "../../api/dashboard/GetLoansOverview";
 import GetRMAsOverview from "../../api/dashboard/GetRMAsOverview";
 import GetTLoanRMAChart from "../../api/dashboard/GetTLoanRMAChart";
 
-function cards() {
+function cardsManager() {
   // T-Loan Overview
   const [CurrentTloans, setCurrentTloans] = useState([]);
   const [PendingTloans, setPendingTloans] = useState([]);
@@ -36,8 +36,6 @@ function cards() {
 
     setPendingTloans(response.data);
   };
-
- 
 
   // getdraftTloans
   const getdraftTloans = async () => {
@@ -100,22 +98,13 @@ function cards() {
         <span className="featuredTitle">T-Loan Overview</span>
         <div>
           <div>
-            <span className="Current">Current</span>
+            <span className="Current">Approved</span>
             <h1 className="Current">{CurrentTloans.length}</h1>
           </div>
           <div>
-            <span className="Drafts">Drafts</span>
-            <h1 className="Current">{DraftTloans.length}</h1>
+            <span className="Drafts">Rejected</span>
+            <h1 className="Drafts">{DraftTloans.length}</h1>
           </div>
-          <div>
-            <span className="Current">Pending</span>
-            <h1 className="Current">{PendingTloans.length}</h1>
-          </div>
-          <div>
-            <span className="Current">On-Extension</span>
-            <h1 className="Current"></h1>
-          </div>
-          <h1 className="Date"> Updated minutes ago </h1>
         </div>
       </div>
 
@@ -123,26 +112,17 @@ function cards() {
         <span className="featuredTitle">RMA Overview</span>
         <div>
           <div>
-            <span className="Current">Requested</span>
+            <span className="Current">Approved</span>
             <h1 className="Current">{RequestedRMAs.length}</h1>
           </div>
           <div>
-            <span className="Drafts">Pending</span>
+            <span className="Drafts">Rejected</span>
             <h1 className="Current">{PendingRMAs.length}</h1>
           </div>
-          <div>
-            <span className="Current">Closed</span>
-            <h1 className="Current">{ClosedRMAs.length}</h1>
-          </div>
-          <div>
-            <span className="Current">Closed</span>
-            <h1 className="Current"></h1>
-          </div>
-          <h1 className="Date"> Updated minutes ago </h1>
         </div>
       </div>
     </div>
   );
 }
 
-export default cards;
+export default cardsManager;

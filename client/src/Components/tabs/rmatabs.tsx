@@ -1,530 +1,394 @@
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { Tab, Tabs, Box } from '@mui/material';
+import {TabList, TabPanel, TabContext } from '@mui/lab'; 
 import 'react-tabs/style/react-tabs.css';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import React , { useEffect, useState } from 'react';
+// import axios from 'axios';
+// import Table from '@mui/material/Table';
+// import TableBody from '@mui/material/TableBody';
+// import TableCell from '@mui/material/TableCell';
+// import TableContainer from '@mui/material/TableContainer';
+// import TableHead from '@mui/material/TableHead';
+// import TableRow from '@mui/material/TableRow';
+// import Paper from '@mui/material/Paper';
 import { Link, useNavigate } from 'react-router-dom'
 import SubmitButton from '../form/SubmitButton';
-import { useAppSelector } from '../../app/hooks'
-import { selectRole } from '../../app/reducers/CurrentUserSlice';
-import ActionMenu from "../../components/table/ActionMenu";
-import { removeUser } from '../../app/reducers/CurrentUserSlice';
+import { useQuery, useInfiniteQuery } from "react-query";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import PageviewIcon from '@mui/icons-material/Pageview';
+import ActionMenu from "../table/ActionMenu";
+import { GetPendingRMA, GetApprovedRMA, 
+    GetReceivedRMA, GetVerifiedRMA,
+    GetSalesmanAcceptedRMA, GetSalesmanRejectedRMA, GetRMAByRMANo
+   } from "../../api/RmaDB";
+import TableNew from "../table/TableNew";
+import { useAppSelector } from '../../app/hooks'
+import { selectRole } from '../../app/reducers/CurrentUserSlice';
+import RmaSearch from "../search/RmaSearch"
 
-export default function RMATabs() {
-  const [pending, setPending] = useState([]);
-  const [approved, setApproved] = useState([]);
-  const [received, setReceived] = useState([]);
-  const [verified, setVerified] = useState([]);
+const Rmatabs: React.FC = () => {
+  const headers = [
+    "RMA No.",
+    "DateTime",
+    "Company Name",
+    "Customer Email",
+    "Actions"
+  ];
   const userrole = useAppSelector(selectRole)
 
-  useEffect(() => {
-    // declare the async data fetching function
-    const fetchData = async () => {
-      // get the data from the api
-      const pending = await axios.get('http://localhost:5000/api/pendingRMA');
-      const approved = await axios.get('http://localhost:5000/api/acceptedRMA');
-      const received = await axios.get('http://localhost:5000/api/receivedRMA');
-      const verified = await axios.get('http://localhost:5000/api/verifiedRMA');
+  const PendingRMAQuery = useInfiniteQuery(`pending`, GetPendingRMA,
+    {
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
+        return undefined;
+      }
+    });
+  
+  const ApprovedRMAQuery = useInfiniteQuery(`approved`, GetApprovedRMA,
+    {
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
+        return undefined;
+      }
+    });
 
-      setPending(pending.data)
-      setApproved(approved.data)
-      setReceived(received.data)
-      setVerified(verified.data)
+  const ReceivedRMAQuery = useInfiniteQuery(`received`, GetReceivedRMA,
+    {
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
+        return undefined;
+      }
+    });
+
+  const VerifiedRMAQuery = useInfiniteQuery(`verified`, GetVerifiedRMA,
+    {
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
+        return undefined;
+      }
+    });
+
+  const myAcceptedRMAQuery = useInfiniteQuery(`myAccepted`, GetSalesmanAcceptedRMA,
+  {
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
+      return undefined;
     }
-    // call the function
-    fetchData()
-      // make sure to catch any error
-      .catch(console.error);;
-  }, [])
+  });
 
-    const columnName =[ 
-      "RMA No.",
-      "DateTime",
-      "Company Name",
-      "Customer Email",
-      "Actions"
-    ]
+  const myRejectedRMAQuery = useInfiniteQuery(`myRejected`, GetSalesmanRejectedRMA,
+    {
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
+        return undefined;
+      }
+    });
 
-    // const RMAsQuery = useInfiniteQuery('RMAs', pending,
-    // {
-    //   getNextPageParam: (lastPage, pages) => {
-    //     if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
-    //     return undefined;
-    //   }
-    // });
+  const applyLoan = () => {
+      let navigate = useNavigate();
+    
+      async function apply(event) {
+        event.preventDefault();
+        await SubmitButton(event.target);
+        navigate("/createRMA", { replace: true });
+    }
+  }
 
-const getPending = () => {
-    let html = []
-        html.push(
-            <div className='container'>
-                
-                   
-                      <div className="" key="id">
-                        <TableContainer component={Paper}>
-                        <Table aria-label="simple table">
-                          <TableHead>
-                            <TableRow>
-                              {columnName.map((col) => (
-                                <TableCell
-                                  sx={{ color: "#86898E", fontWeight: 500 }}
-                                  className="tableheader"
-                                >
-                                  {col}
-                                </TableCell>
-                              ))}
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            <div >{pending.length > 0
-                              ? pending.map((rma => {
-                                  const {RMANo, DateTime, Company, CustomerEmail} = rma
-                                return(
-                                <div>
-                              <TableRow  key={RMANo} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                                <TableCell sx={{ color: "#0A2540" }} align="left">
-                                            {RMANo}
-                                </TableCell>
-                                <TableCell sx={{ color: "#0A2540" }} align="left">
-                                            {DateTime}
-                                </TableCell>
-                                <TableCell sx={{ color: "#0A2540" }} align="left">
-                                            {RMANo}
-                                </TableCell>
-                                <TableCell sx={{ color: "#0A2540" }} align="left">
-                                            {Company}
-                                </TableCell>
-                                <TableCell sx={{ color: "#0A2540" }} align="left">
-                                          {CustomerEmail}
-                                </TableCell>
-                                {/* <ActionMenu id={RMANo} /> */}
-                                </TableRow>
-                            </div>
-                              )}))
-                              
-                              : "Loading..." }</div> 
-                              
-                          </TableBody>
-                        </Table>
-                      
-                      </TableContainer>
-                    
-                                {/* 
-                                <div>
-                                 <Link to={"/RMADetails/" + rma.RMANo}>View More</Link>
-                                </div>                 */}
-                            </div>                            
-                    
-            </div>
-        )
-    return html
-}
-const getApproved = () => {
-  let html = []
-      html.push(
-          <div className='container'>
-              
-                 
-                    <div className="" key="id">
-                      <TableContainer component={Paper}>
-                      <Table aria-label="simple table">
-                        <TableHead>
-                          <TableRow>
-                            {columnName.map((col) => (
-                              <TableCell
-                                sx={{ color: "#86898E", fontWeight: 500 }}
-                                className="tableheader"
-                              >
-                                {col}
-                              </TableCell>
-                            ))}
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          <div >{approved.length > 0
-                            ? approved.map((rma => {
-                              const {RMANo, DateTime, Company, CustomerEmail} = rma
-                              return(
-                              <div>
-                            <TableRow  key={RMANo} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                            <TableCell sx={{ color: "#0A2540" }} align="left">
-                                            {RMANo}
-                                </TableCell>
-                                <TableCell sx={{ color: "#0A2540" }} align="left">
-                                            {DateTime}
-                                </TableCell>
-                                <TableCell sx={{ color: "#0A2540" }} align="left">
-                                            {RMANo}
-                                </TableCell>
-                                <TableCell sx={{ color: "#0A2540" }} align="left">
-                                            {Company}
-                                </TableCell>
-                                <TableCell sx={{ color: "#0A2540" }} align="left">
-                                          {CustomerEmail}
-                                </TableCell>
-                              {/* <ActionMenu id={RMANo} /> */}
+  const ActionMenu = (id: string) => {
+    return (
+      [
+        {
+          name: "View Details",
+          url: `/rmaDetails/${id}`,
+          icon: <PageviewIcon fontSize="small" />,
+          delete: false
+        },
+        // {
+        //   name: "Edit Details",
+        //   url: `/edituser/${id}`,
+        //   icon: <ModeEditOutlineIcon fontSize="small" />,
+        //   delete: false
+        // },
+        // {
+        //   name: "Delete",
+        //   icon: <DeleteOutlineIcon fontSize="small" />,
+        //   delete: true
+        // },
+      ]
+    )
+  }
+  const [value, setValue] = useState(0); // first tab
 
-                              </TableRow>
-                          
-                          </div>
-                            )}))
-                            
-                            : "Loading..." }</div> 
-                            
-                        </TableBody>
-                      </Table>
-                    
-                    </TableContainer>
-                  
-                              {/* 
-                              <div>
-                               <Link to={"/RMADetails/" + rma.RMANo}>View More</Link>
-                              </div>                 */}
-                          </div>                            
-                  
-          </div>
-      )
-  return html
-}
+  const handleChange = (_event, newValue) => {
+   setValue(newValue);
+  };
 
-const getReceived = () => {
-  let html = []
-      html.push(
-          <div className='container'>
-              
-                 
-                    <div className="" key="id">
-                      <TableContainer component={Paper}>
-                      <Table aria-label="simple table">
-                        <TableHead>
-                          <TableRow>
-                            {columnName.map((col) => (
-                              <TableCell
-                                sx={{ color: "#86898E", fontWeight: 500 }}
-                                className="tableheader"
-                              >
-                                {col}
-                              </TableCell>
-                            ))}
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          <div >{received.length > 0
-                            ? received.map((rma => {
-                              const {RMANo, DateTime, Company, CustomerEmail} = rma
-                              return(
-                              <div>
-                            <TableRow  key={RMANo} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                            <TableCell sx={{ color: "#0A2540" }} align="left">
-                                            {RMANo}
-                                </TableCell>
-                                <TableCell sx={{ color: "#0A2540" }} align="left">
-                                            {DateTime}
-                                </TableCell>
-                                <TableCell sx={{ color: "#0A2540" }} align="left">
-                                            {RMANo}
-                                </TableCell>
-                                <TableCell sx={{ color: "#0A2540" }} align="left">
-                                            {Company}
-                                </TableCell>
-                                <TableCell sx={{ color: "#0A2540" }} align="left">
-                                          {CustomerEmail}
-                                </TableCell>
-                              {/* <ActionMenu id={RMANo} /> */}
-
-                              </TableRow>
-                          
-                          </div>
-                            )}))
-                            
-                            : "Loading..." }</div> 
-                            
-                        </TableBody>
-                      </Table>
-                    
-                    </TableContainer>
-                  
-                              {/* 
-                              <div>
-                               <Link to={"/RMADetails/" + rma.RMANo}>View More</Link>
-                              </div>                 */}
-                          </div>                            
-                  
-          </div>
-      )
-  return html
-}
-
-const getVerified = () => {
-  let html = []
-      html.push(
-          <div className='container'>
-              
-                 
-                    <div className="" key="id">
-                      <TableContainer component={Paper}>
-                      <Table aria-label="simple table">
-                        <TableHead>
-                          <TableRow>
-                            {columnName.map((col) => (
-                              <TableCell
-                                sx={{ color: "#86898E", fontWeight: 500 }}
-                                className="tableheader"
-                              >
-                                {col}
-                              </TableCell>
-                            ))}
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          <div >{verified.length > 0
-                            ? verified.map((rma => {
-                                const {RMANo, DateTime, Company, CustomerEmail} = rma
-                              return(
-                              <div>
-                            <TableRow  key={RMANo} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                            <TableCell sx={{ color: "#0A2540" }} align="left">
-                                            {RMANo}
-                                </TableCell>
-                                <TableCell sx={{ color: "#0A2540" }} align="left">
-                                            {DateTime}
-                                </TableCell>
-                                <TableCell sx={{ color: "#0A2540" }} align="left">
-                                            {RMANo}
-                                </TableCell>
-                                <TableCell sx={{ color: "#0A2540" }} align="left">
-                                            {Company}
-                                </TableCell>
-                                <TableCell sx={{ color: "#0A2540" }} align="left">
-                                          {CustomerEmail}
-                                </TableCell>
-                              {/* <ActionMenu id={RMANo} /> */}
-
-                              </TableRow>
-                          
-                          </div>
-                            )}))
-                            
-                            : "Loading..." }</div> 
-                            
-                        </TableBody>
-                      </Table>
-                    
-                    </TableContainer>
-                  
-                              {/* 
-                              <div>
-                               <Link to={"/RMADetails/" + rma.RMANo}>View More</Link>
-                              </div>                 */}
-                          </div>                            
-                  
-          </div>
-      )
-  return html
-}
-
-const applyLoan = () => {
-  let navigate = useNavigate();
-
-  async function apply(event) {
-    event.preventDefault();
-    await SubmitButton(event.target);
-    navigate("/createRMA", { replace: true });
-}
-
-return   (
-<button onClick={apply}>
-Apply new RMA
-</button>
-)
-}
-
-switch (userrole) { 
-      case "Sales Engineer": { 
+  switch (userrole) { 
+    case "Sales Engineer": { 
         return(
-          <div>
-            <Tabs>
-                <TabList>
-                <Tab>Pending</Tab>
-                </TabList>
-                <TabPanel>
-                <div key="pending">
-                  {getPending()}
-                </div>
-                </TabPanel>       
-            </Tabs>
-
-          {applyLoan()}
-          </div>
-        )
-      } 
-      case "Sales Manager": { 
-        return(
-          <div>
-            <Tabs>
-                <TabList>
-                <Tab>Pending</Tab>
-                <Tab>Approved</Tab>
-                <Tab>Received </Tab>
-                <Tab>Verified</Tab>
-                </TabList>
-
-                <TabPanel>
-                <div key="pending">
-                  {getPending()}
-                </div>
-                </TabPanel>
-                <TabPanel>
-                <div key="approved">
-                  {getApproved()}
-                </div>
-                </TabPanel>
-                <TabPanel>
-                <div key="verified">
-                  {getReceived()}
-                </div>
-                </TabPanel>
-                <TabPanel>
-                <div key="verified">
-                  {getVerified()}
-                </div>
-                </TabPanel>
-            </Tabs>
-          {applyLoan()}
-          </div>
-        )
-      } 
-      case "Sales Admin": { 
-        return(
-        <div>
-          <Tabs>
-              <TabList>
-              <Tab>Verified</Tab>
-              </TabList>
-              <TabPanel>
-              <div key="verified">
-                {getVerified()}
-              </div>
-              </TabPanel>
-          </Tabs>
-          {applyLoan()}
-        </div>
-        )
-      } 
-      case "Warehouse Worker": { 
-        return(
-          <div>
-            <Tabs>
-                <TabList>
-                <Tab>Approved</Tab>
-                </TabList>
-                <TabPanel>
-                <div key="approved">
-                  {getApproved()}
-                </div>
-                </TabPanel>
-            </Tabs>
-            {applyLoan()}
-          </div>
+            <>
+            <h2 className="pagetitle">RMA requests </h2>
+            <RmaSearch/>
+           <TabContext value={value}>
+           <Box sx={{ paddingLeft:10, marginTop: 3}}>
+            <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+            sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
+              <Tab label="Approved" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+              <Tab label="Rejected" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+              </Tabs>
+          </Box>
+          <Box sx={{marginTop:-5}}>
+          <TabPanel value="1">
+            {myAcceptedRMAQuery.isLoading || myAcceptedRMAQuery.isError ? null :
+            <>
+              <TableNew headers={headers} pages={myAcceptedRMAQuery.data.pages} query={myAcceptedRMAQuery} menu={ActionMenu} />
+              </>
+            }
+            </TabPanel>
+            <TabPanel value="2">
+            {myRejectedRMAQuery.isLoading || myRejectedRMAQuery.isError ? null :
+            <>
+              <TableNew headers={headers} pages={myRejectedRMAQuery.data.pages} query={myRejectedRMAQuery} menu={ActionMenu} />
+              </>
+            }
+            </TabPanel>
+          </Box>
+            </TabContext>
+          </>
           )
-      } 
-      case "Technical Staff": { 
+    } 
+  case "Technical Staff": { 
         return(
-          <div>
-            <Tabs>
-                <TabList>
-                <Tab>Received</Tab>
-                </TabList>
-                <TabPanel>
-                <div key="received">
-                  {getReceived()}
-                </div>
-                </TabPanel>
-            </Tabs>
-            {applyLoan()}
-          </div>
-          ) 
-      } 
-      case "Admin": { 
+            <>
+            <h2 className="pagetitle">RMA requests </h2>
+            <RmaSearch/>
+        <TabContext value={value}>
+        <Box sx={{ paddingLeft:10, marginTop: 3}}>
+        <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+        sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
+            <Tab label="Received" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+        </Tabs>
+      </Box>
+      <Box sx={{marginTop:-5}}>
+      <TabPanel value="3">
+            {ReceivedRMAQuery.isLoading || ReceivedRMAQuery.isError ? null :
+            <>
+            <TableNew headers={headers} pages={ReceivedRMAQuery.data.pages} query={ReceivedRMAQuery} menu={ActionMenu} />
+            </>
+            }
+            </TabPanel>
+      </Box>
+            </TabContext>
+        </>
+        )
+    } 
+    case "Sales Manager": { 
+      return(
+        <>
+        <h2 className="pagetitle">RMA requests </h2>
+        <RmaSearch/>
+       <TabContext value={value}>
+       <Box sx={{ paddingLeft:10, marginTop: 3}}>
+        <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+        sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
+            <Tab label="Pending" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="Approved" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="Received" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="Verified" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+        </Tabs>
+      </Box>
+        
+  <Box sx={{marginTop:-5}}>
+         <TabPanel value="1">
+        {PendingRMAQuery.isLoading || PendingRMAQuery.isError ? null :
+        <>
+          <TableNew headers={headers} pages={PendingRMAQuery.data.pages} query={PendingRMAQuery} menu={ActionMenu} />
+          </>
+        }
+        </TabPanel>
+        <TabPanel value="2">
+        {ApprovedRMAQuery.isLoading || ApprovedRMAQuery.isError ? null :
+        <>
+          <TableNew headers={headers} pages={ApprovedRMAQuery.data.pages} query={ApprovedRMAQuery} menu={ActionMenu} />
+          </>
+        }
+        </TabPanel>
+        <TabPanel value="3">
+        {ReceivedRMAQuery.isLoading || ReceivedRMAQuery.isError ? null :
+        <>
+          <TableNew headers={headers} pages={ReceivedRMAQuery.data.pages} query={ReceivedRMAQuery} menu={ActionMenu} />
+          </>
+        }
+        </TabPanel>
+        <TabPanel value="4">
+        {VerifiedRMAQuery.isLoading || VerifiedRMAQuery.isError ? <><div className=''>No Loans bruh</div></> :
+        <>
+          <TableNew headers={headers} pages={VerifiedRMAQuery.data.pages} query={VerifiedRMAQuery} menu={ActionMenu} />
+          </>
+        } 
+        </TabPanel>
+  </Box>
+        
+        </TabContext>
+      </>
+      )
+    } 
+    case "Sales Admin": { 
         return(
-          <div>
-            <Tabs>
-                <TabList>
-                <Tab>Pending</Tab>
-                <Tab>Approved</Tab>
-                <Tab>Received </Tab>
-                <Tab>Verified</Tab>
-                </TabList>
+            <>
+            <h2 className="pagetitle">RMA requests </h2>
+            <RmaSearch/>
+           <TabContext value={value}>
+           <Box sx={{ paddingLeft:10, marginTop: 3}}>
+        <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+        sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
+            <Tab label="Verified" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+        </Tabs>
+      </Box>
+      <Box sx={{marginTop:-5}}>
+      <TabPanel value="4">
+            {VerifiedRMAQuery.isLoading || VerifiedRMAQuery.isError ? <><div className=''>No Loans bruh</div></> :
+            <>
+              <TableNew headers={headers} pages={VerifiedRMAQuery.data.pages} query={VerifiedRMAQuery} menu={ActionMenu} />
+              </>
+            } 
+            </TabPanel>
+      </Box>
 
-                <TabPanel>
-                <div key="pending">
-                  {getPending()}
-                </div>
-                </TabPanel>
-                <TabPanel>
-                <div key="approved">
-                  {getApproved()}
-                </div>
-                </TabPanel>
-                <TabPanel>
-                <div key="verified">
-                  {getReceived()}
-                </div>
-                </TabPanel>
-                <TabPanel>
-                <div key="verified">
-                  {getVerified()}
-                </div>
-                </TabPanel>
-            </Tabs>
-          {applyLoan()}
-          </div>
+            </TabContext>
+          </>
           )
-      } 
-      default: { 
+    } 
+    case "Warehouse Worker": { 
         return(
-          <div>
-            <Tabs>
-                <TabList>
-                <Tab>Pending</Tab>
-                <Tab>Approved</Tab>
-                <Tab>Received </Tab>
-                <Tab>Verified</Tab>
-                </TabList>
-
-                <TabPanel>
-                <div key="pending">
-                  {getPending()}
-                </div>
-                </TabPanel>
-                <TabPanel>
-                <div key="approved">
-                  {getApproved()}
-                </div>
-                </TabPanel>
-                <TabPanel>
-                <div key="verified">
-                  {getReceived()}
-                </div>
-                </TabPanel>
-                <TabPanel>
-                <div key="verified">
-                  {getVerified()}
-                </div>
-                </TabPanel>
+            <>
+            <h2 className="pagetitle">RMA requests </h2>
+            <RmaSearch/>
+           <TabContext value={value}>
+           <Box sx={{ paddingLeft:10, marginTop: 3}}>
+        <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+        sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
+            <Tab label="Received" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+        </Tabs>
+      </Box>
+      <Box sx={{marginTop:-5}}>
+            <TabPanel value="3">
+            {ReceivedRMAQuery.isLoading || ReceivedRMAQuery.isError ? null :
+            <>
+              <TableNew headers={headers} pages={ReceivedRMAQuery.data.pages} query={ReceivedRMAQuery} menu={ActionMenu} />
+              </>
+            }
+            </TabPanel>
+            </Box>
+            </TabContext>
+          </>
+          )
+    } 
+    case "Admin": { 
+        return(
+            <>
+            <h2 className="pagetitle">RMA requests </h2>
+            <RmaSearch/>
+           <TabContext value={value}>
+           <Box sx={{ paddingLeft:10, marginTop: 3}}>
+            <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+            sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
+                <Tab label="Pending" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+                <Tab label="Approved" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+                <Tab label="Received" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+                <Tab label="Verified" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
             </Tabs>
-          {applyLoan()}
-          </div>
-        ) 
-      } 
-  } 
+          </Box>
+            
+      <Box sx={{marginTop:-5}}>
+             <TabPanel value="1">
+            {PendingRMAQuery.isLoading || PendingRMAQuery.isError ? null :
+            <>
+              <TableNew headers={headers} pages={PendingRMAQuery.data.pages} query={PendingRMAQuery} menu={ActionMenu} />
+              </>
+            }
+            </TabPanel>
+            <TabPanel value="2">
+            {ApprovedRMAQuery.isLoading || ApprovedRMAQuery.isError ? null :
+            <>
+              <TableNew headers={headers} pages={ApprovedRMAQuery.data.pages} query={ApprovedRMAQuery} menu={ActionMenu} />
+              </>
+            }
+            </TabPanel>
+            <TabPanel value="3">
+            {ReceivedRMAQuery.isLoading || ReceivedRMAQuery.isError ? null :
+            <>
+              <TableNew headers={headers} pages={ReceivedRMAQuery.data.pages} query={ReceivedRMAQuery} menu={ActionMenu} />
+              </>
+            }
+            </TabPanel>
+            <TabPanel value="4">
+            {VerifiedRMAQuery.isLoading || VerifiedRMAQuery.isError ? <><div className=''>No Loans bruh</div></> :
+            <>
+              <TableNew headers={headers} pages={VerifiedRMAQuery.data.pages} query={VerifiedRMAQuery} menu={ActionMenu} />
+              </>
+            } 
+            </TabPanel>
+      </Box>
+            
+            </TabContext>
+          </>
+          )
+    } 
+    default: { 
+      return(
+        <>
+        <h2 className="pagetitle">RMA requests </h2>
+        <RmaSearch/>
+       <TabContext value={value}>
+       <Box sx={{ paddingLeft:10, marginTop: 3}}>
+        <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+        sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
+            <Tab label="Pending" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="Approved" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="Received" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="Verified" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+        </Tabs>
+      </Box>
+        
+  <Box sx={{marginTop:-5}}>
+         <TabPanel value="1">
+        {PendingRMAQuery.isLoading || PendingRMAQuery.isError ? null :
+        <>
+          <TableNew headers={headers} pages={PendingRMAQuery.data.pages} query={PendingRMAQuery} menu={ActionMenu} />
+          </>
+        }
+        </TabPanel>
+        <TabPanel value="2">
+        {ApprovedRMAQuery.isLoading || ApprovedRMAQuery.isError ? null :
+        <>
+          <TableNew headers={headers} pages={ApprovedRMAQuery.data.pages} query={ApprovedRMAQuery} menu={ActionMenu} />
+          </>
+        }
+        </TabPanel>
+        <TabPanel value="3">
+        {ReceivedRMAQuery.isLoading || ReceivedRMAQuery.isError ? null :
+        <>
+          <TableNew headers={headers} pages={ReceivedRMAQuery.data.pages} query={ReceivedRMAQuery} menu={ActionMenu} />
+          </>
+        }
+        </TabPanel>
+        <TabPanel value="4">
+        {VerifiedRMAQuery.isLoading || VerifiedRMAQuery.isError ? <><div className=''>No Loans bruh</div></> :
+        <>
+          <TableNew headers={headers} pages={VerifiedRMAQuery.data.pages} query={VerifiedRMAQuery} menu={ActionMenu} />
+          </>
+        } 
+        </TabPanel>
+  </Box>
+        
+        </TabContext>
+      </>
+      )
+    } 
+}
 
 };
+export default Rmatabs;
+
+

@@ -15,9 +15,9 @@ import EditNotificationGroup from "./pages/notificationgroups/EditNotificationGr
 import NotificationGroups from "./pages/notificationgroups/NotificationGroups";
 import ViewNotificationGroup from "./pages/notificationgroups/ViewNotificationGroup";
 import Dashboard from "./pages/dashboards/Dashboards";
+import DashboardManager from "./pages/dashboards/DashboardManager";
 import Products from "./pages/products/Products";
-import TestProducts from "./pages/products/TestProducts";
-//import TestProductDetails from "./pages/products/ProductDetails"
+import ViewProduct from "./pages/products/ViewProduct";
 import BinLocations from "./pages/binlocations/BinLocations";
 import TLoan from "./pages/tloans/tloan";
 import RMA from "./pages/rma/rma";
@@ -73,9 +73,9 @@ const App: React.FC = () => {
             </Route>
             <Route element={<ProtectedRoute loginpage={false} />}>
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard/manager" element={<DashboardManager />} />
               <Route path="/products" element={<Products />} />
-              <Route path="/testproducts" element={<TestProducts />} />
-              {/* <Route path="/testproductdetails" element={<TestProductDetails />} /> */}
+              <Route path="/product/:id" element={<ViewProduct />} />
               <Route path="/binlocations" element={<BinLocations />} />
               <Route path="/user/:id" element={<ViewUser />} />
               <Route path="/users" element={<Users />} />
@@ -99,7 +99,7 @@ const App: React.FC = () => {
               <Route path="/createRma" element={<CreateRMA />} />
               <Route path="/rmaDetails/:RMANo" element={<RmaDisplay />} />
               <Route
-                path="/tloanDetails/:TLoanNumber"
+                path="/tloandetails/:TLoanNumber"
                 element={<TLoanDisplay />}
               />
               <Route path="/newtloan" element={<NewTLoan />} />

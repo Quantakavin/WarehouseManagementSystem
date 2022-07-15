@@ -30,7 +30,7 @@ const Products: React.FC = () => {
       [
         {
           name: "View Details",
-          url: `/user/${id}`,
+          url: `/product/${id}`,
           icon: <PageviewIcon fontSize="small" />,
           delete: false
         }

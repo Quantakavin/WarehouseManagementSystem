@@ -1,4 +1,4 @@
-import { Tab, Tabs, Box } from '@mui/material';
+import { Tab, Tabs, Box, Grow } from '@mui/material';
 import {TabList, TabPanel, TabContext } from '@mui/lab'; 
 import 'react-tabs/style/react-tabs.css';
 import React , { useEffect, useState } from 'react';
@@ -19,6 +19,7 @@ import PageviewIcon from '@mui/icons-material/Pageview';
 import ActionMenu from "../../components/table/ActionMenu";
 import { GetCurrent, GetDraft, GetPending, GetHistory } from '../../api/TLoanDB';
 import TableNew from "../../components/table/TableNew";
+import EmptyTable from "../table/EmptyTable"
 
 // const TLoanTabs : React.FC = () => {
 
@@ -221,7 +222,6 @@ import TableNew from "../../components/table/TableNew";
 
 const TLoanTabs: React.FC = () => {
   
-    
   const headers = [
     "Loan No.",
     "Start Date",
@@ -267,7 +267,7 @@ const TLoanTabs: React.FC = () => {
       [
         {
           name: "View Details",
-          url: `/tloan/${id}`,
+          url: `/tloandetails/${id}`,
           icon: <PageviewIcon fontSize="small" />,
           delete: false
         },
@@ -285,26 +285,45 @@ const TLoanTabs: React.FC = () => {
       ]
     )
   }
+
   const [value, setValue] = useState(0); // first tab
 
-  const handleChange = (_event, newValue) => {
+  const handleChange = ( _event, newValue) => {
    setValue(newValue);
   };
-
+ 
   return (
     <>
       <h2 className="pagetitle">TLoans </h2>
      <TabContext value={value}>
-     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-      <TabList onChange={handleChange}>
-        <Tab label="Current" value="1"/>
-        <Tab label="Pending" value="2"/>
-        <Tab label="Drafts" value="3"/>
-        <Tab label="History" value="4"/>
-      </TabList>
+     <Box sx={{ marginLeft:-3,}}>
+      <Tabs selectionFollowsFocus={true}
+      onChange={handleChange}
+      TabIndicatorProps={{
+        style: {
+          backgroundColor: "#D97D54"
+         }
+        }}
+
+        sx={{
+          "& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110},
+          "& button:active": { backgroundColor: "#063970", color:"white", width: 190, height: 110},
+          "& button.Mui-selected": { backgroundColor: "#063970", color:"white", width: 190, height: 110}
+          
+
+        }}
+        aria-label="basic tabs example"
+        centered
+       >
+       
+        <Tab label="Current" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+        <Tab label="Pending" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2, height: 100, width: 180,}}/>
+        <Tab label="Drafts" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2, height: 100, width: 180,}}/>
+        <Tab label="History" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2 ,marginRight: 2,height: 100, width: 180,}}/>
+      </Tabs>
       </Box>
       
-
+        <Box sx={{marginTop:-5}}>
        <TabPanel value="1">
       {LoansQuery.isLoading || LoansQuery.isError ? null :
       <>
@@ -327,12 +346,13 @@ const TLoanTabs: React.FC = () => {
       }
       </TabPanel>
       <TabPanel value="4">
-      {HistoryQuery.isLoading || HistoryQuery.isError ? <><div className=''>No Loans bruh</div></> :
+      {HistoryQuery.isLoading || HistoryQuery.isError ? <><EmptyTable headers={headers}/></>:
       <>
         <TableNew headers={headers} pages={HistoryQuery.data.pages} query={HistoryQuery} menu={ActionMenu} />
         </>
-      } 
+      }
       </TabPanel>
+      </Box>
       
       </TabContext>
     </>
