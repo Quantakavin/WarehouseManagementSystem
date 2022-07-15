@@ -1,6 +1,6 @@
 import * as React from 'react';
 import defaultprofile from "../../assets/defaultprofile.png";
-import { useAppSelector } from '../../app/hooks'
+import { useAppSelector, useAppDispatch} from '../../app/hooks'
 import { selectRole, selectName } from '../../app/reducers/CurrentUserSlice';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import WarehouseIcon from '@mui/icons-material/Warehouse';
@@ -8,17 +8,29 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import ArticleIcon from '@mui/icons-material/Article';
 import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
 import SidebarLink from './SidebarLink';
-import { selectCurrentTab } from '../../app/reducers/SidebarSlice';
+import { selectCurrentTab, selectOpen, Open, Close } from '../../app/reducers/SidebarSlice';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import PersonIcon from '@mui/icons-material/Person';
 import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 
 const Sidebar: React.FC = () => { 
 
+  const dispatch = useAppDispatch()
+  const isopen = useAppSelector(selectOpen)
   const username = useAppSelector(selectName)
   const userrole = useAppSelector(selectRole)
   const currenttab = useAppSelector(selectCurrentTab)
   const usertabs = ["Users", "User Groups", "Notification Groups"]
+
+  const toggleopen = () => {
+    if (isopen) {
+      dispatch(Close())
+    } else {
+      dispatch(Open())
+    }
+  }
 
   return(
     <div className="sidebar">
@@ -30,12 +42,18 @@ const Sidebar: React.FC = () => {
         width="40"
         height="40"
         className="d-inline-block align-top"
-        style={{ marginRight: 10 }}
+        style={{ marginRight: 15 }}
       />
         </div>
+        {isopen &&
         <div style={{flex: 3, marginTop: 8, marginBottom: -8}}>
           <p style={{fontSize: 18, fontWeight: 500, textTransform: "capitalize"}}>{username}</p>
           <p style={{fontSize:  12, fontWeight: 400, marginTop: -15}}>{userrole}</p>
+        </div>}
+        <div style={{flex: 1}}>
+          <button className="buttonremovestyling" type="button" onClick={() => toggleopen()}>
+          {isopen? <NavigateBeforeIcon /> : <NavigateNextIcon />}
+          </button>
         </div>
 
       </div>

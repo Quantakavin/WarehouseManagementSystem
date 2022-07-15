@@ -34,7 +34,7 @@ const FormField = <T,>({
   errormsg,
   type,
   register,
-  rules
+  rules,
 } : FormFieldProps<T>) => {
   const { toggle, passwordType, showPassword } = useTogglePasword();
   let field = null;
@@ -79,3 +79,107 @@ const FormField = <T,>({
 };
 
 export default FormField;
+
+
+// import React from "react";
+// import styled from "styled-components";
+// import { UseFormRegister, RegisterOptions, Path } from "react-hook-form";
+// import VisibilityIcon from "@mui/icons-material/Visibility";
+// import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+// import { IconButton, InputAdornment, TextField, OutlinedInput } from "@mui/material";
+// import Visibility from "@mui/icons-material/Visibility";
+// import VisibilityOff from "@mui/icons-material/VisibilityOff";
+// import useTogglePasword from "../../hooks/useTogglePassword";
+
+// type AllowedInputs = "email" | "password" | "text" | "number";
+
+
+// interface FormFieldProps<T> {
+//   label: string;
+//   name: Path<T>;
+//   defaultvalue?: string;
+//   errormsg?: string;
+//   type: AllowedInputs;
+//   register?: UseFormRegister<T>;
+//   rules?: RegisterOptions;
+//   multiline?: boolean;
+// }
+
+// const inputProps = {
+//   style: {
+//     paddingTop: 5,
+//     paddingBottom: 12,
+//     paddingLeft: 15,
+//     paddingRight: 15
+//   }
+// };
+
+
+// const FormField = <T,>({
+//   label,
+//   name,
+//   defaultvalue,
+//   errormsg,
+//   type,
+//   register,
+//   rules,
+//   multiline
+// } : FormFieldProps<T>) => {
+//   let field = null;
+//   const { toggle, passwordType, showPassword } = useTogglePasword();
+
+//   if (type === "password") {
+//     field = (
+//       <OutlinedInput
+//             type={passwordType}
+//             className="textfield"
+//             defaultValue = {defaultvalue}
+//             sx={{
+//               borderRadius: 3
+//             }}
+//             multiline={multiline}
+//             rows={multiline? 5 : 1}
+//             inputProps={inputProps}
+//             {...(register && register(name, rules))}
+//             endAdornment={
+//               <InputAdornment position="end" sx={{marginBottom: 0.5}}>
+//               <IconButton
+//                 aria-label="toggle password visibility"
+//                 onClick={toggle}
+//               >
+//                 {showPassword ? <VisibilityOff sx={{color: "#0A2540"}}/> : <Visibility sx={{color: "#0A2540"}}/>}
+//               </IconButton>
+//             </InputAdornment>
+//             }
+//             label="Password"
+//           />
+//     );
+//   } else {
+//     field = (
+//       <OutlinedInput
+//         className="textfield"
+//         sx={{
+//           borderRadius: 3
+//         }}
+//         type={type}
+//         multiline={multiline}
+//         rows={multiline? 5 : 1}
+//         defaultValue = {defaultvalue}
+//         inputProps={inputProps}
+//         {...(register && register(name, rules))}
+//       />
+//     );
+//   }
+//   return (
+//     <div style={{ display: "flex", flexDirection: "column" }}>
+//       <p className="formlabels"> {label} </p>
+//       <div className="formfieldcontainer">
+// {field}
+//         {/* <TextField variant="outlined" /> */}
+//       </div>
+//       <p className="errormsg">{errormsg}</p>
+//     </div>
+//   );
+// };
+
+// export default FormField;

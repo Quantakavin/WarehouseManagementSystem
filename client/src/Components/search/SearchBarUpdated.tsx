@@ -5,7 +5,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 const SearchBarUpdated = () => {
   return (
-    <Stack spacing={2} sx={{ width: 300, marginLeft: "8%", marginTop: "20px"}}>
+    <Stack spacing={2} sx={{ width: 300, marginLeft: "8%", marginTop: "20px", alignSelf: "flex-start"}}>
       {/* <Autocomplete
         id="free-solo-demo"
         freeSolo

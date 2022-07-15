@@ -81,7 +81,7 @@ module.exports.update = async (userGroupID, name, description, features) => {
 };
 
 module.exports.getFeatures = async (userGroupID) => {
-    const query = `SELECT u.FeatureID, u.FeatureRightID, f.FeatureName, fr.FeatureRight FROM UserGroupFeature u INNER JOIN Feature f ON u.FeatureID = f.FeatureID INNER JOIN FeatureRight fr on u.FeatureRightID = fr.FeatureRightID WHERE u.UserGroupID = ?`;
+    const query = `SELECT u.FeatureID, f.FeatureName, fr.FeatureRight FROM UserGroupFeature u INNER JOIN Feature f ON u.FeatureID = f.FeatureID INNER JOIN FeatureRight fr on u.FeatureRightID = fr.FeatureRightID WHERE u.UserGroupID = ? ORDER BY u.FeatureID`;
     return knex.raw(query, [userGroupID]);
 };
 

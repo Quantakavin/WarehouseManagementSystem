@@ -76,7 +76,7 @@ const EditUser: React.FC = () => {
 
     const usergroups: Option[] = [];
     if (!userGroupsQuery.error && !userGroupsQuery.isLoading) {
-      userGroupsQuery.data.data.forEach((usergroup: UserGroup) => {
+      userGroupsQuery.data.response.data.forEach((usergroup: UserGroup) => {
         usergroups.push({
           id: usergroup.UserGroupID,
           text: usergroup.UserGroupName,
@@ -88,7 +88,7 @@ const EditUser: React.FC = () => {
 
     const notigroups: Option[] = [];
     if (!notiGroupsQuery.error && !notiGroupsQuery.isLoading) {
-      notiGroupsQuery.data.data.forEach((notigroup: NotiGroup) => {
+      notiGroupsQuery.data.response.data.forEach((notigroup: NotiGroup) => {
         notigroups.push({
           id: notigroup.NotiGroupID,
           text: notigroup.NotiGroupName,
@@ -217,8 +217,12 @@ const EditUser: React.FC = () => {
       handleSubmit={handleSubmit}
       onSubmit={onSubmit}
     >
+      {(!UserQuery.isLoading && !UserQuery.isError) &&
+      <>
       {StepOne}
       {StepTwo}
+      </>
+      }
     </FormContainer>
   );
 };

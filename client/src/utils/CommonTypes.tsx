@@ -9,6 +9,18 @@ export interface Company {
   CompanyName: string;
 }
 
+export interface Feature {
+  FeatureID: number;
+  FeatureName: string;
+}
+
+export interface FeatureRight {
+  FeatureRightID: number;
+  FeatureRight: string;
+}
+
+
+
 export interface UserGroup {
   UserGroupID: number;
   UserGroupName: string;

@@ -1,3 +1,5 @@
+import { TransgenderTwoTone } from "@mui/icons-material";
+import { Checkbox, ListItemText, MenuItem, Select } from "@mui/material";
 import React from "react";
 import { UseFormRegister, RegisterOptions } from "react-hook-form";
 import { Option } from "../../utils/CommonTypes";
@@ -23,11 +25,42 @@ const SelectDropdown: React.FC<SelectProps<any>> = ({
   defaultoption,
   multiselect,
 }) => {
+
+  const field = (
+      <Select
+      size="small"
+      defaultValue={multiselect? []: ""}
+      className="selectfield"
+      name={name}
+      {...(register && register(name, rules))}
+      sx={{ 
+        borderRadius: "15px",
+        paddingTop: "0px",
+        textOverflow: "ellipsis", 
+        overflow: "hidden", 
+        whiteSpace: "pre"
+      }}
+      displayEmpty
+      multiple={multiselect}
+    >
+      <MenuItem value={""} disabled hidden>
+      {defaultoption}
+      </MenuItem>
+      {options.map(({ id, text, value }) => (
+      <MenuItem key={id} value={value}>
+
+        {text}
+      </MenuItem>
+      ))}
+    </Select>
+    )
+
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <p className="formlabels"> {label} </p>
-      <div className="formfieldcontainer" style={{ alignSelf: "center" }}>
-        <select
+      <div className="formfieldcontainer">
+        {field}
+        {/* <select
           defaultValue=""
           className="formselect"
           name={name}
@@ -40,7 +73,7 @@ const SelectDropdown: React.FC<SelectProps<any>> = ({
           {options.map(({ id, text, value }) => (
             <option key={id} value={value}>{text}</option>
           ))}
-        </select>
+        </select> */}
       </div>
       <p className="errormsg">{errormsg}</p>
     </div>

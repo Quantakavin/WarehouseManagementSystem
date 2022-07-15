@@ -8,6 +8,7 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Dialog from "@mui/material/Dialog";
 import Alert from "@mui/material/Alert";
 import CheckIcon from "@mui/icons-material/Check";
+import { triggerAsyncId } from "async_hooks";
 import FormContainer from "../../components/form/FormContainer";
 import SubmitButton from "../../components/form/SubmitButton";
 import ErrorAlert from "../../components/form/ErrorAlert";
@@ -50,8 +51,10 @@ const AddUser: React.FC = () => {
   const navigate = useNavigate();
   const {
     register,
+    trigger,
+    watch,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isDirty, dirtyFields},
   } = useForm<FormValues>({ mode: "all" });
 
   // const companiesQuery = useQuery("companies", GetCompanies);
@@ -77,7 +80,7 @@ const AddUser: React.FC = () => {
 
     const usergroups: Option[] = [];
     if (!userGroupsQuery.error && !userGroupsQuery.isLoading) {
-      userGroupsQuery.data.data.forEach((usergroup: UserGroup) => {
+      userGroupsQuery.data.response.data.forEach((usergroup: UserGroup) => {
         usergroups.push({
           id: usergroup.UserGroupID,
           text: usergroup.UserGroupName,
@@ -89,7 +92,7 @@ const AddUser: React.FC = () => {
 
     const notigroups: Option[] = [];
     if (!notiGroupsQuery.error && !notiGroupsQuery.isLoading) {
-      notiGroupsQuery.data.data.forEach((notigroup: NotiGroup) => {
+      notiGroupsQuery.data.response.data.forEach((notigroup: NotiGroup) => {
         notigroups.push({
           id: notigroup.NotiGroupID,
           text: notigroup.NotiGroupName,
@@ -107,6 +110,15 @@ const AddUser: React.FC = () => {
   };
 
   const nextStep = () => {
+    // trigger([
+    //   "name",
+    //   "email",
+    //   "mobileno",
+    //   "password",
+    //   "company",
+    // ])
+    // console.log(isDirty)
+    // console.log(dirtyFields)
     setStep(step + 1);
   };
 
@@ -146,7 +158,7 @@ const AddUser: React.FC = () => {
         type="password"
         register={register}
         errormsg={errors.password?.message}
-        rules={PasswordValidation}
+        rules={PasswordValidation}        
       />
       <SelectDropdown
         label="Company"
@@ -185,6 +197,7 @@ const AddUser: React.FC = () => {
         multiselect={false}
         defaultoption="Choose a User Group"
       />
+
       <SelectDropdown
         label="Notification Groups"
         name="notificationgroups"
