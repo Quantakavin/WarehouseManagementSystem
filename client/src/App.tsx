@@ -41,7 +41,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ loginpage }) => {
   const token = localStorage.getItem("token");
   if (loginpage) {
     if (token) {
-      return <Navigate replace to="/dashboard" />;
+      return <Navigate replace to="/dashboard/manager" />;
     } else {
       return <Outlet />;
     }
