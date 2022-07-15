@@ -105,7 +105,7 @@ const Rmatabs: React.FC = () => {
         },
         // {
         //   name: "Edit Details",
-        //   url: `/edituser/${id}`,
+        //   url: `/tloan/edit/${id}`,
         //   icon: <ModeEditOutlineIcon fontSize="small" />,
         //   delete: false
         // },

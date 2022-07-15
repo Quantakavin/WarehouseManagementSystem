@@ -20,13 +20,30 @@ module.exports.getByRMANo = async (RMANo) => {
     const query = ` SELECT
                     r.RMANo,
                     r.RmaID,
-                    r.DateTime ,
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime',
+                    r.ContactPerson,
+                    r.CustomerEmail,
                     c.CompanyName,
-                    r.CustomerEmail
+                    r.ContactNo
                     FROM Rma r, Company c WHERE
                     RMANo = ? AND 
                     r.CompanyID = c.CompanyID;`;
     return knex.raw(query, [RMANo]);
+};
+
+
+module.exports.getRMAProducts = async (RmaID) => {
+    const query = ` SELECT 
+                    ItemCode,
+                    InvoiceNo,      
+                    DoNo,
+                    DateOfPurchase,        
+                    ReturnReason,
+                    Instructions,       
+                    CourseOfAction,
+                    RmaProductPK
+                    FROM RmaProduct WHERE RmaID = ?`;
+    return knex.raw(query, [RmaID]);
 };
 
 module.exports.getSalesmanRMA = async (SalesmanID) => {
@@ -64,14 +81,6 @@ module.exports.getSalesmanRejectedRMA = async (SalesmanID) => {
     return knex.raw(query, [SalesmanID]);
 };
 
-module.exports.getRMAProducts = async (RmaID) => {
-    const query = ` SELECT ItemCode, InvoiceNo, 
-                    DoNo, DateOfPurchase, 
-                    ReturnReason, Instructions, 
-                    CourseOfAction, RmaProductPK 
-                    FROM RmaProduct WHERE RmaID = ?`;
-    return knex.raw(query, [RmaID]);
-};
 
 module.exports.getAllRMA = async () => {
     const query = ` SELECT r.RMANo, 
@@ -296,6 +305,19 @@ module.exports.updateRmaCOA = async (RMANo, COA) => {
             .where('RMANo', RMANo)
             .update({
                 CourseOfAction: COA
+            })
+            .transacting(trx)
+            .then(trx.commit)
+            .catch(trx.rollback);
+    });
+};
+
+module.exports.closeRMA = async (RMANo) => {
+    return knex.transaction((trx) => {
+        knex('Rma')
+            .where('RMANo', RMANo)
+            .update({
+                RmaStatusID: 6
             })
             .transacting(trx)
             .then(trx.commit)

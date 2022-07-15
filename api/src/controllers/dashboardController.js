@@ -65,21 +65,6 @@ module.exports.ExtendedTLoans = async (req, res) => {
 };
 
 // RMA Overview
-
-module.exports.currentRMAs = async (req, res) => {
-    try {
-        const results = await dashboard.getCurrentRMAs();
-        if (results.length > 0) {
-            return res.status(200).json(results[0]);
-        } else {
-            return res.status(404).send('There is no Approved RMAs');
-        }
-    } catch (error) {
-        console.log(error);
-        return res.status(500).send('Internal Server Error');
-    }
-};
-
 module.exports.pendingRMAs = async (req, res) => {
     try {
         const results = await dashboard.getPendingRMAs();
@@ -94,9 +79,23 @@ module.exports.pendingRMAs = async (req, res) => {
     }
 };
 
-module.exports.rejectedRMAs = async (req, res) => {
+module.exports.approvedRMAs = async (req, res) => {
     try {
-        const results = await dashboard.getRejectedRMAs();
+        const results = await dashboard.getApprovedRMAs();
+        if (results.length > 0) {
+            return res.status(200).json(results[0]);
+        } else {
+            return res.status(404).send('There is no pendding RMAs');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
+module.exports.receivedRMAs = async (req, res) => {
+    try {
+        const results = await dashboard.getReceivedRMAs();
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {

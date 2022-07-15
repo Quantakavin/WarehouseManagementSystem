@@ -8,9 +8,9 @@ router.get('/getdraftTloans', dashboardController.DraftTLoans);
 router.get('/getextendedTloan', dashboardController.ExtendedTLoans);
 
 // RMA Overview
-router.get('/getcurrentRMAs', dashboardController.currentRMAs);
 router.get('/getpendingRMAs', dashboardController.pendingRMAs);
-router.get('/getrejectedRMAs', dashboardController.rejectedRMAs);
+router.get('/getapprovedRMAs', dashboardController.approvedRMAs);
+router.get('/getreceivedRMAs', dashboardController.receivedRMAs);
 router.get('/getclosedRMAs', dashboardController.closedRMAs);
 
 // Current T-Loan and RMA Statistic
