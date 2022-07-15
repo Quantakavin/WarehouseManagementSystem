@@ -65,21 +65,36 @@ module.exports.getLoanByNumber = async(TLoanNumber) => {
   // DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   // c.CompanyName,
   // t.Requestor, FROM TLoan t JOIN Company C WHERE t.TLoanNumber = ?, t.CompanyID = c.CompanyID`
-  const query = `   SELECT t.TLoanNumber,
+  const query = `   SELECT 
+	t.TLoanID,
+  t.TLoanNumber,
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS 'EndDate',
   c.CompanyName,
-  t.Requestor,
+  t.Requestor
+  FROM TLoan t 
+  LEFT JOIN Company c ON t.CompanyID = c.CompanyID
+  WHERE t.TLoanNumber = ?
+ `
+  return knex.raw(query, [TLoanNumber])
+}
+
+module.exports.getTLoanOutItem = async(TLoanID) =>{
+
+  const query = 
+  `
+  SELECT 
+  tl.TLoanID,
   tl.ItemNo,
   bp.BatchNo,
   tl.Quantity
- FROM TLoan t 
- LEFT OUTER JOIN Company c ON t.CompanyID = c.CompanyID
- LEFT OUTER JOIN TLoanOutItem tl ON t.TLoanID = tl.TLoanID 
- LEFT JOIN BinProduct bp ON tl.ItemNo = bp.ItemNo 
- WHERE t.TLoanNumber = ? 
- `
-  return knex.raw(query, [TLoanNumber])
+  FROM TLoanOutItem tl 
+	JOIN BinProduct bp
+  ON tl.ItemNo = bp.ItemNo
+  WHERE tl.TLoanID = ?
+  `
+
+  return knex.raw(query, [TLoanID])
 }
 
 module.exports.extension = async(id,duration,reason) => {

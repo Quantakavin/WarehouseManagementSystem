@@ -18,6 +18,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { styled } from '@mui/material/styles'
+import TextField from '@mui/material/TextField';
 //import { GetDetails }from "../../api/TLoanDB"
 
 
@@ -26,6 +27,7 @@ export default function tloanDisplay() {
   
 
     const [details, setDetails] = useState([]);
+    //const [loanDetails, setLoanDetails] = useState([]);
     const [loans, setLoans] = useState([]);
    
     let { TLoanNumber } = useParams();
@@ -34,10 +36,11 @@ export default function tloanDisplay() {
       // declare the async data fetching function
       const fetchData = async () => {
         // get the data from the api
-        const loan = await axios.get(`http://localhost:5000/api/tloans/${TLoanNumber}`);
+        const loans = await axios.get(`http://localhost:5000/api/tloans/${TLoanNumber}`);
        
-        setLoans(loan.data)
+        setLoans(loans.data)
         
+        // setLoan(Object.e)
       
       }
       // call the function
@@ -45,8 +48,11 @@ export default function tloanDisplay() {
         // make sure to catch any error
         .catch(console.error);;
     }, [])
+
+    console.log(loans.Items)
     
-    console.log(loans)
+    
+    
    
     const table = () =>{
       const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -60,7 +66,7 @@ export default function tloanDisplay() {
       }));
       
       const StyledTableRow = styled(TableRow)(({ theme }) => ({
-        '&:nth-of-type(odd)': {
+        '&:nth-of-type(even)': {
           backgroundColor: theme.palette.action.hover,
         },
         // hide last border
@@ -76,10 +82,10 @@ export default function tloanDisplay() {
       ) {
         return { itemName, batchNo, quantity };
       }
-      
+      const items = loans.Items
      
       return (
-        <TableContainer component={Paper} sx={{width:500, marginLeft: 6.5}}>
+        <TableContainer component={Paper} sx={{width:500, marginLeft: 6.5, overflow: "hidden"}}>
       <Table sx={{ width: 500, maxHeight:400 }} aria-label="customized table">
         <TableHead >
           <TableRow >
@@ -91,13 +97,13 @@ export default function tloanDisplay() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {loans.map((loan) => (
-            <StyledTableRow key={loan.ItemNo}>
+          {items?.map((item) => (
+            <StyledTableRow key={item.ItemNo}>
               <StyledTableCell align="center" component="th" scope="row">
-                {loan.ItemNo}
+                {item.ItemNo}
               </StyledTableCell>
-              <StyledTableCell align="center">{loan.BatchNo}</StyledTableCell>
-              <StyledTableCell align="center">{loan.Quantity}</StyledTableCell>
+              <StyledTableCell align="center">{item.BatchNo}</StyledTableCell>
+              <StyledTableCell align="center">{item.Quantity}</StyledTableCell>
               {/* <StyledTableCell align="right">{loans.}</StyledTableCell> */}
               
             </StyledTableRow>
@@ -107,18 +113,18 @@ export default function tloanDisplay() {
     </TableContainer>
       )
     }
-    const getData = () => {
+    const getData = (TLoanNumber, StartDate, EndDate, CompanyName, Requestor) => {
 
-      let html = []
+    
 
-      html.push(
-      loans.map((loan)=>{
-       
-        const { TLoanNumber, Requestor, EndDate, CompanyName, StartDate} = loan
-        return (
+      
+  
+       console.log(loans)
+      return (
+        
            <div>
          
-         <h2 className="pagetitle">{TLoanNumber} </h2>
+         <h2 className="pagetitle">{loans.TLoanNumber}</h2>
           <Card sx={{ width: 800, height: 400, marginLeft: 'auto', marginRight: 'auto'}}>
         <CardMedia
         
@@ -127,23 +133,23 @@ export default function tloanDisplay() {
            <Typography gutterBottom variant="subtitle2" component="div" sx={{display: 'flex',justifyContent:'center', alignItems:'center', marginTop: 3, marginLeft: -10,color:'#063970', fontWeight: 'bold'}}>
            <Box>
            <div >Loan No.</div>
-           <div style={{color: "black", fontWeight: "normal"}}>{TLoanNumber}</div>
+           <div style={{color: "black", fontWeight: "normal"}}>{loans.TLoanNumber}</div>
            </Box >
            <Box sx={{marginLeft: 5}}>
            <div >Start Date:</div>
-           <div style={{color: "black", fontWeight: "normal"}}>{StartDate}</div>
+           <div style={{color: "black", fontWeight: "normal"}}>{loans.StartDate}</div>
            </Box>
            <Box sx={{marginLeft: 5}}>
            <div style={{}}>End Date:</div>
-           <div style={{color: "black", fontWeight: "normal"}}>{EndDate}</div>
+           <div style={{color: "black", fontWeight: "normal"}}>{loans.EndDate}</div>
            </Box>
            <Box sx={{marginLeft: 5}}>
            <div style={{}}>Company Name:</div>
-           <div style={{color: "black", fontWeight: "normal"}}>{CompanyName}</div>
+           <div style={{color: "black", fontWeight: "normal"}}>{loans.CompanyName}</div>
            </Box>
            <Box sx={{marginLeft: 5}}>
            <div style={{}}>Customer Email</div>
-           <div style={{color: "black", fontWeight: "normal"}}>{Requestor}</div>
+           <div style={{color: "black", fontWeight: "normal"}}>{loans.Requestor}</div>
            </Box>
            
           
@@ -152,21 +158,38 @@ export default function tloanDisplay() {
           <div>Item List</div>
           
           </Typography>
-          {table()}
+          <Box sx={{display:'flex'}}> 
+            {table()}
+            <Box sx={{ marginLeft : 2 }} >
+              <TextField
+              id="With normal TextField"
+              // label="Shipping Address"
+              multiline
+              rows={5.5}
+              disabled
+             
+              defaultValue={loans.TLoanNumber}
+              
+              />
+            </Box>
+          </Box>
+         
           <Typography variant="body2" color="text.secondary">
             
           </Typography>
         </CardContent>
-        <CardActions>
-          <Button size="small">uhh</Button>
-          <Button size="small">More</Button>
-        </CardActions>
+        <Box sx={{display:'flex',justifyContent:'center', alignItems:'center', paddingTop: 3}}>
+          <Button size="small" >Back</Button>
+         
+          <Button size="small" >Apply Extension</Button>
+         </Box>
+        
       </Card>
         </div>
-        )
-      })
+        
+    
       )
-      return html
+     
     }
   
 
