@@ -43,7 +43,7 @@ const SelectDropdown: React.FC<SelectProps<any>> = ({
       displayEmpty
       multiple={multiselect}
     >
-      <MenuItem value={""} disabled hidden>
+      <MenuItem value={multiselect? [] : ""} disabled hidden>
       {defaultoption}
       </MenuItem>
       {options.map(({ id, text, value }) => (

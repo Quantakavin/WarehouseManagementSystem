@@ -16,12 +16,7 @@ import FormContainer from "../../components/form/FormContainer";
 import FormTextArea from "../../components/form/FormTextArea";
 import { GetFeatures, GetFeatureRights } from "../../api/FeatureDB";
 import { Option, Feature, FeatureRight } from "../../utils/CommonTypes";
-// import SelectDropdown from "../../components/form/SelectDropdown";
-
-type UserGroupFeature = {
-  FeatureID: string;
-  FeatureRightID: string;
-}
+import { Toast } from "../../components/alerts/SweetAlert";
 
 interface FormValues {
   name: string;
@@ -40,6 +35,7 @@ const AddUserGroup: React.FC = () => {
   const [featureOptions, setFeatureOptions] = useState<Option[]>([]);
   const [featureRightOptions, setFeatureRightOptions] = useState<Option[]>([]);
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+  const [returnFeatures, setReturnFeatures] = useState<any[]>([]);
 
   const featuresQuery = useQuery("features", GetFeatures);
   const featureRightsQuery = useQuery("featurerights", GetFeatureRights);
@@ -72,14 +68,17 @@ const AddUserGroup: React.FC = () => {
   const mutation = useMutation(PostUserGroup);
 
   const onSubmit = (data: FormValues) => {
-    const datafeatures = selectedFeatures.map((selectedfeature) => {
-      const parsedfeature = JSON.parse(selectedfeature);
-      delete parsedfeature["FeatureName"];
-      return parsedfeature;
-    });
     const postdata = data;
-    postdata.features = datafeatures;
-    mutation.mutate(data, { onSuccess: () => navigate("/usergroups") });
+    postdata.features = returnFeatures;
+    mutation.mutate(postdata, {
+      onSuccess: () => {
+        Toast.fire({
+          icon: "success",
+          title: "User group created successfully",
+        });
+        navigate("/usergroups");
+      },
+    });
   };
 
   const nextStep = () => {
@@ -94,7 +93,26 @@ const AddUserGroup: React.FC = () => {
     const {
       target: { value },
     } = event;
+    let valuearray = [];
+    if (typeof value === "string") {
+      valuearray = value.split(",");
+    } else {
+      valuearray = value;
+    }
     setSelectedFeatures(typeof value === "string" ? value.split(",") : value);
+    const featurestoset = valuearray.map((feature) => {
+      if (
+        returnFeatures.some(
+          (returnfeature) => returnfeature.FeatureID === feature
+        )
+      ) {
+        return returnFeatures.find(
+          (returnfeature) => returnfeature.FeatureID === feature
+        );
+      }
+      return { FeatureID: feature, FeatureRightID: 1 };
+    });
+    setReturnFeatures(featurestoset);
   };
 
   const unselectFeature = (feature: string) => {
@@ -103,22 +121,30 @@ const AddUserGroup: React.FC = () => {
         return selectedfeature !== feature;
       })
     );
+    setReturnFeatures(
+      returnFeatures.filter((returnfeature) => {
+        return returnfeature.FeatureID !== feature;
+      })
+    );
   };
 
-  const assignFeatureRight = (event: SelectChangeEvent) => {
+  const assignFeatureRight = (
+    event: SelectChangeEvent<number>,
+    feature: string
+  ) => {
     const {
       target: { value },
     } = event;
-    const parsedvalue = JSON.parse(value);
-    setSelectedFeatures(selectedFeatures.map((selectedfeature) => {
-      const parsedfeature = JSON.parse(selectedfeature)
-      if (parsedvalue.FeatureID === parsedfeature.FeatureID) {
-        parsedfeature["FeatureRightID"] = parsedvalue.FeatureRightID;
-        return JSON.stringify(parsedfeature);
-      }
-      return selectedfeature
-    }))
-  }
+    setReturnFeatures(
+      returnFeatures.map((returnfeature) => {
+        const featurewithrights = returnfeature;
+        if (featurewithrights.FeatureID === feature) {
+          featurewithrights.FeatureRightID = value;
+        }
+        return featurewithrights;
+      })
+    );
+  };
 
   const StepOne = (
     <div className={step === 1 ? "showstep" : "hidestep"}>
@@ -164,7 +190,7 @@ const AddUserGroup: React.FC = () => {
             name="features"
             sx={{
               borderRadius: "15px",
-              paddingTop: "0px"
+              paddingTop: "0px",
             }}
             value={selectedFeatures}
             onChange={selectFeature}
@@ -174,10 +200,7 @@ const AddUserGroup: React.FC = () => {
               Choose a company
             </MenuItem>
             {featureOptions.map(({ id, text, value }) => (
-              <MenuItem
-                key={id}
-                value={JSON.stringify({ FeatureName: text, FeatureID: value, FeatureRightID: 1 })}
-              >
+              <MenuItem key={id} value={value}>
                 {text}
               </MenuItem>
             ))}
@@ -190,12 +213,9 @@ const AddUserGroup: React.FC = () => {
               Feature List{" "}
             </p>
             <div style={{ alignSelf: "center", width: "85%" }}>
-              {selectedFeatures.map((selectedfeature) => {
-                const parsedfeature = JSON.parse(selectedfeature);
+              {selectedFeatures.map((feature) => {
                 return (
-                  <div
-                    className="selectlist"
-                  >
+                  <div className="selectlist">
                     <div
                       style={{
                         flex: 14,
@@ -204,20 +224,24 @@ const AddUserGroup: React.FC = () => {
                         textOverflow: "ellipsis",
                       }}
                     >
-                      {parsedfeature.FeatureName}
+                      {
+                        featuresQuery.data.data.find(
+                          (data) => data.FeatureID === feature
+                        ).FeatureName
+                      }
                     </div>
                     <div style={{ flex: 3, fontWeight: 500 }}>
                       <Select
-                        defaultValue={JSON.stringify({ FeatureID: parsedfeature.FeatureID, FeatureRightID: 1})}
+                        defaultValue={1}
                         autoWidth
                         label="Age"
                         size="small"
                         className="smallselectfield"
-                        onChange={(e)=> assignFeatureRight(e)}
+                        onChange={(e) => assignFeatureRight(e, feature)}
                       >
                         {featureRightOptions.map((option) => {
                           return (
-                            <MenuItem key={option.id} value={JSON.stringify({ FeatureID: parsedfeature.FeatureID, FeatureRightID: option.value})}>
+                            <MenuItem key={option.id} value={option.value}>
                               {option.text}
                             </MenuItem>
                           );
@@ -226,7 +250,7 @@ const AddUserGroup: React.FC = () => {
                     </div>
                     <div style={{ flex: 1, fontWeight: 500 }}>
                       <button
-                        onClick={() => unselectFeature(selectedfeature)}
+                        onClick={() => unselectFeature(feature)}
                         style={{ marginLeft: 5, marginRight: "-5%" }}
                         type="button"
                         className="buttonremovestyling"
