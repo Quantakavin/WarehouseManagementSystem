@@ -13,6 +13,9 @@ import {
   SortAsc,
   SortDesc,
 } from "../../app/reducers/UserGroupTableFilterSlice";
+import { motion } from "framer-motion";
+import SearchBarUpdated from "../../components/search/SearchBarUpdated";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 const UserGroups: React.FC = () => {
 
@@ -74,6 +77,20 @@ const UserGroups: React.FC = () => {
   return (
     <>
       <h2 className="pagetitle"> User Groups </h2>
+      <div style={{display: "flex", flexDirection: "row", alignItems: "center",justifyContent: "space-between"}} >
+      <SearchBarUpdated/>
+      <a href="/addusergroup" style={{ marginRight: "8%"}}>
+        <motion.button
+          className="addbutton"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          style={{alignSelf: "flex-end"}}
+        >
+          <AddCircleOutlineIcon /> Add User Group
+        </motion.button>
+      </a>
+
+      </div>
 
       {UserGroupsQuery.isLoading || UserGroupsQuery.isError ? null :
         <>

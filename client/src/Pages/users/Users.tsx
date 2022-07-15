@@ -14,6 +14,8 @@ import {
   SortAsc,
   SortDesc,
 } from "../../app/reducers/UserTableFilterSlice";
+import { motion } from "framer-motion";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 const Users: React.FC = () => {
   const sortColumn = useAppSelector(selectSortColumn);
@@ -78,7 +80,21 @@ const Users: React.FC = () => {
   return (
     <>
       <h2 className="pagetitle"> All Users </h2>
-      <SearchBarUpdated />
+      <div style={{display: "flex", flexDirection: "row", alignItems: "center",justifyContent: "space-between"}} >
+      <SearchBarUpdated/>
+      <a href="/adduser" style={{ marginRight: "8%"}}>
+        <motion.button
+          className="addbutton"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          style={{alignSelf: "flex-end"}}
+        >
+          <AddCircleOutlineIcon /> Add User
+        </motion.button>
+      </a>
+
+      </div>
+
       <TableNew
         headers={headers}
         query={UsersQuery}

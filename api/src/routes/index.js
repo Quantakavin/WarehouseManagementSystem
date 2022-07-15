@@ -1,6 +1,7 @@
 const router = require('express').Router();
 //const rmaRoute = require('./rma.route');
 const companyRoute = require('./companyRoutes');
+const featureRoute = require('./featureRoutes');
 const userRoute = require('./userRoutes');
 const userGroupRoutes = require('./userGroupRoutes');
 const productRoutes = require('./productRoutes');
@@ -12,6 +13,7 @@ const rmaRoutes = require('./rma.route')
 
 router.use(rmaRoutes);
 router.use(companyRoute);
+router.use(featureRoute);
 router.use(userRoute);
 router.use(userGroupRoutes);
 router.use(productRoutes);

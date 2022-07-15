@@ -296,8 +296,9 @@ const TLoanTabs: React.FC = () => {
     <>
       <h2 className="pagetitle">TLoans </h2>
      <TabContext value={value}>
-     <Box sx={{ paddingLeft:10}}>
-      <Tabs onChange={handleChange}
+     <Box sx={{ marginLeft:-3,}}>
+      <Tabs selectionFollowsFocus={true}
+      onChange={handleChange}
       TabIndicatorProps={{
         style: {
           backgroundColor: "#D97D54"
@@ -312,12 +313,13 @@ const TLoanTabs: React.FC = () => {
 
         }}
         aria-label="basic tabs example"
+        centered
        >
        
         <Tab label="Current" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
         <Tab label="Pending" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2, height: 100, width: 180,}}/>
         <Tab label="Drafts" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2, height: 100, width: 180,}}/>
-        <Tab label="History" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2 ,height: 100, width: 180,}}/>
+        <Tab label="History" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2 ,marginRight: 2,height: 100, width: 180,}}/>
       </Tabs>
       </Box>
       

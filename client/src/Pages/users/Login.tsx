@@ -31,7 +31,7 @@ const Login: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({ mode: "all" });
+  } = useForm<FormValues>({ mode: "onSubmit" });
 
   const mutation = useMutation(LoginUser, {
     onSuccess: (data) => {

@@ -1,25 +1,37 @@
 const TLoan = require('../services/tLoanService');
 const redisClient = require('../config/caching');
+//const { tLoanService } = require('../services');
 
-module.exports.searchLoan = async (req, res) => {
-    let TLoanNumber = req.params.number;
+module.exports.getLoanByNo = async (req, res) => {
+    const { TLoanNumber} = req.params;
     try {
-        const searchTLoan = await redisClient.get(`TLoan#${TLoanNumber}`);
-        if (searchTLoan !== null) {
-            const redisresults = JSON.parse(searchTLoan);
+        const loanDetail = await redisClient.get(`TLoan#${TLoanNumber}`);
+        if (loanDetail !== null) {
+            const redisresults = JSON.parse(loanDetail);
             return res.status(200).json(redisresults);
         }
+        let output = [];
         const results = await TLoan.getLoanByNumber(TLoanNumber);
-        redisClient.set(`TLoan#${TLoanNumber}`, JSON.stringify(results[0]));
-        if (results.length > 0) {
-            return res.status(200).json(results[0]);
-        } else {
-            return res.status(404).send('Does Not Exist');
+        if (results[0].length > 0) {
+            [output] = results;
+            const IDOfTLoan = results[0][0].TLoanID;
+            const results2 = await TLoan.getTLoanOutItem(IDOfTLoan);
+            console.log(output);
+            if (results2.length > 0) {
+                [output[0].Items] = results2;
+                output = output[0];
+            }
+            redisClient.set(`TLoanItems#${TLoanNumber}`, JSON.stringify(output));
+            return res.status(200).send(output);
         }
+        return res.status(404).json({ message: 'Cannot find' });
     } catch (error) {
-        // console.log(error)
-        return res.status(500).send('Internal Server Error');
+        console.log(error);
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
+
+    
+    
 };
 
 module.exports.allLoan = async (req, res) => {

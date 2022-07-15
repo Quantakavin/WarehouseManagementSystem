@@ -85,11 +85,13 @@ module.exports.getUserGroupByName = async (req, res) => {
 
 module.exports.createUserGroup = async (req, res) => {
     const { name, description, features } = req.body;
+    console.log("features are", features)
     try {
         await userGroup.insert(name, description, features);
         redisClient.del('userGroups');
         return res.status(201).json({ message: 'User Group created successfully!' });
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };

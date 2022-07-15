@@ -33,7 +33,7 @@ module.exports.getByName = async (name) => {
 };
 
 module.exports.getNotifications = async (notiGroupID) => {
-    const query = `SELECT f.NotiFeature, t.NotiType FROM NotiGroupFeature g INNER JOIN NotiFeature f ON f.NotiFeatureID = g.NotiFeatureID INNER JOIN NotiType t ON t.NotiTypeID = g.NotiTypeID WHERE g.NotiGroupID = ?`;
+    const query = `SELECT f.NotiFeatureID, f.NotiFeature, t.NotiType FROM NotiGroupFeature g INNER JOIN NotiFeature f ON f.NotiFeatureID = g.NotiFeatureID INNER JOIN NotiType t ON t.NotiTypeID = g.NotiTypeID WHERE g.NotiGroupID = ?`;
     return knex.raw(query, [notiGroupID]);
 };
 

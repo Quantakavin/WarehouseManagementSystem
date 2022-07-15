@@ -13,6 +13,9 @@ import {
   SortAsc,
   SortDesc,
 } from "../../app/reducers/NotiGroupTableFilterSlice";
+import SearchBarUpdated from "../../components/search/SearchBarUpdated";
+import { motion } from "framer-motion";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 const NotificationGroups: React.FC = () => {
 
@@ -73,6 +76,22 @@ const NotificationGroups: React.FC = () => {
   return (
     <>
       <h2 className="pagetitle"> Notification Groups </h2>
+
+      <div style={{display: "flex", flexDirection: "row", alignItems: "center",justifyContent: "space-between"}} >
+      <SearchBarUpdated/>
+      <a href="/addnotificationgroup" style={{ marginRight: "8%"}}>
+        <motion.button
+          className="addbutton"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          style={{alignSelf: "flex-end"}}
+        >
+          <AddCircleOutlineIcon /> Add Notification Group
+        </motion.button>
+      </a>
+
+      </div>
+
 
       {NotificationGroupsQuery.isLoading || NotificationGroupsQuery.isError ? null :
         <>

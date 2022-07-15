@@ -77,19 +77,21 @@ const App: React.FC = () => {
               <Route path="/products" element={<Products />} />
               <Route path="/product/:id" element={<ViewProduct />} />
               <Route path="/binlocations" element={<BinLocations />} />
-              <Route path="/adduser" element={<AddUser />} />
               <Route path="/user/:id" element={<ViewUser />} />
               <Route path="/users" element={<Users />} />
+              <Route path="/adduser" element={<AddUser />} />
               <Route path="/edituser/:id" element={<EditUser />} />
-              <Route path="/addusergroup" element={<AddUserGroup />} />
               <Route path="/usergroups" element={<UserGroups />} />
-              <Route
-                path="/addnotificationgroup"
-                element={<AddNotificationGroup />}
-              />
+              <Route path="/usergroup/:id" element={<ViewUserGroup />} />
+              <Route path="/addusergroup" element={<AddUserGroup />} />
               <Route
                 path="/notificationgroups"
                 element={<NotificationGroups />}
+              />
+              <Route path="/notificationgroup/:id" element={<ViewNotificationGroup />} />
+              <Route
+                path="/addnotificationgroup"
+                element={<AddNotificationGroup />}
               />
               <Route path="/tloan" element={<TLoan />} />
               <Route path="/tloan" element={<TLoan />} />

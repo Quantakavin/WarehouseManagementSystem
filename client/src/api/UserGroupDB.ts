@@ -10,6 +10,15 @@ export const GetUserGroups = async ({pageParam = 0, queryKey}) => {
   return {response, nextPage: pageParam + 1, totalPages: Math.ceil(response.data[0].full_count/5)}
 };
 
+export const GetUserGroup = async (id: string) => {
+  return await axios.get(`${config.baseURL}/usergroup/${id}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+
 export const PostUserGroup = async (formData) => {
     return await axios.post(`${config.baseURL}/usergroup`, formData, {
       headers: {

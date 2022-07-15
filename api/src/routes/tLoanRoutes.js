@@ -4,7 +4,7 @@ const TLoanController = require('../controllers/tloanController');
 
 router.get('/tloan', TLoanController.allLoan);
 router.post('/tloan/newloan', TLoanController.newLoan);
-router.get('/tloans/:number', TLoanController.searchLoan);
+router.get('/tloans/:TLoanNumber', TLoanController.getLoanByNo);
 router.post('/tloan/tloanextension', TLoanController.loanExtension)
 router.get('/tloan/current', TLoanController.currentLoan);
 router.get('/tloan/drafts', TLoanController.draftsLoan);

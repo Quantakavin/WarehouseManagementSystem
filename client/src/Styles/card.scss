@@ -61,6 +61,18 @@ $primary-color: #0A2540;
     }
   }
 
+  .cardtable {
+    @media screen and (min-width: 800px) {
+        flex-direction: row;
+        margin-left: 8% !important;
+        margin-right: 8% !important;
+    }
+
+    @media screen and (max-width: 800px) {
+        flex-direction: column;
+    }
+  }
+
   .cardfieldlabel {
     font-weight: 600;
     @media screen and (min-width: 800px) {
