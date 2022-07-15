@@ -8,6 +8,7 @@ import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 // import { color } from "@mui/system";
 
+
 type GLTFResult = GLTF & {
   nodes: {
     Cube024: THREE.Mesh;
