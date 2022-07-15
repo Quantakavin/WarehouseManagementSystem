@@ -27,7 +27,7 @@ const Floor = () => {
         The material gives a mesh its texture or look.
         In this case, it is just a uniform green
       */}
-      <meshBasicMaterial color="gray" side={DoubleSide} />
+      <meshBasicMaterial color="#7cb1d0" side={DoubleSide} />
     </mesh>
   );
 };
@@ -75,6 +75,15 @@ const BinLocations = () => {
             <Rack position={[0, 0, 0]} areatag="A01" racktag="R01" />
             <Rack position={[20, 0, 0]} areatag="A01" racktag="R02" />
             <Rack position={[40, 0, 0]} areatag="A01" racktag="R03" />
+            <Rack position={[60, 0, 0]} areatag="A01" racktag="R04" />
+            <Rack position={[60, 0, 18]} areatag="A01" racktag="R05" />
+            <Rack position={[40, 0, 18]} areatag="A01" racktag="R06" />
+            <Rack position={[20, 0, 18]} areatag="A01" racktag="R07" />
+            <Rack position={[0, 0, -18]} areatag="A01" racktag="R08" />
+            <Rack position={[20, 0, -18]} areatag="A01" racktag="R09" />
+            <Rack position={[40, 0, -18]} areatag="A01" racktag="R10" />
+            <Rack position={[60, 0, -18]} areatag="A01" racktag="R11" />
+            <Rack position={[-20, 0, -18]} areatag="A01" racktag="R12" />
             <Floor />
           </Suspense>
 
