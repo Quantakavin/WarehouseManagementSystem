@@ -112,7 +112,9 @@ type GLTFResult = GLTF & {
     Cube098: THREE.Mesh;
     Cube099: THREE.Mesh;
   };
-  materials: {};
+  materials: {
+    Material: THREE.MeshStandardMaterial;
+  };
 };
 
 interface ModelProps {
@@ -153,625 +155,634 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
       <Bin position={[8.5, 9.5, 8]} areatag="A03" racktag="R03" leveltag="L01" sectiontag="S01" /> */}
       <mesh
         geometry={nodes.Cube006.geometry}
-        material={nodes.Cube006.material}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube006ial}
+         material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-7.5, 0.5, -2]}
         scale={[0.15, 11.5, 0.15]}
       />
       <mesh
         geometry={nodes.Cube.geometry}
-        material={nodes.Cube.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, -6, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube007.geometry}
-        material={nodes.Cube007.material}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube007ial}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, -10, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube008.geometry}
-        material={nodes.Cube008.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, -8, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube009.geometry}
-        material={nodes.Cube009.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, -4, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube010.geometry}
-        material={nodes.Cube010.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 0, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube011.geometry}
-        material={nodes.Cube011.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 2, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube012.geometry}
-        material={nodes.Cube012.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 4, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube013.geometry}
-        material={nodes.Cube013.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 6, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube015.geometry}
-        material={nodes.Cube015.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, -2, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube016.geometry}
-        material={nodes.Cube016.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-7.5, -4, 0.05]}
         rotation={[2.36, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube014.geometry}
-        material={nodes.Cube014.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 8, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube017.geometry}
-        material={nodes.Cube017.material}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube017ial}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[7.5, -6, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube018.geometry}
-        material={nodes.Cube018.material}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube018ial}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-7.5, 8.03, 0.05]}
         rotation={[Math.PI / 4, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
+       
       />
       <mesh
         geometry={nodes.Cube019.geometry}
-        material={nodes.Cube019.material}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube019ial}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-7.5, 4, 0.05]}
         rotation={[2.36, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube020.geometry}
-        material={nodes.Cube020.material}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube020ial}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-7.5, -8, 0.05]}
         rotation={[Math.PI / 4, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube021.geometry}
-        material={nodes.Cube021.material}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube021ial}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-7.5, 0, 0.05]}
         rotation={[Math.PI / 4, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube022.geometry}
-        material={nodes.Cube022.material}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube022ial}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[7.5, 0, 0.05]}
         rotation={[Math.PI / 4, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube002.geometry}
-        material={nodes.Cube002.material}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube002ial}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 0, 0.05]}
         rotation={[Math.PI / 4, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube004.geometry}
-        material={nodes.Cube004.material}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube004ial}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 0, 0.05]}
         rotation={[Math.PI / 4, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube023.geometry}
-        material={nodes.Cube023.material}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube023ial}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[7.5, -8, 0.05]}
         rotation={[Math.PI / 4, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube024.geometry}
-        material={nodes.Cube024.material}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube024ial}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[7.5, 4, 0.05]}
         rotation={[2.36, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube025.geometry}
-        material={nodes.Cube025.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[7.5, 8.03, 0.05]}
         rotation={[Math.PI / 4, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube026.geometry}
-        material={nodes.Cube026.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 10, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube027.geometry}
-        material={nodes.Cube027.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[7.5, -4, 0.05]}
         rotation={[2.36, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube028.geometry}
-        material={nodes.Cube028.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, -2, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube029.geometry}
-        material={nodes.Cube029.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 8, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube030.geometry}
-        material={nodes.Cube030.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 6, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube031.geometry}
-        material={nodes.Cube031.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 4, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube032.geometry}
-        material={nodes.Cube032.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 2, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube033.geometry}
-        material={nodes.Cube033.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 0, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube034.geometry}
-        material={nodes.Cube034.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, -4, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube035.geometry}
-        material={nodes.Cube035.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, -8, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube036.geometry}
-        material={nodes.Cube036.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, -10, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube037.geometry}
-        material={nodes.Cube037.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 0.5, -2]}
         scale={[0.15, 11.5, 0.15]}
       />
       <mesh
         geometry={nodes.Cube038.geometry}
-        material={nodes.Cube038.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-7.5, 0.5, 2]}
         scale={[0.15, 11.5, 0.15]}
       />
       <mesh
         geometry={nodes.Cube039.geometry}
-        material={nodes.Cube039.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, -6, 0.01]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube040.geometry}
-        material={nodes.Cube040.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-2.5, 0.5, 2]}
         scale={[0.15, 11.5, 0.15]}
       />
       <mesh
         geometry={nodes.Cube049.geometry}
-        material={nodes.Cube049.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-2.5, -8, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube052.geometry}
-        material={nodes.Cube052.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-7.5, -8, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube072.geometry}
-        material={nodes.Cube072.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-2.5, 0.5, -2]}
         scale={[0.15, 11.5, 0.15]}
       />
       <mesh
         geometry={nodes.Cube003.geometry}
-        material={nodes.Cube003.material}
-        position={[-2.5, 8, -0.04]}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube001.geometry}
-        material={nodes.Cube001.material}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube001ial}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
+
         position={[-2.5, 6, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube005.geometry}
-        material={nodes.Cube005.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-2.5, 4, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube041.geometry}
-        material={nodes.Cube041.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-2.5, 2, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube042.geometry}
-        material={nodes.Cube042.material}
-        position={[-2.5, 0, -0.04]}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube043.geometry}
-        material={nodes.Cube043.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-2.5, -2, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube044.geometry}
-        material={nodes.Cube044.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-2.5, -4, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube045.geometry}
-        material={nodes.Cube045.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-2.5, -6, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube046.geometry}
-        material={nodes.Cube046.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 8.03, 0.05]}
         rotation={[Math.PI / 4, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube047.geometry}
-        material={nodes.Cube047.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 4, 0.05]}
         rotation={[2.36, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube048.geometry}
-        material={nodes.Cube048.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 0, 0.05]}
         rotation={[Math.PI / 4, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube050.geometry}
-        material={nodes.Cube050.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, -4, 0.05]}
         rotation={[2.36, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube051.geometry}
-        material={nodes.Cube051.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, -8, 0.05]}
         rotation={[Math.PI / 4, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube053.geometry}
-        material={nodes.Cube053.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 0.5, 2]}
         scale={[0.15, 11.5, 0.15]}
       />
       <mesh
         geometry={nodes.Cube054.geometry}
-        material={nodes.Cube054.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 0.5, -2]}
         scale={[0.15, 11.5, 0.15]}
       />
       <mesh
         geometry={nodes.Cube055.geometry}
-        material={nodes.Cube055.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[7.5, 0.5, -2]}
         scale={[0.15, 11.5, 0.15]}
       />
       <mesh
         geometry={nodes.Cube056.geometry}
-        material={nodes.Cube056.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[7.5, 0.5, 2]}
         scale={[0.15, 11.5, 0.15]}
       />
       <mesh
         geometry={nodes.Cube057.geometry}
-        material={nodes.Cube057.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 10, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube058.geometry}
-        material={nodes.Cube058.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[7.5, 10, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube059.geometry}
-        material={nodes.Cube059.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[7.5, 10, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube060.geometry}
-        material={nodes.Cube060.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[7.5, 8, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube061.geometry}
-        material={nodes.Cube061.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[7.5, 6, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube062.geometry}
-        material={nodes.Cube062.material}
-        position={[7.5, 4, -0.04]}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube063.geometry}
-        material={nodes.Cube063.material}
-        position={[7.5, 2, -0.04]}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube064.geometry}
-        material={nodes.Cube064.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[7.5, 0, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube065.geometry}
-        material={nodes.Cube065.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[7.5, -2, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube066.geometry}
-        material={nodes.Cube066.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[7.5, -4, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube067.geometry}
-        material={nodes.Cube067.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-7.5, -10, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube068.geometry}
-        material={nodes.Cube068.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[7.5, -8, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube069.geometry}
-        material={nodes.Cube069.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 8.03, 0.05]}
         rotation={[Math.PI / 4, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube070.geometry}
-        material={nodes.Cube070.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[2.5, 4, 0.05]}
         rotation={[2.36, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube071.geometry}
-        material={nodes.Cube071.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-2.5, 10, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube073.geometry}
-        material={nodes.Cube073.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-7.5, 10, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube074.geometry}
-        material={nodes.Cube074.material}
-        position={[-7.5, 8, -0.04]}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube075.geometry}
-        material={nodes.Cube075.material}
-        position={[-7.5, 6, -0.04]}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube076.geometry}
-        material={nodes.Cube076.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-7.5, 4, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube077.geometry}
-        material={nodes.Cube077.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-7.5, 2, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube078.geometry}
-        material={nodes.Cube078.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-7.5, 0, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube079.geometry}
-        material={nodes.Cube079.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-7.5, -2, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube080.geometry}
-        material={nodes.Cube080.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-7.5, -4, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube081.geometry}
-        material={nodes.Cube081.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-7.5, -6, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube082.geometry}
-        material={nodes.Cube082.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-2.5, 8.03, 0.05]}
         rotation={[Math.PI / 4, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube083.geometry}
-        material={nodes.Cube083.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-2.5, 4, 0.05]}
         rotation={[2.36, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube084.geometry}
-        material={nodes.Cube084.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-2.5, 0, 0.05]}
         rotation={[Math.PI / 4, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube085.geometry}
-        material={nodes.Cube085.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-2.5, -4, 0.05]}
         rotation={[2.36, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube086.geometry}
-        material={nodes.Cube086.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-2.5, -8, 0.05]}
         rotation={[Math.PI / 4, 0, 0]}
         scale={[0.21, 0.2, 2.8]}
       />
       <mesh
         geometry={nodes.Cube087.geometry}
-        material={nodes.Cube087.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[0.11, -10, 0]}
         scale={[7.5, 0.19, 2]}
       />
       <mesh
         geometry={nodes.Cube088.geometry}
-        material={nodes.Cube088.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[0.11, 10, 0]}
         scale={[7.5, 0.19, 2]}
       />
       <mesh
         geometry={nodes.Cube089.geometry}
-        material={nodes.Cube089.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[0.11, 8, 0]}
         scale={[7.5, 0.19, 2]}
       />
       <mesh
         geometry={nodes.Cube090.geometry}
-        material={nodes.Cube090.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[0.11, 6, 0]}
         scale={[7.5, 0.19, 2]}
       />
       <mesh
         geometry={nodes.Cube091.geometry}
-        material={nodes.Cube091.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[0.11, 4, 0]}
         scale={[7.5, 0.19, 2]}
       />
       <mesh
         geometry={nodes.Cube092.geometry}
-        material={nodes.Cube092.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[0.11, 2, 0]}
         scale={[7.5, 0.19, 2]}
       />
       <mesh
         geometry={nodes.Cube093.geometry}
-        material={nodes.Cube093.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[0.11, 0, 0]}
         scale={[7.5, 0.19, 2]}
       />
       <mesh
         geometry={nodes.Cube094.geometry}
-        material={nodes.Cube094.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[0.11, -2, 0]}
         scale={[7.5, 0.19, 2]}
       />
       <mesh
         geometry={nodes.Cube095.geometry}
-        material={nodes.Cube095.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[0.11, -4, 0]}
         scale={[7.5, 0.19, 2]}
       />
       <mesh
         geometry={nodes.Cube096.geometry}
-        material={nodes.Cube096.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[0.11, -6, 0]}
         scale={[7.5, 0.19, 2]}
       />
       <mesh
         geometry={nodes.Cube097.geometry}
-        material={nodes.Cube097.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[7.5, -10, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube098.geometry}
-        material={nodes.Cube098.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[-2.5, -10, -0.04]}
         scale={[0.16, 0.14, 2]}
       />
       <mesh
         geometry={nodes.Cube099.geometry}
-        material={nodes.Cube099.material}
+        material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}
         position={[0.11, -8, 0]}
         scale={[7.5, 0.19, 2]}
       />

@@ -27,7 +27,7 @@ const Floor = () => {
         The material gives a mesh its texture or look.
         In this case, it is just a uniform green
       */}
-      <meshBasicMaterial color="gray" side={DoubleSide} />
+      <meshBasicMaterial color="#7cb1d0" side={DoubleSide} />
     </mesh>
   );
 };
