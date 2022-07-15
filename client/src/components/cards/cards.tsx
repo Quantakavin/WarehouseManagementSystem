@@ -15,8 +15,9 @@ function cards() {
   const [ExtendedTloans, setExtenddedTloans] = useState([]);
 
   // RMA Overview
-  const [RequestedRMAs, setRequesteddRMAs] = useState([]);
   const [PendingRMAs, setPendingRMAs] = useState([]);
+  const [ApprovedRMAs, setApprovedRMAs] = useState([]);
+  const [ReceivedRMAs, setReceivedRMAs] = useState([]);
   const [ClosedRMAs, setClosedRMAs] = useState([]);
 
   // getcurrentTloans
@@ -61,17 +62,6 @@ function cards() {
     getextendedTloans();
   }, []);
 
-  // getrequestedRMAs
-  const getrequestedRMAs = async () => {
-    const response = await axios.get(`${config.baseURL}/getcurrentRMAs`);
-
-    setRequesteddRMAs(response.data);
-  };
-
-  useEffect(() => {
-    getrequestedRMAs();
-  }, []);
-
   // getpendingRMAs
   const getpendingdRMAs = async () => {
     const response = await axios.get(`${config.baseURL}/getpendingRMAs`);
@@ -83,9 +73,31 @@ function cards() {
     getpendingdRMAs();
   }, []);
 
+   // getapprovedRMAs
+   const getApprovedRMAs = async () => {
+    const response = await axios.get(`${config.baseURL}/getapprovedRMAs`);
+
+    setApprovedRMAs(response.data);
+  };
+
+  useEffect(() => {
+    getApprovedRMAs();
+  }, []);
+
+  // getreceivedRMAs
+   const getReceivedRMAs = async () => {
+    const response = await axios.get(`${config.baseURL}/getreceivedRMAs`);
+
+    setReceivedRMAs(response.data);
+  };
+
+  useEffect(() => {
+    getReceivedRMAs();
+  }, []);
+
   // getclosedRMAs
   const getclosedRMAs = async () => {
-    const response = await axios.get(`${config.baseURL}/getcloseRMAs`);
+    const response = await axios.get(`${config.baseURL}/getclosedRMAs`);
 
     setClosedRMAs(response.data);
   };
@@ -123,20 +135,20 @@ function cards() {
         <span className="featuredTitle">RMA Overview</span>
         <div>
           <div>
-            <span className="Current">Requested</span>
-            <h1 className="Current">{RequestedRMAs.length}</h1>
-          </div>
-          <div>
             <span className="Drafts">Pending</span>
             <h1 className="Current">{PendingRMAs.length}</h1>
           </div>
           <div>
-            <span className="Current">Closed</span>
-            <h1 className="Current">{ClosedRMAs.length}</h1>
+            <span className="Current">Approved</span>
+            <h1 className="Current">{ApprovedRMAs.length}</h1>
+          </div>
+          <div>
+            <span className="Current">Received</span>
+            <h1 className="Current">{ReceivedRMAs.length}</h1>
           </div>
           <div>
             <span className="Current">Closed</span>
-            <h1 className="Current"></h1>
+            <h1 className="Current">{ClosedRMAs.length}</h1>
           </div>
           <h1 className="Date"> Updated minutes ago </h1>
         </div>

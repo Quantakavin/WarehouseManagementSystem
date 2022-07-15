@@ -322,3 +322,17 @@ module.exports.updateRmaInstructions = async (req, res) => {
 //         return res.status(500).json({ message: 'Internal Server Error!' });
 //     }
 // };
+
+module.exports.closeRma = async (req, res) => {
+    const { RMANo } = req.params;
+    try {
+        const results = await rmaService.getByRMANo(RMANo);
+        if (results.length > 0) {
+            await rmaService.closeRMA(RMANo);
+            return res.status(204).json({ message: 'RMA status updated successfully!' });
+        }
+        return res.status(404).json({ message: 'Cannot find RMA with that number' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
