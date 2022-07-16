@@ -15,7 +15,7 @@ router.post('/newRMA', rmaController.newRMA);
 router.put('/acceptRMA/:RMANo',rmaController.updateRmaAccepted)
 router.put('/rejectRMA/:RMANo',rmaController.updateRmaRejected)
 router.put('/receiveRMA/:RMANo',rmaController.updateRmaReceived)
-router.put('/verifyRMA/:RMANo',rmaController.updateRmaInstructions)
+router.put('/verifyRMA' ,rmaController.updateRmaInstructions)
 router.put('/closeRMA/:RMANo',rmaController.closeRma)
 // router.put('/COARMA/:RMANo',rmaController.updateRmaCOA)
 
