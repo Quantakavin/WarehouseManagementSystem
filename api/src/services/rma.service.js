@@ -243,38 +243,6 @@ module.exports.updateRMAReceived = async (RmaID) => {
     });
 };
 
-// module.exports.updateRmaInstructions = async (RmaID, products) => {
-//     return knex.transaction((trx) => {
-//         knex('Rma')
-//             .where('RmaID', RmaID)
-//             .update({
-//                 RmaStatusID: 5
-//             })
-//             .transacting(trx)
-//             .then(() => {
-//                 products.map(product => {
-//                     console.log(product.RmaProductPK + " " + product.instructions)
-//                     return knex('RmaProduct')
-//                     .where('RmaProductPK', product.RmaProductPK)
-//                     .update({Instructions: product.instructions}).transacting(trx)
-//                 })
-//                 // for (let i = 0; i < products.length; i++) {
-//                 //     console.log(products[i].RmaProductPK + " " + products[i].instructions)
-//                 //         return knex('RmaProduct')
-//                 //         .where('RmaProductPK', products[i].RmaProductPK)
-//                 //         .update({
-//                 //             Instructions: products[i].instructions
-//                 //         })
-//                 //         .transacting(trx)
-//                 //         console.log("called")
-//                 // }
-
-//             })
-//             .then(trx.commit)
-//             .catch(trx.rollback);
-//     });
-// };
-
 module.exports.updateRmaInstructions = async (RmaID, products) => {
     return await knex.transaction((trx) => {
         knex('Rma')
@@ -300,7 +268,7 @@ module.exports.updateRmaInstructions = async (RmaID, products) => {
 
 module.exports.updateRmaCOA = async (RmaID, products) => {
     return await knex.transaction((trx) => {
-        knex('Rmaproduct')
+        knex('Rma')
             .where('RmaID', RmaID)
             .update({
                 RmaStatusID: 6
@@ -321,7 +289,7 @@ module.exports.updateRmaCOA = async (RmaID, products) => {
     });
 };
 
-module.exports.closeRMA = async (RmaID) => {
+module.exports.closeRma = async (RmaID) => {
     return knex.transaction((trx) => {
         knex('Rma')
             .where('RmaID', RmaID)

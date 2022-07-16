@@ -333,44 +333,46 @@ module.exports.updateRmaReceived = async (req, res) => {
 };
 
 module.exports.updateRmaInstructions = async (req, res) => {
-    const {
-        RmaID,
-        products
-    } = req.body;
+    const { RmaID } = req.params;
+    const { products } = req.body;
     try {
         const resultsrma = await rmaService.updateRmaInstructions(RmaID, products);
-        return res.status(200).json(resultsrma);
+        if (resultsrma.length > 0) {
+            return res.status(200).json({ message: 'RMA status updated successfully!' });
+        }
     } catch (error) {
         console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
 
-// module.exports.updateRmaCOA = async (req, res) => {
-//     const { RmaID } = req.params;
-//     const { COA } = req.body;
-//     try {
-//         const results = await rmaService.getByRmaID(RmaID);
-//         if (results.length > 0) {
-//             await rmaService.updateRmaCOA(RmaID, COA);
-//             return res.status(204).json({ message: 'RMA status updated successfully!' });
-//         }
-//         return res.status(404).json({ message: 'Cannot find RMA with that number' });
-//     } catch (error) {
-//         return res.status(500).json({ message: 'Internal Server Error!' });
-//     }
-// };
+module.exports.updateRmaCoa = async (req, res) => {
+    const { RmaID } = req.params;
+    const { products } = req.body;
+    try {
+        const resultsrma = await rmaService.updateRmaCOA(RmaID, products);
+        if (resultsrma.length > 0) {
+            return res.status(200).json({ message: 'RMA status updated successfully!' });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
+
 
 module.exports.closeRma = async (req, res) => {
     const { RmaID } = req.params;
     try {
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
-            await rmaService.closeRMA(RmaID);
+            await rmaService.closeRma(RmaID);
             return res.status(204).json({ message: 'RMA status updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
