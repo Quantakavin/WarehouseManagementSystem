@@ -32,7 +32,7 @@ module.exports.getRMAProducts = async (RmaID) => {
 
 module.exports.getSalesmanRMA = async (SalesmanID) => {
     const query = ` SELECT r.RMANo, 
-                    r.DateTime ,
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
                     c.CompanyName,
                     r.CustomerEmail
                     FROM Rma r, Company c
@@ -43,7 +43,7 @@ module.exports.getSalesmanRMA = async (SalesmanID) => {
 
 module.exports.getSalesmanAcceptedRMA = async (SalesmanID) => {
     const query = ` SELECT r.RMANo, 
-                    r.DateTime ,
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
                     c.CompanyName,
                     r.CustomerEmail
                     FROM Rma r, Company c 
@@ -55,7 +55,7 @@ module.exports.getSalesmanAcceptedRMA = async (SalesmanID) => {
 
 module.exports.getSalesmanRejectedRMA = async (SalesmanID) => {
     const query = ` SELECT r.RMANo, 
-                    r.DateTime ,
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
                     c.CompanyName,
                     r.CustomerEmail
                     FROM Rma r, Company c 
@@ -68,7 +68,7 @@ module.exports.getSalesmanRejectedRMA = async (SalesmanID) => {
 
 module.exports.getAllRMA = async () => {
     const query = ` SELECT r.RMANo, 
-                    r.DateTime ,
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
                     c.CompanyName,
                     r.CustomerEmail
                     FROM Rma r, Company c 
@@ -77,13 +77,19 @@ module.exports.getAllRMA = async () => {
 };
 
 module.exports.getPendingRMA = async () => {
-    const query = ` SELECT r.RMANo, r.DateTime, c.CompanyName, r.CustomerEmail FROM Rma r, Company c WHERE RmaStatusID = 1 AND r.CompanyID = c.CompanyID;`;
+    const query = ` SELECT r.RMANo, 
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime', 
+                    c.CompanyName, 
+                    r.CustomerEmail 
+                    FROM Rma r, Company c 
+                    WHERE RmaStatusID = 1 
+                    AND r.CompanyID = c.CompanyID;`;
     return knex.raw(query);
 };
 
 module.exports.getAcceptedRMA = async () => {
     const query = ` SELECT r.RMANo, 
-                    r.DateTime ,
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
                     c.CompanyName,
                     r.CustomerEmail
                     FROM Rma r, Company c 
@@ -94,7 +100,7 @@ module.exports.getAcceptedRMA = async () => {
 
 module.exports.getReceivedRMA = async () => {
     const query = ` SELECT r.RMANo, 
-                    r.DateTime ,
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
                     c.CompanyName,
                     r.CustomerEmail
                     FROM Rma r, Company c 
@@ -105,7 +111,7 @@ module.exports.getReceivedRMA = async () => {
 
 module.exports.getVerifiedRMA = async () => {
     const query = `SELECT r.RMANo, 
-                    r.DateTime ,
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
                     c.CompanyName,
                     r.CustomerEmail
                     FROM Rma r, Company c 

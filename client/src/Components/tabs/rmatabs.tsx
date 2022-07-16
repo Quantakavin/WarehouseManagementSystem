@@ -23,7 +23,7 @@ import { GetPendingRMA, GetApprovedRMA,
    } from "../../api/RmaDB";
 import TableNew from "../table/TableNew";
 import { useAppSelector } from '../../app/hooks'
-import { selectRole } from '../../app/reducers/CurrentUserSlice';
+import { selectRole, selectId } from '../../app/reducers/CurrentUserSlice';
 import RmaSearch from "../search/RmaSearch"
 
 const Rmatabs: React.FC = () => {
@@ -35,6 +35,7 @@ const Rmatabs: React.FC = () => {
     "Actions"
   ];
   const userrole = useAppSelector(selectRole)
+  const userid = useAppSelector(selectId)
 
   const PendingRMAQuery = useInfiniteQuery(`pending`, GetPendingRMA,
     {
@@ -131,7 +132,7 @@ const Rmatabs: React.FC = () => {
             <RmaSearch/>
            <TabContext value={value}>
            <Box sx={{ paddingLeft:10, marginTop: 3}}>
-            <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+            <Tabs centered onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
             sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
               <Tab label="Approved" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
               <Tab label="Rejected" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
@@ -164,7 +165,7 @@ const Rmatabs: React.FC = () => {
             <RmaSearch/>
         <TabContext value={value}>
         <Box sx={{ paddingLeft:10, marginTop: 3}}>
-        <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+        <Tabs centered onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
         sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
             <Tab label="Received" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
         </Tabs>
@@ -189,7 +190,7 @@ const Rmatabs: React.FC = () => {
         <RmaSearch/>
        <TabContext value={value}>
        <Box sx={{ paddingLeft:10, marginTop: 3}}>
-        <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+        <Tabs centered onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
         sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
             <Tab label="Pending" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
             <Tab label="Approved" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
@@ -240,7 +241,7 @@ const Rmatabs: React.FC = () => {
             <RmaSearch/>
            <TabContext value={value}>
            <Box sx={{ paddingLeft:10, marginTop: 3}}>
-        <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+        <Tabs centered onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
         sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
             <Tab label="Verified" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
         </Tabs>
@@ -266,7 +267,7 @@ const Rmatabs: React.FC = () => {
             <RmaSearch/>
            <TabContext value={value}>
            <Box sx={{ paddingLeft:10, marginTop: 3}}>
-        <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+        <Tabs centered onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
         sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
             <Tab label="Received" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
         </Tabs>
@@ -291,7 +292,7 @@ const Rmatabs: React.FC = () => {
             <RmaSearch/>
            <TabContext value={value}>
            <Box sx={{ paddingLeft:10, marginTop: 3}}>
-            <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+            <Tabs centered onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
             sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
                 <Tab label="Pending" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
                 <Tab label="Approved" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
@@ -342,7 +343,7 @@ const Rmatabs: React.FC = () => {
         <RmaSearch/>
        <TabContext value={value}>
        <Box sx={{ paddingLeft:10, marginTop: 3}}>
-        <Tabs onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
+        <Tabs centered onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
         sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
             <Tab label="Pending" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
             <Tab label="Approved" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
