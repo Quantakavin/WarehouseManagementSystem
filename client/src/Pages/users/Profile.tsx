@@ -7,13 +7,12 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { motion } from "framer-motion";
 import { Container } from "@mui/material";
 
-const ViewUser: React.FC = () => {
-  const params = useParams();
+const Profile: React.FC = () => {
   const navigate = useNavigate();
 
   const UserQuery = useQuery(
-    [`user${params.id}`, params.id],
-    () => GetUser(params.id)
+    [`user${localStorage.getItem("user_id")}`, localStorage.getItem("user_id")],
+    () => GetUser(localStorage.getItem("user_id"))
   );
 
   if (UserQuery.isLoading || UserQuery.isError) {
@@ -46,15 +45,6 @@ const ViewUser: React.FC = () => {
             <button style={{ alignSelf: "flex-start" }} className="cardbackbutton" onClick={() => navigate(-1)} type="button">
               <ArrowBackIosIcon fontSize="small" /> Back
             </button>
-            <motion.button
-              style={{ alignSelf: "flex-end" }}
-              className="mainbutton"
-              onClick={() => navigate(`/edituser/${params.id}`)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Edit Details
-            </motion.button>
           </div>
         </Container>
       }
@@ -62,4 +52,4 @@ const ViewUser: React.FC = () => {
     </>
   );
 };
-export default ViewUser;
+export default Profile;

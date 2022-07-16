@@ -34,7 +34,7 @@ const TopBar: React.FC = () => {
       <a
         onClick={() => {
           if (localStorage.getItem("user_id") !== null) {
-            navigate(`/profile/${localStorage.getItem("user_id")}`);
+            navigate(`/profile`);
           }
         }}
       >

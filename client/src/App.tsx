@@ -8,6 +8,7 @@ import Users from "./pages/users/Users";
 import ViewUser from "./pages/users/ViewUser";
 import AddUserGroup from "./pages/usergroups/AddUserGroup";
 import EditUserGroup from "./pages/usergroups/EditUserGroup";
+import Profile from "./pages/users/Profile";
 import UserGroups from "./pages/usergroups/UserGroups";
 import ViewUserGroup from "./pages/usergroups/ViewUserGroup";
 import AddNotificationGroup from "./pages/notificationgroups/AddNotificationGroup";
@@ -79,6 +80,7 @@ const App: React.FC = () => {
               <Route path="/productspag" element={<ProductsPag />} />
               <Route path="/product/:id" element={<ViewProduct />} />
               <Route path="/binlocations" element={<BinLocations />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/user/:id" element={<ViewUser />} />
               <Route path="/users" element={<Users />} />
               <Route path="/adduser" element={<AddUser />} />

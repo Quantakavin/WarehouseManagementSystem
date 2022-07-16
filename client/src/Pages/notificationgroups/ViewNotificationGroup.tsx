@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { GetNotificationGroup } from "../../api/NotificationGroupDB";
-import CardField from "../../components/cards/CardField";
-import CardContainer from "../../components/cards/CardContainer";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { motion } from "framer-motion";
