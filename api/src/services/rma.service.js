@@ -1,21 +1,5 @@
 const knex = require('../config/database');
 
-// module.exports.getByRMANo = async (RMANo) => {
-//     const query = `SELECT RmaID,
-//                    DateTime,
-//                    CompanyID,
-//                    ContactPerson,
-//                    RMANo,
-//                    Supplier,
-//                    SupplierRma,
-//                    SalesmanID,
-//                    RmaStatusID,
-//                    Instruction,
-//                    CourseOfAction
-//                    FROM Rma WHERE RMANo = ?`;
-//     return knex.raw(query, [RMANo]);
-// };
-
 module.exports.getByRMANo = async (RMANo) => {
     const query = ` SELECT
                     r.RMANo,
@@ -267,7 +251,7 @@ module.exports.updateRMAReceived = async (RMANo) => {
 // };
 
 module.exports.updateRmaInstructions = async (RMANo, products) => {
-    return knex.transaction((trx) => {
+    return await knex.transaction((trx) => {
         knex('Rma')
             .where('RMANo', RMANo)
             .update({
@@ -275,42 +259,51 @@ module.exports.updateRmaInstructions = async (RMANo, products) => {
             })
             .transacting(trx)
             .then(() => {
-                products.forEach((product) => {
+                Promise.all(products.map((product) => {
                     console.log(`${product.RmaProductPK} ${product.instructions}`);
-                    return knex('RmaProduct')
+                        knex('RmaProduct')
                         .where('RmaProductPK', product.RmaProductPK)
-                        .update({ Instructions: product.instructions })
-                        .transacting(trx);
-                });
-                // for (let i = 0; i < products.length; i++) {
-                //     console.log(products[i].RmaProductPK + " " + products[i].instructions)
-                //         return knex('RmaProduct')
-                //         .where('RmaProductPK', products[i].RmaProductPK)
-                //         .insert(
-                //             {
-                //             Instructions: products[i].instructions
-                //             }
-                //         )
-                //         .transacting(trx)
-                // }
+                        .update({Instructions: product.Instructions})
+                        .transacting(trx)
+                }))
+            }).then(response => {
+                console.log(response)
             })
+                // products.forEach((product) => {
+                //     knex('RmaProduct')
+                //         .where('RmaProductPK', product.RmaProductPK)
+                //         .update({ Instructions: product.instructions })
+                //         .transacting(trx);
+                // });
+
+            //     for (var i=0; i<products.length; i++) {
+            //         console.log(`${products[i].RmaProductPK} ${products[i].instructions}`);
+            //         knex('RmaProduct')
+            //         .where('RmaProductPK', products[i].RmaProductPK)
+            //         .update({ Instructions: products[i].instructions })
+            //         .transacting(trx);
+            //     }
+            // })
+            // })
             .then(trx.commit)
             .catch(trx.rollback);
     });
 };
 
-module.exports.updateRmaCOA = async (RMANo, COA) => {
+module.exports.updateRmaCOA = async (products) => {
     return knex.transaction((trx) => {
-        knex('Rma')
-            .where('RMANo', RMANo)
-            .update({
-                CourseOfAction: COA
-            })
-            .transacting(trx)
+        products.forEach((product) => {
+            console.log(`${product.RmaProductPK} ${product.CourseOfAction}`);
+                knex('RmaProduct')
+                .where('RmaProductPK', product.RmaProductPK)
+                .update({ CourseOfAction: product.CourseOfAction })
+                .transacting(trx);
+        });
+    })
             .then(trx.commit)
             .catch(trx.rollback);
-    });
-};
+    };
+
 
 module.exports.closeRMA = async (RMANo) => {
     return knex.transaction((trx) => {

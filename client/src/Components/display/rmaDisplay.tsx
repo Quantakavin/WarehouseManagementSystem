@@ -85,7 +85,6 @@ export default function rmaDisplay() {
         return {ItemCode, InvoiceNo, DoNo, DateOfPurchase, ReturnReason, Instructions, CourseOfAction};
       }
       const products = rma.RMAProducts
-     
       return (
         <TableContainer component={Paper} sx={{width:750, marginLeft: 1, overflow: "hidden"}}>
       <Table sx={{ width: 750, maxHeight:400 }} aria-label="customized table">
@@ -104,7 +103,7 @@ export default function rmaDisplay() {
           {products?.map((product) => (
             <StyledTableRow key={product.ItemNo}>
               <StyledTableCell align="center" component="th" scope="row">
-                {product.ItemNo}
+                {product.ItemCode}
               </StyledTableCell>
               <StyledTableCell align="center">{product.ItemCode}</StyledTableCell>
               <StyledTableCell align="center">{product.InvoiceNo}</StyledTableCell>
