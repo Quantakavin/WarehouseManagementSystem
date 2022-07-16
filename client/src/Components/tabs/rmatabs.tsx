@@ -19,7 +19,8 @@ import PageviewIcon from '@mui/icons-material/Pageview';
 import ActionMenu from "../table/ActionMenu";
 import { GetPendingRMA, GetApprovedRMA, 
     GetReceivedRMA, GetVerifiedRMA,
-    GetSalesmanAcceptedRMA, GetSalesmanRejectedRMA, GetRMAByRMANo
+    GetSalesmanAcceptedRMA, GetSalesmanRejectedRMA, 
+    GetIPRMA, GetClosedRMA, GetRMAByRmaID
    } from "../../api/RmaDB";
 import TableNew from "../table/TableNew";
 import { useAppSelector } from '../../app/hooks'
@@ -69,6 +70,22 @@ const Rmatabs: React.FC = () => {
       }
     });
 
+  const InprogressRMAQuery = useInfiniteQuery(`inprogress`, GetIPRMA,
+    {
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
+        return undefined;
+      }
+    });
+
+  const ClosedRMAQuery = useInfiniteQuery(`closed`, GetClosedRMA,
+    {
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
+        return undefined;
+      }
+    });
+
   const myAcceptedRMAQuery = useInfiniteQuery(`myAccepted`, GetSalesmanAcceptedRMA,
   {
     getNextPageParam: (lastPage, pages) => {
@@ -104,12 +121,12 @@ const Rmatabs: React.FC = () => {
           icon: <PageviewIcon fontSize="small" />,
           delete: false
         },
-        // {
-        //   name: "Edit Details",
-        //   url: `/tloan/edit/${id}`,
-        //   icon: <ModeEditOutlineIcon fontSize="small" />,
-        //   delete: false
-        // },
+        {
+          name: "Edit Details",
+          url: `/rmaDetails/edit/${id}`,
+          icon: <ModeEditOutlineIcon fontSize="small" />,
+          delete: false
+        }
         // {
         //   name: "Delete",
         //   icon: <DeleteOutlineIcon fontSize="small" />,
@@ -196,6 +213,8 @@ const Rmatabs: React.FC = () => {
             <Tab label="Approved" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
             <Tab label="Received" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
             <Tab label="Verified" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="In Progress" value="5" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="Closed" value="6" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
         </Tabs>
       </Box>
         
@@ -222,9 +241,23 @@ const Rmatabs: React.FC = () => {
         }
         </TabPanel>
         <TabPanel value="4">
-        {VerifiedRMAQuery.isLoading || VerifiedRMAQuery.isError ? <><div className=''>No Loans bruh</div></> :
+        {VerifiedRMAQuery.isLoading || VerifiedRMAQuery.isError ? <><div className=''>No RMA requests</div></> :
         <>
           <TableNew headers={headers} pages={VerifiedRMAQuery.data.pages} query={VerifiedRMAQuery} menu={ActionMenu} />
+          </>
+        } 
+        </TabPanel>
+        <TabPanel value="5">
+        {InprogressRMAQuery.isLoading || InprogressRMAQuery.isError ? <><div className=''>No RMA requests</div></> :
+        <>
+          <TableNew headers={headers} pages={InprogressRMAQuery.data.pages} query={InprogressRMAQuery} menu={ActionMenu} />
+          </>
+        } 
+        </TabPanel>
+        <TabPanel value="6">
+        {ClosedRMAQuery.isLoading || ClosedRMAQuery.isError ? <><div className=''>No RMA requests</div></> :
+        <>
+          <TableNew headers={headers} pages={ClosedRMAQuery.data.pages} query={ClosedRMAQuery} menu={ActionMenu} />
           </>
         } 
         </TabPanel>
@@ -244,13 +277,21 @@ const Rmatabs: React.FC = () => {
         <Tabs centered onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
         sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
             <Tab label="Verified" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="In Progress" value="5" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
         </Tabs>
       </Box>
       <Box sx={{marginTop:-5}}>
       <TabPanel value="4">
-            {VerifiedRMAQuery.isLoading || VerifiedRMAQuery.isError ? <><div className=''>No Loans bruh</div></> :
+            {VerifiedRMAQuery.isLoading || VerifiedRMAQuery.isError ? <><div className=''>No RMA requests</div></> :
             <>
               <TableNew headers={headers} pages={VerifiedRMAQuery.data.pages} query={VerifiedRMAQuery} menu={ActionMenu} />
+              </>
+            } 
+            </TabPanel>
+      <TabPanel value="5">
+            {InprogressRMAQuery.isLoading || InprogressRMAQuery.isError ? <><div className=''>No RMA requests</div></> :
+            <>
+              <TableNew headers={headers} pages={InprogressRMAQuery.data.pages} query={InprogressRMAQuery} menu={ActionMenu} />
               </>
             } 
             </TabPanel>
@@ -298,6 +339,8 @@ const Rmatabs: React.FC = () => {
                 <Tab label="Approved" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
                 <Tab label="Received" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
                 <Tab label="Verified" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+                <Tab label="In Progress" value="5" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+                <Tab label="Closed" value="6" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
             </Tabs>
           </Box>
             
@@ -324,9 +367,23 @@ const Rmatabs: React.FC = () => {
             }
             </TabPanel>
             <TabPanel value="4">
-            {VerifiedRMAQuery.isLoading || VerifiedRMAQuery.isError ? <><div className=''>No Loans bruh</div></> :
+            {VerifiedRMAQuery.isLoading || VerifiedRMAQuery.isError ? <><div className=''>No RMA requests</div></> :
             <>
               <TableNew headers={headers} pages={VerifiedRMAQuery.data.pages} query={VerifiedRMAQuery} menu={ActionMenu} />
+              </>
+            } 
+            </TabPanel>
+            <TabPanel value="5">
+            {InprogressRMAQuery.isLoading || InprogressRMAQuery.isError ? <><div className=''>No RMA requests</div></> :
+            <>
+              <TableNew headers={headers} pages={InprogressRMAQuery.data.pages} query={InprogressRMAQuery} menu={ActionMenu} />
+              </>
+            } 
+            </TabPanel>
+            <TabPanel value="6">
+            {ClosedRMAQuery.isLoading || ClosedRMAQuery.isError ? <><div className=''>No RMA requests</div></> :
+            <>
+              <TableNew headers={headers} pages={ClosedRMAQuery.data.pages} query={ClosedRMAQuery} menu={ActionMenu} />
               </>
             } 
             </TabPanel>
@@ -375,7 +432,7 @@ const Rmatabs: React.FC = () => {
         }
         </TabPanel>
         <TabPanel value="4">
-        {VerifiedRMAQuery.isLoading || VerifiedRMAQuery.isError ? <><div className=''>No Loans bruh</div></> :
+        {VerifiedRMAQuery.isLoading || VerifiedRMAQuery.isError ? <><div className=''>No RMA requests</div></> :
         <>
           <TableNew headers={headers} pages={VerifiedRMAQuery.data.pages} query={VerifiedRMAQuery} menu={ActionMenu} />
           </>

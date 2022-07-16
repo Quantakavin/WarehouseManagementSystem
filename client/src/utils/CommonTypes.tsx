@@ -37,7 +37,7 @@ export interface RMA {
   CompanyID: number;
   ContactPerson: string;
   ContactNo: number;
-  RMANo: string;
+  RmaID: string;
   SupplierRMA: string;
   SalesmanID: string;
   RmaStatusID: number;

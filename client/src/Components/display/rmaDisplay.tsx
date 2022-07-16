@@ -28,13 +28,13 @@ export default function rmaDisplay() {
     //const [rmaDetails, setRmaDetails] = useState([]);
     const [rma, setRmas] = useState([]);
    
-    let { RMANo } = useParams();
+    let { RmaID } = useParams();
     
     useEffect(() => {
       // declare the async data fetching function
       const fetchData = async () => {
         // get the data from the api
-        const rma = await axios.get(`http://localhost:5000/api/RMADetails/${RMANo}`);
+        const rma = await axios.get(`http://localhost:5000/api/RMADetails/${RmaID}`);
        
         setRmas(rma.data)
         // setRma(Object.e)
@@ -120,7 +120,7 @@ export default function rmaDisplay() {
         
            <div>
          
-         <h2 className="pagetitle">RMA Request {rma.RMANo}</h2>
+         <h2 className="pagetitle">RMA Request {rma.RmaID}</h2>
           <Card sx={{ width: 1000, height: 400, marginLeft: 'auto', marginRight: 'auto'}}>
         <CardMedia
         
@@ -162,7 +162,7 @@ export default function rmaDisplay() {
               rows={5.5}
               disabled
              
-              defaultValue={rma.RMANo}
+              defaultValue={rma.RmaID}
               
               />
             </Box> */}
