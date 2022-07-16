@@ -14,22 +14,90 @@ import defaultprofile from "../../assets/defaultprofile.png";
 import navbarbrand from "../../assets/navbarbrand.png";
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import { removeUser } from '../../app/reducers/CurrentUserSlice'
+import { ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 
 const TopBar: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [showNavDropdown, setShowNavDropdown] = useState<boolean>(false);
-  const [showProfileDropdown, setShowProfileDropdown] =
-    useState<boolean>(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const profileopen = Boolean(anchorEl);
+  const handleMouseEnter = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleMouseLeave = () => {
+    setAnchorEl(null);
+  };
+
 
   const logout = () => {
-    setShowProfileDropdown(false);
+    setAnchorEl(null);
     dispatch(removeUser())
     localStorage.clear();
     navigate("/");
   };
 
   const ProfileDropdown = (
+    <>
+      <Menu
+        id="profilemenu"
+        anchorEl={anchorEl}
+        open={profileopen}
+        onClose={() => setAnchorEl(null)}
+        MenuListProps={{
+          "aria-labelledby": "headerprofile",
+          onMouseLeave: handleMouseLeave
+        }}
+      >
+        <MenuItem
+          sx={{ color: "#0A2540" }}
+          onClick={() => {
+            navigate("/profile");
+          }}
+        >
+          <ListItemIcon sx={{ color: "#0A2540" }}>
+            <AccountCircleIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText
+            primaryTypographyProps={{ fontSize: "14px", marginLeft: "-7px" }}
+          >
+            Profile
+          </ListItemText>
+        </MenuItem>
+
+        <MenuItem
+          sx={{ color: "#0A2540" }}
+          onClick={() => {
+            navigate("/settings");
+          }}
+        >
+          <ListItemIcon sx={{ color: "#0A2540" }}>
+            <SettingsIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText
+            primaryTypographyProps={{ fontSize: "14px", marginLeft: "-7px" }}
+          >
+            Settings
+          </ListItemText>
+        </MenuItem>
+
+        <MenuItem
+          sx={{ color: "#0A2540" }}
+          onClick={() => {
+            logout();
+          }}
+        >
+          <ListItemIcon sx={{ color: "#0A2540" }}>
+            <LogoutIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText
+            primaryTypographyProps={{ fontSize: "14px", marginLeft: "-7px" }}
+          >
+            Logout
+          </ListItemText>
+        </MenuItem>
+      </Menu>
+      {/*
     <div className="navprofiledropdown">
       <a
         onClick={() => {
@@ -48,14 +116,19 @@ const TopBar: React.FC = () => {
       <a onClick={() => logout()}>
         <LogoutIcon style={{ marginRight: 5 }} /> Logout
       </a>
-    </div>
+      </div>*/}
+    </>
   );
 
   const ProfileContainer = (
     <div
       className="navprofile flexcontainer"
-      onMouseEnter={() => setShowProfileDropdown(true)}
-      onMouseLeave={() => setShowProfileDropdown(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      id="headerprofile"
+      aria-controls={profileopen ? "profilemenu" : undefined}
+      aria-haspopup="true"
+      aria-expanded={profileopen ? "true" : undefined}
     >
       <img
         alt="ISDN Logo"
@@ -66,7 +139,7 @@ const TopBar: React.FC = () => {
         style={{ marginRight: 10 }}
       />
       <p className="navprofilename">{localStorage.getItem("username")}</p>
-      {showProfileDropdown ? (
+      {profileopen ? (
         <>
           <KeyboardArrowUpIcon />
           {ProfileDropdown}
