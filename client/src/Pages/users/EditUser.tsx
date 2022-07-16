@@ -60,7 +60,6 @@ const EditUser: React.FC = () => {
     if (!UserQuery.error && !UserQuery.isLoading) {
       setUser(UserQuery.data.data[0]);
     }
-    console.log("user is ", user);
 
     const companies: Option[] = [];
     if (!companiesQuery.error && !companiesQuery.isLoading) {

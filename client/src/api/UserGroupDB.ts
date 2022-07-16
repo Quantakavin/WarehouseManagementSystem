@@ -27,5 +27,14 @@ export const PostUserGroup = async (formData) => {
       },
     });
   };
+
+  export const UpdateUserGroup = async (formData, id: string) => {
+    return await axios.put(`${config.baseURL}/usergroup/${id}`, formData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  };
   
 

@@ -17,6 +17,7 @@ import FormTextArea from "../../components/form/FormTextArea";
 import { GetFeatures, GetFeatureRights } from "../../api/FeatureDB";
 import { Option, Feature, FeatureRight } from "../../utils/CommonTypes";
 import { Toast } from "../../components/alerts/SweetAlert";
+import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 
 interface FormValues {
   name: string;
@@ -75,6 +76,8 @@ const AddUserGroup: React.FC = () => {
         Toast.fire({
           icon: "success",
           title: "User group created successfully",
+          customClass: "swalpopup",
+          timer: 1500
         });
         navigate("/usergroups");
       },
@@ -180,7 +183,15 @@ const AddUserGroup: React.FC = () => {
 
   const StepTwo = (
     <div className={step === 2 ? "showstep" : "hidestep"}>
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <MultiSelectDropdown
+        name="features"
+        label="Features"
+        selectedValues={selectedFeatures}
+        changeSelectedValues={selectFeature}
+        placeholder="Select Features..."
+        options={featureOptions}
+      />
+      {/* <div style={{ display: "flex", flexDirection: "column" }}>
         <p className="formlabels"> Features </p>
         <div className="formfieldcontainer">
           <Select
@@ -206,66 +217,67 @@ const AddUserGroup: React.FC = () => {
             ))}
           </Select>
         </div>
-        {selectedFeatures.length > 0 && (
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <p className="formlabels" style={{ marginTop: 20 }}>
-              {" "}
-              Feature List{" "}
-            </p>
-            <div style={{ alignSelf: "center", width: "85%" }}>
-              {selectedFeatures.map((feature) => {
-                return (
-                  <div className="selectlist">
-                    <div
-                      style={{
-                        flex: 14,
-                        fontWeight: 500,
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {
-                        featuresQuery.data.data.find(
-                          (data) => data.FeatureID === feature
-                        ).FeatureName
-                      }
-                    </div>
-                    <div style={{ flex: 3, fontWeight: 500 }}>
-                      <Select
-                        defaultValue={1}
-                        autoWidth
-                        label="Age"
-                        size="small"
-                        className="smallselectfield"
-                        onChange={(e) => assignFeatureRight(e, feature)}
-                      >
-                        {featureRightOptions.map((option) => {
-                          return (
-                            <MenuItem key={option.id} value={option.value}>
-                              {option.text}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </div>
-                    <div style={{ flex: 1, fontWeight: 500 }}>
-                      <button
-                        onClick={() => unselectFeature(feature)}
-                        style={{ marginLeft: 5, marginRight: "-5%" }}
-                        type="button"
-                        className="buttonremovestyling"
-                      >
-                        <CloseIcon fontSize="small" />
-                      </button>
-                    </div>
+      </div> */}
+
+
+
+      {selectedFeatures.length > 0 && (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <p className="formlabels" style={{ marginTop: 20 }}>
+            Feature List
+          </p>
+          <div style={{ alignSelf: "center", width: "85%" }}>
+            {selectedFeatures.map((feature) => {
+              return (
+                <div className="selectlist">
+                  <div
+                    style={{
+                      flex: 14,
+                      fontWeight: 500,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {
+                      featuresQuery.data.data.find(
+                        (data) => data.FeatureID === feature
+                      ).FeatureName
+                    }
                   </div>
-                );
-              })}
-            </div>
+                  <div style={{ flex: 3, fontWeight: 500 }}>
+                    <Select
+                      defaultValue={Number(featureRightOptions[0].value)}
+                      autoWidth
+                      label="Age"
+                      size="small"
+                      className="smallselectfield"
+                      onChange={(e) => assignFeatureRight(e, feature)}
+                    >
+                      {featureRightOptions.map((option) => {
+                        return (
+                          <MenuItem key={option.id} value={option.value}>
+                            {option.text}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </div>
+                  <div style={{ flex: 1, fontWeight: 500 }}>
+                    <button
+                      onClick={() => unselectFeature(feature)}
+                      style={{ marginLeft: 5, marginRight: "-5%" }}
+                      type="button"
+                      className="buttonremovestyling"
+                    >
+                      <CloseIcon fontSize="small" />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        )}
-        <p className="errormsg">{errors.features?.message}</p>
-      </div>
+        </div>
+      )}
 
       {mutation.isError && axios.isAxiosError(mutation.error) ? (
         <ErrorAlert error={mutation.error} />
@@ -292,4 +304,4 @@ const AddUserGroup: React.FC = () => {
     </FormContainer>
   );
 };
-export default AddUserGroup;
+export default AddUserGroup; 

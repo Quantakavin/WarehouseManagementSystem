@@ -51,6 +51,8 @@ const Login: React.FC = () => {
       Toast.fire({
         icon: "success",
         title: "Logged in successfully",
+        customClass: "swalpopup",
+        timer: 1500
       });
       return navigate("/dashboard", { replace: true });
     },

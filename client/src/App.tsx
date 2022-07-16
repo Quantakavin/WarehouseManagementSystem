@@ -88,6 +88,7 @@ const App: React.FC = () => {
               <Route path="/usergroups" element={<UserGroups />} />
               <Route path="/usergroup/:id" element={<ViewUserGroup />} />
               <Route path="/addusergroup" element={<AddUserGroup />} />
+              <Route path="/editusergroup/:id" element={<EditUserGroup />} />
               <Route
                 path="/notificationgroups"
                 element={<NotificationGroups />}
