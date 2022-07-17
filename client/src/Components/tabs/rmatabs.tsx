@@ -147,7 +147,7 @@ const Rmatabs: React.FC = () => {
             <>
             <h2 className="pagetitle">RMA requests </h2>
             <RmaSearch/>
-           <TabContext value={value}>
+           <TabContext value={value || "1"}>
            <Box sx={{ paddingLeft:10, marginTop: 3}}>
             <Tabs centered onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
             sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
@@ -180,7 +180,7 @@ const Rmatabs: React.FC = () => {
             <>
             <h2 className="pagetitle">RMA requests </h2>
             <RmaSearch/>
-        <TabContext value={value}>
+        <TabContext value={value || "3"}>
         <Box sx={{ paddingLeft:10, marginTop: 3}}>
         <Tabs centered onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
         sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
@@ -205,7 +205,7 @@ const Rmatabs: React.FC = () => {
         <>
         <h2 className="pagetitle">RMA requests </h2>
         <RmaSearch/>
-       <TabContext value={value}>
+        <TabContext value={value || "1"}>
        <Box sx={{ paddingLeft:10, marginTop: 3}}>
         <Tabs centered onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
         sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
@@ -272,7 +272,7 @@ const Rmatabs: React.FC = () => {
             <>
             <h2 className="pagetitle">RMA requests </h2>
             <RmaSearch/>
-           <TabContext value={value}>
+           <TabContext value={value || "4"}>
            <Box sx={{ paddingLeft:10, marginTop: 3}}>
         <Tabs centered onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
         sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
@@ -306,7 +306,7 @@ const Rmatabs: React.FC = () => {
             <>
             <h2 className="pagetitle">RMA requests </h2>
             <RmaSearch/>
-           <TabContext value={value}>
+           <TabContext value={value || "3"}>
            <Box sx={{ paddingLeft:10, marginTop: 3}}>
         <Tabs centered onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
         sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
@@ -331,7 +331,7 @@ const Rmatabs: React.FC = () => {
             <>
             <h2 className="pagetitle">RMA requests </h2>
             <RmaSearch/>
-           <TabContext value={value}>
+           <TabContext value={value || "1"}>
            <Box sx={{ paddingLeft:10, marginTop: 3}}>
             <Tabs centered onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
             sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
@@ -398,7 +398,7 @@ const Rmatabs: React.FC = () => {
         <>
         <h2 className="pagetitle">RMA requests </h2>
         <RmaSearch/>
-       <TabContext value={value}>
+        <TabContext value={value || "1"}>
        <Box sx={{ paddingLeft:10, marginTop: 3}}>
         <Tabs centered onChange={handleChange} TabIndicatorProps={{style: {backgroundColor: "#D97D54"}}} 
         sx={{"& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110}}}>
