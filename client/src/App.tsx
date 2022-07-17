@@ -32,7 +32,7 @@ import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "./app/hooks";
 import {
   selectIsAuthenticated,
-  selectName,
+  selectName
 } from "./app/reducers/CurrentUserSlice";
 
 interface ProtectedRouteProps {
@@ -43,7 +43,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ loginpage }) => {
   const token = localStorage.getItem("token");
   if (loginpage) {
     if (token) {
-      return <Navigate replace to="/dashboard/manager" />;
+      return <Navigate replace to="/dashboard" />;
     } else {
       return <Outlet />;
     }

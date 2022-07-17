@@ -12,7 +12,7 @@ router.get('/getpendingRMAs', dashboardController.pendingRMAs);
 router.get('/getapprovedRMAs', dashboardController.approvedRMAs);
 router.get('/getrejectedRMAs', dashboardController.rejectedRMAs);
 router.get('/getreceivedRMAs', dashboardController.receivedRMAs);
-router.get('/getverifiedRMAs', dashboardController.verfiedRMAs);
+router.get('/getverifiedRMAs', dashboardController.verifiedRMAs);
 router.get('/getIPRMAs', dashboardController.IPRMAs);
 router.get('/getclosedRMAs', dashboardController.closedRMAs);
 
