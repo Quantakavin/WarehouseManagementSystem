@@ -16,7 +16,6 @@ import EditNotificationGroup from "./pages/notificationgroups/EditNotificationGr
 import NotificationGroups from "./pages/notificationgroups/NotificationGroups";
 import ViewNotificationGroup from "./pages/notificationgroups/ViewNotificationGroup";
 import Dashboard from "./pages/dashboards/Dashboards";
-import DashboardManager from "./pages/dashboards/DashboardManager";
 import Products from "./pages/products/Products";
 import ProductsPag from "./pages/products/TestProducts";
 import ViewProduct from "./pages/products/ViewProduct";
@@ -32,7 +31,7 @@ import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "./app/hooks";
 import {
   selectIsAuthenticated,
-  selectName,
+  selectName
 } from "./app/reducers/CurrentUserSlice";
 
 interface ProtectedRouteProps {
@@ -43,7 +42,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ loginpage }) => {
   const token = localStorage.getItem("token");
   if (loginpage) {
     if (token) {
-      return <Navigate replace to="/dashboard/manager" />;
+      return <Navigate replace to="/dashboard" />;
     } else {
       return <Outlet />;
     }
@@ -75,7 +74,6 @@ const App: React.FC = () => {
             </Route>
             <Route element={<ProtectedRoute loginpage={false} />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/dashboard/manager" element={<DashboardManager />} />
               <Route path="/products" element={<Products />} />
               <Route path="/productspag" element={<ProductsPag />} />
               <Route path="/product/:id" element={<ViewProduct />} />
@@ -105,7 +103,7 @@ const App: React.FC = () => {
               <Route path="/tloan" element={<TLoan />} />
               <Route path="/rma" element={<RMA />} />
               <Route path="/createRma" element={<CreateRMA />} />
-              <Route path="/rmaDetails/:RMANo" element={<RmaDisplay />} />
+              <Route path="/rmaDetails/:RmaID" element={<RmaDisplay />} />
               <Route
                 path="/tloandetails/:TLoanNumber"
                 element={<TLoanDisplay />}

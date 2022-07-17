@@ -3,7 +3,7 @@ import type { RootState } from "../store";
 
 // Define a type for the slice state
 interface RmaState {
-  RMANo: number | null;
+  RmaID: number | null;
   Company: string | null;
   Email: string | null;
   ContactNo: number | null;
@@ -18,7 +18,7 @@ interface RmaState {
 
 // Define the initial state using that type
 const initialState: RmaState = {
-  RMANo: null,
+  RmaID: null,
   Company: null,
   Email: null,
   ContactNo: null,
@@ -37,7 +37,7 @@ export const RmaSlice = createSlice({
   initialState,
   reducers: {
     createRMA: (state, action: PayloadAction<RmaState>) => {
-      state.RMANo = action.payload.RMANo;
+      state.RmaID = action.payload.RmaID;
       state.Company = action.payload.Company;
       state.Email = action.payload.Email;
       state.ContactNo = action.payload.ContactNo;
@@ -77,6 +77,6 @@ export const {
 } = RmaSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectRma = (state: RootState) => state.rma.RMANo;
+export const selectRma = (state: RootState) => state.rma.RmaID;
 
 export default RmaSlice.reducer;

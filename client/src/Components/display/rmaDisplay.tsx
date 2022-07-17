@@ -25,21 +25,19 @@ import TextField from '@mui/material/TextField';
 export default function rmaDisplay() {
     const navigate = useNavigate();
     const [details, setDetails] = useState([]);
-    //const [loanDetails, setLoanDetails] = useState([]);
-    const [rma, setLoans] = useState([]);
+    //const [rmaDetails, setRmaDetails] = useState([]);
+    const [rma, setRmas] = useState([]);
    
-    let { RMANo } = useParams();
+    let { RmaID } = useParams();
     
     useEffect(() => {
       // declare the async data fetching function
       const fetchData = async () => {
         // get the data from the api
-        const rma = await axios.get(`http://localhost:5000/api/RMADetails/${RMANo}`);
+        const rma = await axios.get(`http://localhost:5000/api/RMADetails/${RmaID}`);
        
-        setLoans(rma.data)
-        
-        // setLoan(Object.e)
-      
+        setRmas(rma.data)
+        // setRma(Object.e)
       }
       // call the function
       fetchData()
@@ -47,7 +45,8 @@ export default function rmaDisplay() {
         .catch(console.error);;
     }, [])
 
-    console.log(rma.RMAProducts)
+    // console.log(rma.data.RMAProducts)
+    const products = rma.RMAProducts
     
     
     
@@ -84,10 +83,9 @@ export default function rmaDisplay() {
       ) {
         return {ItemCode, InvoiceNo, DoNo, DateOfPurchase, ReturnReason, Instructions, CourseOfAction};
       }
-      const products = rma.RMAProducts
       return (
-        <TableContainer component={Paper} sx={{width:750, marginLeft: 1, overflow: "hidden"}}>
-      <Table sx={{ width: 750, maxHeight:400 }} aria-label="customized table">
+        <TableContainer component={Paper} sx={{width: 950, marginLeft: 1, overflow: "hidden"}}>
+      <Table sx={{ width: 950, maxHeight:400 }} aria-label="customized table">
         <TableHead >
           <TableRow >
             <StyledTableCell align="center">Item Code</StyledTableCell>
@@ -101,10 +99,8 @@ export default function rmaDisplay() {
         </TableHead>
         <TableBody>
           {products?.map((product) => (
-            <StyledTableRow key={product.ItemNo}>
-              <StyledTableCell align="center" component="th" scope="row">
-                {product.ItemCode}
-              </StyledTableCell>
+
+              <StyledTableRow key={product.ItemCode}>
               <StyledTableCell align="center">{product.ItemCode}</StyledTableCell>
               <StyledTableCell align="center">{product.InvoiceNo}</StyledTableCell>
               <StyledTableCell align="center">{product.DoNo}</StyledTableCell>
@@ -119,24 +115,18 @@ export default function rmaDisplay() {
     </TableContainer>
       )
     }
-    const getData = (RMANo, ContactPerson, CustomerEmail, Company, ContactNo) => {
-
-    
-
-      
-  
-       console.log(rma)
+    const getData = () => {
       return (
         
            <div>
          
-         <h2 className="pagetitle">{rma.RMANo}</h2>
-          <Card sx={{ width: 800, height: 400, marginLeft: 'auto', marginRight: 'auto'}}>
+         <h2 className="pagetitle">RMA Request {rma.RmaID}</h2>
+          <Card sx={{ width: 1000, height: 400, marginLeft: 'auto', marginRight: 'auto'}}>
         <CardMedia
         
         />
         <CardContent> 
-           <Typography gutterBottom variant="subtitle2" component="div" sx={{display: 'flex',justifyContent:'center', alignItems:'center', marginTop: 3, color:'#063970', fontWeight: 'bold'}}>
+           <Typography gutterBottom variant="subtitle2" component="div" sx={{display: 'flex',justifyContent:'left', alignItems:'left', marginTop: 3, marginLeft: 3.5, color:'#063970', fontWeight: 'bold'}}>
            <Box>
            <div >Date Applied:</div>
            <div style={{color: "black", fontWeight: "normal"}}>{rma.DateTime}</div>
@@ -160,9 +150,7 @@ export default function rmaDisplay() {
 
 
           </Typography>
-          <Typography gutterBottom variant="subtitle2" component="div" sx={{marginTop: 3 , marginLeft: 6.5,color:'#063970', fontWeight: 'bold'}}>
-          <div>Product List</div>
-          
+          <Typography gutterBottom variant="subtitle2" component="div" sx={{marginTop: 3 , marginLeft: 5,color:'#063970', fontWeight: 'bold'}}>
           </Typography>
           <Box sx={{display:'flex'}}> 
             {table()}
@@ -174,7 +162,7 @@ export default function rmaDisplay() {
               rows={5.5}
               disabled
              
-              defaultValue={rma.RMANo}
+              defaultValue={rma.RmaID}
               
               />
             </Box> */}

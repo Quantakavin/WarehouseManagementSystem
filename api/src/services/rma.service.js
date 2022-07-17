@@ -1,8 +1,7 @@
 const knex = require('../config/database');
 
-module.exports.getByRMANo = async (RMANo) => {
+module.exports.getByRmaID = async (RmaID) => {
     const query = ` SELECT
-                    r.RMANo,
                     r.RmaID,
                     DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime',
                     r.ContactPerson,
@@ -10,9 +9,9 @@ module.exports.getByRMANo = async (RMANo) => {
                     c.CompanyName,
                     r.ContactNo
                     FROM Rma r, Company c WHERE
-                    RMANo = ? AND 
+                    RmaID = ? AND 
                     r.CompanyID = c.CompanyID;`;
-    return knex.raw(query, [RMANo]);
+    return knex.raw(query, [RmaID]);
 };
 
 
@@ -31,8 +30,8 @@ module.exports.getRMAProducts = async (RmaID) => {
 };
 
 module.exports.getSalesmanRMA = async (SalesmanID) => {
-    const query = ` SELECT r.RMANo, 
-                    r.DateTime ,
+    const query = ` SELECT r.RmaID, 
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
                     c.CompanyName,
                     r.CustomerEmail
                     FROM Rma r, Company c
@@ -42,8 +41,8 @@ module.exports.getSalesmanRMA = async (SalesmanID) => {
 };
 
 module.exports.getSalesmanAcceptedRMA = async (SalesmanID) => {
-    const query = ` SELECT r.RMANo, 
-                    r.DateTime ,
+    const query = ` SELECT r.RmaID, 
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
                     c.CompanyName,
                     r.CustomerEmail
                     FROM Rma r, Company c 
@@ -54,8 +53,8 @@ module.exports.getSalesmanAcceptedRMA = async (SalesmanID) => {
 };
 
 module.exports.getSalesmanRejectedRMA = async (SalesmanID) => {
-    const query = ` SELECT r.RMANo, 
-                    r.DateTime ,
+    const query = ` SELECT r.RmaID, 
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
                     c.CompanyName,
                     r.CustomerEmail
                     FROM Rma r, Company c 
@@ -67,8 +66,8 @@ module.exports.getSalesmanRejectedRMA = async (SalesmanID) => {
 
 
 module.exports.getAllRMA = async () => {
-    const query = ` SELECT r.RMANo, 
-                    r.DateTime ,
+    const query = ` SELECT r.RmaID, 
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
                     c.CompanyName,
                     r.CustomerEmail
                     FROM Rma r, Company c 
@@ -77,13 +76,19 @@ module.exports.getAllRMA = async () => {
 };
 
 module.exports.getPendingRMA = async () => {
-    const query = ` SELECT r.RMANo, r.DateTime, c.CompanyName, r.CustomerEmail FROM Rma r, Company c WHERE RmaStatusID = 1 AND r.CompanyID = c.CompanyID;`;
+    const query = ` SELECT r.RmaID, 
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime', 
+                    c.CompanyName, 
+                    r.CustomerEmail 
+                    FROM Rma r, Company c 
+                    WHERE RmaStatusID = 1 
+                    AND r.CompanyID = c.CompanyID;`;
     return knex.raw(query);
 };
 
 module.exports.getAcceptedRMA = async () => {
-    const query = ` SELECT r.RMANo, 
-                    r.DateTime ,
+    const query = ` SELECT r.RmaID, 
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
                     c.CompanyName,
                     r.CustomerEmail
                     FROM Rma r, Company c 
@@ -92,9 +97,20 @@ module.exports.getAcceptedRMA = async () => {
     return knex.raw(query);
 };
 
+module.exports.getRejectedRMA = async () => {
+    const query = ` SELECT r.RmaID, 
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
+                    c.CompanyName,
+                    r.CustomerEmail
+                    FROM Rma r, Company c 
+                    WHERE RmaStatusID = 3
+                    AND r.CompanyID = c.CompanyID;`;
+    return knex.raw(query);
+};
+
 module.exports.getReceivedRMA = async () => {
-    const query = ` SELECT r.RMANo, 
-                    r.DateTime ,
+    const query = ` SELECT r.RmaID, 
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
                     c.CompanyName,
                     r.CustomerEmail
                     FROM Rma r, Company c 
@@ -104,12 +120,34 @@ module.exports.getReceivedRMA = async () => {
 };
 
 module.exports.getVerifiedRMA = async () => {
-    const query = `SELECT r.RMANo, 
-                    r.DateTime ,
+    const query = `SELECT r.RmaID, 
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
                     c.CompanyName,
                     r.CustomerEmail
                     FROM Rma r, Company c 
                     WHERE RmaStatusID = 5
+                    AND r.CompanyID = c.CompanyID;`;
+    return knex.raw(query);
+};
+
+module.exports.getIPRMA = async () => {
+    const query = `SELECT r.RmaID, 
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
+                    c.CompanyName,
+                    r.CustomerEmail
+                    FROM Rma r, Company c 
+                    WHERE RmaStatusID = 6
+                    AND r.CompanyID = c.CompanyID;`;
+    return knex.raw(query);
+};
+
+module.exports.getClosedRMA = async () => {
+    const query = `SELECT r.RmaID, 
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
+                    c.CompanyName,
+                    r.CustomerEmail
+                    FROM Rma r, Company c 
+                    WHERE RmaStatusID = 7
                     AND r.CompanyID = c.CompanyID;`;
     return knex.raw(query);
 };
@@ -144,7 +182,6 @@ module.exports.insertRMAProducts = async (
 module.exports.insertRMAData = async (
     contactperson,
     contactno,
-    rmano,
     salesmanid,
     contactemail,
     company,
@@ -159,7 +196,6 @@ module.exports.insertRMAData = async (
                 ContactNo: contactno,
                 SalesmanID: salesmanid,
                 RmaStatusID: 1,
-                RMANo: rmano
             },
             'RmaID'
         )
@@ -179,10 +215,10 @@ module.exports.insertRMAData = async (
     });
 };
 
-module.exports.updateRmaAccepted = async (RMANo) => {
+module.exports.updateRmaAccepted = async (RmaID) => {
     return knex.transaction((trx) => {
         knex('Rma')
-            .where('RMANo', RMANo)
+            .where('RmaID', RmaID)
             .update({
                 RmaStatusID: 2
             })
@@ -192,10 +228,10 @@ module.exports.updateRmaAccepted = async (RMANo) => {
     });
 };
 
-module.exports.updateRmaRejected = async (RMANo) => {
+module.exports.updateRmaRejected = async (RmaID) => {
     return knex.transaction((trx) => {
         knex('Rma')
-            .where('RMANo', RMANo)
+            .where('RmaID', RmaID)
             .update({
                 RmaStatusID: 3
             })
@@ -205,10 +241,10 @@ module.exports.updateRmaRejected = async (RMANo) => {
     });
 };
 
-module.exports.updateRMAReceived = async (RMANo) => {
+module.exports.updateRMAReceived = async (RmaID) => {
     return knex.transaction((trx) => {
         knex('Rma')
-            .where('RMANo', RMANo)
+            .where('RmaID', RmaID)
             .update({
                 RmaStatusID: 4
             })
@@ -218,99 +254,58 @@ module.exports.updateRMAReceived = async (RMANo) => {
     });
 };
 
-// module.exports.updateRmaInstructions = async (RMANo, products) => {
-//     return knex.transaction((trx) => {
-//         knex('Rma')
-//             .where('RMANo', RMANo)
-//             .update({
-//                 RmaStatusID: 5
-//             })
-//             .transacting(trx)
-//             .then(() => {
-//                 products.map(product => {
-//                     console.log(product.RmaProductPK + " " + product.instructions)
-//                     return knex('RmaProduct')
-//                     .where('RmaProductPK', product.RmaProductPK)
-//                     .update({Instructions: product.instructions}).transacting(trx)
-//                 })
-//                 // for (let i = 0; i < products.length; i++) {
-//                 //     console.log(products[i].RmaProductPK + " " + products[i].instructions)
-//                 //         return knex('RmaProduct')
-//                 //         .where('RmaProductPK', products[i].RmaProductPK)
-//                 //         .update({
-//                 //             Instructions: products[i].instructions
-//                 //         })
-//                 //         .transacting(trx)
-//                 //         console.log("called")
-//                 // }
-
-//             })
-//             .then(trx.commit)
-//             .catch(trx.rollback);
-//     });
-// };
-
-module.exports.updateRmaInstructions = async (RMANo, products) => {
+module.exports.updateRmaInstructions = async (RmaID, products) => {
     return await knex.transaction((trx) => {
         knex('Rma')
-            .where('RMANo', RMANo)
+            .where('RmaID', RmaID)
             .update({
                 RmaStatusID: 5
             })
             .transacting(trx)
-            .then(() => {
-                Promise.all(products.map((product) => {
+            .then(async () => {
+                let rmaproducts = await products.map(async (product) => {
                     console.log(`${product.RmaProductPK} ${product.instructions}`);
-                        knex('RmaProduct')
+                        return await knex('RmaProduct')
                         .where('RmaProductPK', product.RmaProductPK)
-                        .update({Instructions: product.Instructions})
+                        .update({Instructions: product.instructions})
                         .transacting(trx)
-                }))
-            }).then(response => {
-                console.log(response)
+                })
+                return rmaproducts;
             })
-                // products.forEach((product) => {
-                //     knex('RmaProduct')
-                //         .where('RmaProductPK', product.RmaProductPK)
-                //         .update({ Instructions: product.instructions })
-                //         .transacting(trx);
-                // });
-
-            //     for (var i=0; i<products.length; i++) {
-            //         console.log(`${products[i].RmaProductPK} ${products[i].instructions}`);
-            //         knex('RmaProduct')
-            //         .where('RmaProductPK', products[i].RmaProductPK)
-            //         .update({ Instructions: products[i].instructions })
-            //         .transacting(trx);
-            //     }
-            // })
-            // })
             .then(trx.commit)
             .catch(trx.rollback);
     });
 };
 
-module.exports.updateRmaCOA = async (products) => {
-    return knex.transaction((trx) => {
-        products.forEach((product) => {
-            console.log(`${product.RmaProductPK} ${product.CourseOfAction}`);
-                knex('RmaProduct')
-                .where('RmaProductPK', product.RmaProductPK)
-                .update({ CourseOfAction: product.CourseOfAction })
-                .transacting(trx);
-        });
-    })
-            .then(trx.commit)
-            .catch(trx.rollback);
-    };
-
-
-module.exports.closeRMA = async (RMANo) => {
-    return knex.transaction((trx) => {
+module.exports.updateRmaCOA = async (RmaID, products) => {
+    return await knex.transaction((trx) => {
         knex('Rma')
-            .where('RMANo', RMANo)
+            .where('RmaID', RmaID)
             .update({
                 RmaStatusID: 6
+            })
+            .transacting(trx)
+            .then(async () => {
+                let rmaproducts = await products.map(async (product) => {
+                    console.log(`${product.RmaProductPK} ${product.courseofaction}`);
+                        return await knex('RmaProduct')
+                        .where('RmaProductPK', product.RmaProductPK)
+                        .update({CourseOfAction: product.courseofaction})
+                        .transacting(trx)
+                })
+                return rmaproducts;
+            })
+            .then(trx.commit)
+            .catch(trx.rollback);
+    });
+};
+
+module.exports.closeRma = async (RmaID) => {
+    return knex.transaction((trx) => {
+        knex('Rma')
+            .where('RmaID', RmaID)
+            .update({
+                RmaStatusID: 7
             })
             .transacting(trx)
             .then(trx.commit)

@@ -54,14 +54,32 @@ module.exports.getApprovedRMAs = async () => {
 };
 
 // Rejected RMAs
+module.exports.getRejectedRMAs = async () => {
+    const query = `SELECT * FROM Rma WHERE RMAStatusID = "3"`;
+    return knex.raw(query);
+};
+
+// Received RMAs
 module.exports.getReceivedRMAs = async () => {
     const query = `SELECT * FROM Rma WHERE RMAStatusID = "4"`;
     return knex.raw(query);
 };
 
+// Verified RMAs
+module.exports.getVerifiedRMAs = async () => {
+    const query = `SELECT * FROM Rma WHERE RMAStatusID = "5"`;
+    return knex.raw(query);
+};
+
+// In Progress RMAs
+module.exports.getIPRMAs = async () => {
+    const query = `SELECT * FROM Rma WHERE RMAStatusID = "6"`;
+    return knex.raw(query);
+};
+
 // Closed RMAs
 module.exports.getClosedRMAs = async () => {
-    const query = `SELECT * FROM Rma WHERE RMAStatusID = "6"`;
+    const query = `SELECT * FROM Rma WHERE RMAStatusID = "7"`;
     return knex.raw(query);
 };
 
@@ -75,14 +93,14 @@ module.exports.getClosedRMAs = async () => {
 module.exports.getTLoanCurrentStats = async () => {
     const query = `SELECT COUNT(TLoanNumber) AS Requests,  MONTHNAME(ApplicationDate) as Month FROM TLoan WHERE TLoanStatusID = "3"  GROUP BY ApplicationDate`;
     // const query = `select (select count(TLoanNumber) from TLoan) as TLoanRequests,
-    // (select count(RmaNo) from Rma) as RMARequest`;
+    // (select count(RmaID) from Rma) as RMARequest`;
     return knex.raw(query);
 };
 
 // Get Total RMA Request, Month WHERE Status = 2
 module.exports.getRMACurrentStats = async () => {
-    const query = `SELECT COUNT(RmaNo) AS Requests,  MONTHNAME(DateTime) as Month FROM Rma WHERE RmaStatusID != "3" OR RmaStatusID != "6" GROUP BY DateTime`;
+    const query = `SELECT COUNT(RmaID) AS Requests,  MONTHNAME(DateTime) as Month FROM Rma WHERE RmaStatusID != "3" OR RmaStatusID != "7" GROUP BY DateTime`;
     // const query = `select (select count(TLoanNumber) from TLoan) as TLoanRequests,
-    // (select count(RmaNo) from Rma) as RMARequest`;
+    // (select count(RmaID) from Rma) as RMARequest`;
     return knex.raw(query);
 };

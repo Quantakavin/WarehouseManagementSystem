@@ -46,6 +46,7 @@ export const { setUser, removeUser } = currentUserSlice.actions
 // Other code such as selectors can use the imported `RootState` type
 export const selectName = (state: RootState) => state.currentUser.name
 export const selectRole= (state: RootState) => state.currentUser.role
+export const selectId= (state: RootState) => state.currentUser.id
 export const selectIsAuthenticated = (state: RootState) => state.currentUser.isAuthenticated
 
 export default currentUserSlice.reducer
