@@ -10,6 +10,7 @@ router.get('/getextendedTloan', dashboardController.ExtendedTLoans);
 // RMA Overview
 router.get('/getpendingRMAs', dashboardController.pendingRMAs);
 router.get('/getapprovedRMAs', dashboardController.approvedRMAs);
+router.get('/getrejectedRMAs', dashboardController.rejectedRMAs);
 router.get('/getreceivedRMAs', dashboardController.receivedRMAs);
 router.get('/getverifiedRMAs', dashboardController.verfiedRMAs);
 router.get('/getIPRMAs', dashboardController.IPRMAs);

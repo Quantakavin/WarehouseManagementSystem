@@ -97,6 +97,17 @@ module.exports.getAcceptedRMA = async () => {
     return knex.raw(query);
 };
 
+module.exports.getRejectedRMA = async () => {
+    const query = ` SELECT r.RmaID, 
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
+                    c.CompanyName,
+                    r.CustomerEmail
+                    FROM Rma r, Company c 
+                    WHERE RmaStatusID = 3
+                    AND r.CompanyID = c.CompanyID;`;
+    return knex.raw(query);
+};
+
 module.exports.getReceivedRMA = async () => {
     const query = ` SELECT r.RmaID, 
                     DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,

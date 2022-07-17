@@ -17,6 +17,7 @@ function cardsManager() {
   // RMA Overview
   const [PendingRMAs, setPendingRMAs] = useState([]);
   const [ApprovedRMAs, setApprovedRMAs] = useState([]);
+  const [RejectedRMAs, setRejectedRMAs] = useState([]);
   const [ReceivedRMAs, setReceivedRMAs] = useState([]);
   const [VerifiedRMAs, setVerifiedRMAs] = useState([]);
   const [InprogressRMAs, setInprogressRMAs] = useState([]);
@@ -84,6 +85,17 @@ useEffect(() => {
   getApprovedRMAs();
 }, []);
 
+ // getrejectedRMAs
+ const getRejectedRMAs = async () => {
+  const response = await axios.get(`${config.baseURL}/getrejectedRMAs`);
+
+  setRejectedRMAs(response.data);
+};
+
+useEffect(() => {
+  getRejectedRMAs();
+}, []);
+
 // getreceivedRMAs
  const getReceivedRMAs = async () => {
   const response = await axios.get(`${config.baseURL}/getreceivedRMAs`);
@@ -147,19 +159,19 @@ useEffect(() => {
       <div className="featuredItem">
         <span className="featuredTitle">RMA Overview</span>
         <div>
-          <div>
-            <span className="Drafts">Pending</span>
+          {/* <div>
+            <span className="Current">Pending</span>
             <h1 className="Current">{PendingRMAs.length}</h1>
-          </div>
+          </div> */}
           <div>
             <span className="Current">Approved</span>
             <h1 className="Current">{ApprovedRMAs.length}</h1>
           </div>
           <div>
-            <span className="Current">Received</span>
+            <span className="Current">Rejected</span>
             <h1 className="Current">{ReceivedRMAs.length}</h1>
           </div>
-          <div>
+          {/* <div>
             <span className="Current">Verified</span>
             <h1 className="Current">{VerifiedRMAs.length}</h1>
           </div>
@@ -170,7 +182,7 @@ useEffect(() => {
           <div>
             <span className="Current">Closed</span>
             <h1 className="Current">{ClosedRMAs.length}</h1>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

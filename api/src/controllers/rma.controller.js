@@ -172,6 +172,26 @@ module.exports.getAcceptedRMA = async (req, res) => {
     }
 };
 
+module.exports.getRejectedRMA = async (req, res) => {
+    try {
+        const Rma = await redisClient.get('Rma');
+        if (Rma !== null) {
+            const redisresults = JSON.parse(Rma);
+            return res.status(200).json(redisresults);
+        }
+        const results = await rmaService.getRejectedRMA();
+        redisClient.set('AcceptedRMA', JSON.stringify(results[0]));
+        if (results.length > 0) {
+            return res.status(200).json(results[0]);
+        } else {
+            return res.status(404).send('No RMAs found!');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
 module.exports.getReceivedRMA = async (req, res) => {
     try {
         const Rma = await redisClient.get('Rma');

@@ -9,6 +9,7 @@ router.get('/myAcceptedRMA/:SalesmanID', rmaController.getMyAcceptedRMA);
 router.get('/myRejectedRMA/:SalesmanID', rmaController.getMyRejectedRMA);
 router.get('/pendingRMA', rmaController.getPendingRMA);
 router.get('/acceptedRMA', rmaController.getAcceptedRMA);
+router.get('/rejectedRMA', rmaController.getRejectedRMA);
 router.get('/receivedRMA', rmaController.getReceivedRMA);
 router.get('/verifiedRMA', rmaController.getVerifiedRMA);
 router.get('/inprogressRMA', rmaController.getIPRMA);
