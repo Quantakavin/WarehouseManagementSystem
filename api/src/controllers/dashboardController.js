@@ -71,7 +71,7 @@ module.exports.pendingRMAs = async (req, res) => {
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
-            return res.status(404).send('There is no pendding RMAs');
+            return res.status(404).send('There are no pending RMAs');
         }
     } catch (error) {
         console.log(error);
@@ -85,7 +85,7 @@ module.exports.approvedRMAs = async (req, res) => {
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
-            return res.status(404).send('There is no pendding RMAs');
+            return res.status(404).send('There are no approved RMAs');
         }
     } catch (error) {
         console.log(error);
@@ -99,7 +99,35 @@ module.exports.receivedRMAs = async (req, res) => {
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
-            return res.status(404).send('There is no rejected RMAs');
+            return res.status(404).send('There are no rejected RMAs');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
+module.exports.verifiedRMAs = async (req, res) => {
+    try {
+        const results = await dashboard.getVerifiedRMAs();
+        if (results.length > 0) {
+            return res.status(200).json(results[0]);
+        } else {
+            return res.status(404).send('There are no verified RMAs');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
+module.exports.IPRMAs = async (req, res) => {
+    try {
+        const results = await dashboard.getIPRMAs();
+        if (results.length > 0) {
+            return res.status(200).json(results[0]);
+        } else {
+            return res.status(404).send('There are no RMAs in progress');
         }
     } catch (error) {
         console.log(error);
@@ -114,7 +142,7 @@ module.exports.closedRMAs = async (req, res) => {
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
-            return res.status(404).send('There is no closed RMAs');
+            return res.status(404).send('There are no closed RMAs');
         }
     } catch (error) {
         console.log(error);

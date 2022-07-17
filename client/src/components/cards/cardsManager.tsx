@@ -15,8 +15,11 @@ function cardsManager() {
   const [ExtendedTloans, setExtenddedTloans] = useState([]);
 
   // RMA Overview
-  const [RequestedRMAs, setRequesteddRMAs] = useState([]);
   const [PendingRMAs, setPendingRMAs] = useState([]);
+  const [ApprovedRMAs, setApprovedRMAs] = useState([]);
+  const [ReceivedRMAs, setReceivedRMAs] = useState([]);
+  const [VerifiedRMAs, setVerifiedRMAs] = useState([]);
+  const [InprogressRMAs, setInprogressRMAs] = useState([]);
   const [ClosedRMAs, setClosedRMAs] = useState([]);
 
   // getcurrentTloans
@@ -59,38 +62,71 @@ function cardsManager() {
     getextendedTloans();
   }, []);
 
-  // getrequestedRMAs
-  const getrequestedRMAs = async () => {
-    const response = await axios.get(`${config.baseURL}/getcurrentRMAs`);
+ // getpendingRMAs
+ const getpendingdRMAs = async () => {
+  const response = await axios.get(`${config.baseURL}/getpendingRMAs`);
 
-    setRequesteddRMAs(response.data);
-  };
+  setPendingRMAs(response.data);
+};
 
-  useEffect(() => {
-    getrequestedRMAs();
-  }, []);
+useEffect(() => {
+  getpendingdRMAs();
+}, []);
 
-  // getpendingRMAs
-  const getpendingdRMAs = async () => {
-    const response = await axios.get(`${config.baseURL}/getpendingRMAs`);
+ // getapprovedRMAs
+ const getApprovedRMAs = async () => {
+  const response = await axios.get(`${config.baseURL}/getapprovedRMAs`);
 
-    setPendingRMAs(response.data);
-  };
+  setApprovedRMAs(response.data);
+};
 
-  useEffect(() => {
-    getpendingdRMAs();
-  }, []);
+useEffect(() => {
+  getApprovedRMAs();
+}, []);
 
-  // getclosedRMAs
-  const getclosedRMAs = async () => {
-    const response = await axios.get(`${config.baseURL}/getcloseRMAs`);
+// getreceivedRMAs
+ const getReceivedRMAs = async () => {
+  const response = await axios.get(`${config.baseURL}/getreceivedRMAs`);
 
-    setClosedRMAs(response.data);
-  };
+  setReceivedRMAs(response.data);
+};
 
-  useEffect(() => {
-    getclosedRMAs();
-  }, []);
+useEffect(() => {
+  getReceivedRMAs();
+}, []);
+
+// getverifiedRMAs
+const getVerifiedRMAs = async () => {
+  const response = await axios.get(`${config.baseURL}/getverifiedRMAs`);
+
+  setVerifiedRMAs(response.data);
+};
+
+useEffect(() => {
+  getVerifiedRMAs();
+}, []);
+
+// getIPRMAs
+const getIPRMAs = async () => {
+  const response = await axios.get(`${config.baseURL}/getIPRMAs`);
+
+  setInprogressRMAs(response.data);
+};
+
+useEffect(() => {
+  getIPRMAs();
+}, []);
+
+// getclosedRMAs
+const getclosedRMAs = async () => {
+  const response = await axios.get(`${config.baseURL}/getclosedRMAs`);
+
+  setClosedRMAs(response.data);
+};
+
+useEffect(() => {
+  getclosedRMAs();
+}, []);
 
   return (
     <div className="featured">
@@ -112,12 +148,28 @@ function cardsManager() {
         <span className="featuredTitle">RMA Overview</span>
         <div>
           <div>
-            <span className="Current">Approved</span>
-            <h1 className="Current">{RequestedRMAs.length}</h1>
+            <span className="Drafts">Pending</span>
+            <h1 className="Current">{PendingRMAs.length}</h1>
           </div>
           <div>
-            <span className="Drafts">Rejected</span>
-            <h1 className="Current">{PendingRMAs.length}</h1>
+            <span className="Current">Approved</span>
+            <h1 className="Current">{ApprovedRMAs.length}</h1>
+          </div>
+          <div>
+            <span className="Current">Received</span>
+            <h1 className="Current">{ReceivedRMAs.length}</h1>
+          </div>
+          <div>
+            <span className="Current">Verified</span>
+            <h1 className="Current">{VerifiedRMAs.length}</h1>
+          </div>
+          <div>
+            <span className="Current">In Progress</span>
+            <h1 className="Current">{InprogressRMAs.length}</h1>
+          </div>
+          <div>
+            <span className="Current">Closed</span>
+            <h1 className="Current">{ClosedRMAs.length}</h1>
           </div>
         </div>
       </div>

@@ -18,6 +18,8 @@ function cards() {
   const [PendingRMAs, setPendingRMAs] = useState([]);
   const [ApprovedRMAs, setApprovedRMAs] = useState([]);
   const [ReceivedRMAs, setReceivedRMAs] = useState([]);
+  const [VerifiedRMAs, setVerifiedRMAs] = useState([]);
+  const [InprogressRMAs, setInprogressRMAs] = useState([]);
   const [ClosedRMAs, setClosedRMAs] = useState([]);
 
   // getcurrentTloans
@@ -95,6 +97,28 @@ function cards() {
     getReceivedRMAs();
   }, []);
 
+  // getverifiedRMAs
+  const getVerifiedRMAs = async () => {
+    const response = await axios.get(`${config.baseURL}/getverifiedRMAs`);
+  
+    setVerifiedRMAs(response.data);
+  };
+  
+  useEffect(() => {
+    getVerifiedRMAs();
+  }, []);
+
+  // getIPRMAs
+  const getIPRMAs = async () => {
+    const response = await axios.get(`${config.baseURL}/getIPRMAs`);
+
+    setInprogressRMAs(response.data);
+  };
+
+  useEffect(() => {
+    getIPRMAs();
+  }, []);
+
   // getclosedRMAs
   const getclosedRMAs = async () => {
     const response = await axios.get(`${config.baseURL}/getclosedRMAs`);
@@ -145,6 +169,14 @@ function cards() {
           <div>
             <span className="Current">Received</span>
             <h1 className="Current">{ReceivedRMAs.length}</h1>
+          </div>
+          <div>
+            <span className="Current">Verified</span>
+            <h1 className="Current">{VerifiedRMAs.length}</h1>
+          </div>
+          <div>
+            <span className="Current">In Progress</span>
+            <h1 className="Current">{InprogressRMAs.length}</h1>
           </div>
           <div>
             <span className="Current">Closed</span>
