@@ -20,7 +20,8 @@ import ActionMenu from "../../components/table/ActionMenu";
 import { GetCurrent, GetDraft, GetPending, GetHistory } from '../../api/TLoanDB';
 import TableNew from "../table/InfiniteTable";
 import EmptyTable from "../table/EmptyTable"
-
+import { selectRole, selectId } from '../../app/reducers/CurrentUserSlice';
+import { useAppSelector } from '../../app/hooks'
 // const TLoanTabs : React.FC = () => {
 
 
@@ -292,71 +293,337 @@ const TLoanTabs: React.FC = () => {
    setValue(newValue);
   };
  
-  return (
-    <>
-      <h2 className="pagetitle">TLoans </h2>
-     <TabContext value={value}>
-     <Box sx={{ marginLeft:-3,}}>
-      <Tabs selectionFollowsFocus={true}
-      onChange={handleChange}
-      TabIndicatorProps={{
-        style: {
-          backgroundColor: "#D97D54"
-         }
-        }}
 
-        sx={{
-          "& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110},
-          "& button:active": { backgroundColor: "#063970", color:"white", width: 190, height: 110},
-          "& button.Mui-selected": { backgroundColor: "#063970", color:"white", width: 190, height: 110}
+  const userRole = useAppSelector(selectRole)
+  
+
+  switch(userRole) {
+    case "Sales Admin": {
+      return (
+        <>
+          <h2 className="pagetitle">TLoans </h2>
+        <TabContext value={value || "1"}>
+        <Box sx={{ marginLeft:-3,}}>
+          <Tabs selectionFollowsFocus={true}
+          onChange={handleChange}
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: "#D97D54"
+            }
+            }}
+    
+            sx={{
+              "& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110},
+              "& button:active": { backgroundColor: "#063970", color:"white", width: 190, height: 110},
+              "& button.Mui-selected": { backgroundColor: "#063970", color:"white", width: 190, height: 110}
+              
+    
+            }}
+            aria-label="basic tabs example"
+            centered
+          >
           
-
-        }}
-        aria-label="basic tabs example"
-        centered
-       >
-       
-        <Tab label="Current" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
-        <Tab label="Pending" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2, height: 100, width: 180,}}/>
-        <Tab label="Drafts" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2, height: 100, width: 180,}}/>
-        <Tab label="History" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2 ,marginRight: 2,height: 100, width: 180,}}/>
-      </Tabs>
-      </Box>
+            <Tab label="Current" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="Pending" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2, height: 100, width: 180,}}/>
+            <Tab label="Drafts" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2, height: 100, width: 180,}}/>
+            <Tab label="History" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2 ,marginRight: 2,height: 100, width: 180,}}/>
+          </Tabs>
+          </Box>
+          
+            <Box sx={{marginTop:-5}}>
+          <TabPanel value="1">
+          {LoansQuery.isLoading || LoansQuery.isError ? null :
+          <>
+            <TableNew headers={headers} pages={LoansQuery.data.pages} query={LoansQuery} menu={ActionMenu} />
+            </>
+          }
+          </TabPanel>
+          <TabPanel value="2">
+          {PendingQuery.isLoading || PendingQuery.isError ? null :
+          <>
+            <TableNew headers={headers} pages={PendingQuery.data.pages} query={PendingQuery} menu={ActionMenu} />
+            </>
+          }
+          </TabPanel>
+          <TabPanel value="3">
+          {DraftQuery.isLoading || DraftQuery.isError ? null :
+          <>
+            <TableNew headers={headers} pages={DraftQuery.data.pages} query={DraftQuery} menu={ActionMenu} />
+            </>
+          }
+          </TabPanel>
+          <TabPanel value="4">
+          {HistoryQuery.isLoading || HistoryQuery.isError ? <><EmptyTable headers={headers}/></>:
+          <>
+            <TableNew headers={headers} pages={HistoryQuery.data.pages} query={HistoryQuery} menu={ActionMenu} />
+            </>
+          }
+          </TabPanel>
+          </Box>
+          
+          </TabContext>
+        </>
+      )
+    };
+    case "Sales Engineer": {
+      return (
+        <>
+          <h2 className="pagetitle">TLoans </h2>
+        <TabContext value={value || "1"}>
+        <Box sx={{ marginLeft:-3,}}>
+          <Tabs selectionFollowsFocus={true}
+          onChange={handleChange}
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: "#D97D54"
+            }
+            }}
+    
+            sx={{
+              "& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110},
+              "& button:active": { backgroundColor: "#063970", color:"white", width: 190, height: 110},
+              "& button.Mui-selected": { backgroundColor: "#063970", color:"white", width: 190, height: 110}
+              
+    
+            }}
+            aria-label="basic tabs example"
+            centered
+          >
+          
+            <Tab label="Current" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="Pending" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2, height: 100, width: 180,}}/>
+            <Tab label="Drafts" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2, height: 100, width: 180,}}/>
+            <Tab label="History" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2 ,marginRight: 2,height: 100, width: 180,}}/>
+          </Tabs>
+          </Box>
+          
+            <Box sx={{marginTop:-5}}>
+          <TabPanel value="1">
+          {LoansQuery.isLoading || LoansQuery.isError ? null :
+          <>
+            <TableNew headers={headers} pages={LoansQuery.data.pages} query={LoansQuery} menu={ActionMenu} />
+            </>
+          }
+          </TabPanel>
+          <TabPanel value="2">
+          {PendingQuery.isLoading || PendingQuery.isError ? null :
+          <>
+            <TableNew headers={headers} pages={PendingQuery.data.pages} query={PendingQuery} menu={ActionMenu} />
+            </>
+          }
+          </TabPanel>
+          <TabPanel value="3">
+          {DraftQuery.isLoading || DraftQuery.isError ? null :
+          <>
+            <TableNew headers={headers} pages={DraftQuery.data.pages} query={DraftQuery} menu={ActionMenu} />
+            </>
+          }
+          </TabPanel>
+          <TabPanel value="4">
+          {HistoryQuery.isLoading || HistoryQuery.isError ? <><EmptyTable headers={headers}/></>:
+          <>
+            <TableNew headers={headers} pages={HistoryQuery.data.pages} query={HistoryQuery} menu={ActionMenu} />
+            </>
+          }
+          </TabPanel>
+          </Box>
+          
+          </TabContext>
+        </>
+      )
+    }; 
+    case "Technical Staff": {
+      return (
+        <>
+          <h2 className="pagetitle">TLoans </h2>
+        <TabContext value={value || "1"}>
+        <Box sx={{ marginLeft:-3,}}>
+          <Tabs selectionFollowsFocus={true}
+          onChange={handleChange}
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: "#D97D54"
+            }
+            }}
+    
+            sx={{
+              "& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110},
+              "& button:active": { backgroundColor: "#063970", color:"white", width: 190, height: 110},
+              "& button.Mui-selected": { backgroundColor: "#063970", color:"white", width: 190, height: 110}
+              
+    
+            }}
+            aria-label="basic tabs example"
+            centered
+          >
+          
+            <Tab label="Current" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="Pending" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2, height: 100, width: 180,}}/>
+            <Tab label="Drafts" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2, height: 100, width: 180,}}/>
+            <Tab label="History" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2 ,marginRight: 2,height: 100, width: 180,}}/>
+          </Tabs>
+          </Box>
+          
+            <Box sx={{marginTop:-5}}>
+          <TabPanel value="1">
+          {LoansQuery.isLoading || LoansQuery.isError ? null :
+          <>
+            <TableNew headers={headers} pages={LoansQuery.data.pages} query={LoansQuery} menu={ActionMenu} />
+            </>
+          }
+          </TabPanel>
+          <TabPanel value="2">
+          {PendingQuery.isLoading || PendingQuery.isError ? null :
+          <>
+            <TableNew headers={headers} pages={PendingQuery.data.pages} query={PendingQuery} menu={ActionMenu} />
+            </>
+          }
+          </TabPanel>
+          <TabPanel value="3">
+          {DraftQuery.isLoading || DraftQuery.isError ? null :
+          <>
+            <TableNew headers={headers} pages={DraftQuery.data.pages} query={DraftQuery} menu={ActionMenu} />
+            </>
+          }
+          </TabPanel>
+          <TabPanel value="4">
+          {HistoryQuery.isLoading || HistoryQuery.isError ? <><EmptyTable headers={headers}/></>:
+          <>
+            <TableNew headers={headers} pages={HistoryQuery.data.pages} query={HistoryQuery} menu={ActionMenu} />
+            </>
+          }
+          </TabPanel>
+          </Box>
+          
+          </TabContext>
+        </>
+      )
+    };
+    case "Admin": {
+      return (
+        <>
+          <h2 className="pagetitle">TLoans </h2>
+        <TabContext value={value || "1"}>
+        <Box sx={{ marginLeft:-3, }} >
+          <Tabs 
+          onChange={handleChange}
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: "#D97D54"
+            }
+            }}
+    
+            sx={{
+              "& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height:65},
+              "& button:active": { backgroundColor: "#063970", color:"white", width: 190, height: 65},
+              "& button.Mui-selected": { backgroundColor: "#063970", color:"white", width: 190, height: 65},
+              paddingRight: 50
+              
+    
+            }}
+            aria-label="basic tabs example"
+            centered
+            
+            
+          >
+          
+            <Tab label="Loan" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 60, width: 180,}}/>
+            <Tab label="Extension" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2, height: 60, width: 180,}}/>
+           
+          </Tabs>
+          </Box>
+         
+            <Box sx={{marginTop:-5}}>
+          <TabPanel value="1">
+          {LoansQuery.isLoading || LoansQuery.isError ? null :
+          <>
+            <TableNew headers={headers} pages={LoansQuery.data.pages} query={LoansQuery} menu={ActionMenu} />
+            </>
+          }
+          </TabPanel>
+          <TabPanel value="2">
+          {PendingQuery.isLoading || PendingQuery.isError ? null :
+          <>
+            <TableNew headers={headers} pages={PendingQuery.data.pages} query={PendingQuery} menu={ActionMenu} />
+            </>
+          }
+          </TabPanel>
+          </Box>
+          
+          </TabContext>
+        </>
+      )
+    };
+    case "Warehouse Worker": {
+      return (
+        <>
+          <h2 className="pagetitle">TLoans </h2>
+        <TabContext value={value || "1"}>
+        <Box sx={{ marginLeft:-3,}}>
+          <Tabs selectionFollowsFocus={true}
+          onChange={handleChange}
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: "#D97D54"
+            }
+            }}
+    
+            sx={{
+              "& button:focus": { backgroundColor: "#063970", color:"white", width: 190, height: 110},
+              "& button:active": { backgroundColor: "#063970", color:"white", width: 190, height: 110},
+              "& button.Mui-selected": { backgroundColor: "#063970", color:"white", width: 190, height: 110}
+              
+    
+            }}
+            aria-label="basic tabs example"
+            centered
+          >
+          
+            <Tab label="Current" value="1" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2,height: 100, width: 180,}}/>
+            <Tab label="Pending" value="2" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2, height: 100, width: 180,}}/>
+            <Tab label="Drafts" value="3" sx={{color:"grey", backgroundColor: "White",borderRadius: 2, marginRight: 2, height: 100, width: 180,}}/>
+            <Tab label="History" value="4" sx={{color:"grey", backgroundColor: "White",borderRadius: 2 ,marginRight: 2,height: 100, width: 180,}}/>
+          </Tabs>
+          </Box>
+          
+            <Box sx={{marginTop:-5}}>
+          <TabPanel value="1">
+          {LoansQuery.isLoading || LoansQuery.isError ? null :
+          <>
+            <TableNew headers={headers} pages={LoansQuery.data.pages} query={LoansQuery} menu={ActionMenu} />
+            </>
+          }
+          </TabPanel>
+          <TabPanel value="2">
+          {PendingQuery.isLoading || PendingQuery.isError ? null :
+          <>
+            <TableNew headers={headers} pages={PendingQuery.data.pages} query={PendingQuery} menu={ActionMenu} />
+            </>
+          }
+          </TabPanel>
+          <TabPanel value="3">
+          {DraftQuery.isLoading || DraftQuery.isError ? null :
+          <>
+            <TableNew headers={headers} pages={DraftQuery.data.pages} query={DraftQuery} menu={ActionMenu} />
+            </>
+          }
+          </TabPanel>
+          <TabPanel value="4">
+          {HistoryQuery.isLoading || HistoryQuery.isError ? <><EmptyTable headers={headers}/></>:
+          <>
+            <TableNew headers={headers} pages={HistoryQuery.data.pages} query={HistoryQuery} menu={ActionMenu} />
+            </>
+          }
+          </TabPanel>
+          </Box>
+          
+          </TabContext>
+        </>
+      )
+    };
       
-        <Box sx={{marginTop:-5}}>
-       <TabPanel value="1">
-      {LoansQuery.isLoading || LoansQuery.isError ? null :
-      <>
-        <TableNew headers={headers} pages={LoansQuery.data.pages} query={LoansQuery} menu={ActionMenu} />
-        </>
-      }
-      </TabPanel>
-      <TabPanel value="2">
-      {PendingQuery.isLoading || PendingQuery.isError ? null :
-      <>
-        <TableNew headers={headers} pages={PendingQuery.data.pages} query={PendingQuery} menu={ActionMenu} />
-        </>
-      }
-      </TabPanel>
-      <TabPanel value="3">
-      {DraftQuery.isLoading || DraftQuery.isError ? null :
-      <>
-        <TableNew headers={headers} pages={DraftQuery.data.pages} query={DraftQuery} menu={ActionMenu} />
-        </>
-      }
-      </TabPanel>
-      <TabPanel value="4">
-      {HistoryQuery.isLoading || HistoryQuery.isError ? <><EmptyTable headers={headers}/></>:
-      <>
-        <TableNew headers={headers} pages={HistoryQuery.data.pages} query={HistoryQuery} menu={ActionMenu} />
-        </>
-      }
-      </TabPanel>
-      </Box>
-      
-      </TabContext>
-    </>
-  )
+   
+  }
 
 };
 export default TLoanTabs
