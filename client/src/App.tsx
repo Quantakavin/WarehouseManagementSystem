@@ -16,7 +16,6 @@ import EditNotificationGroup from "./pages/notificationgroups/EditNotificationGr
 import NotificationGroups from "./pages/notificationgroups/NotificationGroups";
 import ViewNotificationGroup from "./pages/notificationgroups/ViewNotificationGroup";
 import Dashboard from "./pages/dashboards/Dashboards";
-import DashboardManager from "./pages/dashboards/DashboardManager";
 import Products from "./pages/products/Products";
 import ProductsPag from "./pages/products/TestProducts";
 import ViewProduct from "./pages/products/ViewProduct";
@@ -75,7 +74,6 @@ const App: React.FC = () => {
             </Route>
             <Route element={<ProtectedRoute loginpage={false} />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/dashboard/manager" element={<DashboardManager />} />
               <Route path="/products" element={<Products />} />
               <Route path="/productspag" element={<ProductsPag />} />
               <Route path="/product/:id" element={<ViewProduct />} />
