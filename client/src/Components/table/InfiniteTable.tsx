@@ -7,6 +7,7 @@ import { ActionMenuItem } from "../../utils/CommonTypes";
 import LoadMoreButton from "./LoadMoreButton";
 import TableContents from "./TableContents";
 import TableSkeleton from "../skeletons/TableSkeleton";
+import { SSRProviderProps } from "react-bootstrap";
 
 interface TableProps {
   headers: string[];
@@ -17,9 +18,11 @@ interface TableProps {
 }, unknown>;
   menu: (id?: string) => ActionMenuItem[];
   filter: (header: string) => void;
+  sortColumn: string;
+  sortOrder: string;
 }
 
-const TableNew = ({ headers, query , menu, filter}: TableProps) => {
+const TableNew = ({ headers, query , menu, filter, sortColumn, sortOrder}: TableProps) => {
   return (
     <Container sx={{ width: "95%", marginTop: "50px" }}>
       <TableContainer component={Paper}>
@@ -27,7 +30,7 @@ const TableNew = ({ headers, query , menu, filter}: TableProps) => {
           <TableHead>
             <TableRow>
               {headers.map((header, key) => (
-                <TableHeader key={key} header={header} filter={filter}/>
+                <TableHeader key={key} header={header} filter={filter} sortColumn={sortColumn} sortOrder={sortOrder}/>
               ))}
             </TableRow>
           </TableHead>

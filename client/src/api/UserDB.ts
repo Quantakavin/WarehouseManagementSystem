@@ -27,8 +27,16 @@ export const GetUser = async (id: string) => {
     });
   };
 
+  export const GetUsernames = async (name: string) => {
+    return await axios.get(`${config.baseURL}/usernames?name=${name}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  };
+
 export const GetAllUsers = async ({pageParam = 0, queryKey}) => {
-    const response = await axios.get(`${config.baseURL}/users?pageSize=5&pageNo=${pageParam * 5}&sortColumn=${queryKey[1]}&sortOrder=${queryKey[2]}`, {
+    const response = await axios.get(`${config.baseURL}/users?pageSize=5&pageNo=${pageParam * 5}&sortColumn=${queryKey[1]}&sortOrder=${queryKey[2]}&name=${queryKey[3]}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },

@@ -17,6 +17,11 @@ module.exports.getAll = async (pageSize, pageNo, sortColumn, sortOrder, name ) =
     return knex.raw(query, [Number(pageSize), Number(pageNo), sortColumn, sortOrder, name ]);
 };
 
+module.exports.getNames = async ( name ) => {
+    const query = `SELECT DISTINCT IFNULL(NotiGroupName, NULL) 'Name' FROM NotiGroup WHERE NotiGroupName LIKE ?`;
+    return knex.raw(query, [`%${name}%`]);
+};
+
 // module.exports.getAll = async (limit, page) => {
 //     const query = `SELECT NotiGroupID, NotiGroupName, NotiGroupDesc, count(NotiGroupID) OVER() AS full_count FROM NotiGroup LIMIT ? OFFSET ?`;
 //     return knex.raw(query, [Number(limit), Number(page)]);

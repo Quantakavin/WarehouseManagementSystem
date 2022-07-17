@@ -21,7 +21,7 @@ import { GetPendingRMA, GetApprovedRMA,
     GetReceivedRMA, GetVerifiedRMA,
     GetSalesmanAcceptedRMA, GetSalesmanRejectedRMA, GetRMAByRMANo
    } from "../../api/RmaDB";
-import TableNew from "../table/TableNew";
+import TableNew from "../table/InfiniteTable";
 import { useAppSelector } from '../../app/hooks'
 import { selectRole } from '../../app/reducers/CurrentUserSlice';
 import RmaSearch from "../search/RmaSearch"

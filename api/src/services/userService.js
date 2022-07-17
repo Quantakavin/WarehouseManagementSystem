@@ -8,6 +8,11 @@ module.exports.getByEmail = async (email) => {
     return knex.raw(query, [email]);
 };
 
+module.exports.getNames = async ( name ) => {
+    const query = `SELECT DISTINCT IFNULL(Username, NULL) 'Name' FROM User WHERE Username LIKE ?`;
+    return knex.raw(query, [`%${name}%`]);
+};
+
 module.exports.getAll = async (pageSize, pageNo, sortColumn, sortOrder, name ) => {
     const query = `Call sp_getAllUsers(?,?,?,?,?)`;
     return knex.raw(query, [Number(pageSize), Number(pageNo), sortColumn, sortOrder, name ]);

@@ -18,7 +18,7 @@ import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import PageviewIcon from '@mui/icons-material/Pageview';
 import ActionMenu from "../../components/table/ActionMenu";
 import { GetCurrent, GetDraft, GetPending, GetHistory } from '../../api/TLoanDB';
-import TableNew from "../../components/table/TableNew";
+import TableNew from "../table/InfiniteTable";
 import EmptyTable from "../table/EmptyTable"
 
 // const TLoanTabs : React.FC = () => {

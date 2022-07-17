@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { UseFormRegister, RegisterOptions, Path } from "react-hook-form";
 
-type AllowedInputs = "email" | "password" | "text" | "number";
-
 const Input = styled.textarea`
   padding-top: 8px;
   padding-bottom: 8px;

@@ -13,6 +13,7 @@ router.get(
     authorization.verifyAdmin,
     notificationGroupController.getNotificationGroupByName
 );
+router.get('/notificationgroupnames', authorization.verifyAdmin, notificationGroupController.getAllNames);
 router.get(
     '/notificationgroups',
     authorization.verifyAdmin,

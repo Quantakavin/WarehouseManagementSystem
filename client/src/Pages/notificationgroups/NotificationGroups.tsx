@@ -4,7 +4,7 @@ import { GetNotificationGroups } from "../../api/NotificationGroupDB";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import PageviewIcon from '@mui/icons-material/Pageview';
-import TableNew from "../../components/table/TableNew";
+import InfiniteTable from "../../components/table/InfiniteTable";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   selectSortColumn,
@@ -16,12 +16,17 @@ import {
 import SearchBarUpdated from "../../components/search/SearchBarUpdated";
 import { motion } from "framer-motion";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { Hidden } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const NotificationGroups: React.FC = () => {
 
   const sortColumn = useAppSelector(selectSortColumn);
   const sortOrder = useAppSelector(selectSortOrder);
   const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+
 
   const headers = [
     "ID",
@@ -79,25 +84,18 @@ const NotificationGroups: React.FC = () => {
 
       <div style={{display: "flex", flexDirection: "row", alignItems: "center",justifyContent: "space-between"}} >
       <SearchBarUpdated/>
-      <a href="/addnotificationgroup" style={{ marginRight: "8%"}}>
         <motion.button
           className="addbutton"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           style={{alignSelf: "flex-end"}}
+          onClick={() => navigate("/addnotificationgroup")}
         >
-          <AddCircleOutlineIcon /> Add Notification Group
+          <AddCircleOutlineIcon fontSize="small"/> Add <Hidden smDown>Notification Group</Hidden>
         </motion.button>
-      </a>
 
       </div>
-
-
-      {NotificationGroupsQuery.isLoading || NotificationGroupsQuery.isError ? null :
-        <>
-        <TableNew headers={headers} query={NotificationGroupsQuery} menu={ActionMenu} filter={ApplyFilter} />
-        </>
-      }
+        <InfiniteTable headers={headers} query={NotificationGroupsQuery} menu={ActionMenu} filter={ApplyFilter} sortColumn={sortColumn} sortOrder={sortOrder}/>
     </>
   )
 

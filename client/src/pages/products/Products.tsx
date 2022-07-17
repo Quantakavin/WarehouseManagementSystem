@@ -6,7 +6,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import PageviewIcon from '@mui/icons-material/Pageview';
 import SearchBarUpdated from "../../components/search/SearchBarUpdated";
-import TableNew from "../../components/table/TableNew";
+import TableNew from "../../components/table/InfiniteTable";
 
 const Products: React.FC = () => {
   const headers = [

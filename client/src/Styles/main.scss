@@ -74,14 +74,60 @@ html, body {
 
 .addbutton {
     width: auto;
-    padding: 4px 5px 4px 5px;
+    padding: 6px 6px 6px 6px;
     font-weight: 500;
     border-radius: 10px;
     border: solid 1px #0A2540;
     background-color: #0A2540;
-    font-size: 15;
+    font-size: 14px;
     color: white;
+    margin-top: 18px;
+    margin-right: 8%;
+    margin-bottom: 4px;
 }
+
+.searchfield {
+    color: #0A2540;
+    border: solid 1px #d3d3d3 !important;
+    border-radius: 10px !important;
+    .MuiOutlinedInput-root{
+      font-size: 15px;
+    }
+    .MuiOutlinedInput-notchedOutline {
+      display: none;
+    }
+  }
+
+  .searchbar {
+    @media screen and (max-width: 800px) {
+      width: 250px;
+    }
+  
+    @media screen and (min-width: 1200px) {
+      width: 350px;
+    }
+  
+    @media screen and (min-width: 800px) {
+      width: 300px;
+    }
+  
+    margin-top: 20px;
+    align-self: flex-start;
+  }
+
+  .searchbutton {
+    width: auto;
+    padding: 6px 6px 6px 6px;
+    font-weight: 500;
+    border-radius: 10px;
+    border: solid 1px #0A2540;
+    background-color: #0A2540;
+    font-size: 14px;
+    color: white;
+    margin-top: 18px;
+    margin-left: 10px;
+    margin-right: auto;
+  }
 
 .swalpopup {
     margin-top: 50px;

@@ -15,6 +15,11 @@ module.exports.getByID = async (userGroupID) => {
     return knex.raw(query, [userGroupID]);
 };
 
+module.exports.getNames = async ( name ) => {
+    const query = `SELECT DISTINCT IFNULL(UserGroupName, NULL) 'Name' FROM UserGroup WHERE UserGroupName LIKE ?`;
+    return knex.raw(query, [`%${name}%`]);
+};
+
 module.exports.getByName = async (name) => {
     const query = `SELECT UserGroupID, UserGroupName, UserGroupDesc FROM UserGroup WHERE UserGroupName LIKE ?`;
     return knex.raw(query, [`%${name}%`]);

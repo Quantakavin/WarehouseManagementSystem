@@ -13,6 +13,17 @@ module.exports.getAllNotificationGroups = async (req, res) => {
     }
 }; 
 
+module.exports.getAllNames = async (req, res) => {
+    const { name=null } = req.query;
+    try {
+        const results = await notificationGroup.getNames(name);
+        return res.status(200).json(results[0]);
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+}; 
+
 
 
 // module.exports.getAllNotificationGroups = async (req, res) => {

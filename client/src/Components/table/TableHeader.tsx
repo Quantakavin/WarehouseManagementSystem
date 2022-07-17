@@ -10,10 +10,12 @@ import { selectSortColumn, selectSortOrder, ChangeSortColumn, SortAsc, SortDesc 
 interface TableHeaderProps {
   header: string;
   filter: (header: string) => void;
+  sortColumn: string;
+  sortOrder: string;
 }
-const TableHeader = ({ header, filter }: TableHeaderProps) => {
-  const sortColumn = useAppSelector(state => state.userTableFilter.sortColumn)
-  const sortOrder = useAppSelector(state => state.userTableFilter.sortOrder)
+const TableHeader = ({ header, filter, sortColumn, sortOrder }: TableHeaderProps) => {
+  // const sortColumn = useAppSelector(state => state.userTableFilter.sortColumn)
+  // const sortOrder = useAppSelector(state => state.userTableFilter.sortOrder)
   //const sortColumn = useAppSelector(selectSortColumn)
   //const sortOrder = useAppSelector(selectSortOrder)
 

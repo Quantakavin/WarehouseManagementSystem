@@ -4,7 +4,7 @@ import { GetUserGroups } from "../../api/UserGroupDB";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import PageviewIcon from '@mui/icons-material/Pageview';
-import TableNew from "../../components/table/TableNew";
+import InfiniteTable from "../../components/table/InfiniteTable";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   selectSortColumn,
@@ -16,19 +16,23 @@ import {
 import { motion } from "framer-motion";
 import SearchBarUpdated from "../../components/search/SearchBarUpdated";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate } from "react-router-dom";
+import { Hidden } from "@mui/material";
 
 const UserGroups: React.FC = () => {
 
   const sortColumn = useAppSelector(selectSortColumn);
   const sortOrder = useAppSelector(selectSortOrder);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-    const headers = [
-        "ID",
-        "Name",
-        "Description",
-        "Action"
-    ];
+  const headers = [
+    "ID",
+    "Name",
+    "Description",
+    "Action"
+  ];
   const UserGroupsQuery = useInfiniteQuery([`usergroups`, sortColumn, sortOrder], GetUserGroups,
     {
       getNextPageParam: (lastPage, pages) => {
@@ -77,26 +81,21 @@ const UserGroups: React.FC = () => {
   return (
     <>
       <h2 className="pagetitle"> User Groups </h2>
-      <div style={{display: "flex", flexDirection: "row", alignItems: "center",justifyContent: "space-between"}} >
-      <SearchBarUpdated/>
-      <a href="/addusergroup" style={{ marginRight: "8%"}}>
+      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }} >
+        <SearchBarUpdated />
         <motion.button
           className="addbutton"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          style={{alignSelf: "flex-end"}}
+          style={{ alignSelf: "flex-end" }}
+          onClick={() => navigate("/addusergroup")}
         >
-          <AddCircleOutlineIcon /> Add User Group
+          <AddCircleOutlineIcon fontSize="small" /> Add <Hidden smDown>User Group</Hidden>
         </motion.button>
-      </a>
 
       </div>
 
-      {UserGroupsQuery.isLoading || UserGroupsQuery.isError ? null :
-        <>
-        <TableNew headers={headers} query={UserGroupsQuery} menu={ActionMenu} filter={ApplyFilter} />
-        </>
-      }
+      <InfiniteTable headers={headers} query={UserGroupsQuery} menu={ActionMenu} filter={ApplyFilter} sortColumn={sortColumn} sortOrder={sortOrder} />
     </>
   )
 

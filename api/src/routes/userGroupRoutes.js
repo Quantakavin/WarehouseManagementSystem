@@ -5,6 +5,7 @@ const userGroupController = require('../controllers/userGroupController');
 
 router.get('/usergroup/:id', authorization.verifyAdmin, userGroupController.getUserGroupById);
 router.get('/usergroup', authorization.verifyAdmin, userGroupController.getUserGroupByName);
+router.get('/usergroupnames', authorization.verifyAdmin, userGroupController.getAllNames);
 router.get('/usergroups', authorization.verifyAdmin, userGroupController.getAllUserGroups);
 router.post(
     '/usergroup',
