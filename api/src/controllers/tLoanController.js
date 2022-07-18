@@ -292,3 +292,23 @@ module.exports.draftLoan = async(req , res) =>{
     }
 
 }
+
+module.exports.ManagerLoan = async (req, res) => {
+    try {
+        const TLoans = await redisClient.get('ManagerLoan');
+        if (TLoans !== null) {
+            const redisresults = JSON.parse(TLoans);
+            return res.status(200).json(redisresults);
+        }
+        const results = await TLoan.getManagerLoan();
+        redisClient.set('ManagerLoan', JSON.stringify(results[0]));
+        if (results.length > 0) {
+            return res.status(200).json(results[0]);
+        } else {
+            return res.status(404).send('You have not made any TLoans');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};

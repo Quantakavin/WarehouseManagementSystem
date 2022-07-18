@@ -96,6 +96,10 @@ html, body {
     .MuiOutlinedInput-notchedOutline {
       display: none;
     }
+    .MuiAutocomplete-clearIndicator {
+      color: $primary-color;
+      visibility: visible;
+    }
   }
 
   .searchbar {

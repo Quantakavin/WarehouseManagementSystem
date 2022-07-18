@@ -31,6 +31,8 @@ import { GetCompanies } from "../../api/CompanyDB";
 import { GetUserGroups } from "../../api/UserGroupDB";
 import { GetNotificationGroups } from "../../api/NotificationGroupDB";
 import { PostUser } from "../../api/UserDB";
+import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
+import { SelectChangeEvent } from "@mui/material";
 
 interface FormValues {
   name: string;
@@ -39,7 +41,7 @@ interface FormValues {
   mobileno: string;
   company: number;
   usergroup: number;
-  notificationgroups: number;
+  notificationgroups: string[];
 }
 
 const AddUser: React.FC = () => {
@@ -47,7 +49,8 @@ const AddUser: React.FC = () => {
   const [userGroupOptions, setUserGroupOptions] = useState<Option[]>([]);
   const [notiGroupOptions, setNotiGroupOptions] = useState<Option[]>([]);
   const [step, setStep] = useState<number>(1);
-  const [success, setSuccess] = useState<boolean>(true);
+  const [selectedNotiGroups, setSelectedNotiGroups] = useState<string[]>([]);
+  const [returnNotiGroups, setReturnNotiGroups] = useState<any[]>([]);
   const navigate = useNavigate();
   const {
     register,
@@ -61,51 +64,56 @@ const AddUser: React.FC = () => {
   // const userGroupsQuery = useQuery("usergroups", GetUserGroups);
   // const notiGroupsQuery = useQuery("notificationgroups", GetNotificationGroups);
 
-  const companiesQuery = useQuery("companies", GetCompanies);
-  const userGroupsQuery = useQuery("usergroups", GetUserGroups);
-  const notiGroupsQuery = useQuery("notificationgroups", GetNotificationGroups);
+  const companiesQuery = useQuery("companies", GetCompanies,
 
-  useEffect(() => {
-    const companies: Option[] = [];
-    if (!companiesQuery.error && !companiesQuery.isLoading) {
-      companiesQuery.data.data.forEach((company: Company) => {
-        companies.push({
-          id: company.CompanyID,
-          text: company.CompanyName,
-          value: company.CompanyID,
+  {
+    onSuccess: (data) => {
+      const companies: Option[] = [];
+        data.data.forEach((company: Company) => {
+          companies.push({
+            id: company.CompanyID,
+            text: company.CompanyName,
+            value: company.CompanyID,
+          });
         });
-      });
+      setCompanyOptions(companies);
     }
-    setCompanyOptions(companies);
-
-    const usergroups: Option[] = [];
-    if (!userGroupsQuery.error && !userGroupsQuery.isLoading) {
-      userGroupsQuery.data.response.data.forEach((usergroup: UserGroup) => {
-        usergroups.push({
-          id: usergroup.UserGroupID,
-          text: usergroup.UserGroupName,
-          value: usergroup.UserGroupID,
+  }
+  
+  );
+  const userGroupsQuery = useQuery("usergroups", GetUserGroups, {
+    onSuccess: (data) => {
+      const usergroups: Option[] = [];
+        data.data.forEach((usergroup: UserGroup) => {
+          usergroups.push({
+            id: usergroup.UserGroupID,
+            text: usergroup.UserGroupName,
+            value: usergroup.UserGroupID,
+          });
         });
-      });
+      setUserGroupOptions(usergroups);
     }
-    setUserGroupOptions(usergroups);
-
-    const notigroups: Option[] = [];
-    if (!notiGroupsQuery.error && !notiGroupsQuery.isLoading) {
-      notiGroupsQuery.data.response.data.forEach((notigroup: NotiGroup) => {
-        notigroups.push({
-          id: notigroup.NotiGroupID,
-          text: notigroup.NotiGroupName,
-          value: JSON.stringify({ NotiGroupID: notigroup.NotiGroupID }),
+  });
+  const notiGroupsQuery = useQuery("notificationgroups", GetNotificationGroups, {
+    onSuccess: (data) => {
+      const notigroups: Option[] = [];
+        data.data.forEach((notigroup: NotiGroup) => {
+          notigroups.push({
+            id: notigroup.NotiGroupID,
+            text: notigroup.NotiGroupName,
+            value: notigroup.NotiGroupID,
+          });
         });
-      });
+      setNotiGroupOptions(notigroups);
     }
-    setNotiGroupOptions(notigroups);
-  }, [companiesQuery.data, userGroupsQuery.data, notiGroupsQuery.data]);
+  });
 
   const mutation = useMutation(PostUser);
 
   const onSubmit = (data: FormValues) => {
+    const postdata = data;
+    postdata.notificationgroups = returnNotiGroups;
+    console.log("postdata is", postdata)
     mutation.mutate(data, { onSuccess: () => navigate("/users") });
   };
 
@@ -125,6 +133,33 @@ const AddUser: React.FC = () => {
   const prevStep = () => {
     setStep(step - 1);
   };
+
+  const selectNotiGroup = (event: SelectChangeEvent<typeof selectedNotiGroups>) => {
+    const {
+      target: { value },
+    } = event;
+    let valuearray = [];
+    if (typeof value === "string") {
+      valuearray = value.split(",");
+    } else {
+      valuearray = value;
+    }
+    setSelectedNotiGroups(typeof value === "string" ? value.split(",") : value);
+    const notigroupstoset = valuearray.map((notigroup) => {
+      if (
+        returnNotiGroups.some(
+          (returnnotigroup) => returnnotigroup.NotiGroupID === notigroup 
+        )
+      ) {
+        return returnNotiGroups.find(
+          (returnnotigroup) => returnnotigroup.NotiGroupID === notigroup
+        );
+      }
+      return { NotiGroupID: notigroup };
+    });
+    setReturnNotiGroups(notigroupstoset);
+  };
+
 
   const StepOne = (
     <div className={step === 1 ? "showstep" : "hidestep"}>
@@ -167,8 +202,7 @@ const AddUser: React.FC = () => {
         register={register}
         errormsg={errors.company?.message}
         rules={SelectValidation}
-        multiselect={false}
-        defaultoption="Choose a company"
+        placeholder="Choose a company"
       />
       <div className="formnavigationcontainer">
         <button
@@ -194,11 +228,19 @@ const AddUser: React.FC = () => {
         register={register}
         errormsg={errors.usergroup?.message}
         rules={SelectValidation}
-        multiselect={false}
-        defaultoption="Choose a User Group"
+        placeholder="Choose a User Group"
       />
 
-      <SelectDropdown
+      <MultiSelectDropdown 
+        name="notificationgroups"
+        label="Notification Groups"
+        selectedValues={selectedNotiGroups}
+        changeSelectedValues={selectNotiGroup}
+        placeholder="Select Notification Groups..."
+        options={notiGroupOptions}
+      />
+
+      {/* <SelectDropdown
         label="Notification Groups"
         name="notificationgroups"
         options={notiGroupOptions}
@@ -206,9 +248,9 @@ const AddUser: React.FC = () => {
         errormsg={errors.notificationgroups?.message}
         multiselect
         defaultoption="Choose a Notification Group"
-      />
+      /> */}
       {mutation.isError && axios.isAxiosError(mutation.error) ? (
-        <ErrorAlert error={mutation.error} />
+        <div style={{marginTop: 25, marginBottom: -15}}><ErrorAlert error={mutation.error} /></div>
       ) : null}
       <div className="formnavigationcontainer">
         <button className="formnavigation" onClick={prevStep} type="button">
@@ -228,6 +270,7 @@ const AddUser: React.FC = () => {
     >
       {StepOne}
       {StepTwo}
+      <pre>{JSON.stringify(watch(), null, 2)}</pre>
     </FormContainer>
   );
 };

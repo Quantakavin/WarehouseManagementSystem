@@ -21,6 +21,8 @@ const MultiSelectDropdown: React.FC<SelectProps> = ({
     options
 }) => {
 
+    console.log("selected values are ", selectedValues)
+
     const field = (
         <Select
             size="small"
@@ -32,10 +34,10 @@ const MultiSelectDropdown: React.FC<SelectProps> = ({
             }}
             value={selectedValues}
             onChange={changeSelectedValues}
-            defaultValue={["none"]}
+            defaultValue={[""]}
             multiple
         >
-            <MenuItem value="none" disabled hidden>
+            <MenuItem value="" disabled hidden>
                 {placeholder}
             </MenuItem>
             {options.map(({ id, text, value }) => (

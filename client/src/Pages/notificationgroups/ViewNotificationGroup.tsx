@@ -6,21 +6,30 @@ import CardSkeleton from "../../components/skeletons/CardSkeleton";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { motion } from "framer-motion";
 import { Container } from "@mui/material";
-import CardTable from "../../components/cards/CardTable";
+import DataTable from "../../components/table/DataTable";
+import { GridColDef } from "@mui/x-data-grid";
 
 const ViewNotificationGroup: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const [notiFeatures,setNotiFeatures] = useState<any[]>([])
 
   const NotificationGroupQuery = useQuery(
     [`notificationgroup${params.id}`, params.id],
-    () => GetNotificationGroup(params.id)
+    () => GetNotificationGroup(params.id), {
+      onSuccess: (data) => {
+        const notifeaturestoset = data.data[0].Features.map((feature) => {
+          return {id: feature.NotiFeatureID, name: feature.NotiFeature, type: feature.NotiType}
+        })
+        setNotiFeatures(notifeaturestoset)
+      }
+    }
   );
 
-  const headers = [
-    "ID",
-    "Notification Name",
-    "Notification Type"
+  const headers: GridColDef[] = [
+    { field: 'id', headerName: 'ID', width: 60 },
+    { field: 'name', headerName: 'Notification Name', width: 350 },
+    { field: 'type', headerName: 'Notification Type', width: 190 }
   ];
 
   if (NotificationGroupQuery.isLoading || NotificationGroupQuery.isError) {
@@ -38,7 +47,7 @@ const ViewNotificationGroup: React.FC = () => {
           </div>
           <div className="flexcontainer cardtable">
           {NotificationGroupQuery.data.data[0].Features.length > 0? 
-          <CardTable data={NotificationGroupQuery.data.data[0].Features} headers={headers} />
+          <DataTable data={notiFeatures} headers={headers} />
           : <p className="cardfieldvalue">No notifications assigned</p>}
           </div>
 

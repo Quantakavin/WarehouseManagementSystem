@@ -7,12 +7,12 @@ import { Option } from "../../utils/CommonTypes";
 interface SelectProps<IFormValues> {
   label: string;
   name: string;
-  defaultoption: string;
-  multiselect: boolean;
+  defaultoption?: string;
   options: Option[];
   errormsg?: string;
   register?: UseFormRegister<IFormValues>;
   rules?: RegisterOptions;
+  placeholder?: string;
 }
 
 const SelectDropdown: React.FC<SelectProps<any>> = ({
@@ -23,13 +23,13 @@ const SelectDropdown: React.FC<SelectProps<any>> = ({
   register,
   rules,
   defaultoption,
-  multiselect,
+  placeholder
 }) => {
 
   const field = (
       <Select
       size="small"
-      defaultValue={multiselect? []: ""}
+      defaultValue={defaultoption}
       className="selectfield"
       name={name}
       {...(register && register(name, rules))}
@@ -41,10 +41,9 @@ const SelectDropdown: React.FC<SelectProps<any>> = ({
         whiteSpace: "pre"
       }}
       displayEmpty
-      multiple={multiselect}
     >
-      <MenuItem value={multiselect? [] : ""} disabled hidden>
-      {defaultoption}
+      <MenuItem value={""} disabled hidden>
+      {placeholder}
       </MenuItem>
       {options.map(({ id, text, value }) => (
       <MenuItem key={id} value={value}>

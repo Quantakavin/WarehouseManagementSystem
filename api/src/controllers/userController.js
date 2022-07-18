@@ -115,12 +115,10 @@ module.exports.getUserByName = async (req, res) => {
 
 module.exports.createUser = async (req, res) => {
     const { name, email, password, mobileno, company, usergroup, notificationgroups } = req.body;
+    console.log("noti groups are ", notificationgroups)
     try {
-        const notigroups = notificationgroups.map((group) => {
-            return JSON.parse(group)
-        })
         const hash = await bcrypt.hash(password, 10);
-        await user.insert(name, email, hash, mobileno, company, usergroup, notigroups);
+        await user.insert(name, email, hash, mobileno, company, usergroup, notificationgroups);
         redisClient.del('users');
         return res.status(201).json({ message: 'User created successfully!' });
     } catch (error) {
@@ -131,14 +129,14 @@ module.exports.createUser = async (req, res) => {
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
-
+ 
 module.exports.updateUser = async (req, res) => {
     const userID = req.params.id;
     const { name, email, password, mobileno, company, usergroup, active, notificationgroups } = req.body;
     try {
-        const notigroups = notificationgroups.map((group) => {
-            return JSON.parse(group)
-        })
+        // const notigroups = notificationgroups.map((group) => {
+        //     return JSON.parse(group)
+        // })
         const results = await user.getByID(userID);
         if (results.length > 0) {
             const hash = await bcrypt.hash(password, 10);
@@ -151,13 +149,14 @@ module.exports.updateUser = async (req, res) => {
                 company,
                 usergroup,
                 active,
-                notigroups
+                notificationgroups
             );
             redisClient.del(`user#${userID}`);
             return res.status(204).json({ message: 'User updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find user with that id' });
     } catch (error) {
+        console.log(error);
         if (error.code === 'ER_DUP_ENTRY') {
             return res.status(422).json({ message: 'User with that email already exists' });
         }

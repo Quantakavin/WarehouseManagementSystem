@@ -3,6 +3,10 @@ import { useInfiniteQuery, useQuery } from "react-query";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import PageviewIcon from "@mui/icons-material/Pageview";
+import { motion } from "framer-motion";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { Hidden } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { GetAllUsers, GetUsernames } from "../../api/UserDB";
 import SearchBarUpdated from "../../components/search/SearchBarUpdated";
 import InfiniteTable from "../../components/table/InfiniteTable";
@@ -14,35 +18,30 @@ import {
   SortAsc,
   SortDesc,
 } from "../../app/reducers/UserTableFilterSlice";
-import { motion } from "framer-motion";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { Hidden } from "@mui/material";
-import { useNavigate } from "react-router";
 import useDebounce from "../../hooks/useDebounce";
 
 const Users: React.FC = () => {
   const sortColumn = useAppSelector(selectSortColumn);
   const sortOrder = useAppSelector(selectSortOrder);
   const navigate = useNavigate();
-  const [searchOptions, setSearchOptions] = useState<string[]>([])
+  const [searchOptions, setSearchOptions] = useState<string[]>([]);
   const [inputName, setInputName] = useState<string>(null);
-  const [searchName, setSearchName] = useState<string>('');
-  const debouncedValue = useDebounce<string>(inputName, 500)
-
+  const [searchName, setSearchName] = useState<string>("");
+  const debouncedValue = useDebounce<string>(inputName, 500);
 
   const dispatch = useAppDispatch();
 
   const handleSearch = (stringtosearch: string) => {
     if (inputName === "") {
-      setSearchName('')
+      setSearchName("");
     } else {
-      setSearchName(stringtosearch)
+      setSearchName(stringtosearch);
     }
-  }
+  };
 
   const handleInputChange = (inputstring: string) => {
-    setInputName(inputstring)
-  }
+    setInputName(inputstring);
+  };
 
   const headers = [
     "ID",
@@ -60,10 +59,10 @@ const Users: React.FC = () => {
     {
       onSuccess: (data) => {
         const namearray = data.data.map((record) => {
-          return record.Name
-        })
-        setSearchOptions(namearray)
-      }
+          return record.Name;
+        });
+        setSearchOptions(namearray);
+      },
     }
   );
 
@@ -112,23 +111,32 @@ const Users: React.FC = () => {
     }
   };
 
-  console.log("search name is", inputName)
-
   return (
     <>
       <h2 className="pagetitle"> All Users </h2>
-      <div style={{display: "flex", flexDirection: "row", alignItems: "center",justifyContent: "space-between"}} >
-      <SearchBarUpdated  handleInputChange={handleInputChange} handleSearch={handleSearch} searchoptions={searchOptions}/>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <SearchBarUpdated
+          handleInputChange={handleInputChange}
+          handleSearch={handleSearch}
+          searchoptions={searchOptions}
+        />
         <motion.button
           className="addbutton"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          style={{alignSelf: "flex-end"}}
+          style={{ alignSelf: "flex-end" }}
           onClick={() => navigate("/adduser")}
         >
-          <AddCircleOutlineIcon fontSize="small" /> Add <Hidden smDown>User</Hidden>
+          <AddCircleOutlineIcon fontSize="small" /> Add{" "}
+          <Hidden smDown>User</Hidden>
         </motion.button>
-
       </div>
 
       <InfiniteTable

@@ -1,13 +1,30 @@
 import axios from "axios";
 import config from "../config/config";
 
-export const GetUserGroups = async ({pageParam = 0, queryKey}) => {
-  const response = await axios.get(`${config.baseURL}/usergroups?pageSize=5&pageNo=${pageParam * 5}&sortColumn=${queryKey[1]}&sortOrder=${queryKey[2]}`, {
+export const FilterUserGroups = async ({pageParam = 0, queryKey}) => {
+  const response = await axios.get(`${config.baseURL}/filterusergroups?pageSize=5&pageNo=${pageParam * 5}&sortColumn=${queryKey[1]}&sortOrder=${queryKey[2]}&name=${queryKey[3]}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
   return {response, nextPage: pageParam + 1, totalPages: Math.ceil(response.data[0].full_count/5)}
+};
+
+export const GetUserGroups = async () => {
+  return await axios.get(`${config.baseURL}/usergroups`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+
+export const GetUserGroupNames = async (name: string) => {
+  return await axios.get(`${config.baseURL}/usergroupnames?name=${name}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
 };
 
 export const GetUserGroup = async (id: string) => {

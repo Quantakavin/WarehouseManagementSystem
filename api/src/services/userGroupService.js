@@ -1,9 +1,15 @@
 const knex = require('../config/database');
 
-module.exports.getAll = async (pageSize, pageNo, sortColumn, sortOrder, name ) => {
+module.exports.getAll = async () => {
+    const query = `SELECT UserGroupID, UserGroupName FROM UserGroup`;
+    return knex.raw(query);
+};
+
+module.exports.filter = async (pageSize, pageNo, sortColumn, sortOrder, name ) => {
     const query = `Call sp_getAllUserGroups(?,?,?,?,?)`;
     return knex.raw(query, [Number(pageSize), Number(pageNo), sortColumn, sortOrder, name ]);
 };
+
 
 // module.exports.getAll = async (limit, page) => {
 //     const query = `SELECT UserGroupID, UserGroupName, UserGroupDesc, count(UserGroupID) OVER() AS full_count FROM UserGroup LIMIT ? OFFSET ?`;

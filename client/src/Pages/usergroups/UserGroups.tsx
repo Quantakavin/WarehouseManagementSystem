@@ -1,6 +1,6 @@
-import React from "react";
-import { useInfiniteQuery } from "react-query";
-import { GetUserGroups } from "../../api/UserGroupDB";
+import React, { useState } from "react";
+import { useInfiniteQuery, useQuery } from "react-query";
+import { FilterUserGroups, GetUserGroupNames, GetUserGroups } from "../../api/UserGroupDB";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import PageviewIcon from '@mui/icons-material/Pageview';
@@ -19,6 +19,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from "react-router-dom";
 import { Hidden } from "@mui/material";
+import useDebounce from "../../hooks/useDebounce";
 
 const UserGroups: React.FC = () => {
 
@@ -26,6 +27,23 @@ const UserGroups: React.FC = () => {
   const sortOrder = useAppSelector(selectSortOrder);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [searchOptions, setSearchOptions] = useState<string[]>([]);
+  const [inputName, setInputName] = useState<string>(null);
+  const [searchName, setSearchName] = useState<string>("");
+  const debouncedValue = useDebounce<string>(inputName, 500);
+
+  const handleSearch = (stringtosearch: string) => {
+    if (inputName === "") {
+      setSearchName("");
+    } else {
+      setSearchName(stringtosearch);
+    }
+  };
+
+  const handleInputChange = (inputstring: string) => {
+    setInputName(inputstring);
+  };
+
 
   const headers = [
     "ID",
@@ -33,7 +51,22 @@ const UserGroups: React.FC = () => {
     "Description",
     "Action"
   ];
-  const UserGroupsQuery = useInfiniteQuery([`usergroups`, sortColumn, sortOrder], GetUserGroups,
+
+
+  const UserGroupnamesQuery = useQuery(
+    [`usergroupnames`, debouncedValue],
+    () => GetUserGroupNames(debouncedValue),
+    {
+      onSuccess: (data) => {
+        const namearray = data.data.map((record) => { 
+          return record.Name;
+        });
+        setSearchOptions(namearray);
+      },
+    }
+  );
+
+  const UserGroupsQuery = useInfiniteQuery([`filterusergroups`, sortColumn, sortOrder, searchName], FilterUserGroups,
     {
       getNextPageParam: (lastPage, pages) => {
         if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
@@ -82,7 +115,13 @@ const UserGroups: React.FC = () => {
     <>
       <h2 className="pagetitle"> User Groups </h2>
       <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }} >
-        <SearchBarUpdated />
+        <SearchBarUpdated
+
+          handleInputChange={handleInputChange}
+          handleSearch={handleSearch}
+          searchoptions={searchOptions}
+
+        />
         <motion.button
           className="addbutton"
           whileHover={{ scale: 1.05 }}
@@ -101,3 +140,4 @@ const UserGroups: React.FC = () => {
 
 };
 export default UserGroups;
+

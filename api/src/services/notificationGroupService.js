@@ -1,7 +1,12 @@
 const knex = require('../config/database');
 
+module.exports.getAll = async () => {
+    const query = `SELECT NotiGroupID, NotiGroupName FROM NotiGroup`;
+    return knex.raw(query);
+};
+
 module.exports.getByUser = async (userid) => {
-    const query = `SELECT n.NotiGroupName FROM NotiGroup n INNER JOIN UserNotiGroup un ON un.NotiGroupID=n.NotiGroupID INNER JOIN User u ON un.UserID = u.UserID WHERE u.UserID = ?`;
+    const query = `SELECT n.NotiGroupName, n.NotiGroupID FROM NotiGroup n INNER JOIN UserNotiGroup un ON un.NotiGroupID=n.NotiGroupID INNER JOIN User u ON un.UserID = u.UserID WHERE u.UserID = ?`;
     return knex.raw(query, [userid]);
 };
 
@@ -12,7 +17,7 @@ module.exports.assignToUser = async (userid, notigroupid) => {
     });
 };
 
-module.exports.getAll = async (pageSize, pageNo, sortColumn, sortOrder, name ) => {
+module.exports.filter = async (pageSize, pageNo, sortColumn, sortOrder, name ) => {
     const query = `Call sp_getAllNotiGroups(?,?,?,?,?)`;
     return knex.raw(query, [Number(pageSize), Number(pageNo), sortColumn, sortOrder, name ]);
 };

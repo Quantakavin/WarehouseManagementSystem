@@ -2,10 +2,35 @@ const user = require('../services/userService');
 const userGroup = require('../services/userGroupService');
 const redisClient = require('../config/caching');
 
+// module.exports.getAllUserGroups = async (req, res) => {
+//     try {
+//         const results = await userGroup.getAll();
+//         return res.status(200).json(results[0][0]);
+//     } catch (error) {
+//         console.log(error)
+//         return res.status(500).json({ message: 'Internal Server Error!' });
+//     }
+// }; 
+
 module.exports.getAllUserGroups = async (req, res) => {
+    try {
+        const userGroups = await redisClient.get('userGroups');
+        if (userGroups !== null) {
+            const redisresults = JSON.parse(userGroups);
+            return res.status(200).json(redisresults);
+        }
+        const results = await userGroup.getAll();
+        redisClient.set('userGroups', JSON.stringify(results[0]));
+        return res.status(200).json(results[0]);
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
+module.exports.filterUserGroups = async (req, res) => {
     const { pageSize=5, pageNo=0, sortColumn=null, sortOrder=null, name=null } = req.query;
     try {
-        const results = await userGroup.getAll(pageSize, pageNo, sortColumn, sortOrder, name);
+        const results = await userGroup.filter(pageSize, pageNo, sortColumn, sortOrder, name);
         return res.status(200).json(results[0][0]);
     } catch (error) {
         console.log(error)
@@ -37,21 +62,6 @@ module.exports.getAllNames = async (req, res) => {
 //         return res.status(200).json(results[0]);
 //     } catch (error) {
 //         console.log(error)
-//         return res.status(500).json({ message: 'Internal Server Error!' });
-//     }
-// };
-
-// module.exports.getAllUserGroups = async (req, res) => {
-//     try {
-//         const userGroups = await redisClient.get('userGroups');
-//         if (userGroups !== null) {
-//             const redisresults = JSON.parse(userGroups);
-//             return res.status(200).json(redisresults);
-//         }
-//         const results = await userGroup.getAll();
-//         redisClient.set('userGroups', JSON.stringify(results[0]));
-//         return res.status(200).json(results[0]);
-//     } catch (error) {
 //         return res.status(500).json({ message: 'Internal Server Error!' });
 //     }
 // };
