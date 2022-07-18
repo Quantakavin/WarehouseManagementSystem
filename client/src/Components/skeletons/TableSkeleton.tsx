@@ -10,8 +10,8 @@ interface SkeletonProps {
 const TableSkeleton: React.FC<SkeletonProps> = ({NoOfCols}) => {
 
 
-    const skeletonrows = [...Array(5)].map(() => 
-    (<TableRow>
+    const skeletonrows = [...Array(5)].map((value, index) => 
+    (<TableRow key={index}>
         <TableCell colSpan={NoOfCols}>
         <Skeleton variant="rectangular" height={18} sx={{marginBottom: "5px", marginTop: "5px"}}/>
         </TableCell>

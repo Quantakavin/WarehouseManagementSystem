@@ -57,7 +57,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ loginpage }) => {
 
 const App: React.FC = () => {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
-  console.log(isAuthenticated);
 
   return (
     <>

@@ -1,6 +1,6 @@
-import React from "react";
-import { useInfiniteQuery } from "react-query";
-import { GetNotificationGroups } from "../../api/NotificationGroupDB";
+import React, { useState } from "react";
+import { useInfiniteQuery, useQuery } from "react-query";
+import { GetNotificationGroupNames, FilterNotificationGroups } from "../../api/NotificationGroupDB";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import PageviewIcon from '@mui/icons-material/Pageview';
@@ -18,6 +18,7 @@ import { motion } from "framer-motion";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Hidden } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import useDebounce from "../../hooks/useDebounce";
 
 const NotificationGroups: React.FC = () => {
 
@@ -27,6 +28,24 @@ const NotificationGroups: React.FC = () => {
 
   const navigate = useNavigate();
 
+  const [searchOptions, setSearchOptions] = useState<string[]>([]);
+  const [inputName, setInputName] = useState<string>(null);
+  const [searchName, setSearchName] = useState<string>("");
+  const debouncedValue = useDebounce<string>(inputName, 500);
+
+  const handleSearch = (stringtosearch: string) => {
+    if (inputName === "") {
+      setSearchName("");
+    } else {
+      setSearchName(stringtosearch);
+    }
+  };
+
+  const handleInputChange = (inputstring: string) => {
+    setInputName(inputstring);
+  };
+
+
 
   const headers = [
     "ID",
@@ -34,7 +53,21 @@ const NotificationGroups: React.FC = () => {
     "Description",
     "Action"
   ];
-  const NotificationGroupsQuery = useInfiniteQuery([`notificationgroups`, sortColumn, sortOrder], GetNotificationGroups,
+
+  const NotificationGroupnamesQuery = useQuery(
+    [`notificationgroupnames`, debouncedValue],
+    () => GetNotificationGroupNames(debouncedValue),
+    {
+      onSuccess: (data) => {
+        const namearray = data.data.map((record) => {
+          return record.Name;
+        });
+        setSearchOptions(namearray);
+      },
+    }
+  );
+
+  const NotificationGroupsQuery = useInfiniteQuery([`filternotificationgroups`, sortColumn, sortOrder, searchName], FilterNotificationGroups,
     {
       getNextPageParam: (lastPage, pages) => {
         if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
@@ -82,20 +115,26 @@ const NotificationGroups: React.FC = () => {
     <>
       <h2 className="pagetitle"> Notification Groups </h2>
 
-      <div style={{display: "flex", flexDirection: "row", alignItems: "center",justifyContent: "space-between"}} >
-      <SearchBarUpdated/>
+      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }} >
+        <SearchBarUpdated
+
+          handleInputChange={handleInputChange}
+          handleSearch={handleSearch}
+          searchoptions={searchOptions}
+
+        />
         <motion.button
           className="addbutton"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          style={{alignSelf: "flex-end"}}
+          style={{ alignSelf: "flex-end" }}
           onClick={() => navigate("/addnotificationgroup")}
         >
-          <AddCircleOutlineIcon fontSize="small"/> Add <Hidden smDown>Notification Group</Hidden>
+          <AddCircleOutlineIcon fontSize="small" /> Add <Hidden smDown>Notification Group</Hidden>
         </motion.button>
-
+        ˝
       </div>
-        <InfiniteTable headers={headers} query={NotificationGroupsQuery} menu={ActionMenu} filter={ApplyFilter} sortColumn={sortColumn} sortOrder={sortOrder}/>
+      <InfiniteTable headers={headers} query={NotificationGroupsQuery} menu={ActionMenu} filter={ApplyFilter} sortColumn={sortColumn} sortOrder={sortOrder} />
     </>
   )
 

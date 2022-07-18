@@ -19,6 +19,11 @@ router.get(
     authorization.verifyAdmin,
     notificationGroupController.getAllNotificationGroups
 );
+router.get(
+    '/filternotificationgroups',
+    authorization.verifyAdmin,
+    notificationGroupController.filterNotificationGroups
+);
 router.post(
     '/notificationgroup',
     authorization.verifyAdmin,

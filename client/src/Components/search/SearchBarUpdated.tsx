@@ -1,27 +1,34 @@
-import * as React from 'react';
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
-import Autocomplete from '@mui/material/Autocomplete';
-import { motion, MotionValue } from 'framer-motion';
-import SearchIcon from '@mui/icons-material/Search';
-import { Hidden } from '@mui/material';
-import { useState } from 'react';
+import * as React from "react";
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
+import Autocomplete from "@mui/material/Autocomplete";
+import { motion, MotionValue } from "framer-motion";
+import SearchIcon from "@mui/icons-material/Search";
+import { Hidden } from "@mui/material";
+import { useState } from "react";
+import ClearIcon from '@mui/icons-material/Clear';
 
 interface SearchParams {
   searchoptions: string[];
-  handleSearch: (stringtosearch: string) => void,
-  handleInputChange: (stringtosearch: string) => void
+  handleSearch: (stringtosearch: string) => void;
+  handleInputChange: (stringtosearch: string) => void;
 }
 
-
-const SearchBarUpdated = ({handleSearch, handleInputChange, searchoptions}: SearchParams) => {
-
-  const [selectedOption, setSelectedOption] = useState<string>('')
+const SearchBarUpdated = ({
+  handleSearch,
+  handleInputChange,
+  searchoptions,
+}: SearchParams) => {
+  const [selectedOption, setSelectedOption] = useState<string>("");
 
   return (
     <>
-    <Stack spacing={2} className="searchbar" style={{marginLeft: "8%", alignSelf: "flex-start"}}>
-{/* 
+      <Stack
+        spacing={2}
+        className="searchbar"
+        style={{ marginLeft: "8%", alignSelf: "flex-start" }}
+      >
+        {/* 
           <TextField
           className="searchfield"
             placeholder="Search by name..."
@@ -31,31 +38,31 @@ const SearchBarUpdated = ({handleSearch, handleInputChange, searchoptions}: Sear
             onChange={(e) => search(e.target.value)}
           /> */}
 
-      <Autocomplete
-        freeSolo
-        id="free-solo-2-demo"
-        disableClearable
-        options={searchoptions}
-        onInputChange={(event,value) => handleInputChange(value)}
-        onChange={(event, value) => setSelectedOption(value)}
+        <Autocomplete
+          freeSolo
+          id="free-solo-2-demo"
+          disableClearable
+          options={searchoptions}
+          onInputChange={(event, value) => handleInputChange(value)}
+          onChange={(event, value) => setSelectedOption(value)}
+          clearIcon = {<ClearIcon fontSize="small" sx={{ color: "#0A2540" }} />}
+          renderInput={(params) => (
+            <TextField
+              className="searchfield"
+              {...params}
+              placeholder="Search by name..."
+              InputProps={{
+                ...params.InputProps,
+                type: "search",
+              }}
+              size="small"
+              sx={{ backgroundColor: "white", color: "#0A2540" }}
+            />
+          )}
+        />
+      </Stack>
 
-        renderInput={(params) => (
-          <TextField
-          className="searchfield"
-            {...params}
-            placeholder="Search by name..."
-            InputProps={{
-              ...params.InputProps,
-              type: 'search',
-            }}
-            size="small"
-            sx={{backgroundColor: "white", color: "#0A2540"}}
-          />
-        )}      
-      />
-    </Stack>
-
-    <motion.button
+      <motion.button
         className="searchbutton"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
@@ -65,10 +72,9 @@ const SearchBarUpdated = ({handleSearch, handleInputChange, searchoptions}: Sear
       </motion.button>
     </>
   );
-}
+};
 
 export default SearchBarUpdated;
-
 
 // const top100Films = [
 //   { title: 'The Shawshank Redemption', year: 1994 },

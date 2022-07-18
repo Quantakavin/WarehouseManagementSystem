@@ -246,7 +246,7 @@ const AddUserGroup: React.FC = () => {
                   </div>
                   <div style={{ flex: 3, fontWeight: 500 }}>
                     <Select
-                      defaultValue={Number(featureRightOptions[0].value)}
+                      defaultValue={Number(featureRightOptions[0]?.value)}
                       autoWidth
                       label="Age"
                       size="small"
