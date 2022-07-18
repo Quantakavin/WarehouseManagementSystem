@@ -102,7 +102,7 @@ module.exports.getMyAcceptedRMA = async (req, res) => {
         }
         const results = await rmaService.getSalesmanAcceptedRMA(SalesmanID);
         if (results[0].length > 0) {
-            redisClient.set(`myAcceptedRMA#${SalesmanID}`, JSON.stringify(results));
+            redisClient.set(`myAcceptedRMA#${SalesmanID}`, JSON.stringify(results[0]));
             return res.status(200).send(results[0]);
         }
         return res.status(404).json({ message: 'Cannot find RMA requests under you!' });
@@ -122,7 +122,7 @@ module.exports.getMyRejectedRMA = async (req, res) => {
         }
         const results = await rmaService.getSalesmanRejectedRMA(SalesmanID);
         if (results[0].length > 0) {
-            redisClient.set(`myRejectedRMA#${SalesmanID}`, JSON.stringify(results));
+            redisClient.set(`myRejectedRMA#${SalesmanID}`, JSON.stringify(results[0]));
             return res.status(200).send(results[0]);
         }
         return res.status(404).json({ message: 'Cannot find RMA requests under you!' });
