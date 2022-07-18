@@ -161,6 +161,30 @@ module.exports.getHistory = async () => {
   return knex.raw(query);
 }
 
+module.exports.getManagerLoan = async () => {
+  const query = `
+  SELECT t.TLoanNumber, 
+  DATE_FORMAT(t.ApplicationDate, "%d-%m-%Y") AS 'StartDate',
+  t.Requestor,
+  tt.TLoanType,
+  count(t.TLoanNumber) OVER() AS full_count
+  FROM TLoan t, TLoanType tt where t.TLoanStatusID = "1" AND 
+  t.TLoanTypeID = tt.TLoanTypeID;`;
+  return knex.raw(query);
+}
+
+module.exports.getManagerExtension = async () => {
+  const query = `
+  SELECT t.TLoanNumber, 
+  DATE_FORMAT(t.ApplicationDate, "%d-%m-%Y") AS 'StartDate',
+  t.Requestor,
+  tt.TLoanType
+  count(t.TLoanNumber) OVER() AS full_count
+  FROM TLoan t, TLoanType tt where t.TLoanStatusID = "" AND 
+  t.TLoanTypeID = tt.TLoanTypeID;`;
+  return knex.raw(query);
+}
+
 module.exports.approveLoan = async (number) => {
   return knex.transaction((trx) => {
       knex('TLoan')

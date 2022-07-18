@@ -99,7 +99,7 @@ const App: React.FC = () => {
                 element={<AddNotificationGroup />}
               />
               <Route path="/tloan" element={<TLoan />} />
-              <Route path="/tloan" element={<TLoan />} />
+             
               <Route path="/rma" element={<RMA />} />
               <Route path="/createRma" element={<CreateRMA />} />
               <Route path="/rmaDetails/:RmaID" element={<RmaDisplay />} />
@@ -108,6 +108,7 @@ const App: React.FC = () => {
                 element={<TLoanDisplay />}
               />
               <Route path="/newtloan" element={<NewTLoan />} />
+             
             </Route>
           </Routes>
         </div>
