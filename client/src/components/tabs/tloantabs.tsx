@@ -75,7 +75,7 @@ const TLoanTabs: React.FC = () => {
       [
         {
           name: "View Details",
-          url: `/tloandetails/${id}`,
+          url: `/tloandetails2/${id}`,
           icon: <PageviewIcon fontSize="small" />,
           delete: false
         },

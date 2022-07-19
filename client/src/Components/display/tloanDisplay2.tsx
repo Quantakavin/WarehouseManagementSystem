@@ -82,7 +82,7 @@ export default function TLoanDisplay2() {
     {
       field: "Quantity",
       headerName: "Quantity",
-      width: 130,
+      width: 120,
       editable: false,
     },
   ];
@@ -164,7 +164,7 @@ export default function TLoanDisplay2() {
               </Grid>
               <Grid item xs={8}>
                 <DataGrid
-                  sx={{ height: 300, width: 500, marginLeft:6.5 }}
+                  sx={{ height: 300, width: 500, marginLeft:6.5}}
                   rows={items}
                   columns={columns}
                   editMode="row"

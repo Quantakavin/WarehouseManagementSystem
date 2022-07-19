@@ -64,7 +64,7 @@ module.exports.getLoanByNumber = async(TLoanNumber) => {
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS 'EndDate',
   c.CompanyName,
-  t.Requestor
+  t.CustomerEmail
   FROM TLoan t 
   LEFT JOIN Company c ON t.CompanyID = c.CompanyID
   WHERE t.TLoanNumber = ?
@@ -83,7 +83,7 @@ module.exports.getTLoanOutItem = async(TLoanID) =>{
   tl.Quantity
   FROM TLoanOutItem tl 
 	JOIN BinProduct bp
-  ON tl.ItemNo = bp.ItemNo
+  ON tl.ItemNo = bp.ItemNo AND tl.BatchNo = bp.BatchNo
   WHERE tl.TLoanID = ?
   `
 
