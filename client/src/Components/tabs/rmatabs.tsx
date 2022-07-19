@@ -26,10 +26,15 @@ import theme from "../../styles/muistyle";
 import {
   DataGrid,
   GridFilterModel,
-  GridToolbar,
   GridRowParams,
   GridRowId,
   MuiEvent,
+  GridToolbarColumnsButton,
+  GridToolbarContainer,
+  GridToolbarDensitySelector,
+  GridToolbarExport,
+  GridToolbarFilterButton,
+  GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 
 const columns = [
@@ -150,15 +155,35 @@ const Rmatabs: React.FC = () => {
     setValue(newValue);
   };
 
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
+        <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
+        <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
+        <GridToolbarExport sx={{ color: "#0A2540" }} />
+        <GridToolbarQuickFilter
+          sx={{
+            color: "#0A2540",
+            marginLeft: 220,
+            marginTop: -3,
+            marginBottom: 3,
+          }}
+          debounceMs={1000}
+        />
+      </GridToolbarContainer>
+    );
+  }
+
   switch (userrole) {
     case "Sales Engineer": {
       return (
         <>
-          <h2 className="pagetitle"> RMA Requests </h2>
           <TabContext value={value || "1"}>
             <Grid container>
               <Grid item xs={11}>
                 <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
+                  <h2> RMA Requests </h2>
                   <Tabs
                     onChange={handleChange}
                     TabIndicatorProps={{
@@ -168,8 +193,8 @@ const Rmatabs: React.FC = () => {
                       "& button:focus": {
                         backgroundColor: "#063970",
                         color: "white",
-                        width: 190,
-                        height: 110,
+                        width: "15%",
+                        height: "15%",
                       },
                     }}
                   >
@@ -181,8 +206,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                     <Tab
@@ -193,8 +218,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                     <Tab
@@ -205,15 +230,15 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                   </Tabs>
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 10, marginTop: 5.5 }}>
+                <Box sx={{ paddingLeft: 10, marginTop: 8 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
                       <Fab
@@ -230,7 +255,7 @@ const Rmatabs: React.FC = () => {
 
               <Grid item xs={12}>
                 <TabPanel value="1">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <Box sx={{ height: 700, width: 1 }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={myPendingTable}
@@ -240,7 +265,7 @@ const Rmatabs: React.FC = () => {
                       onPageSizeChange={(newPage) => setPageSize(newPage)}
                       pagination
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"
@@ -259,7 +284,7 @@ const Rmatabs: React.FC = () => {
                         navigate(`/rmaDetails/${params.id}`);
                       }}
                     />
-                  </div>
+                  </Box>
                 </TabPanel>
                 <TabPanel value="2">
                   <div style={{ height: 700, width: "100%" }}>
@@ -272,7 +297,7 @@ const Rmatabs: React.FC = () => {
                       onPageSizeChange={(newPage) => setPageSize(newPage)}
                       pagination
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"
@@ -319,7 +344,7 @@ const Rmatabs: React.FC = () => {
                       getRowId={(row) => row.RmaID}
                       pageSize={12}
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"
@@ -381,8 +406,8 @@ const Rmatabs: React.FC = () => {
                       "& button:focus": {
                         backgroundColor: "#063970",
                         color: "white",
-                        width: 190,
-                        height: 110,
+                        width: "15%",
+                        height: "15%",
                       },
                     }}
                   >
@@ -394,8 +419,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                   </Tabs>
@@ -412,7 +437,7 @@ const Rmatabs: React.FC = () => {
                       getRowId={(row) => row.RmaID}
                       pageSize={12}
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"
@@ -474,8 +499,8 @@ const Rmatabs: React.FC = () => {
                       "& button:focus": {
                         backgroundColor: "#063970",
                         color: "white",
-                        width: 190,
-                        height: 110,
+                        width: "15%",
+                        height: "15%",
                       },
                     }}
                   >
@@ -487,8 +512,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                     <Tab
@@ -499,8 +524,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                     <Tab
@@ -511,8 +536,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                     <Tab
@@ -523,8 +548,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                     <Tab
@@ -535,8 +560,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                     <Tab
@@ -547,8 +572,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                   </Tabs>
@@ -567,7 +592,7 @@ const Rmatabs: React.FC = () => {
                       onPageSizeChange={(newPage) => setPageSize(newPage)}
                       pagination
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"
@@ -614,7 +639,7 @@ const Rmatabs: React.FC = () => {
                       getRowId={(row) => row.RmaID}
                       pageSize={12}
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"
@@ -661,7 +686,7 @@ const Rmatabs: React.FC = () => {
                       getRowId={(row) => row.RmaID}
                       pageSize={12}
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"
@@ -708,7 +733,7 @@ const Rmatabs: React.FC = () => {
                       getRowId={(row) => row.RmaID}
                       pageSize={12}
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"
@@ -755,7 +780,7 @@ const Rmatabs: React.FC = () => {
                       getRowId={(row) => row.RmaID}
                       pageSize={12}
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"
@@ -802,7 +827,7 @@ const Rmatabs: React.FC = () => {
                       getRowId={(row) => row.RmaID}
                       pageSize={12}
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                       }}
                       componentsProps={{
                         toolbar: {
@@ -854,8 +879,8 @@ const Rmatabs: React.FC = () => {
                       "& button:focus": {
                         backgroundColor: "#063970",
                         color: "white",
-                        width: 190,
-                        height: 110,
+                        width: "15%",
+                        height: "15%",
                       },
                     }}
                   >
@@ -867,8 +892,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                     <Tab
@@ -879,8 +904,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                     <Tab
@@ -891,8 +916,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                   </Tabs>
@@ -908,7 +933,7 @@ const Rmatabs: React.FC = () => {
                       getRowId={(row) => row.RmaID}
                       pageSize={12}
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"
@@ -955,7 +980,7 @@ const Rmatabs: React.FC = () => {
                       getRowId={(row) => row.RmaID}
                       pageSize={12}
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"
@@ -1002,7 +1027,7 @@ const Rmatabs: React.FC = () => {
                       getRowId={(row) => row.RmaID}
                       pageSize={12}
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"
@@ -1064,8 +1089,8 @@ const Rmatabs: React.FC = () => {
                       "& button:focus": {
                         backgroundColor: "#063970",
                         color: "white",
-                        width: 190,
-                        height: 110,
+                        width: "15%",
+                        height: "15%",
                       },
                     }}
                   >
@@ -1077,8 +1102,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                   </Tabs>
@@ -1095,7 +1120,7 @@ const Rmatabs: React.FC = () => {
                       getRowId={(row) => row.RmaID}
                       pageSize={12}
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"
@@ -1144,7 +1169,6 @@ const Rmatabs: React.FC = () => {
       return (
         <>
           <h2 className="pagetitle"> RMA Requests </h2>
-
           <TabContext value={value || "1"}>
             <Grid container>
               <Grid item xs={11}>
@@ -1158,8 +1182,8 @@ const Rmatabs: React.FC = () => {
                       "& button:focus": {
                         backgroundColor: "#063970",
                         color: "white",
-                        width: 190,
-                        height: 110,
+                        width: "15%",
+                        height: "15%",
                       },
                     }}
                   >
@@ -1171,8 +1195,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                     <Tab
@@ -1183,8 +1207,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                     <Tab
@@ -1195,8 +1219,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                     <Tab
@@ -1207,8 +1231,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                     <Tab
@@ -1219,8 +1243,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                     <Tab
@@ -1231,8 +1255,8 @@ const Rmatabs: React.FC = () => {
                         backgroundColor: "White",
                         borderRadius: 2,
                         marginRight: 2,
-                        height: 100,
-                        width: 180,
+                        height: "100%",
+                        width: "15%",
                       }}
                     />
                   </Tabs>
@@ -1251,7 +1275,7 @@ const Rmatabs: React.FC = () => {
                       onPageSizeChange={(newPage) => setPageSize(newPage)}
                       pagination
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"
@@ -1298,7 +1322,7 @@ const Rmatabs: React.FC = () => {
                       getRowId={(row) => row.RmaID}
                       pageSize={12}
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"
@@ -1345,7 +1369,7 @@ const Rmatabs: React.FC = () => {
                       getRowId={(row) => row.RmaID}
                       pageSize={12}
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"
@@ -1392,7 +1416,7 @@ const Rmatabs: React.FC = () => {
                       getRowId={(row) => row.RmaID}
                       pageSize={12}
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"
@@ -1439,7 +1463,7 @@ const Rmatabs: React.FC = () => {
                       getRowId={(row) => row.RmaID}
                       pageSize={12}
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"
@@ -1486,7 +1510,7 @@ const Rmatabs: React.FC = () => {
                       getRowId={(row) => row.RmaID}
                       pageSize={12}
                       components={{
-                        Toolbar: GridToolbar,
+                        Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
                           <Stack
                             height="100%"

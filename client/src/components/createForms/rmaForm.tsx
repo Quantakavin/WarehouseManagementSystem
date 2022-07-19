@@ -561,10 +561,10 @@ export default function CreateRMA() {
               paddingTop: 3,
             }}
           >
-            <Button size="small" onClick={() => navigate("/rma")}>
+            <Button size="small" variant="contained" sx={{color: 'white', backgroundColor: '#063970', width:150, height: 40, marginLeft:3}} onClick={() => navigate("/rma")}>
               Back
             </Button>
-            <Button size="small" onClick={() => navigate("/rma")}>
+            <Button size="small" variant="contained" sx={{color: 'white', backgroundColor: '#063970', width:150, height: 40, marginLeft:3}} onClick={() => navigate("/rma")}>
               Submit
             </Button>
           </Box>

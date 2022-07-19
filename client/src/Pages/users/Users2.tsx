@@ -20,11 +20,11 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router";
 
-const Products2: React.FC = () => {
+const Users2: React.FC = () => {
   const [row, setRow] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/products?limit=100000&page=0`)
+    fetch(`http://localhost:5000/api/users?limit=100000&page=0`)
       .then((data) => data.json())
       .then((data) => setRow(data));
   }, []);
@@ -49,16 +49,12 @@ const Products2: React.FC = () => {
   });
 
   const columns = [
-    { field: "BinProductPK", headerName: "ID", minWidth: 100 },
-    { field: "ItemName", headerName: "Item Name", minWidth: 800 },
-    { field: "BatchNo", headerName: "Batch Number", minWidth: 250 },
-    { field: "Brand", headerName: "Brand", minWidth: 400 },
-    {
-      field: "Quantity",
-      headerName: "Available Quantity",
-      minWidth: 250,
-      type: "number",
-    },
+    { field: "UserID", headerName: "ID", minWidth: 100 },
+    { field: "Username", headerName: "Username", minWidth: 450 },
+    { field: "Email", headerName: "Email Address", minWidth: 450 },
+    { field: "CompanyName", headerName: "Company", minWidth: 350 },
+    { field: "UserGroupName", headerName: "User Group", minWidth: 350 },
+    { field: "MobileNo", headerName: "Phone Number", minWidth: 200 },
   ];
 
   const navigate = useNavigate();
@@ -93,6 +89,7 @@ const Products2: React.FC = () => {
   }
 
   return (
+    <>
     <Card
       sx={{
         width: 1950,
@@ -104,14 +101,14 @@ const Products2: React.FC = () => {
     >
       <CardContent>
         <div>
-          <h2> Products </h2>
+          <h2> Users </h2>
         </div>
         <div style={{ height: 1000, width: "100%" }}>
           <DataGrid
             sx={{ background: "white", fontSize: 18 }}
             rows={row}
             columns={columns}
-            getRowId={(row) => row.BinProductPK}
+            getRowId={(row) => row.UserID}
             pageSize={pageSize}
             onPageSizeChange={(newPage) => setPageSize(newPage)}
             pagination
@@ -126,7 +123,7 @@ const Products2: React.FC = () => {
                   alignItems="center"
                   justifyContent="center"
                 >
-                  No accepted RMA requests
+                  No Users
                 </Stack>
               ),
             }}
@@ -135,12 +132,13 @@ const Products2: React.FC = () => {
               setFilterModel(newFilterModel)
             }
             onRowClick={(params: GridRowParams) => {
-              navigate(`/product/${params.id}`);
+              navigate(`/user/${params.id}`);
             }}
           />
         </div>
       </CardContent>
     </Card>
+    </>
   );
 };
-export default Products2;
+export default Users2;

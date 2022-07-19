@@ -16,7 +16,7 @@ router.get(
 router.get('/notificationgroupnames', authorization.verifyAdmin, notificationGroupController.getAllNames);
 router.get(
     '/notificationgroups',
-    authorization.verifyAdmin,
+    // authorization.verifyAdmin,
     notificationGroupController.getAllNotificationGroups
 );
 router.get(

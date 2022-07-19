@@ -227,10 +227,10 @@ export default function TLoanDisplay2() {
                   marginTop: -5,
                 }}
               >
-                <Button size="small" onClick={() => navigate("/tloan")}>
+                <Button size="small" variant="contained" sx={{color: 'white', backgroundColor: '#063970', width:150, height: 40, marginLeft:3}} onClick={() => navigate("/tloan")}>
                   Back
                 </Button>
-                <Button size="small" onClick={() => navigate("/tloan")}>
+                <Button size="small" variant="contained" sx={{color: 'white', backgroundColor: '#063970', width:200, height: 40, marginLeft:3}} onClick={() => navigate("/tloan")}>
                   Apply for Extension
                 </Button>
               </Grid>

@@ -29,12 +29,17 @@ import RmaDisplay from "./components/display/rmaDisplay";
 import NewTLoan from "./pages/tloans/newtloan";
 import Products2 from "./pages/products/Products2";
 import TLoanDisplay2 from "./components/display/tloanDisplay2";
+import Users2 from "./pages/users/Users2";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "./app/hooks";
 import {
   selectIsAuthenticated,
   selectName,
 } from "./app/reducers/CurrentUserSlice";
+import UserGroups2 from "./pages/usergroups/UserGroups2";
+import NotificationGroups2 from "./pages/notificationgroups/NotificationGroups2";
+import ViewUser2 from "./pages/users/ViewUser2";
+import ViewUserGroup2 from "./pages/usergroups/ViewUserGroup2";
 
 interface ProtectedRouteProps {
   loginpage: boolean;
@@ -80,17 +85,17 @@ const App: React.FC = () => {
               <Route path="/product/:id" element={<ViewProduct />} />
               <Route path="/binlocations" element={<BinLocations />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/user/:id" element={<ViewUser />} />
-              <Route path="/users" element={<Users />} />
+              <Route path="/user/:id" element={<ViewUser2 />} />
+              <Route path="/users" element={<Users2 />} />
               <Route path="/adduser" element={<AddUser />} />
               <Route path="/edituser/:id" element={<EditUser />} />
-              <Route path="/usergroups" element={<UserGroups />} />
-              <Route path="/usergroup/:id" element={<ViewUserGroup />} />
+              <Route path="/usergroups" element={<UserGroups2 />} />
+              <Route path="/usergroup/:id" element={<ViewUserGroup2 />} />
               <Route path="/addusergroup" element={<AddUserGroup />} />
               <Route path="/editusergroup/:id" element={<EditUserGroup />} />
               <Route
                 path="/notificationgroups"
-                element={<NotificationGroups />}
+                element={<NotificationGroups2 />}
               />
               <Route
                 path="/notificationgroup/:id"
