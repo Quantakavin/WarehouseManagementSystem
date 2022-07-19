@@ -27,6 +27,7 @@ import Sidebar2 from "./components/sidebar/Sidebar2";
 import TLoanDisplay from "./components/display/tloanDisplay";
 import RmaDisplay from "./components/display/rmaDisplay";
 import NewTLoan from "./pages/tloans/newtloan";
+import Products2 from "./pages/products/Products2";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "./app/hooks";
 import {
