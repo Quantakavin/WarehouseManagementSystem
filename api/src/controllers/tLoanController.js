@@ -66,6 +66,9 @@ module.exports.newLoan = async (req, res) => {
         requireddate,
         pick,
         remarks,
+        user,
+        email,
+        collect,
         items
      } = req.body;
     try {
@@ -83,6 +86,9 @@ module.exports.newLoan = async (req, res) => {
             requireddate,
             pick,
             remarks, 
+            user,
+            email,
+            collect,
             tloanItems           
         );
        

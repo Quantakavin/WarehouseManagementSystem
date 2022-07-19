@@ -10,7 +10,7 @@ import React , { useEffect, useState } from 'react';
 // import TableHead from '@mui/material/TableHead';
 // import TableRow from '@mui/material/TableRow';
 // import Paper from '@mui/material/Paper';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import SubmitButton from '../form/SubmitButton';
 import { useQuery, useInfiniteQuery } from "react-query";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -22,202 +22,9 @@ import TableNew from "../table/InfiniteTable";
 import EmptyTable from "../table/EmptyTable"
 import { selectRole, selectId } from '../../app/reducers/CurrentUserSlice';
 import { useAppSelector } from '../../app/hooks'
-// const TLoanTabs : React.FC = () => {
-
-
-  
-//       const [current, setCurrent] = useState([]);
-//       const [pending, setPending] = useState([]);
-//       const [draft, setDraft] = useState([]);
-//       const [history, setHistory] = useState([]);
-
-//       useEffect(() => {
-//         // declare the async data fetching function
-//         const fetchData = async () => {
-//           // get the data from the api
-//           const current = await axios.get('http://localhost:5000/api/tloan/current');
-//           const pending = await axios.get('http://localhost:5000/api/tloan/current');
-//           const draft = await axios.get('http://localhost:5000/api/tloan/current');
-//           const history= await axios.get('http://localhost:5000/api/tloan/current');
-
-         
-//           setCurrent(current.data)
-//           setPending(pending.data)
-//           setDraft(draft.data)
-//           setHistory(history.data)
-          
-        
-//         }
-//         // call the function
-//         fetchData()
-//           // make sure to catch any error
-//           .catch(console.error);;
-//       }, [])
-
-//         const columnName =[ 
-//           "Loan No.",
-//           "Start Date",
-//           "End Date",
-//           "Company Name",
-//           "Customer Email",
-//           "Actions"
-
-//         ]
-
-//         const ActionMenu = (id: string) => {
-//           return (
-//             [
-//               {
-//                 name: "View Details",
-//                 url: `/user/${id}`,
-//                 icon: <PageviewIcon fontSize="small" />,
-//                 delete: false
-//               },
-//               {
-//                 name: "Edit Details",
-//                 url: `/edituser/${id}`,
-//                 icon: <ModeEditOutlineIcon fontSize="small" />,
-//                 delete: false
-//               },
-//               {
-//                 name: "Delete",
-//                 icon: <DeleteOutlineIcon fontSize="small" />,
-//                 delete: true
-//               },
-//             ]
-//           )
-//         }
-      
-
-//         // const LoansQuery = useInfiniteQuery('loans', current,
-//         // {
-//         //   getNextPageParam: (lastPage, pages) => {
-//         //     if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
-//         //     return undefined;
-//         //   }
-//         // });
-    
-//       const getCurrent = () => {
-//         let html = []
-//             html.push(
-//                 <div className='container'>
-                    
-                       
-//                           <div className="" key="id">
-//                             <TableContainer component={Paper}>
-//                             <Table aria-label="simple table">
-//                               <TableHead>
-//                                 <TableRow>
-//                                   {columnName.map((col) => (
-//                                     <TableCell
-//                                       sx={{ color: "#86898E", fontWeight: 500 }}
-//                                       className="tableheader"
-//                                     >
-//                                       {col}
-//                                     </TableCell>
-//                                   ))}
-//                                 </TableRow>
-//                               </TableHead>
-//                               <TableBody>
-//                                 <div >{current.length > 0
-//                                   ? current.map((loans => {
-//                                       const {TLoanNumber} = loans
-//                                     return(
-//                                     <div>
-//                                   <TableRow  key={TLoanNumber} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-//                                     <TableCell sx={{ color: "#0A2540" }} align="left">
-//                                                 {TLoanNumber}
-//                                     </TableCell>
-//                                     <TableCell sx={{ color: "#0A2540" }} align="left">
-//                                                 {TLoanNumber}
-//                                     </TableCell>
-//                                     <TableCell sx={{ color: "#0A2540" }} align="left">
-//                                                 {TLoanNumber}
-//                                     </TableCell>
-//                                     <TableCell sx={{ color: "#0A2540" }} align="left">
-//                                                 {TLoanNumber}
-//                                     </TableCell>
-//                                     <TableCell sx={{ color: "#0A2540" }} align="left">
-//                                               {TLoanNumber}
-//                                     </TableCell>
-//                                     <ActionMenu id={TLoanNumber} />
-
-//                                     </TableRow>
-                                
-//                                 </div>
-//                                   )}))
-                                  
-//                                   : "Loading..." }</div> 
-                                  
-//                               </TableBody>
-//                             </Table>
-                          
-//                           </TableContainer>
-                        
-//                                     {/* 
-//                                     <div>
-//                                      <Link to={"/tloanDetails/" + loans.TLoanNumber}>View More</Link>
-//                                     </div>                 */}
-//                                 </div>                            
-                        
-//                 </div>
-//             )
-//         return html
-//     }
-    
-//     const applyLoan = () => {
-//       let navigate = useNavigate();
-
-//       async function apply(event) {
-//         event.preventDefault();
-//         await SubmitButton(event.target);
-//         navigate("/newtloan", { replace: true });
-//     }
-//     return   (
-//     <button onClick={apply}>
-//     Apply new TLoan
-//     </button>
-//     )
-//   }
-   
-//    return(
-//       <div>
-//         <Tabs>
-//             <TabList>
-//             <Tab>Current</Tab>
-//             <Tab>Pending</Tab>
-//             <Tab>Draft </Tab>
-//             <Tab>History</Tab>
-//             </TabList>
-
-//             <TabPanel>
-            
-            
-//             <div key="current">
-//               {getCurrent()}
-//             </div>
-     
-//             </TabPanel>
-//             <TabPanel>
-//             <h2>Any content 2</h2>
-//             </TabPanel>
-//             <TabPanel>
-//             <h2>Any content 2</h2>
-//             </TabPanel>
-//             <TabPanel>
-//             <h2>Any content 2</h2>
-//             </TabPanel>
-
-           
-//         </Tabs>
-    
-//         {applyLoan()}
-//         </div>
-      
-//    )
-// };
-
-// export default TLoanTabs
+import { NavigationRounded } from '@mui/icons-material';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material';
 
 
 
@@ -296,12 +103,23 @@ const TLoanTabs: React.FC = () => {
 
   const userRole = useAppSelector(selectRole)
   
+  const navigate = useNavigate();
+
 
   switch(userRole) {
-    case "Sales Admin": {
+    case "Admin": {
       return (
         <>
+          
+          <Box sx={{margin: 2, display:'flex'}}>
           <h2 className="pagetitle">TLoans </h2>
+
+          <Button variant="contained" onClick={()=>navigate('/newtloan')} 
+          sx={{marginTop:5,marginLeft:"auto", marginRight:10, color: 'white', backgroundColor: '#063970', width:150, height: 40, '& button:hover': {backgroundColor: '#063970'} }}
+          >Apply TLoan</Button>
+          </Box>
+
+
         <TabContext value={value || "1"}>
         <Box sx={{ marginLeft:-3,}}>
           <Tabs selectionFollowsFocus={true}
@@ -362,6 +180,8 @@ const TLoanTabs: React.FC = () => {
           </Box>
           
           </TabContext>
+
+         
         </>
       )
     };
@@ -499,7 +319,7 @@ const TLoanTabs: React.FC = () => {
         </>
       )
     };
-    case "Admin": {
+    case "Sales Manager": {
       return (
         <>
           <h2 className="pagetitle">TLoans </h2>
@@ -626,4 +446,5 @@ const TLoanTabs: React.FC = () => {
   }
 
 };
+
 export default TLoanTabs

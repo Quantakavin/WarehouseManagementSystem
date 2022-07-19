@@ -19,20 +19,10 @@ module.exports.tloanOutItem = async (
   });
 };
 
-// module.exports.tloanOutItemBatch = async (
-//   itemno,
-//   itemname,
-//   quantity
-// ) => {
-//   return knex('TLoanOutItem').insert({
-//     itemno,
-//     itemname,
-//     quantity
-//   });
-// };
 
 
-module.exports.createTLoan = async (type, company, number, name, purpose, applicationdate, duration, requireddate, pick, remarks, tloanItems, tloanBatch) => {
+
+module.exports.createTLoan = async (type, company, number, name, purpose, applicationdate, duration, requireddate, pick, remarks, user,email,collect, tloanItems) => {
   knex.transaction(function(trx) {
    
     knex.insert({
@@ -46,7 +36,10 @@ module.exports.createTLoan = async (type, company, number, name, purpose, applic
       RequiredDate: requireddate,
       TLoanStatusID: 4,
       PickStatusID: pick,
-      Remarks: remarks
+      Remarks: remarks,
+      UserID: user,
+      CustomerEmail:email,
+      Collection: collect,
     }, 'TLoanID')
     .into('TLoan')
     .transacting(trx)
@@ -113,7 +106,7 @@ module.exports.getCurrent = async () => {
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,
-  t.Requestor,
+  t.CustomerEmail,
   count(t.TLoanNumber) OVER() AS full_count
   FROM TLoan t, Company c where TLoanStatusID IN (3,5,6,7) AND 
   t.CompanyID = c.CompanyID;`;
@@ -126,7 +119,7 @@ module.exports.getPending = async () => {
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,
-  t.Requestor,
+  t.CustomerEmail,
   count(t.TLoanNumber) OVER() AS full_count
   FROM TLoan t, Company c where TLoanStatusID = "4" AND 
   t.CompanyID = c.CompanyID;`;
@@ -140,7 +133,7 @@ module.exports.getDraft = async () => {
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,
-  t.Requestor,
+  t.CustomerEmail,
   count(t.TLoanNumber) OVER() AS full_count
   FROM TLoan t, Company c where TLoanStatusID = "1" AND 
   t.CompanyID = c.CompanyID;`;
@@ -154,7 +147,7 @@ module.exports.getHistory = async () => {
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,
-  t.Requestor,
+  t.CustomerEmail,
   count(t.TLoanNumber) OVER() AS full_count
   FROM TLoan t, Company c where TLoanStatusID = "8" AND 
   t.CompanyID = c.CompanyID;`;

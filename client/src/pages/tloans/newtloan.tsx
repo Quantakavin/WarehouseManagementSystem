@@ -12,8 +12,52 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/material";
 import Paper from "@mui/material/Paper";
+import {useNavigate} from "react-router-dom"
 
 function newtloan() {
+
+    const [type, setType] = useState('')
+    const [company,setCompany] = useState('')
+    const [number,setNumber] = useState('')
+    const [requestor,setRequestor] = useState('')
+    const [purpose,setPurpose] = useState('')
+    const [applicationdate,setADate] = useState('')
+    const [duration,setDuration] = useState('')
+    const [requireddate,setRdate] = useState('')
+    const [pick,setPick] = useState('')
+    const [remarks,setRemarks] = useState('')
+    const [user,setUser] = useState('')
+    const [email,setEmail] = useState('')
+    const [items,setItems] = useState([{}])
+
+    const navigate = useNavigate()
+  
+    const submitLoan =(e) => {
+      e.preventDefault()
+       try {
+  
+        const results = axios.post('http://localhost:5000/api/tloan/newloan',{
+          type,
+          company,
+          number,
+          requestor,
+          purpose,
+          applicationdate,
+          duration,
+          requireddate,
+          pick,
+          remarks,
+          user,
+          email,
+          items
+        })
+        console.log(results)
+       } catch( error) {
+        console.log(error.response)
+       }
+  
+    }
+  
   const getCard = () => {
     return (
       <div>

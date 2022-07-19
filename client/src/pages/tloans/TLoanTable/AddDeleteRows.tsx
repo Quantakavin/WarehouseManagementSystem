@@ -30,7 +30,7 @@ function AddDeleteTableRows(){
  
 }
     return(
-        <div className="container">
+        <div className="container" style={{width: 10000}}>
             <div className="row">
                 <div className="col-sm-8">
                 <table className="table">
