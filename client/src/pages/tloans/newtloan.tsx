@@ -17,7 +17,13 @@ import TextField from '@mui/material/TextField';
 import { CompanyName, LoanType, CollectionType, DurationOfLoan } from './Dropdown/dropDown';
 import {useNavigate} from 'react-router-dom'
 
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+
 function newtloan() {
+
   const [type, setType] = useState('')
   const [company,setCompany] = useState('')
   const [number,setNumber] = useState('')
@@ -26,17 +32,44 @@ function newtloan() {
   const [applicationdate,setADate] = useState('')
   const [duration,setDuration] = useState('')
   const [requireddate,setRdate] = useState('')
-  const [pick,setPick] = useState('')
-  const [remarks,setRemarks] = useState('')
+  // const [pick,setPick] = useState('')
+  // const [remarks,setRemarks] = useState('')
   const [user,setUser] = useState('')
   const [email,setEmail] = useState('')
   const [collection,setCollection] = useState('')
   const [items,setItems] = useState([{}])
 
-  const navigate = useNavigate()
 
-  const submitLoan =() => {
-    // e.preventDefault()
+  const handleChangeCompany = (event: SelectChangeEvent) => {
+    setCompany(event.target.value);
+  };
+  const handleChangeDuration = (event: SelectChangeEvent) => {
+    setDuration(event.target.value);
+  };
+
+  const handleChangeType = (event: SelectChangeEvent) => {
+    setType(event.target.value);
+  };
+
+  const handleChangeCollection = (event: SelectChangeEvent) => {
+    setCollection(event.target.value);
+  };
+
+  const navigate = useNavigate()
+  useEffect(()=>{
+    const user4="1"
+
+    setUser(user4)
+  })
+
+  useEffect(()=>{
+    const req="2022-03-06"
+
+    setRdate(req)
+  })
+
+  const submitLoan =(e) => {
+    e.preventDefault()
      try {
 
       const results = axios.post('http://localhost:5000/api/tloan/newloan',{
@@ -48,8 +81,6 @@ function newtloan() {
         applicationdate,
         duration,
         requireddate,
-        pick,
-        remarks,
         user,
         email,
         collection,
@@ -63,7 +94,9 @@ function newtloan() {
   }
 
   useEffect(()=>{
-    const date = new Date().toLocaleString() + ""
+    var date = new Date().toISOString().split('T')[0]
+   
+   
     setADate(date)
   })
   
@@ -76,41 +109,139 @@ function newtloan() {
     const id = 1
     setUser(id)
   })
-    
+    console.log(applicationdate)
   const getCard = () => {
 
+    const loanDuration = [
+      {"1 Week":"7"},
+      {"2 Weeks":"14"},
+      {"3 Weeks":"21"},
+      {"1 Month":"30"},
+      {"2 Months":"60"},
+      {"3 Months":"90"},
+      {"4 Months":"120"},
+      {"5 Months":"150"},
+      {"6 Months":"180"},
+      {"7 Months":"210"},
+      {"8 Months":"240"},
+      {"9 Months":"270"},
+      {"10 Months":"300"},
+      {"11 Months":"330"},
+      {"12 Months":"365"},
+
+    ]
   return (
       <div>
 
           <h2 className="pagetitle">Apply TLoan</h2>
-    {/* <form onSubmit={submitLoan}> */}
-      <Card sx={{ width: 800, height: 450, marginLeft: 'auto', marginRight: 'auto'}}>
+    <form onSubmit={submitLoan}>
+      <Card sx={{ width: 800, height: 550, marginLeft: 'auto', marginRight: 'auto'}}>
       <CardMedia
       
       />
       <CardContent> 
-        <AddDeleteTableRows />
+        <AddDeleteTableRows  onChange={(e)=>setItems(e.target.value)} />
         
         
         <Box sx={{marginLeft: 2, marginTop: 1, display: 'flex'}}>
-        <TextField id="outlined-basic" label="Employee Name" variant="outlined" size='small'  />
-        <TextField id="outlined-basic" label="Customer Email" variant="outlined" size='small' sx={{marginLeft: 3}} />
-        <CompanyName />
+        <TextField id="outlined-basic" label="Employee Name" variant="outlined" size='small' 
+        onChange={(e)=>setName(e.target.value)}  />
+       
+        <TextField id="outlined-basic" label="Customer Email" variant="outlined" size='small' sx={{marginLeft: 3}}
+         onChange={(e)=>setEmail(e.target.value)}  />
+    
+        <FormControl sx={{ width: 200, marginLeft: 3 }}>
+        <InputLabel >Customer Company</InputLabel>
+        <Select          
+          id="outlined-basic"
+          value={company}
+          onChange={handleChangeCompany}
+          size='small'
+          label="Customer Company"
+        >
+          <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
+          <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
+          <MenuItem value={"3"}>DIRAK181025</MenuItem>
+          <MenuItem value={"4"}>PMC_LIVE</MenuItem>
+          <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
+          <MenuItem value={"6"}>ALL</MenuItem>
+        </Select>
+      </FormControl>
+      {console.log(company)}
 
         </Box>
 
         <Box sx={{display: 'flex'}}>
 
-        <TextField sx={{width: 500, marginLeft:2, marginTop:2}}
+        <TextField sx={{width: 970, marginLeft:2, marginTop:2}}
           multiline
           rows={5.2}
           label="Purpose"
-          
+          onChange={(e)=>setPurpose(e.target.value)} 
         ></TextField>
-        <Box sx={{float: 'right', marginRight: 10.5}}>
-        <DurationOfLoan />
-        <CollectionType/>
-        <LoanType/>
+        <Box sx={{marginLeft: 0.3, float:'right'}}>
+        
+        {/* Duration */}
+        <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+          <InputLabel >Duration</InputLabel>
+          <Select
+            
+            id="outlined-basic"
+            value={duration}
+            onChange={handleChangeDuration}      
+            label="Duration"
+            size='small'
+            >
+           {loanDuration.map((element) => {
+          const [[key, val]] = Object.entries(element);
+          return (
+            <MenuItem value={val} key={key}>
+              {key}
+            </MenuItem>
+          );
+        })}
+        
+          
+           </Select>
+        </FormControl>
+        {console.log(duration)}
+
+        {/* Collection */}
+        <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+        <InputLabel >Collection Type</InputLabel>
+        <Select
+          
+          id="outlined-basic"
+          value={collection}
+          onChange={handleChangeCollection}      
+          label="Collection Type"
+          size='small'
+        >
+          {/* <MenuItem value="">
+            <em>None</em>
+          </MenuItem> */}
+          <MenuItem value={'Self-Collection'}>Self-Collection</MenuItem>
+          <MenuItem value={'Delivery'}>Delivery</MenuItem>
+         </Select>
+      </FormControl>
+
+        {/* Type */}
+        <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+        <InputLabel >Loan Type</InputLabel>
+        <Select
+          
+          id="outlined-basic"
+          value={type}
+          onChange={handleChangeType}
+          label="Loan Type"
+          size='small'
+        >
+         
+          <MenuItem value={"1"}>Internal</MenuItem>
+          <MenuItem value={"2"}>External</MenuItem>
+         
+        </Select>
+      </FormControl>
         </Box>
 
         </Box>
@@ -128,7 +259,7 @@ function newtloan() {
       </Box>
       
     </Card>
-
+    </form>
     </div>
     ) 
   }

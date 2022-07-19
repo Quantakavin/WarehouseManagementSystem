@@ -82,11 +82,9 @@ module.exports.newLoan = async (req, res) => {
         applicationdate,
         duration,
         requireddate,
-        pick,
-        remarks,
         user,
         email,
-        collect,
+        collection,
         items
      } = req.body;
     try {
@@ -102,15 +100,13 @@ module.exports.newLoan = async (req, res) => {
             applicationdate,
             duration,
             requireddate,
-            pick,
-            remarks, 
             user,
             email,
-            collect,
+            collection,
             tloanItems           
         );
        
-            return res.status(201).send('TLoan created successfully!');
+            return res.status(201).json(tloanItems);
     } catch (error) {
         console.log(error);
         return res.status(500).send('Internal Server Error');

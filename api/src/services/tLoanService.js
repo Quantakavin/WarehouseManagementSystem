@@ -10,19 +10,21 @@ module.exports.getAll = async () => {
 module.exports.tloanOutItem = async (
   itemno,
   itemname,
-  quantity
+  quantity,
+  batchno
 ) => {
   return knex('TLoanOutItem').insert({
     itemno,
     itemname,
-    quantity
+    quantity,
+    batchno
   });
 };
 
 
 
 
-module.exports.createTLoan = async (type, company, number, name, purpose, applicationdate, duration, requireddate, pick, remarks, user,email,collect, tloanItems) => {
+module.exports.createTLoan = async (type, company, number, name, purpose, applicationdate, duration, requireddate, user,email,collection, tloanItems) => {
   knex.transaction(function(trx) {
    
     knex.insert({
@@ -35,11 +37,11 @@ module.exports.createTLoan = async (type, company, number, name, purpose, applic
       Duration: duration,
       RequiredDate: requireddate,
       TLoanStatusID: 4,
-      PickStatusID: pick,
-      Remarks: remarks,
+      PickStatusID: 1,
+      Remarks: null,
       UserID: user,
       CustomerEmail:email,
-      Collection: collect,
+      Collection: collection,
     }, 'TLoanID')
     .into('TLoan')
     .transacting(trx)
@@ -78,11 +80,9 @@ module.exports.getTLoanOutItem = async(TLoanID) =>{
   `SELECT 
   tl.TLoanID,
   tl.ItemNo,
-  bp.BatchNo,
+  tl.BatchNo,
   tl.Quantity
   FROM TLoanOutItem tl 
-	JOIN BinProduct bp
-  ON tl.ItemNo = bp.ItemNo AND tl.BatchNo = bp.BatchNo
   WHERE tl.TLoanID = ?
   `
 

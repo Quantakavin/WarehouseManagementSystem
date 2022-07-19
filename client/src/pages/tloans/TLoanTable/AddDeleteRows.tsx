@@ -1,5 +1,6 @@
 import { useState } from "react"
 import TableRows from "./TableRows"
+import './table.css'
 function AddDeleteTableRows(){
     const [rowsData, setRowsData] = useState([]);
  
@@ -30,17 +31,19 @@ function AddDeleteTableRows(){
  
 }
     return(
-        <div className="container" style={{width: 10000}}>
+        <div className="container" style={{width: 10000, height:200, overflow:'scroll'}}>
             <div className="row">
                 <div className="col-sm-8">
-                <table className="table">
+                <table className="table" >
                     <thead>
                       <tr>
+                          <th>Item No.</th>
                           <th>Item Name</th>
                           <th>Batch No.</th>
                           <th>Quantity</th>
                           <th><button className="btn btn-outline-success" onClick={addTableRows} >+</button></th>
-                      </tr>
+                        </tr>
+                      
                     </thead>
                    <tbody>
                    <TableRows rowsData={rowsData} deleteTableRows={deleteTableRows} handleChange={handleChange} />
