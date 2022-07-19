@@ -39,7 +39,13 @@ import {
   DateTimePicker,
   LocalizationProvider,
 } from "@mui/x-date-pickers";
-import { Card, CardContent, MenuItem, TextField, Typography } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  MenuItem,
+  TextField,
+  Typography,
+} from "@mui/material";
 import locale from "date-fns/locale/en-US";
 import { textAlign } from "@mui/system";
 import { useNavigate, useParams } from "react-router";
@@ -47,8 +53,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
-
-
 
 export default function CreateRMA() {
   const userrole = useAppSelector(selectRole);
@@ -61,9 +65,7 @@ export default function CreateRMA() {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const rma = await axios.get(
-        `http://localhost:5000/api/RMA/${RmaID}`
-      );
+      const rma = await axios.get(`http://localhost:5000/api/RMA/${RmaID}`);
 
       setRma(rma.data);
     };
@@ -93,214 +95,214 @@ export default function CreateRMA() {
   // console.log(rma.data.RMAProducts)
   // const products = rma.RMAProducts;
 
-    function buildApplyDateFilterFn(
-        filterItem: GridFilterItem,
-        compareFn: (value1: number, value2: number) => boolean,
-        showTime: boolean = false
-      ) {
-        if (!filterItem.value) {
-          return null;
-        }
-      
-        const filterValueMs = filterItem.value.getTime();
-      
-        return ({ value }: GridCellParams<Date, any, any>): boolean => {
-          if (!value) {
-            return false;
-          }
-      
-          // Make a copy of the date to not reset the hours in the original object
-          const dateCopy = new Date(value);
-          dateCopy.setHours(
-            showTime ? value.getHours() : 0,
-            showTime ? value.getMinutes() : 0,
-            0,
-            0
+  function buildApplyDateFilterFn(
+    filterItem: GridFilterItem,
+    compareFn: (value1: number, value2: number) => boolean,
+    showTime: boolean = false
+  ) {
+    if (!filterItem.value) {
+      return null;
+    }
+
+    const filterValueMs = filterItem.value.getTime();
+
+    return ({ value }: GridCellParams<Date, any, any>): boolean => {
+      if (!value) {
+        return false;
+      }
+
+      // Make a copy of the date to not reset the hours in the original object
+      const dateCopy = new Date(value);
+      dateCopy.setHours(
+        showTime ? value.getHours() : 0,
+        showTime ? value.getMinutes() : 0,
+        0,
+        0
+      );
+      const cellValueMs = dateCopy.getTime();
+
+      return compareFn(cellValueMs, filterValueMs);
+    };
+  }
+
+  function getDateFilterOperators(
+    showTime: boolean = false
+  ): GridColTypeDef["filterOperators"] {
+    return [
+      {
+        value: "is",
+        getApplyFilterFn: (filterItem) => {
+          return buildApplyDateFilterFn(
+            filterItem,
+            (value1, value2) => value1 === value2,
+            showTime
           );
-          const cellValueMs = dateCopy.getTime();
-      
-          return compareFn(cellValueMs, filterValueMs);
-        };
-      }
-      
-      function getDateFilterOperators(
-        showTime: boolean = false
-      ): GridColTypeDef["filterOperators"] {
-        return [
-          {
-            value: "is",
-            getApplyFilterFn: (filterItem) => {
-              return buildApplyDateFilterFn(
-                filterItem,
-                (value1, value2) => value1 === value2,
-                showTime
-              );
-            },
-            InputComponent: GridFilterDateInput,
-            InputComponentProps: { showTime },
-          },
-          {
-            value: "not",
-            getApplyFilterFn: (filterItem) => {
-              return buildApplyDateFilterFn(
-                filterItem,
-                (value1, value2) => value1 !== value2,
-                showTime
-              );
-            },
-            InputComponent: GridFilterDateInput,
-            InputComponentProps: { showTime },
-          },
-          {
-            value: "after",
-            getApplyFilterFn: (filterItem) => {
-              return buildApplyDateFilterFn(
-                filterItem,
-                (value1, value2) => value1 > value2,
-                showTime
-              );
-            },
-            InputComponent: GridFilterDateInput,
-            InputComponentProps: { showTime },
-          },
-          {
-            value: "onOrAfter",
-            getApplyFilterFn: (filterItem) => {
-              return buildApplyDateFilterFn(
-                filterItem,
-                (value1, value2) => value1 >= value2,
-                showTime
-              );
-            },
-            InputComponent: GridFilterDateInput,
-            InputComponentProps: { showTime },
-          },
-          {
-            value: "before",
-            getApplyFilterFn: (filterItem) => {
-              return buildApplyDateFilterFn(
-                filterItem,
-                (value1, value2) => value1 < value2,
-                showTime
-              );
-            },
-            InputComponent: GridFilterDateInput,
-            InputComponentProps: { showTime },
-          },
-          {
-            value: "onOrBefore",
-            getApplyFilterFn: (filterItem) => {
-              return buildApplyDateFilterFn(
-                filterItem,
-                (value1, value2) => value1 <= value2,
-                showTime
-              );
-            },
-            InputComponent: GridFilterDateInput,
-            InputComponentProps: { showTime },
-          },
-          {
-            value: "isEmpty",
-            getApplyFilterFn: () => {
-              return ({ value }): boolean => {
-                return value == null;
-              };
-            },
-            requiresFilterValue: false,
-          },
-          {
-            value: "isNotEmpty",
-            getApplyFilterFn: () => {
-              return ({ value }): boolean => {
-                return value != null;
-              };
-            },
-            requiresFilterValue: false,
-          },
-        ];
-      }
-      
-      const dateAdapter = new AdapterDateFns({ locale });
-      
-      const dateColumnType: GridColTypeDef<Date | string, string> = {
-        ...GRID_DATE_COL_DEF,
-        resizable: false,
-        renderEditCell: (params) => {
-          return <GridEditDateCell {...params} />;
         },
-        filterOperators: getDateFilterOperators(),
-        valueFormatter: (params) => {
-          if (typeof params.value === "string") {
-            return params.value;
-          }
-          if (params.value) {
-            return dateAdapter.format(params.value, "keyboardDate");
-          }
-          return "";
+        InputComponent: GridFilterDateInput,
+        InputComponentProps: { showTime },
+      },
+      {
+        value: "not",
+        getApplyFilterFn: (filterItem) => {
+          return buildApplyDateFilterFn(
+            filterItem,
+            (value1, value2) => value1 !== value2,
+            showTime
+          );
         },
-      };
-      
-      function GridEditDateCell({
-        id,
-        field,
-        value,
-      }: GridRenderEditCellParams<Date | string | null>) {
-        const apiRef = useGridApiContext();
-      
-        const handleChange = (newValue: unknown) => {
-          apiRef.current.setEditCellValue({ id, field, value: newValue });
-        };
-      
-        return (
-          <DatePicker
-            value={value}
-            renderInput={(params) => <TextField {...params} />}
-            onChange={handleChange}
-            inputFormat="dd/MM/yy"
-            views={['day', 'month', 'year']}
+        InputComponent: GridFilterDateInput,
+        InputComponentProps: { showTime },
+      },
+      {
+        value: "after",
+        getApplyFilterFn: (filterItem) => {
+          return buildApplyDateFilterFn(
+            filterItem,
+            (value1, value2) => value1 > value2,
+            showTime
+          );
+        },
+        InputComponent: GridFilterDateInput,
+        InputComponentProps: { showTime },
+      },
+      {
+        value: "onOrAfter",
+        getApplyFilterFn: (filterItem) => {
+          return buildApplyDateFilterFn(
+            filterItem,
+            (value1, value2) => value1 >= value2,
+            showTime
+          );
+        },
+        InputComponent: GridFilterDateInput,
+        InputComponentProps: { showTime },
+      },
+      {
+        value: "before",
+        getApplyFilterFn: (filterItem) => {
+          return buildApplyDateFilterFn(
+            filterItem,
+            (value1, value2) => value1 < value2,
+            showTime
+          );
+        },
+        InputComponent: GridFilterDateInput,
+        InputComponentProps: { showTime },
+      },
+      {
+        value: "onOrBefore",
+        getApplyFilterFn: (filterItem) => {
+          return buildApplyDateFilterFn(
+            filterItem,
+            (value1, value2) => value1 <= value2,
+            showTime
+          );
+        },
+        InputComponent: GridFilterDateInput,
+        InputComponentProps: { showTime },
+      },
+      {
+        value: "isEmpty",
+        getApplyFilterFn: () => {
+          return ({ value }): boolean => {
+            return value == null;
+          };
+        },
+        requiresFilterValue: false,
+      },
+      {
+        value: "isNotEmpty",
+        getApplyFilterFn: () => {
+          return ({ value }): boolean => {
+            return value != null;
+          };
+        },
+        requiresFilterValue: false,
+      },
+    ];
+  }
+
+  const dateAdapter = new AdapterDateFns({ locale });
+
+  const dateColumnType: GridColTypeDef<Date | string, string> = {
+    ...GRID_DATE_COL_DEF,
+    resizable: false,
+    renderEditCell: (params) => {
+      return <GridEditDateCell {...params} />;
+    },
+    filterOperators: getDateFilterOperators(),
+    valueFormatter: (params) => {
+      if (typeof params.value === "string") {
+        return params.value;
+      }
+      if (params.value) {
+        return dateAdapter.format(params.value, "keyboardDate");
+      }
+      return "";
+    },
+  };
+
+  function GridEditDateCell({
+    id,
+    field,
+    value,
+  }: GridRenderEditCellParams<Date | string | null>) {
+    const apiRef = useGridApiContext();
+
+    const handleChange = (newValue: unknown) => {
+      apiRef.current.setEditCellValue({ id, field, value: newValue });
+    };
+
+    return (
+      <DatePicker
+        value={value}
+        renderInput={(params) => <TextField {...params} />}
+        onChange={handleChange}
+        inputFormat="dd/MM/yy"
+        views={["day", "month", "year"]}
+      />
+    );
+  }
+
+  function GridFilterDateInput(
+    props: GridFilterInputValueProps & { showTime?: boolean }
+  ) {
+    const { item, showTime, applyValue, apiRef } = props;
+
+    const Component = showTime ? DateTimePicker : DatePicker;
+
+    const handleFilterChange = (newValue: unknown) => {
+      applyValue({ ...item, value: newValue });
+    };
+
+    return (
+      <Component
+        value={item.value || null}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            variant="standard"
+            label={apiRef.current.getLocaleText("filterPanelInputLabel")}
           />
-        );
-      }
-      
-      function GridFilterDateInput(
-        props: GridFilterInputValueProps & { showTime?: boolean }
-      ) {
-        const { item, showTime, applyValue, apiRef } = props;
-      
-        const Component = showTime ? DateTimePicker : DatePicker;
-      
-        const handleFilterChange = (newValue: unknown) => {
-          applyValue({ ...item, value: newValue });
-        };
-      
-        return (
-          <Component
-            value={item.value || null}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="standard"
-                label={apiRef.current.getLocaleText("filterPanelInputLabel")}
-              />
-            )}
-            InputAdornmentProps={{
-              sx: {
-                "& .MuiButtonBase-root": {
-                  marginRight: -1,
-                },
-              },
-            }}
-            onChange={handleFilterChange}
-          />
-        );
-      }
-      
-      interface EditToolbarProps {
-        setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
-        setRowModesModel: (
-          newModel: (oldModel: GridRowModesModel) => GridRowModesModel
-        ) => void;
-      }
+        )}
+        InputAdornmentProps={{
+          sx: {
+            "& .MuiButtonBase-root": {
+              marginRight: -1,
+            },
+          },
+        }}
+        onChange={handleFilterChange}
+      />
+    );
+  }
+
+  interface EditToolbarProps {
+    setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
+    setRowModesModel: (
+      newModel: (oldModel: GridRowModesModel) => GridRowModesModel
+    ) => void;
+  }
 
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
@@ -373,7 +375,12 @@ export default function CreateRMA() {
       width: 400,
       editable: true,
     },
-    { field: "Instructions", headerName: "Instructions", width: 400, editable: true },
+    {
+      field: "Instructions",
+      headerName: "Instructions",
+      width: 400,
+      editable: true,
+    },
     {
       field: "CourseOfAction",
       headerName: "Course Of Action",
@@ -432,146 +439,138 @@ export default function CreateRMA() {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const companies = await axios.get(
-        `http://localhost:5000/api/rmacompanies`
-      )
-      .then((companies)=> setCompanies(companies.data))
+      const companies = await axios
+        .get(`http://localhost:5000/api/rmacompanies`)
+        .then((companies) => setCompanies(companies.data));
       // setRma(Object.e)
     };
     // call the function
     fetchData()
       // make sure to catch any error
-    .catch(console.error);
+      .catch(console.error);
   }, []);
-
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCompany(event.target.value);
   };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
-    <div>
-      <h2 className="pagetitle">RMA Application Form</h2>
-      <Card
-        sx={{
-          width: 1950,
-          height: 680,
-          marginTop: 5,
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}
-      >
-        <CardContent>
-                    <Box
-                component="form"
-                sx={{
-                  "& .MuiTextField-root": { m: 1, width: "25ch" },
-                  marginBottom: 2,
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                }}
-                noValidate
-                autoComplete="off"
-              >
-                <Typography
-                  gutterBottom
-                  variant="subtitle2"
-                  component="div"
-                  sx={{
-                    display: "flex",
-                    justifyContent: "left",
-                    alignItems: "center",
-                    marginTop: 3,
-                    marginLeft: 0,
-                    color: "#063970",
-                    fontWeight: "bold",
-                  }}
-                >
-                  <Box>
-                    <div>RMA ID</div>
-                    <div style={{ color: "black", fontWeight: "normal" }}>
-                      {rma.RmaID}
-                    </div>
-                  </Box>
-                  <Box sx={{ marginLeft: 5 }}>
-                    <div>EMPLOYEE</div>
-                    <div style={{ color: "black", fontWeight: "normal" }}>
-                      {rma.Username}
-                    </div>
-                  </Box>
-                  <Box sx={{ marginLeft: 5 }}>
-                    <div style={{}}>DATE APPLIED</div>
-                    <div style={{ color: "black", fontWeight: "normal" }}>
-                      {rma.DateTime}
-                    </div>
-                  </Box>
-                  <Box sx={{ marginLeft: 5 }}>
-                    <div style={{}}>CUSTOMER NAME</div>
-                    <div style={{ color: "black", fontWeight: "normal" }}>
-                      {rma.ContactPerson}
-                    </div>
-                  </Box>
-                  <Box sx={{ marginLeft: 5 }}>
-                    <div style={{}}>CUSTOMER EMAIL</div>
-                    <div style={{ color: "black", fontWeight: "normal" }}>
-                      {rma.CustomerEmail}
-                    </div>
-                  </Box>
-                  <Box sx={{ marginLeft: 5 }}>
-                    <div style={{}}>COMPANY</div>
-                    <div style={{ color: "black", fontWeight: "normal" }}>
-                      {rma.CompanyName}
-                    </div>
-                  </Box>
-                  <Box sx={{ marginLeft: 5 }}>
-                    <div style={{}}>CONTACT NUMBER</div>
-                    <div style={{ color: "black", fontWeight: "normal" }}>
-                      {rma.ContactNo}
-                    </div>
-                  </Box>
-                </Typography>
-              </Box>
-          <Box
+    <Card
+      sx={{
+        width: 1950,
+        height: 700,
+        marginTop: 5,
+        marginLeft: "auto",
+        marginRight: "auto",
+      }}
+    >
+      <CardContent>
+        <Box
+          component="form"
+          sx={{
+            "& .MuiTextField-root": { m: 1, width: "25ch" },
+            marginBottom: 2,
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <Typography
+            gutterBottom
+            variant="subtitle2"
+            component="div"
             sx={{
-              height: 500,
-              width: "100%",
-              "& .actions": {
-                color: "text.secondary",
-              },
-              "& .textPrimary": {
-                color: "text.primary",
-              },
-              marginLeft: "auto",
-              marginRight: "auto",
+              display: "flex",
+              justifyContent: "left",
+              alignItems: "center",
+              marginTop: 3,
+              marginLeft: 0,
+              color: "#063970",
+              fontWeight: "bold",
             }}
           >
-            <LocalizationProvider
-              dateAdapter={AdapterDateFns}
-              adapterLocale={locale}
-            >
-              <DataGridPro
-                rows={rows}
-                columns={columns}
-                editMode="row"
-                getRowId={(row) => row.id}
-                rowModesModel={rowModesModel}
-                onRowEditStart={handleRowEditStart}
-                onRowEditStop={handleRowEditStop}
-                processRowUpdate={processRowUpdate}
-                componentsProps={{
-                  toolbar: { setRows, setRowModesModel },
-                }}
-                experimentalFeatures={{ newEditingApi: true }}
-              />
-            </LocalizationProvider>
-          </Box>
+            <Box>
+              <h2>RMA Request #{rma.RmaID}</h2>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <div>EMPLOYEE</div>
+              <div style={{ color: "black", fontWeight: "normal" }}>
+                {rma.Username}
+              </div>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <div style={{}}>DATE APPLIED</div>
+              <div style={{ color: "black", fontWeight: "normal" }}>
+                {rma.DateTime}
+              </div>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <div style={{}}>CUSTOMER NAME</div>
+              <div style={{ color: "black", fontWeight: "normal" }}>
+                {rma.ContactPerson}
+              </div>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <div style={{}}>CUSTOMER EMAIL</div>
+              <div style={{ color: "black", fontWeight: "normal" }}>
+                {rma.CustomerEmail}
+              </div>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <div style={{}}>COMPANY</div>
+              <div style={{ color: "black", fontWeight: "normal" }}>
+                {rma.CompanyName}
+              </div>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <div style={{}}>CONTACT NUMBER</div>
+              <div style={{ color: "black", fontWeight: "normal" }}>
+                {rma.ContactNo}
+              </div>
+            </Box>
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            height: 500,
+            width: "100%",
+            "& .actions": {
+              color: "text.secondary",
+            },
+            "& .textPrimary": {
+              color: "text.primary",
+            },
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        >
+          <LocalizationProvider
+            dateAdapter={AdapterDateFns}
+            adapterLocale={locale}
+          >
+            <DataGridPro
+              sx={{ height: 500 }}
+              rows={rows}
+              columns={columns}
+              editMode="row"
+              getRowId={(row) => row.id}
+              rowModesModel={rowModesModel}
+              onRowEditStart={handleRowEditStart}
+              onRowEditStop={handleRowEditStop}
+              processRowUpdate={processRowUpdate}
+              componentsProps={{
+                toolbar: { setRows, setRowModesModel },
+              }}
+              experimentalFeatures={{ newEditingApi: true }}
+            />
+          </LocalizationProvider>
           <Box
             sx={{
               display: "flex",
               justifyContent: "center",
-              alignItems: "center",
               paddingTop: 3,
             }}
           >
@@ -582,10 +581,8 @@ export default function CreateRMA() {
               Submit
             </Button>
           </Box>
-        </CardContent>
-      </Card>
-    </div>
+        </Box>
+      </CardContent>
+    </Card>
   );
 }
-
-
