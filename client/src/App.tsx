@@ -109,6 +109,10 @@ const App: React.FC = () => {
                 path="/tloandetails/:TLoanNumber"
                 element={<TLoanDisplay />}
               />
+              <Route
+                path="/tloandetails2/:TLoanNumber"
+                element={<TLoanDisplay2/>}
+              />
               <Route path="/newtloan" element={<NewTLoan />} />
             </Route>
           </Routes>

@@ -150,7 +150,7 @@ export default function tloanDisplay() {
 
     // }
     const items = loans.Items;
-
+    console.log(items)
     return (
       <TableContainer
         component={Paper}
@@ -241,9 +241,9 @@ export default function tloanDisplay() {
                 </div>
               </Box>
               <Box sx={{ marginLeft: 5 }}>
-                <div style={{}}>Customer Email</div>
+                <div style={{}}>Customer Email:</div>
                 <div style={{ color: "black", fontWeight: "normal" }}>
-                  {loans.Requestor}
+                  {loans.CustomerEmail}
                 </div>
               </Box>
             </Typography>

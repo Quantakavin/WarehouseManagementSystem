@@ -68,17 +68,21 @@ export default function TLoanDisplay2() {
   }, []);
 
   const columns: GridColumns = [
-    { field: "ItemNo", headerName: "Item Number", width: 220, editable: false },
+    {   
+      field: "ItemNo", 
+      headerName: "Item Number", 
+      width: 180,
+      editable: false },
     {
       field: "BatchNo",
       headerName: "Batch Number",
-      width: 220,
+      width: 180,
       editable: false,
     },
     {
       field: "Quantity",
       headerName: "Quantity",
-      width: 98,
+      width: 130,
       editable: false,
     },
   ];
@@ -151,16 +155,16 @@ export default function TLoanDisplay2() {
                     </div>
                   </Box>
                   <Box sx={{ marginLeft: 5 }}>
-                    <div style={{}}>Customer Email</div>
+                    <div style={{}}>Customer Email:</div>
                     <div style={{ color: "black", fontWeight: "normal" }}>
-                      {loans.Requestor}
+                      {loans.CustomerEmail}
                     </div>
                   </Box>
                 </Typography>
               </Grid>
               <Grid item xs={8}>
                 <DataGrid
-                  sx={{ height: 300, width: 540 }}
+                  sx={{ height: 300, width: 500, marginLeft:6.5 }}
                   rows={items}
                   columns={columns}
                   editMode="row"
@@ -238,37 +242,5 @@ export default function TLoanDisplay2() {
   };
 
   return <div>{getData()}</div>;
-  // <Card>
-  //   <Box
-  //     sx={{
-  //       height: 1200,
-  //       marginLeft: "auto",
-  //       marginRight: "auto",
-  //     }}
-  //   >
-
-  //     <DataGrid
-  //       sx={{ height: 500, width: 500 }}
-  //       rows={items}
-  //       columns={columns}
-  //       editMode="row"
-  //       getRowId={(item) => item.ItemNo}
-  //       experimentalFeatures={{ newEditingApi: true }}
-  //     />
-  //     <Box
-  //       sx={{
-  //         display: "flex",
-  //         justifyContent: "center",
-  //         paddingTop: 3,
-  //       }}
-  //     >
-  //       <Button size="small" onClick={() => navigate("/rma")}>
-  //         Back
-  //       </Button>
-  //       <Button size="small" onClick={() => navigate("/rma")}>
-  //         Submit
-  //       </Button>
-  //     </Box>
-  //   </Box>
-  // </Card>
+ 
 }

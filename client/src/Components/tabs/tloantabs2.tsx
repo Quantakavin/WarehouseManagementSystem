@@ -254,7 +254,7 @@ import {
                           setFilterModel(newFilterModel)
                         }
                         onRowClick={(params: GridRowParams) => {
-                          navigate(`/tloandetails/${params.id}`);
+                          navigate(`/tloandetails2/${params.id}`);
                         }}
                       />
                     </div>
