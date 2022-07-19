@@ -75,8 +75,7 @@ module.exports.getLoanByNumber = async(TLoanNumber) => {
 module.exports.getTLoanOutItem = async(TLoanID) =>{
 
   const query = 
-  `
-  SELECT 
+  `SELECT 
   tl.TLoanID,
   tl.ItemNo,
   bp.BatchNo,

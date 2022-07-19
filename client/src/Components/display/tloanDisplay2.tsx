@@ -82,7 +82,7 @@ export default function TLoanDisplay2() {
     {
       field: "Quantity",
       headerName: "Quantity",
-      width: 130,
+      width: 80,
       editable: false,
     },
   ];

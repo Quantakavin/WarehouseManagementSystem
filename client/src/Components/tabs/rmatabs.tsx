@@ -12,9 +12,7 @@ import { TabList, TabPanel, TabContext } from "@mui/lab";
 import "react-tabs/style/react-tabs.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
 import { Link, useNavigate } from "react-router-dom";
-import TableNew from "../table/InfiniteTable";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole, selectId } from "../../app/reducers/CurrentUserSlice";
 import RmaSearch from "../search/RmaSearch";
@@ -33,7 +31,6 @@ import {
   GridRowId,
   MuiEvent,
 } from "@mui/x-data-grid";
-import { DataGridPro } from "@mui/x-data-grid-pro";
 
 const columns = [
   { field: "RmaID", headerName: "ID", minWidth: 250 },
@@ -232,7 +229,7 @@ const Rmatabs: React.FC = () => {
               </Grid>
 
               <Grid item xs={12}>
-              <TabPanel value="1">
+                <TabPanel value="1">
                   <div style={{ height: 700, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
@@ -286,6 +283,23 @@ const Rmatabs: React.FC = () => {
                           </Stack>
                         ),
                       }}
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
+                      }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
@@ -298,7 +312,7 @@ const Rmatabs: React.FC = () => {
                 </TabPanel>
                 <TabPanel value="3">
                   <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
+                    <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={myRejectedTable}
                       columns={columns}
@@ -315,6 +329,23 @@ const Rmatabs: React.FC = () => {
                             No rejected RMA requests
                           </Stack>
                         ),
+                      }}
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
@@ -374,7 +405,7 @@ const Rmatabs: React.FC = () => {
               <Grid item xs={12}>
                 <TabPanel value="3">
                   <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
+                    <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={receivedTable}
                       columns={columns}
@@ -391,6 +422,23 @@ const Rmatabs: React.FC = () => {
                             No received RMA requessts
                           </Stack>
                         ),
+                      }}
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
@@ -530,6 +578,23 @@ const Rmatabs: React.FC = () => {
                           </Stack>
                         ),
                       }}
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
+                      }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
@@ -542,7 +607,7 @@ const Rmatabs: React.FC = () => {
                 </TabPanel>
                 <TabPanel value="2">
                   <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
+                    <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={approvedTable}
                       columns={columns}
@@ -560,6 +625,23 @@ const Rmatabs: React.FC = () => {
                           </Stack>
                         ),
                       }}
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
+                      }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
@@ -572,7 +654,7 @@ const Rmatabs: React.FC = () => {
                 </TabPanel>
                 <TabPanel value="3">
                   <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
+                    <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={receivedTable}
                       columns={columns}
@@ -590,6 +672,23 @@ const Rmatabs: React.FC = () => {
                           </Stack>
                         ),
                       }}
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
+                      }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
@@ -602,7 +701,7 @@ const Rmatabs: React.FC = () => {
                 </TabPanel>
                 <TabPanel value="4">
                   <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
+                    <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={verifiedTable}
                       columns={columns}
@@ -620,6 +719,23 @@ const Rmatabs: React.FC = () => {
                           </Stack>
                         ),
                       }}
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
+                      }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
@@ -632,7 +748,7 @@ const Rmatabs: React.FC = () => {
                 </TabPanel>
                 <TabPanel value="5">
                   <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
+                    <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={inprogressTable}
                       columns={columns}
@@ -650,6 +766,23 @@ const Rmatabs: React.FC = () => {
                           </Stack>
                         ),
                       }}
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
+                      }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
@@ -662,7 +795,7 @@ const Rmatabs: React.FC = () => {
                 </TabPanel>
                 <TabPanel value="6">
                   <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
+                    <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={closedTable}
                       columns={columns}
@@ -670,6 +803,23 @@ const Rmatabs: React.FC = () => {
                       pageSize={12}
                       components={{
                         Toolbar: GridToolbar,
+                      }}
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
@@ -691,7 +841,6 @@ const Rmatabs: React.FC = () => {
       return (
         <>
           <h2 className="pagetitle"> RMA Requests </h2>
-
           <TabContext value={value || "1"}>
             <Grid container>
               <Grid item xs={11}>
@@ -749,11 +898,10 @@ const Rmatabs: React.FC = () => {
                   </Tabs>
                 </Box>
               </Grid>
-
               <Grid item xs={12}>
                 <TabPanel value="4">
                   <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
+                    <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={verifiedTable}
                       columns={columns}
@@ -771,6 +919,23 @@ const Rmatabs: React.FC = () => {
                           </Stack>
                         ),
                       }}
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
+                      }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
@@ -783,7 +948,7 @@ const Rmatabs: React.FC = () => {
                 </TabPanel>
                 <TabPanel value="5">
                   <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
+                    <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={inprogressTable}
                       columns={columns}
@@ -797,9 +962,26 @@ const Rmatabs: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No closed RMA requessts
+                            No RMA requests in progress
                           </Stack>
                         ),
+                      }}
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
@@ -813,7 +995,7 @@ const Rmatabs: React.FC = () => {
                 </TabPanel>
                 <TabPanel value="6">
                   <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
+                    <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={closedTable}
                       columns={columns}
@@ -821,6 +1003,32 @@ const Rmatabs: React.FC = () => {
                       pageSize={12}
                       components={{
                         Toolbar: GridToolbar,
+                        NoRowsOverlay: () => (
+                          <Stack
+                            height="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            No closed RMA requests
+                          </Stack>
+                        ),
+                      }}
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
@@ -880,206 +1088,8 @@ const Rmatabs: React.FC = () => {
               <Grid item xs={12}>
                 <TabPanel value="3">
                   <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={receivedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: GridToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No received RMA requessts
-                          </Stack>
-                        ),
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </div>
-                </TabPanel>
-              </Grid>
-            </Grid>
-          </TabContext>
-        </>
-      );
-    }
-    case "Admin": {
-      return (
-        <>
-          <h2 className="pagetitle"> RMA Requests </h2>
-
-          <TabContext value={value || "1"}>
-            <Grid container>
-              <Grid item xs={11}>
-                <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                  <Tabs
-                    onChange={handleChange}
-                    TabIndicatorProps={{
-                      style: { backgroundColor: "#D97D54" },
-                    }}
-                    sx={{
-                      "& button:focus": {
-                        backgroundColor: "#063970",
-                        color: "white",
-                        width: 190,
-                        height: 110,
-                      },
-                    }}
-                  >
-                    <Tab
-                      label="Pending"
-                      value="1"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: 100,
-                        width: 180,
-                      }}
-                    />
-                    <Tab
-                      label="Approved"
-                      value="2"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: 100,
-                        width: 180,
-                      }}
-                    />
-                    <Tab
-                      label="Received"
-                      value="3"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: 100,
-                        width: 180,
-                      }}
-                    />
-                    <Tab
-                      label="Verified"
-                      value="4"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: 100,
-                        width: 180,
-                      }}
-                    />
-                    <Tab
-                      label="In Progress"
-                      value="5"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: 100,
-                        width: 180,
-                      }}
-                    />
-                    <Tab
-                      label="Closed"
-                      value="6"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: 100,
-                        width: 180,
-                      }}
-                    />
-                  </Tabs>
-                </Box>
-              </Grid>
-
-              <Grid item xs={12}>
-                <TabPanel value="1">
-                  <div style={{ height: 700, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
-                      rows={pendingTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={pageSize}
-                      onPageSizeChange={(newPage) => setPageSize(newPage)}
-                      pagination
-                      components={{
-                        Toolbar: GridToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No pending RMA requests
-                          </Stack>
-                        ),
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </div>
-                </TabPanel>
-                <TabPanel value="2">
-                  <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={approvedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: GridToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No approved RMA requessts
-                          </Stack>
-                        ),
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </div>
-                </TabPanel>
-                <TabPanel value="3">
-                  <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
-                      sx={{ background: "white", fontSize: 18 }}
                       rows={receivedTable}
                       columns={columns}
                       getRowId={(row) => row.RmaID}
@@ -1096,86 +1106,22 @@ const Rmatabs: React.FC = () => {
                           </Stack>
                         ),
                       }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </div>
-                </TabPanel>
-                <TabPanel value="4">
-                  <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={verifiedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: GridToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No verified RMA requessts
-                          </Stack>
-                        ),
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </div>
-                </TabPanel>
-                <TabPanel value="5">
-                  <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={inprogressTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: GridToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No closed RMA requessts
-                          </Stack>
-                        ),
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </div>
-                </TabPanel>
-                <TabPanel value="6">
-                  <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={closedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: GridToolbar,
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
@@ -1193,6 +1139,7 @@ const Rmatabs: React.FC = () => {
         </>
       );
     }
+    case "Admin":
     default: {
       return (
         <>
@@ -1315,6 +1262,23 @@ const Rmatabs: React.FC = () => {
                           </Stack>
                         ),
                       }}
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
+                      }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
@@ -1327,7 +1291,7 @@ const Rmatabs: React.FC = () => {
                 </TabPanel>
                 <TabPanel value="2">
                   <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
+                    <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={approvedTable}
                       columns={columns}
@@ -1345,6 +1309,23 @@ const Rmatabs: React.FC = () => {
                           </Stack>
                         ),
                       }}
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
+                      }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
@@ -1357,7 +1338,7 @@ const Rmatabs: React.FC = () => {
                 </TabPanel>
                 <TabPanel value="3">
                   <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
+                    <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={receivedTable}
                       columns={columns}
@@ -1375,6 +1356,23 @@ const Rmatabs: React.FC = () => {
                           </Stack>
                         ),
                       }}
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
+                      }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
@@ -1387,7 +1385,7 @@ const Rmatabs: React.FC = () => {
                 </TabPanel>
                 <TabPanel value="4">
                   <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
+                    <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={verifiedTable}
                       columns={columns}
@@ -1405,6 +1403,23 @@ const Rmatabs: React.FC = () => {
                           </Stack>
                         ),
                       }}
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
+                      }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
@@ -1417,9 +1432,56 @@ const Rmatabs: React.FC = () => {
                 </TabPanel>
                 <TabPanel value="5">
                   <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
+                    <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={inprogressTable}
+                      columns={columns}
+                      getRowId={(row) => row.RmaID}
+                      pageSize={12}
+                      components={{
+                        Toolbar: GridToolbar,
+                        NoRowsOverlay: () => (
+                          <Stack
+                            height="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            No RMA requests in progress
+                          </Stack>
+                        ),
+                      }}
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
+                      }}
+                      filterModel={filterModel}
+                      onFilterModelChange={(newFilterModel) =>
+                        setFilterModel(newFilterModel)
+                      }
+                      onRowClick={(params: GridRowParams) => {
+                        navigate(`/rmaDetails/${params.id}`);
+                      }}
+                    />
+                  </div>
+                </TabPanel>
+                <TabPanel value="6">
+                  <div style={{ height: 700, width: "100%" }}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 18 }}
+                      rows={closedTable}
                       columns={columns}
                       getRowId={(row) => row.RmaID}
                       pageSize={12}
@@ -1435,26 +1497,22 @@ const Rmatabs: React.FC = () => {
                           </Stack>
                         ),
                       }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </div>
-                </TabPanel>
-                <TabPanel value="6">
-                  <div style={{ height: 700, width: "100%" }}>
-                    <DataGridPro
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={closedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: GridToolbar,
+                      componentsProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                        },
+                        panel: {
+                          sx: {
+                            "& .MuiTypography-root": {
+                              color: "black",
+                              fontSize: 16,
+                            },
+                            "& .MuiDataGrid-filterForm": {
+                              bgcolor: "white",
+                            },
+                          },
+                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
