@@ -6,6 +6,7 @@ interface RmaState {
   RmaID: number | null;
   Company: string | null;
   Email: string | null;
+  Username: string | null;
   ContactNo: number | null;
   RmaStatusID: number | null;
   ItemCode: number | null;
@@ -21,6 +22,7 @@ const initialState: RmaState = {
   RmaID: null,
   Company: null,
   Email: null,
+  Username: null,
   ContactNo: null,
   RmaStatusID: null,
   ItemCode: null,
@@ -40,6 +42,7 @@ export const RmaSlice = createSlice({
       state.RmaID = action.payload.RmaID;
       state.Company = action.payload.Company;
       state.Email = action.payload.Email;
+      state.Username = action.payload.Username;
       state.ContactNo = action.payload.ContactNo;
       state.ItemCode = action.payload.ItemCode;
       state.InvoiceNo = action.payload.InvoiceNo;

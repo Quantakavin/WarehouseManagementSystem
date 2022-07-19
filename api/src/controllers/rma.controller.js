@@ -92,6 +92,26 @@ module.exports.getByRmaID = async (req, res) => {
     }
 };
 
+module.exports.getMyPendingRMA = async (req, res) => {
+    const { SalesmanID } = req.params;
+    try {
+        const reqRMA = await redisClient.get(`myPendingRMA#${SalesmanID}`);
+        if (reqRMA !== null) {
+            const redisresults = JSON.parse(reqRMA);
+            return res.status(200).json(redisresults);
+        }
+        const results = await rmaService.getSalesmanPendingRMA(SalesmanID);
+        if (results[0].length > 0) {
+            redisClient.set(`myPendingRMA#${SalesmanID}`, JSON.stringify(results[0]));
+            return res.status(200).send(results[0]);
+        }
+        return res.status(404).json({ message: 'Cannot find RMA requests under you!' });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
 module.exports.getMyAcceptedRMA = async (req, res) => {
     const { SalesmanID } = req.params;
     try {

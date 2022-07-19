@@ -256,6 +256,8 @@ export default function CreateRMA() {
             value={value}
             renderInput={(params) => <TextField {...params} />}
             onChange={handleChange}
+            inputFormat="dd/MM/yy"
+            views={['day', 'month', 'year']}
           />
         );
       }

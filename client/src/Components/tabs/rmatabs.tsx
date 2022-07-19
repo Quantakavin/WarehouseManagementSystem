@@ -11,7 +11,7 @@ import {
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import "react-tabs/style/react-tabs.css";
 import React, { useEffect, useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 
 import { Link, useNavigate } from "react-router-dom";
 import TableNew from "../table/InfiniteTable";
@@ -52,6 +52,7 @@ const Rmatabs: React.FC = () => {
   const [verifiedTable, setVerifiedTable] = useState([]);
   const [inprogressTable, setInProgressTable] = useState([]);
   const [closedTable, setClosedTable] = useState([]);
+  const [myPendingTable, setMPTable] = useState([]);
   const [myAcceptedTable, setMATable] = useState([]);
   const [myRejectedTable, setMRTable] = useState([]);
 
@@ -93,24 +94,31 @@ const Rmatabs: React.FC = () => {
 
   useEffect(() => {
     // declare the async data fetching function
+    const fetchPendingData = async () => {
+      // get the data from the api
+      const pendingrma = await axios
+        .get(`http://localhost:5000/api/myPendingRMA/${userid}`)
+        .then((pendingrma) => setMPTable(pendingrma.data));
+      // setRma(Object.e)
+    };
+    // declare the async data fetching function
     const fetchAcceptedData = async () => {
       // get the data from the api
-      const acceptedrma = await axios.get(
-        `http://localhost:5000/api/myAcceptedRMA/${userid}`
-      )
-      .then((acceptedrma)=> setMATable(acceptedrma.data))
+      const acceptedrma = await axios
+        .get(`http://localhost:5000/api/myAcceptedRMA/${userid}`)
+        .then((acceptedrma) => setMATable(acceptedrma.data));
       // setRma(Object.e)
     };
     const fetchRejectedData = async () => {
       // get the data from the api
-      const rejectedrma = await axios.get(
-        `http://localhost:5000/api/myRejectedRMA/${userid}`
-      )
-      .then((rejectedrma)=> setMRTable(rejectedrma.data))
+      const rejectedrma = await axios
+        .get(`http://localhost:5000/api/myRejectedRMA/${userid}`)
+        .then((rejectedrma) => setMRTable(rejectedrma.data));
       // setRma(Object.e)
     };
     // call the function
-    fetchAcceptedData()
+    fetchPendingData();
+    fetchAcceptedData();
     fetchRejectedData()
       // make sure to catch any error
       .catch(console.error);
@@ -169,7 +177,7 @@ const Rmatabs: React.FC = () => {
                     }}
                   >
                     <Tab
-                      label="Accepted"
+                      label="Pending"
                       value="1"
                       sx={{
                         color: "grey",
@@ -181,8 +189,20 @@ const Rmatabs: React.FC = () => {
                       }}
                     />
                     <Tab
-                      label="Rejected"
+                      label="Accepted"
                       value="2"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: 100,
+                        width: 180,
+                      }}
+                    />
+                    <Tab
+                      label="Rejected"
+                      value="3"
                       sx={{
                         color: "grey",
                         backgroundColor: "White",
@@ -212,7 +232,39 @@ const Rmatabs: React.FC = () => {
               </Grid>
 
               <Grid item xs={12}>
-                <TabPanel value="1">
+              <TabPanel value="1">
+                  <div style={{ height: 700, width: "100%" }}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 18 }}
+                      rows={myPendingTable}
+                      columns={columns}
+                      getRowId={(row) => row.RmaID}
+                      pageSize={pageSize}
+                      onPageSizeChange={(newPage) => setPageSize(newPage)}
+                      pagination
+                      components={{
+                        Toolbar: GridToolbar,
+                        NoRowsOverlay: () => (
+                          <Stack
+                            height="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            No accepted RMA requests
+                          </Stack>
+                        ),
+                      }}
+                      filterModel={filterModel}
+                      onFilterModelChange={(newFilterModel) =>
+                        setFilterModel(newFilterModel)
+                      }
+                      onRowClick={(params: GridRowParams) => {
+                        navigate(`/rmaDetails/${params.id}`);
+                      }}
+                    />
+                  </div>
+                </TabPanel>
+                <TabPanel value="2">
                   <div style={{ height: 700, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
@@ -244,7 +296,7 @@ const Rmatabs: React.FC = () => {
                     />
                   </div>
                 </TabPanel>
-                <TabPanel value="2">
+                <TabPanel value="3">
                   <div style={{ height: 700, width: "100%" }}>
                     <DataGridPro
                       sx={{ background: "white", fontSize: 18 }}
@@ -318,7 +370,6 @@ const Rmatabs: React.FC = () => {
                   </Tabs>
                 </Box>
               </Grid>
-
 
               <Grid item xs={12}>
                 <TabPanel value="3">
@@ -455,7 +506,6 @@ const Rmatabs: React.FC = () => {
                   </Tabs>
                 </Box>
               </Grid>
-
 
               <Grid item xs={12}>
                 <TabPanel value="1">
@@ -827,7 +877,6 @@ const Rmatabs: React.FC = () => {
                 </Box>
               </Grid>
 
-
               <Grid item xs={12}>
                 <TabPanel value="3">
                   <div style={{ height: 700, width: "100%" }}>
@@ -963,7 +1012,6 @@ const Rmatabs: React.FC = () => {
                   </Tabs>
                 </Box>
               </Grid>
-
 
               <Grid item xs={12}>
                 <TabPanel value="1">

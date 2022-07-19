@@ -434,24 +434,40 @@ export default function CreateRMA() {
   }, []);
 
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCompany(event.target.value);
+  const handleChange = (e) => {
+    setCompany(e.target.value);
+    console.log(company)
   };
 
   const navigate = useNavigate()
 
+  const getInitialState = () => {
+      return {
+          contactperson: '',
+          contactemail: '',
+          company: '',
+          contactno: '',
+          salesmanid: '',
+      };
+  };
+
+  const _handleTextFieldChange = (e) => {
+    this.setState({
+        textFieldValue: e.target.value
+    });
+  };
+
   return (
-    <div>
-      <h2 className="pagetitle">RMA Application Form</h2>
       <Card
         sx={{
           width: 1950,
-          height: 680,
+          height: 745,
           marginTop: 5,
           marginLeft: "auto",
           marginRight: "auto",
         }}
       >
+        
         <CardContent>
           <Box
             component="form"
@@ -464,6 +480,7 @@ export default function CreateRMA() {
             noValidate
             autoComplete="off"
           >
+          <h2 style={{marginLeft: 7, marginBottom: 20}}>RMA Application Form</h2>
             <div>
               <TextField
                 required
@@ -553,6 +570,5 @@ export default function CreateRMA() {
           </Box>
         </CardContent>
       </Card>
-    </div>
   );
 }

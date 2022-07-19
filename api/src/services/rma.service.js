@@ -44,6 +44,20 @@ module.exports.getSalesmanRMA = async (SalesmanID) => {
     return knex.raw(query, [SalesmanID]);
 };
 
+module.exports.getSalesmanPendingRMA = async (SalesmanID) => {
+    const query = ` SELECT r.RmaID, 
+                    u.Username,
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
+                    c.CompanyName,
+                    r.CustomerEmail
+                    FROM Rma r, Company c, User u 
+                    WHERE SalesmanID = ? 
+                    AND RmaStatusID = 1
+                    AND r.CompanyID = c.CompanyID
+                    AND r.SalesmanID = u.UserID;`;
+    return knex.raw(query, [SalesmanID]);
+};
+
 module.exports.getSalesmanAcceptedRMA = async (SalesmanID) => {
     const query = ` SELECT r.RmaID, 
                     u.Username,

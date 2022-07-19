@@ -34,24 +34,6 @@ export const GetAllRMA = async ({pageParam = 0}) => {
   return {response, nextPage: pageParam + 1, totalPages: Math.ceil(response.data[0].full_count/5)}
 };
 
-// export const GetSalesmanAcceptedRMA = async (SalesmanID: string, {pageParam = 0}) => {
-//   const response = await axios.get(`${config.baseURL}/myAcceptedRMA/${SalesmanID}?limit=5&page=${pageParam * 5}`, {
-//     headers: {
-//       Authorization: `Bearer ${localStorage.getItem("token")}`,
-//     },
-//   });
-//   return {response, nextPage: pageParam + 1, totalPages: Math.ceil(response.data[0].full_count/5)}
-// };
-
-// export const GetSalesmanRejectedRMA = async (SalesmanID: string, {pageParam = 0}) => {
-//   const response = await axios.get(`${config.baseURL}/myRejectedRMA/${SalesmanID}?limit=5&page=${pageParam * 5}`, {
-//     headers: {
-//       Authorization: `Bearer ${localStorage.getItem("token")}`,
-//     },
-//   });
-//   return {response, nextPage: pageParam + 1, totalPages: Math.ceil(response.data[0].full_count/5)}
-// }; 
-
   export const GetPendingRMA = async ({pageParam = 0}) => {
     const response = await axios.get(`${config.baseURL}/pendingRMA?limit=5&page=${pageParam * 5}`, {
       headers: {
