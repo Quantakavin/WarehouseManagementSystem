@@ -5,6 +5,7 @@ import {
   CardContent,
   Stack,
   unstable_createMuiStrictModeTheme,
+  withStyles,
 } from "@mui/material";
 import { useNavigate } from "react-router";
 
@@ -35,11 +36,11 @@ const Products2: React.FC = () => {
   });
 
   const columns = [
-    { field: "BinProductPK", headerName: "ID", minWidth: 250 },
-    { field: "ItemName", headerName: "Item Name", minWidth: 500 },
+    { field: "BinProductPK", headerName: "ID", minWidth: 100 },
+    { field: "ItemName", headerName: "Item Name", minWidth: 800 },
     { field: "BatchNo", headerName: "Batch Number", minWidth: 250 },
-    { field: "Brand", headerName: "Brand", minWidth: 500 },
-    { field: "Quantity", headerName: "Available Quantity", minWidth: 500 },
+    { field: "Brand", headerName: "Brand", minWidth: 400 },
+    { field: "Quantity", headerName: "Available Quantity", minWidth: 250 },
   ];
 
   const navigate = useNavigate();
@@ -53,8 +54,10 @@ const Products2: React.FC = () => {
     setValue(newValue);
   };
 
+
+
   return (
-    <Card>
+    <Card sx={{}} >
       <CardContent>
         <div>
           <h2> Products </h2>
@@ -68,6 +71,9 @@ const Products2: React.FC = () => {
             pageSize={pageSize}
             onPageSizeChange={(newPage) => setPageSize(newPage)}
             pagination
+            headerHeight={30}
+            // rowHeight={70}
+            getRowHeight={()=>'auto'}
             components={{
               Toolbar: GridToolbar,
               NoRowsOverlay: () => (

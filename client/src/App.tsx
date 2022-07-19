@@ -28,11 +28,12 @@ import TLoanDisplay from "./components/display/tloanDisplay";
 import RmaDisplay from "./components/display/rmaDisplay";
 import NewTLoan from "./pages/tloans/newtloan";
 import Products2 from "./pages/products/Products2";
+import TLoanDisplay2 from "./components/display/tloanDisplay2";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "./app/hooks";
 import {
   selectIsAuthenticated,
-  selectName
+  selectName,
 } from "./app/reducers/CurrentUserSlice";
 
 interface ProtectedRouteProps {
@@ -74,7 +75,7 @@ const App: React.FC = () => {
             </Route>
             <Route element={<ProtectedRoute loginpage={false} />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/products" element={<Products />} />
+              <Route path="/products" element={<Products2 />} />
               <Route path="/productspag" element={<ProductsPag />} />
               <Route path="/product/:id" element={<ViewProduct />} />
               <Route path="/binlocations" element={<BinLocations />} />
@@ -100,7 +101,7 @@ const App: React.FC = () => {
                 element={<AddNotificationGroup />}
               />
               <Route path="/tloan" element={<TLoan />} />
-             
+
               <Route path="/rma" element={<RMA />} />
               <Route path="/createRma" element={<CreateRMA />} />
               <Route path="/rmaDetails/:RmaID" element={<RmaDisplay />} />
@@ -109,7 +110,6 @@ const App: React.FC = () => {
                 element={<TLoanDisplay />}
               />
               <Route path="/newtloan" element={<NewTLoan />} />
-             
             </Route>
           </Routes>
         </div>

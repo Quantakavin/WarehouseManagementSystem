@@ -34,6 +34,24 @@ module.exports.getLoanByNo = async (req, res) => {
     
 };
 
+module.exports.getItemsByTloan = async (req, res) => {
+    const { TLoanNumber} = req.params;
+    try {
+        const results1 = await TLoan.getLoanByNumber(TLoanNumber);
+        const IDOfTLoan = results1[0][0].TLoanID;
+        const results2 = await TLoan.getTLoanOutItem(IDOfTLoan);
+        if (results2.length > 0) {
+            redisClient.set(`TLoanItems#${TLoanNumber}`, JSON.stringify(results2));
+            return res.status(200).json(results2[0]);
+        } else {
+            return res.status(404).send('This TLoan has no items');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
 module.exports.allLoan = async (req, res) => {
     try {
         const TLoans = await redisClient.get('TLoans');
