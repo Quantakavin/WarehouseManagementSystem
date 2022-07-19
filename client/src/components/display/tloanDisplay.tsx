@@ -71,84 +71,84 @@ export default function tloanDisplay() {
       },
     }));
 
-    function createData(itemName: string, batchNo: string, quantity: number) {
-      return { itemName, batchNo, quantity };
+    // function createData(itemName: string, batchNo: string, quantity: number) {
+    //   return { itemName, batchNo, quantity };
 
       
   
-       console.log(loans)
-      return (
+    //    console.log(loans)
+    //   return (
         
-           <div>
+    //        <div>
          
-         <h2 className="pagetitle">{loans.TLoanNumber}</h2>
-          <Card sx={{ width: 800, height: 400, marginLeft: 'auto', marginRight: 'auto'}}>
-        <CardMedia
+    //      <h2 className="pagetitle">{loans.TLoanNumber}</h2>
+    //       <Card sx={{ width: 800, height: 400, marginLeft: 'auto', marginRight: 'auto'}}>
+    //     <CardMedia
         
-        />
-        <CardContent> 
-           <Typography gutterBottom variant="subtitle2" component="div" sx={{display: 'flex',justifyContent:'center', alignItems:'center', marginTop: 3, marginLeft: -10,color:'#063970', fontWeight: 'bold'}}>
-           <Box>
-           <div >Loan No.</div>
-           <div style={{color: "black", fontWeight: "normal"}}>{loans.TLoanNumber}</div>
-           </Box >
-           <Box sx={{marginLeft: 5}}>
-           <div >Start Date:</div>
-           <div style={{color: "black", fontWeight: "normal"}}>{loans.StartDate}</div>
-           </Box>
-           <Box sx={{marginLeft: 5}}>
-           <div style={{}}>End Date:</div>
-           <div style={{color: "black", fontWeight: "normal"}}>{loans.EndDate}</div>
-           </Box>
-           <Box sx={{marginLeft: 5}}>
-           <div style={{}}>Company Name:</div>
-           <div style={{color: "black", fontWeight: "normal"}}>{loans.CompanyName}</div>
-           </Box>
-           <Box sx={{marginLeft: 5}}>
-           <div style={{}}>Customer Email</div>
-           <div style={{color: "black", fontWeight: "normal"}}>{loans.CustomerEmail}</div>
-           </Box>
+    //     />
+    //     <CardContent> 
+    //        <Typography gutterBottom variant="subtitle2" component="div" sx={{display: 'flex',justifyContent:'center', alignItems:'center', marginTop: 3, marginLeft: -10,color:'#063970', fontWeight: 'bold'}}>
+    //        <Box>
+    //        <div >Loan No.</div>
+    //        <div style={{color: "black", fontWeight: "normal"}}>{loans.TLoanNumber}</div>
+    //        </Box >
+    //        <Box sx={{marginLeft: 5}}>
+    //        <div >Start Date:</div>
+    //        <div style={{color: "black", fontWeight: "normal"}}>{loans.StartDate}</div>
+    //        </Box>
+    //        <Box sx={{marginLeft: 5}}>
+    //        <div style={{}}>End Date:</div>
+    //        <div style={{color: "black", fontWeight: "normal"}}>{loans.EndDate}</div>
+    //        </Box>
+    //        <Box sx={{marginLeft: 5}}>
+    //        <div style={{}}>Company Name:</div>
+    //        <div style={{color: "black", fontWeight: "normal"}}>{loans.CompanyName}</div>
+    //        </Box>
+    //        <Box sx={{marginLeft: 5}}>
+    //        <div style={{}}>Customer Email</div>
+    //        <div style={{color: "black", fontWeight: "normal"}}>{loans.CustomerEmail}</div>
+    //        </Box>
            
           
-          </Typography>
-          <Typography gutterBottom variant="subtitle2" component="div" sx={{marginTop: 3 , marginLeft: 6.5,color:'#063970', fontWeight: 'bold'}}>
-          <div>Item List</div>
+    //       </Typography>
+    //       <Typography gutterBottom variant="subtitle2" component="div" sx={{marginTop: 3 , marginLeft: 6.5,color:'#063970', fontWeight: 'bold'}}>
+    //       <div>Item List</div>
           
-          </Typography>
-          <Box sx={{display:'flex'}}> 
-            {table()}
-            <Box sx={{ marginLeft : 2 }} >
-              <TextField
-              id="With normal TextField"
-              // label="Shipping Address"
-              multiline
-              rows={5.5}
-              disabled
+    //       </Typography>
+    //       <Box sx={{display:'flex'}}> 
+    //         {table()}
+    //         <Box sx={{ marginLeft : 2 }} >
+    //           <TextField
+    //           id="With normal TextField"
+    //           // label="Shipping Address"
+    //           multiline
+    //           rows={5.5}
+    //           disabled
              
-              defaultValue={loans.TLoanNumber}
+    //           defaultValue={loans.TLoanNumber}
               
-              />
-            </Box>
-          </Box>
+    //           />
+    //         </Box>
+    //       </Box>
          
-          <Typography variant="body2" color="text.secondary">
+    //       <Typography variant="body2" color="text.secondary">
             
-          </Typography>
-        </CardContent>
-        <Box sx={{display:'flex',justifyContent:'center', alignItems:'center', paddingTop: 3}}>
-          <Button size="small" >Back</Button>
+    //       </Typography>
+    //     </CardContent>
+    //     <Box sx={{display:'flex',justifyContent:'center', alignItems:'center', paddingTop: 3}}>
+    //       <Button size="small" >Back</Button>
          
-          <Button size="small" >Apply Extension</Button>
-         </Box>
+    //       <Button size="small" >Apply Extension</Button>
+    //      </Box>
         
-      </Card>
-        </div>
+    //   </Card>
+    //     </div>
         
     
-      )
+    //   )
      
 
-    }
+    // }
     const items = loans.Items;
 
     return (

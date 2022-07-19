@@ -11,7 +11,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import {Box} from '@mui/material'
+import {Box, Input} from '@mui/material'
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import { CompanyName, LoanType, CollectionType, DurationOfLoan } from './Dropdown/dropDown';
@@ -21,7 +21,7 @@ function newtloan() {
   const [type, setType] = useState('')
   const [company,setCompany] = useState('')
   const [number,setNumber] = useState('')
-  const [requestor,setRequestor] = useState('')
+  const [name,setName] = useState('')
   const [purpose,setPurpose] = useState('')
   const [applicationdate,setADate] = useState('')
   const [duration,setDuration] = useState('')
@@ -35,15 +35,15 @@ function newtloan() {
 
   const navigate = useNavigate()
 
-  const submitLoan =(e) => {
-    e.preventDefault()
+  const submitLoan =() => {
+    // e.preventDefault()
      try {
 
       const results = axios.post('http://localhost:5000/api/tloan/newloan',{
         type,
         company,
         number,
-        requestor,
+        name,
         purpose,
         applicationdate,
         duration,
@@ -68,7 +68,7 @@ function newtloan() {
   })
   
   useEffect(()=>{
-    const loanNumber = 1
+    const loanNumber = "1ccccdewewcwe"
     setNumber(loanNumber)
   })
 
@@ -83,7 +83,7 @@ function newtloan() {
       <div>
 
           <h2 className="pagetitle">Apply TLoan</h2>
-      <form onSubmit={submitLoan}>
+    {/* <form onSubmit={submitLoan}> */}
       <Card sx={{ width: 800, height: 450, marginLeft: 'auto', marginRight: 'auto'}}>
       <CardMedia
       
@@ -93,7 +93,7 @@ function newtloan() {
         
         
         <Box sx={{marginLeft: 2, marginTop: 1, display: 'flex'}}>
-        <TextField id="outlined-basic" label="Employee Name" variant="outlined" size='small' />
+        <TextField id="outlined-basic" label="Employee Name" variant="outlined" size='small'  />
         <TextField id="outlined-basic" label="Customer Email" variant="outlined" size='small' sx={{marginLeft: 3}} />
         <CompanyName />
 
@@ -105,7 +105,7 @@ function newtloan() {
           multiline
           rows={5.2}
           label="Purpose"
-         
+          
         ></TextField>
         <Box sx={{float: 'right', marginRight: 10.5}}>
         <DurationOfLoan />
@@ -128,7 +128,7 @@ function newtloan() {
       </Box>
       
     </Card>
-    </form>
+
     </div>
     ) 
   }
