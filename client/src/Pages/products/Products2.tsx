@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { DataGrid, GridRowParams, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridFilterModel, GridLinkOperator, GridRowParams, GridToolbar, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from "@mui/x-data-grid";
 import {
   Card,
   CardContent,
   Stack,
+  Theme,
   unstable_createMuiStrictModeTheme,
   withStyles,
 } from "@mui/material";
@@ -40,7 +41,7 @@ const Products2: React.FC = () => {
     { field: "ItemName", headerName: "Item Name", minWidth: 800 },
     { field: "BatchNo", headerName: "Batch Number", minWidth: 250 },
     { field: "Brand", headerName: "Brand", minWidth: 400 },
-    { field: "Quantity", headerName: "Available Quantity", minWidth: 250 },
+    { field: "Quantity", headerName: "Available Quantity", minWidth: 250, type: "number" },
   ];
 
   const navigate = useNavigate();
@@ -54,10 +55,27 @@ const Products2: React.FC = () => {
     setValue(newValue);
   };
 
-
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarColumnsButton sx={{color: '#0A2540'}} />
+        <GridToolbarFilterButton sx={{color: '#0A2540'}} />
+        <GridToolbarDensitySelector sx={{color: '#0A2540'}} />
+        <GridToolbarExport sx={{color: '#0A2540'}} />
+      </GridToolbarContainer>
+    );
+  }
 
   return (
-    <Card sx={{}} >
+    <Card
+      sx={{
+        width: 1950,
+        height: 1100,
+        marginTop: 5,
+        marginLeft: "auto",
+        marginRight: "auto",
+      }}
+    >
       <CardContent>
         <div>
           <h2> Products </h2>
@@ -71,11 +89,11 @@ const Products2: React.FC = () => {
             pageSize={pageSize}
             onPageSizeChange={(newPage) => setPageSize(newPage)}
             pagination
-            headerHeight={30}
+            headerHeight={50}
             // rowHeight={70}
-            getRowHeight={()=>'auto'}
+            // getRowHeight={() => "auto"}
             components={{
-              Toolbar: GridToolbar,
+              Toolbar: CustomToolbar,
               NoRowsOverlay: () => (
                 <Stack
                   height="100%"
@@ -85,6 +103,12 @@ const Products2: React.FC = () => {
                   No accepted RMA requests
                 </Stack>
               ),
+            }}
+            componentsProps={{
+              toolbar: {
+                showQuickFilter: true,
+                quickFilterProps: { debounceMs: 500 },
+              },
             }}
             filterModel={filterModel}
             onFilterModelChange={(newFilterModel) =>

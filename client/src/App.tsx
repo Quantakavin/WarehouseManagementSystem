@@ -75,7 +75,7 @@ const App: React.FC = () => {
             </Route>
             <Route element={<ProtectedRoute loginpage={false} />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/products" element={<Products />} />
+              <Route path="/products" element={<Products2 />} />
               <Route path="/productspag" element={<ProductsPag />} />
               <Route path="/product/:id" element={<ViewProduct />} />
               <Route path="/binlocations" element={<BinLocations />} />
@@ -107,7 +107,7 @@ const App: React.FC = () => {
               <Route path="/rmaDetails/:RmaID" element={<RmaDisplay />} />
               <Route
                 path="/tloandetails/:TLoanNumber"
-                element={<TLoanDisplay />}
+                element={<TLoanDisplay2 />}
               />
               <Route
                 path="/tloandetails2/:TLoanNumber"
