@@ -142,6 +142,7 @@ function cards() {
   useEffect(() => {
     getclosedRMAs();
   }, []);
+<<<<<<< Updated upstream
   {
     CurrentTloans.length;
   }
@@ -167,6 +168,8 @@ function cards() {
   {
     ClosedRMAs.length;
   }
+=======
+>>>>>>> Stashed changes
 
   // '-apple-system',
   // '',
