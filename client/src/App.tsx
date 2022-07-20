@@ -83,22 +83,22 @@ const App: React.FC = () => {
             </Route>
             <Route element={<ProtectedRoute loginpage={false} />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/products" element={<Products />} />
+              <Route path="/products" element={<Products2 />} />
               <Route path="/productspag" element={<ProductsPag />} />
               <Route path="/product/:id" element={<ViewProduct />} />
               <Route path="/binlocations" element={<BinLocations />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/user/:id" element={<ViewUser />} />
-              <Route path="/users" element={<Users />} />
+              <Route path="/user/:id" element={<ViewUser2 />} />
+              <Route path="/users" element={<Users2 />} />
               <Route path="/adduser" element={<AddUser />} />
               <Route path="/edituser/:id" element={<EditUser />} />
-              <Route path="/usergroups" element={<UserGroups />} />
-              <Route path="/usergroup/:id" element={<ViewUserGroup />} />
+              <Route path="/usergroups" element={<UserGroups2 />} />
+              <Route path="/usergroup/:id" element={<ViewUserGroup2 />} />
               <Route path="/addusergroup" element={<AddUserGroup />} />
               <Route path="/editusergroup/:id" element={<EditUserGroup />} />
               <Route
                 path="/notificationgroups"
-                element={<NotificationGroups />}
+                element={<NotificationGroups2 />}
               />
               <Route
                 path="/notificationgroup/:id"
