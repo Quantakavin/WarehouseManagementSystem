@@ -11,10 +11,12 @@ import {
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import {
+  Box,
   Card,
   CardContent,
   Stack,
   Theme,
+  Typography,
   unstable_createMuiStrictModeTheme,
   withStyles,
 } from "@mui/material";
@@ -29,15 +31,6 @@ const UserGroups2: React.FC = () => {
       .then((data) => setRow(data));
   }, []);
 
-  const headers = [
-    "ID",
-    "Item Name",
-    "Batch Number",
-    "Brand",
-    "Avalible Quantity",
-    "Action",
-  ];
-
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [
       {
@@ -49,8 +42,8 @@ const UserGroups2: React.FC = () => {
   });
 
   const columns = [
-    { field: "UserGroupID", headerName: "ID", minWidth: 100 },
-    { field: "UserGroupName", headerName: "Name", minWidth: 1800 },
+    { field: "UserGroupID", headerName: "ID", flex: 2 },
+    { field: "UserGroupName", headerName: "Name", flex: 38 },
   ];
 
   const navigate = useNavigate();
@@ -66,41 +59,28 @@ const UserGroups2: React.FC = () => {
 
   function CustomToolbar() {
     return (
-      <GridToolbarContainer>
+      <GridToolbarContainer sx={{display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1}}>
+        <Box>
+        <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
+        </Box>
+        <Box>
         <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
         <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
         <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
         <GridToolbarExport sx={{ color: "#0A2540" }} />
-        <GridToolbarQuickFilter
-          sx={{
-            color: "#0A2540",
-            marginLeft: 205,
-            marginTop: -4,
-            marginBottom: 3,
-          }}
-          debounceMs={1000}
-        />
+        </Box>
       </GridToolbarContainer>
     );
   }
 
   return (
-    <>
-    <Card
-      sx={{
-        width: 1950,
-        height: 1100,
-        marginTop: 5,
-        marginLeft: "auto",
-        marginRight: "auto",
-      }}
-    >
-      <CardContent>
-        <div>
-          <h2> User Groups </h2>
-        </div>
-        <div style={{ height: 1000, width: "100%" }}>
-          <DataGrid
+    <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
+    <Box sx={{ display: "flex", height: "100%" }}>
+      <Box sx={{ flexGrow: 1 }}>
+        <Typography sx={{ color: "#063970", fontWeight: "bold" }}>
+          <h2>User Groups</h2>
+        </Typography>
+        <DataGrid
             sx={{ background: "white", fontSize: 18 }}
             rows={row}
             columns={columns}
@@ -131,10 +111,9 @@ const UserGroups2: React.FC = () => {
               navigate(`/usergroup/${params.id}`);
             }}
           />
-        </div>
-      </CardContent>
-    </Card>
-    </>
+        </Box>
+        </Box>
+        </Box>
   );
 };
 export default UserGroups2;

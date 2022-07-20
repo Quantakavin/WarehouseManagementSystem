@@ -41,11 +41,11 @@ import {
 import { DataGridPro } from "@mui/x-data-grid-pro";
 
 const columns = [
-  { field: "TLoanNumber", headerName: "Loan No.", minWidth: 300 },
-  { field: "StartDate", headerName: "Start Date", minWidth: 250 },
-  { field: "EndDate", headerName: "End Date", minWidth: 250 },
-  { field: "CompanyName", headerName: "Company Name", minWidth: 625 },
-  { field: "CustomerEmail", headerName: "Customer Email", minWidth: 625 },
+  { field: "TLoanNumber", headerName: "Loan No.", flex: 4 },
+  { field: "StartDate", headerName: "Start Date", flex: 1 },
+  { field: "EndDate", headerName: "End Date", flex: 4 },
+  { field: "CompanyName", headerName: "Company Name", flex: 3 },
+  { field: "CustomerEmail", headerName: "Customer Email", flex: 3 },
 ];
 
 const TLoanTabs2: React.FC = () => {
@@ -92,20 +92,16 @@ const TLoanTabs2: React.FC = () => {
 
   function CustomToolbar() {
     return (
-      <GridToolbarContainer>
+      <GridToolbarContainer sx={{display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1}}>
+        <Box>
+        <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
+        </Box>
+        <Box>
         <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
         <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
         <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
         <GridToolbarExport sx={{ color: "#0A2540" }} />
-        <GridToolbarQuickFilter
-          sx={{
-            color: "#0A2540",
-            marginLeft: 220,
-            marginTop: -3,
-            marginBottom: 3,
-          }}
-          debounceMs={1000}
-        />
+        </Box>
       </GridToolbarContainer>
     );
   }
@@ -129,7 +125,7 @@ const TLoanTabs2: React.FC = () => {
             <Grid container>
               <Grid item xs={11}>
                 <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                <h2> TLoans </h2>
+                  <h2> TLoans </h2>
                   <Tabs
                     onChange={handleChange}
                     TabIndicatorProps={{
@@ -144,7 +140,6 @@ const TLoanTabs2: React.FC = () => {
                       },
                     }}
                   >
-
                     <Tab
                       label="Current"
                       value="1"

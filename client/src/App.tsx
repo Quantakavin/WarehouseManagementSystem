@@ -41,6 +41,7 @@ import UserGroups2 from "./pages/usergroups/UserGroups2";
 import NotificationGroups2 from "./pages/notificationgroups/NotificationGroups2";
 import ViewUser2 from "./pages/users/ViewUser2";
 import ViewUserGroup2 from "./pages/usergroups/ViewUserGroup2";
+import { Box } from "@mui/material";
 
 interface ProtectedRouteProps {
   loginpage: boolean;
@@ -71,9 +72,9 @@ const App: React.FC = () => {
       <header>
         <TopBar />
       </header>
-      <div className="flexcontainer" style={{ flexDirection: "row" }}>
-        {isAuthenticated ? <Sidebar/> : null}
-        <div className="bluebackground" style={{ flex: 5 }}>
+      <Box className="flexcontainer">
+        {isAuthenticated ? <Sidebar /> : null}
+        <Box className="bluebackground" style={{ flex: 5 }}>
           <Routes>
             <Route element={<ProtectedRoute loginpage={true} />}>
               <Route path="/login" element={<Navigate replace to="/" />} />
@@ -123,8 +124,8 @@ const App: React.FC = () => {
               <Route path="/newtloan" element={<NewTLoan />} />
             </Route>
           </Routes>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </>
   );
 };

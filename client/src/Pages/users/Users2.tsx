@@ -11,10 +11,12 @@ import {
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import {
+  Box,
   Card,
   CardContent,
   Stack,
   Theme,
+  Typography,
   unstable_createMuiStrictModeTheme,
   withStyles,
 } from "@mui/material";
@@ -49,12 +51,12 @@ const Users2: React.FC = () => {
   });
 
   const columns = [
-    { field: "UserID", headerName: "ID", minWidth: 100 },
-    { field: "Username", headerName: "Username", minWidth: 450 },
-    { field: "Email", headerName: "Email Address", minWidth: 450 },
-    { field: "CompanyName", headerName: "Company", minWidth: 350 },
-    { field: "UserGroupName", headerName: "User Group", minWidth: 350 },
-    { field: "MobileNo", headerName: "Phone Number", minWidth: 200 },
+    { field: "UserID", headerName: "ID", flex: 1 },
+    { field: "Username", headerName: "Username", flex: 3 },
+    { field: "Email", headerName: "Email Address", flex: 5 },
+    { field: "CompanyName", headerName: "Company", flex: 5 },
+    { field: "UserGroupName", headerName: "User Group", flex: 3 },
+    { field: "MobileNo", headerName: "Phone Number", flex: 3 },
   ];
 
   const navigate = useNavigate();
@@ -70,74 +72,64 @@ const Users2: React.FC = () => {
 
   function CustomToolbar() {
     return (
-      <GridToolbarContainer>
-        <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
-        <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
-        <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
-        <GridToolbarExport sx={{ color: "#0A2540" }} />
-        <GridToolbarQuickFilter
-          sx={{
-            color: "#0A2540",
-            marginLeft: 205,
-            marginTop: -4,
-            marginBottom: 3,
-          }}
-          debounceMs={1000}
-        />
+      <GridToolbarContainer
+        sx={{ display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1 }}
+      >
+        <Box>
+          <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
+        </Box>
+        <Box>
+          <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
+          <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
+          <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
+          <GridToolbarExport sx={{ color: "#0A2540" }} />
+        </Box>
       </GridToolbarContainer>
     );
   }
 
   return (
     <>
-    <Card
-      sx={{
-        width: 1950,
-        height: 1100,
-        marginTop: 5,
-        marginLeft: "auto",
-        marginRight: "auto",
-      }}
-    >
-      <CardContent>
-        <div>
-          <h2> Users </h2>
-        </div>
-        <div style={{ height: 1000, width: "100%" }}>
-          <DataGrid
-            sx={{ background: "white", fontSize: 18 }}
-            rows={row}
-            columns={columns}
-            getRowId={(row) => row.UserID}
-            pageSize={pageSize}
-            onPageSizeChange={(newPage) => setPageSize(newPage)}
-            pagination
-            headerHeight={50}
-            // rowHeight={70}
-            // getRowHeight={() => "auto"}
-            components={{
-              Toolbar: CustomToolbar,
-              NoRowsOverlay: () => (
-                <Stack
-                  height="100%"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  No Users
-                </Stack>
-              ),
-            }}
-            filterModel={filterModel}
-            onFilterModelChange={(newFilterModel) =>
-              setFilterModel(newFilterModel)
-            }
-            onRowClick={(params: GridRowParams) => {
-              navigate(`/user/${params.id}`);
-            }}
-          />
-        </div>
-      </CardContent>
-    </Card>
+      <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
+        <Box sx={{ display: "flex", height: "100%" }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Typography sx={{ color: "#063970", fontWeight: "bold" }}>
+              <h2>Users</h2>
+            </Typography>
+            <DataGrid
+              sx={{ background: "white", fontSize: 18 }}
+              rows={row}
+              columns={columns}
+              getRowId={(row) => row.UserID}
+              pageSize={pageSize}
+              onPageSizeChange={(newPage) => setPageSize(newPage)}
+              pagination
+              headerHeight={50}
+              // rowHeight={70}
+              // getRowHeight={() => "auto"}
+              components={{
+                Toolbar: CustomToolbar,
+                NoRowsOverlay: () => (
+                  <Stack
+                    height="100%"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    No Users
+                  </Stack>
+                ),
+              }}
+              filterModel={filterModel}
+              onFilterModelChange={(newFilterModel) =>
+                setFilterModel(newFilterModel)
+              }
+              onRowClick={(params: GridRowParams) => {
+                navigate(`/user/${params.id}`);
+              }}
+            />
+          </Box>
+        </Box>
+      </Box>
     </>
   );
 };

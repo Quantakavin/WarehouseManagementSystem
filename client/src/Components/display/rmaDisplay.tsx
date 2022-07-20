@@ -354,45 +354,45 @@ export default function CreateRMA() {
   };
 
   const columns: GridColumns = [
-    { field: "id", headerName: "PK", width: 50, editable: true },
-    { field: "ItemCode", headerName: "Item Code", width: 150, editable: true },
+    { field: "id", headerName: "PK", flex: 1, editable: true },
+    { field: "ItemCode", headerName: "Item Code", flex: 2, editable: true },
     {
       field: "InvoiceNo",
       headerName: "Invoice Number",
-      width: 150,
+      flex: 3,
       editable: true,
     },
-    { field: "DoNo", headerName: "D.O Number", width: 150, editable: true },
+    { field: "DoNo", headerName: "D.O Number", flex: 3, editable: true },
     {
       field: "DateOfPurchase",
       headerName: "Date Of Purchase",
       ...dateColumnType,
-      width: 160,
+      flex: 3,
       editable: true,
     },
     {
       field: "ReturnReason",
       headerName: "Reason For Return",
-      width: 400,
+      flex: 9,
       editable: true,
     },
     {
       field: "Instructions",
       headerName: "Instructions",
-      width: 400,
+      flex: 9,
       editable: true,
     },
     {
       field: "CourseOfAction",
       headerName: "Course Of Action",
-      width: 400,
+      flex: 9,
       editable: true,
     },
     {
       field: "actions",
       type: "actions",
       headerName: "Actions",
-      width: 100,
+      flex: 2,
       cellClassName: "actions",
       getActions: ({ id }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
@@ -433,9 +433,6 @@ export default function CreateRMA() {
     },
   ];
 
-  const [companies, setCompanies] = useState([]);
-  const [company, setCompany] = useState([]);
-
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
@@ -458,129 +455,121 @@ export default function CreateRMA() {
   const navigate = useNavigate();
 
   return (
-    <Card
-      sx={{
-        width: 1950,
-        height: 700,
-        marginTop: 5,
-        marginLeft: "auto",
-        marginRight: "auto",
-      }}
-    >
-      <CardContent>
-        <Grid container justifyContent="flex-end">
-          <Grid item xs={12} sx={{ marginBottom: 3 }}>
-            <Typography
-              gutterBottom
-              variant="subtitle2"
-              component="div"
-              sx={{
-                display: "flex",
-                justifyContent: "left",
-                alignItems: "center",
-                marginTop: 2,
-                marginLeft: 0,
-                color: "#063970",
-                fontWeight: "bold",
+    <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
+      <Typography
+        gutterBottom
+        variant="subtitle2"
+        component="Box"
+        sx={{
+          display: "flex",
+          justifyContent: "left",
+          alignItems: "center",
+          marginLeft: 0,
+          color: "#063970",
+          fontWeight: "bold",
+        }}
+      >
+        <Box>
+          <h2>RMA Request #{rma.RmaID}</h2>
+        </Box>
+        <Box sx={{ marginLeft: 5 }}>
+          <Box>EMPLOYEE</Box>
+          <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {rma.Username}
+          </Box>
+        </Box>
+        <Box sx={{ marginLeft: 5 }}>
+          <Box sx={{}}>DATE APPLIED</Box>
+          <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {rma.DateTime}
+          </Box>
+        </Box>
+        <Box sx={{ marginLeft: 5 }}>
+          <Box sx={{}}>CUSTOMER NAME</Box>
+          <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {rma.ContactPerson}
+          </Box>
+        </Box>
+        <Box sx={{ marginLeft: 5 }}>
+          <Box sx={{}}>CUSTOMER EMAIL</Box>
+          <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {rma.CustomerEmail}
+          </Box>
+        </Box>
+        <Box sx={{ marginLeft: 5 }}>
+          <Box sx={{}}>COMPANY</Box>
+          <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {rma.CompanyName}
+          </Box>
+        </Box>
+        <Box sx={{ marginLeft: 5 }}>
+          <Box sx={{}}>CONTACT NUMBER</Box>
+          <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {rma.ContactNo}
+          </Box>
+        </Box>
+      </Typography>
+
+      <Box sx={{ display: "flex", height: "100%", width: "100%" }}>
+        <Box sx={{ flexGrow: 1}}>
+          <LocalizationProvider
+            dateAdapter={AdapterDateFns}
+            adapterLocale={locale}
+          >
+            <DataGridPro
+              sx={{ background: "white", fontSize: 16 }}
+              rows={rows}
+              columns={columns}
+              editMode="row"
+              getRowId={(row) => row.id}
+              rowModesModel={rowModesModel}
+              onRowEditStart={handleRowEditStart}
+              onRowEditStop={handleRowEditStop}
+              processRowUpdate={processRowUpdate}
+              componentsProps={{
+                toolbar: { setRows, setRowModesModel },
               }}
-            >
-              <Box>
-                <h2>RMA Request #{rma.RmaID}</h2>
-              </Box>
-              <Box sx={{ marginLeft: 5 }}>
-                <div>EMPLOYEE</div>
-                <div style={{ color: "black", fontWeight: "normal" }}>
-                  {rma.Username}
-                </div>
-              </Box>
-              <Box sx={{ marginLeft: 5 }}>
-                <div style={{}}>DATE APPLIED</div>
-                <div style={{ color: "black", fontWeight: "normal" }}>
-                  {rma.DateTime}
-                </div>
-              </Box>
-              <Box sx={{ marginLeft: 5 }}>
-                <div style={{}}>CUSTOMER NAME</div>
-                <div style={{ color: "black", fontWeight: "normal" }}>
-                  {rma.ContactPerson}
-                </div>
-              </Box>
-              <Box sx={{ marginLeft: 5 }}>
-                <div style={{}}>CUSTOMER EMAIL</div>
-                <div style={{ color: "black", fontWeight: "normal" }}>
-                  {rma.CustomerEmail}
-                </div>
-              </Box>
-              <Box sx={{ marginLeft: 5 }}>
-                <div style={{}}>COMPANY</div>
-                <div style={{ color: "black", fontWeight: "normal" }}>
-                  {rma.CompanyName}
-                </div>
-              </Box>
-              <Box sx={{ marginLeft: 5 }}>
-                <div style={{}}>CONTACT NUMBER</div>
-                <div style={{ color: "black", fontWeight: "normal" }}>
-                  {rma.ContactNo}
-                </div>
-              </Box>
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sx={{ marginBottom: 3 }}>
-            <LocalizationProvider
-              dateAdapter={AdapterDateFns}
-              adapterLocale={locale}
-            >
-              <DataGridPro
-                sx={{ height: 500 }}
-                rows={rows}
-                columns={columns}
-                editMode="row"
-                getRowId={(row) => row.id}
-                rowModesModel={rowModesModel}
-                onRowEditStart={handleRowEditStart}
-                onRowEditStop={handleRowEditStop}
-                processRowUpdate={processRowUpdate}
-                componentsProps={{
-                  toolbar: { setRows, setRowModesModel },
-                }}
-                experimentalFeatures={{ newEditingApi: true }}
-              />
-            </LocalizationProvider>
-          </Grid>
-          <Grid item xs={6}>
-            <Button
-              size="small"
-              variant="contained"
-              sx={{
-                color: "white",
-                backgroundColor: "#063970",
-                width: 150,
-                height: 40,
-                marginLeft: 3,
-              }}
-              onClick={() => navigate("/rma")}
-            >
-              Back
-            </Button>
-          </Grid>
-          <Grid item xs={6} justifyContent="right">
-            <Button
-              size="small"
-              variant="contained"
-              sx={{
-                color: "white",
-                backgroundColor: "#063970",
-                width: 150,
-                height: 40,
-                marginLeft: 98,
-              }}
-              onClick={() => navigate("/rma")}
-            >
-              Submit
-            </Button>
-          </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
+              experimentalFeatures={{ newEditingApi: true }}
+            />
+          </LocalizationProvider>
+        </Box>
+      </Box>
+
+      <Box
+        component="span"
+        m={1}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Button
+          size="small"
+          variant="contained"
+          sx={{
+            color: "white",
+            backgroundColor: "#063970",
+            width: 150,
+            height: 40,
+          }}
+          onClick={() => navigate("/rma")}
+        >
+          Back
+        </Button>
+        <Button
+          size="small"
+          variant="contained"
+          sx={{
+            color: "white",
+            backgroundColor: "#063970",
+            width: 150,
+            height: 40,
+          }}
+          onClick={() => navigate("/rma")}
+        >
+          Submit
+        </Button>
+      </Box>
+    </Box>
   );
 }
+
