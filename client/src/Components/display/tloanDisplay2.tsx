@@ -21,7 +21,7 @@ import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import { DataGrid, GridColumns } from "@mui/x-data-grid";
 //import { GetDetails }from "../../api/TLoanDB"
-
+import ModalButton from './TloanModal/modal'
 export default function TLoanDisplay2() {
   const navigate = useNavigate();
   const [details, setDetails] = useState([]);
@@ -225,18 +225,7 @@ export default function TLoanDisplay2() {
                       Back
                     </Button>
                     
-                    <Button
-                      size="small"
-                      variant="contained"
-                      sx={{
-                        color: "white",
-                        backgroundColor: "#063970",
-                        height: "100%",
-                      }}
-                      onClick={() => navigate("/tloan")}
-                    >
-                      Apply For Extension
-                    </Button>
+                  <ModalButton/>
                   </Grid>
                 </Grid>
               </CardContent>
