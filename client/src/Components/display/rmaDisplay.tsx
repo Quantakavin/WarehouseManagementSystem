@@ -459,7 +459,7 @@ export default function CreateRMA() {
       <Typography
         gutterBottom
         variant="subtitle2"
-        component="Box"
+        component="span"
         sx={{
           display: "flex",
           justifyContent: "left",
