@@ -4,18 +4,15 @@ const validation = require('../middlewares/validation');
 const userController = require('../controllers/userController');
 
 router.post('/login', validation.validateLogin, userController.loginUser);
-router.get(
-    '/user/:id',
-    // authorization.verifyAdmin,
-    userController.getUserById
-);
+router.get('/user/:id', authorization.verifyAdmin, userController.getUserById);
+router.get('/user2/:id', authorization.verifyAdmin, userController.getUserById2);
 router.get(
     '/usersgroups/:id',
-    // authorization.verifyAdmin,
+    authorization.verifyAdmin,
     userController.getUsersGroupsByID
 );
 router.get('/user', authorization.verifyAdmin, userController.getUserByName);
-router.get('/users', userController.getAllUsers);
+router.get('/users', authorization.verifyAdmin, userController.getAllUsers);
 router.get('/usernames', authorization.verifyAdmin, userController.getAllNames);
 router.post('/user', authorization.verifyAdmin, validation.validateUser, userController.createUser);
 router.put(
@@ -24,7 +21,6 @@ router.put(
     validation.validateUser,
     userController.updateUser
 );
-
 /*
 router.delete('/user/:id', authorization.verifyAdmin, userController.deleteUser);
 */

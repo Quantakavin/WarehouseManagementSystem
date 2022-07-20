@@ -37,15 +37,11 @@ import {
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 
-const columns = [
-  { field: "RmaID", headerName: "ID", flex: 1 },
-  { field: "Username", headerName: "Employee", flex: 8},
-  { field: "DateTime", headerName: "Date", flex: 8 },
-  { field: "CompanyName", headerName: "Company", flex: 8 },
-  { field: "CustomerEmail", headerName: "Customer Email", flex: 8},
-];
-
 const Rmatabs: React.FC = () => {
+  const navigate = useNavigate();
+  const theme = unstable_createMuiStrictModeTheme();
+  const [pageSize, setPageSize] = React.useState(25);
+  const [inputName, setInputName] = useState<string>(null);
   const userid = useAppSelector(selectId);
   const userrole = useAppSelector(selectRole);
   const [pendingTable, setPendingTable] = useState([]);
@@ -57,6 +53,47 @@ const Rmatabs: React.FC = () => {
   const [myPendingTable, setMPTable] = useState([]);
   const [myAcceptedTable, setMATable] = useState([]);
   const [myRejectedTable, setMRTable] = useState([]);
+  const [value, setValue] = useState(0); // first tab
+
+  const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
+    items: [
+      {
+        columnField: "Company Name",
+        operatorValue: "=",
+        value: "SERVO_LIVE",
+      },
+    ],
+  });
+
+  const handleChange = (_event, newValue) => {
+    setValue(newValue);
+  };
+
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer
+        sx={{ display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1 }}
+      >
+        <Box>
+          <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
+        </Box>
+        <Box>
+          <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
+          <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
+          <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
+          <GridToolbarExport sx={{ color: "#0A2540" }} />
+        </Box>
+      </GridToolbarContainer>
+    );
+  }
+
+  const columns = [
+    { field: "RmaID", headerName: "ID", flex: 1 },
+    { field: "Username", headerName: "Employee", flex: 8 },
+    { field: "DateTime", headerName: "Date", flex: 8 },
+    { field: "CompanyName", headerName: "Company", flex: 8 },
+    { field: "CustomerEmail", headerName: "Customer Email", flex: 8 },
+  ];
 
   useEffect(() => {
     fetch("http://localhost:5000/api/pendingRMA")
@@ -125,43 +162,6 @@ const Rmatabs: React.FC = () => {
       // make sure to catch any error
       .catch(console.error);
   }, []);
-
-  const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
-    items: [
-      {
-        columnField: "Company Name",
-        operatorValue: "=",
-        value: "SERVO_LIVE",
-      },
-    ],
-  });
-
-  const navigate = useNavigate();
-  const theme = unstable_createMuiStrictModeTheme();
-  const [pageSize, setPageSize] = React.useState(25);
-  const [inputName, setInputName] = useState<string>(null);
-
-  const [value, setValue] = useState(0); // first tab
-
-  const handleChange = (_event, newValue) => {
-    setValue(newValue);
-  };
-
-  function CustomToolbar() {
-    return (
-      <GridToolbarContainer sx={{display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1}}>
-        <Box>
-        <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
-        </Box>
-        <Box>
-        <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
-        <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
-        <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
-        <GridToolbarExport sx={{ color: "#0A2540" }} />
-        </Box>
-      </GridToolbarContainer>
-    );
-  }
 
   switch (userrole) {
     case "Sales Engineer": {
@@ -376,9 +376,15 @@ const Rmatabs: React.FC = () => {
     }
     case "Technical Staff": {
       return (
-        <TabContext value={value || "1"}>
-          <Grid container>
-            <Grid item xs={11}>
+        <Grid
+          container
+          sx={{
+            height: 800,
+            width: "100%",
+          }}
+        >
+          <TabContext value={value || "1"}>
+            <Grid item xs={12}>
               <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
                 <h2> RMA Requests </h2>
                 <Tabs
@@ -411,9 +417,9 @@ const Rmatabs: React.FC = () => {
               </Box>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ height: "inherit" }}>
               <TabPanel value="3" sx={{ height: "inherit", width: "inherit" }}>
-                <Box sx={{ height: 700, width: "100%" }}>
+                <Box sx={{ height: "inherit", width: "inherit" }}>
                   <DataGrid
                     sx={{ background: "white", fontSize: 18 }}
                     rows={receivedTable}
@@ -428,7 +434,614 @@ const Rmatabs: React.FC = () => {
                           alignItems="center"
                           justifyContent="center"
                         >
-                          No received RMA requessts
+                          No received RMA requests
+                        </Stack>
+                      ),
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
+                      },
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/rmaDetails/${params.id}`);
+                    }}
+                  />
+                </Box>
+              </TabPanel>
+            </Grid>
+          </TabContext>
+        </Grid>
+      );
+    }
+    case "Sales Manager": {
+      return (
+        <Grid
+          container
+          sx={{
+            height: 800,
+            width: "100%",
+          }}
+        >
+          <TabContext value={value || "1"}>
+            <Grid item xs={12}>
+              <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
+                <h2> RMA Requests </h2>
+                <Tabs
+                  onChange={handleChange}
+                  TabIndicatorProps={{
+                    style: { backgroundColor: "#D97D54" },
+                  }}
+                  sx={{
+                    "& button:focus": {
+                      backgroundColor: "#063970",
+                      color: "white",
+                      width: "15%",
+                      height: "15%",
+                    },
+                  }}
+                >
+                  <Tab
+                    label="Pending"
+                    value="1"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                  <Tab
+                    label="Accepted"
+                    value="2"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                  <Tab
+                    label="Received"
+                    value="3"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                  <Tab
+                    label="Verified"
+                    value="4"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                  <Tab
+                    label="In Progress"
+                    value="5"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                  <Tab
+                    label="Closed"
+                    value="6"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                </Tabs>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12} sx={{ height: "inherit" }}>
+              <TabPanel value="1" sx={{ height: "inherit", width: "inherit" }}>
+                <Box sx={{ height: "inherit", width: "inherit" }}>
+                  <DataGrid
+                    sx={{
+                      background: "white",
+                      fontSize: 18,
+                      width: "inherit",
+                      height: "inherit",
+                    }}
+                    rows={pendingTable}
+                    columns={columns}
+                    getRowId={(row) => row.RmaID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No pending RMA requests
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/rmaDetails/${params.id}`);
+                    }}
+                  />
+                </Box>
+              </TabPanel>
+              <TabPanel value="2" sx={{ height: "inherit", width: "inherit" }}>
+                <Box sx={{ height: "inherit", width: "inherit" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={approvedTable}
+                    columns={columns}
+                    getRowId={(row) => row.RmaID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No approved RMA requests
+                        </Stack>
+                      ),
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
+                      },
+                      panel: {
+                        sx: {
+                          "& .MuiTypography-root": {
+                            color: "black",
+                            fontSize: 16,
+                          },
+                          "& .MuiDataGrid-filterForm": {
+                            bgcolor: "white",
+                          },
+                        },
+                      },
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/rmaDetails/${params.id}`);
+                    }}
+                  />
+                </Box>
+              </TabPanel>
+              <TabPanel value="3" sx={{ height: "inherit", width: "inherit" }}>
+                <Box sx={{ height: "inherit", width: "inherit" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={receivedTable}
+                    columns={columns}
+                    getRowId={(row) => row.RmaID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No received RMA requests
+                        </Stack>
+                      ),
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
+                      },
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/rmaDetails/${params.id}`);
+                    }}
+                  />
+                </Box>
+              </TabPanel>
+              <TabPanel value="4" sx={{ height: "inherit", width: "inherit" }}>
+                <Box sx={{ height: "inherit", width: "inherit" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={verifiedTable}
+                    columns={columns}
+                    getRowId={(row) => row.RmaID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No verified RMA requests
+                        </Stack>
+                      ),
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
+                      },
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/rmaDetails/${params.id}`);
+                    }}
+                  />
+                </Box>
+              </TabPanel>
+              <TabPanel value="5" sx={{ height: "inherit", width: "inherit" }}>
+                <Box sx={{ height: "inherit", width: "inherit" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={inprogressTable}
+                    columns={columns}
+                    getRowId={(row) => row.RmaID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No RMA requests in progress
+                        </Stack>
+                      ),
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
+                      },
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/rmaDetails/${params.id}`);
+                    }}
+                  />
+                </Box>
+              </TabPanel>
+              <TabPanel value="6" sx={{ height: "inherit", width: "inherit" }}>
+                <Box sx={{ height: "inherit", width: "inherit" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={closedTable}
+                    columns={columns}
+                    getRowId={(row) => row.RmaID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No closed RMA requests
+                        </Stack>
+                      ),
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
+                      },
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/rmaDetails/${params.id}`);
+                    }}
+                  />
+                </Box>
+              </TabPanel>
+            </Grid>
+          </TabContext>
+        </Grid>
+      );
+    }
+    case "Sales Admin": {
+      return (
+        <Grid
+          container
+          sx={{
+            height: 800,
+            width: "100%",
+          }}
+        >
+          <TabContext value={value || "1"}>
+            <Grid item xs={12}>
+              <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
+                <h2> RMA Requests </h2>
+                <Tabs
+                  onChange={handleChange}
+                  TabIndicatorProps={{
+                    style: { backgroundColor: "#D97D54" },
+                  }}
+                  sx={{
+                    "& button:focus": {
+                      backgroundColor: "#063970",
+                      color: "white",
+                      width: "15%",
+                      height: "15%",
+                    },
+                  }}
+                >
+                  <Tab
+                    label="Verified"
+                    value="4"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                  <Tab
+                    label="In Progress"
+                    value="5"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                  <Tab
+                    label="Closed"
+                    value="6"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                </Tabs>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12} sx={{ height: "inherit" }}>
+              <TabPanel value="4" sx={{ height: "inherit", width: "inherit" }}>
+                <Box sx={{ height: "inherit", width: "inherit" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={verifiedTable}
+                    columns={columns}
+                    getRowId={(row) => row.RmaID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No verified RMA requests
+                        </Stack>
+                      ),
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
+                      },
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/rmaDetails/${params.id}`);
+                    }}
+                  />
+                </Box>
+              </TabPanel>
+              <TabPanel value="5" sx={{ height: "inherit", width: "inherit" }}>
+                <Box sx={{ height: "inherit", width: "inherit" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={inprogressTable}
+                    columns={columns}
+                    getRowId={(row) => row.RmaID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No RMA requests in progress
+                        </Stack>
+                      ),
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
+                      },
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/rmaDetails/${params.id}`);
+                    }}
+                  />
+                </Box>
+              </TabPanel>
+              <TabPanel value="6" sx={{ height: "inherit", width: "inherit" }}>
+                <Box sx={{ height: "inherit", width: "inherit" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={closedTable}
+                    columns={columns}
+                    getRowId={(row) => row.RmaID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No closed RMA requests
+                        </Stack>
+                      ),
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
+                      },
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/rmaDetails/${params.id}`);
+                    }}
+                  />
+                </Box>
+              </TabPanel>
+            </Grid>
+          </TabContext>
+        </Grid>
+      );
+    }
+    case "Warehouse Worker": {
+      return (
+        <Grid
+          container
+          sx={{
+            height: 800,
+            width: "100%",
+          }}
+        >
+          <TabContext value={value || "1"}>
+            <Grid item xs={12}>
+              <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
+                <h2> RMA Requests </h2>
+                <Tabs
+                  onChange={handleChange}
+                  TabIndicatorProps={{
+                    style: { backgroundColor: "#D97D54" },
+                  }}
+                  sx={{
+                    "& button:focus": {
+                      backgroundColor: "#063970",
+                      color: "white",
+                      width: "15%",
+                      height: "15%",
+                    },
+                  }}
+                >
+                  <Tab
+                    label="Accepted"
+                    value="2"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                </Tabs>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12} sx={{ height: "inherit" }}>
+              <TabPanel value="2" sx={{ height: "inherit", width: "inherit" }}>
+                <Box sx={{ height: "inherit", width: "inherit" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={approvedTable}
+                    columns={columns}
+                    getRowId={(row) => row.RmaID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No approved RMA requests
                         </Stack>
                       ),
                     }}
@@ -460,1129 +1073,347 @@ const Rmatabs: React.FC = () => {
                 </Box>
               </TabPanel>
             </Grid>
-          </Grid>
-        </TabContext>
-      );
-    }
-    case "Sales Manager": {
-      return (
-        <>
-          <h2 className="pagetitle"> RMA Requests </h2>
-
-          <TabContext value={value || "1"}>
-            <Grid container>
-              <Grid item xs={11}>
-                <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                  <Tabs
-                    onChange={handleChange}
-                    TabIndicatorProps={{
-                      style: { backgroundColor: "#D97D54" },
-                    }}
-                    sx={{
-                      "& button:focus": {
-                        backgroundColor: "#063970",
-                        color: "white",
-                        width: "15%",
-                        height: "15%",
-                      },
-                    }}
-                  >
-                    <Tab
-                      label="Pending"
-                      value="1"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Approved"
-                      value="2"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Received"
-                      value="3"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Verified"
-                      value="4"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="In Progress"
-                      value="5"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Closed"
-                      value="6"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                  </Tabs>
-                </Box>
-              </Grid>
-
-              <Grid item xs={12}>
-                <TabPanel
-                  value="1"
-                  sx={{ height: "inherit", width: "inherit" }}
-                >
-                  <Box sx={{ height: "inherit", width: "inherit" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={pendingTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={pageSize}
-                      onPageSizeChange={(newPage) => setPageSize(newPage)}
-                      pagination
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No pending RMA requests
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </Box>
-                </TabPanel>
-                <TabPanel
-                  value="2"
-                  sx={{ height: "inherit", width: "inherit" }}
-                >
-                  <Box sx={{ height: "inherit", width: "inherit" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={approvedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No approved RMA requessts
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </Box>
-                </TabPanel>
-                <TabPanel
-                  value="3"
-                  sx={{ height: "inherit", width: "inherit" }}
-                >
-                  <Box sx={{ height: "inherit", width: "inherit" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={receivedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No received RMA requessts
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </Box>
-                </TabPanel>
-                <TabPanel
-                  value="4"
-                  sx={{ height: "inherit", width: "inherit" }}
-                >
-                  <Box sx={{ height: "inherit", width: "inherit" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={verifiedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No verified RMA requessts
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </Box>
-                </TabPanel>
-                <TabPanel
-                  value="5"
-                  sx={{ height: "inherit", width: "inherit" }}
-                >
-                  <Box sx={{ height: "inherit", width: "inherit" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={inprogressTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No closed RMA requessts
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </Box>
-                </TabPanel>
-                <TabPanel
-                  value="6"
-                  sx={{ height: "inherit", width: "inherit" }}
-                >
-                  <Box sx={{ height: "inherit", width: "inherit" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={closedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </Box>
-                </TabPanel>
-              </Grid>
-            </Grid>
           </TabContext>
-        </>
-      );
-    }
-    case "Sales Admin": {
-      return (
-        <>
-          <h2 className="pagetitle"> RMA Requests </h2>
-          <TabContext value={value || "1"}>
-            <Grid container>
-              <Grid item xs={11}>
-                <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                  <Tabs
-                    onChange={handleChange}
-                    TabIndicatorProps={{
-                      style: { backgroundColor: "#D97D54" },
-                    }}
-                    sx={{
-                      "& button:focus": {
-                        backgroundColor: "#063970",
-                        color: "white",
-                        width: "15%",
-                        height: "15%",
-                      },
-                    }}
-                  >
-                    <Tab
-                      label="Verified"
-                      value="4"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="In Progress"
-                      value="5"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Closed"
-                      value="6"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                  </Tabs>
-                </Box>
-              </Grid>
-              <Grid item xs={12}>
-                <TabPanel
-                  value="4"
-                  sx={{ height: "inherit", width: "inherit" }}
-                >
-                  <Box sx={{ height: "inherit", width: "inherit" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={verifiedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No verified RMA requessts
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </Box>
-                </TabPanel>
-                <TabPanel
-                  value="5"
-                  sx={{ height: "inherit", width: "inherit" }}
-                >
-                  <Box sx={{ height: "inherit", width: "inherit" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={inprogressTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No RMA requests in progress
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </Box>
-                </TabPanel>
-                <TabPanel
-                  value="6"
-                  sx={{ height: "inherit", width: "inherit" }}
-                >
-                  <Box sx={{ height: "inherit", width: "inherit" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={closedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No closed RMA requests
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </Box>
-                </TabPanel>
-              </Grid>
-            </Grid>
-          </TabContext>
-        </>
-      );
-    }
-    case "Warehouse Worker": {
-      return (
-        <>
-          <h2 className="pagetitle"> RMA Requests </h2>
-
-          <TabContext value={value || "1"}>
-            <Grid container>
-              <Grid item xs={11}>
-                <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                  <Tabs
-                    onChange={handleChange}
-                    TabIndicatorProps={{
-                      style: { backgroundColor: "#D97D54" },
-                    }}
-                    sx={{
-                      "& button:focus": {
-                        backgroundColor: "#063970",
-                        color: "white",
-                        width: "15%",
-                        height: "15%",
-                      },
-                    }}
-                  >
-                    <Tab
-                      label="Received"
-                      value="3"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                  </Tabs>
-                </Box>
-              </Grid>
-
-              <Grid item xs={12}>
-                <TabPanel
-                  value="3"
-                  sx={{ height: "inherit", width: "inherit" }}
-                >
-                  <Box sx={{ height: "inherit", width: "inherit" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={receivedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No received RMA requessts
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </Box>
-                </TabPanel>
-              </Grid>
-            </Grid>
-          </TabContext>
-        </>
+        </Grid>
       );
     }
     case "Admin":
     default: {
       return (
-        <>
-          <h2 className="pagetitle"> RMA Requests </h2>
+        <Grid
+          container
+          sx={{
+            height: 800,
+            width: "100%",
+          }}
+        >
           <TabContext value={value || "1"}>
-            <Grid container>
-              <Grid item xs={11}>
-                <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                  <Tabs
-                    onChange={handleChange}
-                    TabIndicatorProps={{
-                      style: { backgroundColor: "#D97D54" },
-                    }}
+            <Grid item xs={12}>
+              <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
+                <h2> RMA Requests </h2>
+                <Tabs
+                  onChange={handleChange}
+                  TabIndicatorProps={{
+                    style: { backgroundColor: "#D97D54" },
+                  }}
+                  sx={{
+                    "& button:focus": {
+                      backgroundColor: "#063970",
+                      color: "white",
+                      width: "15%",
+                      height: "15%",
+                    },
+                  }}
+                >
+                  <Tab
+                    label="Pending"
+                    value="1"
                     sx={{
-                      "& button:focus": {
-                        backgroundColor: "#063970",
-                        color: "white",
-                        width: "15%",
-                        height: "15%",
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                  <Tab
+                    label="Accepted"
+                    value="2"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                  <Tab
+                    label="Received"
+                    value="3"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                  <Tab
+                    label="Verified"
+                    value="4"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                  <Tab
+                    label="In Progress"
+                    value="5"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                  <Tab
+                    label="Closed"
+                    value="6"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                </Tabs>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sx={{ height: "inherit" }}>
+              <TabPanel value="1" sx={{ height: "inherit", width: "inherit" }}>
+                <Box sx={{ height: "inherit", width: "inherit" }}>
+                  <DataGrid
+                    sx={{
+                      background: "white",
+                      fontSize: 18,
+                      width: "inherit",
+                      height: "inherit",
+                    }}
+                    rows={pendingTable}
+                    columns={columns}
+                    getRowId={(row) => row.RmaID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No pending RMA requests
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/rmaDetails/${params.id}`);
+                    }}
+                  />
+                </Box>
+              </TabPanel>
+              <TabPanel value="2" sx={{ height: "inherit", width: "inherit" }}>
+                <Box sx={{ height: "inherit", width: "inherit" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={approvedTable}
+                    columns={columns}
+                    getRowId={(row) => row.RmaID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No approved RMA requests
+                        </Stack>
+                      ),
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
+                      },
+                      panel: {
+                        sx: {
+                          "& .MuiTypography-root": {
+                            color: "black",
+                            fontSize: 16,
+                          },
+                          "& .MuiDataGrid-filterForm": {
+                            bgcolor: "white",
+                          },
+                        },
                       },
                     }}
-                  >
-                    <Tab
-                      label="Pending"
-                      value="1"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Approved"
-                      value="2"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Received"
-                      value="3"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Verified"
-                      value="4"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="In Progress"
-                      value="5"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Closed"
-                      value="6"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                  </Tabs>
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/rmaDetails/${params.id}`);
+                    }}
+                  />
                 </Box>
-              </Grid>
-
-              <Grid item xs={12}>
-                <TabPanel
-                  value="1"
-                  sx={{ height: "inherit", width: "inherit" }}
-                >
-                  <Box sx={{ height: "inherit", width: "inherit" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={pendingTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={pageSize}
-                      onPageSizeChange={(newPage) => setPageSize(newPage)}
-                      pagination
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No pending RMA requests
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </Box>
-                </TabPanel>
-                <TabPanel
-                  value="2"
-                  sx={{ height: "inherit", width: "inherit" }}
-                >
-                  <Box sx={{ height: "inherit", width: "inherit" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={approvedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No approved RMA requessts
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </Box>
-                </TabPanel>
-                <TabPanel
-                  value="3"
-                  sx={{ height: "inherit", width: "inherit" }}
-                >
-                  <Box sx={{ height: "inherit", width: "inherit" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={receivedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No received RMA requessts
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </Box>
-                </TabPanel>
-                <TabPanel
-                  value="4"
-                  sx={{ height: "inherit", width: "inherit" }}
-                >
-                  <Box sx={{ height: "inherit", width: "inherit" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={verifiedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No verified RMA requessts
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </Box>
-                </TabPanel>
-                <TabPanel
-                  value="5"
-                  sx={{ height: "inherit", width: "inherit" }}
-                >
-                  <Box sx={{ height: "inherit", width: "inherit" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={inprogressTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No RMA requests in progress
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </Box>
-                </TabPanel>
-                <TabPanel
-                  value="6"
-                  sx={{ height: "inherit", width: "inherit" }}
-                >
-                  <Box sx={{ height: "inherit", width: "inherit" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={closedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No closed RMA requessts
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </Box>
-                </TabPanel>
-              </Grid>
+              </TabPanel>
+              <TabPanel value="3" sx={{ height: "inherit", width: "inherit" }}>
+                <Box sx={{ height: "inherit", width: "inherit" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={receivedTable}
+                    columns={columns}
+                    getRowId={(row) => row.RmaID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No received RMA requests
+                        </Stack>
+                      ),
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
+                      },
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/rmaDetails/${params.id}`);
+                    }}
+                  />
+                </Box>
+              </TabPanel>
+              <TabPanel value="4" sx={{ height: "inherit", width: "inherit" }}>
+                <Box sx={{ height: "inherit", width: "inherit" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={verifiedTable}
+                    columns={columns}
+                    getRowId={(row) => row.RmaID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No verified RMA requests
+                        </Stack>
+                      ),
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
+                      },
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/rmaDetails/${params.id}`);
+                    }}
+                  />
+                </Box>
+              </TabPanel>
+              <TabPanel value="5" sx={{ height: "inherit", width: "inherit" }}>
+                <Box sx={{ height: "inherit", width: "inherit" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={inprogressTable}
+                    columns={columns}
+                    getRowId={(row) => row.RmaID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No RMA requests in progress
+                        </Stack>
+                      ),
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
+                      },
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/rmaDetails/${params.id}`);
+                    }}
+                  />
+                </Box>
+              </TabPanel>
+              <TabPanel value="6" sx={{ height: "inherit", width: "inherit" }}>
+                <Box sx={{ height: "inherit", width: "inherit" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={closedTable}
+                    columns={columns}
+                    getRowId={(row) => row.RmaID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No closed RMA requests
+                        </Stack>
+                      ),
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
+                      },
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/rmaDetails/${params.id}`);
+                    }}
+                  />
+                </Box>
+              </TabPanel>
             </Grid>
           </TabContext>
-        </>
+        </Grid>
       );
     }
   }

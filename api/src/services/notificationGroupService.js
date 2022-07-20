@@ -33,7 +33,7 @@ module.exports.getNames = async ( name ) => {
 // };
 
 module.exports.getByID = async (notiGroupID) => {
-    const query = `SELECT NotiGroupName, NotiGroupDesc FROM NotiGroup WHERE NotiGroupID = ?`;
+    const query = `SELECT n.NotiGroupName, n.NotiGroupDesc, c.CompanyName, c.CompanyID FROM NotiGroup n LEFT JOIN Company c ON n.CompanyID = c.CompanyID WHERE NotiGroupID = ?`;
     return knex.raw(query, [notiGroupID]);
 };
 
@@ -43,7 +43,7 @@ module.exports.getByName = async (name) => {
 };
 
 module.exports.getNotifications = async (notiGroupID) => {
-    const query = `SELECT f.NotiFeatureID, f.NotiFeature, t.NotiType FROM NotiGroupFeature g INNER JOIN NotiFeature f ON f.NotiFeatureID = g.NotiFeatureID INNER JOIN NotiType t ON t.NotiTypeID = g.NotiTypeID WHERE g.NotiGroupID = ?`;
+    const query = `SELECT f.NotiFeatureID, f.NotiFeature, t.NotiType, t.NotiTypeID FROM NotiGroupFeature g INNER JOIN NotiFeature f ON f.NotiFeatureID = g.NotiFeatureID INNER JOIN NotiType t ON t.NotiTypeID = g.NotiTypeID WHERE g.NotiGroupID = ?`;
     return knex.raw(query, [notiGroupID]);
 };
 

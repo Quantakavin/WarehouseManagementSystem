@@ -19,7 +19,11 @@ import {
   Typography,
   unstable_createMuiStrictModeTheme,
   withStyles,
+  IconButton
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useNavigate } from "react-router";
 
 const NotificationGroups2: React.FC = () => {
@@ -44,14 +48,56 @@ const NotificationGroups2: React.FC = () => {
   const columns = [
     { field: "NotiGroupID", headerName: "ID", flex: 2 },
     { field: "NotiGroupName", headerName: "Name", flex: 38 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 3,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => {
+        if (hoveredRow === params.id) {
+          return (
+            <Box
+              sx={{
+                backgroundColor: "whitesmoke",
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <IconButton onClick={() => navigate(`/notificationgroup/${params.id}`)}>
+                <VisibilityIcon />
+              </IconButton>
+              <IconButton onClick={() => navigate(`/editnotificationgroup/${params.id}`)}>
+                <EditIcon />
+              </IconButton>
+              <IconButton onClick={() => navigate(`/dashboard`)}>
+                <DeleteIcon />
+              </IconButton>
+            </Box>
+          );
+        } else return null;
+      },
+    },
   ];
 
   const navigate = useNavigate();
   const theme = unstable_createMuiStrictModeTheme();
   const [pageSize, setPageSize] = React.useState(25);
   const [inputName, setInputName] = useState<string>(null);
-
   const [value, setValue] = useState(0); // first tab
+  const [hoveredRow, setHoveredRow] = React.useState(null);
+
+  const onMouseEnterRow = (event) => {
+    const id = Number(event.currentTarget.getAttribute("data-id"));
+    setHoveredRow(id);
+  };
+
+  const onMouseLeaveRow = (event) => {
+    setHoveredRow(null);
+  };
 
   const handleChange = (_event, newValue) => {
     setValue(newValue);
@@ -102,6 +148,12 @@ const NotificationGroups2: React.FC = () => {
                 No Notification Groups
               </Stack>
             ),
+          }}
+          componentsProps={{
+            row: {
+              onMouseEnter: onMouseEnterRow,
+              onMouseLeave: onMouseLeaveRow,
+            },
           }}
           filterModel={filterModel}
           onFilterModelChange={(newFilterModel) =>

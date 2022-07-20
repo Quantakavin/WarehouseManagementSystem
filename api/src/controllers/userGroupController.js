@@ -82,27 +82,14 @@ module.exports.getUserGroupById = async (req, res) => {
             if (results2.length > 0) {
                 [output[0].Features] = results2;
             }
-            redisClient.set(`userGroup#${userGroupID}`, JSON.stringify(output[0]));
-            return res.status(200).json(output[0]);
+            redisClient.set(`userGroup#${userGroupID}`, JSON.stringify(output));
+            return res.status(200).json(output);
         }
         return res.status(404).json({ message: 'Cannot find user group with that id' });
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
-
-module.exports.getGroupFeaturesByID = async (req, res) => {
-    const userGroupID = req.params.id;
-    try {
-        const results = await userGroup.getFeatures(userGroupID);
-
-            return res.status(200).send(results[0]);
-
-    } catch (error) {
-        return res.status(500).json({ message: 'Internal Server Error!' });
-    }
-};
-
 
 module.exports.getUserGroupByName = async (req, res) => {
     const { name } = req.query;

@@ -14,16 +14,30 @@ import {
   Box,
   Card,
   CardContent,
+  IconButton,
   Stack,
   Theme,
   Typography,
   unstable_createMuiStrictModeTheme,
   withStyles,
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useNavigate } from "react-router";
 
 const UserGroups2: React.FC = () => {
   const [row, setRow] = useState([]);
+  const [hoveredRow, setHoveredRow] = React.useState(null);
+
+  const onMouseEnterRow = (event) => {
+    const id = Number(event.currentTarget.getAttribute("data-id"));
+    setHoveredRow(id);
+  };
+
+  const onMouseLeaveRow = (event) => {
+    setHoveredRow(null);
+  };
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/userGroups`)
@@ -44,6 +58,39 @@ const UserGroups2: React.FC = () => {
   const columns = [
     { field: "UserGroupID", headerName: "ID", flex: 2 },
     { field: "UserGroupName", headerName: "Name", flex: 38 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 3,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => {
+        if (hoveredRow === params.id) {
+          return (
+            <Box
+              sx={{
+                backgroundColor: "whitesmoke",
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <IconButton onClick={() => navigate(`/usergroup/${params.id}`)}>
+                <VisibilityIcon />
+              </IconButton>
+              <IconButton onClick={() => navigate(`/editusergroup/${params.id}`)}>
+                <EditIcon />
+              </IconButton>
+              <IconButton onClick={() => navigate(`/dashboard`)}>
+                <DeleteIcon />
+              </IconButton>
+            </Box>
+          );
+        } else return null;
+      },
+    },
   ];
 
   const navigate = useNavigate();
@@ -103,13 +150,16 @@ const UserGroups2: React.FC = () => {
                 </Stack>
               ),
             }}
+            componentsProps={{
+              row: {
+                onMouseEnter: onMouseEnterRow,
+                onMouseLeave: onMouseLeaveRow,
+              },
+            }}
             filterModel={filterModel}
             onFilterModelChange={(newFilterModel) =>
               setFilterModel(newFilterModel)
             }
-            onRowClick={(params: GridRowParams) => {
-              navigate(`/usergroup/${params.id}`);
-            }}
           />
         </Box>
         </Box>

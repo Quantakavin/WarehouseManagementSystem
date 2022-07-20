@@ -11,7 +11,7 @@ const CardContainer: React.FC<SkeletonProps> = ({NoOfFields}) => {
     const SkeletonFields = () => {
         let SkeletonArray = []
         for (let i = 0; i < NoOfFields; i+=1) {
-            SkeletonArray.push(<Skeleton variant="text" sx={{marginBottom: "5px"}} />)
+            SkeletonArray.push(<Skeleton variant="text" sx={{marginBottom: "5px"}} key={i}/>)
         }
         return SkeletonArray
     }

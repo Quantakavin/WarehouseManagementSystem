@@ -5,7 +5,7 @@ module.exports.getAll = async () => {
     return knex.raw(query);
 };
 
-module.exports.getAllForRMA = async () => {
-    const query = `SELECT CompanyName as "label", CompanyID as "value" FROM Company WHERE active = 'Y'`;
+module.exports.getAll2 = async () => {
+    const query = `SELECT CompanyID as "value", CompanyName as "label" FROM Company WHERE active = 'Y'`;
     return knex.raw(query);
 };

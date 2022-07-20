@@ -28,8 +28,8 @@ const ViewNotificationGroup: React.FC = () => {
 
   const headers: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 60 },
-    { field: 'name', headerName: 'Notification Name', width: 350 },
-    { field: 'type', headerName: 'Notification Type', width: 190 }
+    { field: 'name', headerName: 'Notification Name', width: 400 },
+    { field: 'type', headerName: 'Notification Type', width: 150 }
   ];
 
   if (NotificationGroupQuery.isLoading || NotificationGroupQuery.isError) {
@@ -42,6 +42,12 @@ const ViewNotificationGroup: React.FC = () => {
         <Container className="cardcontainer shadow">
           <h2 className="cardheader">{NotificationGroupQuery.data.data[0].NotiGroupName}</h2>
           <p className="cardsubheading">{NotificationGroupQuery.data.data[0].NotiGroupDesc}</p>
+          <div className="flexcontainer cardfield">
+            <p className="cardfieldlabel">Company</p>
+            <p className="cardfieldvalue">
+              {NotificationGroupQuery.data.data[0].CompanyName}
+            </p>
+          </div>
           <div className="flexcontainer cardfield">
           <p className="cardfieldlabel">Notification List:</p>
           </div>
@@ -58,7 +64,7 @@ const ViewNotificationGroup: React.FC = () => {
             <motion.button
               style={{ alignSelf: "flex-end" }}
               className="mainbutton"
-              onClick={() => navigate(`/editusergroup/${params.id}`)}
+              onClick={() => navigate(`/editnotificationgroup/${params.id}`)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >

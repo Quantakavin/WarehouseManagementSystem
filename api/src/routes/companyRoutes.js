@@ -3,6 +3,6 @@ const authorization = require('../middlewares/authorization');
 const companyController = require('../controllers/companyController');
 
 router.get('/companies', authorization.verifyAdmin, companyController.getAllCompanies);
-router.get('/rmacompanies', companyController.getAllCompaniesForRMA);
+router.get('/companies2', authorization.verifyAdmin, companyController.getAllCompanies2);
 
 module.exports = router;
