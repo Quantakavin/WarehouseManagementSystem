@@ -27,8 +27,215 @@ import TableRowColumn from "@mui/material/TableRow";
 import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
 import Table from "@mui/material/Table";
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Close';
+import {
+  GridRowsProp,
+  GridRowModesModel,
+  GridRowModes,
+  DataGridPro,
+  GridColumns,
+  GridRowParams,
+  MuiEvent,
+  GridToolbarContainer,
+  GridActionsCellItem,
+  GridEventListener,
+  GridRowId,
+  GridRowModel,
+} from '@mui/x-data-grid-pro';
+import {
+  randomCreatedDate,
+  randomTraderName,
+  randomUpdatedDate,
+  randomId,
+} from '@mui/x-data-grid-generator';
 
 function newtloan() {
+
+
+
+
+
+  const initialRows: GridRowsProp = [
+    // {
+    //   id: randomId(),
+    //   ItemNo:'',
+    //   ItemName:'',
+    //   BatchNo:'',
+    //   Quantity:''
+    // },
+    
+  ];
+  
+  interface EditToolbarProps {
+    setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
+    setRowModesModel: (
+      newModel: (oldModel: GridRowModesModel) => GridRowModesModel,
+    ) => void;
+  }
+  
+  function EditToolbar(props: EditToolbarProps) {
+    const { setRows, setRowModesModel } = props;
+  
+    const handleClick = () => {
+      const id = randomId();
+      setRows((oldRows) => [...oldRows, { id, ItemNo: '', ItemName: '', isNew: true }]);
+      setRowModesModel((oldModel) => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: 'ItemNo' },
+      }));
+    };
+  
+    return (
+      <GridToolbarContainer>
+        <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
+          Add record
+        </Button>
+      </GridToolbarContainer>
+    );
+  }
+  
+    const FullFeaturedCrudGrid = ()=> {
+    const [rows, setRows] = React.useState(initialRows);
+    const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
+  
+    const handleRowEditStart = (
+      params: GridRowParams,
+      event: MuiEvent<React.SyntheticEvent>,
+    ) => {
+      event.defaultMuiPrevented = true;
+    };
+  
+    const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
+      event.defaultMuiPrevented = true;
+    };
+  
+    const handleEditClick = (id: GridRowId) => () => {
+      setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+    };
+  
+    const handleSaveClick = (id: GridRowId) => () => {
+      setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+    };
+  
+    const handleDeleteClick = (id: GridRowId) => () => {
+      setRows(rows.filter((row) => row.id !== id));
+    };
+  
+    const handleCancelClick = (id: GridRowId) => () => {
+      setRowModesModel({
+        ...rowModesModel,
+        [id]: { mode: GridRowModes.View, ignoreModifications: true },
+      });
+  
+      const editedRow = rows.find((row) => row.id === id);
+      if (editedRow!.isNew) {
+        setRows(rows.filter((row) => row.id !== id));
+      }
+    };
+  
+    const processRowUpdate = (newRow: GridRowModel) => {
+      const updatedRow = { ...newRow, isNew: false };
+      setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+      setItems(updatedRow)
+      return updatedRow;
+     
+    };
+
+    
+    
+    const columns: GridColumns = [
+      { field: 'ItemNo', headerName: 'Item No.', width: 180, editable: true },
+      { field: 'ItemName', headerName: 'Item Name', width: 180, editable: true },
+      { field: 'BatchNo', headerName: 'Batch No.', width: 180, editable: true },
+      { field: 'Quantity', headerName: 'Quantity', type: 'number', editable: true },
+     
+      {
+        field: 'actions',
+        type: 'actions',
+        headerName: 'Actions',
+        width: 80,
+        cellClassName: 'actions',
+        getActions: ({ id }) => {
+          const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+  
+          if (isInEditMode) {
+            return [
+              <GridActionsCellItem
+                icon={<SaveIcon />}
+                label="Save"
+                onClick={handleSaveClick(id)}
+              />,
+              <GridActionsCellItem
+                icon={<CancelIcon />}
+                label="Cancel"
+                className="textPrimary"
+                onClick={handleCancelClick(id)}
+                color="inherit"
+              />,
+            ];
+          }
+  
+          return [
+            <GridActionsCellItem
+              icon={<EditIcon />}
+              label="Edit"
+              className="textPrimary"
+              onClick={handleEditClick(id)}
+              color="inherit"
+            />,
+            <GridActionsCellItem
+              icon={<DeleteIcon />}
+              label="Delete"
+              onClick={handleDeleteClick(id)}
+              color="inherit"
+            />,
+          ];
+        },
+      },
+    ];
+   
+  
+    return (
+      <Box
+        sx={{
+          height: 300,
+          width: '100%',
+          '& .actions': {
+            color: 'text.secondary',
+          },
+          '& .textPrimary': {
+            color: 'text.primary',
+          },
+        }}
+
+        
+      >
+        <DataGridPro
+          rows={rows}
+          columns={columns}
+          editMode="row"
+          rowModesModel={rowModesModel}
+          onRowEditStart={handleRowEditStart}
+          onRowEditStop={handleRowEditStop}
+          processRowUpdate={processRowUpdate}
+          components={{
+            Toolbar: EditToolbar,
+          }}
+          componentsProps={{
+            toolbar: { setRows, setRowModesModel },
+          }}
+          experimentalFeatures={{ newEditingApi: true }}
+          
+         
+        />
+        {console.log(items)}
+      </Box>
+    );
+  }
 
   const [type, setType] = useState('')
   const [company,setCompany] = useState('')
@@ -43,15 +250,10 @@ function newtloan() {
   const [user,setUser] = useState('')
   const [email,setEmail] = useState('')
   const [collection,setCollection] = useState('')
-  const [items,setItems] = useState([{
-    "ItemNo":"",
-    "ItemName":"",
-    "BatchNo":"",
-    "Quantity": ""
-  }])
-
+  const [items,setItems] = useState([])
 
  
+
 
 
   const handleChangeCompany = (event: SelectChangeEvent) => {
@@ -112,8 +314,9 @@ function newtloan() {
    
    
     setADate(date)
+    
   })
-  
+  console.log(applicationdate)
   useEffect(()=>{
     const loanNumber = "1ccccdewewcwe"
     setNumber(loanNumber)
@@ -123,7 +326,7 @@ function newtloan() {
     const id = "1"
     setUser(id)
   })
-    console.log(applicationdate)
+   
   const getCard = () => {
 
     const loanDuration = [
@@ -149,13 +352,13 @@ function newtloan() {
           
           <h2 className="pagetitle">Apply TLoan</h2>
     <form onSubmit={submitLoan}>
-      <Card sx={{ width: 800, height: 550, marginLeft: 'auto', marginRight: 'auto'}}>
+      <Card sx={{ width: 800, height: 650, marginLeft: 'auto', marginRight: 'auto'}}>
       <CardMedia
       
       />
       <CardContent> 
         <>
-      
+        {FullFeaturedCrudGrid()}
         {console.log(items)}
         
         
@@ -221,7 +424,7 @@ function newtloan() {
           
            </Select>
         </FormControl>
-        {console.log(duration)}
+      
 
         {/* Collection */}
         <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>

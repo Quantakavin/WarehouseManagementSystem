@@ -42,6 +42,7 @@ import NotificationGroups2 from "./pages/notificationgroups/NotificationGroups2"
 import ViewUser2 from "./pages/users/ViewUser2";
 import ViewUserGroup2 from "./pages/usergroups/ViewUserGroup2";
 import { Box } from "@mui/material";
+import Modals12 from './components/display/TloanModal/modal'
 
 interface ProtectedRouteProps {
   loginpage: boolean;
@@ -118,6 +119,7 @@ const App: React.FC = () => {
                 element={<TLoanDisplay2 />}
               />
               <Route path="/newtloan" element={<NewTLoan />} />
+              <Route path="/modal" element={<Modals12 />} />
             </Route>
           </Routes>
         </Box>
