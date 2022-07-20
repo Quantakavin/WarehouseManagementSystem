@@ -16,11 +16,17 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import { CompanyName, LoanType, CollectionType, DurationOfLoan } from './Dropdown/dropDown';
 import {useNavigate} from 'react-router-dom'
-
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import TableRows from "./TLoanTable/TableRows"
+import './TLoanTable/table.css'
+import TableRow from "@mui/material/TableRow";
+import TableRowColumn from "@mui/material/TableRow";
+import TableHead from "@mui/material/TableHead";
+import TableBody from "@mui/material/TableBody";
+import Table from "@mui/material/Table";
 
 function newtloan() {
 
@@ -37,7 +43,15 @@ function newtloan() {
   const [user,setUser] = useState('')
   const [email,setEmail] = useState('')
   const [collection,setCollection] = useState('')
-  const [items,setItems] = useState([{}])
+  const [items,setItems] = useState([{
+    "ItemNo":"",
+    "ItemName":"",
+    "BatchNo":"",
+    "Quantity": ""
+  }])
+
+
+ 
 
 
   const handleChangeCompany = (event: SelectChangeEvent) => {
@@ -132,7 +146,7 @@ function newtloan() {
     ]
   return (
       <div>
-
+          
           <h2 className="pagetitle">Apply TLoan</h2>
     <form onSubmit={submitLoan}>
       <Card sx={{ width: 800, height: 550, marginLeft: 'auto', marginRight: 'auto'}}>
@@ -140,7 +154,8 @@ function newtloan() {
       
       />
       <CardContent> 
-        <AddDeleteTableRows  onChange={(e)=>setItems(e.target.value)} />
+      
+        {console.log(items)}
         
         
         <Box sx={{marginLeft: 2, marginTop: 1, display: 'flex'}}>
@@ -267,6 +282,7 @@ function newtloan() {
     <>
     
     {getCard()}
+        
    
    </>
   )

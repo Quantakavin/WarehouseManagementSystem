@@ -34,7 +34,7 @@ function AddDeleteTableRows(){
         <div className="container" style={{width: 10000, height:200, overflow:'scroll'}}>
             <div className="row">
                 <div className="col-sm-8">
-                <table className="table" >
+                <table className="table">
                     <thead>
                       <tr>
                           <th>Item No.</th>

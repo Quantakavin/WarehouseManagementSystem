@@ -8,7 +8,7 @@ function tloan() {
   return (
     <div>
       {/* <SideBar/> */}
-    <TLoanTabs2/>
+    <TLoanTabs/>
     </div>
   )
 }
