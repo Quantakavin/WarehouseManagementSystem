@@ -455,7 +455,7 @@ export default function CreateRMA() {
   const navigate = useNavigate();
 
   return (
-    <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
+    <Box sx={{ padding: 3, height: "100%", width: "100%"}}>
       <Typography
         gutterBottom
         variant="subtitle2"

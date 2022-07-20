@@ -92,7 +92,7 @@ const TLoanTabs2: React.FC = () => {
 
   function CustomToolbar() {
     return (
-      <GridToolbarContainer sx={{display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1}}>
+      <GridToolbarContainer sx={{display: "flex", flexWrap: "wrap", maxWidth: 613, p: 1}}>
         <Box>
         <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
         </Box>
@@ -341,11 +341,11 @@ const TLoanTabs2: React.FC = () => {
     case "Technical Staff": {
       return (
         <>
-          <h2 className="pagetitle"> TLoans </h2>
           <TabContext value={value || "1"}>
             <Grid container>
               <Grid item xs={11}>
                 <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
+                  <h2> TLoans </h2>
                   <Tabs
                     onChange={handleChange}
                     TabIndicatorProps={{
@@ -355,8 +355,8 @@ const TLoanTabs2: React.FC = () => {
                       "& button:focus": {
                         backgroundColor: "#063970",
                         color: "white",
-                        height: "100%",
-                        width: "100%",
+                        height: "15%",
+                        width: "15%",
                       },
                     }}
                   >
@@ -412,7 +412,7 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 10, marginTop: 5.5 }}>
+                <Box sx={{ paddingLeft: 10, marginTop: 8 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
                       <Fab
@@ -446,7 +446,7 @@ const TLoanTabs2: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No current Tloans
+                            No current TLoans
                           </Stack>
                         ),
                       }}
@@ -478,7 +478,7 @@ const TLoanTabs2: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No pending TLoans
+                            No pending Tloans
                           </Stack>
                         ),
                       }}
@@ -487,7 +487,7 @@ const TLoanTabs2: React.FC = () => {
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/tloandetails/${params.id}`);
+                        navigate(`/tloandetails2/${params.id}`);
                       }}
                     />
                   </div>
@@ -561,11 +561,11 @@ const TLoanTabs2: React.FC = () => {
     case "Sales Manager": {
       return (
         <>
-          <h2 className="pagetitle"> TLoans </h2>
           <TabContext value={value || "1"}>
             <Grid container>
-              <Grid item xs={11}>
+              <Grid item xs={12}>
                 <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
+                  <h2> TLoans </h2>
                   <Tabs
                     onChange={handleChange}
                     TabIndicatorProps={{
@@ -575,8 +575,129 @@ const TLoanTabs2: React.FC = () => {
                       "& button:focus": {
                         backgroundColor: "#063970",
                         color: "white",
+                        height: "15%",
+                        width: "15%",
+                      },
+                    }}
+                  >
+                    <Tab
+                      label="Loans"
+                      value="1"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
                         height: "100%",
-                        width: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Extensions"
+                      value="2"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                  </Tabs>
+                </Box>
+              </Grid>
+
+              <Grid item xs={12}>
+                <TabPanel value="1">
+                  <div style={{ height: 700, width: "100%" }}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 18 }}
+                      rows={loansTable}
+                      columns={columns}
+                      getRowId={(row) => row.TLoanNumber}
+                      pageSize={pageSize}
+                      onPageSizeChange={(newPage) => setPageSize(newPage)}
+                      pagination
+                      components={{
+                        Toolbar: CustomToolbar,
+                        NoRowsOverlay: () => (
+                          <Stack
+                            height="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            No current TLoans
+                          </Stack>
+                        ),
+                      }}
+                      filterModel={filterModel}
+                      onFilterModelChange={(newFilterModel) =>
+                        setFilterModel(newFilterModel)
+                      }
+                      onRowClick={(params: GridRowParams) => {
+                        navigate(`/tloandetails/${params.id}`);
+                      }}
+                    />
+                  </div>
+                </TabPanel>
+                <TabPanel value="2">
+                  <div style={{ height: 700, width: "100%" }}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 18 }}
+                      rows={extensionsTable}
+                      columns={columns}
+                      getRowId={(row) => row.TLoanNumber}
+                      pageSize={pageSize}
+                      onPageSizeChange={(newPage) => setPageSize(newPage)}
+                      pagination
+                      components={{
+                        Toolbar: CustomToolbar,
+                        NoRowsOverlay: () => (
+                          <Stack
+                            height="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            No pending Tloans
+                          </Stack>
+                        ),
+                      }}
+                      filterModel={filterModel}
+                      onFilterModelChange={(newFilterModel) =>
+                        setFilterModel(newFilterModel)
+                      }
+                      onRowClick={(params: GridRowParams) => {
+                        navigate(`/tloandetails2/${params.id}`);
+                      }}
+                    />
+                  </div>
+                </TabPanel>
+              </Grid>
+            </Grid>
+          </TabContext>
+        </>
+      );
+    }
+    case "Sales Admin": {
+      return (
+        <>
+          <TabContext value={value || "1"}>
+            <Grid container>
+              <Grid item xs={11}>
+                <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
+                  <h2> TLoans </h2>
+                  <Tabs
+                    onChange={handleChange}
+                    TabIndicatorProps={{
+                      style: { backgroundColor: "#D97D54" },
+                    }}
+                    sx={{
+                      "& button:focus": {
+                        backgroundColor: "#063970",
+                        color: "white",
+                        height: "15%",
+                        width: "15%",
                       },
                     }}
                   >
@@ -632,7 +753,7 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 10, marginTop: 5.5 }}>
+                <Box sx={{ paddingLeft: 10, marginTop: 8 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
                       <Fab
@@ -698,226 +819,6 @@ const TLoanTabs2: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No pending TLoans
-                          </Stack>
-                        ),
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/tloandetails/${params.id}`);
-                      }}
-                    />
-                  </div>
-                </TabPanel>
-                <TabPanel value="3">
-                  <div style={{ height: 700, width: "100%" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={draftTable}
-                      columns={columns}
-                      getRowId={(row) => row.TLoanNumber}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No drafts
-                          </Stack>
-                        ),
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/tloandetails/${params.id}`);
-                      }}
-                    />
-                  </div>
-                </TabPanel>
-                <TabPanel value="4">
-                  <div style={{ height: 700, width: "100%" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={historyTable}
-                      columns={columns}
-                      getRowId={(row) => row.TLoanNumber}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No History
-                          </Stack>
-                        ),
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/tloandetails/${params.id}`);
-                      }}
-                    />
-                  </div>
-                </TabPanel>
-              </Grid>
-            </Grid>
-          </TabContext>
-        </>
-      );
-    }
-    case "Sales Admin": {
-      return (
-        <>
-          <h2 className="pagetitle"> TLoans </h2>
-          <TabContext value={value || "1"}>
-            <Grid container>
-              <Grid item xs={11}>
-                <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                  <Tabs
-                    onChange={handleChange}
-                    TabIndicatorProps={{
-                      style: { backgroundColor: "#D97D54" },
-                    }}
-                    sx={{
-                      "& button:focus": {
-                        backgroundColor: "#063970",
-                        color: "white",
-                        height: "100%",
-                        width: "100%",
-                      },
-                    }}
-                  >
-                    <Tab
-                      label="Current"
-                      value="1"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Pending"
-                      value="2"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Drafts"
-                      value="3"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="History"
-                      value="4"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                  </Tabs>
-                </Box>
-              </Grid>
-              <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 10, marginTop: 5.5 }}>
-                  <React.StrictMode>
-                    <ThemeProvider theme={theme}>
-                      <Fab
-                        aria-label="add"
-                        onClick={() => navigate("/newtloan")}
-                        style={{ marginTop: 0 }}
-                      >
-                        <AddIcon />
-                      </Fab>
-                    </ThemeProvider>
-                  </React.StrictMode>
-                </Box>
-              </Grid>
-
-              <Grid item xs={12}>
-                <TabPanel value="1">
-                  <div style={{ height: 700, width: "100%" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={currentTable}
-                      columns={columns}
-                      getRowId={(row) => row.TLoanNumber}
-                      pageSize={pageSize}
-                      onPageSizeChange={(newPage) => setPageSize(newPage)}
-                      pagination
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No current Tloans
-                          </Stack>
-                        ),
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/tloandetails/${params.id}`);
-                      }}
-                    />
-                  </div>
-                </TabPanel>
-                <TabPanel value="2">
-                  <div style={{ height: 700, width: "100%" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={pendingTable}
-                      columns={columns}
-                      getRowId={(row) => row.TLoanNumber}
-                      pageSize={pageSize}
-                      onPageSizeChange={(newPage) => setPageSize(newPage)}
-                      pagination
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
                             No pending Tloans
                           </Stack>
                         ),
@@ -927,7 +828,7 @@ const TLoanTabs2: React.FC = () => {
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/tloandetails/${params.id}`);
+                        navigate(`/tloandetails2/${params.id}`);
                       }}
                     />
                   </div>
@@ -1001,11 +902,11 @@ const TLoanTabs2: React.FC = () => {
     case "Warehouse Worker": {
       return (
         <>
-          <h2 className="pagetitle"> TLoans </h2>
           <TabContext value={value || "1"}>
             <Grid container>
-              <Grid item xs={11}>
+              <Grid item xs={12}>
                 <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
+                  <h2> TLoans </h2>
                   <Tabs
                     onChange={handleChange}
                     TabIndicatorProps={{
@@ -1015,8 +916,84 @@ const TLoanTabs2: React.FC = () => {
                       "& button:focus": {
                         backgroundColor: "#063970",
                         color: "white",
+                        height: "15%",
+                        width: "15%",
+                      },
+                    }}
+                  >
+                    <Tab
+                      label="Approved"
+                      value="1"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
                         height: "100%",
-                        width: "100%",
+                        width: "15%",
+                      }}
+                    />
+                  </Tabs>
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+                <TabPanel value="1">
+                  <div style={{ height: 700, width: "100%" }}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 18 }}
+                      rows={approvedTable}
+                      columns={columns}
+                      getRowId={(row) => row.TLoanNumber}
+                      pageSize={pageSize}
+                      onPageSizeChange={(newPage) => setPageSize(newPage)}
+                      pagination
+                      components={{
+                        Toolbar: CustomToolbar,
+                        NoRowsOverlay: () => (
+                          <Stack
+                            height="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            No current TLoans
+                          </Stack>
+                        ),
+                      }}
+                      filterModel={filterModel}
+                      onFilterModelChange={(newFilterModel) =>
+                        setFilterModel(newFilterModel)
+                      }
+                      onRowClick={(params: GridRowParams) => {
+                        navigate(`/tloandetails/${params.id}`);
+                      }}
+                    />
+                  </div>
+                </TabPanel>
+              </Grid>
+            </Grid>
+          </TabContext>
+        </>
+      );
+    }
+    case "Admin": {
+      return (
+        <>
+          <TabContext value={value || "1"}>
+            <Grid container>
+              <Grid item xs={11}>
+                <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
+                  <h2> TLoans </h2>
+                  <Tabs
+                    onChange={handleChange}
+                    TabIndicatorProps={{
+                      style: { backgroundColor: "#D97D54" },
+                    }}
+                    sx={{
+                      "& button:focus": {
+                        backgroundColor: "#063970",
+                        color: "white",
+                        height: "15%",
+                        width: "15%",
                       },
                     }}
                   >
@@ -1072,7 +1049,7 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 10, marginTop: 5.5 }}>
+                <Box sx={{ paddingLeft: 10, marginTop: 8 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
                       <Fab
@@ -1106,7 +1083,7 @@ const TLoanTabs2: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No current Tloans
+                            No current TLoans
                           </Stack>
                         ),
                       }}
@@ -1147,7 +1124,7 @@ const TLoanTabs2: React.FC = () => {
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/tloandetails/${params.id}`);
+                        navigate(`/tloandetails2/${params.id}`);
                       }}
                     />
                   </div>
@@ -1218,150 +1195,14 @@ const TLoanTabs2: React.FC = () => {
         </>
       );
     }
-    case "Admin": {
-      return (
-        <>
-          <h2 className="pagetitle"> TLoans </h2>
-          <TabContext value={value || "1"}>
-            <Grid container>
-              <Grid item xs={11}>
-                <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                  <Tabs
-                    onChange={handleChange}
-                    TabIndicatorProps={{
-                      style: { backgroundColor: "#D97D54" },
-                    }}
-                    sx={{
-                      "& button:focus": {
-                        backgroundColor: "#063970",
-                        color: "white",
-                        height: "100%",
-                        width: "100%",
-                      },
-                    }}
-                  >
-                    <Tab
-                      label="Current"
-                      value="1"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Pending"
-                      value="2"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                  </Tabs>
-                </Box>
-              </Grid>
-              <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 10, marginTop: 5.5 }}>
-                  <React.StrictMode>
-                    <ThemeProvider theme={theme}>
-                      <Fab
-                        aria-label="add"
-                        onClick={() => navigate("/newtloan")}
-                        style={{ marginTop: 0 }}
-                      >
-                        <AddIcon />
-                      </Fab>
-                    </ThemeProvider>
-                  </React.StrictMode>
-                </Box>
-              </Grid>
-
-              <Grid item xs={12}>
-                <TabPanel value="1">
-                  <div style={{ height: 700, width: "100%" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={currentTable}
-                      columns={columns}
-                      getRowId={(row) => row.TLoanNumber}
-                      pageSize={pageSize}
-                      onPageSizeChange={(newPage) => setPageSize(newPage)}
-                      pagination
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No current Tloans
-                          </Stack>
-                        ),
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/tloandetails/${params.id}`);
-                      }}
-                    />
-                  </div>
-                </TabPanel>
-                <TabPanel value="2">
-                  <div style={{ height: 700, width: "100%" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={pendingTable}
-                      columns={columns}
-                      getRowId={(row) => row.TLoanNumber}
-                      pageSize={pageSize}
-                      onPageSizeChange={(newPage) => setPageSize(newPage)}
-                      pagination
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No pending Tloans
-                          </Stack>
-                        ),
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/tloandetails/${params.id}`);
-                      }}
-                    />
-                  </div>
-                </TabPanel>
-              </Grid>
-            </Grid>
-          </TabContext>
-        </>
-      );
-    }
     default: {
       return (
         <>
-          <h2 className="pagetitle"> TLoans </h2>
           <TabContext value={value || "1"}>
             <Grid container>
               <Grid item xs={11}>
                 <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
+                  <h2> TLoans </h2>
                   <Tabs
                     onChange={handleChange}
                     TabIndicatorProps={{
@@ -1371,8 +1212,8 @@ const TLoanTabs2: React.FC = () => {
                       "& button:focus": {
                         backgroundColor: "#063970",
                         color: "white",
-                        height: "100%",
-                        width: "100%",
+                        height: "15%",
+                        width: "15%",
                       },
                     }}
                   >
@@ -1428,7 +1269,7 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 10, marginTop: 5.5 }}>
+                <Box sx={{ paddingLeft: 10, marginTop: 8 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
                       <Fab
@@ -1462,7 +1303,7 @@ const TLoanTabs2: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No current Tloans
+                            No current TLoans
                           </Stack>
                         ),
                       }}
@@ -1503,7 +1344,7 @@ const TLoanTabs2: React.FC = () => {
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/tloandetails/${params.id}`);
+                        navigate(`/tloandetails2/${params.id}`);
                       }}
                     />
                   </div>

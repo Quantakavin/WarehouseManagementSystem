@@ -46,249 +46,246 @@ import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-
-
 export default function CreateRMA() {
+  function buildApplyDateFilterFn(
+    filterItem: GridFilterItem,
+    compareFn: (value1: number, value2: number) => boolean,
+    showTime: boolean = false
+  ) {
+    if (!filterItem.value) {
+      return null;
+    }
 
-    function buildApplyDateFilterFn(
-        filterItem: GridFilterItem,
-        compareFn: (value1: number, value2: number) => boolean,
-        showTime: boolean = false
-      ) {
-        if (!filterItem.value) {
-          return null;
-        }
-      
-        const filterValueMs = filterItem.value.getTime();
-      
-        return ({ value }: GridCellParams<Date, any, any>): boolean => {
-          if (!value) {
-            return false;
-          }
-      
-          // Make a copy of the date to not reset the hours in the original object
-          const dateCopy = new Date(value);
-          dateCopy.setHours(
-            showTime ? value.getHours() : 0,
-            showTime ? value.getMinutes() : 0,
-            0,
-            0
+    const filterValueMs = filterItem.value.getTime();
+
+    return ({ value }: GridCellParams<Date, any, any>): boolean => {
+      if (!value) {
+        return false;
+      }
+
+      // Make a copy of the date to not reset the hours in the original object
+      const dateCopy = new Date(value);
+      dateCopy.setHours(
+        showTime ? value.getHours() : 0,
+        showTime ? value.getMinutes() : 0,
+        0,
+        0
+      );
+      const cellValueMs = dateCopy.getTime();
+
+      return compareFn(cellValueMs, filterValueMs);
+    };
+  }
+
+  function getDateFilterOperators(
+    showTime: boolean = false
+  ): GridColTypeDef["filterOperators"] {
+    return [
+      {
+        value: "is",
+        getApplyFilterFn: (filterItem) => {
+          return buildApplyDateFilterFn(
+            filterItem,
+            (value1, value2) => value1 === value2,
+            showTime
           );
-          const cellValueMs = dateCopy.getTime();
-      
-          return compareFn(cellValueMs, filterValueMs);
-        };
-      }
-      
-      function getDateFilterOperators(
-        showTime: boolean = false
-      ): GridColTypeDef["filterOperators"] {
-        return [
-          {
-            value: "is",
-            getApplyFilterFn: (filterItem) => {
-              return buildApplyDateFilterFn(
-                filterItem,
-                (value1, value2) => value1 === value2,
-                showTime
-              );
-            },
-            InputComponent: GridFilterDateInput,
-            InputComponentProps: { showTime },
-          },
-          {
-            value: "not",
-            getApplyFilterFn: (filterItem) => {
-              return buildApplyDateFilterFn(
-                filterItem,
-                (value1, value2) => value1 !== value2,
-                showTime
-              );
-            },
-            InputComponent: GridFilterDateInput,
-            InputComponentProps: { showTime },
-          },
-          {
-            value: "after",
-            getApplyFilterFn: (filterItem) => {
-              return buildApplyDateFilterFn(
-                filterItem,
-                (value1, value2) => value1 > value2,
-                showTime
-              );
-            },
-            InputComponent: GridFilterDateInput,
-            InputComponentProps: { showTime },
-          },
-          {
-            value: "onOrAfter",
-            getApplyFilterFn: (filterItem) => {
-              return buildApplyDateFilterFn(
-                filterItem,
-                (value1, value2) => value1 >= value2,
-                showTime
-              );
-            },
-            InputComponent: GridFilterDateInput,
-            InputComponentProps: { showTime },
-          },
-          {
-            value: "before",
-            getApplyFilterFn: (filterItem) => {
-              return buildApplyDateFilterFn(
-                filterItem,
-                (value1, value2) => value1 < value2,
-                showTime
-              );
-            },
-            InputComponent: GridFilterDateInput,
-            InputComponentProps: { showTime },
-          },
-          {
-            value: "onOrBefore",
-            getApplyFilterFn: (filterItem) => {
-              return buildApplyDateFilterFn(
-                filterItem,
-                (value1, value2) => value1 <= value2,
-                showTime
-              );
-            },
-            InputComponent: GridFilterDateInput,
-            InputComponentProps: { showTime },
-          },
-          {
-            value: "isEmpty",
-            getApplyFilterFn: () => {
-              return ({ value }): boolean => {
-                return value == null;
-              };
-            },
-            requiresFilterValue: false,
-          },
-          {
-            value: "isNotEmpty",
-            getApplyFilterFn: () => {
-              return ({ value }): boolean => {
-                return value != null;
-              };
-            },
-            requiresFilterValue: false,
-          },
-        ];
-      }
-      
-      const dateAdapter = new AdapterDateFns({ locale });
-      
-      const dateColumnType: GridColTypeDef<Date | string, string> = {
-        ...GRID_DATE_COL_DEF,
-        resizable: false,
-        renderEditCell: (params) => {
-          return <GridEditDateCell {...params} />;
         },
-        filterOperators: getDateFilterOperators(),
-        valueFormatter: (params) => {
-          if (typeof params.value === "string") {
-            return params.value;
-          }
-          if (params.value) {
-            return dateAdapter.format(params.value, "keyboardDate");
-          }
-          return "";
+        InputComponent: GridFilterDateInput,
+        InputComponentProps: { showTime },
+      },
+      {
+        value: "not",
+        getApplyFilterFn: (filterItem) => {
+          return buildApplyDateFilterFn(
+            filterItem,
+            (value1, value2) => value1 !== value2,
+            showTime
+          );
         },
-      };
-      
-      function GridEditDateCell({
-        id,
-        field,
-        value,
-      }: GridRenderEditCellParams<Date | string | null>) {
-        const apiRef = useGridApiContext();
-      
-        const handleChange = (newValue: unknown) => {
-          apiRef.current.setEditCellValue({ id, field, value: newValue });
-        };
-      
-        return (
-          <DatePicker
-            value={value}
-            renderInput={(params) => <TextField {...params} />}
-            onChange={handleChange}
+        InputComponent: GridFilterDateInput,
+        InputComponentProps: { showTime },
+      },
+      {
+        value: "after",
+        getApplyFilterFn: (filterItem) => {
+          return buildApplyDateFilterFn(
+            filterItem,
+            (value1, value2) => value1 > value2,
+            showTime
+          );
+        },
+        InputComponent: GridFilterDateInput,
+        InputComponentProps: { showTime },
+      },
+      {
+        value: "onOrAfter",
+        getApplyFilterFn: (filterItem) => {
+          return buildApplyDateFilterFn(
+            filterItem,
+            (value1, value2) => value1 >= value2,
+            showTime
+          );
+        },
+        InputComponent: GridFilterDateInput,
+        InputComponentProps: { showTime },
+      },
+      {
+        value: "before",
+        getApplyFilterFn: (filterItem) => {
+          return buildApplyDateFilterFn(
+            filterItem,
+            (value1, value2) => value1 < value2,
+            showTime
+          );
+        },
+        InputComponent: GridFilterDateInput,
+        InputComponentProps: { showTime },
+      },
+      {
+        value: "onOrBefore",
+        getApplyFilterFn: (filterItem) => {
+          return buildApplyDateFilterFn(
+            filterItem,
+            (value1, value2) => value1 <= value2,
+            showTime
+          );
+        },
+        InputComponent: GridFilterDateInput,
+        InputComponentProps: { showTime },
+      },
+      {
+        value: "isEmpty",
+        getApplyFilterFn: () => {
+          return ({ value }): boolean => {
+            return value == null;
+          };
+        },
+        requiresFilterValue: false,
+      },
+      {
+        value: "isNotEmpty",
+        getApplyFilterFn: () => {
+          return ({ value }): boolean => {
+            return value != null;
+          };
+        },
+        requiresFilterValue: false,
+      },
+    ];
+  }
+
+  const dateAdapter = new AdapterDateFns({ locale });
+
+  const dateColumnType: GridColTypeDef<Date | string, string> = {
+    ...GRID_DATE_COL_DEF,
+    resizable: false,
+    renderEditCell: (params) => {
+      return <GridEditDateCell {...params} />;
+    },
+    filterOperators: getDateFilterOperators(),
+    valueFormatter: (params) => {
+      if (typeof params.value === "string") {
+        return params.value;
+      }
+      if (params.value) {
+        return dateAdapter.format(params.value, "keyboardDate");
+      }
+      return "";
+    },
+  };
+
+  function GridEditDateCell({
+    id,
+    field,
+    value,
+  }: GridRenderEditCellParams<Date | string | null>) {
+    const apiRef = useGridApiContext();
+
+    const handleChange = (newValue: unknown) => {
+      apiRef.current.setEditCellValue({ id, field, value: newValue });
+    };
+
+    return (
+      <DatePicker
+        value={value}
+        renderInput={(params) => <TextField {...params} />}
+        onChange={handleChange}
+      />
+    );
+  }
+
+  function GridFilterDateInput(
+    props: GridFilterInputValueProps & { showTime?: boolean }
+  ) {
+    const { item, showTime, applyValue, apiRef } = props;
+
+    const Component = showTime ? DateTimePicker : DatePicker;
+
+    const handleFilterChange = (newValue: unknown) => {
+      applyValue({ ...item, value: newValue });
+    };
+
+    return (
+      <Component
+        value={item.value || null}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            variant="standard"
+            label={apiRef.current.getLocaleText("filterPanelInputLabel")}
           />
-        );
-      }
-      
-      function GridFilterDateInput(
-        props: GridFilterInputValueProps & { showTime?: boolean }
-      ) {
-        const { item, showTime, applyValue, apiRef } = props;
-      
-        const Component = showTime ? DateTimePicker : DatePicker;
-      
-        const handleFilterChange = (newValue: unknown) => {
-          applyValue({ ...item, value: newValue });
-        };
-      
-        return (
-          <Component
-            value={item.value || null}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="standard"
-                label={apiRef.current.getLocaleText("filterPanelInputLabel")}
-              />
-            )}
-            InputAdornmentProps={{
-              sx: {
-                "& .MuiButtonBase-root": {
-                  marginRight: -1,
-                },
-              },
-            }}
-            onChange={handleFilterChange}
-          />
-        );
-      }
-      
-      interface EditToolbarProps {
-        setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
-        setRowModesModel: (
-          newModel: (oldModel: GridRowModesModel) => GridRowModesModel
-        ) => void;
-      }
-      
-      function EditToolbar(props: EditToolbarProps) {
-        const { setRows, setRowModesModel } = props;
-      
-        const handleClick = () => {
-          const id = randomId();
-          setRows((oldRows) => [
-            ...oldRows,
-            {
-              id,
-              icode: "",
-              invno: "",
-              dono: "",
-              ror: "",
-              ins: "",
-              coa: "",
-              isNew: true,
+        )}
+        InputAdornmentProps={{
+          sx: {
+            "& .MuiButtonBase-root": {
+              marginRight: -1,
             },
-          ]);
-          setRowModesModel((oldModel) => ({
-            ...oldModel,
-            [id]: { mode: GridRowModes.Edit, fieldToFocus: "icode" },
-          }));
-        };
-      
-        return (
-          <GridToolbarContainer>
-            <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-              Add record
-            </Button>
-          </GridToolbarContainer>
-        );
-      }
+          },
+        }}
+        onChange={handleFilterChange}
+      />
+    );
+  }
+
+  interface EditToolbarProps {
+    setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
+    setRowModesModel: (
+      newModel: (oldModel: GridRowModesModel) => GridRowModesModel
+    ) => void;
+  }
+
+  function EditToolbar(props: EditToolbarProps) {
+    const { setRows, setRowModesModel } = props;
+
+    const handleClick = () => {
+      const id = randomId();
+      setRows((oldRows) => [
+        ...oldRows,
+        {
+          id,
+          icode: "",
+          invno: "",
+          dono: "",
+          ror: "",
+          ins: "",
+          coa: "",
+          isNew: true,
+        },
+      ]);
+      setRowModesModel((oldModel) => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: "icode" },
+      }));
+    };
+
+    return (
+      <GridToolbarContainer>
+        <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
+          Add record
+        </Button>
+      </GridToolbarContainer>
+    );
+  }
 
   const [rows, setRows] = React.useState([]);
 
@@ -421,154 +418,179 @@ export default function CreateRMA() {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const companies = await axios.get(
-        `http://localhost:5000/api/rmacompanies`
-      )
-      .then((companies)=> setCompanies(companies.data))
+      const companies = await axios
+        .get(`http://localhost:5000/api/companies2`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((companies) => setCompanies(companies.data));
       // setRma(Object.e)
     };
     // call the function
     fetchData()
       // make sure to catch any error
-    .catch(console.error);
+      .catch(console.error);
   }, []);
-
 
   const handleChange = (e) => {
     setCompany(e.target.value);
-    console.log(company)
+    console.log(company);
   };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const getInitialState = () => {
-      return {
-          contactperson: '',
-          contactemail: '',
-          company: '',
-          contactno: '',
-          salesmanid: '',
-      };
+    return {
+      contactperson: "",
+      contactemail: "",
+      company: "",
+      contactno: "",
+      salesmanid: "",
+    };
   };
 
   const _handleTextFieldChange = (e) => {
     this.setState({
-        textFieldValue: e.target.value
+      textFieldValue: e.target.value,
     });
   };
 
   return (
-      <Card
-        sx={{
-          width: 1950,
-          height: 745,
-          marginTop: 5,
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}
-      >
-        
-        <CardContent>
-          <Box
-            component="form"
-            sx={{
-              "& .MuiTextField-root": { m: 1, width: "25ch" },
-              marginBottom: 2,
-              marginLeft: "auto",
-              marginRight: "auto"
-            }}
-            noValidate
-            autoComplete="off"
-          >
-          <h2 style={{marginLeft: 7, marginBottom: 20}}>RMA Application Form</h2>
-            <div>
-              <TextField
-                required
-                id="filled-required"
-                label="Customer Name"
-                variant="filled"
-              />
-              <TextField
-                required
-                id="filled-required"
-                label="Customer Email"
-                variant="filled"
-              />
-              <TextField
-                required
-                id="filled-required"
-                select
-                label="Company"
-                value={company}
-                onChange={handleChange}
-                variant="filled"
-              >
-                {companies.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                required
-                id="filled-required"
-                label="Contact Number"
-                variant="filled"
-              />
-            </div>
-          </Box>
-          <Box
-            sx={{
-              height: 500,
-              width: "100%",
-              "& .actions": {
-                color: "text.secondary",
-              },
-              "& .textPrimary": {
-                color: "text.primary",
-              },
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
-            <LocalizationProvider
-              dateAdapter={AdapterDateFns}
-              adapterLocale={locale}
+    <Card
+      sx={{
+        width: 1950,
+        height: 745,
+        marginTop: 5,
+        marginLeft: "auto",
+        marginRight: "auto",
+      }}
+    >
+      <CardContent>
+        <Box
+          component="form"
+          sx={{
+            "& .MuiTextField-root": { m: 1, width: "25ch" },
+            marginBottom: 2,
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <h2 style={{ marginLeft: 7, marginBottom: 20 }}>
+            RMA Application Form
+          </h2>
+          <div>
+            <TextField
+              required
+              id="filled-required"
+              label="Customer Name"
+              variant="filled"
+            />
+            <TextField
+              required
+              id="filled-required"
+              label="Customer Email"
+              variant="filled"
+            />
+            <TextField
+              required
+              id="filled-required"
+              select
+              label="Company"
+              value={company}
+              onChange={handleChange}
+              variant="filled"
             >
-              <DataGridPro
-                rows={rows}
-                columns={columns}
-                editMode="row"
-                rowModesModel={rowModesModel}
-                onRowEditStart={handleRowEditStart}
-                onRowEditStop={handleRowEditStop}
-                processRowUpdate={processRowUpdate}
-                components={{
-                  Toolbar: EditToolbar,
-                }}
-                componentsProps={{
-                  toolbar: { setRows, setRowModesModel },
-                }}
-                experimentalFeatures={{ newEditingApi: true }}
-              />
-            </LocalizationProvider>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              paddingTop: 3,
-            }}
+              {companies.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              required
+              id="filled-required"
+              label="Contact Number"
+              variant="filled"
+            />
+          </div>
+        </Box>
+        <Box
+          sx={{
+            height: 500,
+            width: "100%",
+            "& .actions": {
+              color: "text.secondary",
+            },
+            "& .textPrimary": {
+              color: "text.primary",
+            },
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        >
+          <LocalizationProvider
+            dateAdapter={AdapterDateFns}
+            adapterLocale={locale}
           >
-            <Button size="small" variant="contained" sx={{color: 'white', backgroundColor: '#063970', width:150, height: 40, marginLeft:3}} onClick={() => navigate("/rma")}>
-              Back
-            </Button>
-            <Button size="small" variant="contained" sx={{color: 'white', backgroundColor: '#063970', width:150, height: 40, marginLeft:3}} onClick={() => navigate("/rma")}>
-              Submit
-            </Button>
-          </Box>
-        </CardContent>
-      </Card>
+            <DataGridPro
+              rows={rows}
+              columns={columns}
+              editMode="row"
+              rowModesModel={rowModesModel}
+              onRowEditStart={handleRowEditStart}
+              onRowEditStop={handleRowEditStop}
+              processRowUpdate={processRowUpdate}
+              components={{
+                Toolbar: EditToolbar,
+              }}
+              componentsProps={{
+                toolbar: { setRows, setRowModesModel },
+              }}
+              experimentalFeatures={{ newEditingApi: true }}
+            />
+          </LocalizationProvider>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            paddingTop: 3,
+          }}
+        >
+          <Button
+            size="small"
+            variant="contained"
+            sx={{
+              color: "white",
+              backgroundColor: "#063970",
+              width: 150,
+              height: 40,
+              marginLeft: 3,
+            }}
+            onClick={() => navigate("/rma")}
+          >
+            Back
+          </Button>
+          <Button
+            size="small"
+            variant="contained"
+            sx={{
+              color: "white",
+              backgroundColor: "#063970",
+              width: 150,
+              height: 40,
+              marginLeft: 3,
+            }}
+            onClick={() => navigate("/rma")}
+          >
+            Submit
+          </Button>
+        </Box>
+      </CardContent>
+    </Card>
   );
 }

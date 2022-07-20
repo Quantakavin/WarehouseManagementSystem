@@ -6,6 +6,8 @@ import Sidebar from "../../components/sidebar/SideBar";
 import TLoanChart from "../../components/charts/Chart";
 import Cards from "../../components/cards/cards";
 import RMAChart from "../../components/charts/Chart2";
+import PieChart  from "../../components/charts/Chart3";
+
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Grid } from "@mui/material";
@@ -52,6 +54,9 @@ function Dashboards() {
       </Grid>
       <Grid item xs={12}>
         <RMAChart title={undefined} dataKey={undefined} grid={undefined} />
+      </Grid>
+      <Grid item xs={12}>
+       <PieChart title={undefined} dataKey={undefined} grid={undefined} />                              />
       </Grid>
     </Grid>
   );

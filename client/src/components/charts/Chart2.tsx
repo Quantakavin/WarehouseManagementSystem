@@ -47,7 +47,7 @@ function Chart2({ title, dataKey, grid }) {
   return (
     <>
       <div className="chart">
-        <h4 style={{ textAlign: "left" }}>Current RMA Requests</h4>
+        <h4 style={{ textAlign: "left" }}>Pending RMA Requests</h4>
         <br></br>
         <ResponsiveContainer width="100%" aspect={4 / 1}>
           <LineChart data={rma}>

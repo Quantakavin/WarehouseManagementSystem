@@ -10,7 +10,7 @@ function TableRows({rowsData, deleteTableRows, handleChange}) {
             return(
                 <tr key={index}>
                 <td>
-               <input type="text" value={ItemNo} onChange={(e)=>setItems(e.target.value)} name="itemNo" className="form-control"/>
+            <input type="text" value={ItemNo} onChange={(e)=>setItems(e.target.value)} name="itemNo" className="form-control"/>
                 </td>
                 <td><input type="text" value={ItemName}  onChange={(evnt)=>(handleChange(index, evnt))} name="ItemName" className="form-control"/> </td>
                 <td><input type="text" value={BatchNo}  onChange={(evnt)=>(handleChange(index, evnt))} name="BatchNo" className="form-control"/> </td>
@@ -19,8 +19,10 @@ function TableRows({rowsData, deleteTableRows, handleChange}) {
             </tr>
             )
         })
-   
+
     )
     
 }
 export default TableRows;
+
+
