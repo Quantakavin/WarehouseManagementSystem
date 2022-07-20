@@ -120,7 +120,7 @@ function newtloan() {
   })
 
   useEffect(()=>{
-    const id = 1
+    const id = "1"
     setUser(id)
   })
     console.log(applicationdate)
@@ -154,11 +154,13 @@ function newtloan() {
       
       />
       <CardContent> 
+        <>
       
         {console.log(items)}
         
         
         <Box sx={{marginLeft: 2, marginTop: 1, display: 'flex'}}>
+          <>
         <TextField id="outlined-basic" label="Employee Name" variant="outlined" size='small' 
         onChange={(e)=>setName(e.target.value)}  />
        
@@ -183,7 +185,7 @@ function newtloan() {
         </Select>
       </FormControl>
       {console.log(company)}
-
+      </>
         </Box>
 
         <Box sx={{display: 'flex'}}>
@@ -195,7 +197,7 @@ function newtloan() {
           onChange={(e)=>setPurpose(e.target.value)} 
         ></TextField>
         <Box sx={{marginLeft: 0.3, float:'right'}}>
-        
+        <>
         {/* Duration */}
         <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
           <InputLabel >Duration</InputLabel>
@@ -257,6 +259,7 @@ function newtloan() {
          
         </Select>
       </FormControl>
+      </>
         </Box>
 
         </Box>
@@ -265,6 +268,7 @@ function newtloan() {
         <Typography variant="body2" color="text.secondary">
           
         </Typography>
+        </>
       </CardContent>
       <Box sx={{display:'flex', paddingTop: 3, marginLeft:  4}}>
         <Button size="small" variant="contained" sx={{color: 'white', backgroundColor: '#063970', width:150, height: 40, float: 'left'}} onClick={()=>navigate('/tloan')}>Back</Button>
