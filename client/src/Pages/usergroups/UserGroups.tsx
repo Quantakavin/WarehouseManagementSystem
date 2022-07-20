@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useInfiniteQuery, useQuery } from "react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "react-query";
 import { FilterUserGroups, GetUserGroupNames, GetUserGroups } from "../../api/UserGroupDB";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
@@ -18,8 +18,10 @@ import SearchBarUpdated from "../../components/search/SearchBarUpdated";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from "react-router-dom";
-import { Hidden } from "@mui/material";
+import { Backdrop, Box, Fade, Hidden, Modal, Typography } from "@mui/material";
 import useDebounce from "../../hooks/useDebounce";
+import CancelIcon from '@mui/icons-material/Cancel';
+import { DeleteUser } from "../../api/UserDB";
 
 const UserGroups: React.FC = () => {
 
@@ -31,6 +33,8 @@ const UserGroups: React.FC = () => {
   const [inputName, setInputName] = useState<string>(null);
   const [searchName, setSearchName] = useState<string>("");
   const debouncedValue = useDebounce<string>(inputName, 500);
+  const [showConfirmation, setShowConfirmation] = useState<boolean>(true);
+  const [showError, setShowError] = useState<boolean>(true);
 
   const handleSearch = (stringtosearch: string) => {
     if (inputName === "") {
@@ -111,8 +115,80 @@ const UserGroups: React.FC = () => {
     }
   };
 
+  // const DeleteUserGroup = (id: number) => {
+  //   const mutation = useMutation((id) => DeleteUserGroup(id));
+  //   mutation.mutate(id, {
+  //     onSuccess: () => {
+  //       Toast.fire({
+  //         icon: "success",
+  //         title: "User group deleted successfully",
+  //         customClass: "swalpopup",
+  //         timer: 1500
+  //       });
+  //       navigate("/usergroups");
+  //     },
+  //   });
+
+  // }
+
+  const confirmationpopupstyle = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: "600px",
+    bgcolor: 'background.paper',
+    border: '1px solid #d3d3d3',
+    textAlign: 'center',
+    boxShadow: 24,
+    outline: 0,
+    borderRadius: "10px",
+    pt: 5,
+    px: 10,
+    pb: 5
+  };
+
   return (
     <>
+
+<Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={showConfirmation}
+        onClose={() => setShowConfirmation(false)}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={showConfirmation}>
+          <Box sx={confirmationpopupstyle}>
+            <Typography id="transition-modal-title" variant="h6" component="h2" sx={{fontSize: "25px"}}>
+              Are you sure you want to delete this user?
+            </Typography>
+            <CancelIcon sx={{color: "#D11A2A", fontSize: "150px"}}/>
+            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
+            By doing so, you will delete all information associated with it such as TLoans and RMAs
+            </Typography>
+            <div className="flexcontainer" style={{ flexDirection: "row", marginTop: 20 }}>
+            <button style={{ alignSelf: "flex-start" }} className="cardbackbutton" onClick={() => setShowConfirmation(false)} type="button">
+              Cancel
+            </button>
+            <motion.button
+              style={{ alignSelf: "flex-end" }}
+              className="deletebutton"
+              onClick={() => alert("hi")}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Delete Anyway
+            </motion.button>
+          </div>
+          </Box>
+        </Fade>
+      </Modal>
+
       <h2 className="pagetitle"> User Groups </h2>
       <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }} >
         <SearchBarUpdated

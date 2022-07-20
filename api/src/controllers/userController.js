@@ -164,8 +164,23 @@ module.exports.updateUser = async (req, res) => {
     }
 };
 
-/*
 module.exports.deleteUser = async (req, res) => {
-    
-}
-*/
+    const userID = req.params.id;
+    try {
+        const results = await user.getByID(userID);
+        if (results[0].length > 0) {
+            const results2 = await user.getByUserGroup(userGroupID);
+            if (results2[0][0].Count === 0) {
+                await user.delete(userID);
+                redisClient.del('users');
+                return res.status(200).json({ message: 'User deleted successfully!' });
+            }
+            return res
+                .status(405)
+                .json({ message: 'This user cannot be deleted as they have outstanding TLoans or RMAs' });
+        }
+        return res.status(404).json({ message: 'Cannot find User with that id' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
