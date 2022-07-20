@@ -24,6 +24,7 @@ import TLoan from "./pages/tloans/tloan";
 import RMA from "./pages/rma/rma";
 import CreateRMA from "./pages/rma/createRma";
 import Sidebar2 from "./components/sidebar/Sidebar2";
+import TopNav from "./components/header/TopNav";
 import TLoanDisplay from "./components/display/tloanDisplay";
 import RmaDisplay from "./components/display/rmaDisplay";
 import NewTLoan from "./pages/tloans/newtloan";
@@ -64,7 +65,7 @@ const App: React.FC = () => {
         <TopBar />
       </header>
       <div className="flexcontainer" style={{ flexDirection: "row" }}>
-        {isAuthenticated ? <Sidebar /> : null}
+        {isAuthenticated ? <Sidebar/> : null}
         <div className="bluebackground" style={{ flex: 5 }}>
           <Routes>
             <Route element={<ProtectedRoute loginpage={true} />}>
@@ -98,6 +99,7 @@ const App: React.FC = () => {
                 path="/addnotificationgroup"
                 element={<AddNotificationGroup />}
               />
+              <Route path="/editnotificationgroup/:id" element={<EditNotificationGroup />} />
               <Route path="/tloan" element={<TLoan />} />
               <Route path="/tloan" element={<TLoan />} />
               <Route path="/rma" element={<RMA />} />

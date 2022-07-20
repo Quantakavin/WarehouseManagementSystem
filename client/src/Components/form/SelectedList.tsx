@@ -2,19 +2,26 @@ import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import React from "react";
 import { UseFormRegister, RegisterOptions } from "react-hook-form";
 import { Option } from "../../utils/CommonTypes";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface SelectProps {
     label: string;
-    name: string;
+    getname: (name: string) => string;
     selectedValues: any[];
-    changeSelectedValues: (event: SelectChangeEvent<any[]>) => void;
-    placeholder: string;
+    unselect: (value: any) => void;
+    select: (event: SelectChangeEvent<any>, value: any) => void;
     options: Option[];
+    defaultOptions?:  (feature: any) => string | number | string[];
 }
 
-const MultiSelectDropdown: React.FC<SelectProps> = ({
+const SelectedList: React.FC<SelectProps> = ({
+    getname,
     label,
-    options
+    selectedValues,
+    unselect,
+    select,
+    options,
+    defaultOptions
 }) => {
 
     return (
@@ -23,9 +30,9 @@ const MultiSelectDropdown: React.FC<SelectProps> = ({
             {label}
           </p>
           <div style={{ alignSelf: "center", width: "85%" }}>
-            {selectedFeatures.map((feature) => {
+            {selectedValues.map((value) => {
               return (
-                <div className="selectlist">
+                <div className="selectlist" key={value}>
                   <div
                     style={{
                       flex: 14,
@@ -34,20 +41,16 @@ const MultiSelectDropdown: React.FC<SelectProps> = ({
                       textOverflow: "ellipsis",
                     }}
                   >
-                    {
-                      featuresQuery.data.data.find(
-                        (data) => data.FeatureID === feature
-                      ).FeatureName
-                    }
+                    { getname(value) }
                   </div>
                   <div style={{ flex: 3, fontWeight: 500 }}>
                     <Select
-                      defaultValue={1}
+                      defaultValue={defaultOptions? defaultOptions(value) : options[0].value}
                       autoWidth
                       label="Age"
                       size="small"
                       className="smallselectfield"
-                      onChange={(e) => assignFeatureRight(e, feature)}
+                      onChange={(e) => select(e, value)}
                     >
                       {options.map((option) => {
                         return (
@@ -60,7 +63,7 @@ const MultiSelectDropdown: React.FC<SelectProps> = ({
                   </div>
                   <div style={{ flex: 1, fontWeight: 500 }}>
                     <button
-                      onClick={() => unselectFeature(feature)}
+                      onClick={() => unselect(value)}
                       style={{ marginLeft: 5, marginRight: "-5%" }}
                       type="button"
                       className="buttonremovestyling"
@@ -76,4 +79,4 @@ const MultiSelectDropdown: React.FC<SelectProps> = ({
     );
 };
 
-export default MultiSelectDropdown;
+export default SelectedList;

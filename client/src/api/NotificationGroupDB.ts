@@ -36,3 +36,21 @@ export const FilterNotificationGroups = async ({pageParam = 0, queryKey}) => {
   console.log("response is ", response)
   return {response, nextPage: pageParam + 1, totalPages: Math.ceil(response.data[0].full_count/5)}
 };
+
+export const PostNotificationGroup = async (formData) => {
+  return await axios.post(`${config.baseURL}/notificationgroup`, formData, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+export const UpdateNotificationGroup = async (formData, id: string) => {
+  return await axios.put(`${config.baseURL}/notificationgroup/${id}`, formData, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};

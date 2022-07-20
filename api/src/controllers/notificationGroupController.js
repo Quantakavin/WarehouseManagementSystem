@@ -81,6 +81,7 @@ module.exports.getNotificationGroupById = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find notification group with that id' });
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };

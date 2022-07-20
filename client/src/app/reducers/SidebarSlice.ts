@@ -27,10 +27,14 @@ export const SidebarSlice = createSlice({
     Close: state => {
         state.open = false
     },
+    Reset: state => {
+      state.currenttab = "Dashboard";
+      state.open = true;
+    }
   }
 })
 
-export const { ChangeTab, Open, Close } = SidebarSlice.actions
+export const { ChangeTab, Open, Close, Reset } = SidebarSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectCurrentTab = (state: RootState) => state.sidebar.currenttab

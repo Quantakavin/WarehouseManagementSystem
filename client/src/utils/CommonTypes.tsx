@@ -19,6 +19,15 @@ export interface FeatureRight {
   FeatureRight: string;
 }
 
+export interface NotiFeature {
+  NotiFeatureID: number;
+  NotiFeature: string;
+}
+
+export interface NotiType {
+  NotiTypeID: number;
+  NotiType: string;
+}
 
 
 export interface UserGroup {

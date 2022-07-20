@@ -19,7 +19,8 @@ import { Option, Feature, FeatureRight } from "../../utils/CommonTypes";
 import { Toast } from "../../components/alerts/SweetAlert";
 import SelectDropdown from "../../components/form/SelectDropdown";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
-import { FeaturedVideo } from "@mui/icons-material";
+import { FeaturedVideo } from "@mui/icons-material"; 
+import SelectedList from "../../components/form/SelectedList";
 
 interface FormValues {
   name: string;
@@ -55,42 +56,38 @@ const EditUserGroup: React.FC = () => {
             return {FeatureID: returnfeature.FeatureID, FeatureRightID: returnfeature.FeatureRightID};
           })
         );
+        setUserGroup(data.data[0]);
       }
     }
   );
 
-  const featuresQuery = useQuery("features", GetFeatures);
-  const featureRightsQuery = useQuery("featurerights", GetFeatureRights);
-
-  useEffect(() => {
-
-    if (!UserGroupQuery.error && !UserGroupQuery.isLoading) {
-      setUserGroup(UserGroupQuery.data.data[0]);
-    }
-
-    const features: Option[] = [];
-    if (!featuresQuery.error && !featuresQuery.isLoading) {
-      featuresQuery.data.data.forEach((feature: Feature) => {
-        features.push({
-          id: feature.FeatureID,
-          text: feature.FeatureName,
-          value: feature.FeatureID,
+  const featuresQuery = useQuery("features", GetFeatures, {
+    onSuccess: (data) => {
+      const features: Option[] = [];
+        data.data.forEach((feature: Feature) => {
+          features.push({
+            id: feature.FeatureID,
+            text: feature.FeatureName,
+            value: feature.FeatureID,
+          });
         });
-      });
+      setFeatureOptions(features);
     }
-    setFeatureOptions(features);
-    const featurerights: Option[] = [];
-    if (!featureRightsQuery.error && !featureRightsQuery.isLoading) {
-      featureRightsQuery.data.data.forEach((featureright: FeatureRight) => {
-        featurerights.push({
-          id: featureright.FeatureRightID,
-          text: featureright.FeatureRight,
-          value: featureright.FeatureRightID,
+
+  });
+  const featureRightsQuery = useQuery("featurerights", GetFeatureRights, {
+    onSuccess: (data) => {
+      const featurerights: Option[] = [];
+        data.data.forEach((featureright: FeatureRight) => {
+          featurerights.push({
+            id: featureright.FeatureRightID,
+            text: featureright.FeatureRight,
+            value: featureright.FeatureRightID,
+          });
         });
-      });
+      setFeatureRightOptions(featurerights);
     }
-    setFeatureRightOptions(featurerights);
-  }, [featuresQuery.data]);
+  });
 
   const mutation = useMutation((data: FormValues) => UpdateUserGroup(data, params.id));
 
@@ -175,6 +172,12 @@ const EditUserGroup: React.FC = () => {
     );
   };
 
+  const getFeatureName = (feature: string) => {
+    return featuresQuery.data.data.find(
+      (data) => data.FeatureID === feature
+    ).FeatureName
+  } 
+
   const StepOne = (
     <div className={step === 1 ? "showstep" : "hidestep"}>
       <FormField
@@ -210,8 +213,7 @@ const EditUserGroup: React.FC = () => {
   );
 
   const SetDefaultOptions = (feature) => {
-    console.log("why am i being called")
-    let optiontoset = Number(featureRightOptions[0]?.value);
+    let optiontoset = featureRightOptions[0]?.value;
     if (UserGroupQuery.isSuccess) {
     for (let i = 0; i<UserGroupQuery.data.data[0].Features.length; i++) {
       if (UserGroupQuery.data.data[0].Features[i].FeatureID === feature) {
@@ -234,71 +236,74 @@ const EditUserGroup: React.FC = () => {
         options={featureOptions}
       />
       {selectedFeatures.length > 0 && (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <p className="formlabels" style={{ marginTop: 20 }}>
-            Feature List
-          </p>
-          <div style={{ alignSelf: "center", width: "85%" }}>
-            {selectedFeatures.map((feature) => {
-              return (
-                <div className="selectlist">
-                  <div
-                    style={{
-                      flex: 14,
-                      fontWeight: 500,
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
-                    {
-                      featuresQuery.data.data.find(
-                        (data) => data.FeatureID === feature
-                      ).FeatureName
-                    }
-                  </div>
-                  <div style={{ flex: 3, fontWeight: 500 }}>
-                    <Select
-                      defaultValue={
-                        SetDefaultOptions(feature)
-                        // UserGroupQuery.data.data[0].Features.some(
-                        //   (usergroupfeature) => usergroupfeature.FeatureID === feature
-                        // ) ? UserGroupQuery.data.data[0].Features.find(
-                        //   (usergroupfeature) => usergroupfeature.FeatureID === feature
-                        // ).FeatureRightID
-                        // :
-                        // Number(featureRightOptions[0].value)
+
+<SelectedList
+getname={getFeatureName}
+label="Feature List"
+selectedValues={selectedFeatures}
+unselect={unselectFeature}
+select={assignFeatureRight}
+options={featureRightOptions}
+defaultOptions={SetDefaultOptions}
+/>
+        // <div style={{ display: "flex", flexDirection: "column" }}>
+        //   <p className="formlabels" style={{ marginTop: 20 }}>
+        //     Feature List
+        //   </p>
+        //   <div style={{ alignSelf: "center", width: "85%" }}>
+        //     {selectedFeatures.map((feature) => {
+        //       return (
+        //         <div className="selectlist">
+        //           <div
+        //             style={{
+        //               flex: 14,
+        //               fontWeight: 500,
+        //               overflow: "hidden",
+        //               textOverflow: "ellipsis",
+        //             }}
+        //           >
+        //             {
+        //               featuresQuery.data.data.find(
+        //                 (data) => data.FeatureID === feature
+        //               ).FeatureName
+        //             }
+        //           </div>
+        //           <div style={{ flex: 3, fontWeight: 500 }}>
+        //             <Select
+        //               defaultValue={
+        //                 SetDefaultOptions(feature)
                       
-                      }
-                      autoWidth
-                      label="Age"
-                      size="small"
-                      className="smallselectfield"
-                      onChange={(e) => assignFeatureRight(e, feature)}
-                    >
-                      {featureRightOptions.map((option) => {
-                        return (
-                          <MenuItem key={option.id} value={option.value}>
-                            {option.text}
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
-                  </div>
-                  <div style={{ flex: 1, fontWeight: 500 }}>
-                    <button
-                      onClick={() => unselectFeature(feature)}
-                      style={{ marginLeft: 5, marginRight: "-5%" }}
-                      type="button"
-                      className="buttonremovestyling"
-                    >
-                      <CloseIcon fontSize="small" />
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        //               }
+        //               autoWidth
+        //               label="Age"
+        //               size="small"
+        //               className="smallselectfield"
+        //               onChange={(e) => assignFeatureRight(e, feature)}
+        //             >
+        //               {featureRightOptions.map((option) => {
+        //                 return (
+        //                   <MenuItem key={option.id} value={option.value}>
+        //                     {option.text}
+        //                   </MenuItem>
+        //                 );
+        //               })}
+        //             </Select>
+        //           </div>
+        //           <div style={{ flex: 1, fontWeight: 500 }}>
+        //             <button
+        //               onClick={() => unselectFeature(feature)}
+        //               style={{ marginLeft: 5, marginRight: "-5%" }}
+        //               type="button"
+        //               className="buttonremovestyling"
+        //             >
+        //               <CloseIcon fontSize="small" />
+        //             </button>
+        //           </div>
+        //         </div>
+        //       );
+        //     })}
+        //   </div>
+        // </div>
       )}
 
       {mutation.isError && axios.isAxiosError(mutation.error) ? (
@@ -321,11 +326,10 @@ const EditUserGroup: React.FC = () => {
       handleSubmit={handleSubmit}
       onSubmit={onSubmit}
     >
-      {(UserGroupQuery.isSuccess && featuresQuery.isSuccess && featureRightsQuery.isSuccess) &&
+      {(UserGroupQuery.isSuccess) &&
         <>
           {StepOne}
           {StepTwo}
-          {JSON.stringify(returnFeatures)}
         </>
       }
     </FormContainer>

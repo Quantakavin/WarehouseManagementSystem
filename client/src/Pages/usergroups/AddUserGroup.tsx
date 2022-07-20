@@ -18,6 +18,7 @@ import { GetFeatures, GetFeatureRights } from "../../api/FeatureDB";
 import { Option, Feature, FeatureRight } from "../../utils/CommonTypes";
 import { Toast } from "../../components/alerts/SweetAlert";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
+import SelectedList from "../../components/form/SelectedList";
 
 interface FormValues {
   name: string;
@@ -38,33 +39,32 @@ const AddUserGroup: React.FC = () => {
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [returnFeatures, setReturnFeatures] = useState<any[]>([]);
 
-  const featuresQuery = useQuery("features", GetFeatures);
-  const featureRightsQuery = useQuery("featurerights", GetFeatureRights);
-
-  useEffect(() => {
-    const features: Option[] = [];
-    if (!featuresQuery.error && !featuresQuery.isLoading) {
-      featuresQuery.data.data.forEach((feature: Feature) => {
+  const featuresQuery = useQuery("features", GetFeatures, {
+    onSuccess: (data) => {
+      const features: Option[] = [];
+      data.data.forEach((feature: Feature) => {
         features.push({
           id: feature.FeatureID,
           text: feature.FeatureName,
           value: feature.FeatureID,
         });
       });
+      setFeatureOptions(features);
     }
-    setFeatureOptions(features);
-    const featurerights: Option[] = [];
-    if (!featureRightsQuery.error && !featureRightsQuery.isLoading) {
-      featureRightsQuery.data.data.forEach((featureright: FeatureRight) => {
+  });
+  const featureRightsQuery = useQuery("featurerights", GetFeatureRights, {
+    onSuccess: (data) => {
+      const featurerights: Option[] = [];
+      data.data.forEach((featureright: FeatureRight) => {
         featurerights.push({
           id: featureright.FeatureRightID,
           text: featureright.FeatureRight,
           value: featureright.FeatureRightID,
         });
       });
+      setFeatureRightOptions(featurerights);
     }
-    setFeatureRightOptions(featurerights);
-  }, [featuresQuery.data]);
+  });
 
   const mutation = useMutation(PostUserGroup);
 
@@ -149,6 +149,12 @@ const AddUserGroup: React.FC = () => {
     );
   };
 
+  const getFeatureName = (feature: string) => {
+    return featuresQuery.data.data.find(
+      (data) => data.FeatureID === feature
+    ).FeatureName
+  } 
+
   const StepOne = (
     <div className={step === 1 ? "showstep" : "hidestep"}>
       <FormField
@@ -191,92 +197,73 @@ const AddUserGroup: React.FC = () => {
         placeholder="Select Features..."
         options={featureOptions}
       />
-      {/* <div style={{ display: "flex", flexDirection: "column" }}>
-        <p className="formlabels"> Features </p>
-        <div className="formfieldcontainer">
-          <Select
-            size="small"
-            defaultValue={[]}
-            className="selectfield"
-            name="features"
-            sx={{
-              borderRadius: "15px",
-              paddingTop: "0px",
-            }}
-            value={selectedFeatures}
-            onChange={selectFeature}
-            multiple
-          >
-            <MenuItem value="" disabled hidden>
-              Choose a company
-            </MenuItem>
-            {featureOptions.map(({ id, text, value }) => (
-              <MenuItem key={id} value={value}>
-                {text}
-              </MenuItem>
-            ))}
-          </Select>
-        </div>
-      </div> */}
-
-
 
       {selectedFeatures.length > 0 && (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <p className="formlabels" style={{ marginTop: 20 }}>
-            Feature List
-          </p>
-          <div style={{ alignSelf: "center", width: "85%" }}>
-            {selectedFeatures.map((feature) => {
-              return (
-                <div className="selectlist">
-                  <div
-                    style={{
-                      flex: 14,
-                      fontWeight: 500,
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
-                    {
-                      featuresQuery.data.data.find(
-                        (data) => data.FeatureID === feature
-                      ).FeatureName
-                    }
-                  </div>
-                  <div style={{ flex: 3, fontWeight: 500 }}>
-                    <Select
-                      defaultValue={Number(featureRightOptions[0]?.value)}
-                      autoWidth
-                      label="Age"
-                      size="small"
-                      className="smallselectfield"
-                      onChange={(e) => assignFeatureRight(e, feature)}
-                    >
-                      {featureRightOptions.map((option) => {
-                        return (
-                          <MenuItem key={option.id} value={option.value}>
-                            {option.text}
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
-                  </div>
-                  <div style={{ flex: 1, fontWeight: 500 }}>
-                    <button
-                      onClick={() => unselectFeature(feature)}
-                      style={{ marginLeft: 5, marginRight: "-5%" }}
-                      type="button"
-                      className="buttonremovestyling"
-                    >
-                      <CloseIcon fontSize="small" />
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+
+        <SelectedList
+          getname={getFeatureName}
+          label="Feature List"
+          selectedValues={selectedFeatures}
+          unselect={unselectFeature}
+          select={assignFeatureRight}
+          options={featureRightOptions}
+        />
+
+        // <div style={{ display: "flex", flexDirection: "column" }}>
+        //   <p className="formlabels" style={{ marginTop: 20 }}>
+        //     Feature List
+        //   </p>
+        //   <div style={{ alignSelf: "center", width: "85%" }}>
+        //     {selectedFeatures.map((feature) => {
+        //       return (
+        //         <div className="selectlist">
+        //           <div
+        //             style={{
+        //               flex: 14,
+        //               fontWeight: 500,
+        //               overflow: "hidden",
+        //               textOverflow: "ellipsis",
+        //             }}
+        //           >
+        //             {
+        //               featuresQuery.data.data.find(
+        //                 (data) => data.FeatureID === feature
+        //               ).FeatureName
+        //             }
+        //           </div>
+        //           <div style={{ flex: 3, fontWeight: 500 }}>
+        //             <Select
+        //               defaultValue={Number(featureRightOptions[0]?.value)}
+        //               autoWidth
+        //               label="Age"
+        //               size="small"
+        //               className="smallselectfield"
+        //               onChange={(e) => assignFeatureRight(e, feature)}
+        //             >
+        //               {featureRightOptions.map((option) => {
+        //                 return (
+        //                   <MenuItem key={option.id} value={option.value}>
+        //                     {option.text}
+        //                   </MenuItem>
+        //                 );
+        //               })}
+        //             </Select>
+        //           </div>
+        //           <div style={{ flex: 1, fontWeight: 500 }}>
+        //             <button
+        //               onClick={() => unselectFeature(feature)}
+        //               style={{ marginLeft: 5, marginRight: "-5%" }}
+        //               type="button"
+        //               className="buttonremovestyling"
+        //             >
+        //               <CloseIcon fontSize="small" />
+        //             </button>
+        //           </div>
+        //         </div>
+        //       );
+        //     })}
+        //   </div>
+        // </div>
       )}
 
       {mutation.isError && axios.isAxiosError(mutation.error) ? (

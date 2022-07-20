@@ -1,6 +1,5 @@
 import React from "react";
-import axios, { AxiosResponse } from "axios";
-import { Container } from "react-bootstrap";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
@@ -15,10 +14,9 @@ import {
 // import LoginUser from "../../api/user/LoginUser";
 import { LoginUser } from "../../api/UserDB";
 import { setUser } from "../../app/reducers/CurrentUserSlice";
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
+import { useAppDispatch } from "../../app/hooks";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
-
 
 interface FormValues {
   email: string;
@@ -52,7 +50,7 @@ const Login: React.FC = () => {
         icon: "success",
         title: "Logged in successfully",
         customClass: "swalpopup",
-        timer: 1500
+        timer: 1500,
       });
       return navigate("/dashboard", { replace: true });
     },

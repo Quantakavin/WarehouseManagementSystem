@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { Container } from "react-bootstrap";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import Alert from "@mui/material/Alert";
-import CheckIcon from "@mui/icons-material/Check";
+import { SelectChangeEvent } from "@mui/material";
 import FormContainer from "../../components/form/FormContainer";
 import SubmitButton from "../../components/form/SubmitButton";
 import ErrorAlert from "../../components/form/ErrorAlert";
@@ -25,7 +23,7 @@ import { GetUserGroups } from "../../api/UserGroupDB";
 import { GetNotificationGroups } from "../../api/NotificationGroupDB";
 import { UpdateUser, GetUser } from "../../api/UserDB";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
-import { SelectChangeEvent } from "@mui/material";
+import { Toast } from "../../components/alerts/SweetAlert";
 
 interface FormValues {
   name: string;
@@ -54,27 +52,32 @@ const EditUser: React.FC = () => {
     setValue,
     formState: { errors, isValid },
   } = useForm<FormValues>({ mode: "all" });
-  const UserQuery = useQuery([`user${params.id}`, params.id], () =>
-    GetUser(params.id),
+  const UserQuery = useQuery(
+    [`user${params.id}`, params.id],
+    () => GetUser(params.id),
     {
       onSuccess: (data) => {
         setUser(data.data[0]);
-        setSelectedNotiGroups(data.data[0].NotificationGroups.map((value) => {
-          return value.NotiGroupID
-        }))
-        setReturnNotiGroups(
+        setSelectedNotiGroups(
           data.data[0].NotificationGroups.map((value) => {
-            return {NotiGroupID: value.NotiGroupID};
+            return value.NotiGroupID;
           })
         );
-      }
+        setReturnNotiGroups(
+          data.data[0].NotificationGroups.map((value) => {
+            return { NotiGroupID: value.NotiGroupID };
+          })
+        );
+      },
     }
   );
-  const companiesQuery = useQuery("companies", GetCompanies,
+  const companiesQuery = useQuery(
+    "companies",
+    GetCompanies,
 
-  {
-    onSuccess: (data) => {
-      const companies: Option[] = [];
+    {
+      onSuccess: (data) => {
+        const companies: Option[] = [];
         data.data.forEach((company: Company) => {
           companies.push({
             id: company.CompanyID,
@@ -82,27 +85,29 @@ const EditUser: React.FC = () => {
             value: company.CompanyID,
           });
         });
-      setCompanyOptions(companies);
+        setCompanyOptions(companies);
+      },
     }
-  }
-  
   );
   const userGroupsQuery = useQuery("usergroups", GetUserGroups, {
     onSuccess: (data) => {
       const usergroups: Option[] = [];
-        data.data.forEach((usergroup: UserGroup) => {
-          usergroups.push({
-            id: usergroup.UserGroupID,
-            text: usergroup.UserGroupName,
-            value: usergroup.UserGroupID,
-          });
+      data.data.forEach((usergroup: UserGroup) => {
+        usergroups.push({
+          id: usergroup.UserGroupID,
+          text: usergroup.UserGroupName,
+          value: usergroup.UserGroupID,
         });
+      });
       setUserGroupOptions(usergroups);
-    }
+    },
   });
-  const notiGroupsQuery = useQuery("notificationgroups", GetNotificationGroups, {
-    onSuccess: (data) => {
-      const notigroups: Option[] = [];
+  const notiGroupsQuery = useQuery(
+    "notificationgroups",
+    GetNotificationGroups,
+    {
+      onSuccess: (data) => {
+        const notigroups: Option[] = [];
         data.data.forEach((notigroup: NotiGroup) => {
           notigroups.push({
             id: notigroup.NotiGroupID,
@@ -110,9 +115,10 @@ const EditUser: React.FC = () => {
             value: notigroup.NotiGroupID,
           });
         });
-      setNotiGroupOptions(notigroups);
+        setNotiGroupOptions(notigroups);
+      },
     }
-  });
+  );
 
   const mutation = useMutation((data: FormValues) =>
     UpdateUser(data, params.id)
@@ -121,8 +127,15 @@ const EditUser: React.FC = () => {
   const onSubmit = (data: FormValues) => {
     const postdata = data;
     postdata.notificationgroups = returnNotiGroups;
-    console.log("postdata is", postdata)
-    mutation.mutate(data, { onSuccess: () => navigate("/users") });
+    mutation.mutate(data, { onSuccess: () => {
+      Toast.fire({
+        icon: "success",
+        title: "User updated successfully",
+        customClass: "swalpopup",
+        timer: 1500
+      });
+      navigate("/users")
+    } });
   };
 
   const nextStep = () => {
@@ -133,7 +146,9 @@ const EditUser: React.FC = () => {
     setStep(step - 1);
   };
 
-  const selectNotiGroup = (event: SelectChangeEvent<typeof selectedNotiGroups>) => {
+  const selectNotiGroup = (
+    event: SelectChangeEvent<typeof selectedNotiGroups>
+  ) => {
     const {
       target: { value },
     } = event;
@@ -147,7 +162,7 @@ const EditUser: React.FC = () => {
     const notigroupstoset = valuearray.map((notigroup) => {
       if (
         returnNotiGroups.some(
-          (returnnotigroup) => returnnotigroup.NotiGroupID === notigroup 
+          (returnnotigroup) => returnnotigroup.NotiGroupID === notigroup
         )
       ) {
         return returnNotiGroups.find(
@@ -158,7 +173,6 @@ const EditUser: React.FC = () => {
     });
     setReturnNotiGroups(notigroupstoset);
   };
-
 
   const StepOne = (
     <div className={step === 1 ? "showstep" : "hidestep"}>
@@ -204,7 +218,7 @@ const EditUser: React.FC = () => {
         register={register}
         errormsg={errors.company?.message}
         rules={SelectValidation}
-        defaultoption={user? user.CompanyID : ""}
+        defaultoption={user ? user.CompanyID : ""}
         placeholder="Choose a company"
       />
       <div className="formnavigationcontainer">
@@ -231,11 +245,11 @@ const EditUser: React.FC = () => {
         register={register}
         errormsg={errors.usergroup?.message}
         rules={SelectValidation}
-        defaultoption={user? user.UserGroupID : ""}
+        defaultoption={user ? user.UserGroupID : ""}
         placeholder="Choose a User Group"
       />
-      
-      <MultiSelectDropdown 
+
+      <MultiSelectDropdown
         name="notificationgroups"
         label="Notification Groups"
         selectedValues={selectedNotiGroups}
@@ -253,7 +267,9 @@ const EditUser: React.FC = () => {
         defaultoption="Choose a Notification Group"
       /> */}
       {mutation.isError && axios.isAxiosError(mutation.error) ? (
-        <div style={{marginTop: 25, marginBottom: -15}}><ErrorAlert error={mutation.error} /></div>
+        <div style={{ marginTop: 25, marginBottom: -15 }}>
+          <ErrorAlert error={mutation.error} />
+        </div>
       ) : null}
       <div className="formnavigationcontainer">
         <button className="formnavigation" onClick={prevStep} type="button">
@@ -271,13 +287,12 @@ const EditUser: React.FC = () => {
       handleSubmit={handleSubmit}
       onSubmit={onSubmit}
     >
-      {(!UserQuery.isLoading && !UserQuery.isError) &&
-      <>
-      {StepOne}
-      {StepTwo}
-      <pre>{JSON.stringify(watch(), null, 2)}</pre>
-      </>
-      }
+      {!UserQuery.isLoading && !UserQuery.isError && (
+        <>
+          {StepOne}
+          {StepTwo}
+        </>
+      )}
     </FormContainer>
   );
 };
