@@ -142,34 +142,6 @@ function cards() {
   useEffect(() => {
     getclosedRMAs();
   }, []);
-<<<<<<< Updated upstream
-  {
-    CurrentTloans.length;
-  }
-  {
-    DraftTloans.length;
-  }
-
-  {
-    PendingRMAs.length;
-  }
-  {
-    ApprovedRMAs.length;
-  }
-  {
-    ReceivedRMAs.length;
-  }
-  {
-    VerifiedRMAs.length;
-  }
-  {
-    InprogressRMAs.length;
-  }
-  {
-    ClosedRMAs.length;
-  }
-=======
->>>>>>> Stashed changes
 
   // '-apple-system',
   // '',
@@ -264,7 +236,7 @@ function cards() {
                   {ReceivedRMAs.length}
                 </Box>
               </Box>
-              <Box sx={{ marginTop: -8 }}>
+              <Box sx={{ marginTop: -15 }}>
                 <Box sx={{}}>Verified</Box>
                 <Box sx={{ color: "black", fontWeight: "normal" }}>
                   {VerifiedRMAs.length}
