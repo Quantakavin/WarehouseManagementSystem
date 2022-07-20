@@ -6,53 +6,54 @@ import Sidebar from "../../components/sidebar/SideBar";
 import TLoanChart from "../../components/charts/Chart";
 import Cards from "../../components/cards/cards";
 import RMAChart from "../../components/charts/Chart2";
-import { useAppSelector } from '../../app/hooks'
-import { selectRole } from '../../app/reducers/CurrentUserSlice';
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { Grid } from "@mui/material";
 
 function Dashboards() {
+  // implement switch case
 
+  const userrole = useAppSelector(selectRole);
 
-// implement switch case
+  switch (userrole) {
+    case "Sales Engineer":
+      // code block
 
-const userrole = useAppSelector(selectRole)
+      break;
+    case "Technical Staff":
+      // code block
 
-switch(userrole) {
-  case "Sales Engineer":
+      break;
+
+    case "Sales Manager":
+      // code block
+
+      break;
+
+    case "Sales Admin":
+      break;
+    default:
     // code block
-
-    break;
-  case "Technical Staff":
-    // code block
-
-    break;
-
-  case "Sales Manager":
-    // code block
-
-    break;
-
-  case "Sales Admin":
-  
-
-    break;
-   default:
-    // code block 
-}
-// end of switch case
+  }
+  // end of switch case
 
   return (
-    <>
-      <div className="home">
-        <br></br>
+    <Grid container>
+      <Grid item xs={12}>
         <h1 className="homeTitle">
           {localStorage.getItem("username")}'s Dashboard{""}
         </h1>
-
+      </Grid>
+      <Grid item xs={12}>
         <Cards />
+      </Grid>
+      <Grid item xs={12}>
         <TLoanChart title={undefined} dataKey={undefined} grid={undefined} />
+      </Grid>
+      <Grid item xs={12}>
         <RMAChart title={undefined} dataKey={undefined} grid={undefined} />
-      </div>
-    </>
+      </Grid>
+    </Grid>
   );
 }
 

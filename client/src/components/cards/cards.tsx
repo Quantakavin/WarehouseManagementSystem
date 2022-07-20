@@ -2,15 +2,16 @@ import "./cards.scss";
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useAppSelector, useAppDispatch} from '../../app/hooks'
-import { selectRole, selectName } from '../../app/reducers/CurrentUserSlice';
+import { useAppSelector, useAppDispatch } from "../../app/hooks";
+import { selectRole, selectName } from "../../app/reducers/CurrentUserSlice";
 import config from "../../config/config";
 import GetLoansOverview from "../../api/dashboard/GetLoansOverview";
 import GetRMAsOverview from "../../api/dashboard/GetRMAsOverview";
 import GetTLoanRMAChart from "../../api/dashboard/GetTLoanRMAChart";
+import { Box, Card, Grid, Typography } from "@mui/material";
 
 function cards() {
-  const userrole = useAppSelector(selectRole)
+  const userrole = useAppSelector(selectRole);
   // T-Loan Overview
   const [CurrentTloans, setCurrentTloans] = useState([]);
   const [PendingTloans, setPendingTloans] = useState([]);
@@ -20,6 +21,7 @@ function cards() {
   // RMA Overview
   const [PendingRMAs, setPendingRMAs] = useState([]);
   const [ApprovedRMAs, setApprovedRMAs] = useState([]);
+  const [RejectedRMAs, setRejecteRMAs] = useState([]);
   const [ReceivedRMAs, setReceivedRMAs] = useState([]);
   const [VerifiedRMAs, setVerifiedRMAs] = useState([]);
   const [InprogressRMAs, setInprogressRMAs] = useState([]);
@@ -42,8 +44,6 @@ function cards() {
 
     setPendingTloans(response.data);
   };
-
- 
 
   // getdraftTloans
   const getdraftTloans = async () => {
@@ -78,8 +78,8 @@ function cards() {
     getpendingdRMAs();
   }, []);
 
-   // getapprovedRMAs
-   const getApprovedRMAs = async () => {
+  // getapprovedRMAs
+  const getApprovedRMAs = async () => {
     const response = await axios.get(`${config.baseURL}/getapprovedRMAs`);
 
     setApprovedRMAs(response.data);
@@ -89,8 +89,18 @@ function cards() {
     getApprovedRMAs();
   }, []);
 
+  const getRejectedRMAs = async () => {
+    const response = await axios.get(`${config.baseURL}/getrejectedRMAs`);
+
+    setRejecteRMAs(response.data);
+  };
+
+  useEffect(() => {
+    getRejectedRMAs();
+  }, []);
+
   // getreceivedRMAs
-   const getReceivedRMAs = async () => {
+  const getReceivedRMAs = async () => {
     const response = await axios.get(`${config.baseURL}/getreceivedRMAs`);
 
     setReceivedRMAs(response.data);
@@ -103,10 +113,10 @@ function cards() {
   // getverifiedRMAs
   const getVerifiedRMAs = async () => {
     const response = await axios.get(`${config.baseURL}/getverifiedRMAs`);
-  
+
     setVerifiedRMAs(response.data);
   };
-  
+
   useEffect(() => {
     getVerifiedRMAs();
   }, []);
@@ -132,99 +142,195 @@ function cards() {
   useEffect(() => {
     getclosedRMAs();
   }, []);
+  {
+    CurrentTloans.length;
+  }
+  {DraftTloans.length}
+  
+  { PendingRMAs.length}
+  {ApprovedRMAs.length}
+  {ReceivedRMAs.length}
+  {
+    VerifiedRMAs.length;
+  }
+  {
+    InprogressRMAs.length;
+  }
+  {
+    ClosedRMAs.length;
+  }
 
+
+  // '-apple-system',
+  // '',
+  // '""',
+  // 'Roboto',
+  // '"Helvetica Neue"',
+  // 'Arial',
+  // 'sans-serif',
+  // '"Apple Color Emoji"',
+  // '"Segoe UI Emoji"',
+  // '"Segoe UI Symbol"',
   if (userrole != "Sales Manager") {
     return (
-      <div className="featured">
-        <div className="featuredItem">
-          <span className="featuredTitle">T-Loan Overview</span>
-          <div>
-            <div>
-              <span className="Current">Current</span>
-              <h1 className="Current">{CurrentTloans.length}</h1>
-            </div>
-            <div>
-              <span className="Drafts">Drafts</span>
-              <h1 className="Current">{DraftTloans.length}</h1>
-            </div>
-            <div>
-              <span className="Current">Pending</span>
-              <h1 className="Current">{PendingTloans.length}</h1>
-            </div>
-            <div>
-              <span className="Current">On-Extension</span>
-              <h1 className="Current"></h1>
-            </div>
-            <h1 className="Date"> Updated minutes ago </h1>
-          </div>
-        </div>
-
-        <div className="featuredItem">
-          <span className="featuredTitle">RMA Overview</span>
-          <div>
-            <div>
-              <span className="Drafts">Pending</span>
-              <h1 className="Current">{PendingRMAs.length}</h1>
-            </div>
-            <div>
-              <span className="Current">Approved</span>
-              <h1 className="Current">{ApprovedRMAs.length}</h1>
-            </div>
-            <div>
-              <span className="Current">Received</span>
-              <h1 className="Current">{ReceivedRMAs.length}</h1>
-            </div>
-            <div>
-              <span className="Current">Verified</span>
-              <h1 className="Current">{VerifiedRMAs.length}</h1>
-            </div>
-            <div>
-              <span className="Current">In Progress</span>
-              <h1 className="Current">{InprogressRMAs.length}</h1>
-            </div>
-            <div>
-              <span className="Current">Closed</span>
-              <h1 className="Current">{ClosedRMAs.length}</h1>
-            </div>
-            <h1 className="Date"> Updated minutes ago </h1>
-          </div>
-        </div>
-      </div>
+      <Grid container sx={{paddingLeft: 2, paddingRight: 2}}>
+        <Grid item xs={6}>
+          <Card sx={{height: "100%", width: "98%"}}>
+        <Typography
+          gutterBottom
+          variant="subtitle2"
+          component="span"
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{
+            paddingTop: 5,
+            paddingLeft: 5,
+            paddingRight: 50,
+            color: "#063970",
+            fontWeight: "bold",
+            fontSize: 22,
+            fontFamily: 'Roboto'
+          }}
+        >
+          <Box>
+            <Box>Current</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {CurrentTloans.length}
+            </Box>
+            <Box>Pending</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {PendingTloans.length}
+            </Box>
+          </Box>
+          <Box>
+          <Box sx={{}}>Drafts</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {DraftTloans.length}
+            </Box>
+            <Box sx={{}}>On Extension</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {PendingTloans.length}
+            </Box>
+          </Box>
+        </Typography>
+        </Card>
+        </Grid>
+        <Grid item xs={6}>
+          <Card sx={{height: "100%", width: "100%"}}>
+          <Typography
+          gutterBottom
+          variant="subtitle2"
+          component="span"
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{
+            paddingTop: 5,
+            paddingLeft: 5,
+            paddingRight: 50,
+            color: "#063970",
+            fontWeight: "bold",
+            fontSize: 22,
+            fontFamily: 'Roboto'
+          }}
+        >
+          <Box>
+            <Box>Pending</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {PendingRMAs.length}
+            </Box>
+            <Box>Approved</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {ApprovedRMAs.length}
+            </Box>
+            <Box sx={{}}>Rejected</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {RejectedRMAs.length}
+            </Box>
+            <Box sx={{}}>Received</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {ReceivedRMAs.length}
+            </Box>
+          </Box>
+          <Box>
+            <Box sx={{}}>Verified</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {VerifiedRMAs.length}
+            </Box>
+            <Box sx={{}}>In Progress</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {InprogressRMAs.length}
+            </Box>
+            <Box sx={{}}>Closed</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {ClosedRMAs.length}
+            </Box>
+          </Box>
+        </Typography>
+        </Card>
+        </Grid>
+      </Grid>
     );
   } else {
     return (
-      <div className="featured">
-        <div className="featuredItem">
-          <span className="featuredTitle">T-Loan Overview</span>
-          <div>
-            <div>
-              <span className="Current">Approved</span>
-              <h1 className="Current">{CurrentTloans.length}</h1>
-            </div>
-            <div>
-              <span className="Drafts">Rejected</span>
-              <h1 className="Drafts">{DraftTloans.length}</h1>
-            </div>
-          </div>
-        </div>
-  
-        <div className="featuredItem">
-          <span className="featuredTitle">RMA Overview</span>
-          <div>
-            <div>
-              <span className="Current">Approved</span>
-              <h1 className="Current">{ApprovedRMAs.length}</h1>
-            </div>
-            <div>
-              <span className="Current">Rejected</span>
-              <h1 className="Current">{ReceivedRMAs.length}</h1>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Grid container sx={{paddingLeft: 2, paddingRight: 2}}>
+        <Grid item xs={6}>
+          <Card sx={{height: "100%", width: "98%"}}>
+        <Typography
+          gutterBottom
+          variant="subtitle2"
+          component="Box"
+          sx={{
+            paddingTop: 2,
+            paddingLeft: 2,
+            color: "#063970",
+            fontWeight: "bold",
+          }}
+        >
+          <Box>
+            <Box>Approved</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {CurrentTloans.length}
+            </Box>
+            <Box sx={{}}>Rejected</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {DraftTloans.length}
+            </Box>
+          </Box>
+        </Typography>
+        </Card>
+        </Grid>
+        <Grid item xs={6}>
+          <Card sx={{height: "100%", width: "100%"}}>
+        <Typography
+          gutterBottom
+          variant="subtitle2"
+          component="Box"
+          sx={{
+            paddingTop: 2,
+            paddingLeft: 2,
+            paddingBottom: 2,
+            color: "#063970",
+            fontWeight: "bold",
+          }}
+        >
+          <Box>
+            <Box>Approved</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {ApprovedRMAs.length}
+            </Box>
+            <Box sx={{}}>Rejected</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {RejectedRMAs.length}
+            </Box>
+          </Box>
+        </Typography>
+        </Card>
+        </Grid>
+      </Grid>
     );
   }
-  
 }
 
 export default cards;

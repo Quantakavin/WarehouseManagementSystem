@@ -11,10 +11,12 @@ import {
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import {
+  Box,
   Card,
   CardContent,
   Stack,
   Theme,
+  Typography,
   unstable_createMuiStrictModeTheme,
   withStyles,
 } from "@mui/material";
@@ -49,15 +51,15 @@ const Products2: React.FC = () => {
   });
 
   const columns = [
-    { field: "BinProductPK", headerName: "ID", minWidth: 100 },
-    { field: "ItemName", headerName: "Item Name", minWidth: 800 },
-    { field: "BatchNo", headerName: "Batch Number", minWidth: 250 },
-    { field: "Brand", headerName: "Brand", minWidth: 400 },
+    { field: "BinProductPK", headerName: "ID", flex: 2 },
+    { field: "ItemName", headerName: "Item Name", flex: 30 },
+    { field: "BatchNo", headerName: "Batch Number", flex: 10 },
+    { field: "Brand", headerName: "Brand", flex: 10 },
     {
       field: "Quantity",
       headerName: "Available Quantity",
-      minWidth: 250,
       type: "number",
+      flex: 8,
     },
   ];
 
@@ -74,39 +76,27 @@ const Products2: React.FC = () => {
 
   function CustomToolbar() {
     return (
-      <GridToolbarContainer>
+      <GridToolbarContainer sx={{display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1}}>
+        <Box>
+        <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
+        </Box>
+        <Box>
         <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
         <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
         <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
         <GridToolbarExport sx={{ color: "#0A2540" }} />
-        <GridToolbarQuickFilter
-          sx={{
-            color: "#0A2540",
-            marginLeft: 205,
-            marginTop: -4,
-            marginBottom: 3,
-          }}
-          debounceMs={1000}
-        />
+        </Box>
       </GridToolbarContainer>
     );
   }
 
   return (
-    <Card
-      sx={{
-        width: 1950,
-        height: 1100,
-        marginTop: 5,
-        marginLeft: "auto",
-        marginRight: "auto",
-      }}
-    >
-      <CardContent>
-        <div>
-          <h2> Products </h2>
-        </div>
-        <div style={{ height: 1000, width: "100%" }}>
+    <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
+      <Box sx={{ display: "flex", height: "100%" }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Typography sx={{ color: "#063970", fontWeight: "bold" }}>
+            <h2>Products</h2>
+          </Typography>
           <DataGrid
             sx={{ background: "white", fontSize: 18 }}
             rows={row}
@@ -126,7 +116,7 @@ const Products2: React.FC = () => {
                   alignItems="center"
                   justifyContent="center"
                 >
-                  No accepted RMA requests
+                  No Products
                 </Stack>
               ),
             }}
@@ -138,9 +128,9 @@ const Products2: React.FC = () => {
               navigate(`/product/${params.id}`);
             }}
           />
-        </div>
-      </CardContent>
-    </Card>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 export default Products2;
