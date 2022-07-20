@@ -82,22 +82,22 @@ const App: React.FC = () => {
             </Route>
             <Route element={<ProtectedRoute loginpage={false} />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/products" element={<Products2 />} />
+              <Route path="/products" element={<Products />} />
               <Route path="/productspag" element={<ProductsPag />} />
               <Route path="/product/:id" element={<ViewProduct />} />
               <Route path="/binlocations" element={<BinLocations />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/user/:id" element={<ViewUser2 />} />
+              <Route path="/user/:id" element={<ViewUser />} />
               <Route path="/users" element={<Users />} />
               <Route path="/adduser" element={<AddUser />} />
               <Route path="/edituser/:id" element={<EditUser />} />
               <Route path="/usergroups" element={<UserGroups />} />
-              <Route path="/usergroup/:id" element={<ViewUserGroup2 />} />
+              <Route path="/usergroup/:id" element={<ViewUserGroup />} />
               <Route path="/addusergroup" element={<AddUserGroup />} />
               <Route path="/editusergroup/:id" element={<EditUserGroup />} />
               <Route
                 path="/notificationgroups"
-                element={<NotificationGroups2 />}
+                element={<NotificationGroups />}
               />
               <Route
                 path="/notificationgroup/:id"
@@ -116,10 +116,6 @@ const App: React.FC = () => {
               <Route
                 path="/tloandetails/:TLoanNumber"
                 element={<TLoanDisplay2 />}
-              />
-              <Route
-                path="/tloandetails2/:TLoanNumber"
-                element={<TLoanDisplay2/>}
               />
               <Route path="/newtloan" element={<NewTLoan />} />
             </Route>

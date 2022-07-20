@@ -46,7 +46,11 @@ const Users2: React.FC = () => {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/users?limit=100000&page=0`)
+    fetch('http://localhost:5000/api/users?limit=100000&page=0', { 
+      headers: new Headers({
+          'Authorization': `Bearer ${localStorage.getItem("token")}`
+      }), 
+  })
       .then((data) => data.json())
       .then((data) => setRow(data));
   }, []);

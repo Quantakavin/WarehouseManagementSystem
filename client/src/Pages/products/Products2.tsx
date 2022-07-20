@@ -112,6 +112,7 @@ const Products2: React.FC = () => {
             onFilterModelChange={(newFilterModel) =>
               setFilterModel(newFilterModel)
             }
+            onRowClick={(params: GridRowParams)=>{navigate(`/product/${params.id}`)}}
           />
         </Box>
       </Box>

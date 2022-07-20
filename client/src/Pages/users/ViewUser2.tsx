@@ -35,7 +35,11 @@ export default function ViewUser2() {
     const fetchData = async () => {
       // get the data from the api
       const details = await axios.get(
-        `http://localhost:5000/api/user/${id}`
+        `http://localhost:5000/api/user2/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
 
       setDetails(details.data);
@@ -52,7 +56,11 @@ export default function ViewUser2() {
     const fetchData = async () => {
       // get the data from the api
       const notigroups = await axios.get(
-        `http://localhost:5000/api/usersgroups/${id}`
+        `http://localhost:5000/api/usersgroups/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
 
       setNotigroups(notigroups.data);
@@ -69,55 +77,37 @@ export default function ViewUser2() {
     {   
       field: "NotiGroupName", 
       headerName: "Notification Group", 
-      width: 200,
+      flex: 10,
       editable: false },
     {
       field: "NotiGroupID",
       headerName: "ID",
-      width: 80,
+      flex: 1,
       editable: false,
     }
   ];
 
   const getData = () => {
     return (
-      <div>
-        <h2 className="pagetitle">{details.Username}</h2>
-        <Card
-          sx={{
-            width: 800,
-            height: 580,
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-        >
-          <CardContent>
-            {/* <Typography
-              gutterBottom
-              variant="subtitle2"
-              component="div"
-              sx={{
-                marginTop: 3,
-                marginLeft: 6.5,
-                color: "#063970",
-                fontWeight: "bold",
-              }}
-            >
-              <div>Item List</div>
-            </Typography> */}
-            <Grid container spacing={8}>
-              <Grid item xs={6}>
+      <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
+      <Box sx={{ display: "flex", height: "100%", width: "100%" }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Card>
+            <CardContent>
+              <Grid container spacing={0}>
+                <Grid item xs={6}>
+
                 <Typography
                   gutterBottom
                   variant="subtitle2"
                   component="div"
                   sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginTop: 2,
-                    marginBottom: -5,
-                    marginLeft: -10,
+                    // display: "flex",
+                    // justifyContent: "center",
+                    // alignItems: "center",
+                    // marginTop: 2,
+                    // marginBottom: -5,
+                    // marginLeft: -10,
                     color: "#063970",
                     fontWeight: "bold",
                   }}
@@ -144,7 +134,7 @@ export default function ViewUser2() {
               </Grid>
               <Grid item xs={6}>
                 <DataGrid
-                  sx={{ height: 400, width: 300 }}
+                sx={{height: "100%"}}
                   rows={notigroups}
                   columns={columns}
                   editMode="row"
@@ -153,7 +143,7 @@ export default function ViewUser2() {
                   rowsPerPageOptions={[10]}
                 />
               </Grid>
-              <Grid item xs={6} sx={{marginTop: 4}}>
+              <Grid item xs={12}>
                 <Button
                   size="small"
                   variant="contained"
@@ -162,33 +152,18 @@ export default function ViewUser2() {
                     backgroundColor: "#063970",
                     width: 150,
                     height: 40,
-                    marginLeft: 3,
                   }}
                   onClick={() => navigate("/users")}
                 >
                   Back
                 </Button>
               </Grid>
-              <Grid item xs={6} justifyContent="right" sx={{marginTop: 4}}>
-                <Button
-                  size="small"
-                  variant="contained"
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#063970",
-                    width: 150,
-                    height: 40,
-                    marginLeft: 22,
-                  }}
-                  onClick={() => navigate(`/edituser/${id}`)}
-                >
-                  Edit
-                </Button>
-              </Grid>
             </Grid>
           </CardContent>
         </Card>
-      </div>
+        </Box>
+        </Box>
+        </Box>
     );
   };
 
