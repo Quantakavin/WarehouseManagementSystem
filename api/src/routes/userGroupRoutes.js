@@ -3,11 +3,16 @@ const authorization = require('../middlewares/authorization');
 const validation = require('../middlewares/validation');
 const userGroupController = require('../controllers/userGroupController');
 
-router.get('/usergroup/:id', authorization.verifyAdmin, userGroupController.getUserGroupById);
+router.get('/usergroup/:id',
+            //  authorization.verifyAdmin, 
+             userGroupController.getUserGroupById);
+router.get('/groupfeatures/:id',
+            //  authorization.verifyAdmin, 
+             userGroupController.getGroupFeaturesByID);
 router.get('/usergroup', authorization.verifyAdmin, userGroupController.getUserGroupByName);
 router.get('/usergroupnames', authorization.verifyAdmin, userGroupController.getAllNames);
 router.get('/filterusergroups', authorization.verifyAdmin, userGroupController.filterUserGroups);
-router.get('/usergroups', authorization.verifyAdmin, userGroupController.getAllUserGroups);
+router.get('/usergroups', userGroupController.getAllUserGroups);
 router.post(
     '/usergroup',
     authorization.verifyAdmin,

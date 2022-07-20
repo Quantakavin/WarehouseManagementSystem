@@ -5,6 +5,7 @@ router.get('/AllRMA', rmaController.getAllRMA);
 router.get('/RMA/:RmaID', rmaController.getByRmaID);
 router.get('/RMA/Product/:RmaID', rmaController.getRMAProducts);
 router.get('/RMADetails/:RmaID', rmaController.getRMADetails);
+router.get('/myPendingRMA/:SalesmanID', rmaController.getMyPendingRMA);
 router.get('/myAcceptedRMA/:SalesmanID', rmaController.getMyAcceptedRMA);
 router.get('/myRejectedRMA/:SalesmanID', rmaController.getMyRejectedRMA);
 router.get('/pendingRMA', rmaController.getPendingRMA);

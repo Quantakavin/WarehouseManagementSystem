@@ -10,29 +10,21 @@ module.exports.getAll = async () => {
 module.exports.tloanOutItem = async (
   itemno,
   itemname,
-  quantity
+  quantity,
+  batchno
 ) => {
   return knex('TLoanOutItem').insert({
     itemno,
     itemname,
-    quantity
+    quantity,
+    batchno
   });
 };
 
-// module.exports.tloanOutItemBatch = async (
-//   itemno,
-//   itemname,
-//   quantity
-// ) => {
-//   return knex('TLoanOutItem').insert({
-//     itemno,
-//     itemname,
-//     quantity
-//   });
-// };
 
 
-module.exports.createTLoan = async (type, company, number, name, purpose, applicationdate, duration, requireddate, pick, remarks, tloanItems, tloanBatch) => {
+
+module.exports.createTLoan = async (type, company, number, name, purpose, applicationdate, duration, requireddate, user,email,collection, tloanItems) => {
   knex.transaction(function(trx) {
    
     knex.insert({
@@ -45,8 +37,11 @@ module.exports.createTLoan = async (type, company, number, name, purpose, applic
       Duration: duration,
       RequiredDate: requireddate,
       TLoanStatusID: 4,
-      PickStatusID: pick,
-      Remarks: remarks
+      PickStatusID: 1,
+      Remarks: null,
+      UserID: user,
+      CustomerEmail:email,
+      Collection: collection,
     }, 'TLoanID')
     .into('TLoan')
     .transacting(trx)
@@ -71,7 +66,7 @@ module.exports.getLoanByNumber = async(TLoanNumber) => {
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS 'EndDate',
   c.CompanyName,
-  t.Requestor
+  t.CustomerEmail
   FROM TLoan t 
   LEFT JOIN Company c ON t.CompanyID = c.CompanyID
   WHERE t.TLoanNumber = ?
@@ -82,15 +77,12 @@ module.exports.getLoanByNumber = async(TLoanNumber) => {
 module.exports.getTLoanOutItem = async(TLoanID) =>{
 
   const query = 
-  `
-  SELECT 
+  `SELECT 
   tl.TLoanID,
   tl.ItemNo,
-  bp.BatchNo,
+  tl.BatchNo,
   tl.Quantity
   FROM TLoanOutItem tl 
-	JOIN BinProduct bp
-  ON tl.ItemNo = bp.ItemNo
   WHERE tl.TLoanID = ?
   `
 
@@ -113,7 +105,7 @@ module.exports.getCurrent = async () => {
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,
-  t.Requestor,
+  t.CustomerEmail,
   count(t.TLoanNumber) OVER() AS full_count
   FROM TLoan t, Company c where TLoanStatusID IN (3,5,6,7) AND 
   t.CompanyID = c.CompanyID;`;
@@ -126,7 +118,7 @@ module.exports.getPending = async () => {
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,
-  t.Requestor,
+  t.CustomerEmail,
   count(t.TLoanNumber) OVER() AS full_count
   FROM TLoan t, Company c where TLoanStatusID = "4" AND 
   t.CompanyID = c.CompanyID;`;
@@ -140,7 +132,7 @@ module.exports.getDraft = async () => {
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,
-  t.Requestor,
+  t.CustomerEmail,
   count(t.TLoanNumber) OVER() AS full_count
   FROM TLoan t, Company c where TLoanStatusID = "1" AND 
   t.CompanyID = c.CompanyID;`;
@@ -154,10 +146,34 @@ module.exports.getHistory = async () => {
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,
-  t.Requestor,
+  t.CustomerEmail,
   count(t.TLoanNumber) OVER() AS full_count
   FROM TLoan t, Company c where TLoanStatusID = "8" AND 
   t.CompanyID = c.CompanyID;`;
+  return knex.raw(query);
+}
+
+module.exports.getManagerLoan = async () => {
+  const query = `
+  SELECT t.TLoanNumber, 
+  DATE_FORMAT(t.ApplicationDate, "%d-%m-%Y") AS 'StartDate',
+  t.Requestor,
+  tt.TLoanType,
+  count(t.TLoanNumber) OVER() AS full_count
+  FROM TLoan t, TLoanType tt where t.TLoanStatusID = "1" AND 
+  t.TLoanTypeID = tt.TLoanTypeID;`;
+  return knex.raw(query);
+}
+
+module.exports.getManagerExtension = async () => {
+  const query = `
+  SELECT t.TLoanNumber, 
+  DATE_FORMAT(t.ApplicationDate, "%d-%m-%Y") AS 'StartDate',
+  t.Requestor,
+  tt.TLoanType
+  count(t.TLoanNumber) OVER() AS full_count
+  FROM TLoan t, TLoanType tt where t.TLoanStatusID = "" AND 
+  t.TLoanTypeID = tt.TLoanTypeID;`;
   return knex.raw(query);
 }
 

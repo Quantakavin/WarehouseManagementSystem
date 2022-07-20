@@ -34,6 +34,24 @@ module.exports.getLoanByNo = async (req, res) => {
     
 };
 
+module.exports.getItemsByTloan = async (req, res) => {
+    const { TLoanNumber} = req.params;
+    try {
+        const results1 = await TLoan.getLoanByNumber(TLoanNumber);
+        const IDOfTLoan = results1[0][0].TLoanID;
+        const results2 = await TLoan.getTLoanOutItem(IDOfTLoan);
+        if (results2.length > 0) {
+            redisClient.set(`TLoanItems#${TLoanNumber}`, JSON.stringify(results2));
+            return res.status(200).json(results2[0]);
+        } else {
+            return res.status(404).send('This TLoan has no items');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
 module.exports.allLoan = async (req, res) => {
     try {
         const TLoans = await redisClient.get('TLoans');
@@ -64,8 +82,9 @@ module.exports.newLoan = async (req, res) => {
         applicationdate,
         duration,
         requireddate,
-        pick,
-        remarks,
+        user,
+        email,
+        collection,
         items
      } = req.body;
     try {
@@ -81,12 +100,13 @@ module.exports.newLoan = async (req, res) => {
             applicationdate,
             duration,
             requireddate,
-            pick,
-            remarks, 
+            user,
+            email,
+            collection,
             tloanItems           
         );
        
-            return res.status(201).send('TLoan created successfully!');
+            return res.status(201).json(tloanItems);
     } catch (error) {
         console.log(error);
         return res.status(500).send('Internal Server Error');
@@ -292,3 +312,23 @@ module.exports.draftLoan = async(req , res) =>{
     }
 
 }
+
+module.exports.ManagerLoan = async (req, res) => {
+    try {
+        const TLoans = await redisClient.get('ManagerLoan');
+        if (TLoans !== null) {
+            const redisresults = JSON.parse(TLoans);
+            return res.status(200).json(redisresults);
+        }
+        const results = await TLoan.getManagerLoan();
+        redisClient.set('ManagerLoan', JSON.stringify(results[0]));
+        if (results.length > 0) {
+            return res.status(200).json(results[0]);
+        } else {
+            return res.status(404).send('You have not made any TLoans');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};

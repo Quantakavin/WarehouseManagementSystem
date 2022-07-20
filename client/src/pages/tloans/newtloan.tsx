@@ -1,12 +1,291 @@
+
 import React from 'react'
+import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import AddDeleteTableRows from './TLoanTable/AddDeleteRows'
+import { useState, useEffect } from 'react';
+import { useParams} from "react-router-dom";
+import axios from "axios";
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import {Box, Input} from '@mui/material'
+import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+import { CompanyName, LoanType, CollectionType, DurationOfLoan } from './Dropdown/dropDown';
+import {useNavigate} from 'react-router-dom'
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import TableRows from "./TLoanTable/TableRows"
+import './TLoanTable/table.css'
+import TableRow from "@mui/material/TableRow";
+import TableRowColumn from "@mui/material/TableRow";
+import TableHead from "@mui/material/TableHead";
+import TableBody from "@mui/material/TableBody";
+import Table from "@mui/material/Table";
 
-export default function NewTLoan() {
+function newtloan() {
+
+  const [type, setType] = useState('')
+  const [company,setCompany] = useState('')
+  const [number,setNumber] = useState('')
+  const [name,setName] = useState('')
+  const [purpose,setPurpose] = useState('')
+  const [applicationdate,setADate] = useState('')
+  const [duration,setDuration] = useState('')
+  const [requireddate,setRdate] = useState('')
+  // const [pick,setPick] = useState('')
+  // const [remarks,setRemarks] = useState('')
+  const [user,setUser] = useState('')
+  const [email,setEmail] = useState('')
+  const [collection,setCollection] = useState('')
+  const [items,setItems] = useState([{
+    "ItemNo":"",
+    "ItemName":"",
+    "BatchNo":"",
+    "Quantity": ""
+  }])
 
 
+ 
 
+
+  const handleChangeCompany = (event: SelectChangeEvent) => {
+    setCompany(event.target.value);
+  };
+  const handleChangeDuration = (event: SelectChangeEvent) => {
+    setDuration(event.target.value);
+  };
+
+  const handleChangeType = (event: SelectChangeEvent) => {
+    setType(event.target.value);
+  };
+
+  const handleChangeCollection = (event: SelectChangeEvent) => {
+    setCollection(event.target.value);
+  };
+
+  const navigate = useNavigate()
+  useEffect(()=>{
+    const user4="1"
+
+    setUser(user4)
+  })
+
+  useEffect(()=>{
+    const req="2022-03-06"
+
+    setRdate(req)
+  })
+
+  const submitLoan =(e) => {
+    e.preventDefault()
+     try {
+
+      const results = axios.post('http://localhost:5000/api/tloan/newloan',{
+        type,
+        company,
+        number,
+        name,
+        purpose,
+        applicationdate,
+        duration,
+        requireddate,
+        user,
+        email,
+        collection,
+        items
+      })
+      console.log(results)
+     } catch( error) {
+      console.log(error.response)
+     }
+
+  }
+
+  useEffect(()=>{
+    var date = new Date().toISOString().split('T')[0]
+   
+   
+    setADate(date)
+  })
+  
+  useEffect(()=>{
+    const loanNumber = "1ccccdewewcwe"
+    setNumber(loanNumber)
+  })
+
+  useEffect(()=>{
+    const id = 1
+    setUser(id)
+  })
+    console.log(applicationdate)
+  const getCard = () => {
+
+    const loanDuration = [
+      {"1 Week":"7"},
+      {"2 Weeks":"14"},
+      {"3 Weeks":"21"},
+      {"1 Month":"30"},
+      {"2 Months":"60"},
+      {"3 Months":"90"},
+      {"4 Months":"120"},
+      {"5 Months":"150"},
+      {"6 Months":"180"},
+      {"7 Months":"210"},
+      {"8 Months":"240"},
+      {"9 Months":"270"},
+      {"10 Months":"300"},
+      {"11 Months":"330"},
+      {"12 Months":"365"},
+
+    ]
   return (
-    <div>newtloan</div>
+      <div>
+          
+          <h2 className="pagetitle">Apply TLoan</h2>
+    <form onSubmit={submitLoan}>
+      <Card sx={{ width: 800, height: 550, marginLeft: 'auto', marginRight: 'auto'}}>
+      <CardMedia
+      
+      />
+      <CardContent> 
+      
+        {console.log(items)}
+        
+        
+        <Box sx={{marginLeft: 2, marginTop: 1, display: 'flex'}}>
+        <TextField id="outlined-basic" label="Employee Name" variant="outlined" size='small' 
+        onChange={(e)=>setName(e.target.value)}  />
+       
+        <TextField id="outlined-basic" label="Customer Email" variant="outlined" size='small' sx={{marginLeft: 3}}
+         onChange={(e)=>setEmail(e.target.value)}  />
+    
+        <FormControl sx={{ width: 200, marginLeft: 3 }}>
+        <InputLabel >Customer Company</InputLabel>
+        <Select          
+          id="outlined-basic"
+          value={company}
+          onChange={handleChangeCompany}
+          size='small'
+          label="Customer Company"
+        >
+          <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
+          <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
+          <MenuItem value={"3"}>DIRAK181025</MenuItem>
+          <MenuItem value={"4"}>PMC_LIVE</MenuItem>
+          <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
+          <MenuItem value={"6"}>ALL</MenuItem>
+        </Select>
+      </FormControl>
+      {console.log(company)}
+
+        </Box>
+
+        <Box sx={{display: 'flex'}}>
+
+        <TextField sx={{width: 970, marginLeft:2, marginTop:2}}
+          multiline
+          rows={5.2}
+          label="Purpose"
+          onChange={(e)=>setPurpose(e.target.value)} 
+        ></TextField>
+        <Box sx={{marginLeft: 0.3, float:'right'}}>
+        
+        {/* Duration */}
+        <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+          <InputLabel >Duration</InputLabel>
+          <Select
+            
+            id="outlined-basic"
+            value={duration}
+            onChange={handleChangeDuration}      
+            label="Duration"
+            size='small'
+            >
+           {loanDuration.map((element) => {
+          const [[key, val]] = Object.entries(element);
+          return (
+            <MenuItem value={val} key={key}>
+              {key}
+            </MenuItem>
+          );
+        })}
+        
+          
+           </Select>
+        </FormControl>
+        {console.log(duration)}
+
+        {/* Collection */}
+        <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+        <InputLabel >Collection Type</InputLabel>
+        <Select
+          
+          id="outlined-basic"
+          value={collection}
+          onChange={handleChangeCollection}      
+          label="Collection Type"
+          size='small'
+        >
+          {/* <MenuItem value="">
+            <em>None</em>
+          </MenuItem> */}
+          <MenuItem value={'Self-Collection'}>Self-Collection</MenuItem>
+          <MenuItem value={'Delivery'}>Delivery</MenuItem>
+         </Select>
+      </FormControl>
+
+        {/* Type */}
+        <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+        <InputLabel >Loan Type</InputLabel>
+        <Select
+          
+          id="outlined-basic"
+          value={type}
+          onChange={handleChangeType}
+          label="Loan Type"
+          size='small'
+        >
+         
+          <MenuItem value={"1"}>Internal</MenuItem>
+          <MenuItem value={"2"}>External</MenuItem>
+         
+        </Select>
+      </FormControl>
+        </Box>
+
+        </Box>
+      
+        
+        <Typography variant="body2" color="text.secondary">
+          
+        </Typography>
+      </CardContent>
+      <Box sx={{display:'flex', paddingTop: 3, marginLeft:  4}}>
+        <Button size="small" variant="contained" sx={{color: 'white', backgroundColor: '#063970', width:150, height: 40, float: 'left'}} onClick={()=>navigate('/tloan')}>Back</Button>
+        <Button size="small" variant="contained" sx={{color: 'white', backgroundColor: '#063970', width:150, height: 40,marginLeft:24}}>Save Draft</Button>
+        <Button size="small" variant="contained" sx={{color: 'white', backgroundColor: '#063970', width:150, height: 40, marginLeft:3}} type='submit'>Submit</Button>
+
+      </Box>
+      
+    </Card>
+    </form>
+    </div>
+    ) 
+  }
+  return (
+    <>
+    
+    {getCard()}
+        
+   
+   </>
   )
 }
 
-
+export default newtloan

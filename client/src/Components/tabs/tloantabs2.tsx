@@ -12,10 +12,11 @@ import { TabList, TabPanel, TabContext } from "@mui/lab";
 import "react-tabs/style/react-tabs.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+
 import { Link, useNavigate } from "react-router-dom";
+import TableNew from "../table/InfiniteTable";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole, selectId } from "../../app/reducers/CurrentUserSlice";
-import RmaSearch from "../search/RmaSearch";
 import { Hidden } from "@mui/material";
 import { motion } from "framer-motion";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -26,6 +27,7 @@ import theme from "../../styles/muistyle";
 import {
   DataGrid,
   GridFilterModel,
+  GridToolbar,
   GridRowParams,
   GridRowId,
   MuiEvent,
@@ -36,94 +38,46 @@ import {
   GridToolbarFilterButton,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
+import { DataGridPro } from "@mui/x-data-grid-pro";
 
 const columns = [
-  { field: "RmaID", headerName: "ID", minWidth: 250 },
-  { field: "Username", headerName: "Employee", minWidth: 500 },
-  { field: "DateTime", headerName: "Date", minWidth: 250 },
-  { field: "CompanyName", headerName: "Company", minWidth: 500 },
-  { field: "CustomerEmail", headerName: "Customer Email", minWidth: 500 },
+  { field: "TLoanNumber", headerName: "Loan No.", minWidth: 300 },
+  { field: "StartDate", headerName: "Start Date", minWidth: 250 },
+  { field: "EndDate", headerName: "End Date", minWidth: 250 },
+  { field: "CompanyName", headerName: "Company Name", minWidth: 625 },
+  { field: "CustomerEmail", headerName: "Customer Email", minWidth: 625 },
 ];
 
-const Rmatabs: React.FC = () => {
+const TLoanTabs2: React.FC = () => {
   const userid = useAppSelector(selectId);
   const userrole = useAppSelector(selectRole);
+  const [currentTable, setCurrentTable] = useState([]);
   const [pendingTable, setPendingTable] = useState([]);
-  const [approvedTable, setApprovedTable] = useState([]);
-  const [receivedTable, setReceivedTable] = useState([]);
-  const [verifiedTable, setVerifiedTable] = useState([]);
-  const [inprogressTable, setInProgressTable] = useState([]);
-  const [closedTable, setClosedTable] = useState([]);
-  const [myPendingTable, setMPTable] = useState([]);
-  const [myAcceptedTable, setMATable] = useState([]);
-  const [myRejectedTable, setMRTable] = useState([]);
-
+  const [draftTable, setDraftTable] = useState([]);
+  const [historyTable, setHistoryTable] = useState([]);
+  //Get and set current tloans data
   useEffect(() => {
-    fetch("http://localhost:5000/api/pendingRMA")
+    fetch("http://localhost:5000/api/tloan/current")
+      .then((data) => data.json())
+      .then((data) => setCurrentTable(data));
+  }, []);
+  //Get and set pending tloans data
+  useEffect(() => {
+    fetch("http://localhost:5000/api/tloan/pending")
       .then((data) => data.json())
       .then((data) => setPendingTable(data));
   }, []);
-
+  //Get and set draft data
   useEffect(() => {
-    fetch("http://localhost:5000/api/acceptedRMA")
+    fetch("http://localhost:5000/api/tloan/drafts")
       .then((data) => data.json())
-      .then((data) => setApprovedTable(data));
+      .then((data) => setDraftTable(data));
   }, []);
-
+  //Get and set history data
   useEffect(() => {
-    fetch("http://localhost:5000/api/receivedRMA")
+    fetch("http://localhost:5000/api/tloans/history")
       .then((data) => data.json())
-      .then((data) => setReceivedTable(data));
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:5000/api/verifiedRMA")
-      .then((data) => data.json())
-      .then((data) => setVerifiedTable(data));
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:5000/api/inprogressRMA")
-      .then((data) => data.json())
-      .then((data) => setInProgressTable(data));
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:5000/api/closedRMA")
-      .then((data) => data.json())
-      .then((data) => setClosedTable(data));
-  }, []);
-
-  useEffect(() => {
-    // declare the async data fetching function
-    const fetchPendingData = async () => {
-      // get the data from the api
-      const pendingrma = await axios
-        .get(`http://localhost:5000/api/myPendingRMA/${userid}`)
-        .then((pendingrma) => setMPTable(pendingrma.data));
-      // setRma(Object.e)
-    };
-    // declare the async data fetching function
-    const fetchAcceptedData = async () => {
-      // get the data from the api
-      const acceptedrma = await axios
-        .get(`http://localhost:5000/api/myAcceptedRMA/${userid}`)
-        .then((acceptedrma) => setMATable(acceptedrma.data));
-      // setRma(Object.e)
-    };
-    const fetchRejectedData = async () => {
-      // get the data from the api
-      const rejectedrma = await axios
-        .get(`http://localhost:5000/api/myRejectedRMA/${userid}`)
-        .then((rejectedrma) => setMRTable(rejectedrma.data));
-      // setRma(Object.e)
-    };
-    // call the function
-    fetchPendingData();
-    fetchAcceptedData();
-    fetchRejectedData()
-      // make sure to catch any error
-      .catch(console.error);
+      .then((data) => setHistoryTable(data));
   }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
@@ -135,25 +89,6 @@ const Rmatabs: React.FC = () => {
       },
     ],
   });
-
-  const headers = [
-    "RMA No.",
-    "DateTime",
-    "Company Name",
-    "Customer Email",
-    "Actions",
-  ];
-
-  const navigate = useNavigate();
-  const theme = unstable_createMuiStrictModeTheme();
-  const [pageSize, setPageSize] = React.useState(25);
-  const [inputName, setInputName] = useState<string>(null);
-
-  const [value, setValue] = useState(0); // first tab
-
-  const handleChange = (_event, newValue) => {
-    setValue(newValue);
-  };
 
   function CustomToolbar() {
     return (
@@ -175,6 +110,17 @@ const Rmatabs: React.FC = () => {
     );
   }
 
+  const navigate = useNavigate();
+  const theme = unstable_createMuiStrictModeTheme();
+  const [pageSize, setPageSize] = React.useState(25);
+  const [inputName, setInputName] = useState<string>(null);
+
+  const [value, setValue] = useState(0); // first tab
+
+  const handleChange = (_event, newValue) => {
+    setValue(newValue);
+  };
+
   switch (userrole) {
     case "Sales Engineer": {
       return (
@@ -183,7 +129,7 @@ const Rmatabs: React.FC = () => {
             <Grid container>
               <Grid item xs={11}>
                 <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                  <h2> RMA Requests </h2>
+                <h2> TLoans </h2>
                   <Tabs
                     onChange={handleChange}
                     TabIndicatorProps={{
@@ -193,13 +139,14 @@ const Rmatabs: React.FC = () => {
                       "& button:focus": {
                         backgroundColor: "#063970",
                         color: "white",
-                        width: "15%",
                         height: "15%",
+                        width: "15%",
                       },
                     }}
                   >
+
                     <Tab
-                      label="Pending"
+                      label="Current"
                       value="1"
                       sx={{
                         color: "grey",
@@ -211,7 +158,7 @@ const Rmatabs: React.FC = () => {
                       }}
                     />
                     <Tab
-                      label="Accepted"
+                      label="Pending"
                       value="2"
                       sx={{
                         color: "grey",
@@ -223,8 +170,20 @@ const Rmatabs: React.FC = () => {
                       }}
                     />
                     <Tab
-                      label="Rejected"
+                      label="Drafts"
                       value="3"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="History"
+                      value="4"
                       sx={{
                         color: "grey",
                         backgroundColor: "White",
@@ -243,7 +202,7 @@ const Rmatabs: React.FC = () => {
                     <ThemeProvider theme={theme}>
                       <Fab
                         aria-label="add"
-                        onClick={() => navigate("/createRMA")}
+                        onClick={() => navigate("/newtloan")}
                         style={{ marginTop: 0 }}
                       >
                         <AddIcon />
@@ -255,12 +214,12 @@ const Rmatabs: React.FC = () => {
 
               <Grid item xs={12}>
                 <TabPanel value="1">
-                  <Box sx={{ height: 700, width: 1 }}>
+                  <div style={{ height: 700, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
-                      rows={myPendingTable}
+                      rows={currentTable}
                       columns={columns}
-                      getRowId={(row) => row.RmaID}
+                      getRowId={(row) => row.TLoanNumber}
                       pageSize={pageSize}
                       onPageSizeChange={(newPage) => setPageSize(newPage)}
                       pagination
@@ -272,7 +231,7 @@ const Rmatabs: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No accepted RMA requests
+                            No current TLoans
                           </Stack>
                         ),
                       }}
@@ -281,18 +240,18 @@ const Rmatabs: React.FC = () => {
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
-                  </Box>
+                  </div>
                 </TabPanel>
                 <TabPanel value="2">
                   <div style={{ height: 700, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
-                      rows={myAcceptedTable}
+                      rows={pendingTable}
                       columns={columns}
-                      getRowId={(row) => row.RmaID}
+                      getRowId={(row) => row.TLoanNumber}
                       pageSize={pageSize}
                       onPageSizeChange={(newPage) => setPageSize(newPage)}
                       pagination
@@ -304,33 +263,16 @@ const Rmatabs: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No accepted RMA requests
+                            No pending Tloans
                           </Stack>
                         ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
+                        navigate(`/tloandetails2/${params.id}`);
                       }}
                     />
                   </div>
@@ -339,9 +281,9 @@ const Rmatabs: React.FC = () => {
                   <div style={{ height: 700, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
-                      rows={myRejectedTable}
+                      rows={draftTable}
                       columns={columns}
-                      getRowId={(row) => row.RmaID}
+                      getRowId={(row) => row.TLoanNumber}
                       pageSize={12}
                       components={{
                         Toolbar: CustomToolbar,
@@ -351,33 +293,46 @@ const Rmatabs: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No rejected RMA requests
+                            No drafts
                           </Stack>
                         ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
+                      }}
+                    />
+                  </div>
+                </TabPanel>
+                <TabPanel value="4">
+                  <div style={{ height: 700, width: "100%" }}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 18 }}
+                      rows={historyTable}
+                      columns={columns}
+                      getRowId={(row) => row.TLoanNumber}
+                      pageSize={12}
+                      components={{
+                        Toolbar: CustomToolbar,
+                        NoRowsOverlay: () => (
+                          <Stack
+                            height="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            No History
+                          </Stack>
+                        ),
+                      }}
+                      filterModel={filterModel}
+                      onFilterModelChange={(newFilterModel) =>
+                        setFilterModel(newFilterModel)
+                      }
+                      onRowClick={(params: GridRowParams) => {
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
@@ -391,8 +346,7 @@ const Rmatabs: React.FC = () => {
     case "Technical Staff": {
       return (
         <>
-          <h2 className="pagetitle"> RMA Requests </h2>
-
+          <h2 className="pagetitle"> TLoans </h2>
           <TabContext value={value || "1"}>
             <Grid container>
               <Grid item xs={11}>
@@ -406,14 +360,50 @@ const Rmatabs: React.FC = () => {
                       "& button:focus": {
                         backgroundColor: "#063970",
                         color: "white",
-                        width: "15%",
-                        height: "15%",
+                        height: "100%",
+                        width: "100%",
                       },
                     }}
                   >
                     <Tab
-                      label="Received"
+                      label="Current"
+                      value="1"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Pending"
+                      value="2"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Drafts"
                       value="3"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="History"
+                      value="4"
                       sx={{
                         color: "grey",
                         backgroundColor: "White",
@@ -426,15 +416,94 @@ const Rmatabs: React.FC = () => {
                   </Tabs>
                 </Box>
               </Grid>
+              <Grid item xs={1}>
+                <Box sx={{ paddingLeft: 10, marginTop: 5.5 }}>
+                  <React.StrictMode>
+                    <ThemeProvider theme={theme}>
+                      <Fab
+                        aria-label="add"
+                        onClick={() => navigate("/newtloan")}
+                        style={{ marginTop: 0 }}
+                      >
+                        <AddIcon />
+                      </Fab>
+                    </ThemeProvider>
+                  </React.StrictMode>
+                </Box>
+              </Grid>
 
               <Grid item xs={12}>
+                <TabPanel value="1">
+                  <div style={{ height: 700, width: "100%" }}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 18 }}
+                      rows={currentTable}
+                      columns={columns}
+                      getRowId={(row) => row.TLoanNumber}
+                      pageSize={pageSize}
+                      onPageSizeChange={(newPage) => setPageSize(newPage)}
+                      pagination
+                      components={{
+                        Toolbar: CustomToolbar,
+                        NoRowsOverlay: () => (
+                          <Stack
+                            height="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            No current Tloans
+                          </Stack>
+                        ),
+                      }}
+                      filterModel={filterModel}
+                      onFilterModelChange={(newFilterModel) =>
+                        setFilterModel(newFilterModel)
+                      }
+                      onRowClick={(params: GridRowParams) => {
+                        navigate(`/tloandetails/${params.id}`);
+                      }}
+                    />
+                  </div>
+                </TabPanel>
+                <TabPanel value="2">
+                  <div style={{ height: 700, width: "100%" }}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 18 }}
+                      rows={pendingTable}
+                      columns={columns}
+                      getRowId={(row) => row.TLoanNumber}
+                      pageSize={pageSize}
+                      onPageSizeChange={(newPage) => setPageSize(newPage)}
+                      pagination
+                      components={{
+                        Toolbar: CustomToolbar,
+                        NoRowsOverlay: () => (
+                          <Stack
+                            height="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            No pending TLoans
+                          </Stack>
+                        ),
+                      }}
+                      filterModel={filterModel}
+                      onFilterModelChange={(newFilterModel) =>
+                        setFilterModel(newFilterModel)
+                      }
+                      onRowClick={(params: GridRowParams) => {
+                        navigate(`/tloandetails/${params.id}`);
+                      }}
+                    />
+                  </div>
+                </TabPanel>
                 <TabPanel value="3">
                   <div style={{ height: 700, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
-                      rows={receivedTable}
+                      rows={draftTable}
                       columns={columns}
-                      getRowId={(row) => row.RmaID}
+                      getRowId={(row) => row.TLoanNumber}
                       pageSize={12}
                       components={{
                         Toolbar: CustomToolbar,
@@ -444,33 +513,46 @@ const Rmatabs: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No received RMA requessts
+                            No drafts
                           </Stack>
                         ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
+                      }}
+                    />
+                  </div>
+                </TabPanel>
+                <TabPanel value="4">
+                  <div style={{ height: 700, width: "100%" }}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 18 }}
+                      rows={historyTable}
+                      columns={columns}
+                      getRowId={(row) => row.TLoanNumber}
+                      pageSize={12}
+                      components={{
+                        Toolbar: CustomToolbar,
+                        NoRowsOverlay: () => (
+                          <Stack
+                            height="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            No History
+                          </Stack>
+                        ),
+                      }}
+                      filterModel={filterModel}
+                      onFilterModelChange={(newFilterModel) =>
+                        setFilterModel(newFilterModel)
+                      }
+                      onRowClick={(params: GridRowParams) => {
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
@@ -484,8 +566,7 @@ const Rmatabs: React.FC = () => {
     case "Sales Manager": {
       return (
         <>
-          <h2 className="pagetitle"> RMA Requests </h2>
-
+          <h2 className="pagetitle"> TLoans </h2>
           <TabContext value={value || "1"}>
             <Grid container>
               <Grid item xs={11}>
@@ -499,13 +580,13 @@ const Rmatabs: React.FC = () => {
                       "& button:focus": {
                         backgroundColor: "#063970",
                         color: "white",
-                        width: "15%",
-                        height: "15%",
+                        height: "100%",
+                        width: "100%",
                       },
                     }}
                   >
                     <Tab
-                      label="Pending"
+                      label="Current"
                       value="1"
                       sx={{
                         color: "grey",
@@ -517,7 +598,7 @@ const Rmatabs: React.FC = () => {
                       }}
                     />
                     <Tab
-                      label="Approved"
+                      label="Pending"
                       value="2"
                       sx={{
                         color: "grey",
@@ -529,7 +610,7 @@ const Rmatabs: React.FC = () => {
                       }}
                     />
                     <Tab
-                      label="Received"
+                      label="Drafts"
                       value="3"
                       sx={{
                         color: "grey",
@@ -541,32 +622,8 @@ const Rmatabs: React.FC = () => {
                       }}
                     />
                     <Tab
-                      label="Verified"
+                      label="History"
                       value="4"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="In Progress"
-                      value="5"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Closed"
-                      value="6"
                       sx={{
                         color: "grey",
                         backgroundColor: "White",
@@ -579,15 +636,30 @@ const Rmatabs: React.FC = () => {
                   </Tabs>
                 </Box>
               </Grid>
+              <Grid item xs={1}>
+                <Box sx={{ paddingLeft: 10, marginTop: 5.5 }}>
+                  <React.StrictMode>
+                    <ThemeProvider theme={theme}>
+                      <Fab
+                        aria-label="add"
+                        onClick={() => navigate("/newtloan")}
+                        style={{ marginTop: 0 }}
+                      >
+                        <AddIcon />
+                      </Fab>
+                    </ThemeProvider>
+                  </React.StrictMode>
+                </Box>
+              </Grid>
 
               <Grid item xs={12}>
                 <TabPanel value="1">
                   <div style={{ height: 700, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
-                      rows={pendingTable}
+                      rows={currentTable}
                       columns={columns}
-                      getRowId={(row) => row.RmaID}
+                      getRowId={(row) => row.TLoanNumber}
                       pageSize={pageSize}
                       onPageSizeChange={(newPage) => setPageSize(newPage)}
                       pagination
@@ -599,33 +671,16 @@ const Rmatabs: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No pending RMA requests
+                            No current TLoans
                           </Stack>
                         ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
@@ -634,10 +689,12 @@ const Rmatabs: React.FC = () => {
                   <div style={{ height: 700, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
-                      rows={approvedTable}
+                      rows={pendingTable}
                       columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
+                      getRowId={(row) => row.TLoanNumber}
+                      pageSize={pageSize}
+                      onPageSizeChange={(newPage) => setPageSize(newPage)}
+                      pagination
                       components={{
                         Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
@@ -646,33 +703,16 @@ const Rmatabs: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No approved RMA requessts
+                            No pending TLoans
                           </Stack>
                         ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
@@ -681,9 +721,9 @@ const Rmatabs: React.FC = () => {
                   <div style={{ height: 700, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
-                      rows={receivedTable}
+                      rows={draftTable}
                       columns={columns}
-                      getRowId={(row) => row.RmaID}
+                      getRowId={(row) => row.TLoanNumber}
                       pageSize={12}
                       components={{
                         Toolbar: CustomToolbar,
@@ -693,33 +733,16 @@ const Rmatabs: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No received RMA requessts
+                            No drafts
                           </Stack>
                         ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
@@ -728,9 +751,9 @@ const Rmatabs: React.FC = () => {
                   <div style={{ height: 700, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
-                      rows={verifiedTable}
+                      rows={historyTable}
                       columns={columns}
-                      getRowId={(row) => row.RmaID}
+                      getRowId={(row) => row.TLoanNumber}
                       pageSize={12}
                       components={{
                         Toolbar: CustomToolbar,
@@ -740,118 +763,16 @@ const Rmatabs: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No verified RMA requessts
+                            No History
                           </Stack>
                         ),
                       }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </div>
-                </TabPanel>
-                <TabPanel value="5">
-                  <div style={{ height: 700, width: "100%" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={inprogressTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No closed RMA requessts
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </div>
-                </TabPanel>
-                <TabPanel value="6">
-                  <div style={{ height: 700, width: "100%" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={closedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
@@ -865,7 +786,7 @@ const Rmatabs: React.FC = () => {
     case "Sales Admin": {
       return (
         <>
-          <h2 className="pagetitle"> RMA Requests </h2>
+          <h2 className="pagetitle"> TLoans </h2>
           <TabContext value={value || "1"}>
             <Grid container>
               <Grid item xs={11}>
@@ -879,38 +800,50 @@ const Rmatabs: React.FC = () => {
                       "& button:focus": {
                         backgroundColor: "#063970",
                         color: "white",
-                        width: "15%",
-                        height: "15%",
+                        height: "100%",
+                        width: "100%",
                       },
                     }}
                   >
                     <Tab
-                      label="Verified"
+                      label="Current"
+                      value="1"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Pending"
+                      value="2"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Drafts"
+                      value="3"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="History"
                       value="4"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="In Progress"
-                      value="5"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Closed"
-                      value="6"
                       sx={{
                         color: "grey",
                         backgroundColor: "White",
@@ -923,14 +856,124 @@ const Rmatabs: React.FC = () => {
                   </Tabs>
                 </Box>
               </Grid>
+              <Grid item xs={1}>
+                <Box sx={{ paddingLeft: 10, marginTop: 5.5 }}>
+                  <React.StrictMode>
+                    <ThemeProvider theme={theme}>
+                      <Fab
+                        aria-label="add"
+                        onClick={() => navigate("/newtloan")}
+                        style={{ marginTop: 0 }}
+                      >
+                        <AddIcon />
+                      </Fab>
+                    </ThemeProvider>
+                  </React.StrictMode>
+                </Box>
+              </Grid>
+
               <Grid item xs={12}>
+                <TabPanel value="1">
+                  <div style={{ height: 700, width: "100%" }}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 18 }}
+                      rows={currentTable}
+                      columns={columns}
+                      getRowId={(row) => row.TLoanNumber}
+                      pageSize={pageSize}
+                      onPageSizeChange={(newPage) => setPageSize(newPage)}
+                      pagination
+                      components={{
+                        Toolbar: CustomToolbar,
+                        NoRowsOverlay: () => (
+                          <Stack
+                            height="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            No current Tloans
+                          </Stack>
+                        ),
+                      }}
+                      filterModel={filterModel}
+                      onFilterModelChange={(newFilterModel) =>
+                        setFilterModel(newFilterModel)
+                      }
+                      onRowClick={(params: GridRowParams) => {
+                        navigate(`/tloandetails/${params.id}`);
+                      }}
+                    />
+                  </div>
+                </TabPanel>
+                <TabPanel value="2">
+                  <div style={{ height: 700, width: "100%" }}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 18 }}
+                      rows={pendingTable}
+                      columns={columns}
+                      getRowId={(row) => row.TLoanNumber}
+                      pageSize={pageSize}
+                      onPageSizeChange={(newPage) => setPageSize(newPage)}
+                      pagination
+                      components={{
+                        Toolbar: CustomToolbar,
+                        NoRowsOverlay: () => (
+                          <Stack
+                            height="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            No pending Tloans
+                          </Stack>
+                        ),
+                      }}
+                      filterModel={filterModel}
+                      onFilterModelChange={(newFilterModel) =>
+                        setFilterModel(newFilterModel)
+                      }
+                      onRowClick={(params: GridRowParams) => {
+                        navigate(`/tloandetails/${params.id}`);
+                      }}
+                    />
+                  </div>
+                </TabPanel>
+                <TabPanel value="3">
+                  <div style={{ height: 700, width: "100%" }}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 18 }}
+                      rows={draftTable}
+                      columns={columns}
+                      getRowId={(row) => row.TLoanNumber}
+                      pageSize={12}
+                      components={{
+                        Toolbar: CustomToolbar,
+                        NoRowsOverlay: () => (
+                          <Stack
+                            height="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            No drafts
+                          </Stack>
+                        ),
+                      }}
+                      filterModel={filterModel}
+                      onFilterModelChange={(newFilterModel) =>
+                        setFilterModel(newFilterModel)
+                      }
+                      onRowClick={(params: GridRowParams) => {
+                        navigate(`/tloandetails/${params.id}`);
+                      }}
+                    />
+                  </div>
+                </TabPanel>
                 <TabPanel value="4">
                   <div style={{ height: 700, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
-                      rows={verifiedTable}
+                      rows={historyTable}
                       columns={columns}
-                      getRowId={(row) => row.RmaID}
+                      getRowId={(row) => row.TLoanNumber}
                       pageSize={12}
                       components={{
                         Toolbar: CustomToolbar,
@@ -940,127 +983,16 @@ const Rmatabs: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No verified RMA requessts
+                            No History
                           </Stack>
                         ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </div>
-                </TabPanel>
-                <TabPanel value="5">
-                  <div style={{ height: 700, width: "100%" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={inprogressTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No RMA requests in progress
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </div>
-                </TabPanel>
-                <TabPanel value="6">
-                  <div style={{ height: 700, width: "100%" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={closedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No closed RMA requests
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
@@ -1074,8 +1006,7 @@ const Rmatabs: React.FC = () => {
     case "Warehouse Worker": {
       return (
         <>
-          <h2 className="pagetitle"> RMA Requests </h2>
-
+          <h2 className="pagetitle"> TLoans </h2>
           <TabContext value={value || "1"}>
             <Grid container>
               <Grid item xs={11}>
@@ -1089,106 +1020,13 @@ const Rmatabs: React.FC = () => {
                       "& button:focus": {
                         backgroundColor: "#063970",
                         color: "white",
-                        width: "15%",
-                        height: "15%",
-                      },
-                    }}
-                  >
-                    <Tab
-                      label="Received"
-                      value="3"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
                         height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                  </Tabs>
-                </Box>
-              </Grid>
-
-              <Grid item xs={12}>
-                <TabPanel value="3">
-                  <div style={{ height: 700, width: "100%" }}>
-                    <DataGrid
-                      sx={{ background: "white", fontSize: 18 }}
-                      rows={receivedTable}
-                      columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
-                      components={{
-                        Toolbar: CustomToolbar,
-                        NoRowsOverlay: () => (
-                          <Stack
-                            height="100%"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            No received RMA requessts
-                          </Stack>
-                        ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
-                      }}
-                      filterModel={filterModel}
-                      onFilterModelChange={(newFilterModel) =>
-                        setFilterModel(newFilterModel)
-                      }
-                      onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
-                      }}
-                    />
-                  </div>
-                </TabPanel>
-              </Grid>
-            </Grid>
-          </TabContext>
-        </>
-      );
-    }
-    case "Admin":
-    default: {
-      return (
-        <>
-          <h2 className="pagetitle"> RMA Requests </h2>
-          <TabContext value={value || "1"}>
-            <Grid container>
-              <Grid item xs={11}>
-                <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                  <Tabs
-                    onChange={handleChange}
-                    TabIndicatorProps={{
-                      style: { backgroundColor: "#D97D54" },
-                    }}
-                    sx={{
-                      "& button:focus": {
-                        backgroundColor: "#063970",
-                        color: "white",
-                        width: "15%",
-                        height: "15%",
+                        width: "100%",
                       },
                     }}
                   >
                     <Tab
-                      label="Pending"
+                      label="Current"
                       value="1"
                       sx={{
                         color: "grey",
@@ -1200,7 +1038,7 @@ const Rmatabs: React.FC = () => {
                       }}
                     />
                     <Tab
-                      label="Approved"
+                      label="Pending"
                       value="2"
                       sx={{
                         color: "grey",
@@ -1212,7 +1050,7 @@ const Rmatabs: React.FC = () => {
                       }}
                     />
                     <Tab
-                      label="Received"
+                      label="Drafts"
                       value="3"
                       sx={{
                         color: "grey",
@@ -1224,32 +1062,8 @@ const Rmatabs: React.FC = () => {
                       }}
                     />
                     <Tab
-                      label="Verified"
+                      label="History"
                       value="4"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="In Progress"
-                      value="5"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Closed"
-                      value="6"
                       sx={{
                         color: "grey",
                         backgroundColor: "White",
@@ -1262,15 +1076,30 @@ const Rmatabs: React.FC = () => {
                   </Tabs>
                 </Box>
               </Grid>
+              <Grid item xs={1}>
+                <Box sx={{ paddingLeft: 10, marginTop: 5.5 }}>
+                  <React.StrictMode>
+                    <ThemeProvider theme={theme}>
+                      <Fab
+                        aria-label="add"
+                        onClick={() => navigate("/newtloan")}
+                        style={{ marginTop: 0 }}
+                      >
+                        <AddIcon />
+                      </Fab>
+                    </ThemeProvider>
+                  </React.StrictMode>
+                </Box>
+              </Grid>
 
               <Grid item xs={12}>
                 <TabPanel value="1">
                   <div style={{ height: 700, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
-                      rows={pendingTable}
+                      rows={currentTable}
                       columns={columns}
-                      getRowId={(row) => row.RmaID}
+                      getRowId={(row) => row.TLoanNumber}
                       pageSize={pageSize}
                       onPageSizeChange={(newPage) => setPageSize(newPage)}
                       pagination
@@ -1282,33 +1111,16 @@ const Rmatabs: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No pending RMA requests
+                            No current Tloans
                           </Stack>
                         ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
@@ -1317,10 +1129,12 @@ const Rmatabs: React.FC = () => {
                   <div style={{ height: 700, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
-                      rows={approvedTable}
+                      rows={pendingTable}
                       columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
+                      getRowId={(row) => row.TLoanNumber}
+                      pageSize={pageSize}
+                      onPageSizeChange={(newPage) => setPageSize(newPage)}
+                      pagination
                       components={{
                         Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
@@ -1329,33 +1143,16 @@ const Rmatabs: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No approved RMA requessts
+                            No pending Tloans
                           </Stack>
                         ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
@@ -1364,9 +1161,9 @@ const Rmatabs: React.FC = () => {
                   <div style={{ height: 700, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
-                      rows={receivedTable}
+                      rows={draftTable}
                       columns={columns}
-                      getRowId={(row) => row.RmaID}
+                      getRowId={(row) => row.TLoanNumber}
                       pageSize={12}
                       components={{
                         Toolbar: CustomToolbar,
@@ -1376,33 +1173,16 @@ const Rmatabs: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No received RMA requessts
+                            No drafts
                           </Stack>
                         ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
@@ -1411,9 +1191,9 @@ const Rmatabs: React.FC = () => {
                   <div style={{ height: 700, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
-                      rows={verifiedTable}
+                      rows={historyTable}
                       columns={columns}
-                      getRowId={(row) => row.RmaID}
+                      getRowId={(row) => row.TLoanNumber}
                       pageSize={12}
                       components={{
                         Toolbar: CustomToolbar,
@@ -1423,45 +1203,102 @@ const Rmatabs: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No verified RMA requessts
+                            No History
                           </Stack>
                         ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
                 </TabPanel>
-                <TabPanel value="5">
+              </Grid>
+            </Grid>
+          </TabContext>
+        </>
+      );
+    }
+    case "Admin": {
+      return (
+        <>
+          <h2 className="pagetitle"> TLoans </h2>
+          <TabContext value={value || "1"}>
+            <Grid container>
+              <Grid item xs={11}>
+                <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
+                  <Tabs
+                    onChange={handleChange}
+                    TabIndicatorProps={{
+                      style: { backgroundColor: "#D97D54" },
+                    }}
+                    sx={{
+                      "& button:focus": {
+                        backgroundColor: "#063970",
+                        color: "white",
+                        height: "100%",
+                        width: "100%",
+                      },
+                    }}
+                  >
+                    <Tab
+                      label="Current"
+                      value="1"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Pending"
+                      value="2"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                  </Tabs>
+                </Box>
+              </Grid>
+              <Grid item xs={1}>
+                <Box sx={{ paddingLeft: 10, marginTop: 5.5 }}>
+                  <React.StrictMode>
+                    <ThemeProvider theme={theme}>
+                      <Fab
+                        aria-label="add"
+                        onClick={() => navigate("/newtloan")}
+                        style={{ marginTop: 0 }}
+                      >
+                        <AddIcon />
+                      </Fab>
+                    </ThemeProvider>
+                  </React.StrictMode>
+                </Box>
+              </Grid>
+
+              <Grid item xs={12}>
+                <TabPanel value="1">
                   <div style={{ height: 700, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
-                      rows={inprogressTable}
+                      rows={currentTable}
                       columns={columns}
-                      getRowId={(row) => row.RmaID}
-                      pageSize={12}
+                      getRowId={(row) => row.TLoanNumber}
+                      pageSize={pageSize}
+                      onPageSizeChange={(newPage) => setPageSize(newPage)}
+                      pagination
                       components={{
                         Toolbar: CustomToolbar,
                         NoRowsOverlay: () => (
@@ -1470,44 +1307,219 @@ const Rmatabs: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No RMA requests in progress
+                            No current Tloans
                           </Stack>
                         ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
                 </TabPanel>
-                <TabPanel value="6">
+                <TabPanel value="2">
                   <div style={{ height: 700, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
-                      rows={closedTable}
+                      rows={pendingTable}
                       columns={columns}
-                      getRowId={(row) => row.RmaID}
+                      getRowId={(row) => row.TLoanNumber}
+                      pageSize={pageSize}
+                      onPageSizeChange={(newPage) => setPageSize(newPage)}
+                      pagination
+                      components={{
+                        Toolbar: CustomToolbar,
+                        NoRowsOverlay: () => (
+                          <Stack
+                            height="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            No pending Tloans
+                          </Stack>
+                        ),
+                      }}
+                      filterModel={filterModel}
+                      onFilterModelChange={(newFilterModel) =>
+                        setFilterModel(newFilterModel)
+                      }
+                      onRowClick={(params: GridRowParams) => {
+                        navigate(`/tloandetails/${params.id}`);
+                      }}
+                    />
+                  </div>
+                </TabPanel>
+              </Grid>
+            </Grid>
+          </TabContext>
+        </>
+      );
+    }
+    default: {
+      return (
+        <>
+          <h2 className="pagetitle"> TLoans </h2>
+          <TabContext value={value || "1"}>
+            <Grid container>
+              <Grid item xs={11}>
+                <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
+                  <Tabs
+                    onChange={handleChange}
+                    TabIndicatorProps={{
+                      style: { backgroundColor: "#D97D54" },
+                    }}
+                    sx={{
+                      "& button:focus": {
+                        backgroundColor: "#063970",
+                        color: "white",
+                        height: "100%",
+                        width: "100%",
+                      },
+                    }}
+                  >
+                    <Tab
+                      label="Current"
+                      value="1"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Pending"
+                      value="2"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Drafts"
+                      value="3"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="History"
+                      value="4"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                  </Tabs>
+                </Box>
+              </Grid>
+              <Grid item xs={1}>
+                <Box sx={{ paddingLeft: 10, marginTop: 5.5 }}>
+                  <React.StrictMode>
+                    <ThemeProvider theme={theme}>
+                      <Fab
+                        aria-label="add"
+                        onClick={() => navigate("/newtloan")}
+                        style={{ marginTop: 0 }}
+                      >
+                        <AddIcon />
+                      </Fab>
+                    </ThemeProvider>
+                  </React.StrictMode>
+                </Box>
+              </Grid>
+
+              <Grid item xs={12}>
+                <TabPanel value="1">
+                  <div style={{ height: 700, width: "100%" }}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 18 }}
+                      rows={currentTable}
+                      columns={columns}
+                      getRowId={(row) => row.TLoanNumber}
+                      pageSize={pageSize}
+                      onPageSizeChange={(newPage) => setPageSize(newPage)}
+                      pagination
+                      components={{
+                        Toolbar: CustomToolbar,
+                        NoRowsOverlay: () => (
+                          <Stack
+                            height="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            No current Tloans
+                          </Stack>
+                        ),
+                      }}
+                      filterModel={filterModel}
+                      onFilterModelChange={(newFilterModel) =>
+                        setFilterModel(newFilterModel)
+                      }
+                      onRowClick={(params: GridRowParams) => {
+                        navigate(`/tloandetails/${params.id}`);
+                      }}
+                    />
+                  </div>
+                </TabPanel>
+                <TabPanel value="2">
+                  <div style={{ height: 700, width: "100%" }}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 18 }}
+                      rows={pendingTable}
+                      columns={columns}
+                      getRowId={(row) => row.TLoanNumber}
+                      pageSize={pageSize}
+                      onPageSizeChange={(newPage) => setPageSize(newPage)}
+                      pagination
+                      components={{
+                        Toolbar: CustomToolbar,
+                        NoRowsOverlay: () => (
+                          <Stack
+                            height="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            No pending Tloans
+                          </Stack>
+                        ),
+                      }}
+                      filterModel={filterModel}
+                      onFilterModelChange={(newFilterModel) =>
+                        setFilterModel(newFilterModel)
+                      }
+                      onRowClick={(params: GridRowParams) => {
+                        navigate(`/tloandetails/${params.id}`);
+                      }}
+                    />
+                  </div>
+                </TabPanel>
+                <TabPanel value="3">
+                  <div style={{ height: 700, width: "100%" }}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 18 }}
+                      rows={draftTable}
+                      columns={columns}
+                      getRowId={(row) => row.TLoanNumber}
                       pageSize={12}
                       components={{
                         Toolbar: CustomToolbar,
@@ -1517,33 +1529,46 @@ const Rmatabs: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No closed RMA requessts
+                            No drafts
                           </Stack>
                         ),
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          quickFilterProps: { debounceMs: 500 },
-                        },
-                        panel: {
-                          sx: {
-                            "& .MuiTypography-root": {
-                              color: "black",
-                              fontSize: 16,
-                            },
-                            "& .MuiDataGrid-filterForm": {
-                              bgcolor: "white",
-                            },
-                          },
-                        },
                       }}
                       filterModel={filterModel}
                       onFilterModelChange={(newFilterModel) =>
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/rmaDetails/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
+                      }}
+                    />
+                  </div>
+                </TabPanel>
+                <TabPanel value="4">
+                  <div style={{ height: 700, width: "100%" }}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 18 }}
+                      rows={historyTable}
+                      columns={columns}
+                      getRowId={(row) => row.TLoanNumber}
+                      pageSize={12}
+                      components={{
+                        Toolbar: CustomToolbar,
+                        NoRowsOverlay: () => (
+                          <Stack
+                            height="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            No History
+                          </Stack>
+                        ),
+                      }}
+                      filterModel={filterModel}
+                      onFilterModelChange={(newFilterModel) =>
+                        setFilterModel(newFilterModel)
+                      }
+                      onRowClick={(params: GridRowParams) => {
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
@@ -1556,4 +1581,5 @@ const Rmatabs: React.FC = () => {
     }
   }
 };
-export default Rmatabs;
+
+export default TLoanTabs2;
