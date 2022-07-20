@@ -19,7 +19,7 @@ import { Option, Feature, FeatureRight } from "../../utils/CommonTypes";
 import { Toast } from "../../components/alerts/SweetAlert";
 import SelectDropdown from "../../components/form/SelectDropdown";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
-import { FeaturedVideo } from "@mui/icons-material"; 
+import { FeaturedVideo } from "@mui/icons-material";
 import SelectedList from "../../components/form/SelectedList";
 
 interface FormValues {
@@ -46,14 +46,14 @@ const EditUserGroup: React.FC = () => {
   const UserGroupQuery = useQuery([`usergroup${params.id}`, params.id], () =>
     GetUserGroup(params.id),
     {
-      onSuccess:(data) => {
+      onSuccess: (data) => {
         console.log(JSON.stringify(data.data[0].Features))
         setSelectedFeatures(data.data[0].Features.map((value) => {
           return value.FeatureID
         }))
         setReturnFeatures(
           data.data[0].Features.map((returnfeature) => {
-            return {FeatureID: returnfeature.FeatureID, FeatureRightID: returnfeature.FeatureRightID};
+            return { FeatureID: returnfeature.FeatureID, FeatureRightID: returnfeature.FeatureRightID };
           })
         );
         setUserGroup(data.data[0]);
@@ -64,13 +64,13 @@ const EditUserGroup: React.FC = () => {
   const featuresQuery = useQuery("features", GetFeatures, {
     onSuccess: (data) => {
       const features: Option[] = [];
-        data.data.forEach((feature: Feature) => {
-          features.push({
-            id: feature.FeatureID,
-            text: feature.FeatureName,
-            value: feature.FeatureID,
-          });
+      data.data.forEach((feature: Feature) => {
+        features.push({
+          id: feature.FeatureID,
+          text: feature.FeatureName,
+          value: feature.FeatureID,
         });
+      });
       setFeatureOptions(features);
     }
 
@@ -78,13 +78,13 @@ const EditUserGroup: React.FC = () => {
   const featureRightsQuery = useQuery("featurerights", GetFeatureRights, {
     onSuccess: (data) => {
       const featurerights: Option[] = [];
-        data.data.forEach((featureright: FeatureRight) => {
-          featurerights.push({
-            id: featureright.FeatureRightID,
-            text: featureright.FeatureRight,
-            value: featureright.FeatureRightID,
-          });
+      data.data.forEach((featureright: FeatureRight) => {
+        featurerights.push({
+          id: featureright.FeatureRightID,
+          text: featureright.FeatureRight,
+          value: featureright.FeatureRightID,
         });
+      });
       setFeatureRightOptions(featurerights);
     }
   });
@@ -176,148 +176,90 @@ const EditUserGroup: React.FC = () => {
     return featuresQuery.data.data.find(
       (data) => data.FeatureID === feature
     ).FeatureName
-  } 
+  }
 
-  const StepOne = (
-    <div className={step === 1 ? "showstep" : "hidestep"}>
-      <FormField
-        label="Name"
-        name="name"
-        type="text"
-        register={register}
-        defaultvalue={userGroup ? userGroup.UserGroupName : ""}
-        errormsg={errors.name?.message}
-        rules={NameValidation}
-      />
-      <FormTextArea
-        label="Description"
-        name="description"
-        register={register}
-        errormsg={errors.description?.message}
-        defaultvalue={userGroup ? userGroup.UserGroupDesc : ""}
-        rules={NameValidation}
-      />
-      <div className="formnavigationcontainer">
-        <button
-          className="formnavigation"
-          onClick={() => navigate(-1)}
-          type="button"
-        >
-          Cancel
-        </button>
-        <button className="nextbutton" onClick={nextStep} type="button">
-          Next <NavigateNextIcon style={{ marginRight: -10, marginLeft: -7 }} />
-        </button>
-      </div>
-    </div>
-  );
+  // const StepOne = (
+  //   <div className={step === 1 ? "showstep" : "hidestep"}>
+  //     <FormField
+  //       label="Name"
+  //       name="name"
+  //       type="text"
+  //       register={register}
+  //       defaultvalue={userGroup ? userGroup.UserGroupName : ""}
+  //       errormsg={errors.name?.message}
+  //       rules={NameValidation}
+  //     />
+  //     <FormTextArea
+  //       label="Description"
+  //       name="description"
+  //       register={register}
+  //       errormsg={errors.description?.message}
+  //       defaultvalue={userGroup ? userGroup.UserGroupDesc : ""}
+  //       rules={NameValidation}
+  //     />
+  //     <div className="formnavigationcontainer">
+  //       <button
+  //         className="formnavigation"
+  //         onClick={() => navigate(-1)}
+  //         type="button"
+  //       >
+  //         Cancel
+  //       </button>
+  //       <button className="nextbutton" onClick={nextStep} type="button">
+  //         Next <NavigateNextIcon style={{ marginRight: -10, marginLeft: -7 }} />
+  //       </button>
+  //     </div>
+  //   </div>
+  // );
 
   const SetDefaultOptions = (feature) => {
     let optiontoset = featureRightOptions[0]?.value;
     if (UserGroupQuery.isSuccess) {
-    for (let i = 0; i<UserGroupQuery.data.data[0].Features.length; i++) {
-      if (UserGroupQuery.data.data[0].Features[i].FeatureID === feature) {
-        optiontoset = UserGroupQuery.data.data[0].Features[i].FeatureRightID
+      for (let i = 0; i < UserGroupQuery.data.data[0].Features.length; i++) {
+        if (UserGroupQuery.data.data[0].Features[i].FeatureID === feature) {
+          optiontoset = UserGroupQuery.data.data[0].Features[i].FeatureRightID
+        }
       }
     }
-  }
     return optiontoset;
 
   }
 
-  const StepTwo = (
-    <div className={step === 2 ? "showstep" : "hidestep"}>
-      <MultiSelectDropdown
-        name="features"
-        label="Features"
-        selectedValues={selectedFeatures}
-        changeSelectedValues={selectFeature}
-        placeholder="Select Features..."
-        options={featureOptions}
-      />
-      {selectedFeatures.length > 0 && (
+  // const StepTwo = (
+  //   <div className={step === 2 ? "showstep" : "hidestep"}>
+  //     <MultiSelectDropdown
+  //       name="features"
+  //       label="Features"
+  //       selectedValues={selectedFeatures}
+  //       changeSelectedValues={selectFeature}
+  //       placeholder="Select Features..."
+  //       options={featureOptions}
+  //     />
+  //     {selectedFeatures.length > 0 && (
 
-<SelectedList
-getname={getFeatureName}
-label="Feature List"
-selectedValues={selectedFeatures}
-unselect={unselectFeature}
-select={assignFeatureRight}
-options={featureRightOptions}
-defaultOptions={SetDefaultOptions}
-/>
-        // <div style={{ display: "flex", flexDirection: "column" }}>
-        //   <p className="formlabels" style={{ marginTop: 20 }}>
-        //     Feature List
-        //   </p>
-        //   <div style={{ alignSelf: "center", width: "85%" }}>
-        //     {selectedFeatures.map((feature) => {
-        //       return (
-        //         <div className="selectlist">
-        //           <div
-        //             style={{
-        //               flex: 14,
-        //               fontWeight: 500,
-        //               overflow: "hidden",
-        //               textOverflow: "ellipsis",
-        //             }}
-        //           >
-        //             {
-        //               featuresQuery.data.data.find(
-        //                 (data) => data.FeatureID === feature
-        //               ).FeatureName
-        //             }
-        //           </div>
-        //           <div style={{ flex: 3, fontWeight: 500 }}>
-        //             <Select
-        //               defaultValue={
-        //                 SetDefaultOptions(feature)
-                      
-        //               }
-        //               autoWidth
-        //               label="Age"
-        //               size="small"
-        //               className="smallselectfield"
-        //               onChange={(e) => assignFeatureRight(e, feature)}
-        //             >
-        //               {featureRightOptions.map((option) => {
-        //                 return (
-        //                   <MenuItem key={option.id} value={option.value}>
-        //                     {option.text}
-        //                   </MenuItem>
-        //                 );
-        //               })}
-        //             </Select>
-        //           </div>
-        //           <div style={{ flex: 1, fontWeight: 500 }}>
-        //             <button
-        //               onClick={() => unselectFeature(feature)}
-        //               style={{ marginLeft: 5, marginRight: "-5%" }}
-        //               type="button"
-        //               className="buttonremovestyling"
-        //             >
-        //               <CloseIcon fontSize="small" />
-        //             </button>
-        //           </div>
-        //         </div>
-        //       );
-        //     })}
-        //   </div>
-        // </div>
-      )}
+  //       <SelectedList
+  //         getname={getFeatureName}
+  //         label="Feature List"
+  //         selectedValues={selectedFeatures}
+  //         unselect={unselectFeature}
+  //         select={assignFeatureRight}
+  //         options={featureRightOptions}
+  //         defaultOptions={SetDefaultOptions}
+  //       />
+  //     )}
 
-      {mutation.isError && axios.isAxiosError(mutation.error) ? (
-        <ErrorAlert error={mutation.error} />
-      ) : null}
-      <div className="formnavigationcontainer">
-        <button className="formnavigation" onClick={prevStep} type="button">
-          <NavigateBeforeIcon style={{ marginRight: -7, marginLeft: -10 }} />{" "}
-          Back
-        </button>
-        <SubmitButton text="Submit" loading={mutation.isLoading} multipart />
-      </div>
-    </div>
-  );
+  //     {mutation.isError && axios.isAxiosError(mutation.error) ? (
+  //       <ErrorAlert error={mutation.error} />
+  //     ) : null}
+  //     <div className="formnavigationcontainer">
+  //       <button className="formnavigation" onClick={prevStep} type="button">
+  //         <NavigateBeforeIcon style={{ marginRight: -7, marginLeft: -10 }} />{" "}
+  //         Back
+  //       </button>
+  //       <SubmitButton text="Submit" loading={mutation.isLoading} multipart />
+  //     </div>
+  //   </div>
+  // );
 
   return (
     <FormContainer
@@ -328,8 +270,72 @@ defaultOptions={SetDefaultOptions}
     >
       {(UserGroupQuery.isSuccess) &&
         <>
-          {StepOne}
-          {StepTwo}
+          {/* Step One */}
+          <div className={step === 1 ? "showstep" : "hidestep"}>
+            <FormField
+              label="Name"
+              name="name"
+              type="text"
+              register={register}
+              defaultvalue={UserGroupQuery.data.data[0].UserGroupName}
+              errormsg={errors.name?.message}
+              rules={NameValidation}
+            />
+            <FormTextArea
+              label="Description"
+              name="description"
+              register={register}
+              errormsg={errors.description?.message}
+              defaultvalue={UserGroupQuery.data.data[0].UserGroupDesc}
+              rules={NameValidation}
+            />
+            <div className="formnavigationcontainer">
+              <button
+                className="formnavigation"
+                onClick={() => navigate(-1)}
+                type="button"
+              >
+                Cancel
+              </button>
+              <button className="nextbutton" onClick={nextStep} type="button">
+                Next <NavigateNextIcon style={{ marginRight: -10, marginLeft: -7 }} />
+              </button>
+            </div>
+          </div>
+          {/* Step Two */}
+          <div className={step === 2 ? "showstep" : "hidestep"}>
+            <MultiSelectDropdown
+              name="features"
+              label="Features"
+              selectedValues={selectedFeatures}
+              changeSelectedValues={selectFeature}
+              placeholder="Select Features..."
+              options={featureOptions}
+            />
+            {selectedFeatures.length > 0 && (
+
+              <SelectedList
+                getname={getFeatureName}
+                label="Feature List"
+                selectedValues={selectedFeatures}
+                unselect={unselectFeature}
+                select={assignFeatureRight}
+                options={featureRightOptions}
+                defaultOptions={SetDefaultOptions}
+              />
+            )}
+
+            {mutation.isError && axios.isAxiosError(mutation.error) ? (
+              <ErrorAlert error={mutation.error} />
+            ) : null}
+            <div className="formnavigationcontainer">
+              <button className="formnavigation" onClick={prevStep} type="button">
+                <NavigateBeforeIcon style={{ marginRight: -7, marginLeft: -10 }} />{" "}
+                Back
+              </button>
+              <SubmitButton text="Submit" loading={mutation.isLoading} multipart />
+            </div>
+          </div>
         </>
       }
     </FormContainer>

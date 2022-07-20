@@ -170,8 +170,107 @@ const AddUser: React.FC = () => {
     setReturnNotiGroups(notigroupstoset);
   };
 
-  const StepOne = (
-    <div className={step === 1 ? "showstep" : "hidestep"}>
+  // const StepOne = (
+  //   <div className={step === 1 ? "showstep" : "hidestep"}>
+  //     <FormField
+  //       label="Username"
+  //       name="name"
+  //       type="text"
+  //       register={register}
+  //       errormsg={errors.name?.message}
+  //       rules={UsernameValidation}
+  //     />
+  //     <FormField
+  //       label="Email Address"
+  //       name="email"
+  //       type="email"
+  //       register={register}
+  //       errormsg={errors.email?.message}
+  //       rules={EmailValidation}
+  //     />
+  //     <FormField
+  //       label="Phone No"
+  //       name="mobileno"
+  //       type="text"
+  //       register={register}
+  //       errormsg={errors.mobileno?.message}
+  //       rules={PhoneNoValidation}
+  //     />
+  //     <FormField
+  //       label="Password"
+  //       name="password"
+  //       type="password"
+  //       register={register}
+  //       errormsg={errors.password?.message}
+  //       rules={PasswordValidation}
+  //     />
+  //     <SelectDropdown
+  //       label="Company"
+  //       name="company"
+  //       options={companyOptions}
+  //       register={register}
+  //       errormsg={errors.company?.message}
+  //       rules={SelectValidation}
+  //       placeholder="Choose a company"
+  //     />
+  //     <div className="formnavigationcontainer">
+  //       <button
+  //         className="formnavigation"
+  //         onClick={() => navigate(-1)}
+  //         type="button"
+  //       >
+  //         Cancel
+  //       </button>
+  //       <button className="nextbutton" onClick={nextStep} type="button">
+  //         Next <NavigateNextIcon style={{ marginRight: -10, marginLeft: -7 }} />
+  //       </button>
+  //     </div>
+  //   </div>
+  // );
+
+  // const StepTwo = (
+  //   <div className={step === 2 ? "showstep" : "hidestep"}>
+  //     <SelectDropdown
+  //       label="User Group"
+  //       name="usergroup"
+  //       options={userGroupOptions}
+  //       register={register}
+  //       errormsg={errors.usergroup?.message}
+  //       rules={SelectValidation}
+  //       placeholder="Choose a User Group"
+  //     />
+
+  //     <MultiSelectDropdown
+  //       name="notificationgroups"
+  //       label="Notification Groups"
+  //       selectedValues={selectedNotiGroups}
+  //       changeSelectedValues={selectNotiGroup}
+  //       placeholder="Select Notification Groups..."
+  //       options={notiGroupOptions}
+  //     />
+  //     {mutation.isError && axios.isAxiosError(mutation.error) ? (
+  //       <div style={{ marginTop: 25, marginBottom: -15 }}>
+  //         <ErrorAlert error={mutation.error} />
+  //       </div>
+  //     ) : null}
+  //     <div className="formnavigationcontainer">
+  //       <button className="formnavigation" onClick={prevStep} type="button">
+  //         Back
+  //       </button>
+  //       <SubmitButton text="Submit" loading={mutation.isLoading} multipart />
+  //     </div>
+  //   </div>
+  // );
+
+  return (
+    <FormContainer
+      header="Create User"
+      multistep
+      handleSubmit={handleSubmit}
+      onSubmit={onSubmit}
+    >
+      {/* Step One */}
+          <div className={step === 1 ? "showstep" : "hidestep"}>
       <FormField
         label="Username"
         name="name"
@@ -226,9 +325,7 @@ const AddUser: React.FC = () => {
         </button>
       </div>
     </div>
-  );
-
-  const StepTwo = (
+    {/* Step Two */}
     <div className={step === 2 ? "showstep" : "hidestep"}>
       <SelectDropdown
         label="User Group"
@@ -248,16 +345,6 @@ const AddUser: React.FC = () => {
         placeholder="Select Notification Groups..."
         options={notiGroupOptions}
       />
-
-      {/* <SelectDropdown
-        label="Notification Groups"
-        name="notificationgroups"
-        options={notiGroupOptions}
-        register={register}
-        errormsg={errors.notificationgroups?.message}
-        multiselect
-        defaultoption="Choose a Notification Group"
-      /> */}
       {mutation.isError && axios.isAxiosError(mutation.error) ? (
         <div style={{ marginTop: 25, marginBottom: -15 }}>
           <ErrorAlert error={mutation.error} />
@@ -270,17 +357,6 @@ const AddUser: React.FC = () => {
         <SubmitButton text="Submit" loading={mutation.isLoading} multipart />
       </div>
     </div>
-  );
-
-  return (
-    <FormContainer
-      header="Create User"
-      multistep
-      handleSubmit={handleSubmit}
-      onSubmit={onSubmit}
-    >
-      {StepOne}
-      {StepTwo}
     </FormContainer>
   );
 };

@@ -64,7 +64,7 @@ const ViewNotificationGroup: React.FC = () => {
             <motion.button
               style={{ alignSelf: "flex-end" }}
               className="mainbutton"
-              onClick={() => navigate(`/editusergroup/${params.id}`)}
+              onClick={() => navigate(`/editnotificationgroup/${params.id}`)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >

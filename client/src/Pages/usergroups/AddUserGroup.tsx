@@ -155,8 +155,83 @@ const AddUserGroup: React.FC = () => {
     ).FeatureName
   } 
 
-  const StepOne = (
-    <div className={step === 1 ? "showstep" : "hidestep"}>
+  // const StepOne = (
+  //   <div className={step === 1 ? "showstep" : "hidestep"}>
+  //     <FormField
+  //       label="Name"
+  //       name="name"
+  //       type="text"
+  //       register={register}
+  //       errormsg={errors.name?.message}
+  //       rules={NameValidation}
+  //     />
+  //     <FormTextArea
+  //       label="Description"
+  //       name="description"
+  //       register={register}
+  //       errormsg={errors.description?.message}
+  //       rules={NameValidation}
+  //     />
+  //     <div className="formnavigationcontainer">
+  //       <button
+  //         className="formnavigation"
+  //         onClick={() => navigate(-1)}
+  //         type="button"
+  //       >
+  //         Cancel
+  //       </button>
+  //       <button className="nextbutton" onClick={nextStep} type="button">
+  //         Next <NavigateNextIcon style={{ marginRight: -10, marginLeft: -7 }} />
+  //       </button>
+  //     </div>
+  //   </div>
+  // );
+
+  // const StepTwo = (
+  //   <div className={step === 2 ? "showstep" : "hidestep"}>
+  //     <MultiSelectDropdown
+  //       name="features"
+  //       label="Features"
+  //       selectedValues={selectedFeatures}
+  //       changeSelectedValues={selectFeature}
+  //       placeholder="Select Features..."
+  //       options={featureOptions}
+  //     />
+
+  //     {selectedFeatures.length > 0 && (
+
+  //       <SelectedList
+  //         getname={getFeatureName}
+  //         label="Feature List"
+  //         selectedValues={selectedFeatures}
+  //         unselect={unselectFeature}
+  //         select={assignFeatureRight}
+  //         options={featureRightOptions}
+  //       />
+  //     )}
+
+  //     {mutation.isError && axios.isAxiosError(mutation.error) ? (
+  //       <ErrorAlert error={mutation.error} />
+  //     ) : null}
+  //     <div className="formnavigationcontainer">
+  //       <button className="formnavigation" onClick={prevStep} type="button">
+  //         <NavigateBeforeIcon style={{ marginRight: -7, marginLeft: -10 }} />{" "}
+  //         Back
+  //       </button>
+  //       <SubmitButton text="Submit" loading={mutation.isLoading} multipart />
+  //     </div>
+  //   </div>
+  // );
+
+  return (
+    <FormContainer
+      header="Create User Group"
+      multistep
+      handleSubmit={handleSubmit}
+      onSubmit={onSubmit}
+    >
+      {/* Step One */}
+      <div className={step === 1 ? "showstep" : "hidestep"}>
       <FormField
         label="Name"
         name="name"
@@ -185,10 +260,8 @@ const AddUserGroup: React.FC = () => {
         </button>
       </div>
     </div>
-  );
-
-  const StepTwo = (
-    <div className={step === 2 ? "showstep" : "hidestep"}>
+      {/* Step Two */}
+      <div className={step === 2 ? "showstep" : "hidestep"}>
       <MultiSelectDropdown
         name="features"
         label="Features"
@@ -208,62 +281,6 @@ const AddUserGroup: React.FC = () => {
           select={assignFeatureRight}
           options={featureRightOptions}
         />
-
-        // <div style={{ display: "flex", flexDirection: "column" }}>
-        //   <p className="formlabels" style={{ marginTop: 20 }}>
-        //     Feature List
-        //   </p>
-        //   <div style={{ alignSelf: "center", width: "85%" }}>
-        //     {selectedFeatures.map((feature) => {
-        //       return (
-        //         <div className="selectlist">
-        //           <div
-        //             style={{
-        //               flex: 14,
-        //               fontWeight: 500,
-        //               overflow: "hidden",
-        //               textOverflow: "ellipsis",
-        //             }}
-        //           >
-        //             {
-        //               featuresQuery.data.data.find(
-        //                 (data) => data.FeatureID === feature
-        //               ).FeatureName
-        //             }
-        //           </div>
-        //           <div style={{ flex: 3, fontWeight: 500 }}>
-        //             <Select
-        //               defaultValue={Number(featureRightOptions[0]?.value)}
-        //               autoWidth
-        //               label="Age"
-        //               size="small"
-        //               className="smallselectfield"
-        //               onChange={(e) => assignFeatureRight(e, feature)}
-        //             >
-        //               {featureRightOptions.map((option) => {
-        //                 return (
-        //                   <MenuItem key={option.id} value={option.value}>
-        //                     {option.text}
-        //                   </MenuItem>
-        //                 );
-        //               })}
-        //             </Select>
-        //           </div>
-        //           <div style={{ flex: 1, fontWeight: 500 }}>
-        //             <button
-        //               onClick={() => unselectFeature(feature)}
-        //               style={{ marginLeft: 5, marginRight: "-5%" }}
-        //               type="button"
-        //               className="buttonremovestyling"
-        //             >
-        //               <CloseIcon fontSize="small" />
-        //             </button>
-        //           </div>
-        //         </div>
-        //       );
-        //     })}
-        //   </div>
-        // </div>
       )}
 
       {mutation.isError && axios.isAxiosError(mutation.error) ? (
@@ -277,17 +294,6 @@ const AddUserGroup: React.FC = () => {
         <SubmitButton text="Submit" loading={mutation.isLoading} multipart />
       </div>
     </div>
-  );
-
-  return (
-    <FormContainer
-      header="Create User Group"
-      multistep
-      handleSubmit={handleSubmit}
-      onSubmit={onSubmit}
-    >
-      {StepOne}
-      {StepTwo}
     </FormContainer>
   );
 };
