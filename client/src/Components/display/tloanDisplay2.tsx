@@ -94,7 +94,7 @@ export default function TLoanDisplay2() {
         <Card
           sx={{
             width: 800,
-            height: 580,
+            height: 800,
             marginLeft: "auto",
             marginRight: "auto",
           }}

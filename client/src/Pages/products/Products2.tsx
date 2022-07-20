@@ -76,7 +76,7 @@ const Products2: React.FC = () => {
 
   function CustomToolbar() {
     return (
-      <GridToolbarContainer sx={{display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1}}>
+      <GridToolbarContainer sx={{display: "flex", flexWrap: "wrap", maxWidth: 613, p: 1}}>
         <Box>
         <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
         </Box>
