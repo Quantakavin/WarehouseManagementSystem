@@ -105,7 +105,6 @@ const TLoanTabs: React.FC = () => {
   
   const navigate = useNavigate();
 
-
   switch(userRole) {
     case "Admin": {
       return (

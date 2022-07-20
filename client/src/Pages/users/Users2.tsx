@@ -12,6 +12,7 @@ import {
 } from "@mui/x-data-grid";
 import {
   Box,
+  Button,
   Card,
   CardContent,
   Stack,
@@ -19,11 +20,30 @@ import {
   Typography,
   unstable_createMuiStrictModeTheme,
   withStyles,
+  IconButton
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useNavigate } from "react-router";
 
 const Users2: React.FC = () => {
+  const navigate = useNavigate();
   const [row, setRow] = useState([]);
+  const theme = unstable_createMuiStrictModeTheme();
+  const [pageSize, setPageSize] = React.useState(25);
+  const [inputName, setInputName] = useState<string>(null);
+  const [value, setValue] = useState(0); // first tab
+  const [hoveredRow, setHoveredRow] = React.useState(null);
+
+  const onMouseEnterRow = (event) => {
+    const id = Number(event.currentTarget.getAttribute("data-id"));
+    setHoveredRow(id);
+  };
+
+  const onMouseLeaveRow = (event) => {
+    setHoveredRow(null);
+  };
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/users?limit=100000&page=0`)
@@ -51,24 +71,46 @@ const Users2: React.FC = () => {
   });
 
   const columns = [
-    { field: "UserID", headerName: "ID", flex: 1 },
-    { field: "Username", headerName: "Username", flex: 3 },
-    { field: "Email", headerName: "Email Address", flex: 5 },
-    { field: "CompanyName", headerName: "Company", flex: 5 },
-    { field: "UserGroupName", headerName: "User Group", flex: 3 },
-    { field: "MobileNo", headerName: "Phone Number", flex: 3 },
+    { field: "UserID", headerName: "ID", flex: 2 },
+    { field: "Username", headerName: "Username", flex: 5 },
+    { field: "Email", headerName: "Email Address", flex: 7 },
+    { field: "CompanyName", headerName: "Company", flex: 7 },
+    { field: "UserGroupName", headerName: "User Group", flex: 5 },
+    { field: "MobileNo", headerName: "Phone Number", flex: 5 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 3,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => {
+        if (hoveredRow === params.id) {
+          return (
+            <Box
+              sx={{
+                backgroundColor: "whitesmoke",
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <IconButton onClick={() => navigate(`/user/${params.id}`)}>
+                <VisibilityIcon />
+              </IconButton>
+              <IconButton onClick={() => navigate(`/edituser/${params.id}`)}>
+                <EditIcon />
+              </IconButton>
+              <IconButton onClick={() => navigate(`/dashboard`)}>
+                <DeleteIcon />
+              </IconButton>
+            </Box>
+          );
+        } else return null;
+      },
+    },
   ];
-
-  const navigate = useNavigate();
-  const theme = unstable_createMuiStrictModeTheme();
-  const [pageSize, setPageSize] = React.useState(25);
-  const [inputName, setInputName] = useState<string>(null);
-
-  const [value, setValue] = useState(0); // first tab
-
-  const handleChange = (_event, newValue) => {
-    setValue(newValue);
-  };
 
   function CustomToolbar() {
     return (
@@ -119,13 +161,19 @@ const Users2: React.FC = () => {
                   </Stack>
                 ),
               }}
+              componentsProps={{
+                row: {
+                  onMouseEnter: onMouseEnterRow,
+                  onMouseLeave: onMouseLeaveRow,
+                },
+              }}
               filterModel={filterModel}
               onFilterModelChange={(newFilterModel) =>
                 setFilterModel(newFilterModel)
               }
-              onRowClick={(params: GridRowParams) => {
-                navigate(`/user/${params.id}`);
-              }}
+              // onRowClick={(params: GridRowParams) => {
+              //   navigate(`/user/${params.id}`);
+              // }}
             />
           </Box>
         </Box>

@@ -164,7 +164,7 @@ export default function ViewUser2() {
                     height: 40,
                     marginLeft: 3,
                   }}
-                  onClick={() => navigate("/usergroups")}
+                  onClick={() => navigate("/users")}
                 >
                   Back
                 </Button>
