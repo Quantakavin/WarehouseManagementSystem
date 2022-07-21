@@ -34,7 +34,12 @@ import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 import Swal from "sweetalert2"
 import {Toast} from "../../components/alerts/SweetAlert"
-
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import Stack from '@mui/material/Stack';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { useAppSelector } from "../../app/hooks";
 import {
   GridRowsProp,
   GridRowModesModel,
@@ -57,10 +62,6 @@ import {
 } from '@mui/x-data-grid-generator';
 
 function newtloan() {
-
-
-
-    
 
 
   interface EditToolbarProps {
@@ -230,7 +231,7 @@ function newtloan() {
     );
   }
 
- 
+  
   const [type, setType] = useState('')
   const [company,setCompany] = useState('')
   const [number,setNumber] = useState('')
@@ -238,14 +239,13 @@ function newtloan() {
   const [purpose,setPurpose] = useState('')
   const [applicationdate,setADate] = useState('')
   const [duration,setDuration] = useState('')
-  const [requireddate,setRdate] = useState('')
-  // const [pick,setPick] = useState('')
-  // const [remarks,setRemarks] = useState('')
   const [user,setUser] = useState('')
   const [email,setEmail] = useState('')
   const [collection,setCollection] = useState('')
-  //const [items,setItems] = useState([])
-  
+  const [requireddate,setRdate] =  useState('')
+  const [localDate,setLocalDate] = useState('')
+  const userRole = useAppSelector(selectRole);
+  console.log(userRole)
    
       const items = rows.map(({id, isNew, ...rows}) => rows)
       console.log(items)
@@ -269,18 +269,12 @@ function newtloan() {
     setCollection(event.target.value);
   };
 
+
+  const handleChangeRequiredDate = (newValue: Date | null) => {
+    setRdate(newValue);
+  };
+
   const navigate = useNavigate()
-  useEffect(()=>{
-    const user4="1"
-
-    setUser(user4)
-  })
-
-  useEffect(()=>{
-    const req="2022-03-06"
-
-    setRdate(req)
-  })
 
   const submitLoan =(e) => {
     e.preventDefault()
@@ -324,17 +318,25 @@ function newtloan() {
     setADate(date)
     
   })
-  console.log(applicationdate)
+
+ 
   useEffect(()=>{
     const loanNumber = "1ccccdewewcwe"
     setNumber(loanNumber)
   })
 
   useEffect(()=>{
-    const id = "1"
-    setUser(id)
+    const uid = localStorage.getItem("user_id")
+    setUser(uid)
   })
-   
+
+  useEffect(()=>{
+    const Employee = localStorage.getItem("username")
+    setName(Employee)
+  })
+
+   console.log(user)
+  console.log(localStorage)
   const getCard = () => {
 
     const loanDuration = [
@@ -360,7 +362,7 @@ function newtloan() {
           
           <h2 className="pagetitle">Apply TLoan</h2>
     <form onSubmit={submitLoan}>
-      <Card sx={{ width: 800, height: 650, marginLeft: 'auto', marginRight: 'auto'}}>
+      <Card sx={{ width: 800, height: 700, marginLeft: 'auto', marginRight: 'auto'}}>
       <CardMedia
       
       />
@@ -372,8 +374,7 @@ function newtloan() {
         
         <Box sx={{marginLeft: 2, marginTop: 1, display: 'flex'}}>
           <>
-        <TextField id="outlined-basic" label="Employee Name" variant="outlined" size='small' 
-        onChange={(e)=>setName(e.target.value)}  />
+        <TextField id="outlined-basic" label="Employee Name" variant="outlined" size='small' value={name} disabled/>
        
         <TextField id="outlined-basic" label="Customer Email" variant="outlined" size='small' sx={{marginLeft: 3}}
          onChange={(e)=>setEmail(e.target.value)}  />
@@ -403,7 +404,7 @@ function newtloan() {
 
         <TextField sx={{width: 970, marginLeft:2, marginTop:2}}
           multiline
-          rows={5.2}
+          rows={7.65}
           label="Purpose"
           onChange={(e)=>setPurpose(e.target.value)} 
         ></TextField>
@@ -470,6 +471,22 @@ function newtloan() {
          
         </Select>
       </FormControl>
+
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <Stack >
+        <DesktopDatePicker
+          label="Required Date"
+          inputFormat="yyyy-MM-dd"
+          value={requireddate}
+          onChange={handleChangeRequiredDate}
+          renderInput={(params) => <TextField size="small" {...params} sx={{width: 200, marginLeft:3, marginTop: 2}} />}
+        
+        />
+        </Stack>
+        </LocalizationProvider>
+
+
+       
       </>
         </Box>
 
