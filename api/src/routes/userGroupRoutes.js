@@ -4,7 +4,9 @@ const validation = require('../middlewares/validation');
 const userGroupController = require('../controllers/userGroupController');
 
 router.get('/usergroup/:id', authorization.verifyAdmin, userGroupController.getUserGroupById);
+router.get('/usergroup2/:id', authorization.verifyAdmin, userGroupController.getUserGroupById2);
 router.get('/usergroup', authorization.verifyAdmin, userGroupController.getUserGroupByName);
+router.get('/usergroup2', authorization.verifyAdmin, userGroupController.getUserGroupByName);
 router.get('/usergroupnames', authorization.verifyAdmin, userGroupController.getAllNames);
 router.get('/filterusergroups', authorization.verifyAdmin, userGroupController.filterUserGroups);
 router.get('/usergroups', authorization.verifyAdmin, userGroupController.getAllUserGroups);

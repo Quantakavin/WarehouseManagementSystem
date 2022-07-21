@@ -8,7 +8,9 @@ module.exports.getByRmaID = async (RmaID) => {
                     r.ContactPerson,
                     r.CustomerEmail,
                     c.CompanyName,
-                    r.ContactNo
+                    r.ContactNo,
+                    r.RmaStatusID,
+                    r.RejectReason
                     FROM Rma r, Company c, User u 
                     WHERE RmaID = ? AND 
                     r.CompanyID = c.CompanyID
@@ -81,6 +83,20 @@ module.exports.getSalesmanRejectedRMA = async (SalesmanID) => {
                     FROM Rma r, Company c, User u 
                     WHERE SalesmanID = ? 
                     AND RmaStatusID = 3
+                    AND r.CompanyID = c.CompanyID
+                    AND r.SalesmanID = u.UserID;`;
+    return knex.raw(query, [SalesmanID]);
+};
+
+module.exports.getSalesmanIPRMA = async (SalesmanID) => {
+    const query = ` SELECT r.RmaID, 
+                    u.Username,
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
+                    c.CompanyName,
+                    r.CustomerEmail
+                    FROM Rma r, Company c, User u 
+                    WHERE SalesmanID = ? 
+                    AND RmaStatusID = 6
                     AND r.CompanyID = c.CompanyID
                     AND r.SalesmanID = u.UserID;`;
     return knex.raw(query, [SalesmanID]);
@@ -303,10 +319,10 @@ module.exports.updateRmaInstructions = async (RmaID, products) => {
             .transacting(trx)
             .then(async () => {
                 let rmaproducts = await products.map(async (product) => {
-                    console.log(`${product.RmaProductPK} ${product.instructions}`);
+                    console.log(`${product.id} ${product.Instructions}`);
                         return await knex('RmaProduct')
-                        .where('RmaProductPK', product.RmaProductPK)
-                        .update({Instructions: product.instructions})
+                        .where('RmaProductPK', product.id)
+                        .update({Instructions: product.Instructions})
                         .transacting(trx)
                 })
                 return rmaproducts;
@@ -326,10 +342,10 @@ module.exports.updateRmaCOA = async (RmaID, products) => {
             .transacting(trx)
             .then(async () => {
                 let rmaproducts = await products.map(async (product) => {
-                    console.log(`${product.RmaProductPK} ${product.courseofaction}`);
+                    console.log(`${product.id} ${product.CourseOfAction}`);
                         return await knex('RmaProduct')
-                        .where('RmaProductPK', product.RmaProductPK)
-                        .update({CourseOfAction: product.courseofaction})
+                        .where('RmaProductPK', product.id)
+                        .update({CourseOfAction: product.CourseOfAction})
                         .transacting(trx)
                 })
                 return rmaproducts;

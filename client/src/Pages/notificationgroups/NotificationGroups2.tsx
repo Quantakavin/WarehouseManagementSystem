@@ -19,18 +19,24 @@ import {
   Typography,
   unstable_createMuiStrictModeTheme,
   withStyles,
-  IconButton
+  IconButton,
+  Fab
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
 import { useNavigate } from "react-router";
 
 const NotificationGroups2: React.FC = () => {
   const [row, setRow] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/notificationgroups`)
+    fetch(`http://localhost:5000/api/notificationgroups`, { 
+      headers: new Headers({
+          'Authorization': `Bearer ${localStorage.getItem("token")}`
+      }), 
+  })
       .then((data) => data.json())
       .then((data) => setRow(data));
   }, []);
@@ -123,9 +129,34 @@ const NotificationGroups2: React.FC = () => {
     <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
     <Box sx={{ display: "flex", height: "100%" }}>
       <Box sx={{ flexGrow: 1 }}>
-        <Typography sx={{ color: "#063970", fontWeight: "bold" }}>
-          <h2>Notification Groups</h2>
-        </Typography>
+      <Box
+            component="span"
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography sx={{ color: "#063970", fontWeight: "bold" }}>
+              <Box>
+                <h1>Notification Groups</h1>
+              </Box>
+            </Typography>
+            <Box>
+              <Fab
+                variant="extended"
+                aria-label="add"
+                onClick={() => navigate("/addnotificationgroup")}
+                style={{ marginBottom: 10 }}
+                sx={{
+                  color: "white",
+                  backgroundColor: "#063970",
+                  ":hover": { backgroundColor: "#031c38" },
+                }}
+              >
+                Create
+                <NotificationAddIcon sx={{ ml: 2 }} />
+              </Fab>
+            </Box>
+          </Box>
         <DataGrid
           sx={{ background: "white", fontSize: 18 }}
           rows={row}

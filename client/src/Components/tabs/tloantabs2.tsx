@@ -7,6 +7,7 @@ import {
   MenuItem,
   Stack,
   Grid,
+  Typography,
 } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import "react-tabs/style/react-tabs.css";
@@ -22,7 +23,7 @@ import { motion } from "framer-motion";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import SearchBarUpdated from "../../components/search/SearchBarUpdated";
 import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
+import PostAddIcon from "@mui/icons-material/PostAdd";
 import theme from "../../styles/muistyle";
 import {
   DataGrid,
@@ -48,6 +49,12 @@ const columns = [
   { field: "CustomerEmail", headerName: "Customer Email", flex: 3 },
 ];
 
+const managerColumns = [
+  { field: "TLoanNumber", headerName: "Loan No.", flex: 2.5 },
+  { field: "StartDate", headerName: "Start Date", flex: 1 },
+  { field: "Requestor", headerName: "Employee Name", flex: 3 },
+  { field: "TLoanType", headerName: "Loan Type", flex: 3 },
+];
 const TLoanTabs2: React.FC = () => {
   const userid = useAppSelector(selectId);
   const userrole = useAppSelector(selectRole);
@@ -55,29 +62,37 @@ const TLoanTabs2: React.FC = () => {
   const [pendingTable, setPendingTable] = useState([]);
   const [draftTable, setDraftTable] = useState([]);
   const [historyTable, setHistoryTable] = useState([]);
+  const [managerLoan, setManagerLoan] = useState([]);
+  const [extensionsTable, setExtensionTable] = useState([]);
   //Get and set current tloans data
   useEffect(() => {
-    fetch("http://localhost:5000/api/tloan/current")
+    fetch(`http://localhost:5000/api/tloan/current/${userid}`)
       .then((data) => data.json())
       .then((data) => setCurrentTable(data));
   }, []);
   //Get and set pending tloans data
   useEffect(() => {
-    fetch("http://localhost:5000/api/tloan/pending")
+    fetch(`http://localhost:5000/api/tloan/pending/${userid}`)
       .then((data) => data.json())
       .then((data) => setPendingTable(data));
   }, []);
   //Get and set draft data
   useEffect(() => {
-    fetch("http://localhost:5000/api/tloan/drafts")
+    fetch(`http://localhost:5000/api/tloan/drafts/${userid}`)
       .then((data) => data.json())
       .then((data) => setDraftTable(data));
   }, []);
   //Get and set history data
   useEffect(() => {
-    fetch("http://localhost:5000/api/tloans/history")
+    fetch(`http://localhost:5000/api/tloan/history/${userid}`)
       .then((data) => data.json())
       .then((data) => setHistoryTable(data));
+  }, []);
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/tloan/ManagerLoan`)
+      .then((data) => data.json())
+      .then((data) => setManagerLoan(data));
   }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
@@ -92,15 +107,17 @@ const TLoanTabs2: React.FC = () => {
 
   function CustomToolbar() {
     return (
-      <GridToolbarContainer sx={{display: "flex", flexWrap: "wrap", maxWidth: 613, p: 1}}>
+      <GridToolbarContainer
+        sx={{ display: "flex", flexWrap: "wrap", maxWidth: 613, p: 1 }}
+      >
         <Box>
-        <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
+          <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
         </Box>
         <Box>
-        <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
-        <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
-        <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
-        <GridToolbarExport sx={{ color: "#0A2540" }} />
+          <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
+          <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
+          <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
+          <GridToolbarExport sx={{ color: "#0A2540" }} />
         </Box>
       </GridToolbarContainer>
     );
@@ -192,15 +209,22 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 10, marginTop: 8 }}>
+                <Box sx={{ paddingLeft: 4, marginTop: 8 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
-                      <Fab
+                    <Fab
+                        variant="extended"
                         aria-label="add"
                         onClick={() => navigate("/newtloan")}
                         style={{ marginTop: 0 }}
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          ":hover": { backgroundColor: "#031c38" },
+                        }}
                       >
-                        <AddIcon />
+                          Create
+                        <PostAddIcon sx={{ ml: 2 }} />
                       </Fab>
                     </ThemeProvider>
                   </React.StrictMode>
@@ -412,15 +436,22 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 10, marginTop: 8 }}>
+                <Box sx={{ paddingLeft: 4, marginTop: 8 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
-                      <Fab
+                    <Fab
+                        variant="extended"
                         aria-label="add"
                         onClick={() => navigate("/newtloan")}
                         style={{ marginTop: 0 }}
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          ":hover": { backgroundColor: "#031c38" },
+                        }}
                       >
-                        <AddIcon />
+                          Create
+                        <PostAddIcon sx={{ ml: 2 }} />
                       </Fab>
                     </ThemeProvider>
                   </React.StrictMode>
@@ -613,8 +644,8 @@ const TLoanTabs2: React.FC = () => {
                   <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
-                      rows={loansTable}
-                      columns={columns}
+                      rows={managerLoan}
+                      columns={managerColumns}
                       getRowId={(row) => row.TLoanNumber}
                       pageSize={pageSize}
                       onPageSizeChange={(newPage) => setPageSize(newPage)}
@@ -636,7 +667,7 @@ const TLoanTabs2: React.FC = () => {
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/tloandetails/${params.id}`);
+                        navigate(`/tloanManagerDisplay/${params.id}`);
                       }}
                     />
                   </div>
@@ -753,15 +784,22 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 10, marginTop: 8 }}>
+                <Box sx={{ paddingLeft: 4, marginTop: 8 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
-                      <Fab
+                    <Fab
+                        variant="extended"
                         aria-label="add"
                         onClick={() => navigate("/newtloan")}
                         style={{ marginTop: 0 }}
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          ":hover": { backgroundColor: "#031c38" },
+                        }}
                       >
-                        <AddIcon />
+                          Create
+                        <PostAddIcon sx={{ ml: 2 }} />
                       </Fab>
                     </ThemeProvider>
                   </React.StrictMode>
@@ -1049,15 +1087,22 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 10, marginTop: 7.8 }}>
+                <Box sx={{ marginLeft: 4, marginTop: 8 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
                       <Fab
+                        variant="extended"
                         aria-label="add"
                         onClick={() => navigate("/newtloan")}
                         style={{ marginTop: 0 }}
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          ":hover": { backgroundColor: "#031c38" },
+                        }}
                       >
-                        <AddIcon />
+                          Create
+                        <PostAddIcon sx={{ ml: 2 }} />
                       </Fab>
                     </ThemeProvider>
                   </React.StrictMode>
@@ -1269,15 +1314,22 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 10, marginTop: 8 }}>
+                <Box sx={{ paddingLeft: 4, marginTop: 8 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
-                      <Fab
+                    <Fab
+                        variant="extended"
                         aria-label="add"
                         onClick={() => navigate("/newtloan")}
                         style={{ marginTop: 0 }}
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          ":hover": { backgroundColor: "#031c38" },
+                        }}
                       >
-                        <AddIcon />
+                          Create
+                        <PostAddIcon sx={{ ml: 2 }} />
                       </Fab>
                     </ThemeProvider>
                   </React.StrictMode>

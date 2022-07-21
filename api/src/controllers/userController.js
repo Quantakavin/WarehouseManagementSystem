@@ -100,45 +100,6 @@ module.exports.getUserById = async (req, res) => {
     }
 };
 
-module.exports.getUserById2 = async (req, res) => {
-    const userID = req.params.id;
-    try {
-        const reqUser = await redisClient.get(`user2#${userID}`);
-        if (reqUser !== null) {
-            const redisresults = JSON.parse(reqUser);
-            return res.status(200).json(redisresults);
-        }
-        let output = [];
-        const results = await user.getByID(userID);
-        if (results[0].length > 0) {
-            [output] = results;
-            const results2 = await notificationGroup.getByUser(userID);
-            if (results2.length > 0) {
-                [output[0].NotificationGroups] = results2;
-            }
-            redisClient.set(`user#${userID}`, JSON.stringify(output[0]));
-            return res.status(200).send(output[0]);
-        }
-        return res.status(404).json({ message: 'Cannot find user with that id' });
-    } catch (error) {
-        return res.status(500).json({ message: 'Internal Server Error!' });
-    }
-};
-
-
-module.exports.getUsersGroupsByID = async (req, res) => {
-    const userID = req.params.id;
-    try {
-        const results = await notificationGroup.getByUser(userID);
-        if (results[0].length > 0) {
-            return res.status(200).send(results[0]);
-        }
-        return res.status(404).json({ message: 'No more results' });
-    } catch (error) {
-        console.log(error)
-        return res.status(500).json({ message: 'Internal Server Error!' });
-    }
-};
 
 module.exports.getUserByName = async (req, res) => {
     const { name } = req.query;

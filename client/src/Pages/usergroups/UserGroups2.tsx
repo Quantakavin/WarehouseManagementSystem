@@ -14,6 +14,7 @@ import {
   Box,
   Card,
   CardContent,
+  Fab,
   IconButton,
   Stack,
   Theme,
@@ -24,6 +25,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { useNavigate } from "react-router";
 
 const UserGroups2: React.FC = () => {
@@ -40,7 +42,11 @@ const UserGroups2: React.FC = () => {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/userGroups`)
+    fetch(`http://localhost:5000/api/userGroups`, {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      }),
+    })
       .then((data) => data.json())
       .then((data) => setRow(data));
   }, []);
@@ -80,7 +86,9 @@ const UserGroups2: React.FC = () => {
               <IconButton onClick={() => navigate(`/usergroup/${params.id}`)}>
                 <VisibilityIcon />
               </IconButton>
-              <IconButton onClick={() => navigate(`/editusergroup/${params.id}`)}>
+              <IconButton
+                onClick={() => navigate(`/editusergroup/${params.id}`)}
+              >
                 <EditIcon />
               </IconButton>
               <IconButton onClick={() => navigate(`/dashboard`)}>
@@ -106,15 +114,17 @@ const UserGroups2: React.FC = () => {
 
   function CustomToolbar() {
     return (
-      <GridToolbarContainer sx={{display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1}}>
+      <GridToolbarContainer
+        sx={{ display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1 }}
+      >
         <Box>
-        <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
+          <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
         </Box>
         <Box>
-        <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
-        <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
-        <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
-        <GridToolbarExport sx={{ color: "#0A2540" }} />
+          <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
+          <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
+          <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
+          <GridToolbarExport sx={{ color: "#0A2540" }} />
         </Box>
       </GridToolbarContainer>
     );
@@ -122,12 +132,37 @@ const UserGroups2: React.FC = () => {
 
   return (
     <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
-    <Box sx={{ display: "flex", height: "100%" }}>
-      <Box sx={{ flexGrow: 1 }}>
-        <Typography sx={{ color: "#063970", fontWeight: "bold" }}>
-          <h2>User Groups</h2>
-        </Typography>
-        <DataGrid
+      <Box sx={{ display: "flex", height: "100%" }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Box
+            component="span"
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography sx={{ color: "#063970", fontWeight: "bold" }}>
+              <Box>
+                <h1>User Groups</h1>
+              </Box>
+            </Typography>
+            <Box>
+              <Fab
+                variant="extended"
+                aria-label="add"
+                onClick={() => navigate("/addusergroup")}
+                style={{ marginBottom: 10 }}
+                sx={{
+                  color: "white",
+                  backgroundColor: "#063970",
+                  ":hover": { backgroundColor: "#031c38" },
+                }}
+              >
+                Create
+                <GroupAddIcon sx={{ ml: 2 }} />
+              </Fab>
+            </Box>
+          </Box>
+          <DataGrid
             sx={{ background: "white", fontSize: 18 }}
             rows={row}
             columns={columns}
@@ -162,8 +197,8 @@ const UserGroups2: React.FC = () => {
             }
           />
         </Box>
-        </Box>
-        </Box>
+      </Box>
+    </Box>
   );
 };
 export default UserGroups2;
