@@ -53,6 +53,7 @@ const Rmatabs: React.FC = () => {
   const [myPendingTable, setMPTable] = useState([]);
   const [myAcceptedTable, setMATable] = useState([]);
   const [myRejectedTable, setMRTable] = useState([]);
+  const [myInProgressTable, setMIPTable] = useState([]);
   const [value, setValue] = useState(0); // first tab
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
@@ -155,10 +156,18 @@ const Rmatabs: React.FC = () => {
         .then((rejectedrma) => setMRTable(rejectedrma.data));
       // setRma(Object.e)
     };
+    const fetchInProgressData = async () => {
+      // get the data from the api
+      const inprogressrma = await axios
+        .get(`http://localhost:5000/api/myIPRMA/${userid}`)
+        .then((inprogressrma) => setMIPTable(inprogressrma.data));
+      // setRma(Object.e)
+    };
     // call the function
     fetchPendingData();
     fetchAcceptedData();
-    fetchRejectedData()
+    fetchRejectedData();
+    fetchInProgressData()
       // make sure to catch any error
       .catch(console.error);
   }, []);
@@ -210,6 +219,18 @@ const Rmatabs: React.FC = () => {
               <Tab
                 label="Rejected"
                 value="3"
+                sx={{
+                  color: "grey",
+                  backgroundColor: "White",
+                  borderRadius: 2,
+                  marginRight: 2,
+                  height: "100%",
+                  width: "15%",
+                }}
+              />
+              <Tab
+                label="In Progress"
+                value="4"
                 sx={{
                   color: "grey",
                   backgroundColor: "White",
@@ -331,6 +352,43 @@ const Rmatabs: React.FC = () => {
                 </Box>
               </Box>
             </TabPanel>
+            <TabPanel value="4">
+              <Box sx={{ display: "flex", height: 600, width: "100%" }}>
+                <Box sx={{ flexGrow: 1 }}>
+                  <DataGrid
+                    sx={{
+                      background: "white",
+                      fontSize: 18,
+                    }}
+                    rows={myInProgressTable}
+                    columns={columns}
+                    getRowId={(row) => row.RmaID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No RMA requests in progress
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/rmaDetails/${params.id}`);
+                    }}
+                  />
+                </Box>
+              </Box>
+            </TabPanel>
           </Box>
         </TabContext>
       );
@@ -344,7 +402,7 @@ const Rmatabs: React.FC = () => {
             width: "100%",
           }}
         >
-          <TabContext value={value || "1"}>
+          <TabContext value={value || "3"}>
             <Grid item xs={12}>
               <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
                 <h2> RMA Requests </h2>
@@ -768,7 +826,7 @@ const Rmatabs: React.FC = () => {
             width: "100%",
           }}
         >
-          <TabContext value={value || "1"}>
+          <TabContext value={value || "4"}>
             <Grid item xs={12}>
               <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
                 <h2> RMA Requests </h2>

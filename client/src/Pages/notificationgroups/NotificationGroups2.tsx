@@ -30,7 +30,11 @@ const NotificationGroups2: React.FC = () => {
   const [row, setRow] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/notificationgroups`)
+    fetch(`http://localhost:5000/api/notificationgroups`, { 
+      headers: new Headers({
+          'Authorization': `Bearer ${localStorage.getItem("token")}`
+      }), 
+  })
       .then((data) => data.json())
       .then((data) => setRow(data));
   }, []);

@@ -91,6 +91,33 @@ module.exports.getUserGroupById = async (req, res) => {
     }
 };
 
+module.exports.getUserGroupById2 = async (req, res) => {
+    const userGroupID = req.params.id;
+    try {
+        const results = await userGroup.getByID(userGroupID);
+        let output = [];
+        if (results[0].length > 0) {
+            [output] = results;
+            return res.status(200).json(output[0]);
+        }
+        return res.status(404).json({ message: 'Cannot find user group with that id' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
+module.exports.getGroupFeaturesByID = async (req, res) => {
+    const userGroupID = req.params.id;
+    try {
+        const results = await userGroup.getFeatures(userGroupID);
+
+            return res.status(200).send(results[0]);
+
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
 module.exports.getUserGroupByName = async (req, res) => {
     const { name } = req.query;
     try {
@@ -103,6 +130,7 @@ module.exports.getUserGroupByName = async (req, res) => {
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
+
 
 module.exports.createUserGroup = async (req, res) => {
     const { name, description, features } = req.body;
