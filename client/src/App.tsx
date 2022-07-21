@@ -33,16 +33,14 @@ import TLoanDisplay2 from "./components/display/tloanDisplay2";
 import Users2 from "./pages/users/Users2";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "./app/hooks";
-import {
-  selectIsAuthenticated,
-  selectName,
-} from "./app/reducers/CurrentUserSlice";
+import { selectIsAuthenticated, selectName } from "./app/reducers/CurrentUserSlice";
 import UserGroups2 from "./pages/usergroups/UserGroups2";
 import NotificationGroups2 from "./pages/notificationgroups/NotificationGroups2";
 import ViewUser2 from "./pages/users/ViewUser2";
 import ViewUserGroup2 from "./pages/usergroups/ViewUserGroup2";
 import { Box } from "@mui/material";
 import Modals12 from './components/display/TloanModal/modal'
+import Error404 from './pages/Error404'
 
 interface ProtectedRouteProps {
   loginpage: boolean;
@@ -96,30 +94,18 @@ const App: React.FC = () => {
               <Route path="/usergroup/:id" element={<ViewUserGroup2 />} />
               <Route path="/addusergroup" element={<AddUserGroup />} />
               <Route path="/editusergroup/:id" element={<EditUserGroup />} />
-              <Route
-                path="/notificationgroups"
-                element={<NotificationGroups2 />}
-              />
-              <Route
-                path="/notificationgroup/:id"
-                element={<ViewNotificationGroup />}
-              />
-              <Route
-                path="/addnotificationgroup"
-                element={<AddNotificationGroup />}
-              />
+              <Route path="/notificationgroups" element={<NotificationGroups2 />} />
+              <Route path="/notificationgroup/:id" element={<ViewNotificationGroup />} />
+              <Route path="/addnotificationgroup" element={<AddNotificationGroup />} />
               <Route path="/editnotificationgroup/:id" element={<EditNotificationGroup />} />
               <Route path="/tloan" element={<TLoan />} />
-
               <Route path="/rma" element={<RMA />} />
               <Route path="/createRma" element={<CreateRMA />} />
               <Route path="/rmaDetails/:RmaID" element={<RmaDisplay />} />
-              <Route
-                path="/tloandetails/:TLoanNumber"
-                element={<TLoanDisplay2 />}
-              />
+              <Route path="/tloandetails/:TLoanNumber" element={<TLoanDisplay2 />} />
               <Route path="/newtloan" element={<NewTLoan />} />
               <Route path="/modal" element={<Modals12 />} />
+              <Route path="/error404" element={<Error404 />} />
             </Route>
           </Routes>
         </Box>
