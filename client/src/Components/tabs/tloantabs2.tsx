@@ -209,7 +209,7 @@ const TLoanTabs2: React.FC = () => {
 
               <Grid item xs={12}>
                 <TabPanel value="1">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={currentTable}
@@ -241,7 +241,7 @@ const TLoanTabs2: React.FC = () => {
                   </div>
                 </TabPanel>
                 <TabPanel value="2">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={pendingTable}
@@ -267,13 +267,13 @@ const TLoanTabs2: React.FC = () => {
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/tloandetails2/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
                 </TabPanel>
                 <TabPanel value="3">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={draftTable}
@@ -303,7 +303,7 @@ const TLoanTabs2: React.FC = () => {
                   </div>
                 </TabPanel>
                 <TabPanel value="4">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={historyTable}
@@ -429,7 +429,7 @@ const TLoanTabs2: React.FC = () => {
 
               <Grid item xs={12}>
                 <TabPanel value="1">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={currentTable}
@@ -461,7 +461,7 @@ const TLoanTabs2: React.FC = () => {
                   </div>
                 </TabPanel>
                 <TabPanel value="2">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={pendingTable}
@@ -487,13 +487,13 @@ const TLoanTabs2: React.FC = () => {
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/tloandetails2/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
                 </TabPanel>
                 <TabPanel value="3">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={draftTable}
@@ -523,7 +523,7 @@ const TLoanTabs2: React.FC = () => {
                   </div>
                 </TabPanel>
                 <TabPanel value="4">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={historyTable}
@@ -610,7 +610,7 @@ const TLoanTabs2: React.FC = () => {
 
               <Grid item xs={12}>
                 <TabPanel value="1">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={loansTable}
@@ -642,7 +642,7 @@ const TLoanTabs2: React.FC = () => {
                   </div>
                 </TabPanel>
                 <TabPanel value="2">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={extensionsTable}
@@ -668,7 +668,7 @@ const TLoanTabs2: React.FC = () => {
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/tloandetails2/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
@@ -770,7 +770,7 @@ const TLoanTabs2: React.FC = () => {
 
               <Grid item xs={12}>
                 <TabPanel value="1">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={currentTable}
@@ -802,7 +802,7 @@ const TLoanTabs2: React.FC = () => {
                   </div>
                 </TabPanel>
                 <TabPanel value="2">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={pendingTable}
@@ -828,13 +828,13 @@ const TLoanTabs2: React.FC = () => {
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/tloandetails2/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
                 </TabPanel>
                 <TabPanel value="3">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={draftTable}
@@ -864,7 +864,7 @@ const TLoanTabs2: React.FC = () => {
                   </div>
                 </TabPanel>
                 <TabPanel value="4">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={historyTable}
@@ -938,7 +938,7 @@ const TLoanTabs2: React.FC = () => {
               </Grid>
               <Grid item xs={12}>
                 <TabPanel value="1">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={approvedTable}
@@ -1049,7 +1049,7 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 10, marginTop: 8 }}>
+                <Box sx={{ paddingLeft: 10, marginTop: 7.8 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
                       <Fab
@@ -1066,7 +1066,7 @@ const TLoanTabs2: React.FC = () => {
 
               <Grid item xs={12}>
                 <TabPanel value="1">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={currentTable}
@@ -1098,7 +1098,7 @@ const TLoanTabs2: React.FC = () => {
                   </div>
                 </TabPanel>
                 <TabPanel value="2">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={pendingTable}
@@ -1124,13 +1124,13 @@ const TLoanTabs2: React.FC = () => {
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/tloandetails2/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
                 </TabPanel>
                 <TabPanel value="3">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={draftTable}
@@ -1160,7 +1160,7 @@ const TLoanTabs2: React.FC = () => {
                   </div>
                 </TabPanel>
                 <TabPanel value="4">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={historyTable}
@@ -1286,7 +1286,7 @@ const TLoanTabs2: React.FC = () => {
 
               <Grid item xs={12}>
                 <TabPanel value="1">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={currentTable}
@@ -1318,7 +1318,7 @@ const TLoanTabs2: React.FC = () => {
                   </div>
                 </TabPanel>
                 <TabPanel value="2">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={pendingTable}
@@ -1344,13 +1344,13 @@ const TLoanTabs2: React.FC = () => {
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/tloandetails2/${params.id}`);
+                        navigate(`/tloandetails/${params.id}`);
                       }}
                     />
                   </div>
                 </TabPanel>
                 <TabPanel value="3">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={draftTable}
@@ -1380,7 +1380,7 @@ const TLoanTabs2: React.FC = () => {
                   </div>
                 </TabPanel>
                 <TabPanel value="4">
-                  <div style={{ height: 700, width: "100%" }}>
+                  <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
                       rows={historyTable}

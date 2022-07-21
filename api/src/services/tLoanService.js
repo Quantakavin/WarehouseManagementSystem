@@ -101,7 +101,8 @@ module.exports.extension = async(id,duration,reason) => {
 
 module.exports.getCurrent = async () => {
   const query = `
-  SELECT t.TLoanNumber, 
+  SELECT t.TLoanNumber,
+  t.TLoanID,
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,
@@ -115,6 +116,7 @@ module.exports.getCurrent = async () => {
 module.exports.getPending = async () => {
   const query = `
   SELECT t.TLoanNumber, 
+  t.TLoanID,
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,
@@ -128,7 +130,8 @@ module.exports.getPending = async () => {
 module.exports.getDraft = async () => {
   
   const query = `
-  SELECT t.TLoanNumber, 
+  SELECT t.TLoanNumber,
+  t.TLoanID,
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,
@@ -142,7 +145,8 @@ module.exports.getDraft = async () => {
 
 module.exports.getHistory = async () => {
   const query = `
-  SELECT t.TLoanNumber, 
+  SELECT t.TLoanNumber,
+  t.TLoanID,
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,

@@ -266,12 +266,13 @@ module.exports.updateRmaAccepted = async (RmaID) => {
     });
 };
 
-module.exports.updateRmaRejected = async (RmaID) => {
+module.exports.updateRmaRejected = async (RmaID, rejectreason) => {
     return knex.transaction((trx) => {
         knex('Rma')
             .where('RmaID', RmaID)
             .update({
-                RmaStatusID: 3
+                RmaStatusID: 3,
+                RejectReason: rejectreason
             })
             .transacting(trx)
             .then(trx.commit)

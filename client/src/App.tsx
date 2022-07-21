@@ -42,6 +42,7 @@ import NotificationGroups2 from "./pages/notificationgroups/NotificationGroups2"
 import ViewUser2 from "./pages/users/ViewUser2";
 import ViewUserGroup2 from "./pages/usergroups/ViewUserGroup2";
 import { Box } from "@mui/material";
+import Modals12 from './components/display/TloanModal/modal'
 
 interface ProtectedRouteProps {
   loginpage: boolean;
@@ -82,22 +83,22 @@ const App: React.FC = () => {
             </Route>
             <Route element={<ProtectedRoute loginpage={false} />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/products" element={<Products />} />
+              <Route path="/products" element={<Products2 />} />
               <Route path="/productspag" element={<ProductsPag />} />
               <Route path="/product/:id" element={<ViewProduct />} />
               <Route path="/binlocations" element={<BinLocations />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/user/:id" element={<ViewUser />} />
-              <Route path="/users" element={<Users />} />
+              <Route path="/user/:id" element={<ViewUser2 />} />
+              <Route path="/users" element={<Users2 />} />
               <Route path="/adduser" element={<AddUser />} />
               <Route path="/edituser/:id" element={<EditUser />} />
-              <Route path="/usergroups" element={<UserGroups />} />
-              <Route path="/usergroup/:id" element={<ViewUserGroup />} />
+              <Route path="/usergroups" element={<UserGroups2 />} />
+              <Route path="/usergroup/:id" element={<ViewUserGroup2 />} />
               <Route path="/addusergroup" element={<AddUserGroup />} />
               <Route path="/editusergroup/:id" element={<EditUserGroup />} />
               <Route
                 path="/notificationgroups"
-                element={<NotificationGroups />}
+                element={<NotificationGroups2 />}
               />
               <Route
                 path="/notificationgroup/:id"
@@ -118,6 +119,7 @@ const App: React.FC = () => {
                 element={<TLoanDisplay2 />}
               />
               <Route path="/newtloan" element={<NewTLoan />} />
+              <Route path="/modal" element={<Modals12 />} />
             </Route>
           </Routes>
         </Box>
