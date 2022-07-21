@@ -16,6 +16,7 @@ module.exports.getLoanByNo = async (req, res) => {
             [output] = results;
             const IDOfTLoan = results[0][0].TLoanID;
             const results2 = await TLoan.getTLoanOutItem(IDOfTLoan);
+            console.log(output);
             if (results2.length > 0) {
                 [output[0].Items] = results2;
                 output = output[0];
