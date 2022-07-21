@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
@@ -39,6 +39,8 @@ const AddUserGroup: React.FC = () => {
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [returnFeatures, setReturnFeatures] = useState<any[]>([]);
 
+  const queryClient = useQueryClient()
+
   const featuresQuery = useQuery("features", GetFeatures, {
     onSuccess: (data) => {
       const features: Option[] = [];
@@ -73,12 +75,16 @@ const AddUserGroup: React.FC = () => {
     postdata.features = returnFeatures;
     mutation.mutate(postdata, {
       onSuccess: () => {
+
         Toast.fire({
           icon: "success",
           title: "User group created successfully",
           customClass: "swalpopup",
           timer: 1500
         });
+        queryClient.invalidateQueries('usergroups');
+        queryClient.invalidateQueries('filterusergroups');
+        queryClient.invalidateQueries('usergroupnames');
         navigate("/usergroups");
       },
     });

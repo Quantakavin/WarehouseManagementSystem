@@ -288,7 +288,7 @@ export default function tloanDisplay() {
               Back
             </Button>
 
-            <Button size="small">Apply Extension</Button>
+            <Button size="small" type="submit">Apply Extension</Button>
           </Box>
         </Card>
       </div>

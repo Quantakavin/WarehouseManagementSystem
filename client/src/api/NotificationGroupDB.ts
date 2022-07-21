@@ -54,3 +54,12 @@ export const UpdateNotificationGroup = async (formData, id: string) => {
     },
   });
 };
+
+export const DeleteNotificationGroup = async (id: string) => {
+  return await axios.delete(`${config.baseURL}/notificationgroup/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};

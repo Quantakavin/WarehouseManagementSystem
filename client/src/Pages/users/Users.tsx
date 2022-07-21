@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { useInfiniteQuery, useQuery } from "react-query";
+import { useInfiniteQuery, useQuery, useQueryClient, useMutation } from "react-query";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import PageviewIcon from "@mui/icons-material/Pageview";
+import CancelIcon from '@mui/icons-material/Cancel';
 import { motion } from "framer-motion";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { Hidden } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { GetAllUsers, GetUsernames } from "../../api/UserDB";
+import { DeleteUser, GetAllUsers, GetUsernames } from "../../api/UserDB";
 import SearchBarUpdated from "../../components/search/SearchBarUpdated";
 import InfiniteTable from "../../components/table/InfiniteTable";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -19,6 +20,8 @@ import {
   SortDesc,
 } from "../../app/reducers/UserTableFilterSlice";
 import useDebounce from "../../hooks/useDebounce";
+import { Toast } from "../../components/alerts/SweetAlert";
+import Popup from "../../components/alerts/Popup";
 
 const Users: React.FC = () => {
   const sortColumn = useAppSelector(selectSortColumn);
@@ -28,6 +31,12 @@ const Users: React.FC = () => {
   const [inputName, setInputName] = useState<string>(null);
   const [searchName, setSearchName] = useState<string>("");
   const debouncedValue = useDebounce<string>(inputName, 500);
+  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+  const [showError, setShowError] = useState<boolean>(false);
+  const [idToDelete, setIdToDelete] = useState<string>(null);
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(DeleteUser);
 
   const dispatch = useAppDispatch();
 
@@ -83,7 +92,7 @@ const Users: React.FC = () => {
         name: "View Details",
         url: `/user/${id}`,
         icon: <PageviewIcon fontSize="small" />,
-        delete: false,
+        delete: false
       },
       {
         name: "Edit Details",
@@ -95,6 +104,7 @@ const Users: React.FC = () => {
         name: "Delete",
         icon: <DeleteOutlineIcon fontSize="small" />,
         delete: true,
+        deleteFunction: () => SelectDelete(id)
       },
     ];
   };
@@ -111,8 +121,90 @@ const Users: React.FC = () => {
     }
   };
 
+  const SelectDelete = (id: string) => {
+    setIdToDelete(id)
+    setShowConfirmation(true)
+  }
+
+  const Delete = (id: string) => {
+    mutation.mutate(id, {
+      onError: () => {
+        setShowConfirmation(false)
+        setShowError(true)
+        setIdToDelete(null)
+      },
+      onSuccess: () => {
+        setShowConfirmation(false)
+        Toast.fire({
+          icon: "success",
+          title: "User deleted successfully",
+          customClass: "swalpopup",
+          timer: 1500
+        });
+        queryClient.invalidateQueries('users');
+        //queryClient.invalidateQueries('filterusergroups');
+        queryClient.invalidateQueries('usernames');
+        setIdToDelete(null)
+        navigate("/users");
+      }
+    });
+  }
+
+  const closeConfirmationPopup = () => {
+    setShowConfirmation(false)
+    setIdToDelete(null)
+  }
+
+  const closeErrorPopup = () => {
+    setShowError(false)
+    setIdToDelete(null)
+  }
+
+
   return (
     <>
+
+      <Popup
+        showpopup={showConfirmation}
+        heading="Are you sure you want to delete this user?"
+        subheading="By doing so, you will delete all information associated with it such as TLoans and RMA"
+        popupimage={<CancelIcon sx={{ color: "#D11A2A", fontSize: "150px" }} />}
+        closepopup={closeConfirmationPopup}
+        buttons={
+          <>
+            <button style={{ alignSelf: "flex-start" }} className="cardbackbutton" onClick={() => setShowConfirmation(false)} type="button">
+              Cancel
+            </button>
+            <motion.button
+              style={{ alignSelf: "flex-end" }}
+              className="deletebutton"
+              onClick={() => Delete(idToDelete)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Delete Anyway
+            </motion.button>
+          </>
+        }
+
+      />
+
+      <Popup
+        showpopup={showError}
+        heading="Cannot Delete User!"
+        subheading="This user cannot be deleted as they have outstanding TLoans or RMA"
+        popupimage={<CancelIcon sx={{ color: "#D11A2A", fontSize: "150px" }} />}
+        closepopup={closeErrorPopup}
+        buttons={
+          <>
+            <button style={{ alignSelf: "flex-start", marginLeft: "auto", fontWeight: 700, color: "#0A2540" }} className="buttonremovestyling" onClick={() => setShowError(false)} type="button">
+              Close
+            </button>
+          </>
+        }
+
+      />
+
       <h2 className="pagetitle"> All Users </h2>
       <div
         style={{

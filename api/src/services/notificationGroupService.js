@@ -99,16 +99,21 @@ module.exports.update = async (notiGroupID, name, description, company, notifica
     });
 };
 
+
 module.exports.delete = async (notiGroupID) => {
-    return knex.transaction((trx) => {
-        knex('NotiGroupFeature')
-            .where('NotiGroupID', notiGroupID)
-            .del()
-            .transacting(trx)
-            .then(() => {
-                return knex('NotiGroup').where('NotiGroupID', notiGroupID).del().transacting(trx);
-            })
-            .then(trx.commit)
-            .catch(trx.rollback);
-    });
+    return knex('NotiGroup').where('NotiGroupID', notiGroupID).del()
 };
+
+// module.exports.delete = async (notiGroupID) => {
+//     return knex.transaction((trx) => {
+//         knex('NotiGroupFeature')
+//             .where('NotiGroupID', notiGroupID)
+//             .del()
+//             .transacting(trx)
+//             .then(() => {
+//                 return knex('NotiGroup').where('NotiGroupID', notiGroupID).del().transacting(trx);
+//             })
+//             .then(trx.commit)
+//             .catch(trx.rollback);
+//     });
+// };

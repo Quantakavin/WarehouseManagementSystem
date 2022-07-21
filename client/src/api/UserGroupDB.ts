@@ -53,5 +53,14 @@ export const PostUserGroup = async (formData) => {
       },
     });
   };
+
+  export const DeleteUserGroup = async (id: string) => {
+    return await axios.delete(`${config.baseURL}/usergroup/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  };
   
 

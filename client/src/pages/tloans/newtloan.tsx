@@ -259,6 +259,7 @@ function newtloan() {
   const handleChangeCompany = (event: SelectChangeEvent) => {
     setCompany(event.target.value);
   };
+
   const handleChangeDuration = (event: SelectChangeEvent) => {
     setDuration(event.target.value);
   };

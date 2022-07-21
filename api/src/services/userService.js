@@ -135,3 +135,12 @@ module.exports.getByNotificationGroup = async (notiGroupID) => {
     const query = `SELECT Count(UserID) 'Count' FROM UserNotiGroup WHERE NotiGroupID = ?`;
     return knex.raw(query, [notiGroupID]);
 };
+
+module.exports.checkTLoansAndRMA = async (userID) => {
+    const query = `SELECT Count(UserID) 'Count' FROM (SELECT UserID FROM TLoan WHERE UserID = ? UNION SELECT SalesmanID 'UserID' FROM Rma WHERE SalesmanID = ?) AS T`
+    return knex.raw(query, [userID, userID]);
+}
+
+module.exports.delete = async (userID) => {
+    return knex('User').where('UserID', userID).del()
+};

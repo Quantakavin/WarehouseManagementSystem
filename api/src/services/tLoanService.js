@@ -7,6 +7,8 @@ module.exports.getAll = async () => {
   return knex.raw(query);
 }
 
+
+
 module.exports.tloanOutItem = async (
   itemno,
   itemname,
@@ -195,12 +197,13 @@ module.exports.approveLoan = async (number) => {
 };
 
 //Add status to db
-module.exports.rejectLoan = async (number) => {
+module.exports.rejectLoan = async (TLoanNumber, remarks) => {
   return knex.transaction((trx) => {
       knex('TLoan')
-          .where('TLoanNumber', number)
+          .where('TLoanNumber', TLoanNumber)
           .update({
               TLoanStatusID: 9,
+              Remarks:remarks
           })
           .transacting(trx)
           .then(trx.commit)
@@ -279,3 +282,25 @@ module.exports.draftLoan = async (number) => {
 };
 
 
+module.exports.loanExtension = async (
+  tloanid,
+  duration,
+  reason
+
+) => {
+  return knex('TLoanExtension').insert({
+    TLoanID: tloanid,
+    TLoanExtensionStatusID: 1,
+    Duration: duration,
+    Reason: reason
+  });
+};
+
+module.exports.getID = async(TLoanNumber) => {
+  const query = `   SELECT 
+	TLoanID
+  FROM TLoan
+  WHERE TLoanNumber = ?
+ `
+  return knex.raw(query, [TLoanNumber])
+}

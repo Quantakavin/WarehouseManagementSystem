@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
@@ -44,6 +44,7 @@ const AddNotificationGroup: React.FC = () => {
   const [notiTypeOptions, setNotiTypeOptions] = useState<Option[]>([]);
   const [selectedNotiFeatures, setSelectedNotiFeatures] = useState<string[]>([]);
   const [returnNotiFeatures, setReturnNotiFeatures] = useState<any[]>([]);
+  const queryClient = useQueryClient();
 
   const companiesQuery = useQuery(
     "companies",
@@ -104,6 +105,9 @@ const AddNotificationGroup: React.FC = () => {
           customClass: "swalpopup",
           timer: 1500
         });
+        queryClient.invalidateQueries('notificationgroups');
+        queryClient.invalidateQueries('filternotificationgroups');
+        queryClient.invalidateQueries('notificationgroupnames');
         navigate("/notificationgroups");
       },
     });
@@ -337,7 +341,6 @@ const AddNotificationGroup: React.FC = () => {
         <SubmitButton text="Submit" loading={mutation.isLoading} multipart />
       </div>
     </div>
-      <pre>{JSON.stringify(returnNotiFeatures)}</pre>
     </FormContainer>
   );
 };

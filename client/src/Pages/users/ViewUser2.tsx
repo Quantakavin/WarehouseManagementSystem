@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Card from "@mui/material/Card";
@@ -20,15 +19,15 @@ import TableRow from "@mui/material/TableRow";
 import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import { DataGrid, GridColumns } from "@mui/x-data-grid";
-//import { GetDetails }from "../../api/TLoanDB"
+// import { GetDetails }from "../../api/TLoanDB"
 
 export default function ViewUser2() {
   const navigate = useNavigate();
   const [details, setDetails] = useState([]);
-  //const [loanDetails, setLoanDetails] = useState([]);
+  // const [loanDetails, setLoanDetails] = useState([]);
   const [notigroups, setNotigroups] = useState([]);
 
-  let { id } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
     // declare the async data fetching function

@@ -34,6 +34,8 @@ module.exports.getLoanByNo = async (req, res) => {
     
 };
 
+
+
 module.exports.getItemsByTloan = async (req, res) => {
     const { TLoanNumber} = req.params;
     try {
@@ -45,6 +47,23 @@ module.exports.getItemsByTloan = async (req, res) => {
             return res.status(200).json(results2[0]);
         } else {
             return res.status(404).send('This TLoan has no items');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
+
+module.exports.getIDofLoan = async (req, res) => {
+    const { TLoanNumber} = req.params;
+    try {
+        const results = await TLoan.getID(TLoanNumber);
+        if (results.length > 0) {
+           
+            return res.status(200).json(results[0]);
+        } else {
+            return res.status(404).send('There is no ID');
         }
     } catch (error) {
         console.log(error);
@@ -205,10 +224,12 @@ module.exports.approveLoan = async(req , res) =>{
 }
 
 module.exports.rejectLoan = async(req , res) =>{
-    const {number} = req.body
+    const {TLoanNumber} = req.params
+    const { remarks } = req.body;
     try{
-        const results = await TLoan.rejectLoan(number)
-        if(results) {
+        const results = await TLoan.getLoanByNumber(TLoanNumber)
+        if(results.length > 0) {
+            await TLoan.rejectLoan(TLoanNumber, remarks)
             return res.status(200).send('Status has been Updated')
         } else {
             return res.status(500).send('Status failed to Update')
@@ -326,6 +347,24 @@ module.exports.ManagerLoan = async (req, res) => {
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('You have not made any TLoans');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
+module.exports.LoanExtend = async (req, res) => {
+
+    const {tloanid, duration, reason} = req.body
+    try {
+       
+        const results = await TLoan.loanExtension(tloanid,duration,reason);
+       
+        if (results.length > 0) {
+            return res.status(200).json(results[0]);
+        } else {
+            return res.status(404).send('Could not submit extension request');
         }
     } catch (error) {
         console.log(error);
