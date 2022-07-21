@@ -108,9 +108,11 @@ export default function ViewUser2() {
                         // marginLeft: -10,
                         color: "#063970",
                         fontWeight: "bold",
+                        fontSize: 20,
                       }}
                     >
-                      <Box>
+                      <h1>{details.Username}</h1>
+                      <Box sx={{paddingTop: 4}}>
                         <div>Email</div>
                         <div
                           style={{
@@ -154,7 +156,7 @@ export default function ViewUser2() {
                       </Box>
                     </Typography>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} sx={{ height: 600 }}>
                     <DataGrid
                       sx={{ height: "100%" }}
                       rows={notigroups}
