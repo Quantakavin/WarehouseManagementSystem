@@ -30,6 +30,7 @@ import RmaDisplay from "./components/display/rmaDisplay";
 import NewTLoan from "./pages/tloans/newtloan";
 import Products2 from "./pages/products/Products2";
 import TLoanDisplay2 from "./components/display/tloanDisplay2";
+import TLoanManagerDisplay from "./components/display/tloanManagerDisplay"
 import Users2 from "./pages/users/Users2";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "./app/hooks";
@@ -106,6 +107,8 @@ const App: React.FC = () => {
               <Route path="/newtloan" element={<NewTLoan />} />
               <Route path="/modal" element={<Modals12 />} />
               <Route path="/error404" element={<Error404 />} />
+              <Route path="/tloanManagerDisplay/:TLoanNumber" element={<TLoanManagerDisplay/>} />
+              
             </Route>
           </Routes>
         </Box>

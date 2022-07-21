@@ -38,7 +38,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Stack from '@mui/material/Stack';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { selectRole, selectId } from "../../app/reducers/CurrentUserSlice";
 import { useAppSelector } from "../../app/hooks";
 import {
   GridRowsProp,
@@ -245,6 +245,7 @@ function newtloan() {
   const [requireddate,setRDate] =  useState('')
   const [localDate,setLocalDate] = useState('')
   const userRole = useAppSelector(selectRole);
+
   console.log(userRole)
    
       const items = rows.map(({id, isNew, ...rows}) => rows)
