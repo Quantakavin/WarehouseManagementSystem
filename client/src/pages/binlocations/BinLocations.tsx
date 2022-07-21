@@ -1,11 +1,15 @@
 import React, { Suspense } from "react";
 import "../../styles/BinLocation.scss";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useLoader } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { DoubleSide } from "three";
+import { DoubleSide, TextureLoader } from "three";
 import Rack from "../../components/3Dmodels/Rack";
 
+
 const Floor = () => {
+
+  const colorMap = useLoader(TextureLoader, 'Concrete030_4K_Color.png')
+  
   return (
     // The mesh is at the origin
     // Since it is inside a group, it is at the origin
@@ -27,7 +31,8 @@ const Floor = () => {
         The material gives a mesh its texture or look.
         In this case, it is just a uniform green
       */}
-      <meshBasicMaterial color="#7cb1d0" side={DoubleSide} />
+      <meshBasicMaterial map={colorMap} side={DoubleSide} />
+      {/*color="#7cb1d0*/}
     </mesh>
   );
 };
