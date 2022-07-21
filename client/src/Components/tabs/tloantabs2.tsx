@@ -195,7 +195,7 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 4, marginTop: 8 }}>
+                <Box sx={{ paddingLeft: 4, marginTop: 8.75 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
                     <Fab
@@ -422,7 +422,7 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 4, marginTop: 8 }}>
+                <Box sx={{ paddingLeft: 4, marginTop: 8.75 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
                     <Fab
@@ -770,7 +770,7 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 4, marginTop: 8 }}>
+                <Box sx={{ paddingLeft: 4, marginTop: 8.75 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
                     <Fab
@@ -1073,7 +1073,7 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ marginLeft: 4, marginTop: 8 }}>
+                <Box sx={{ marginLeft: 4, marginTop: 8.75 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
                       <Fab
@@ -1300,7 +1300,7 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 4, marginTop: 8 }}>
+                <Box sx={{ paddingLeft: 4, marginTop: 8.75 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
                     <Fab

@@ -232,7 +232,7 @@ const Rmatabs: React.FC = () => {
                 </Tabs>
               </Box>
             </Grid>
-            <Grid item xs={1} sx={{ paddingLeft: 4, marginTop: 8 }}>
+            <Grid item xs={1} sx={{ paddingLeft: 4, marginTop: 8.75 }}>
               <Fab
                 variant="extended"
                 aria-label="add"
