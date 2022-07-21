@@ -73,7 +73,6 @@ export default function CreateRMA() {
   const userrole = useAppSelector(selectRole);
   const [rma, setRma] = useState([]);
   const [rows, setRows] = useState([]);
-  const [data, setData] = useState();
   const [pageSize, setPageSize] = React.useState(25);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
@@ -129,6 +128,7 @@ export default function CreateRMA() {
       // make sure to catch any error
       .catch(console.error);
   }, []);
+  console.log(rma.RmaStatusID);
   //Accept RMA
   const acceptRMA = async () => {
     axios
@@ -739,138 +739,9 @@ export default function CreateRMA() {
 
   const navigate = useNavigate();
 
-  if (rma.RmaStatusID != 3) {
+  if (rma.RmaStatusID == 3) {
     switch (userrole) {
       case "Sales Engineer": {
-          return (
-            <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
-              <Typography
-                gutterBottom
-                variant="subtitle2"
-                component="span"
-                sx={{
-                  display: "flex",
-                  justifyContent: "left",
-                  alignItems: "center",
-                  marginLeft: 0,
-                  color: "#063970",
-                  fontWeight: "bold",
-                }}
-              >
-                <Box>
-                  <h2>RMA Request #{rma.RmaID}</h2>
-                </Box>
-                <Box sx={{ marginLeft: 5 }}>
-                  <Box>EMPLOYEE</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {rma.Username}
-                  </Box>
-                </Box>
-                <Box sx={{ marginLeft: 5 }}>
-                  <Box sx={{}}>DATE APPLIED</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {rma.DateTime}
-                  </Box>
-                </Box>
-                <Box sx={{ marginLeft: 5 }}>
-                  <Box sx={{}}>CUSTOMER NAME</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {rma.ContactPerson}
-                  </Box>
-                </Box>
-                <Box sx={{ marginLeft: 5 }}>
-                  <Box sx={{}}>CUSTOMER EMAIL</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {rma.CustomerEmail}
-                  </Box>
-                </Box>
-                <Box sx={{ marginLeft: 5 }}>
-                  <Box sx={{}}>COMPANY</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {rma.CompanyName}
-                  </Box>
-                </Box>
-                <Box sx={{ marginLeft: 5 }}>
-                  <Box sx={{}}>CONTACT NUMBER</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {rma.ContactNo}
-                  </Box>
-                </Box>
-                <Box sx={{ marginLeft: 5 }}>
-                  <Box sx={{}}>Rejected</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {rma.RmaStatusID}
-                  </Box>
-                </Box>
-              </Typography>
-  
-              <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
-                <Box sx={{ flexGrow: 1 }}>
-                  <DataGrid
-                    sx={{ background: "white", fontSize: 16 }}
-                    rows={rows}
-                    columns={staticcolumns}
-                    editMode="row"
-                    getRowId={(row) => row.id}
-                    pageSize={pageSize}
-                    onPageSizeChange={(newPage) => setPageSize(newPage)}
-                    pagination
-                    components={{
-                      Toolbar: CustomToolbar,
-                      NoRowsOverlay: () => (
-                        <Stack
-                          height="100%"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          No approved RMA requests
-                        </Stack>
-                      ),
-                    }}
-                    filterModel={filterModel}
-                    onFilterModelChange={(newFilterModel) =>
-                      setFilterModel(newFilterModel)
-                    }
-                    // rowModesModel={rowModesModel}
-                    // onRowEditStart={handleRowEditStart}
-                    // onRowEditStop={handleRowEditStop}
-                    // processRowUpdate={processRowUpdate}
-                    // componentsProps={{
-                    //   toolbar: { setRows, setRowModesModel },
-                    // }}
-                    // experimentalFeatures={{ newEditingApi: true }}
-                  />
-                </Box>
-              </Box>
-  
-              <Box
-                component="span"
-                paddingTop={2}
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Button
-                  size="small"
-                  variant="contained"
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#063970",
-                    width: 150,
-                    height: 50,
-                    borderRadius: 10,
-                  }}
-                  onClick={() => navigate("/rma")}
-                >
-                  Back
-                </Button>
-              </Box>
-            </Box>
-          );
-      }
-      case "Sales Manager":
-      case "Warehouse Worker":
-      case "Technical Staff": {
         return (
           <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
             <Typography
@@ -925,14 +796,20 @@ export default function CreateRMA() {
                   {rma.ContactNo}
                 </Box>
               </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>Rejected</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.RmaStatusID}
+                </Box>
+              </Box>
             </Typography>
-  
+
             <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
               <Box sx={{ flexGrow: 1 }}>
                 <DataGrid
                   sx={{ background: "white", fontSize: 16 }}
                   rows={rows}
-                  columns={icolumns}
+                  columns={staticcolumns}
                   editMode="row"
                   getRowId={(row) => row.id}
                   pageSize={pageSize}
@@ -954,18 +831,10 @@ export default function CreateRMA() {
                   onFilterModelChange={(newFilterModel) =>
                     setFilterModel(newFilterModel)
                   }
-                  rowModesModel={rowModesModel}
-                  onRowEditStart={handleRowEditStart}
-                  onRowEditStop={handleRowEditStop}
-                  processRowUpdate={processRowUpdate}
-                  componentsProps={{
-                    toolbar: { setRows, setRowModesModel },
-                  }}
-                  experimentalFeatures={{ newEditingApi: true }}
                 />
               </Box>
             </Box>
-  
+
             <Box
               component="span"
               paddingTop={2}
@@ -987,32 +856,12 @@ export default function CreateRMA() {
               >
                 Back
               </Button>
-              <Box
-                component="span"
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Button
-                  size="small"
-                  variant="contained"
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#31A961",
-                    width: 150,
-                    height: 50,
-                    borderRadius: 10,
-                  }}
-                  onClick={verifyRMA}
-                >
-                  Verify
-                </Button>
-              </Box>
+              <ReasonModalButton />
             </Box>
           </Box>
         );
       }
-      case "Sales Admin": {
+      case "Sales Manager": {
         return (
           <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
             <Typography
@@ -1068,46 +917,24 @@ export default function CreateRMA() {
                 </Box>
               </Box>
             </Typography>
-  
+
             <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
               <Box sx={{ flexGrow: 1 }}>
-                <DataGrid
-                  sx={{ background: "white", fontSize: 16 }}
-                  rows={rows}
-                  columns={coacolumns}
-                  editMode="row"
-                  getRowId={(row) => row.id}
-                  pageSize={pageSize}
-                  onPageSizeChange={(newPage) => setPageSize(newPage)}
-                  pagination
-                  components={{
-                    Toolbar: CustomToolbar,
-                    NoRowsOverlay: () => (
-                      <Stack
-                        height="100%"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        No products
-                      </Stack>
-                    ),
-                  }}
-                  filterModel={filterModel}
-                  onFilterModelChange={(newFilterModel) =>
-                    setFilterModel(newFilterModel)
-                  }
-                  rowModesModel={rowModesModel}
-                  onRowEditStart={handleRowEditStart}
-                  onRowEditStop={handleRowEditStop}
-                  processRowUpdate={processRowUpdate}
-                  componentsProps={{
-                    toolbar: { setRows, setRowModesModel },
-                  }}
-                  experimentalFeatures={{ newEditingApi: true }}
-                />
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 16 }}
+                    rows={rows}
+                    columns={staticcolumns}
+                    editMode="row"
+                    getRowId={(row) => row.id}
+                    rowModesModel={rowModesModel}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                  />
               </Box>
             </Box>
-  
+
             <Box
               component="span"
               paddingTop={2}
@@ -1129,31 +956,13 @@ export default function CreateRMA() {
               >
                 Back
               </Button>
-              <Box
-                component="span"
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Button
-                  size="small"
-                  variant="contained"
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#31A961",
-                    width: 150,
-                    height: 50,
-                    borderRadius: 10,
-                  }}
-                  onClick={COARMA}
-                >
-                  Update
-                </Button>
-              </Box>
             </Box>
           </Box>
         );
       }
+      case "Warehouse Worker":
+      case "Technical Staff":
+      case "Sales Admin":
       case "Admin":
       default: {
         return (
@@ -1211,8 +1020,368 @@ export default function CreateRMA() {
                 </Box>
               </Box>
             </Typography>
-  
-            <Box sx={{ display: "flex", height: "100%", width: "100%" }}>
+
+            <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
+              <Box sx={{ flexGrow: 1 }}>
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
+                  adapterLocale={locale}
+                >
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 16 }}
+                    rows={rows}
+                    columns={staticcolumns}
+                    editMode="row"
+                    getRowId={(row) => row.id}
+                    rowModesModel={rowModesModel}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                  />
+                </LocalizationProvider>
+              </Box>
+            </Box>
+
+            <Box
+              component="span"
+              paddingTop={2}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Button
+                size="small"
+                variant="contained"
+                sx={{
+                  color: "white",
+                  backgroundColor: "#063970",
+                  width: 150,
+                  height: 50,
+                  borderRadius: 10,
+                }}
+                onClick={() => navigate("/rma")}
+              >
+                Back
+              </Button>
+            </Box>
+          </Box>
+        );
+      }
+    }
+  } else if (rma.RmaStatusID == 1) {
+    switch (userrole) {
+      case "Sales Manager": {
+        return (
+          <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
+            <Typography
+              gutterBottom
+              variant="subtitle2"
+              component="span"
+              sx={{
+                display: "flex",
+                justifyContent: "left",
+                alignItems: "center",
+                marginLeft: 0,
+                color: "#063970",
+                fontWeight: "bold",
+              }}
+            >
+              <Box>
+                <h2>RMA Request #{rma.RmaID}</h2>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box>EMPLOYEE</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.Username}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>DATE APPLIED</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.DateTime}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CUSTOMER NAME</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.ContactPerson}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CUSTOMER EMAIL</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.CustomerEmail}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>COMPANY</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.CompanyName}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CONTACT NUMBER</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.ContactNo}
+                </Box>
+              </Box>
+            </Typography>
+
+            <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
+              <Box sx={{ flexGrow: 1 }}>
+                <DataGrid
+                  sx={{ background: "white", fontSize: 16 }}
+                  rows={rows}
+                  columns={staticcolumns}
+                  editMode="row"
+                  getRowId={(row) => row.id}
+                  pageSize={pageSize}
+                  onPageSizeChange={(newPage) => setPageSize(newPage)}
+                  pagination
+                  components={{
+                    Toolbar: CustomToolbar,
+                    NoRowsOverlay: () => (
+                      <Stack
+                        height="100%"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        No products
+                      </Stack>
+                    ),
+                  }}
+                  filterModel={filterModel}
+                  onFilterModelChange={(newFilterModel) =>
+                    setFilterModel(newFilterModel)
+                  }
+                />
+              </Box>
+            </Box>
+
+            <Box
+              component="span"
+              paddingTop={2}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Button
+                size="small"
+                variant="contained"
+                sx={{
+                  color: "white",
+                  backgroundColor: "#063970",
+                  width: 150,
+                  height: 50,
+                  borderRadius: 10,
+                }}
+                onClick={() => navigate("/rma")}
+              >
+                Back
+              </Button>
+              <Box
+                component="span"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#31A961",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                    marginRight: 5,
+                  }}
+                  onClick={acceptRMA}
+                >
+                  Accept
+                </Button>
+                <RejectModalButton />
+              </Box>
+            </Box>
+          </Box>
+        );
+      }
+      case "Sales Engineer":
+      case "Warehouse Worker":
+      case "Technical Staff":
+      case "Sales Admin": {
+        return (
+          <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
+            <Typography
+              gutterBottom
+              variant="subtitle2"
+              component="span"
+              sx={{
+                display: "flex",
+                justifyContent: "left",
+                alignItems: "center",
+                marginLeft: 0,
+                color: "#063970",
+                fontWeight: "bold",
+              }}
+            >
+              <Box>
+                <h2>RMA Request #{rma.RmaID}</h2>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box>EMPLOYEE</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.Username}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>DATE APPLIED</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.DateTime}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CUSTOMER NAME</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.ContactPerson}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CUSTOMER EMAIL</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.CustomerEmail}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>COMPANY</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.CompanyName}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CONTACT NUMBER</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.ContactNo}
+                </Box>
+              </Box>
+            </Typography>
+
+            <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
+              <Box sx={{ flexGrow: 1 }}>
+                <DataGrid
+                  sx={{ background: "white", fontSize: 16 }}
+                  rows={rows}
+                  columns={staticcolumns}
+                  editMode="row"
+                  getRowId={(row) => row.id}
+                  pageSize={pageSize}
+                  onPageSizeChange={(newPage) => setPageSize(newPage)}
+                  pagination
+                  components={{
+                    Toolbar: CustomToolbar,
+                    NoRowsOverlay: () => (
+                      <Stack
+                        height="100%"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        No products
+                      </Stack>
+                    ),
+                  }}
+                  filterModel={filterModel}
+                  onFilterModelChange={(newFilterModel) =>
+                    setFilterModel(newFilterModel)
+                  }
+                />
+              </Box>
+            </Box>
+
+            <Box
+              component="span"
+              paddingTop={2}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Button
+                size="small"
+                variant="contained"
+                sx={{
+                  color: "white",
+                  backgroundColor: "#063970",
+                  width: 150,
+                  height: 50,
+                  borderRadius: 10,
+                }}
+                onClick={() => navigate("/rma")}
+              >
+                Back
+              </Button>
+            </Box>
+          </Box>
+        );
+      }
+      case "Admin":
+      default: {
+        return (
+          <Box sx={{ padding: 3, height: "97%", width: "100%" }}>
+            <Typography
+              gutterBottom
+              variant="subtitle2"
+              component="span"
+              sx={{
+                display: "flex",
+                justifyContent: "left",
+                alignItems: "center",
+                marginLeft: 0,
+                color: "#063970",
+                fontWeight: "bold",
+              }}
+            >
+              <Box>
+                <h2>RMA Request #{rma.RmaID}</h2>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box>EMPLOYEE</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.Username}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>DATE APPLIED</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.DateTime}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CUSTOMER NAME</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.ContactPerson}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CUSTOMER EMAIL</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.CustomerEmail}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>COMPANY</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.CompanyName}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CONTACT NUMBER</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.ContactNo}
+                </Box>
+              </Box>
+            </Typography>
+
+            <Box sx={{ display: "flex", height: "99%", width: "100%" }}>
               <Box sx={{ flexGrow: 1 }}>
                 <LocalizationProvider
                   dateAdapter={AdapterDateFns}
@@ -1221,7 +1390,7 @@ export default function CreateRMA() {
                   <DataGridPro
                     sx={{ background: "white", fontSize: 16 }}
                     rows={rows}
-                    columns={columns}
+                    columns={staticcolumns}
                     editMode="row"
                     getRowId={(row) => row.id}
                     rowModesModel={rowModesModel}
@@ -1236,10 +1405,10 @@ export default function CreateRMA() {
                 </LocalizationProvider>
               </Box>
             </Box>
-  
+
             <Box
               component="span"
-              m={1}
+              paddingTop={2}
               display="flex"
               justifyContent="space-between"
               alignItems="center"
@@ -1252,137 +1421,14 @@ export default function CreateRMA() {
                   backgroundColor: "#063970",
                   width: 150,
                   height: 50,
+                  borderRadius: 10,
                 }}
                 onClick={() => navigate("/rma")}
               >
                 Back
               </Button>
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                }}
-                onClick={acceptRMA}
-              >
-                Accept
-              </Button>
-              <RejectModalButton/>
-            </Box>
-          </Box>
-        );
-      }
-    }
-  } else {
-    switch (userrole) {
-      case "Sales Engineer": {
-          return (
-            <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
-              <Typography
-                gutterBottom
-                variant="subtitle2"
-                component="span"
-                sx={{
-                  display: "flex",
-                  justifyContent: "left",
-                  alignItems: "center",
-                  marginLeft: 0,
-                  color: "#063970",
-                  fontWeight: "bold",
-                }}
-              >
-                <Box>
-                  <h2>RMA Request #{rma.RmaID}</h2>
-                </Box>
-                <Box sx={{ marginLeft: 5 }}>
-                  <Box>EMPLOYEE</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {rma.Username}
-                  </Box>
-                </Box>
-                <Box sx={{ marginLeft: 5 }}>
-                  <Box sx={{}}>DATE APPLIED</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {rma.DateTime}
-                  </Box>
-                </Box>
-                <Box sx={{ marginLeft: 5 }}>
-                  <Box sx={{}}>CUSTOMER NAME</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {rma.ContactPerson}
-                  </Box>
-                </Box>
-                <Box sx={{ marginLeft: 5 }}>
-                  <Box sx={{}}>CUSTOMER EMAIL</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {rma.CustomerEmail}
-                  </Box>
-                </Box>
-                <Box sx={{ marginLeft: 5 }}>
-                  <Box sx={{}}>COMPANY</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {rma.CompanyName}
-                  </Box>
-                </Box>
-                <Box sx={{ marginLeft: 5 }}>
-                  <Box sx={{}}>CONTACT NUMBER</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {rma.ContactNo}
-                  </Box>
-                </Box>
-                <Box sx={{ marginLeft: 5 }}>
-                  <Box sx={{}}>Rejected</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {rma.RmaStatusID}
-                  </Box>
-                </Box>
-              </Typography>
-  
-              <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
-                <Box sx={{ flexGrow: 1 }}>
-                  <DataGrid
-                    sx={{ background: "white", fontSize: 16 }}
-                    rows={rows}
-                    columns={staticcolumns}
-                    editMode="row"
-                    getRowId={(row) => row.id}
-                    pageSize={pageSize}
-                    onPageSizeChange={(newPage) => setPageSize(newPage)}
-                    pagination
-                    components={{
-                      Toolbar: CustomToolbar,
-                      NoRowsOverlay: () => (
-                        <Stack
-                          height="100%"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          No approved RMA requests
-                        </Stack>
-                      ),
-                    }}
-                    filterModel={filterModel}
-                    onFilterModelChange={(newFilterModel) =>
-                      setFilterModel(newFilterModel)
-                    }
-                    // rowModesModel={rowModesModel}
-                    // onRowEditStart={handleRowEditStart}
-                    // onRowEditStop={handleRowEditStop}
-                    // processRowUpdate={processRowUpdate}
-                    // componentsProps={{
-                    //   toolbar: { setRows, setRowModesModel },
-                    // }}
-                    // experimentalFeatures={{ newEditingApi: true }}
-                  />
-                </Box>
-              </Box>
-  
               <Box
                 component="span"
-                paddingTop={2}
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
@@ -1392,21 +1438,244 @@ export default function CreateRMA() {
                   variant="contained"
                   sx={{
                     color: "white",
-                    backgroundColor: "#063970",
+                    backgroundColor: "#31A961",
                     width: 150,
                     height: 50,
                     borderRadius: 10,
+                    marginRight: 5,
                   }}
-                  onClick={() => navigate("/rma")}
+                  onClick={acceptRMA}
                 >
-                  Back
+                  Accept
                 </Button>
-                <ReasonModalButton/>
+                <RejectModalButton />
               </Box>
             </Box>
-          );
+          </Box>
+        );
       }
+    }
+  } else if (rma.RmaStatusID == 7) {
+    switch (userrole) {
+      case "Sales Admin":
+      case "Sales Engineer":
       case "Sales Manager":
+      case "Warehouse Worker":
+      case "Technical Staff":
+      case "Admin":
+      default: {
+        return (
+          <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
+            <Typography
+              gutterBottom
+              variant="subtitle2"
+              component="span"
+              sx={{
+                display: "flex",
+                justifyContent: "left",
+                alignItems: "center",
+                marginLeft: 0,
+                color: "#063970",
+                fontWeight: "bold",
+              }}
+            >
+              <Box>
+                <h2>RMA Request #{rma.RmaID}</h2>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box>EMPLOYEE</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.Username}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>DATE APPLIED</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.DateTime}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CUSTOMER NAME</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.ContactPerson}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CUSTOMER EMAIL</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.CustomerEmail}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>COMPANY</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.CompanyName}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CONTACT NUMBER</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.ContactNo}
+                </Box>
+              </Box>
+            </Typography>
+
+            <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
+              <Box sx={{ flexGrow: 1 }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 16 }}
+                    rows={rows}
+                    columns={staticcolumns}
+                    editMode="row"
+                    getRowId={(row) => row.id}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                  />
+              </Box>
+            </Box>
+
+            <Box
+              component="span"
+              paddingTop={2}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Button
+                size="small"
+                variant="contained"
+                sx={{
+                  color: "white",
+                  backgroundColor: "#063970",
+                  width: 150,
+                  height: 50,
+                  borderRadius: 10,
+                }}
+                onClick={() => navigate("/rma")}
+              >
+                Back
+              </Button>
+            </Box>
+          </Box>
+        );
+      }
+    }
+  } else {
+    switch (userrole) {
+      case "Sales Engineer":
+      case "Sales Manager": {
+        return (
+          <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
+            <Typography
+              gutterBottom
+              variant="subtitle2"
+              component="span"
+              sx={{
+                display: "flex",
+                justifyContent: "left",
+                alignItems: "center",
+                marginLeft: 0,
+                color: "#063970",
+                fontWeight: "bold",
+              }}
+            >
+              <Box>
+                <h2>RMA Request #{rma.RmaID}</h2>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box>EMPLOYEE</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.Username}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>DATE APPLIED</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.DateTime}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CUSTOMER NAME</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.ContactPerson}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CUSTOMER EMAIL</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.CustomerEmail}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>COMPANY</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.CompanyName}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CONTACT NUMBER</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.ContactNo}
+                </Box>
+              </Box>
+            </Typography>
+
+            <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
+              <Box sx={{ flexGrow: 1 }}>
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
+                  adapterLocale={locale}
+                >
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 16 }}
+                    rows={rows}
+                    columns={staticcolumns}
+                    editMode="row"
+                    getRowId={(row) => row.id}
+                    rowModesModel={rowModesModel}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    // onRowEditStart={handleRowEditStart}
+                    // onRowEditStop={handleRowEditStop}
+                    // processRowUpdate={processRowUpdate}
+                    // componentsProps={{
+                    //   toolbar: { setRows, setRowModesModel },
+                    // }}
+                    // experimentalFeatures={{ newEditingApi: true }}
+                  />
+                </LocalizationProvider>
+              </Box>
+            </Box>
+
+            <Box
+              component="span"
+              paddingTop={2}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Button
+                size="small"
+                variant="contained"
+                sx={{
+                  color: "white",
+                  backgroundColor: "#063970",
+                  width: 150,
+                  height: 50,
+                  borderRadius: 10,
+                }}
+                onClick={() => navigate("/rma")}
+              >
+                Back
+              </Button>
+            </Box>
+          </Box>
+        );
+      }
       case "Warehouse Worker": {
         return (
           <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
@@ -1463,13 +1732,13 @@ export default function CreateRMA() {
                 </Box>
               </Box>
             </Typography>
-  
+
             <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
               <Box sx={{ flexGrow: 1 }}>
                 <DataGrid
                   sx={{ background: "white", fontSize: 16 }}
                   rows={rows}
-                  columns={icolumns}
+                  columns={staticcolumns}
                   editMode="row"
                   getRowId={(row) => row.id}
                   pageSize={pageSize}
@@ -1491,18 +1760,10 @@ export default function CreateRMA() {
                   onFilterModelChange={(newFilterModel) =>
                     setFilterModel(newFilterModel)
                   }
-                  rowModesModel={rowModesModel}
-                  onRowEditStart={handleRowEditStart}
-                  onRowEditStop={handleRowEditStop}
-                  processRowUpdate={processRowUpdate}
-                  componentsProps={{
-                    toolbar: { setRows, setRowModesModel },
-                  }}
-                  experimentalFeatures={{ newEditingApi: true }}
                 />
               </Box>
             </Box>
-  
+
             <Box
               component="span"
               paddingTop={2}
@@ -1605,7 +1866,7 @@ export default function CreateRMA() {
                 </Box>
               </Box>
             </Typography>
-  
+
             <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
               <Box sx={{ flexGrow: 1 }}>
                 <DataGrid
@@ -1644,7 +1905,7 @@ export default function CreateRMA() {
                 />
               </Box>
             </Box>
-  
+
             <Box
               component="span"
               paddingTop={2}
@@ -1747,7 +2008,7 @@ export default function CreateRMA() {
                 </Box>
               </Box>
             </Typography>
-  
+
             <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
               <Box sx={{ flexGrow: 1 }}>
                 <DataGrid
@@ -1786,7 +2047,7 @@ export default function CreateRMA() {
                 />
               </Box>
             </Box>
-  
+
             <Box
               component="span"
               paddingTop={2}
@@ -1890,35 +2151,26 @@ export default function CreateRMA() {
                 </Box>
               </Box>
             </Typography>
-  
-            <Box sx={{ display: "flex", height: "100%", width: "100%" }}>
+
+            <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
               <Box sx={{ flexGrow: 1 }}>
-                <LocalizationProvider
-                  dateAdapter={AdapterDateFns}
-                  adapterLocale={locale}
-                >
-                  <DataGridPro
+                  <DataGrid
                     sx={{ background: "white", fontSize: 16 }}
                     rows={rows}
-                    columns={columns}
+                    columns={staticcolumns}
                     editMode="row"
                     getRowId={(row) => row.id}
-                    rowModesModel={rowModesModel}
-                    onRowEditStart={handleRowEditStart}
-                    onRowEditStop={handleRowEditStop}
-                    processRowUpdate={processRowUpdate}
-                    componentsProps={{
-                      toolbar: { setRows, setRowModesModel },
-                    }}
-                    experimentalFeatures={{ newEditingApi: true }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
                   />
-                </LocalizationProvider>
               </Box>
             </Box>
-  
+
             <Box
               component="span"
-              m={1}
+              paddingTop={2}
               display="flex"
               justifyContent="space-between"
               alignItems="center"
@@ -1931,566 +2183,16 @@ export default function CreateRMA() {
                   backgroundColor: "#063970",
                   width: 150,
                   height: 50,
+                  borderRadius: 10,
                 }}
                 onClick={() => navigate("/rma")}
               >
                 Back
               </Button>
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                }}
-                onClick={acceptRMA}
-              >
-                Accept
-              </Button>
-              <RejectModalButton/>
             </Box>
           </Box>
         );
       }
     }
   }
-
-  // switch (userrole) {
-  //   case "Sales Engineer": {
-  //       return (
-  //         <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
-  //           <Typography
-  //             gutterBottom
-  //             variant="subtitle2"
-  //             component="span"
-  //             sx={{
-  //               display: "flex",
-  //               justifyContent: "left",
-  //               alignItems: "center",
-  //               marginLeft: 0,
-  //               color: "#063970",
-  //               fontWeight: "bold",
-  //             }}
-  //           >
-  //             <Box>
-  //               <h2>RMA Request #{rma.RmaID}</h2>
-  //             </Box>
-  //             <Box sx={{ marginLeft: 5 }}>
-  //               <Box>EMPLOYEE</Box>
-  //               <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //                 {rma.Username}
-  //               </Box>
-  //             </Box>
-  //             <Box sx={{ marginLeft: 5 }}>
-  //               <Box sx={{}}>DATE APPLIED</Box>
-  //               <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //                 {rma.DateTime}
-  //               </Box>
-  //             </Box>
-  //             <Box sx={{ marginLeft: 5 }}>
-  //               <Box sx={{}}>CUSTOMER NAME</Box>
-  //               <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //                 {rma.ContactPerson}
-  //               </Box>
-  //             </Box>
-  //             <Box sx={{ marginLeft: 5 }}>
-  //               <Box sx={{}}>CUSTOMER EMAIL</Box>
-  //               <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //                 {rma.CustomerEmail}
-  //               </Box>
-  //             </Box>
-  //             <Box sx={{ marginLeft: 5 }}>
-  //               <Box sx={{}}>COMPANY</Box>
-  //               <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //                 {rma.CompanyName}
-  //               </Box>
-  //             </Box>
-  //             <Box sx={{ marginLeft: 5 }}>
-  //               <Box sx={{}}>CONTACT NUMBER</Box>
-  //               <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //                 {rma.ContactNo}
-  //               </Box>
-  //             </Box>
-  //             <Box sx={{ marginLeft: 5 }}>
-  //               <Box sx={{}}>Rejected</Box>
-  //               <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //                 {rma.RmaStatusID}
-  //               </Box>
-  //             </Box>
-  //           </Typography>
-
-  //           <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
-  //             <Box sx={{ flexGrow: 1 }}>
-  //               <DataGrid
-  //                 sx={{ background: "white", fontSize: 16 }}
-  //                 rows={rows}
-  //                 columns={staticcolumns}
-  //                 editMode="row"
-  //                 getRowId={(row) => row.id}
-  //                 pageSize={pageSize}
-  //                 onPageSizeChange={(newPage) => setPageSize(newPage)}
-  //                 pagination
-  //                 components={{
-  //                   Toolbar: CustomToolbar,
-  //                   NoRowsOverlay: () => (
-  //                     <Stack
-  //                       height="100%"
-  //                       alignItems="center"
-  //                       justifyContent="center"
-  //                     >
-  //                       No approved RMA requests
-  //                     </Stack>
-  //                   ),
-  //                 }}
-  //                 filterModel={filterModel}
-  //                 onFilterModelChange={(newFilterModel) =>
-  //                   setFilterModel(newFilterModel)
-  //                 }
-  //                 // rowModesModel={rowModesModel}
-  //                 // onRowEditStart={handleRowEditStart}
-  //                 // onRowEditStop={handleRowEditStop}
-  //                 // processRowUpdate={processRowUpdate}
-  //                 // componentsProps={{
-  //                 //   toolbar: { setRows, setRowModesModel },
-  //                 // }}
-  //                 // experimentalFeatures={{ newEditingApi: true }}
-  //               />
-  //             </Box>
-  //           </Box>
-
-  //           <Box
-  //             component="span"
-  //             paddingTop={2}
-  //             display="flex"
-  //             justifyContent="space-between"
-  //             alignItems="center"
-  //           >
-  //             <Button
-  //               size="small"
-  //               variant="contained"
-  //               sx={{
-  //                 color: "white",
-  //                 backgroundColor: "#063970",
-  //                 width: 150,
-  //                 height: 50,
-  //                 borderRadius: 10,
-  //               }}
-  //               onClick={() => navigate("/rma")}
-  //             >
-  //               Back
-  //             </Button>
-  //           </Box>
-  //         </Box>
-  //       );
-  //   }
-  //   case "Sales Manager":
-  //   case "Warehouse Worker":
-  //   case "Technical Staff": {
-  //     return (
-  //       <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
-  //         <Typography
-  //           gutterBottom
-  //           variant="subtitle2"
-  //           component="span"
-  //           sx={{
-  //             display: "flex",
-  //             justifyContent: "left",
-  //             alignItems: "center",
-  //             marginLeft: 0,
-  //             color: "#063970",
-  //             fontWeight: "bold",
-  //           }}
-  //         >
-  //           <Box>
-  //             <h2>RMA Request #{rma.RmaID}</h2>
-  //           </Box>
-  //           <Box sx={{ marginLeft: 5 }}>
-  //             <Box>EMPLOYEE</Box>
-  //             <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //               {rma.Username}
-  //             </Box>
-  //           </Box>
-  //           <Box sx={{ marginLeft: 5 }}>
-  //             <Box sx={{}}>DATE APPLIED</Box>
-  //             <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //               {rma.DateTime}
-  //             </Box>
-  //           </Box>
-  //           <Box sx={{ marginLeft: 5 }}>
-  //             <Box sx={{}}>CUSTOMER NAME</Box>
-  //             <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //               {rma.ContactPerson}
-  //             </Box>
-  //           </Box>
-  //           <Box sx={{ marginLeft: 5 }}>
-  //             <Box sx={{}}>CUSTOMER EMAIL</Box>
-  //             <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //               {rma.CustomerEmail}
-  //             </Box>
-  //           </Box>
-  //           <Box sx={{ marginLeft: 5 }}>
-  //             <Box sx={{}}>COMPANY</Box>
-  //             <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //               {rma.CompanyName}
-  //             </Box>
-  //           </Box>
-  //           <Box sx={{ marginLeft: 5 }}>
-  //             <Box sx={{}}>CONTACT NUMBER</Box>
-  //             <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //               {rma.ContactNo}
-  //             </Box>
-  //           </Box>
-  //         </Typography>
-
-  //         <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
-  //           <Box sx={{ flexGrow: 1 }}>
-  //             <DataGrid
-  //               sx={{ background: "white", fontSize: 16 }}
-  //               rows={rows}
-  //               columns={icolumns}
-  //               editMode="row"
-  //               getRowId={(row) => row.id}
-  //               pageSize={pageSize}
-  //               onPageSizeChange={(newPage) => setPageSize(newPage)}
-  //               pagination
-  //               components={{
-  //                 Toolbar: CustomToolbar,
-  //                 NoRowsOverlay: () => (
-  //                   <Stack
-  //                     height="100%"
-  //                     alignItems="center"
-  //                     justifyContent="center"
-  //                   >
-  //                     No approved RMA requests
-  //                   </Stack>
-  //                 ),
-  //               }}
-  //               filterModel={filterModel}
-  //               onFilterModelChange={(newFilterModel) =>
-  //                 setFilterModel(newFilterModel)
-  //               }
-  //               rowModesModel={rowModesModel}
-  //               onRowEditStart={handleRowEditStart}
-  //               onRowEditStop={handleRowEditStop}
-  //               processRowUpdate={processRowUpdate}
-  //               componentsProps={{
-  //                 toolbar: { setRows, setRowModesModel },
-  //               }}
-  //               experimentalFeatures={{ newEditingApi: true }}
-  //             />
-  //           </Box>
-  //         </Box>
-
-  //         <Box
-  //           component="span"
-  //           paddingTop={2}
-  //           display="flex"
-  //           justifyContent="space-between"
-  //           alignItems="center"
-  //         >
-  //           <Button
-  //             size="small"
-  //             variant="contained"
-  //             sx={{
-  //               color: "white",
-  //               backgroundColor: "#063970",
-  //               width: 150,
-  //               height: 50,
-  //               borderRadius: 10,
-  //             }}
-  //             onClick={() => navigate("/rma")}
-  //           >
-  //             Back
-  //           </Button>
-  //           <Box
-  //             component="span"
-  //             display="flex"
-  //             justifyContent="space-between"
-  //             alignItems="center"
-  //           >
-  //             <Button
-  //               size="small"
-  //               variant="contained"
-  //               sx={{
-  //                 color: "white",
-  //                 backgroundColor: "#31A961",
-  //                 width: 150,
-  //                 height: 50,
-  //                 borderRadius: 10,
-  //               }}
-  //               onClick={verifyRMA}
-  //             >
-  //               Verify
-  //             </Button>
-  //           </Box>
-  //         </Box>
-  //       </Box>
-  //     );
-  //   }
-  //   case "Sales Admin": {
-  //     return (
-  //       <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
-  //         <Typography
-  //           gutterBottom
-  //           variant="subtitle2"
-  //           component="span"
-  //           sx={{
-  //             display: "flex",
-  //             justifyContent: "left",
-  //             alignItems: "center",
-  //             marginLeft: 0,
-  //             color: "#063970",
-  //             fontWeight: "bold",
-  //           }}
-  //         >
-  //           <Box>
-  //             <h2>RMA Request #{rma.RmaID}</h2>
-  //           </Box>
-  //           <Box sx={{ marginLeft: 5 }}>
-  //             <Box>EMPLOYEE</Box>
-  //             <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //               {rma.Username}
-  //             </Box>
-  //           </Box>
-  //           <Box sx={{ marginLeft: 5 }}>
-  //             <Box sx={{}}>DATE APPLIED</Box>
-  //             <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //               {rma.DateTime}
-  //             </Box>
-  //           </Box>
-  //           <Box sx={{ marginLeft: 5 }}>
-  //             <Box sx={{}}>CUSTOMER NAME</Box>
-  //             <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //               {rma.ContactPerson}
-  //             </Box>
-  //           </Box>
-  //           <Box sx={{ marginLeft: 5 }}>
-  //             <Box sx={{}}>CUSTOMER EMAIL</Box>
-  //             <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //               {rma.CustomerEmail}
-  //             </Box>
-  //           </Box>
-  //           <Box sx={{ marginLeft: 5 }}>
-  //             <Box sx={{}}>COMPANY</Box>
-  //             <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //               {rma.CompanyName}
-  //             </Box>
-  //           </Box>
-  //           <Box sx={{ marginLeft: 5 }}>
-  //             <Box sx={{}}>CONTACT NUMBER</Box>
-  //             <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //               {rma.ContactNo}
-  //             </Box>
-  //           </Box>
-  //         </Typography>
-
-  //         <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
-  //           <Box sx={{ flexGrow: 1 }}>
-  //             <DataGrid
-  //               sx={{ background: "white", fontSize: 16 }}
-  //               rows={rows}
-  //               columns={coacolumns}
-  //               editMode="row"
-  //               getRowId={(row) => row.id}
-  //               pageSize={pageSize}
-  //               onPageSizeChange={(newPage) => setPageSize(newPage)}
-  //               pagination
-  //               components={{
-  //                 Toolbar: CustomToolbar,
-  //                 NoRowsOverlay: () => (
-  //                   <Stack
-  //                     height="100%"
-  //                     alignItems="center"
-  //                     justifyContent="center"
-  //                   >
-  //                     No products
-  //                   </Stack>
-  //                 ),
-  //               }}
-  //               filterModel={filterModel}
-  //               onFilterModelChange={(newFilterModel) =>
-  //                 setFilterModel(newFilterModel)
-  //               }
-  //               rowModesModel={rowModesModel}
-  //               onRowEditStart={handleRowEditStart}
-  //               onRowEditStop={handleRowEditStop}
-  //               processRowUpdate={processRowUpdate}
-  //               componentsProps={{
-  //                 toolbar: { setRows, setRowModesModel },
-  //               }}
-  //               experimentalFeatures={{ newEditingApi: true }}
-  //             />
-  //           </Box>
-  //         </Box>
-
-  //         <Box
-  //           component="span"
-  //           paddingTop={2}
-  //           display="flex"
-  //           justifyContent="space-between"
-  //           alignItems="center"
-  //         >
-  //           <Button
-  //             size="small"
-  //             variant="contained"
-  //             sx={{
-  //               color: "white",
-  //               backgroundColor: "#063970",
-  //               width: 150,
-  //               height: 50,
-  //               borderRadius: 10,
-  //             }}
-  //             onClick={() => navigate("/rma")}
-  //           >
-  //             Back
-  //           </Button>
-  //           <Box
-  //             component="span"
-  //             display="flex"
-  //             justifyContent="space-between"
-  //             alignItems="center"
-  //           >
-  //             <Button
-  //               size="small"
-  //               variant="contained"
-  //               sx={{
-  //                 color: "white",
-  //                 backgroundColor: "#31A961",
-  //                 width: 150,
-  //                 height: 50,
-  //                 borderRadius: 10,
-  //               }}
-  //               onClick={COARMA}
-  //             >
-  //               Update
-  //             </Button>
-  //           </Box>
-  //         </Box>
-  //       </Box>
-  //     );
-  //   }
-  //   case "Admin":
-  //   default: {
-  //     return (
-  //       <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
-  //         <Typography
-  //           gutterBottom
-  //           variant="subtitle2"
-  //           component="span"
-  //           sx={{
-  //             display: "flex",
-  //             justifyContent: "left",
-  //             alignItems: "center",
-  //             marginLeft: 0,
-  //             color: "#063970",
-  //             fontWeight: "bold",
-  //           }}
-  //         >
-  //           <Box>
-  //             <h2>RMA Request #{rma.RmaID}</h2>
-  //           </Box>
-  //           <Box sx={{ marginLeft: 5 }}>
-  //             <Box>EMPLOYEE</Box>
-  //             <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //               {rma.Username}
-  //             </Box>
-  //           </Box>
-  //           <Box sx={{ marginLeft: 5 }}>
-  //             <Box sx={{}}>DATE APPLIED</Box>
-  //             <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //               {rma.DateTime}
-  //             </Box>
-  //           </Box>
-  //           <Box sx={{ marginLeft: 5 }}>
-  //             <Box sx={{}}>CUSTOMER NAME</Box>
-  //             <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //               {rma.ContactPerson}
-  //             </Box>
-  //           </Box>
-  //           <Box sx={{ marginLeft: 5 }}>
-  //             <Box sx={{}}>CUSTOMER EMAIL</Box>
-  //             <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //               {rma.CustomerEmail}
-  //             </Box>
-  //           </Box>
-  //           <Box sx={{ marginLeft: 5 }}>
-  //             <Box sx={{}}>COMPANY</Box>
-  //             <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //               {rma.CompanyName}
-  //             </Box>
-  //           </Box>
-  //           <Box sx={{ marginLeft: 5 }}>
-  //             <Box sx={{}}>CONTACT NUMBER</Box>
-  //             <Box sx={{ color: "black", fontWeight: "normal" }}>
-  //               {rma.ContactNo}
-  //             </Box>
-  //           </Box>
-  //         </Typography>
-
-  //         <Box sx={{ display: "flex", height: "100%", width: "100%" }}>
-  //           <Box sx={{ flexGrow: 1 }}>
-  //             <LocalizationProvider
-  //               dateAdapter={AdapterDateFns}
-  //               adapterLocale={locale}
-  //             >
-  //               <DataGridPro
-  //                 sx={{ background: "white", fontSize: 16 }}
-  //                 rows={rows}
-  //                 columns={columns}
-  //                 editMode="row"
-  //                 getRowId={(row) => row.id}
-  //                 rowModesModel={rowModesModel}
-  //                 onRowEditStart={handleRowEditStart}
-  //                 onRowEditStop={handleRowEditStop}
-  //                 processRowUpdate={processRowUpdate}
-  //                 componentsProps={{
-  //                   toolbar: { setRows, setRowModesModel },
-  //                 }}
-  //                 experimentalFeatures={{ newEditingApi: true }}
-  //               />
-  //             </LocalizationProvider>
-  //           </Box>
-  //         </Box>
-
-  //         <Box
-  //           component="span"
-  //           m={1}
-  //           display="flex"
-  //           justifyContent="space-between"
-  //           alignItems="center"
-  //         >
-  //           <Button
-  //             size="small"
-  //             variant="contained"
-  //             sx={{
-  //               color: "white",
-  //               backgroundColor: "#063970",
-  //               width: 150,
-  //               height: 50,
-  //             }}
-  //             onClick={() => navigate("/rma")}
-  //           >
-  //             Back
-  //           </Button>
-  //           <Button
-  //             size="small"
-  //             variant="contained"
-  //             sx={{
-  //               color: "white",
-  //               backgroundColor: "#063970",
-  //               width: 150,
-  //               height: 50,
-  //             }}
-  //             onClick={acceptRMA}
-  //           >
-  //             Accept
-  //           </Button>
-  //           <RejectModalButton/>
-  //         </Box>
-  //       </Box>
-  //     );
-  //   }
-  // }
 }
