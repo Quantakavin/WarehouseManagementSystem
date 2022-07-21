@@ -97,10 +97,10 @@ function newtloan() {
       </GridToolbarContainer>
     );
   }
-  
-    const FullFeaturedCrudGrid = ()=> {
-    const [rows, setRows] = React.useState(initialRows);
+    const [rows, setRows] = React.useState([]);
     const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
+    const FullFeaturedCrudGrid = ()=> {
+    
   
     const handleRowEditStart = (
       params: GridRowParams,
@@ -232,7 +232,7 @@ function newtloan() {
           
          
         />
-        {console.log(items)}
+        {console.log(rows)}
       </Box>
     );
   }
@@ -250,10 +250,13 @@ function newtloan() {
   const [user,setUser] = useState('')
   const [email,setEmail] = useState('')
   const [collection,setCollection] = useState('')
-  const [items,setItems] = useState([])
-
- 
-
+  //const [items,setItems] = useState([])
+  
+   
+      const items = rows.map(({id, isNew, ...rows}) => rows)
+      console.log(items)
+     
+     
 
 
   const handleChangeCompany = (event: SelectChangeEvent) => {
@@ -302,7 +305,7 @@ function newtloan() {
         email,
         collection,
         items
-      })
+      }).then(() => navigate("/tloan"))
       console.log(results)
      } catch( error) {
       console.log(error.response)
@@ -360,7 +363,7 @@ function newtloan() {
       <CardContent> 
         <>
         {FullFeaturedCrudGrid()}
-        {console.log(items)}
+     
         
         
         <Box sx={{marginLeft: 2, marginTop: 1, display: 'flex'}}>
