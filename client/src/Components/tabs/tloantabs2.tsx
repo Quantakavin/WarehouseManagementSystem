@@ -7,6 +7,7 @@ import {
   MenuItem,
   Stack,
   Grid,
+  Typography,
 } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import "react-tabs/style/react-tabs.css";
@@ -22,7 +23,7 @@ import { motion } from "framer-motion";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import SearchBarUpdated from "../../components/search/SearchBarUpdated";
 import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
+import PostAddIcon from "@mui/icons-material/PostAdd";
 import theme from "../../styles/muistyle";
 import {
   DataGrid,
@@ -92,15 +93,17 @@ const TLoanTabs2: React.FC = () => {
 
   function CustomToolbar() {
     return (
-      <GridToolbarContainer sx={{display: "flex", flexWrap: "wrap", maxWidth: 613, p: 1}}>
+      <GridToolbarContainer
+        sx={{ display: "flex", flexWrap: "wrap", maxWidth: 613, p: 1 }}
+      >
         <Box>
-        <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
+          <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
         </Box>
         <Box>
-        <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
-        <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
-        <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
-        <GridToolbarExport sx={{ color: "#0A2540" }} />
+          <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
+          <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
+          <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
+          <GridToolbarExport sx={{ color: "#0A2540" }} />
         </Box>
       </GridToolbarContainer>
     );
@@ -192,15 +195,22 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 10, marginTop: 8 }}>
+                <Box sx={{ paddingLeft: 4, marginTop: 8 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
-                      <Fab
+                    <Fab
+                        variant="extended"
                         aria-label="add"
                         onClick={() => navigate("/newtloan")}
                         style={{ marginTop: 0 }}
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          ":hover": { backgroundColor: "#031c38" },
+                        }}
                       >
-                        <AddIcon />
+                          Create
+                        <PostAddIcon sx={{ ml: 2 }} />
                       </Fab>
                     </ThemeProvider>
                   </React.StrictMode>
@@ -412,15 +422,22 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 10, marginTop: 8 }}>
+                <Box sx={{ paddingLeft: 4, marginTop: 8 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
-                      <Fab
+                    <Fab
+                        variant="extended"
                         aria-label="add"
                         onClick={() => navigate("/newtloan")}
                         style={{ marginTop: 0 }}
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          ":hover": { backgroundColor: "#031c38" },
+                        }}
                       >
-                        <AddIcon />
+                          Create
+                        <PostAddIcon sx={{ ml: 2 }} />
                       </Fab>
                     </ThemeProvider>
                   </React.StrictMode>
@@ -753,15 +770,22 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 10, marginTop: 8 }}>
+                <Box sx={{ paddingLeft: 4, marginTop: 8 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
-                      <Fab
+                    <Fab
+                        variant="extended"
                         aria-label="add"
                         onClick={() => navigate("/newtloan")}
                         style={{ marginTop: 0 }}
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          ":hover": { backgroundColor: "#031c38" },
+                        }}
                       >
-                        <AddIcon />
+                          Create
+                        <PostAddIcon sx={{ ml: 2 }} />
                       </Fab>
                     </ThemeProvider>
                   </React.StrictMode>
@@ -1049,15 +1073,22 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 10, marginTop: 7.8 }}>
+                <Box sx={{ marginLeft: 4, marginTop: 8 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
                       <Fab
+                        variant="extended"
                         aria-label="add"
                         onClick={() => navigate("/newtloan")}
                         style={{ marginTop: 0 }}
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          ":hover": { backgroundColor: "#031c38" },
+                        }}
                       >
-                        <AddIcon />
+                          Create
+                        <PostAddIcon sx={{ ml: 2 }} />
                       </Fab>
                     </ThemeProvider>
                   </React.StrictMode>
@@ -1269,15 +1300,22 @@ const TLoanTabs2: React.FC = () => {
                 </Box>
               </Grid>
               <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 10, marginTop: 8 }}>
+                <Box sx={{ paddingLeft: 4, marginTop: 8 }}>
                   <React.StrictMode>
                     <ThemeProvider theme={theme}>
-                      <Fab
+                    <Fab
+                        variant="extended"
                         aria-label="add"
                         onClick={() => navigate("/newtloan")}
                         style={{ marginTop: 0 }}
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          ":hover": { backgroundColor: "#031c38" },
+                        }}
                       >
-                        <AddIcon />
+                          Create
+                        <PostAddIcon sx={{ ml: 2 }} />
                       </Fab>
                     </ThemeProvider>
                   </React.StrictMode>

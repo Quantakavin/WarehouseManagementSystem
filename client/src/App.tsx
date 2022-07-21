@@ -86,12 +86,12 @@ const App: React.FC = () => {
               <Route path="/product/:id" element={<ViewProduct />} />
               <Route path="/binlocations" element={<BinLocations />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/user/:id" element={<ViewUser2 />} />
+              <Route path="/user/:id" element={<ViewUser />} />
               <Route path="/users" element={<Users2 />} />
               <Route path="/adduser" element={<AddUser />} />
               <Route path="/edituser/:id" element={<EditUser />} />
               <Route path="/usergroups" element={<UserGroups2 />} />
-              <Route path="/usergroup/:id" element={<ViewUserGroup2 />} />
+              <Route path="/usergroup/:id" element={<ViewUserGroup />} />
               <Route path="/addusergroup" element={<AddUserGroup />} />
               <Route path="/editusergroup/:id" element={<EditUserGroup />} />
               <Route path="/notificationgroups" element={<NotificationGroups2 />} />

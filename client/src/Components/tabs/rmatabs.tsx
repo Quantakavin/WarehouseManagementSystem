@@ -1,18 +1,9 @@
-import {
-  Tab,
-  Tabs,
-  Box,
-  unstable_createMuiStrictModeTheme,
-  ThemeProvider,
-  MenuItem,
-  Stack,
-  Grid,
-} from "@mui/material";
+import { Tab, Tabs, Box, Stack, Grid, ThemeProvider } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import "react-tabs/style/react-tabs.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole, selectId } from "../../app/reducers/CurrentUserSlice";
 import RmaSearch from "../search/RmaSearch";
@@ -21,14 +12,12 @@ import { motion } from "framer-motion";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import SearchBarUpdated from "../../components/search/SearchBarUpdated";
 import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
+import PostAddIcon from "@mui/icons-material/PostAdd";
 import theme from "../../styles/muistyle";
 import {
   DataGrid,
   GridFilterModel,
   GridRowParams,
-  GridRowId,
-  MuiEvent,
   GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarDensitySelector,
@@ -39,9 +28,7 @@ import {
 
 const Rmatabs: React.FC = () => {
   const navigate = useNavigate();
-  const theme = unstable_createMuiStrictModeTheme();
   const [pageSize, setPageSize] = React.useState(25);
-  const [inputName, setInputName] = useState<string>(null);
   const userid = useAppSelector(selectId);
   const userrole = useAppSelector(selectRole);
   const [pendingTable, setPendingTable] = useState([]);
@@ -70,6 +57,14 @@ const Rmatabs: React.FC = () => {
     setValue(newValue);
   };
 
+  const columns = [
+    { field: "RmaID", headerName: "ID", flex: 1 },
+    { field: "Username", headerName: "Employee", flex: 8 },
+    { field: "DateTime", headerName: "Date", flex: 8 },
+    { field: "CompanyName", headerName: "Company", flex: 8 },
+    { field: "CustomerEmail", headerName: "Customer Email", flex: 8 },
+  ];
+
   function CustomToolbar() {
     return (
       <GridToolbarContainer
@@ -87,14 +82,6 @@ const Rmatabs: React.FC = () => {
       </GridToolbarContainer>
     );
   }
-
-  const columns = [
-    { field: "RmaID", headerName: "ID", flex: 1 },
-    { field: "Username", headerName: "Employee", flex: 8 },
-    { field: "DateTime", headerName: "Date", flex: 8 },
-    { field: "CompanyName", headerName: "Company", flex: 8 },
-    { field: "CustomerEmail", headerName: "Customer Email", flex: 8 },
-  ];
 
   useEffect(() => {
     fetch("http://localhost:5000/api/pendingRMA")
@@ -176,220 +163,242 @@ const Rmatabs: React.FC = () => {
     case "Sales Engineer": {
       return (
         <TabContext value={value || "1"}>
-          <Box sx={{ paddingLeft: 3, paddingTop: 3 }}>
-            <h2> RMA Requests </h2>
-            <Tabs
-              onChange={handleChange}
-              TabIndicatorProps={{
-                style: { backgroundColor: "#D97D54" },
-              }}
-              sx={{
-                "& button:focus": {
-                  backgroundColor: "#063970",
+          <Grid container>
+            <Grid item xs={11}>
+              <Box sx={{ paddingLeft: 3, paddingTop: 3 }}>
+                <h2> RMA Requests </h2>
+                <Tabs
+                  onChange={handleChange}
+                  TabIndicatorProps={{
+                    style: { backgroundColor: "#D97D54" },
+                  }}
+                  sx={{
+                    "& button:focus": {
+                      backgroundColor: "#063970",
+                      color: "white",
+                      width: "15%",
+                      height: "15%",
+                    },
+                  }}
+                >
+                  <Tab
+                    label="Pending"
+                    value="1"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                  <Tab
+                    label="Accepted"
+                    value="2"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                  <Tab
+                    label="Rejected"
+                    value="3"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                  <Tab
+                    label="In Progress"
+                    value="4"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                </Tabs>
+              </Box>
+            </Grid>
+            <Grid item xs={1} sx={{ paddingLeft: 4, marginTop: 8 }}>
+              <Fab
+                variant="extended"
+                aria-label="add"
+                onClick={() => navigate("/newtloan")}
+                style={{ marginTop: 0 }}
+                sx={{
                   color: "white",
-                  width: "15%",
-                  height: "15%",
-                },
-              }}
-            >
-              <Tab
-                label="Pending"
-                value="1"
-                sx={{
-                  color: "grey",
-                  backgroundColor: "White",
-                  borderRadius: 2,
-                  marginRight: 2,
-                  height: "100%",
-                  width: "15%",
+                  backgroundColor: "#063970",
+                  ":hover": { backgroundColor: "#031c38" },
                 }}
-              />
-              <Tab
-                label="Accepted"
-                value="2"
-                sx={{
-                  color: "grey",
-                  backgroundColor: "White",
-                  borderRadius: 2,
-                  marginRight: 2,
-                  height: "100%",
-                  width: "15%",
-                }}
-              />
-              <Tab
-                label="Rejected"
-                value="3"
-                sx={{
-                  color: "grey",
-                  backgroundColor: "White",
-                  borderRadius: 2,
-                  marginRight: 2,
-                  height: "100%",
-                  width: "15%",
-                }}
-              />
-              <Tab
-                label="In Progress"
-                value="4"
-                sx={{
-                  color: "grey",
-                  backgroundColor: "White",
-                  borderRadius: 2,
-                  marginRight: 2,
-                  height: "100%",
-                  width: "15%",
-                }}
-              />
-            </Tabs>
-          </Box>
-          <Box>
-            <TabPanel value="1">
-              <Box sx={{ display: "flex", height: 600, width: "100%" }}>
-                <Box sx={{ flexGrow: 1 }}>
-                  <DataGrid
-                    sx={{ background: "white", fontSize: 16 }}
-                    rows={myPendingTable}
-                    columns={columns}
-                    editMode="row"
-                    getRowId={(row) => row.RmaID}
-                    pageSize={pageSize}
-                    onPageSizeChange={(newPage) => setPageSize(newPage)}
-                    pagination
-                    components={{
-                      Toolbar: CustomToolbar,
-                      NoRowsOverlay: () => (
-                        <Stack
-                          height="100%"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          No approved RMA requests
-                        </Stack>
-                      ),
-                    }}
-                    filterModel={filterModel}
-                    onFilterModelChange={(newFilterModel) =>
-                      setFilterModel(newFilterModel)
-                    }
-                    onRowClick={(params: GridRowParams) => {
-                      navigate(`/rmaDetails/${params.id}`);
-                    }}
-                  />
-                </Box>
+              >
+                Create
+                <PostAddIcon sx={{ ml: 2 }} />
+              </Fab>
+            </Grid>
+            <Grid item xs={12}>
+              <Box>
+                <TabPanel value="1">
+                  <Box sx={{ display: "flex", height: 600, width: "100%" }}>
+                    <Box sx={{ flexGrow: 1 }}>
+                      <DataGrid
+                        sx={{ background: "white", fontSize: 16 }}
+                        rows={myPendingTable}
+                        columns={columns}
+                        editMode="row"
+                        getRowId={(row) => row.RmaID}
+                        pageSize={pageSize}
+                        onPageSizeChange={(newPage) => setPageSize(newPage)}
+                        pagination
+                        components={{
+                          Toolbar: CustomToolbar,
+                          NoRowsOverlay: () => (
+                            <Stack
+                              height="100%"
+                              alignItems="center"
+                              justifyContent="center"
+                            >
+                              No approved RMA requests
+                            </Stack>
+                          ),
+                        }}
+                        filterModel={filterModel}
+                        onFilterModelChange={(newFilterModel) =>
+                          setFilterModel(newFilterModel)
+                        }
+                        onRowClick={(params: GridRowParams) => {
+                          navigate(`/rmaDetails/${params.id}`);
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                </TabPanel>
+                <TabPanel value="2">
+                  <Box sx={{ display: "flex", height: 600, width: "100%" }}>
+                    <Box sx={{ flexGrow: 1 }}>
+                      <DataGrid
+                        sx={{
+                          background: "white",
+                          fontSize: 16,
+                        }}
+                        rows={myAcceptedTable}
+                        columns={columns}
+                        getRowId={(row) => row.RmaID}
+                        pageSize={pageSize}
+                        onPageSizeChange={(newPage) => setPageSize(newPage)}
+                        pagination
+                        components={{
+                          Toolbar: CustomToolbar,
+                          NoRowsOverlay: () => (
+                            <Stack
+                              height="100%"
+                              alignItems="center"
+                              justifyContent="center"
+                            >
+                              No pending RMA requests
+                            </Stack>
+                          ),
+                        }}
+                        filterModel={filterModel}
+                        onFilterModelChange={(newFilterModel) =>
+                          setFilterModel(newFilterModel)
+                        }
+                        onRowClick={(params: GridRowParams) => {
+                          navigate(`/rmaDetails/${params.id}`);
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                </TabPanel>
+                <TabPanel value="3">
+                  <Box sx={{ display: "flex", height: 600, width: "100%" }}>
+                    <Box sx={{ flexGrow: 1 }}>
+                      <DataGrid
+                        sx={{
+                          background: "white",
+                          fontSize: 18,
+                        }}
+                        rows={myRejectedTable}
+                        columns={columns}
+                        getRowId={(row) => row.RmaID}
+                        pageSize={pageSize}
+                        onPageSizeChange={(newPage) => setPageSize(newPage)}
+                        pagination
+                        components={{
+                          Toolbar: CustomToolbar,
+                          NoRowsOverlay: () => (
+                            <Stack
+                              height="100%"
+                              alignItems="center"
+                              justifyContent="center"
+                            >
+                              No pending RMA requests
+                            </Stack>
+                          ),
+                        }}
+                        filterModel={filterModel}
+                        onFilterModelChange={(newFilterModel) =>
+                          setFilterModel(newFilterModel)
+                        }
+                        onRowClick={(params: GridRowParams) => {
+                          navigate(`/rmaDetails/${params.id}`);
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                </TabPanel>
+                <TabPanel value="4">
+                  <Box sx={{ display: "flex", height: 600, width: "100%" }}>
+                    <Box sx={{ flexGrow: 1 }}>
+                      <DataGrid
+                        sx={{
+                          background: "white",
+                          fontSize: 18,
+                        }}
+                        rows={myInProgressTable}
+                        columns={columns}
+                        getRowId={(row) => row.RmaID}
+                        pageSize={pageSize}
+                        onPageSizeChange={(newPage) => setPageSize(newPage)}
+                        pagination
+                        components={{
+                          Toolbar: CustomToolbar,
+                          NoRowsOverlay: () => (
+                            <Stack
+                              height="100%"
+                              alignItems="center"
+                              justifyContent="center"
+                            >
+                              No RMA requests in progress
+                            </Stack>
+                          ),
+                        }}
+                        filterModel={filterModel}
+                        onFilterModelChange={(newFilterModel) =>
+                          setFilterModel(newFilterModel)
+                        }
+                        onRowClick={(params: GridRowParams) => {
+                          navigate(`/rmaDetails/${params.id}`);
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                </TabPanel>
               </Box>
-            </TabPanel>
-            <TabPanel value="2">
-              <Box sx={{ display: "flex", height: 600, width: "100%" }}>
-                <Box sx={{ flexGrow: 1 }}>
-                  <DataGrid
-                    sx={{
-                      background: "white",
-                      fontSize: 16,
-                    }}
-                    rows={myAcceptedTable}
-                    columns={columns}
-                    getRowId={(row) => row.RmaID}
-                    pageSize={pageSize}
-                    onPageSizeChange={(newPage) => setPageSize(newPage)}
-                    pagination
-                    components={{
-                      Toolbar: CustomToolbar,
-                      NoRowsOverlay: () => (
-                        <Stack
-                          height="100%"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          No pending RMA requests
-                        </Stack>
-                      ),
-                    }}
-                    filterModel={filterModel}
-                    onFilterModelChange={(newFilterModel) =>
-                      setFilterModel(newFilterModel)
-                    }
-                    onRowClick={(params: GridRowParams) => {
-                      navigate(`/rmaDetails/${params.id}`);
-                    }}
-                  />
-                </Box>
-              </Box>
-            </TabPanel>
-            <TabPanel value="3">
-              <Box sx={{ display: "flex", height: 600, width: "100%" }}>
-                <Box sx={{ flexGrow: 1 }}>
-                  <DataGrid
-                    sx={{
-                      background: "white",
-                      fontSize: 18,
-                    }}
-                    rows={myRejectedTable}
-                    columns={columns}
-                    getRowId={(row) => row.RmaID}
-                    pageSize={pageSize}
-                    onPageSizeChange={(newPage) => setPageSize(newPage)}
-                    pagination
-                    components={{
-                      Toolbar: CustomToolbar,
-                      NoRowsOverlay: () => (
-                        <Stack
-                          height="100%"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          No pending RMA requests
-                        </Stack>
-                      ),
-                    }}
-                    filterModel={filterModel}
-                    onFilterModelChange={(newFilterModel) =>
-                      setFilterModel(newFilterModel)
-                    }
-                    onRowClick={(params: GridRowParams) => {
-                      navigate(`/rmaDetails/${params.id}`);
-                    }}
-                  />
-                </Box>
-              </Box>
-            </TabPanel>
-            <TabPanel value="4">
-              <Box sx={{ display: "flex", height: 600, width: "100%" }}>
-                <Box sx={{ flexGrow: 1 }}>
-                  <DataGrid
-                    sx={{
-                      background: "white",
-                      fontSize: 18,
-                    }}
-                    rows={myInProgressTable}
-                    columns={columns}
-                    getRowId={(row) => row.RmaID}
-                    pageSize={pageSize}
-                    onPageSizeChange={(newPage) => setPageSize(newPage)}
-                    pagination
-                    components={{
-                      Toolbar: CustomToolbar,
-                      NoRowsOverlay: () => (
-                        <Stack
-                          height="100%"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          No RMA requests in progress
-                        </Stack>
-                      ),
-                    }}
-                    filterModel={filterModel}
-                    onFilterModelChange={(newFilterModel) =>
-                      setFilterModel(newFilterModel)
-                    }
-                    onRowClick={(params: GridRowParams) => {
-                      navigate(`/rmaDetails/${params.id}`);
-                    }}
-                  />
-                </Box>
-              </Box>
-            </TabPanel>
-          </Box>
+            </Grid>
+          </Grid>
         </TabContext>
       );
     }
@@ -1007,7 +1016,7 @@ const Rmatabs: React.FC = () => {
             width: "100%",
           }}
         >
-          <TabContext value={value || "1"}>
+          <TabContext value={value || "2"}>
             <Grid item xs={12}>
               <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
                 <h2> RMA Requests </h2>
@@ -1417,4 +1426,5 @@ const Rmatabs: React.FC = () => {
     }
   }
 };
+
 export default Rmatabs;
