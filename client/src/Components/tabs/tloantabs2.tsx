@@ -49,6 +49,12 @@ const columns = [
   { field: "CustomerEmail", headerName: "Customer Email", flex: 3 },
 ];
 
+const managerColumns = [
+  { field: "TLoanNumber", headerName: "Loan No.", flex: 2.5 },
+  { field: "StartDate", headerName: "Start Date", flex: 1 },
+  { field: "Requestor", headerName: "Employee Name", flex: 3 },
+  { field: "TLoanType", headerName: "Loan Type", flex: 3 },
+];
 const TLoanTabs2: React.FC = () => {
   const userid = useAppSelector(selectId);
   const userrole = useAppSelector(selectRole);
@@ -56,29 +62,37 @@ const TLoanTabs2: React.FC = () => {
   const [pendingTable, setPendingTable] = useState([]);
   const [draftTable, setDraftTable] = useState([]);
   const [historyTable, setHistoryTable] = useState([]);
+  const [managerLoan, setManagerLoan] = useState([]);
+  const [extensionsTable, setExtensionTable] = useState([]);
   //Get and set current tloans data
   useEffect(() => {
-    fetch("http://localhost:5000/api/tloan/current")
+    fetch(`http://localhost:5000/api/tloan/current/${userid}`)
       .then((data) => data.json())
       .then((data) => setCurrentTable(data));
   }, []);
   //Get and set pending tloans data
   useEffect(() => {
-    fetch("http://localhost:5000/api/tloan/pending")
+    fetch(`http://localhost:5000/api/tloan/pending/${userid}`)
       .then((data) => data.json())
       .then((data) => setPendingTable(data));
   }, []);
   //Get and set draft data
   useEffect(() => {
-    fetch("http://localhost:5000/api/tloan/drafts")
+    fetch(`http://localhost:5000/api/tloan/drafts/${userid}`)
       .then((data) => data.json())
       .then((data) => setDraftTable(data));
   }, []);
   //Get and set history data
   useEffect(() => {
-    fetch("http://localhost:5000/api/tloans/history")
+    fetch(`http://localhost:5000/api/tloan/history/${userid}`)
       .then((data) => data.json())
       .then((data) => setHistoryTable(data));
+  }, []);
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/tloan/ManagerLoan`)
+      .then((data) => data.json())
+      .then((data) => setManagerLoan(data));
   }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
@@ -630,8 +644,8 @@ const TLoanTabs2: React.FC = () => {
                   <div style={{ height: 600, width: "100%" }}>
                     <DataGrid
                       sx={{ background: "white", fontSize: 18 }}
-                      rows={loansTable}
-                      columns={columns}
+                      rows={managerLoan}
+                      columns={managerColumns}
                       getRowId={(row) => row.TLoanNumber}
                       pageSize={pageSize}
                       onPageSizeChange={(newPage) => setPageSize(newPage)}
@@ -653,7 +667,7 @@ const TLoanTabs2: React.FC = () => {
                         setFilterModel(newFilterModel)
                       }
                       onRowClick={(params: GridRowParams) => {
-                        navigate(`/tloandetails/${params.id}`);
+                        navigate(`/tloanManagerDisplay/${params.id}`);
                       }}
                     />
                   </div>

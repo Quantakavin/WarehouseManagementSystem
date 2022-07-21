@@ -30,14 +30,15 @@ import RmaDisplay from "./components/display/rmaDisplay";
 import NewTLoan from "./pages/tloans/newtloan";
 import Products2 from "./pages/products/Products2";
 import TLoanDisplay2 from "./components/display/tloanDisplay2";
+import TLoanManagerDisplay from "./components/display/tloanManagerDisplay"
 import Users2 from "./pages/users/Users2";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "./app/hooks";
 import { selectIsAuthenticated, selectName } from "./app/reducers/CurrentUserSlice";
 import UserGroups2 from "./pages/usergroups/UserGroups2";
 import NotificationGroups2 from "./pages/notificationgroups/NotificationGroups2";
-import ViewUser2 from "./pages/users/ViewUser2";
-import ViewUserGroup2 from "./pages/usergroups/ViewUserGroup2";
+// import ViewUser2 from "./pages/users/ViewUser2";
+// import ViewUserGroup2 from "./pages/usergroups/ViewUserGroup2";
 import { Box } from "@mui/material";
 import Modals12 from './components/display/TloanModal/modal'
 import Error404 from './pages/Error404'
@@ -87,16 +88,25 @@ const App: React.FC = () => {
               <Route path="/binlocations" element={<BinLocations />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/user/:id" element={<ViewUser />} />
-              <Route path="/users" element={<Users2 />} />
+              <Route path="/users" element={<Users />} />
               <Route path="/adduser" element={<AddUser />} />
               <Route path="/edituser/:id" element={<EditUser />} />
-              <Route path="/usergroups" element={<UserGroups2 />} />
+              <Route path="/usergroups" element={<UserGroups />} />
               <Route path="/usergroup/:id" element={<ViewUserGroup />} />
               <Route path="/addusergroup" element={<AddUserGroup />} />
               <Route path="/editusergroup/:id" element={<EditUserGroup />} />
-              <Route path="/notificationgroups" element={<NotificationGroups2 />} />
-              <Route path="/notificationgroup/:id" element={<ViewNotificationGroup />} />
-              <Route path="/addnotificationgroup" element={<AddNotificationGroup />} />
+              <Route
+                path="/notificationgroups"
+                element={<NotificationGroups />}
+              />
+              <Route
+                path="/notificationgroup/:id"
+                element={<ViewNotificationGroup />}
+              />
+              <Route
+                path="/addnotificationgroup"
+                element={<AddNotificationGroup />}
+              />
               <Route path="/editnotificationgroup/:id" element={<EditNotificationGroup />} />
               <Route path="/tloan" element={<TLoan />} />
               <Route path="/rma" element={<RMA />} />
@@ -106,6 +116,8 @@ const App: React.FC = () => {
               <Route path="/newtloan" element={<NewTLoan />} />
               <Route path="/modal" element={<Modals12 />} />
               <Route path="/error404" element={<Error404 />} />
+              <Route path="/tloanManagerDisplay/:TLoanNumber" element={<TLoanManagerDisplay/>} />
+              
             </Route>
           </Routes>
         </Box>

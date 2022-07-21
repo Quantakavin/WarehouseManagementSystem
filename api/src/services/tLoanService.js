@@ -132,7 +132,7 @@ module.exports.extension = async(id,duration,reason) => {
 }
 
 
-module.exports.getCurrent = async () => {
+module.exports.getCurrent = async (UserID) => {
   const query = `
   SELECT t.TLoanNumber,
   t.TLoanID,
@@ -140,28 +140,16 @@ module.exports.getCurrent = async () => {
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,
   t.CustomerEmail,
+  u.UserID,
   count(t.TLoanNumber) OVER() AS full_count
-  FROM TLoan t, Company c where TLoanStatusID IN (3,5,6,7) AND 
-  t.CompanyID = c.CompanyID;`;
-  return knex.raw(query);
+  FROM TLoan t JOIN Company c
+  ON t.CompanyID = c.CompanyID 
+  JOIN User u ON  t.UserID= u.UserID 
+  WHERE t.UserID=? AND t.TLoanStatusID IN (3,5,6,7);`;
+  return knex.raw(query, [UserID]);
 }
 
-module.exports.getPending = async () => {
-  const query = `
-  SELECT t.TLoanNumber, 
-  t.TLoanID,
-  DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
-  DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
-  c.CompanyName,
-  t.CustomerEmail,
-  count(t.TLoanNumber) OVER() AS full_count
-  FROM TLoan t, Company c where TLoanStatusID = "4" AND 
-  t.CompanyID = c.CompanyID;`;
-  return knex.raw(query);
-}
-
-module.exports.getDraft = async () => {
-  
+module.exports.getPending = async (UserID) => {
   const query = `
   SELECT t.TLoanNumber,
   t.TLoanID,
@@ -169,14 +157,17 @@ module.exports.getDraft = async () => {
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,
   t.CustomerEmail,
+  u.UserID,
   count(t.TLoanNumber) OVER() AS full_count
-  FROM TLoan t, Company c where TLoanStatusID = "1" AND 
-  t.CompanyID = c.CompanyID;`;
-  return knex.raw(query)
-  
+  FROM TLoan t JOIN Company c
+  ON t.CompanyID = c.CompanyID 
+  JOIN User u ON  t.UserID= u.UserID 
+  WHERE t.UserID=? AND t.TLoanStatusID = "4";`;
+  return knex.raw(query, [UserID]);
 }
 
-module.exports.getHistory = async () => {
+
+module.exports.getDraft = async (UserID) => {
   const query = `
   SELECT t.TLoanNumber,
   t.TLoanID,
@@ -184,20 +175,41 @@ module.exports.getHistory = async () => {
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
   c.CompanyName,
   t.CustomerEmail,
+  u.UserID,
   count(t.TLoanNumber) OVER() AS full_count
-  FROM TLoan t, Company c where TLoanStatusID = "8" AND 
-  t.CompanyID = c.CompanyID;`;
-  return knex.raw(query);
+  FROM TLoan t JOIN Company c
+  ON t.CompanyID = c.CompanyID 
+  JOIN User u ON  t.UserID= u.UserID 
+  WHERE t.UserID=? AND t.TLoanStatusID = "1";`;
+  return knex.raw(query, [UserID]);
 }
+
+
+module.exports.getHistory = async (UserID) => {
+  const query = `
+  SELECT t.TLoanNumber,
+  t.TLoanID,
+  DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
+  DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
+  c.CompanyName,
+  t.CustomerEmail,
+  u.UserID,
+  count(t.TLoanNumber) OVER() AS full_count
+  FROM TLoan t JOIN Company c
+  ON t.CompanyID = c.CompanyID 
+  JOIN User u ON  t.UserID= u.UserID 
+  WHERE t.UserID=? AND t.TLoanStatusID = "8";`;
+  return knex.raw(query,[UserID]);
+}
+
 
 module.exports.getManagerLoan = async () => {
   const query = `
   SELECT t.TLoanNumber, 
   DATE_FORMAT(t.ApplicationDate, "%d-%m-%Y") AS 'StartDate',
   t.Requestor,
-  tt.TLoanType,
-  count(t.TLoanNumber) OVER() AS full_count
-  FROM TLoan t, TLoanType tt where t.TLoanStatusID = "1" AND 
+  tt.TLoanType
+  FROM TLoan t, TLoanType tt where t.TLoanStatusID = "4" AND 
   t.TLoanTypeID = tt.TLoanTypeID;`;
   return knex.raw(query);
 }
@@ -214,10 +226,10 @@ module.exports.getManagerExtension = async () => {
   return knex.raw(query);
 }
 
-module.exports.approveLoan = async (number) => {
+module.exports.approveLoan = async (TLoanNumber) => {
   return knex.transaction((trx) => {
       knex('TLoan')
-          .where('TLoanNumber', number)
+          .where('TLoanNumber', TLoanNumber)
           .update({
               TLoanStatusID: 3,
           })

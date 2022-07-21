@@ -189,8 +189,9 @@ module.exports.loanExtension = async (req, res) => {
 };
 
 module.exports.currentLoan = async (req, res) => {
+    const {UserID} = req.params
     try {
-        const results = await TLoan.getCurrent();
+        const results = await TLoan.getCurrent(UserID);
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -203,8 +204,9 @@ module.exports.currentLoan = async (req, res) => {
 };
 
 module.exports.draftsLoan = async (req, res) => {
+    const {UserID} = req.params
     try {
-        const results = await TLoan.getDraft();
+        const results = await TLoan.getDraft(UserID);
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -217,8 +219,9 @@ module.exports.draftsLoan = async (req, res) => {
 };
 
 module.exports.historyLoan = async (req, res) => {
+    const {UserID} = req.params
     try {
-        const results = await TLoan.getHistory();
+        const results = await TLoan.getHistory(UserID);
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -231,8 +234,9 @@ module.exports.historyLoan = async (req, res) => {
 };
 
 module.exports.pendingLoan = async (req, res) => {
+    const {UserID} = req.params
     try {
-        const results = await TLoan.getPending();
+        const results = await TLoan.getPending(UserID);
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -247,9 +251,9 @@ module.exports.pendingLoan = async (req, res) => {
 
 
 module.exports.approveLoan = async(req , res) =>{
-    const {number} = req.body
+    const {TLoanNumber} = req.params
     try{
-        const results = await TLoan.approveLoan(number)
+        const results = await TLoan.approveLoan(TLoanNumber)
         if(results) {
             return res.status(200).send('Status has been Updated')
         } else {

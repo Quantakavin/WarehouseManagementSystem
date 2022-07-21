@@ -34,11 +34,11 @@ const Model: React.FC<ModelProps> = ({
 }) => {
   const group = useRef<THREE.Group>();
   const { nodes, materials } = useGLTF("/box.glb") as GLTFResult;
-  const bintag = `${areatag}-${racktag}-${leveltag}-${sectiontag}`;
+  const bintag = `${areatag}${racktag}${leveltag}${sectiontag}`;
   return (
     <group
       onClick={() => {
-        alert(bintag);
+        alert(bintag)
       }}
       ref={group}
       dispose={null}
