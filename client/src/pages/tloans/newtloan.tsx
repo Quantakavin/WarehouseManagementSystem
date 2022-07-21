@@ -242,7 +242,7 @@ function newtloan() {
   const [user,setUser] = useState('')
   const [email,setEmail] = useState('')
   const [collection,setCollection] = useState('')
-  const [requireddate,setRdate] =  useState('')
+  const [requireddate,setRDate] =  useState('')
   const [localDate,setLocalDate] = useState('')
   const userRole = useAppSelector(selectRole);
   console.log(userRole)
@@ -270,9 +270,11 @@ function newtloan() {
   };
 
 
-  const handleChangeRequiredDate = (newValue: Date | null) => {
-    setRdate(newValue);
-  };
+
+
+  // const handleChangeRequiredDate = (newValue: Date | null) => {
+  //   setRdate(newValue);
+  // };
 
   const navigate = useNavigate()
 
@@ -311,6 +313,40 @@ function newtloan() {
 
   }
 
+  const DraftLoan =(e) => {
+    e.preventDefault()
+     try {
+
+      const results = axios.post('http://localhost:5000/api/tloan/loanDrafting',{
+        type,
+        company,
+        number,
+        name,
+        purpose,
+        applicationdate,
+        duration,
+        requireddate,
+        user,
+        email,
+        collection,
+        items
+      }).then(() => {
+        Toast.fire({
+          icon: "info",
+          title: "TLoan has been put into Draft",
+          customClass: "swalpopup",
+          timer: 1500,
+          width:700
+        });
+       navigate("/tloan")})
+      
+      
+      console.log(results)
+     } catch( error) {
+      console.log(error.response)
+     }
+
+  }
   useEffect(()=>{
     var date = new Date().toISOString().split('T')[0]
    
@@ -318,6 +354,15 @@ function newtloan() {
     setADate(date)
     
   })
+
+  useEffect(()=>{
+    var date = new Date().toISOString().split('T')[0]
+   
+   
+    setRDate(date)
+    
+  })
+
 
  
   useEffect(()=>{
@@ -361,7 +406,7 @@ function newtloan() {
       <div>
           
           <h2 className="pagetitle">Apply TLoan</h2>
-    <form onSubmit={submitLoan}>
+    {/* <form onSubmit={submitLoan}> */}
       <Card sx={{ width: 800, height: 700, marginLeft: 'auto', marginRight: 'auto'}}>
       <CardMedia
       
@@ -472,7 +517,7 @@ function newtloan() {
         </Select>
       </FormControl>
 
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
+      {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Stack >
         <DesktopDatePicker
           label="Required Date"
@@ -483,7 +528,7 @@ function newtloan() {
         
         />
         </Stack>
-        </LocalizationProvider>
+        </LocalizationProvider> */}
 
 
        
@@ -500,13 +545,13 @@ function newtloan() {
       </CardContent>
       <Box sx={{display:'flex', paddingTop: 3, marginLeft:  4}}>
         <Button size="small" variant="contained" sx={{color: 'white', backgroundColor: '#063970', width:150, height: 40, float: 'left'}} onClick={()=>navigate('/tloan')}>Back</Button>
-        <Button size="small" variant="contained" sx={{color: 'white', backgroundColor: '#063970', width:150, height: 40,marginLeft:24}}>Save Draft</Button>
-        <Button size="small" variant="contained" sx={{color: 'white', backgroundColor: '#063970', width:150, height: 40, marginLeft:3}} type='submit'>Submit</Button>
+        <Button size="small" variant="contained" sx={{color: 'white', backgroundColor: '#063970', width:150, height: 40,marginLeft:24}} onClick={DraftLoan}>Save Draft</Button>
+        <Button size="small" variant="contained" sx={{color: 'white', backgroundColor: '#063970', width:150, height: 40, marginLeft:3}} type='submit' onClick={submitLoan}>Submit</Button>
 
       </Box>
       
     </Card>
-    </form>
+    {/* </form> */}
     </div>
     ) 
   }

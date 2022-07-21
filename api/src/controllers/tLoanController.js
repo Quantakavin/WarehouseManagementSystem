@@ -132,6 +132,47 @@ module.exports.newLoan = async (req, res) => {
     }
 };
 
+module.exports.SendDraft = async (req, res) => {
+    const {
+        type,
+        company,
+        number,
+        name,
+        purpose,
+        applicationdate,
+        duration,
+        requireddate,
+        user,
+        email,
+        collection,
+        items
+     } = req.body;
+    try {
+        const tloanItems = items.map((item) => {
+            return item
+        })
+         await TLoan.SendTLoanToDraft(
+            type,
+            company,
+            number,
+            name,
+            purpose,
+            applicationdate,
+            duration,
+            requireddate,
+            user,
+            email,
+            collection,
+            tloanItems           
+        );
+       
+            return res.status(201).json(tloanItems);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
 module.exports.loanExtension = async (req, res) => {
     const { id, duration, reason } = req.body;
     try {
