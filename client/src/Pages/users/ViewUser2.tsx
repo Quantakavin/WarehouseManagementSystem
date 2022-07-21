@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Card from "@mui/material/Card";
@@ -20,27 +19,25 @@ import TableRow from "@mui/material/TableRow";
 import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import { DataGrid, GridColumns } from "@mui/x-data-grid";
-//import { GetDetails }from "../../api/TLoanDB"
+// import { GetDetails }from "../../api/TLoanDB"
 
 export default function ViewUser2() {
   const navigate = useNavigate();
   const [details, setDetails] = useState([]);
-  //const [loanDetails, setLoanDetails] = useState([]);
+  // const [loanDetails, setLoanDetails] = useState([]);
   const [notigroups, setNotigroups] = useState([]);
 
-  let { id } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const details = await axios.get(
-        `http://localhost:5000/api/user2/${id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const details = await axios.get(`http://localhost:5000/api/user2/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       setDetails(details.data);
       // setLoan(Object.e)
@@ -56,7 +53,8 @@ export default function ViewUser2() {
     const fetchData = async () => {
       // get the data from the api
       const notigroups = await axios.get(
-        `http://localhost:5000/api/usersgroups/${id}`, {
+        `http://localhost:5000/api/usersgroups/${id}`,
+        {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -74,99 +72,122 @@ export default function ViewUser2() {
   }, []);
 
   const columns: GridColumns = [
-    {   
-      field: "NotiGroupName", 
-      headerName: "Notification Group", 
+    {
+      field: "NotiGroupName",
+      headerName: "Notification Group",
       flex: 10,
-      editable: false },
+      editable: false,
+    },
     {
       field: "NotiGroupID",
       headerName: "ID",
       flex: 1,
       editable: false,
-    }
+    },
   ];
 
   const getData = () => {
     return (
       <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
-      <Box sx={{ display: "flex", height: "100%", width: "100%" }}>
-        <Box sx={{ flexGrow: 1 }}>
-          <Card>
-            <CardContent>
-              <Grid container spacing={0}>
-                <Grid item xs={6}>
-
-                <Typography
-                  gutterBottom
-                  variant="subtitle2"
-                  component="div"
-                  sx={{
-                    // display: "flex",
-                    // justifyContent: "center",
-                    // alignItems: "center",
-                    // marginTop: 2,
-                    // marginBottom: -5,
-                    // marginLeft: -10,
-                    color: "#063970",
-                    fontWeight: "bold",
-                  }}
-                >
-                  <Box>
-                    <div>Email</div>
-                    <div style={{ color: "black", fontWeight: "normal", paddingBottom: 20 }}>
-                      {details.Email}
-                    </div>
-                    <div>Company</div>
-                    <div style={{ color: "black", fontWeight: "normal", paddingBottom: 20 }}>
-                      {details.CompanyName}
-                    </div>
-                    <div style={{}}>User Group</div>
-                    <div style={{ color: "black", fontWeight: "normal", paddingBottom: 20 }}>
-                      {details.UserGroupName}
-                    </div>
-                    <div style={{}}>Contact Number</div>
-                    <div style={{ color: "black", fontWeight: "normal", paddingBottom: 20 }}>
-                      {details.MobileNo}
-                    </div>
-                  </Box>
-                </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <DataGrid
-                sx={{height: "100%"}}
-                  rows={notigroups}
-                  columns={columns}
-                  editMode="row"
-                  getRowId={(item) => item.NotiGroupID}
-                  experimentalFeatures={{ newEditingApi: true }}
-                  rowsPerPageOptions={[10]}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Button
-                  size="small"
-                  variant="contained"
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#063970",
-                    width: 150,
-                    height: 40,
-                  }}
-                  onClick={() => navigate("/users")}
-                >
-                  Back
-                </Button>
-              </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
+        <Box sx={{ display: "flex", height: "100%", width: "100%" }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Card>
+              <CardContent>
+                <Grid container spacing={0}>
+                  <Grid item xs={6}>
+                    <Typography
+                      gutterBottom
+                      variant="subtitle2"
+                      component="div"
+                      sx={{
+                        // display: "flex",
+                        // justifyContent: "center",
+                        // alignItems: "center",
+                        // marginTop: 2,
+                        // marginBottom: -5,
+                        // marginLeft: -10,
+                        color: "#063970",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      <Box>
+                        <div>Email</div>
+                        <div
+                          style={{
+                            color: "black",
+                            fontWeight: "normal",
+                            paddingBottom: 20,
+                          }}
+                        >
+                          {details.Email}
+                        </div>
+                        <div>Company</div>
+                        <div
+                          style={{
+                            color: "black",
+                            fontWeight: "normal",
+                            paddingBottom: 20,
+                          }}
+                        >
+                          {details.CompanyName}
+                        </div>
+                        <div style={{}}>User Group</div>
+                        <div
+                          style={{
+                            color: "black",
+                            fontWeight: "normal",
+                            paddingBottom: 20,
+                          }}
+                        >
+                          {details.UserGroupName}
+                        </div>
+                        <div style={{}}>Contact Number</div>
+                        <div
+                          style={{
+                            color: "black",
+                            fontWeight: "normal",
+                            paddingBottom: 20,
+                          }}
+                        >
+                          {details.MobileNo}
+                        </div>
+                      </Box>
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <DataGrid
+                      sx={{ height: "100%" }}
+                      rows={notigroups}
+                      columns={columns}
+                      editMode="row"
+                      getRowId={(item) => item.NotiGroupID}
+                      experimentalFeatures={{ newEditingApi: true }}
+                      rowsPerPageOptions={[10]}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#063970",
+                        width: 150,
+                        height: 40,
+                      }}
+                      onClick={() => navigate("/users")}
+                    >
+                      Back
+                    </Button>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          </Box>
         </Box>
-        </Box>
-        </Box>
+      </Box>
     );
   };
 
   return <div>{getData()}</div>;
- 
 }

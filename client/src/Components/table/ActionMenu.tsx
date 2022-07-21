@@ -54,6 +54,8 @@ const ActionMenu: React.FC<MenuProps> = ({ items }) => {
             onClick={() => {
               if (!item.delete) {
                 navigate(item.url);
+              } else {
+                item.deleteFunction()
               }
             }}
           >

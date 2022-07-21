@@ -1,3 +1,6 @@
+import { AxiosResponse } from "axios";
+import { UseMutationResult } from "react-query";
+
 export type Option = {
   id: number;
   text: string;
@@ -58,4 +61,6 @@ export type ActionMenuItem = {
   url?: string, 
   icon: React.ReactNode, 
   delete: boolean 
+  deleteFunction?: () => void
+  // deleteFunction?: UseMutationResult<AxiosResponse<any, any>, unknown, string, unknown>
 };

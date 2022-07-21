@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
@@ -42,6 +42,8 @@ const EditUserGroup: React.FC = () => {
   const [featureRightOptions, setFeatureRightOptions] = useState<Option[]>([]);
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [returnFeatures, setReturnFeatures] = useState<any[]>([]);
+
+  const queryClient = useQueryClient()
 
   const UserGroupQuery = useQuery([`usergroup${params.id}`, params.id], () =>
     GetUserGroup(params.id),
@@ -102,6 +104,10 @@ const EditUserGroup: React.FC = () => {
           customClass: "swalpopup",
           timer: 1500
         });
+        queryClient.invalidateQueries('usergroups');
+        queryClient.invalidateQueries('filterusergroups');
+        queryClient.invalidateQueries('usergroupnames');
+        queryClient.invalidateQueries(`usergroup${params.id}`);
         navigate(`/usergroup/${params.id}`);
       },
     });
@@ -268,7 +274,7 @@ const EditUserGroup: React.FC = () => {
       handleSubmit={handleSubmit}
       onSubmit={onSubmit}
     >
-      {(UserGroupQuery.isSuccess) &&
+      {(UserGroupQuery.isSuccess && featuresQuery.isSuccess) &&
         <>
           {/* Step One */}
           <div className={step === 1 ? "showstep" : "hidestep"}>

@@ -20,7 +20,7 @@ import {
   Typography,
   unstable_createMuiStrictModeTheme,
   withStyles,
-  IconButton
+  IconButton,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -46,11 +46,11 @@ const Users2: React.FC = () => {
   };
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/users?limit=100000&page=0', { 
+    fetch("http://localhost:5000/api/users?limit=100000&page=0", {
       headers: new Headers({
-          'Authorization': `Bearer ${localStorage.getItem("token")}`
-      }), 
-  })
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      }),
+    })
       .then((data) => data.json())
       .then((data) => setRow(data));
   }, []);
@@ -111,12 +111,13 @@ const Users2: React.FC = () => {
               </IconButton>
             </Box>
           );
-        } else return null;
+        }
+        return null;
       },
     },
   ];
 
-  function CustomToolbar() {
+  const CustomToolbar = () => {
     return (
       <GridToolbarContainer
         sx={{ display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1 }}
@@ -132,57 +133,55 @@ const Users2: React.FC = () => {
         </Box>
       </GridToolbarContainer>
     );
-  }
+  };
 
   return (
-    <>
-      <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
-        <Box sx={{ display: "flex", height: "100%" }}>
-          <Box sx={{ flexGrow: 1 }}>
-            <Typography sx={{ color: "#063970", fontWeight: "bold" }}>
-              <h2>Users</h2>
-            </Typography>
-            <DataGrid
-              sx={{ background: "white", fontSize: 18 }}
-              rows={row}
-              columns={columns}
-              getRowId={(row) => row.UserID}
-              pageSize={pageSize}
-              onPageSizeChange={(newPage) => setPageSize(newPage)}
-              pagination
-              headerHeight={50}
-              // rowHeight={70}
-              // getRowHeight={() => "auto"}
-              components={{
-                Toolbar: CustomToolbar,
-                NoRowsOverlay: () => (
-                  <Stack
-                    height="100%"
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    No Users
-                  </Stack>
-                ),
-              }}
-              componentsProps={{
-                row: {
-                  onMouseEnter: onMouseEnterRow,
-                  onMouseLeave: onMouseLeaveRow,
-                },
-              }}
-              filterModel={filterModel}
-              onFilterModelChange={(newFilterModel) =>
-                setFilterModel(newFilterModel)
-              }
-              // onRowClick={(params: GridRowParams) => {
-              //   navigate(`/user/${params.id}`);
-              // }}
-            />
-          </Box>
+    <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
+      <Box sx={{ display: "flex", height: "100%" }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Typography sx={{ color: "#063970", fontWeight: "bold" }}>
+            <h2>Users</h2>
+          </Typography>
+          <DataGrid
+            sx={{ background: "white", fontSize: 18 }}
+            rows={row}
+            columns={columns}
+            getRowId={(row) => row.UserID}
+            pageSize={pageSize}
+            onPageSizeChange={(newPage) => setPageSize(newPage)}
+            pagination
+            headerHeight={50}
+            // rowHeight={70}
+            // getRowHeight={() => "auto"}
+            components={{
+              Toolbar: CustomToolbar,
+              NoRowsOverlay: () => (
+                <Stack
+                  height="100%"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  No Users
+                </Stack>
+              ),
+            }}
+            componentsProps={{
+              row: {
+                onMouseEnter: onMouseEnterRow,
+                onMouseLeave: onMouseLeaveRow,
+              },
+            }}
+            filterModel={filterModel}
+            onFilterModelChange={(newFilterModel) =>
+              setFilterModel(newFilterModel)
+            }
+            // onRowClick={(params: GridRowParams) => {
+            //   navigate(`/user/${params.id}`);
+            // }}
+          />
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 export default Users2;

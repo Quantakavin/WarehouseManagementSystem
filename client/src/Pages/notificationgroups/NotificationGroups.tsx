@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { useInfiniteQuery, useQuery } from "react-query";
-import { GetNotificationGroupNames, FilterNotificationGroups } from "../../api/NotificationGroupDB";
+import { useInfiniteQuery, useQuery, useQueryClient, useMutation } from "react-query";
+import { GetNotificationGroupNames, FilterNotificationGroups, DeleteNotificationGroup } from "../../api/NotificationGroupDB";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import PageviewIcon from '@mui/icons-material/Pageview';
 import InfiniteTable from "../../components/table/InfiniteTable";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import CancelIcon from '@mui/icons-material/Cancel';
 import {
   selectSortColumn,
   selectSortOrder,
@@ -19,6 +20,8 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Hidden } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import useDebounce from "../../hooks/useDebounce";
+import { Toast } from "../../components/alerts/SweetAlert";
+import Popup from "../../components/alerts/Popup";
 
 const NotificationGroups: React.FC = () => {
 
@@ -32,6 +35,12 @@ const NotificationGroups: React.FC = () => {
   const [inputName, setInputName] = useState<string>(null);
   const [searchName, setSearchName] = useState<string>("");
   const debouncedValue = useDebounce<string>(inputName, 500);
+  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+  const [showError, setShowError] = useState<boolean>(false);
+  const [idToDelete, setIdToDelete] = useState<string>(null);
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(DeleteNotificationGroup);
 
   const handleSearch = (stringtosearch: string) => {
     if (inputName === "") {
@@ -93,7 +102,8 @@ const NotificationGroups: React.FC = () => {
         {
           name: "Delete",
           icon: <DeleteOutlineIcon fontSize="small" />,
-          delete: true
+          delete: true,
+          deleteFunction: () => SelectDelete(id)
         },
       ]
     )
@@ -111,8 +121,89 @@ const NotificationGroups: React.FC = () => {
     }
   };
 
+  const SelectDelete = (id: string) => {
+    setIdToDelete(id)
+    setShowConfirmation(true)
+  }
+
+  const Delete = (id: string) => {
+    mutation.mutate(id, {
+      onError: () => {
+        setShowConfirmation(false)
+        setShowError(true)
+        setIdToDelete(null)
+      },
+      onSuccess: () => {
+        setShowConfirmation(false)
+        Toast.fire({
+          icon: "success",
+          title: "Notification group deleted successfully",
+          customClass: "swalpopup",
+          timer: 1500
+        });
+        queryClient.invalidateQueries('notificationgroups');
+        queryClient.invalidateQueries('filternotificationgroups');
+        queryClient.invalidateQueries('notificationgroupnames');
+        setIdToDelete(null)
+        navigate("/notificationgroups");
+      }
+    });
+  }
+
+  const closeConfirmationPopup = () => {
+    setShowConfirmation(false)
+    setIdToDelete(null)
+  }
+
+  const closeErrorPopup = () => {
+    setShowError(false)
+    setIdToDelete(null)
+  }
+
   return (
     <>
+
+
+      <Popup
+        showpopup={showConfirmation}
+        heading="Are you sure you want to delete this notification group?"
+        subheading="By doing so, you will delete all notifications associated with it"
+        popupimage={<CancelIcon sx={{ color: "#D11A2A", fontSize: "150px" }} />}
+        closepopup={closeConfirmationPopup}
+        buttons={
+          <>
+            <button style={{ alignSelf: "flex-start" }} className="cardbackbutton" onClick={() => setShowConfirmation(false)} type="button">
+              Cancel
+            </button>
+            <motion.button
+              style={{ alignSelf: "flex-end" }}
+              className="deletebutton"
+              onClick={() => Delete(idToDelete)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Delete Anyway
+            </motion.button>
+          </>
+        }
+
+      />
+
+      <Popup
+        showpopup={showError}
+        heading="Cannot Delete Notification Group!"
+        subheading="This notification group cannot be deleted as it has already been assigned to a user"
+        popupimage={<CancelIcon sx={{ color: "#D11A2A", fontSize: "150px" }} />}
+        closepopup={closeErrorPopup}
+        buttons={
+          <>
+            <button style={{ alignSelf: "flex-start", marginLeft: "auto", fontWeight: 700, color: "#0A2540" }} className="buttonremovestyling" onClick={() => setShowError(false)} type="button">
+              Close
+            </button>
+          </>
+        }
+
+      />
       <h2 className="pagetitle"> Notification Groups </h2>
 
       <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }} >

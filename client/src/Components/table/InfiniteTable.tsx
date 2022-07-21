@@ -22,7 +22,7 @@ interface TableProps {
   sortOrder: string;
 }
 
-const TableNew = ({ headers, query , menu, filter, sortColumn, sortOrder}: TableProps) => {
+const InfiniteTable = ({ headers, query , menu, filter, sortColumn, sortOrder}: TableProps) => {
   return (
     <Container sx={{ width: "95%", marginTop: "50px" }}>
       <TableContainer component={Paper}>
@@ -46,4 +46,4 @@ const TableNew = ({ headers, query , menu, filter, sortColumn, sortOrder}: Table
   );
 };
 
-export default TableNew;
+export default InfiniteTable;

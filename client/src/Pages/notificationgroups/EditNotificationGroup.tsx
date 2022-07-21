@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
@@ -46,6 +46,7 @@ const AddNotificationGroup: React.FC = () => {
   const [notiTypeOptions, setNotiTypeOptions] = useState<Option[]>([]);
   const [selectedNotiFeatures, setSelectedNotiFeatures] = useState<string[]>([]);
   const [returnNotiFeatures, setReturnNotiFeatures] = useState<any[]>([]);
+  const queryClient = useQueryClient();
 
   const NotificationGroupQuery = useQuery([`notificationgroup${params.id}`, params.id], () =>
     GetNotificationGroup(params.id),
@@ -123,6 +124,10 @@ const AddNotificationGroup: React.FC = () => {
           customClass: "swalpopup",
           timer: 1500
         });
+        queryClient.invalidateQueries('notificationgroups');
+        queryClient.invalidateQueries('filternotificationgroups');
+        queryClient.invalidateQueries('notificationgroupnames');
+        queryClient.invalidateQueries(`notificationgroup${params.id}`);
         navigate("/notificationgroups");
       },
     });
@@ -291,7 +296,7 @@ const AddNotificationGroup: React.FC = () => {
       handleSubmit={handleSubmit}
       onSubmit={onSubmit}
     >
-      {(NotificationGroupQuery.isSuccess) &&
+      {(NotificationGroupQuery.isSuccess && notiFeaturesQuery.isSuccess) &&
         <>
           {/* Step One */}
           <div className={step === 1 ? "showstep" : "hidestep"}>
@@ -372,7 +377,6 @@ const AddNotificationGroup: React.FC = () => {
           </div>
         </>
       }
-      <pre>{JSON.stringify(returnNotiFeatures)}</pre>
     </FormContainer>
   );
 };

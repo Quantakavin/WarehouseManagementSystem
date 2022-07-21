@@ -21,7 +21,7 @@ router.put(
     validation.validateUser,
     userController.updateUser
 );
-/*
+
 router.delete('/user/:id', authorization.verifyAdmin, userController.deleteUser);
-*/
+
 module.exports = router;

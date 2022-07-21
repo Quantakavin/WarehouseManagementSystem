@@ -97,15 +97,5 @@ module.exports.getFeatures = async (userGroupID) => {
 };
 
 module.exports.delete = async (userGroupID) => {
-    return knex.transaction((trx) => {
-        knex('UserGroupFeature')
-            .where('UserGroupID', userGroupID)
-            .del()
-            .transacting(trx)
-            .then(() => {
-                return knex('UserGroup').where('UserGroupID', userGroupID).del().transacting(trx);
-            })
-            .then(trx.commit)
-            .catch(trx.rollback);
-    });
+    return knex('UserGroup').where('UserGroupID', userGroupID).del()
 };

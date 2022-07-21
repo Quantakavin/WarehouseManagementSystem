@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { SelectChangeEvent } from "@mui/material";
@@ -40,11 +40,12 @@ const EditUser: React.FC = () => {
   const [userGroupOptions, setUserGroupOptions] = useState<Option[]>([]);
   const [notiGroupOptions, setNotiGroupOptions] = useState<Option[]>([]);
   const [step, setStep] = useState<number>(1);
-  //const [user, setUser] = useState<any>(null);
+  // const [user, setUser] = useState<any>(null);
   const [selectedNotiGroups, setSelectedNotiGroups] = useState<string[]>([]);
   const [returnNotiGroups, setReturnNotiGroups] = useState<any[]>([]);
   const params = useParams();
   const navigate = useNavigate();
+  const queryClient = useQueryClient()
   const {
     register,
     handleSubmit,
@@ -57,7 +58,7 @@ const EditUser: React.FC = () => {
     () => GetUser(params.id),
     {
       onSuccess: (data) => {
-        //setUser(data.data[0]);
+        // setUser(data.data[0]);
         setSelectedNotiGroups(
           data.data[0].NotificationGroups.map((value) => {
             return value.NotiGroupID;
@@ -133,10 +134,13 @@ const EditUser: React.FC = () => {
           icon: "success",
           title: "User updated successfully",
           customClass: "swalpopup",
-          timer: 1500
+          timer: 1500,
         });
-        navigate("/users")
-      }
+        queryClient.invalidateQueries(`user${params.id}`)
+        queryClient.invalidateQueries(`users`)
+        queryClient.invalidateQueries('usernames')
+        navigate("/users");
+      },
     });
   };
 
@@ -283,7 +287,7 @@ const EditUser: React.FC = () => {
     >
       {UserQuery.isSuccess && (
         <>
-        {/* Step One */}
+          {/* Step One */}
           <div className={step === 1 ? "showstep" : "hidestep"}>
             <FormField
               label="Username"
@@ -339,7 +343,10 @@ const EditUser: React.FC = () => {
                 Cancel
               </button>
               <button className="nextbutton" onClick={nextStep} type="button">
-                Next <NavigateNextIcon style={{ marginRight: -10, marginLeft: -7 }} />
+                Next{" "}
+                <NavigateNextIcon
+                  style={{ marginRight: -10, marginLeft: -7 }}
+                />
               </button>
             </div>
           </div>
@@ -371,10 +378,18 @@ const EditUser: React.FC = () => {
               </div>
             ) : null}
             <div className="formnavigationcontainer">
-              <button className="formnavigation" onClick={prevStep} type="button">
+              <button
+                className="formnavigation"
+                onClick={prevStep}
+                type="button"
+              >
                 Back
               </button>
-              <SubmitButton text="Submit" loading={mutation.isLoading} multipart />
+              <SubmitButton
+                text="Submit"
+                loading={mutation.isLoading}
+                multipart
+              />
             </div>
           </div>
         </>
