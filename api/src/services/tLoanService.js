@@ -57,6 +57,37 @@ module.exports.createTLoan = async (type, company, number, name, purpose, applic
   })
 }
 
+module.exports.SendTLoanToDraft = async (type, company, number, name, purpose, applicationdate, duration, requireddate, user,email,collection, tloanItems) => {
+  knex.transaction(function(trx) {
+   
+    knex.insert({
+      TLoanTypeID: type,
+      CompanyID: company,
+      TLoanNumber: number,
+      Requestor: name,
+      Purpose: purpose,
+      ApplicationDate: applicationdate,
+      Duration: duration,
+      RequiredDate: requireddate,
+      TLoanStatusID: 1,
+      PickStatusID: 1,
+      Remarks: null,
+      UserID: user,
+      CustomerEmail:email,
+      Collection: collection,
+    }, 'TLoanID')
+    .into('TLoan')
+    .transacting(trx)
+    .then(function(ids) {
+      tloanItems.forEach((item) =>  item.TLoanID = ids[0] ) 
+      return knex('TLoanOutItem').insert(tloanItems).transacting(trx);
+      })
+      
+      .then(trx.commit)
+      .catch(trx.rollback)
+  })
+}
+
 module.exports.getLoanByNumber = async(TLoanNumber) => {
   // const query = `SELECT t.TLoanNumber,DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   // DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
