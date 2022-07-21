@@ -210,24 +210,26 @@ const TLoanTabs2: React.FC = () => {
               </Grid>
               <Grid item xs={1}>
                 <Box sx={{ paddingLeft: 4, marginTop: 8.75 }}>
-                  <React.StrictMode>
-                    <ThemeProvider theme={theme}>
+                  <motion.div
+                    className="animatable"
+                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                    whileTap={{ scale: 0.9 }}
+                  >
                     <Fab
-                        variant="extended"
-                        aria-label="add"
-                        onClick={() => navigate("/newtloan")}
-                        style={{ marginTop: 0 }}
-                        sx={{
-                          color: "white",
-                          backgroundColor: "#063970",
-                          ":hover": { backgroundColor: "#031c38" },
-                        }}
-                      >
-                          Create
-                        <PostAddIcon sx={{ ml: 2 }} />
-                      </Fab>
-                    </ThemeProvider>
-                  </React.StrictMode>
+                      variant="extended"
+                      aria-label="add"
+                      onClick={() => navigate("/newtloan")}
+                      style={{ marginTop: 0 }}
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#063970",
+                        ":hover": { backgroundColor: "#031c38" },
+                      }}
+                    >
+                      Create
+                      <PostAddIcon sx={{ ml: 2 }} />
+                    </Fab>
+                  </motion.div>
                 </Box>
               </Grid>
 
@@ -437,24 +439,26 @@ const TLoanTabs2: React.FC = () => {
               </Grid>
               <Grid item xs={1}>
                 <Box sx={{ paddingLeft: 4, marginTop: 8.75 }}>
-                  <React.StrictMode>
-                    <ThemeProvider theme={theme}>
+                  <motion.div
+                    className="animatable"
+                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                    whileTap={{ scale: 0.9 }}
+                  >
                     <Fab
-                        variant="extended"
-                        aria-label="add"
-                        onClick={() => navigate("/newtloan")}
-                        style={{ marginTop: 0 }}
-                        sx={{
-                          color: "white",
-                          backgroundColor: "#063970",
-                          ":hover": { backgroundColor: "#031c38" },
-                        }}
-                      >
-                          Create
-                        <PostAddIcon sx={{ ml: 2 }} />
-                      </Fab>
-                    </ThemeProvider>
-                  </React.StrictMode>
+                      variant="extended"
+                      aria-label="add"
+                      onClick={() => navigate("/newtloan")}
+                      style={{ marginTop: 0 }}
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#063970",
+                        ":hover": { backgroundColor: "#031c38" },
+                      }}
+                    >
+                      Create
+                      <PostAddIcon sx={{ ml: 2 }} />
+                    </Fab>
+                  </motion.div>
                 </Box>
               </Grid>
 
@@ -785,24 +789,26 @@ const TLoanTabs2: React.FC = () => {
               </Grid>
               <Grid item xs={1}>
                 <Box sx={{ paddingLeft: 4, marginTop: 8.75 }}>
-                  <React.StrictMode>
-                    <ThemeProvider theme={theme}>
+                  <motion.div
+                    className="animatable"
+                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                    whileTap={{ scale: 0.9 }}
+                  >
                     <Fab
-                        variant="extended"
-                        aria-label="add"
-                        onClick={() => navigate("/newtloan")}
-                        style={{ marginTop: 0 }}
-                        sx={{
-                          color: "white",
-                          backgroundColor: "#063970",
-                          ":hover": { backgroundColor: "#031c38" },
-                        }}
-                      >
-                          Create
-                        <PostAddIcon sx={{ ml: 2 }} />
-                      </Fab>
-                    </ThemeProvider>
-                  </React.StrictMode>
+                      variant="extended"
+                      aria-label="add"
+                      onClick={() => navigate("/newtloan")}
+                      style={{ marginTop: 0 }}
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#063970",
+                        ":hover": { backgroundColor: "#031c38" },
+                      }}
+                    >
+                      Create
+                      <PostAddIcon sx={{ ml: 2 }} />
+                    </Fab>
+                  </motion.div>
                 </Box>
               </Grid>
 
@@ -1088,24 +1094,26 @@ const TLoanTabs2: React.FC = () => {
               </Grid>
               <Grid item xs={1}>
                 <Box sx={{ marginLeft: 4, marginTop: 8.75 }}>
-                  <React.StrictMode>
-                    <ThemeProvider theme={theme}>
-                      <Fab
-                        variant="extended"
-                        aria-label="add"
-                        onClick={() => navigate("/newtloan")}
-                        style={{ marginTop: 0 }}
-                        sx={{
-                          color: "white",
-                          backgroundColor: "#063970",
-                          ":hover": { backgroundColor: "#031c38" },
-                        }}
-                      >
-                          Create
-                        <PostAddIcon sx={{ ml: 2 }} />
-                      </Fab>
-                    </ThemeProvider>
-                  </React.StrictMode>
+                  <motion.div
+                    className="animatable"
+                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <Fab
+                      variant="extended"
+                      aria-label="add"
+                      onClick={() => navigate("/newtloan")}
+                      style={{ marginTop: 0 }}
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#063970",
+                        ":hover": { backgroundColor: "#031c38" },
+                      }}
+                    >
+                      Create
+                      <PostAddIcon sx={{ ml: 2 }} />
+                    </Fab>
+                  </motion.div>
                 </Box>
               </Grid>
 
@@ -1315,24 +1323,26 @@ const TLoanTabs2: React.FC = () => {
               </Grid>
               <Grid item xs={1}>
                 <Box sx={{ paddingLeft: 4, marginTop: 8.75 }}>
-                  <React.StrictMode>
-                    <ThemeProvider theme={theme}>
+                  <motion.div
+                    className="animatable"
+                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                    whileTap={{ scale: 0.9 }}
+                  >
                     <Fab
-                        variant="extended"
-                        aria-label="add"
-                        onClick={() => navigate("/newtloan")}
-                        style={{ marginTop: 0 }}
-                        sx={{
-                          color: "white",
-                          backgroundColor: "#063970",
-                          ":hover": { backgroundColor: "#031c38" },
-                        }}
-                      >
-                          Create
-                        <PostAddIcon sx={{ ml: 2 }} />
-                      </Fab>
-                    </ThemeProvider>
-                  </React.StrictMode>
+                      variant="extended"
+                      aria-label="add"
+                      onClick={() => navigate("/newtloan")}
+                      style={{ marginTop: 0 }}
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#063970",
+                        ":hover": { backgroundColor: "#031c38" },
+                      }}
+                    >
+                      Create
+                      <PostAddIcon sx={{ ml: 2 }} />
+                    </Fab>
+                  </motion.div>
                 </Box>
               </Grid>
 

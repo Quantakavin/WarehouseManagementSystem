@@ -8,6 +8,7 @@ import { TextField } from "@material-ui/core";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
+import { motion } from "framer-motion";
 
 const style = {
   position: "absolute" as "absolute",
@@ -24,32 +25,42 @@ const style = {
 
 export default function TLoanRejectModalButton() {
   let { TLoanNumber } = useParams();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [remarks, setRemarks] = useState("");
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const handleChange = e => {
-    console.log(`Typed => ${e.target.value}`)
-    setRemarks(e.target.value)
-  }
-
-  const tloanremarks = {
-    "remarks" : remarks
+  const handleChange = (e) => {
+    console.log(`Typed => ${e.target.value}`);
+    setRemarks(e.target.value);
   };
 
-  const handleConfirm = async () => { 
+  const tloanremarks = {
+    remarks: remarks,
+  };
+
+  const handleConfirm = async () => {
     axios
-    .put(`http://localhost:5000/api/tloan/reject/${TLoanNumber}`, tloanremarks)
-    .then(() => navigate("/tloan"))
-    .catch((error) => {
-      this.setState({ errorMessage: error.message });
-      console.error("There was an error!", error);
-    });
-  }
+      .put(
+        `http://localhost:5000/api/tloan/reject/${TLoanNumber}`,
+        tloanremarks
+      )
+      .then(() => navigate("/tloan"))
+      .catch((error) => {
+        this.setState({ errorMessage: error.message });
+        console.error("There was an error!", error);
+      });
+  };
 
   return (
-    <div>
+    <motion.div
+      className="animatable"
+      whileHover={{
+        scale: 1.1,
+        transition: { duration: 0.3 },
+      }}
+      whileTap={{ scale: 0.9 }}
+    >
       <Button
         size="small"
         variant="contained"
@@ -59,7 +70,6 @@ export default function TLoanRejectModalButton() {
           width: 200,
           height: 50,
           borderRadius: 10,
-         
         }}
         onClick={handleOpen}
       >
@@ -99,38 +109,56 @@ export default function TLoanRejectModalButton() {
                 paddingTop: 3.7,
               }}
             >
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
+              <motion.div
+                className="animatable"
+                whileHover={{
+                  scale: 1.1,
+                  transition: { duration: 0.3 },
                 }}
-                onClick={handleClose}
+                whileTap={{ scale: 0.9 }}
               >
-                Back
-              </Button>
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#D11A2A",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                  }}
+                  onClick={handleClose}
+                >
+                  Back
+                </Button>
+              </motion.div>
+              <motion.div
+                className="animatable"
+                whileHover={{
+                  scale: 1.1,
+                  transition: { duration: 0.3 },
                 }}
-                onClick={handleConfirm}
+                whileTap={{ scale: 0.9 }}
               >
-                Confirm
-              </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#D11A2A",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                  }}
+                  onClick={handleConfirm}
+                >
+                  Confirm
+                </Button>
+              </motion.div>
             </Box>
           </Box>
         </Fade>
       </Modal>
-    </div>
+    </motion.div>
   );
 }

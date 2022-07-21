@@ -68,6 +68,7 @@ import RejectModalButton from "./RmaModal/rejectModal";
 import ReasonModalButton from "./RmaModal/reasonModal";
 import { verifyRMA } from "../../app/reducers/RmaReducer";
 import { Row } from "react-bootstrap";
+import { motion } from "framer-motion";
 
 export default function CreateRMA() {
   const userrole = useAppSelector(selectRole);
@@ -842,20 +843,26 @@ export default function CreateRMA() {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                }}
-                onClick={() => navigate("/rma")}
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
               >
-                Back
-              </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                  }}
+                  onClick={() => navigate("/rma")}
+                >
+                  Back
+                </Button>
+              </motion.div>
               <ReasonModalButton />
             </Box>
           </Box>
@@ -920,18 +927,18 @@ export default function CreateRMA() {
 
             <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
               <Box sx={{ flexGrow: 1 }}>
-                  <DataGrid
-                    sx={{ background: "white", fontSize: 16 }}
-                    rows={rows}
-                    columns={staticcolumns}
-                    editMode="row"
-                    getRowId={(row) => row.id}
-                    rowModesModel={rowModesModel}
-                    filterModel={filterModel}
-                    onFilterModelChange={(newFilterModel) =>
-                      setFilterModel(newFilterModel)
-                    }
-                  />
+                <DataGrid
+                  sx={{ background: "white", fontSize: 16 }}
+                  rows={rows}
+                  columns={staticcolumns}
+                  editMode="row"
+                  getRowId={(row) => row.id}
+                  rowModesModel={rowModesModel}
+                  filterModel={filterModel}
+                  onFilterModelChange={(newFilterModel) =>
+                    setFilterModel(newFilterModel)
+                  }
+                />
               </Box>
             </Box>
 
@@ -942,20 +949,26 @@ export default function CreateRMA() {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                }}
-                onClick={() => navigate("/rma")}
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
               >
-                Back
-              </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                  }}
+                  onClick={() => navigate("/rma")}
+                >
+                  Back
+                </Button>
+              </motion.div>
             </Box>
           </Box>
         );
@@ -1050,20 +1063,26 @@ export default function CreateRMA() {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                }}
-                onClick={() => navigate("/rma")}
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
               >
-                Back
-              </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                  }}
+                  onClick={() => navigate("/rma")}
+                >
+                  Back
+                </Button>
+              </motion.div>
             </Box>
           </Box>
         );
@@ -1166,41 +1185,60 @@ export default function CreateRMA() {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
+              <motion.div
+                className="animatable"
+                whileHover={{
+                  scale: 1.1,
+                  transition: { duration: 0.3 },
                 }}
-                onClick={() => navigate("/rma")}
-              >
-                Back
-              </Button>
-              <Box
-                component="span"
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
+                whileTap={{ scale: 0.9 }}
               >
                 <Button
                   size="small"
                   variant="contained"
                   sx={{
                     color: "white",
-                    backgroundColor: "#31A961",
+                    backgroundColor: "#063970",
                     width: 150,
                     height: 50,
                     borderRadius: 10,
-                    marginRight: 5,
                   }}
-                  onClick={acceptRMA}
+                  onClick={() => navigate("/rma")}
                 >
-                  Accept
+                  Back
                 </Button>
+              </motion.div>
+
+              <Box
+                component="span"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <motion.div
+                  className="animatable"
+                  whileHover={{
+                    scale: 1.1,
+                    transition: { duration: 0.3 },
+                  }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#31A961",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                      marginRight: 5,
+                    }}
+                    onClick={acceptRMA}
+                  >
+                    Accept
+                  </Button>
+                </motion.div>
                 <RejectModalButton />
               </Box>
             </Box>
@@ -1305,20 +1343,29 @@ export default function CreateRMA() {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
+              <motion.div
+                className="animatable"
+                whileHover={{
+                  scale: 1.1,
+                  transition: { duration: 0.3 },
                 }}
-                onClick={() => navigate("/rma")}
+                whileTap={{ scale: 0.9 }}
               >
-                Back
-              </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                  }}
+                  onClick={() => navigate("/rma")}
+                >
+                  Back
+                </Button>
+              </motion.div>
             </Box>
           </Box>
         );
@@ -1413,41 +1460,53 @@ export default function CreateRMA() {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                }}
-                onClick={() => navigate("/rma")}
-              >
-                Back
-              </Button>
-              <Box
-                component="span"
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
               >
                 <Button
                   size="small"
                   variant="contained"
                   sx={{
                     color: "white",
-                    backgroundColor: "#31A961",
+                    backgroundColor: "#063970",
                     width: 150,
                     height: 50,
                     borderRadius: 10,
-                    marginRight: 5,
                   }}
-                  onClick={acceptRMA}
+                  onClick={() => navigate("/rma")}
                 >
-                  Accept
+                  Back
                 </Button>
+              </motion.div>
+              <Box
+                component="span"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#31A961",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                      marginRight: 5,
+                    }}
+                    onClick={acceptRMA}
+                  >
+                    Accept
+                  </Button>
+                </motion.div>
                 <RejectModalButton />
               </Box>
             </Box>
@@ -1522,17 +1581,17 @@ export default function CreateRMA() {
 
             <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
               <Box sx={{ flexGrow: 1 }}>
-                  <DataGrid
-                    sx={{ background: "white", fontSize: 16 }}
-                    rows={rows}
-                    columns={staticcolumns}
-                    editMode="row"
-                    getRowId={(row) => row.id}
-                    filterModel={filterModel}
-                    onFilterModelChange={(newFilterModel) =>
-                      setFilterModel(newFilterModel)
-                    }
-                  />
+                <DataGrid
+                  sx={{ background: "white", fontSize: 16 }}
+                  rows={rows}
+                  columns={staticcolumns}
+                  editMode="row"
+                  getRowId={(row) => row.id}
+                  filterModel={filterModel}
+                  onFilterModelChange={(newFilterModel) =>
+                    setFilterModel(newFilterModel)
+                  }
+                />
               </Box>
             </Box>
 
@@ -1543,20 +1602,26 @@ export default function CreateRMA() {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                }}
-                onClick={() => navigate("/rma")}
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
               >
-                Back
-              </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                  }}
+                  onClick={() => navigate("/rma")}
+                >
+                  Back
+                </Button>
+              </motion.div>
             </Box>
           </Box>
         );
@@ -1658,20 +1723,26 @@ export default function CreateRMA() {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                }}
-                onClick={() => navigate("/rma")}
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
               >
-                Back
-              </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                  }}
+                  onClick={() => navigate("/rma")}
+                >
+                  Back
+                </Button>
+              </motion.div>
             </Box>
           </Box>
         );
@@ -1771,20 +1842,26 @@ export default function CreateRMA() {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                }}
-                onClick={() => navigate("/rma")}
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
               >
-                Back
-              </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                  }}
+                  onClick={() => navigate("/rma")}
+                >
+                  Back
+                </Button>
+              </motion.div>
               <Box
                 component="span"
                 display="flex"
@@ -1913,20 +1990,26 @@ export default function CreateRMA() {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                }}
-                onClick={() => navigate("/rma")}
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
               >
-                Back
-              </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                  }}
+                  onClick={() => navigate("/rma")}
+                >
+                  Back
+                </Button>
+              </motion.div>
               <Box
                 component="span"
                 display="flex"
@@ -2055,20 +2138,26 @@ export default function CreateRMA() {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                }}
-                onClick={() => navigate("/rma")}
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
               >
-                Back
-              </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                  }}
+                  onClick={() => navigate("/rma")}
+                >
+                  Back
+                </Button>
+              </motion.div>
               <Box
                 component="span"
                 display="flex"
@@ -2154,17 +2243,17 @@ export default function CreateRMA() {
 
             <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
               <Box sx={{ flexGrow: 1 }}>
-                  <DataGrid
-                    sx={{ background: "white", fontSize: 16 }}
-                    rows={rows}
-                    columns={staticcolumns}
-                    editMode="row"
-                    getRowId={(row) => row.id}
-                    filterModel={filterModel}
-                    onFilterModelChange={(newFilterModel) =>
-                      setFilterModel(newFilterModel)
-                    }
-                  />
+                <DataGrid
+                  sx={{ background: "white", fontSize: 16 }}
+                  rows={rows}
+                  columns={staticcolumns}
+                  editMode="row"
+                  getRowId={(row) => row.id}
+                  filterModel={filterModel}
+                  onFilterModelChange={(newFilterModel) =>
+                    setFilterModel(newFilterModel)
+                  }
+                />
               </Box>
             </Box>
 
@@ -2175,20 +2264,26 @@ export default function CreateRMA() {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                }}
-                onClick={() => navigate("/rma")}
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
               >
-                Back
-              </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                  }}
+                  onClick={() => navigate("/rma")}
+                >
+                  Back
+                </Button>
+              </motion.div>
             </Box>
           </Box>
         );

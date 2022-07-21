@@ -10,7 +10,7 @@ import { width } from "@mui/system";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
-import { Box2 } from "three";
+import { motion } from "framer-motion";
 
 const style = {
   position: "absolute" as "absolute",
@@ -48,7 +48,11 @@ export default function ReasonModalButton() {
   }, []);
 
   return (
-    <div>
+    <motion.div
+      className="animatable"
+      whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+      whileTap={{ scale: 0.9 }}
+    >
       <Button
         size="small"
         variant="contained"
@@ -92,7 +96,17 @@ export default function ReasonModalButton() {
                 {rma.RejectReason}
               </Box>
             </Typography>
-            <Box sx={{ display: "flex", height: 1, width: 1 }}>
+            <Box
+              component="span"
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
+              >
                 <Button
                   size="small"
                   variant="contained"
@@ -107,10 +121,11 @@ export default function ReasonModalButton() {
                 >
                   Close
                 </Button>
+              </motion.div>
             </Box>
           </Box>
         </Fade>
       </Modal>
-    </div>
+    </motion.div>
   );
 }

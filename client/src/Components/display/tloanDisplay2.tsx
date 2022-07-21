@@ -21,7 +21,8 @@ import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import { DataGrid, GridColumns } from "@mui/x-data-grid";
 //import { GetDetails }from "../../api/TLoanDB"
-import ModalButton from './TloanModal/modal'
+import ModalButton from "./TloanModal/modal";
+import { motion } from "framer-motion";
 export default function TLoanDisplay2() {
   const navigate = useNavigate();
   const [details, setDetails] = useState([]);
@@ -85,7 +86,7 @@ export default function TLoanDisplay2() {
       headerName: "Quantity",
       flex: 2,
       editable: false,
-      type: "number"
+      type: "number",
     },
   ];
 
@@ -158,7 +159,7 @@ export default function TLoanDisplay2() {
                   </Grid>
                   <Grid item xs={3}>
                     <TextField
-                      sx={{ display: 'flex' }}
+                      sx={{ display: "flex" }}
                       id="With normal TextField"
                       // label="Shipping Address"
                       multiline
@@ -210,26 +211,31 @@ export default function TLoanDisplay2() {
                       component: "span",
                       display: "flex",
                       justifyContent: "space-between",
-                      alignItems: "center"
+                      alignItems: "center",
                     }}
                   >
-                    <Button
-                      size="small"
-                      variant="contained"
-                      sx={{
-                        color: "white",
-                        backgroundColor: "#063970",
-                        height: "100%",
-                        width: 150,
-                        height: 50,
-                        borderRadius: 10,
-                      }}
-                      onClick={() => navigate("/tloan")}
+                    <motion.div
+                      className="animatable"
+                      whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                      whileTap={{ scale: 0.9 }}
                     >
-                      Back
-                    </Button>
-                    
-                  <ModalButton/>
+                      <Button
+                        size="small"
+                        variant="contained"
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          height: "100%",
+                          width: 150,
+                          height: 50,
+                          borderRadius: 10,
+                        }}
+                        onClick={() => navigate("/tloan")}
+                      >
+                        Back
+                      </Button>
+                    </motion.div>
+                    <ModalButton />
                   </Grid>
                 </Grid>
               </CardContent>

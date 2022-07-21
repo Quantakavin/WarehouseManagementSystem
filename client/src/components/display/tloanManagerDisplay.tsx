@@ -21,9 +21,9 @@ import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import { DataGrid, GridColumns } from "@mui/x-data-grid";
 //import { GetDetails }from "../../api/TLoanDB"
-import ModalButton from './TloanModal/modal'
+import ModalButton from "./TloanModal/modal";
 import TLoanRejectModalButton from "./TloanModal/tloanRejectModal";
-
+import { motion } from "framer-motion";
 
 export default function TLoanManagerDisplay() {
   const navigate = useNavigate();
@@ -70,13 +70,14 @@ export default function TLoanManagerDisplay() {
       .catch(console.error);
   }, []);
 
-  const ApproveLoan = async()=>{
-    axios.put(`http://localhost:5000/api/tloan/approve/${TLoanNumber}`)
-    .then(() => navigate("/tloan"))
-    .catch((error) => {
-      console.error("There was an error!", error);
-    });
-  }
+  const ApproveLoan = async () => {
+    axios
+      .put(`http://localhost:5000/api/tloan/approve/${TLoanNumber}`)
+      .then(() => navigate("/tloan"))
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
+  };
 
   const columns: GridColumns = [
     {
@@ -96,7 +97,7 @@ export default function TLoanManagerDisplay() {
       headerName: "Quantity",
       flex: 2,
       editable: false,
-      type: "number"
+      type: "number",
     },
   ];
 
@@ -105,7 +106,6 @@ export default function TLoanManagerDisplay() {
       <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
         <Box sx={{ display: "flex", height: "100%" }}>
           <Box sx={{ flexGrow: 1 }}>
-
             <Card>
               <CardContent>
                 <Grid container spacing={8}>
@@ -170,7 +170,7 @@ export default function TLoanManagerDisplay() {
                   </Grid>
                   <Grid item xs={3}>
                     <TextField
-                      sx={{ display: 'flex' }}
+                      sx={{ display: "flex" }}
                       id="With normal TextField"
                       // label="Shipping Address"
                       multiline
@@ -222,44 +222,61 @@ export default function TLoanManagerDisplay() {
                       component: "span",
                       display: "flex",
                       justifyContent: "space-between",
-                      alignItems: "center"
+                      alignItems: "center",
                     }}
                   >
-                    <Button
-                      size="small"
-                      variant="contained"
-                      sx={{
-                        color: "white",
-                        backgroundColor: "#063970",
-                        height: "100%",
-                        width: 150,
-                        height: 50,
-                        borderRadius: 10,
+                    <motion.div
+                      className="animatable"
+                      whileHover={{
+                        scale: 1.1,
+                        transition: { duration: 0.3 },
                       }}
-                      onClick={() => navigate("/tloan")}
+                      whileTap={{ scale: 0.9 }}
                     >
-                      Back
-                    </Button>
-                    <Box sx={{float:"right", display:"flex"}}>
-                  <TLoanRejectModalButton/>
-                 
                       <Button
                         size="small"
-                            variant="contained"
-                            sx={{
+                        variant="contained"
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          height: "100%",
+                          width: 150,
+                          height: 50,
+                          borderRadius: 10,
+                        }}
+                        onClick={() => navigate("/tloan")}
+                      >
+                        Back
+                      </Button>
+                    </motion.div>
+                    <Box sx={{ float: "right", display: "flex" }}>
+                      <motion.div
+                        className="animatable"
+                        whileHover={{
+                          scale: 1.1,
+                          transition: { duration: 0.3 },
+                        }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <Button
+                          size="small"
+                          variant="contained"
+                          sx={{
                             color: "white",
                             backgroundColor: "green",
                             height: "100%",
                             width: 200,
                             height: 50,
                             borderRadius: 10,
-                            marginRight:5,
-                            marginLeft: 4
-                            }}
-                            onClick={ApproveLoan}
+                            marginRight: 5,
+                            marginLeft: 4,
+                          }}
+                          onClick={ApproveLoan}
                         >
-                      Approve
-                    </Button>
+                          Approve
+                        </Button>
+                      </motion.div>
+                      <TLoanRejectModalButton />
                     </Box>
                   </Grid>
                 </Grid>
@@ -268,7 +285,6 @@ export default function TLoanManagerDisplay() {
           </Box>
         </Box>
       </Box>
-   
     );
   };
 

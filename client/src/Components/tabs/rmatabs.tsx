@@ -233,20 +233,26 @@ const Rmatabs: React.FC = () => {
               </Box>
             </Grid>
             <Grid item xs={1} sx={{ paddingLeft: 4, marginTop: 8.75 }}>
-              <Fab
-                variant="extended"
-                aria-label="add"
-                onClick={() => navigate("/newtloan")}
-                style={{ marginTop: 0 }}
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  ":hover": { backgroundColor: "#031c38" },
-                }}
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
               >
-                Create
-                <PostAddIcon sx={{ ml: 2 }} />
-              </Fab>
+                <Fab
+                  variant="extended"
+                  aria-label="add"
+                  onClick={() => navigate("/createRMA")}
+                  style={{ marginTop: 0 }}
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    ":hover": { backgroundColor: "#031c38" },
+                  }}
+                >
+                  Create
+                  <PostAddIcon sx={{ ml: 2 }} />
+                </Fab>
+              </motion.div>
             </Grid>
             <Grid item xs={12}>
               <Box>

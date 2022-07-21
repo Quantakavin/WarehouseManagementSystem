@@ -45,6 +45,7 @@ import { textAlign } from "@mui/system";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 export default function CreateRMA() {
   function buildApplyDateFilterFn(
@@ -459,11 +460,9 @@ export default function CreateRMA() {
   return (
     <Card
       sx={{
-        width: 1950,
-        height: 745,
-        marginTop: 5,
-        marginLeft: "auto",
-        marginRight: "auto",
+        width: "98%",
+        height: "100%",
+        m: 3
       }}
     >
       <CardContent>
@@ -554,41 +553,52 @@ export default function CreateRMA() {
           </LocalizationProvider>
         </Box>
         <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            paddingTop: 3,
-          }}
+          component="span"
+          paddingTop={2}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
         >
-          <Button
-            size="small"
-            variant="contained"
-            sx={{
-              color: "white",
-              backgroundColor: "#063970",
-              width: 150,
-              height: 40,
-              marginLeft: 3,
-            }}
-            onClick={() => navigate("/rma")}
+          <motion.div
+            className="animatable"
+            whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+            whileTap={{ scale: 0.9 }}
           >
-            Back
-          </Button>
-          <Button
-            size="small"
-            variant="contained"
-            sx={{
-              color: "white",
-              backgroundColor: "#063970",
-              width: 150,
-              height: 40,
-              marginLeft: 3,
-            }}
-            onClick={() => navigate("/rma")}
+            <Button
+              size="small"
+              variant="contained"
+              sx={{
+                color: "white",
+                backgroundColor: "#063970",
+                width: 150,
+                height: 50,
+                borderRadius: 10,
+              }}
+              onClick={() => navigate("/rma")}
+            >
+              Back
+            </Button>
+          </motion.div>
+          <motion.div
+            className="animatable"
+            whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+            whileTap={{ scale: 0.9 }}
           >
-            Submit
-          </Button>
+            <Button
+              size="small"
+              variant="contained"
+              sx={{
+                color: "white",
+                backgroundColor: "#31A961",
+                width: 150,
+                height: 50,
+                borderRadius: 10,
+              }}
+              onClick={() => navigate("/rma")}
+            >
+              Submit
+            </Button>
+          </motion.div>
         </Box>
       </CardContent>
     </Card>
