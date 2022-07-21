@@ -63,6 +63,7 @@ import {
   GridToolbarFilterButton,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
+import RejectModalButton from "./RmaModal/rejectModal";
 
 export default function CreateRMA() {
   const userrole = useAppSelector(selectRole);
@@ -126,7 +127,8 @@ export default function CreateRMA() {
   };
   //Reject RMA
   const rejectRMA = async () => {
-    axios.put(`http://localhost:5000/api/rejectRMA/${RmaID}`)
+    axios
+      .put(`http://localhost:5000/api/rejectRMA/${RmaID}`)
       .then(() => navigate("/rma"))
       .catch((error) => {
         this.setState({ errorMessage: error.message });
@@ -666,7 +668,12 @@ export default function CreateRMA() {
             >
               Back
             </Button>
-            <Box>
+            <Box
+              component="span"
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
               <Button
                 size="small"
                 variant="contained"
@@ -676,26 +683,13 @@ export default function CreateRMA() {
                   width: 150,
                   height: 50,
                   borderRadius: 10,
-                  marginRight: 5
+                  marginRight: 5,
                 }}
                 onClick={acceptRMA}
               >
                 Accept
               </Button>
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#D11A2A",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                }}
-                onClick={rejectRMA}
-              >
-                Reject
-              </Button>
+              <RejectModalButton />
             </Box>
           </Box>
         </Box>

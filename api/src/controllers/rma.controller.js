@@ -348,10 +348,11 @@ module.exports.updateRmaAccepted = async (req, res) => {
 
 module.exports.updateRmaRejected = async (req, res) => {
     const { RmaID } = req.params;
+    const { rejectreason } = req.body;
     try {
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
-            await rmaService.updateRmaRejected(RmaID);
+            await rmaService.updateRmaRejected(RmaID, rejectreason);
             return res.status(204).json({ message: 'RMA status updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
