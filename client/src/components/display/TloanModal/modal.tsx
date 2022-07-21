@@ -51,7 +51,9 @@ const customStyles = {
             sx={{
               color: "white",
               backgroundColor: "#063970",
-              height: "100%",
+              width: 300,
+              height: 50,
+              borderRadius: 10,
             }}
             onClick={openModal}
           >

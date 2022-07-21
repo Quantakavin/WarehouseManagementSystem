@@ -166,98 +166,70 @@ const Rmatabs: React.FC = () => {
   switch (userrole) {
     case "Sales Engineer": {
       return (
-        <Grid
-          container
-          sx={{
-            height: 800,
-            width: "100%",
-          }}
-        >
-          <TabContext value={value || "1"}>
-            <Grid item xs={11}>
-              <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                <h2> RMA Requests </h2>
-                <Tabs
-                  onChange={handleChange}
-                  TabIndicatorProps={{
-                    style: { backgroundColor: "#D97D54" },
-                  }}
-                  sx={{
-                    "& button:focus": {
-                      backgroundColor: "#063970",
-                      color: "white",
-                      width: "15%",
-                      height: "15%",
-                    },
-                  }}
-                >
-                  <Tab
-                    label="Pending"
-                    value="1"
-                    sx={{
-                      color: "grey",
-                      backgroundColor: "White",
-                      borderRadius: 2,
-                      marginRight: 2,
-                      height: "100%",
-                      width: "15%",
-                    }}
-                  />
-                  <Tab
-                    label="Accepted"
-                    value="2"
-                    sx={{
-                      color: "grey",
-                      backgroundColor: "White",
-                      borderRadius: 2,
-                      marginRight: 2,
-                      height: "100%",
-                      width: "15%",
-                    }}
-                  />
-                  <Tab
-                    label="Rejected"
-                    value="3"
-                    sx={{
-                      color: "grey",
-                      backgroundColor: "White",
-                      borderRadius: 2,
-                      marginRight: 2,
-                      height: "100%",
-                      width: "15%",
-                    }}
-                  />
-                </Tabs>
-              </Box>
-            </Grid>
-            <Grid item xs={1}>
-              <Box sx={{ paddingLeft: 10, marginTop: 8 }}>
-                <React.StrictMode>
-                  <ThemeProvider theme={theme}>
-                    <Fab
-                      aria-label="add"
-                      onClick={() => navigate("/createRMA")}
-                      style={{ marginTop: 0 }}
-                    >
-                      <AddIcon />
-                    </Fab>
-                  </ThemeProvider>
-                </React.StrictMode>
-              </Box>
-            </Grid>
-
-            <Grid item xs={12} sx={{ height: "inherit" }}>
-              <TabPanel value="1">
-                <Box sx={{ height: "inherit", width: "inherit" }}>
+        <TabContext value={value || "1"}>
+          <Box sx={{ paddingLeft: 3, paddingTop: 3 }}>
+            <h2> RMA Requests </h2>
+            <Tabs
+              onChange={handleChange}
+              TabIndicatorProps={{
+                style: { backgroundColor: "#D97D54" },
+              }}
+              sx={{
+                "& button:focus": {
+                  backgroundColor: "#063970",
+                  color: "white",
+                  width: "15%",
+                  height: "15%",
+                },
+              }}
+            >
+              <Tab
+                label="Pending"
+                value="1"
+                sx={{
+                  color: "grey",
+                  backgroundColor: "White",
+                  borderRadius: 2,
+                  marginRight: 2,
+                  height: "100%",
+                  width: "15%",
+                }}
+              />
+              <Tab
+                label="Accepted"
+                value="2"
+                sx={{
+                  color: "grey",
+                  backgroundColor: "White",
+                  borderRadius: 2,
+                  marginRight: 2,
+                  height: "100%",
+                  width: "15%",
+                }}
+              />
+              <Tab
+                label="Rejected"
+                value="3"
+                sx={{
+                  color: "grey",
+                  backgroundColor: "White",
+                  borderRadius: 2,
+                  marginRight: 2,
+                  height: "100%",
+                  width: "15%",
+                }}
+              />
+            </Tabs>
+          </Box>
+          <Box>
+            <TabPanel value="1">
+              <Box sx={{ display: "flex", height: 600, width: "100%" }}>
+                <Box sx={{ flexGrow: 1 }}>
                   <DataGrid
-                    sx={{
-                      background: "white",
-                      fontSize: 18,
-                      width: "inherit",
-                      height: "inherit",
-                    }}
+                    sx={{ background: "white", fontSize: 16 }}
                     rows={myPendingTable}
                     columns={columns}
+                    editMode="row"
                     getRowId={(row) => row.RmaID}
                     pageSize={pageSize}
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
@@ -270,7 +242,7 @@ const Rmatabs: React.FC = () => {
                           alignItems="center"
                           justifyContent="center"
                         >
-                          No accepted RMA requests
+                          No approved RMA requests
                         </Stack>
                       ),
                     }}
@@ -283,11 +255,16 @@ const Rmatabs: React.FC = () => {
                     }}
                   />
                 </Box>
-              </TabPanel>
-              <TabPanel value="2" sx={{ height: "inherit", width: "inherit" }}>
-                <Box sx={{ height: "inherit", width: "inherit" }}>
+              </Box>
+            </TabPanel>
+            <TabPanel value="2">
+              <Box sx={{ display: "flex", height: 600, width: "100%" }}>
+                <Box sx={{ flexGrow: 1 }}>
                   <DataGrid
-                    sx={{ background: "white", fontSize: 18 }}
+                    sx={{
+                      background: "white",
+                      fontSize: 16,
+                    }}
                     rows={myAcceptedTable}
                     columns={columns}
                     getRowId={(row) => row.RmaID}
@@ -302,26 +279,9 @@ const Rmatabs: React.FC = () => {
                           alignItems="center"
                           justifyContent="center"
                         >
-                          No accepted RMA requests
+                          No pending RMA requests
                         </Stack>
                       ),
-                    }}
-                    componentsProps={{
-                      toolbar: {
-                        showQuickFilter: true,
-                        quickFilterProps: { debounceMs: 500 },
-                      },
-                      panel: {
-                        sx: {
-                          "& .MuiTypography-root": {
-                            color: "black",
-                            fontSize: 16,
-                          },
-                          "& .MuiDataGrid-filterForm": {
-                            bgcolor: "white",
-                          },
-                        },
-                      },
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -332,15 +292,22 @@ const Rmatabs: React.FC = () => {
                     }}
                   />
                 </Box>
-              </TabPanel>
-              <TabPanel value="3" sx={{ height: "inherit", width: "inherit" }}>
-                <Box sx={{ height: "inherit", width: "inherit" }}>
+              </Box>
+            </TabPanel>
+            <TabPanel value="3">
+              <Box sx={{ display: "flex", height: 600, width: "100%" }}>
+                <Box sx={{ flexGrow: 1 }}>
                   <DataGrid
-                    sx={{ background: "white", fontSize: 18 }}
+                    sx={{
+                      background: "white",
+                      fontSize: 18,
+                    }}
                     rows={myRejectedTable}
                     columns={columns}
                     getRowId={(row) => row.RmaID}
-                    pageSize={12}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
                     components={{
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
@@ -349,15 +316,9 @@ const Rmatabs: React.FC = () => {
                           alignItems="center"
                           justifyContent="center"
                         >
-                          No rejected RMA requests
+                          No pending RMA requests
                         </Stack>
                       ),
-                    }}
-                    componentsProps={{
-                      toolbar: {
-                        showQuickFilter: true,
-                        quickFilterProps: { debounceMs: 500 },
-                      },
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -368,10 +329,10 @@ const Rmatabs: React.FC = () => {
                     }}
                   />
                 </Box>
-              </TabPanel>
-            </Grid>
-          </TabContext>
-        </Grid>
+              </Box>
+            </TabPanel>
+          </Box>
+        </TabContext>
       );
     }
     case "Technical Staff": {

@@ -44,6 +44,7 @@ import {
   CardContent,
   Grid,
   MenuItem,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -54,14 +55,35 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import {
+  DataGrid,
+  GridToolbarColumnsButton,
+  GridToolbarDensitySelector,
+  GridToolbarExport,
+  GridToolbarFilterButton,
+  GridToolbarQuickFilter,
+} from "@mui/x-data-grid";
 
 export default function CreateRMA() {
   const userrole = useAppSelector(selectRole);
   const [rma, setRma] = useState([]);
   const [rows, setRows] = useState([]);
-
+  const [data, setData] = useState();
+  const [pageSize, setPageSize] = React.useState(25);
+  const [isLoading, setIsLoading] = useState(false);
+  const [err, setErr] = useState("");
   let { RmaID } = useParams();
 
+  const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
+    items: [
+      {
+        columnField: "Company Name",
+        operatorValue: "=",
+        value: "SERVO_LIVE",
+      },
+    ],
+  });
+  //Get RMA details
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
@@ -75,7 +97,7 @@ export default function CreateRMA() {
       // make sure to catch any error
       .catch(console.error);
   }, []);
-
+  //Get RMA products
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
@@ -85,14 +107,32 @@ export default function CreateRMA() {
       );
 
       setRows(rows.data);
-      console.log(rows);
     };
     // call the function
     fetchData()
       // make sure to catch any error
       .catch(console.error);
   }, []);
-
+  //Accept RMA
+  const acceptRMA = async () => {
+    const article = { title: "React PUT Request Example" };
+    axios
+      .put(`http://localhost:5000/api/acceptRMA/${RmaID}`)
+      .then(() => navigate("/rma"))
+      .catch((error) => {
+        this.setState({ errorMessage: error.message });
+        console.error("There was an error!", error);
+      });
+  };
+  //Reject RMA
+  const rejectRMA = async () => {
+    axios.put(`http://localhost:5000/api/rejectRMA/${RmaID}`)
+      .then(() => navigate("/rma"))
+      .catch((error) => {
+        this.setState({ errorMessage: error.message });
+        console.error("There was an error!", error);
+      });
+  };
   // console.log(rma.data.RMAProducts)
   // const products = rma.RMAProducts;
 
@@ -353,6 +393,24 @@ export default function CreateRMA() {
     return updatedRow;
   };
 
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer
+        sx={{ display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1 }}
+      >
+        <Box>
+          <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
+        </Box>
+        <Box>
+          <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
+          <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
+          <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
+          <GridToolbarExport sx={{ color: "#0A2540" }} />
+        </Box>
+      </GridToolbarContainer>
+    );
+  }
+
   const columns: GridColumns = [
     { field: "id", headerName: "PK", flex: 1, editable: true },
     { field: "ItemCode", headerName: "Item Code", flex: 2, editable: true },
@@ -413,7 +471,6 @@ export default function CreateRMA() {
             />,
           ];
         }
-
         return [
           <GridActionsCellItem
             icon={<EditIcon />}
@@ -433,143 +490,340 @@ export default function CreateRMA() {
     },
   ];
 
-  useEffect(() => {
-    // declare the async data fetching function
-    const fetchData = async () => {
-      // get the data from the api
-      const companies = await axios
-        .get(`http://localhost:5000/api/rmacompanies`)
-        .then((companies) => setCompanies(companies.data));
-      // setRma(Object.e)
-    };
-    // call the function
-    fetchData()
-      // make sure to catch any error
-      .catch(console.error);
-  }, []);
+  const staticcolumns: GridColumns = [
+    { field: "id", headerName: "PK", flex: 1, editable: false },
+    { field: "ItemCode", headerName: "Item Code", flex: 2, editable: false },
+    {
+      field: "InvoiceNo",
+      headerName: "Invoice Number",
+      flex: 3,
+      editable: false,
+    },
+    { field: "DoNo", headerName: "D.O Number", flex: 3, editable: false },
+    {
+      field: "DateOfPurchase",
+      headerName: "Date Of Purchase",
+      ...dateColumnType,
+      flex: 3,
+      editable: false,
+    },
+    {
+      field: "ReturnReason",
+      headerName: "Reason For Return",
+      flex: 9,
+      editable: false,
+    },
+    {
+      field: "Instructions",
+      headerName: "Instructions",
+      flex: 9,
+      editable: false,
+    },
+    {
+      field: "CourseOfAction",
+      headerName: "Course Of Action",
+      flex: 9,
+      editable: false,
+    },
+  ];
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCompany(event.target.value);
-  };
+  // useEffect(() => {
+  //   // declare the async data fetching function
+  //   const fetchData = async () => {
+  //     // get the data from the api
+  //     const companies = await axios
+  //       .get(`http://localhost:5000/api/rmacompanies`)
+  //       .then((companies) => setCompanies(companies.data));
+  //     // setRma(Object.e)
+  //   };
+  //   // call the function
+  //   fetchData()
+  //     // make sure to catch any error
+  //     .catch(console.error);
+  // }, []);
+
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setCompany(event.target.value);
+  // };
 
   const navigate = useNavigate();
 
-  return (
-    <Box sx={{ padding: 3, height: "100%", width: "100%"}}>
-      <Typography
-        gutterBottom
-        variant="subtitle2"
-        component="span"
-        sx={{
-          display: "flex",
-          justifyContent: "left",
-          alignItems: "center",
-          marginLeft: 0,
-          color: "#063970",
-          fontWeight: "bold",
-        }}
-      >
-        <Box>
-          <h2>RMA Request #{rma.RmaID}</h2>
-        </Box>
-        <Box sx={{ marginLeft: 5 }}>
-          <Box>EMPLOYEE</Box>
-          <Box sx={{ color: "black", fontWeight: "normal" }}>
-            {rma.Username}
-          </Box>
-        </Box>
-        <Box sx={{ marginLeft: 5 }}>
-          <Box sx={{}}>DATE APPLIED</Box>
-          <Box sx={{ color: "black", fontWeight: "normal" }}>
-            {rma.DateTime}
-          </Box>
-        </Box>
-        <Box sx={{ marginLeft: 5 }}>
-          <Box sx={{}}>CUSTOMER NAME</Box>
-          <Box sx={{ color: "black", fontWeight: "normal" }}>
-            {rma.ContactPerson}
-          </Box>
-        </Box>
-        <Box sx={{ marginLeft: 5 }}>
-          <Box sx={{}}>CUSTOMER EMAIL</Box>
-          <Box sx={{ color: "black", fontWeight: "normal" }}>
-            {rma.CustomerEmail}
-          </Box>
-        </Box>
-        <Box sx={{ marginLeft: 5 }}>
-          <Box sx={{}}>COMPANY</Box>
-          <Box sx={{ color: "black", fontWeight: "normal" }}>
-            {rma.CompanyName}
-          </Box>
-        </Box>
-        <Box sx={{ marginLeft: 5 }}>
-          <Box sx={{}}>CONTACT NUMBER</Box>
-          <Box sx={{ color: "black", fontWeight: "normal" }}>
-            {rma.ContactNo}
-          </Box>
-        </Box>
-      </Typography>
-
-      <Box sx={{ display: "flex", height: "100%", width: "100%" }}>
-        <Box sx={{ flexGrow: 1}}>
-          <LocalizationProvider
-            dateAdapter={AdapterDateFns}
-            adapterLocale={locale}
+  switch (userrole) {
+    case "Sales Engineer": {
+      return (
+        <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
+          <Typography
+            gutterBottom
+            variant="subtitle2"
+            component="span"
+            sx={{
+              display: "flex",
+              justifyContent: "left",
+              alignItems: "center",
+              marginLeft: 0,
+              color: "#063970",
+              fontWeight: "bold",
+            }}
           >
-            <DataGridPro
-              sx={{ background: "white", fontSize: 16 }}
-              rows={rows}
-              columns={columns}
-              editMode="row"
-              getRowId={(row) => row.id}
-              rowModesModel={rowModesModel}
-              onRowEditStart={handleRowEditStart}
-              onRowEditStop={handleRowEditStop}
-              processRowUpdate={processRowUpdate}
-              componentsProps={{
-                toolbar: { setRows, setRowModesModel },
+            <Box>
+              <h2>RMA Request #{rma.RmaID}</h2>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box>EMPLOYEE</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.Username}
+              </Box>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>DATE APPLIED</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.DateTime}
+              </Box>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>CUSTOMER NAME</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.ContactPerson}
+              </Box>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>CUSTOMER EMAIL</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.CustomerEmail}
+              </Box>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>COMPANY</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.CompanyName}
+              </Box>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>CONTACT NUMBER</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.ContactNo}
+              </Box>
+            </Box>
+          </Typography>
+
+          <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
+            <Box sx={{ flexGrow: 1 }}>
+              <DataGrid
+                sx={{ background: "white", fontSize: 16 }}
+                rows={rows}
+                columns={staticcolumns}
+                editMode="row"
+                getRowId={(row) => row.id}
+                pageSize={pageSize}
+                onPageSizeChange={(newPage) => setPageSize(newPage)}
+                pagination
+                components={{
+                  Toolbar: CustomToolbar,
+                  NoRowsOverlay: () => (
+                    <Stack
+                      height="100%"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      No approved RMA requests
+                    </Stack>
+                  ),
+                }}
+                filterModel={filterModel}
+                onFilterModelChange={(newFilterModel) =>
+                  setFilterModel(newFilterModel)
+                }
+                // rowModesModel={rowModesModel}
+                // onRowEditStart={handleRowEditStart}
+                // onRowEditStop={handleRowEditStop}
+                // processRowUpdate={processRowUpdate}
+                // componentsProps={{
+                //   toolbar: { setRows, setRowModesModel },
+                // }}
+                // experimentalFeatures={{ newEditingApi: true }}
+              />
+            </Box>
+          </Box>
+
+          <Box
+            component="span"
+            paddingTop={2}
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Button
+              size="small"
+              variant="contained"
+              sx={{
+                color: "white",
+                backgroundColor: "#063970",
+                width: 150,
+                height: 50,
+                borderRadius: 10,
               }}
-              experimentalFeatures={{ newEditingApi: true }}
-            />
-          </LocalizationProvider>
+              onClick={() => navigate("/rma")}
+            >
+              Back
+            </Button>
+            <Box>
+              <Button
+                size="small"
+                variant="contained"
+                sx={{
+                  color: "white",
+                  backgroundColor: "#31A961",
+                  width: 150,
+                  height: 50,
+                  borderRadius: 10,
+                  marginRight: 5
+                }}
+                onClick={acceptRMA}
+              >
+                Accept
+              </Button>
+              <Button
+                size="small"
+                variant="contained"
+                sx={{
+                  color: "white",
+                  backgroundColor: "#D11A2A",
+                  width: 150,
+                  height: 50,
+                  borderRadius: 10,
+                }}
+                onClick={rejectRMA}
+              >
+                Reject
+              </Button>
+            </Box>
+          </Box>
         </Box>
-      </Box>
+      );
+    }
+    case "Sales Manager":
+    case "Warehouse Worker":
+    case "Technical Staff":
+    case "Sales Admin":
+    case "Admin":
+    default: {
+      return (
+        <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
+          <Typography
+            gutterBottom
+            variant="subtitle2"
+            component="span"
+            sx={{
+              display: "flex",
+              justifyContent: "left",
+              alignItems: "center",
+              marginLeft: 0,
+              color: "#063970",
+              fontWeight: "bold",
+            }}
+          >
+            <Box>
+              <h2>RMA Request #{rma.RmaID}</h2>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box>EMPLOYEE</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.Username}
+              </Box>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>DATE APPLIED</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.DateTime}
+              </Box>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>CUSTOMER NAME</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.ContactPerson}
+              </Box>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>CUSTOMER EMAIL</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.CustomerEmail}
+              </Box>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>COMPANY</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.CompanyName}
+              </Box>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>CONTACT NUMBER</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.ContactNo}
+              </Box>
+            </Box>
+          </Typography>
 
-      <Box
-        component="span"
-        m={1}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Button
-          size="small"
-          variant="contained"
-          sx={{
-            color: "white",
-            backgroundColor: "#063970",
-            width: 150,
-            height: 40,
-          }}
-          onClick={() => navigate("/rma")}
-        >
-          Back
-        </Button>
-        <Button
-          size="small"
-          variant="contained"
-          sx={{
-            color: "white",
-            backgroundColor: "#063970",
-            width: 150,
-            height: 40,
-          }}
-          onClick={() => navigate("/rma")}
-        >
-          Submit
-        </Button>
-      </Box>
-    </Box>
-  );
+          <Box sx={{ display: "flex", height: "100%", width: "100%" }}>
+            <Box sx={{ flexGrow: 1 }}>
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                adapterLocale={locale}
+              >
+                <DataGridPro
+                  sx={{ background: "white", fontSize: 16 }}
+                  rows={rows}
+                  columns={columns}
+                  editMode="row"
+                  getRowId={(row) => row.id}
+                  rowModesModel={rowModesModel}
+                  onRowEditStart={handleRowEditStart}
+                  onRowEditStop={handleRowEditStop}
+                  processRowUpdate={processRowUpdate}
+                  componentsProps={{
+                    toolbar: { setRows, setRowModesModel },
+                  }}
+                  experimentalFeatures={{ newEditingApi: true }}
+                />
+              </LocalizationProvider>
+            </Box>
+          </Box>
+
+          <Box
+            component="span"
+            m={1}
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Button
+              size="small"
+              variant="contained"
+              sx={{
+                color: "white",
+                backgroundColor: "#063970",
+                width: 150,
+                height: 50,
+              }}
+              onClick={() => navigate("/rma")}
+            >
+              Back
+            </Button>
+            <Button
+              size="small"
+              variant="contained"
+              sx={{
+                color: "white",
+                backgroundColor: "#063970",
+                width: 150,
+                height: 50,
+              }}
+              onClick={() => navigate("/rma")}
+            >
+              Submit
+            </Button>
+          </Box>
+        </Box>
+      );
+    }
+  }
 }
-

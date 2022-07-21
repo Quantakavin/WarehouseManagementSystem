@@ -207,9 +207,10 @@ export default function TLoanDisplay2() {
                     xs={12}
                     component="span"
                     sx={{
+                      component: "span",
                       display: "flex",
                       justifyContent: "space-between",
-                      alignItems: "center",
+                      alignItems: "center"
                     }}
                   >
                     <Button
@@ -219,6 +220,9 @@ export default function TLoanDisplay2() {
                         color: "white",
                         backgroundColor: "#063970",
                         height: "100%",
+                        width: 150,
+                        height: 50,
+                        borderRadius: 10,
                       }}
                       onClick={() => navigate("/tloan")}
                     >

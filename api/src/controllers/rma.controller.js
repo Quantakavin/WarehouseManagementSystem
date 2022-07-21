@@ -334,8 +334,10 @@ module.exports.updateRmaAccepted = async (req, res) => {
     const { RmaID } = req.params;
     try {
         const results = await rmaService.getByRmaID(RmaID);
+        console.log("called")
         if (results.length > 0) {
             await rmaService.updateRmaAccepted(RmaID);
+            console.log("accepting")
             return res.status(204).json({ message: 'RMA status updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
