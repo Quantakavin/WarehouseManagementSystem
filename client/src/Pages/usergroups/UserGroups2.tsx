@@ -40,7 +40,11 @@ const UserGroups2: React.FC = () => {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/userGroups`)
+    fetch(`http://localhost:5000/api/userGroups`, { 
+      headers: new Headers({
+          'Authorization': `Bearer ${localStorage.getItem("token")}`
+      }), 
+  })
       .then((data) => data.json())
       .then((data) => setRow(data));
   }, []);

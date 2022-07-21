@@ -8,7 +8,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Box, Grid, Stack } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -22,11 +22,11 @@ import TextField from "@mui/material/TextField";
 import { DataGrid, GridColumns } from "@mui/x-data-grid";
 //import { GetDetails }from "../../api/TLoanDB"
 
-export default function ViewUserGroup2() {
+export default function ViewUser2() {
   const navigate = useNavigate();
   const [details, setDetails] = useState([]);
   //const [loanDetails, setLoanDetails] = useState([]);
-  const [features, setFeatures] = useState([]);
+  const [notigroups, setNotigroups] = useState([]);
 
   let { id } = useParams();
 
@@ -35,66 +35,74 @@ export default function ViewUserGroup2() {
     const fetchData = async () => {
       // get the data from the api
       const details = await axios.get(
-        `http://localhost:5000/api/usergroup/${id}`
+        `http://localhost:5000/api/usergroup2/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
 
       setDetails(details.data);
-
       // setLoan(Object.e)
     };
-    const fetchFeatures = async () => {
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    // declare the async data fetching function
+    const fetchData = async () => {
       // get the data from the api
-      const features = await axios.get(
-        `http://localhost:5000/api/groupfeatures/${id}`
+      const notigroups = await axios.get(
+        `http://localhost:5000/api/groupfeatures/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
 
-      setFeatures(features.data);
+      setNotigroups(notigroups.data);
 
       // setLoan(Object.e)
     };
     // call the function
-    fetchData();
-    fetchFeatures()
+    fetchData()
       // make sure to catch any error
       .catch(console.error);
   }, []);
 
   const columns: GridColumns = [
-    {
-      field: "FeatureID",
-      headerName: "ID",
-      width: 50,
-      editable: false,
-    },
+    {   
+      field: "FeatureID", 
+      headerName: "ID", 
+      flex: 1,
+      editable: false },
     {
       field: "FeatureName",
       headerName: "Feature",
-      width: 400,
+      flex: 10,
       editable: false,
     },
     {
       field: "FeatureRight",
-      headerName: "Access Rights",
-      width: 120,
+      headerName: "Access",
+      flex: 10,
       editable: false,
-    },
+    }
   ];
 
   const getData = () => {
     return (
-      <div>
-        <h2 className="pagetitle">{details.UserGroupName}</h2>
-        <Card
-          sx={{
-            width: 1100,
-            height: 600,
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-        >
-          <CardContent>
-            <Grid container spacing={0}>
-              <Grid item xs={5}>
+      <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
+      <Box sx={{ display: "flex", height: "100%", width: "100%" }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Card>
+            <CardContent>
+              <Grid container spacing={0}>
+                <Grid item xs={6}>
+
                 <Typography
                   gutterBottom
                   variant="subtitle2"
@@ -103,43 +111,34 @@ export default function ViewUserGroup2() {
                     // display: "flex",
                     // justifyContent: "center",
                     // alignItems: "center",
-                    marginTop: 2,
+                    // marginTop: 2,
                     // marginBottom: -5,
-                    marginLeft: 3,
+                    // marginLeft: -10,
                     color: "#063970",
                     fontWeight: "bold",
+                    fontSize: 20
                   }}
                 >
                   <Box>
-                    <div>{details.UserGroupName}</div>
-                    <div style={{ color: "black", fontWeight: "normal" }}>
+                    <h2>{details.UserGroupName}</h2>
+                    <div style={{ color: "black", fontWeight: "normal", paddingBottom: 20 }}>
                       {details.UserGroupDesc}
                     </div>
                   </Box>
                 </Typography>
               </Grid>
-              <Grid item xs={7}>
+              <Grid item xs={6} sx={{height: 600}}>
                 <DataGrid
-                  sx={{ height: 500, width: 580 }}
-                  rows={features}
+                sx={{height: "100%"}}
+                  rows={notigroups}
                   columns={columns}
                   editMode="row"
                   getRowId={(item) => item.FeatureID}
                   experimentalFeatures={{ newEditingApi: true }}
-                  components={{
-                    NoRowsOverlay: () => (
-                      <Stack
-                        height="100%"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        No Features
-                      </Stack>
-                    ),
-                  }}
+                  rowsPerPageOptions={[10]}
                 />
               </Grid>
-              <Grid item xs={6} sx={{marginTop: 2}}>
+              <Grid item xs={12}>
                 <Button
                   size="small"
                   variant="contained"
@@ -148,35 +147,21 @@ export default function ViewUserGroup2() {
                     backgroundColor: "#063970",
                     width: 150,
                     height: 40,
-                    marginLeft: 3,
                   }}
                   onClick={() => navigate("/usergroups")}
                 >
                   Back
                 </Button>
               </Grid>
-              <Grid item xs={6} justifyContent="right" sx={{marginTop: 2}}>
-                <Button
-                  size="small"
-                  variant="contained"
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#063970",
-                    width: 150,
-                    height: 40,
-                    marginLeft: 45,
-                  }}
-                  onClick={() => navigate(`/editusergroup/${id}`)}
-                >
-                  Edit
-                </Button>
-              </Grid>
             </Grid>
           </CardContent>
         </Card>
-      </div>
+        </Box>
+        </Box>
+        </Box>
     );
   };
 
   return <div>{getData()}</div>;
+ 
 }
