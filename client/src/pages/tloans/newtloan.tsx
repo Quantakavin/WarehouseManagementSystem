@@ -32,6 +32,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
+import Swal from "sweetalert2"
+import {Toast} from "../../components/alerts/SweetAlert"
+
 import {
   GridRowsProp,
   GridRowModesModel,
@@ -57,19 +60,9 @@ function newtloan() {
 
 
 
-
-
-  const initialRows: GridRowsProp = [
-    // {
-    //   id: randomId(),
-    //   ItemNo:'',
-    //   ItemName:'',
-    //   BatchNo:'',
-    //   Quantity:''
-    // },
     
-  ];
-  
+
+
   interface EditToolbarProps {
     setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
     setRowModesModel: (
@@ -140,7 +133,7 @@ function newtloan() {
     const processRowUpdate = (newRow: GridRowModel) => {
       const updatedRow = { ...newRow, isNew: false };
       setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-      setItems(updatedRow)
+     
       return updatedRow;
      
     };
@@ -237,6 +230,7 @@ function newtloan() {
     );
   }
 
+ 
   const [type, setType] = useState('')
   const [company,setCompany] = useState('')
   const [number,setNumber] = useState('')
@@ -305,7 +299,17 @@ function newtloan() {
         email,
         collection,
         items
-      }).then(() => navigate("/tloan"))
+      }).then(() => {
+        Toast.fire({
+          icon: "success",
+          title: "TLoan Successfully Submitted",
+          customClass: "swalpopup",
+          timer: 1500,
+          width:700
+        });
+       navigate("/tloan")})
+      
+      
       console.log(results)
      } catch( error) {
       console.log(error.response)
@@ -493,7 +497,7 @@ function newtloan() {
     <>
     
     {getCard()}
-        
+   
    
    </>
   )
