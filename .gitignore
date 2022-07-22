@@ -1,6 +1,5 @@
 .DS_Store
 node_modules
 dump.rdb
-api/package-lock.json
-client/package-lock.json
-client/package.json
+package-lock.json
+package.json
