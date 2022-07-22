@@ -8,7 +8,6 @@ import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 // import { color } from "@mui/system";
 
-
 type GLTFResult = GLTF & {
   nodes: {
     Cube024: THREE.Mesh;
@@ -38,7 +37,7 @@ const Model: React.FC<ModelProps> = ({
   return (
     <group
       onClick={() => {
-        alert(bintag)
+        alert(bintag);
       }}
       ref={group}
       dispose={null}

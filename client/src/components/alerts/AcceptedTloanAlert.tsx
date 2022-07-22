@@ -16,4 +16,4 @@ AcceptedTloanAlert.fire({
   title: "Loan Apporved",
 });
 
-export default { AcceptedTloanAlert } ;
+export default { AcceptedTloanAlert };

@@ -35,7 +35,7 @@ const FormField = <T,>({
   type,
   register,
   rules,
-} : FormFieldProps<T>) => {
+}: FormFieldProps<T>) => {
   const { toggle, passwordType, showPassword } = useTogglePasword();
   let field = null;
 
@@ -45,7 +45,7 @@ const FormField = <T,>({
         <Input
           $password
           type={passwordType}
-          defaultValue = {defaultvalue}
+          defaultValue={defaultvalue}
           {...(register && register(name, rules))}
         />
         <div className="passwordicon flexcontainer" onClick={toggle}>
@@ -62,7 +62,7 @@ const FormField = <T,>({
       <Input
         $password={false}
         type={type}
-        defaultValue = {defaultvalue}
+        defaultValue={defaultvalue}
         {...(register && register(name, rules))}
       />
     );
@@ -80,7 +80,6 @@ const FormField = <T,>({
 
 export default FormField;
 
-
 // import React from "react";
 // import styled from "styled-components";
 // import { UseFormRegister, RegisterOptions, Path } from "react-hook-form";
@@ -92,7 +91,6 @@ export default FormField;
 // import useTogglePasword from "../../hooks/useTogglePassword";
 
 // type AllowedInputs = "email" | "password" | "text" | "number";
-
 
 // interface FormFieldProps<T> {
 //   label: string;
@@ -113,7 +111,6 @@ export default FormField;
 //     paddingRight: 15
 //   }
 // };
-
 
 // const FormField = <T,>({
 //   label,

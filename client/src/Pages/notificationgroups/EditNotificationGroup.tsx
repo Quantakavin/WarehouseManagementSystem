@@ -15,14 +15,28 @@ import { PostUserGroup } from "../../api/UserGroupDB";
 import FormContainer from "../../components/form/FormContainer";
 import FormTextArea from "../../components/form/FormTextArea";
 import { GetFeatures, GetFeatureRights } from "../../api/FeatureDB";
-import { Option, Feature, FeatureRight, Company, NotiFeature, NotiType } from "../../utils/CommonTypes";
+import {
+  Option,
+  Feature,
+  FeatureRight,
+  Company,
+  NotiFeature,
+  NotiType,
+} from "../../utils/CommonTypes";
 import { Toast } from "../../components/alerts/SweetAlert";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import SelectedList from "../../components/form/SelectedList";
 import { GetCompanies } from "../../api/CompanyDB";
 import SelectDropdown from "../../components/form/SelectDropdown";
-import { GetNotificationFeatures, GetNotificationTypes } from "../../api/NotificationFeatureDB";
-import { GetNotificationGroup, PostNotificationGroup, UpdateNotificationGroup } from "../../api/NotificationGroupDB";
+import {
+  GetNotificationFeatures,
+  GetNotificationTypes,
+} from "../../api/NotificationFeatureDB";
+import {
+  GetNotificationGroup,
+  PostNotificationGroup,
+  UpdateNotificationGroup,
+} from "../../api/NotificationGroupDB";
 
 interface FormValues {
   name: string;
@@ -44,24 +58,32 @@ const AddNotificationGroup: React.FC = () => {
   const [companyOptions, setCompanyOptions] = useState<Option[]>([]);
   const [notiFeatureOptions, setNotiFeatureOptions] = useState<Option[]>([]);
   const [notiTypeOptions, setNotiTypeOptions] = useState<Option[]>([]);
-  const [selectedNotiFeatures, setSelectedNotiFeatures] = useState<string[]>([]);
+  const [selectedNotiFeatures, setSelectedNotiFeatures] = useState<string[]>(
+    []
+  );
   const [returnNotiFeatures, setReturnNotiFeatures] = useState<any[]>([]);
   const queryClient = useQueryClient();
 
-  const NotificationGroupQuery = useQuery([`notificationgroup${params.id}`, params.id], () =>
-    GetNotificationGroup(params.id),
+  const NotificationGroupQuery = useQuery(
+    [`notificationgroup${params.id}`, params.id],
+    () => GetNotificationGroup(params.id),
     {
       onSuccess: (data) => {
-        setSelectedNotiFeatures(data.data[0].Features.map((value) => {
-          return value.NotiFeatureID
-        }))
+        setSelectedNotiFeatures(
+          data.data[0].Features.map((value) => {
+            return value.NotiFeatureID;
+          })
+        );
         setReturnNotiFeatures(
           data.data[0].Features.map((returnfeature) => {
-            return { NotiFeatureID: returnfeature.NotiFeatureID, NotiTypeID: returnfeature.NotiTypeID };
+            return {
+              NotiFeatureID: returnfeature.NotiFeatureID,
+              NotiTypeID: returnfeature.NotiTypeID,
+            };
           })
         );
         setNotificationGroup(data.data[0]);
-      }
+      },
     }
   );
 
@@ -84,19 +106,23 @@ const AddNotificationGroup: React.FC = () => {
     }
   );
 
-  const notiFeaturesQuery = useQuery("notificationfeatures", GetNotificationFeatures, {
-    onSuccess: (data) => {
-      const notificationfeatures: Option[] = [];
-      data.data.forEach((feature: NotiFeature) => {
-        notificationfeatures.push({
-          id: feature.NotiFeatureID,
-          text: feature.NotiFeature,
-          value: feature.NotiFeatureID,
+  const notiFeaturesQuery = useQuery(
+    "notificationfeatures",
+    GetNotificationFeatures,
+    {
+      onSuccess: (data) => {
+        const notificationfeatures: Option[] = [];
+        data.data.forEach((feature: NotiFeature) => {
+          notificationfeatures.push({
+            id: feature.NotiFeatureID,
+            text: feature.NotiFeature,
+            value: feature.NotiFeatureID,
+          });
         });
-      });
-      setNotiFeatureOptions(notificationfeatures);
+        setNotiFeatureOptions(notificationfeatures);
+      },
     }
-  });
+  );
   const notiTypesQuery = useQuery("notificationtypes", GetNotificationTypes, {
     onSuccess: (data) => {
       const notificationtypes: Option[] = [];
@@ -108,10 +134,12 @@ const AddNotificationGroup: React.FC = () => {
         });
       });
       setNotiTypeOptions(notificationtypes);
-    }
+    },
   });
 
-  const mutation = useMutation((data: FormValues) => UpdateNotificationGroup(data, params.id));
+  const mutation = useMutation((data: FormValues) =>
+    UpdateNotificationGroup(data, params.id)
+  );
 
   const onSubmit = (data: FormValues) => {
     const postdata = data;
@@ -122,11 +150,11 @@ const AddNotificationGroup: React.FC = () => {
           icon: "success",
           title: "Notification group updated successfully",
           customClass: "swalpopup",
-          timer: 1500
+          timer: 1500,
         });
-        queryClient.invalidateQueries('notificationgroups');
-        queryClient.invalidateQueries('filternotificationgroups');
-        queryClient.invalidateQueries('notificationgroupnames');
+        queryClient.invalidateQueries("notificationgroups");
+        queryClient.invalidateQueries("filternotificationgroups");
+        queryClient.invalidateQueries("notificationgroupnames");
         queryClient.invalidateQueries(`notificationgroup${params.id}`);
         navigate("/notificationgroups");
       },
@@ -141,7 +169,9 @@ const AddNotificationGroup: React.FC = () => {
     setStep(step - 1);
   };
 
-  const selectNotiFeature = (event: SelectChangeEvent<typeof selectedNotiFeatures>) => {
+  const selectNotiFeature = (
+    event: SelectChangeEvent<typeof selectedNotiFeatures>
+  ) => {
     const {
       target: { value },
     } = event;
@@ -151,7 +181,9 @@ const AddNotificationGroup: React.FC = () => {
     } else {
       valuearray = value;
     }
-    setSelectedNotiFeatures(typeof value === "string" ? value.split(",") : value);
+    setSelectedNotiFeatures(
+      typeof value === "string" ? value.split(",") : value
+    );
     const notifeaturestoset = valuearray.map((notifeature) => {
       if (
         returnNotiFeatures.some(
@@ -199,11 +231,11 @@ const AddNotificationGroup: React.FC = () => {
   };
 
   const getNotiFeatureName = (notifeature: string) => {
-    console.log(" IS IT UNDEFINED ", notiFeaturesQuery)
+    console.log(" IS IT UNDEFINED ", notiFeaturesQuery);
     return notiFeaturesQuery.data.data.find(
       (data) => data.NotiFeatureID === notifeature
-    ).NotiFeature
-  }
+    ).NotiFeature;
+  };
 
   // const StepOne = (
   //   <div className={step === 1 ? "showstep" : "hidestep"}>
@@ -243,14 +275,22 @@ const AddNotificationGroup: React.FC = () => {
   const SetDefaultOptions = (notifeature) => {
     let optiontoset = notiTypeOptions[0]?.value;
     if (NotificationGroupQuery.isSuccess) {
-      for (let i = 0; i < NotificationGroupQuery.data.data[0].Features.length; i++) {
-        if (NotificationGroupQuery.data.data[0].Features[i].NotiFeatureID === notifeature) {
-          optiontoset = NotificationGroupQuery.data.data[0].Features[i].NotiTypeID
+      for (
+        let i = 0;
+        i < NotificationGroupQuery.data.data[0].Features.length;
+        i++
+      ) {
+        if (
+          NotificationGroupQuery.data.data[0].Features[i].NotiFeatureID ===
+          notifeature
+        ) {
+          optiontoset =
+            NotificationGroupQuery.data.data[0].Features[i].NotiTypeID;
         }
       }
     }
     return optiontoset;
-  }
+  };
 
   // const StepTwo = (
   //   <div className={step === 2 ? "showstep" : "hidestep"}>
@@ -296,7 +336,7 @@ const AddNotificationGroup: React.FC = () => {
       handleSubmit={handleSubmit}
       onSubmit={onSubmit}
     >
-      {(NotificationGroupQuery.isSuccess && notiFeaturesQuery.isSuccess) &&
+      {NotificationGroupQuery.isSuccess && notiFeaturesQuery.isSuccess && (
         <>
           {/* Step One */}
           <div className={step === 1 ? "showstep" : "hidestep"}>
@@ -336,7 +376,10 @@ const AddNotificationGroup: React.FC = () => {
                 Cancel
               </button>
               <button className="nextbutton" onClick={nextStep} type="button">
-                Next <NavigateNextIcon style={{ marginRight: -10, marginLeft: -7 }} />
+                Next{" "}
+                <NavigateNextIcon
+                  style={{ marginRight: -10, marginLeft: -7 }}
+                />
               </button>
             </div>
           </div>
@@ -352,7 +395,6 @@ const AddNotificationGroup: React.FC = () => {
             />
 
             {selectedNotiFeatures.length > 0 && (
-
               <SelectedList
                 getname={getNotiFeatureName}
                 label="Feature List"
@@ -368,16 +410,26 @@ const AddNotificationGroup: React.FC = () => {
               <ErrorAlert error={mutation.error} />
             ) : null}
             <div className="formnavigationcontainer">
-              <button className="formnavigation" onClick={prevStep} type="button">
-                <NavigateBeforeIcon style={{ marginRight: -7, marginLeft: -10 }} />{" "}
+              <button
+                className="formnavigation"
+                onClick={prevStep}
+                type="button"
+              >
+                <NavigateBeforeIcon
+                  style={{ marginRight: -7, marginLeft: -10 }}
+                />{" "}
                 Back
               </button>
-              <SubmitButton text="Submit" loading={mutation.isLoading} multipart />
+              <SubmitButton
+                text="Submit"
+                loading={mutation.isLoading}
+                multipart
+              />
             </div>
           </div>
         </>
-      }
+      )}
     </FormContainer>
   );
 };
-export default AddNotificationGroup; 
+export default AddNotificationGroup;

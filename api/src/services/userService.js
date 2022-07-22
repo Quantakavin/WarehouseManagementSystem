@@ -1,5 +1,3 @@
-
-
 const knex = require('../config/database');
 
 module.exports.getByEmail = async (email) => {
@@ -8,14 +6,14 @@ module.exports.getByEmail = async (email) => {
     return knex.raw(query, [email]);
 };
 
-module.exports.getNames = async ( name ) => {
+module.exports.getNames = async (name) => {
     const query = `SELECT DISTINCT IFNULL(Username, NULL) 'Name' FROM User WHERE Username LIKE ?`;
     return knex.raw(query, [`%${name}%`]);
 };
 
-module.exports.getAll = async (pageSize, pageNo, sortColumn, sortOrder, name ) => {
+module.exports.getAll = async (pageSize, pageNo, sortColumn, sortOrder, name) => {
     const query = `Call sp_getAllUsers(?,?,?,?,?)`;
-    return knex.raw(query, [Number(pageSize), Number(pageNo), sortColumn, sortOrder, name ]);
+    return knex.raw(query, [Number(pageSize), Number(pageNo), sortColumn, sortOrder, name]);
 };
 
 // module.exports.getAll = async (limit, page) => {
@@ -137,10 +135,10 @@ module.exports.getByNotificationGroup = async (notiGroupID) => {
 };
 
 module.exports.checkTLoansAndRMA = async (userID) => {
-    const query = `SELECT Count(UserID) 'Count' FROM (SELECT UserID FROM TLoan WHERE UserID = ? UNION SELECT SalesmanID 'UserID' FROM Rma WHERE SalesmanID = ?) AS T`
+    const query = `SELECT Count(UserID) 'Count' FROM (SELECT UserID FROM TLoan WHERE UserID = ? UNION SELECT SalesmanID 'UserID' FROM Rma WHERE SalesmanID = ?) AS T`;
     return knex.raw(query, [userID, userID]);
-}
+};
 
 module.exports.delete = async (userID) => {
-    return knex('User').where('UserID', userID).del()
+    return knex('User').where('UserID', userID).del();
 };

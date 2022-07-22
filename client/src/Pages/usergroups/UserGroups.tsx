@@ -1,9 +1,19 @@
 import React, { useState } from "react";
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "react-query";
-import { DeleteUserGroup, FilterUserGroups, GetUserGroupNames, GetUserGroups } from "../../api/UserGroupDB";
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
-import PageviewIcon from '@mui/icons-material/Pageview';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "react-query";
+import {
+  DeleteUserGroup,
+  FilterUserGroups,
+  GetUserGroupNames,
+  GetUserGroups,
+} from "../../api/UserGroupDB";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
+import PageviewIcon from "@mui/icons-material/Pageview";
 import InfiniteTable from "../../components/table/InfiniteTable";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
@@ -15,18 +25,17 @@ import {
 } from "../../app/reducers/UserGroupTableFilterSlice";
 import { motion } from "framer-motion";
 import SearchBarUpdated from "../../components/search/SearchBarUpdated";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import SearchIcon from '@mui/icons-material/Search';
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import { Backdrop, Box, Fade, Hidden, Modal, Typography } from "@mui/material";
 import useDebounce from "../../hooks/useDebounce";
-import CancelIcon from '@mui/icons-material/Cancel';
+import CancelIcon from "@mui/icons-material/Cancel";
 import { DeleteUser } from "../../api/UserDB";
 import { Toast } from "../../components/alerts/SweetAlert";
 import Popup from "../../components/alerts/Popup";
 
 const UserGroups: React.FC = () => {
-
   const sortColumn = useAppSelector(selectSortColumn);
   const sortOrder = useAppSelector(selectSortOrder);
   const dispatch = useAppDispatch();
@@ -39,7 +48,6 @@ const UserGroups: React.FC = () => {
   const [showError, setShowError] = useState<boolean>(false);
   const [idToDelete, setIdToDelete] = useState<string>(null);
   const queryClient = useQueryClient();
-
 
   const mutation = useMutation(DeleteUserGroup);
 
@@ -55,14 +63,7 @@ const UserGroups: React.FC = () => {
     setInputName(inputstring);
   };
 
-
-  const headers = [
-    "ID",
-    "Name",
-    "Description",
-    "Action"
-  ];
-
+  const headers = ["ID", "Name", "Description", "Action"];
 
   const UserGroupnamesQuery = useQuery(
     [`usergroupnames`, debouncedValue],
@@ -77,40 +78,40 @@ const UserGroups: React.FC = () => {
     }
   );
 
-  const UserGroupsQuery = useInfiniteQuery([`filterusergroups`, sortColumn, sortOrder, searchName], FilterUserGroups,
+  const UserGroupsQuery = useInfiniteQuery(
+    [`filterusergroups`, sortColumn, sortOrder, searchName],
+    FilterUserGroups,
     {
       getNextPageParam: (lastPage, pages) => {
         if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
         return undefined;
-      }
-    });
-
+      },
+    }
+  );
 
   const ActionMenu = (id: string) => {
-    return (
-      [
-        {
-          name: "View Details",
-          url: `/usergroup/${id}`,
-          icon: <PageviewIcon fontSize="small" />,
-          delete: false
-        },
-        {
-          name: "Edit Details",
-          url: `/editusergroup/${id}`,
-          icon: <ModeEditOutlineIcon fontSize="small" />,
-          delete: false
-        },
-        {
-          name: "Delete",
-          icon: <DeleteOutlineIcon fontSize="small" />,
-          delete: true,
-          deleteFunction: () => SelectDelete(id)
-          // deleteFunction: () => Delete(id)
-        },
-      ]
-    )
-  }
+    return [
+      {
+        name: "View Details",
+        url: `/usergroup/${id}`,
+        icon: <PageviewIcon fontSize="small" />,
+        delete: false,
+      },
+      {
+        name: "Edit Details",
+        url: `/editusergroup/${id}`,
+        icon: <ModeEditOutlineIcon fontSize="small" />,
+        delete: false,
+      },
+      {
+        name: "Delete",
+        icon: <DeleteOutlineIcon fontSize="small" />,
+        delete: true,
+        deleteFunction: () => SelectDelete(id),
+        // deleteFunction: () => Delete(id)
+      },
+    ];
+  };
 
   const ApplyFilter = (header: string) => {
     if (header !== "Action") {
@@ -125,44 +126,43 @@ const UserGroups: React.FC = () => {
   };
 
   const SelectDelete = (id: string) => {
-    setIdToDelete(id)
-    setShowConfirmation(true)
-  }
+    setIdToDelete(id);
+    setShowConfirmation(true);
+  };
 
   const Delete = (id: string) => {
     mutation.mutate(id, {
       onError: () => {
-        setShowConfirmation(false)
-        setShowError(true)
-        setIdToDelete(null)
+        setShowConfirmation(false);
+        setShowError(true);
+        setIdToDelete(null);
       },
       onSuccess: () => {
-        setShowConfirmation(false)
+        setShowConfirmation(false);
         Toast.fire({
           icon: "success",
           title: "User group deleted successfully",
           customClass: "swalpopup",
-          timer: 1500
+          timer: 1500,
         });
-        queryClient.invalidateQueries('usergroups');
-        queryClient.invalidateQueries('filterusergroups');
-        queryClient.invalidateQueries('usergroupnames');
-        setIdToDelete(null)
+        queryClient.invalidateQueries("usergroups");
+        queryClient.invalidateQueries("filterusergroups");
+        queryClient.invalidateQueries("usergroupnames");
+        setIdToDelete(null);
         navigate("/usergroups");
-      }
+      },
     });
-  }
+  };
 
   const closeConfirmationPopup = () => {
-    setShowConfirmation(false)
-    setIdToDelete(null)
-  }
+    setShowConfirmation(false);
+    setIdToDelete(null);
+  };
 
   const closeErrorPopup = () => {
-    setShowError(false)
-    setIdToDelete(null)
-  }
-
+    setShowError(false);
+    setIdToDelete(null);
+  };
 
   // const popupstyle = {
   //   position: 'absolute' as 'absolute',
@@ -183,7 +183,6 @@ const UserGroups: React.FC = () => {
 
   return (
     <>
-
       <Popup
         showpopup={showConfirmation}
         heading="Are you sure you want to delete this user group?"
@@ -192,7 +191,12 @@ const UserGroups: React.FC = () => {
         closepopup={closeConfirmationPopup}
         buttons={
           <>
-            <button style={{ alignSelf: "flex-start" }} className="cardbackbutton" onClick={() => setShowConfirmation(false)} type="button">
+            <button
+              style={{ alignSelf: "flex-start" }}
+              className="cardbackbutton"
+              onClick={() => setShowConfirmation(false)}
+              type="button"
+            >
               Cancel
             </button>
             <motion.button
@@ -206,7 +210,6 @@ const UserGroups: React.FC = () => {
             </motion.button>
           </>
         }
-
       />
 
       <Popup
@@ -217,12 +220,21 @@ const UserGroups: React.FC = () => {
         closepopup={closeErrorPopup}
         buttons={
           <>
-            <button style={{ alignSelf: "flex-start", marginLeft: "auto", fontWeight: 700, color: "#0A2540" }} className="buttonremovestyling" onClick={() => setShowError(false)} type="button">
+            <button
+              style={{
+                alignSelf: "flex-start",
+                marginLeft: "auto",
+                fontWeight: 700,
+                color: "#0A2540",
+              }}
+              className="buttonremovestyling"
+              onClick={() => setShowError(false)}
+              type="button"
+            >
               Close
             </button>
           </>
         }
-
       />
       {/* <Modal
         aria-labelledby="transition-modal-title"
@@ -294,13 +306,18 @@ const UserGroups: React.FC = () => {
       </Modal>
       */}
       <h2 className="pagetitle"> User Groups </h2>
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }} >
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
         <SearchBarUpdated
-
           handleInputChange={handleInputChange}
           handleSearch={handleSearch}
           searchoptions={searchOptions}
-
         />
         <motion.button
           className="addbutton"
@@ -309,15 +326,20 @@ const UserGroups: React.FC = () => {
           style={{ alignSelf: "flex-end" }}
           onClick={() => navigate("/addusergroup")}
         >
-          <AddCircleOutlineIcon fontSize="small" /> Add <Hidden smDown>User Group</Hidden>
+          <AddCircleOutlineIcon fontSize="small" /> Add{" "}
+          <Hidden smDown>User Group</Hidden>
         </motion.button>
-
       </div>
 
-      <InfiniteTable headers={headers} query={UserGroupsQuery} menu={ActionMenu} filter={ApplyFilter} sortColumn={sortColumn} sortOrder={sortOrder} />
+      <InfiniteTable
+        headers={headers}
+        query={UserGroupsQuery}
+        menu={ActionMenu}
+        filter={ApplyFilter}
+        sortColumn={sortColumn}
+        sortOrder={sortOrder}
+      />
     </>
-  )
-
+  );
 };
 export default UserGroups;
-

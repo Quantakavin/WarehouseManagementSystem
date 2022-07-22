@@ -10,7 +10,7 @@ const notificationGroupRoutes = require('./notificationGroupRoutes');
 const tloanRoutes = require('./tLoanRoutes');
 const dashboardRoutes = require('./dashboardRoutes');
 const binRoutes = require('./binRoutes');
-const rmaRoutes = require('./rma.route')
+const rmaRoutes = require('./rma.route');
 
 router.use(rmaRoutes);
 router.use(companyRoute);

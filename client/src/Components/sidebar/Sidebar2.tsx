@@ -19,7 +19,7 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { selectRole, selectName } from '../../app/reducers/CurrentUserSlice';
+import { selectRole, selectName } from "../../app/reducers/CurrentUserSlice";
 import {
   selectCurrentTab,
   selectOpen,
@@ -83,9 +83,9 @@ export default function MiniDrawer() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const open = useAppSelector(selectOpen);
-  const isopen = useAppSelector(selectOpen)
-  const username = useAppSelector(selectName)
-  const userrole = useAppSelector(selectRole)
+  const isopen = useAppSelector(selectOpen);
+  const username = useAppSelector(selectName);
+  const userrole = useAppSelector(selectRole);
   const handleDrawerClose = () => {
     dispatch(Close());
   };
@@ -97,23 +97,34 @@ export default function MiniDrawer() {
       <CssBaseline />
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
-        <Box className="flexcontainer sidebarprofile">
-        <Box style={{flex: 1}}>
-        <img
-        alt="ISDN Logo"
-        src={defaultprofile} 
-        width="40"
-        height="40"
-        className="d-inline-block align-top"
-        style={{ marginRight: 15 }}
-      />
-        </Box>
-        {isopen &&
-        <Box style={{flex: 3, marginTop: 8, marginBottom: -8}}>
-          <p style={{fontSize: 18, fontWeight: 500, textTransform: "capitalize"}}>{username}</p>
-          <p style={{fontSize:  12, fontWeight: 400, marginTop: -15}}>{userrole}</p>
-        </Box>}
-      </Box>
+          <Box className="flexcontainer sidebarprofile">
+            <Box style={{ flex: 1 }}>
+              <img
+                alt="ISDN Logo"
+                src={defaultprofile}
+                width="40"
+                height="40"
+                className="d-inline-block align-top"
+                style={{ marginRight: 15 }}
+              />
+            </Box>
+            {isopen && (
+              <Box style={{ flex: 3, marginTop: 8, marginBottom: -8 }}>
+                <p
+                  style={{
+                    fontSize: 18,
+                    fontWeight: 500,
+                    textTransform: "capitalize",
+                  }}
+                >
+                  {username}
+                </p>
+                <p style={{ fontSize: 12, fontWeight: 400, marginTop: -15 }}>
+                  {userrole}
+                </p>
+              </Box>
+            )}
+          </Box>
           <IconButton onClick={handleDrawerOpen}>
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />

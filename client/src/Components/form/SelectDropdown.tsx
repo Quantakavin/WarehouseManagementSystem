@@ -23,36 +23,34 @@ const SelectDropdown: React.FC<SelectProps<any>> = ({
   register,
   rules,
   defaultoption,
-  placeholder
+  placeholder,
 }) => {
-
   const field = (
-      <Select
+    <Select
       size="small"
       defaultValue={defaultoption}
       className="selectfield"
       name={name}
       {...(register && register(name, rules))}
-      sx={{ 
+      sx={{
         borderRadius: "15px",
         paddingTop: "0px",
-        textOverflow: "ellipsis", 
-        overflow: "hidden", 
-        whiteSpace: "pre"
+        textOverflow: "ellipsis",
+        overflow: "hidden",
+        whiteSpace: "pre",
       }}
       displayEmpty
     >
       <MenuItem value={""} disabled hidden>
-      {placeholder}
+        {placeholder}
       </MenuItem>
       {options.map(({ id, text, value }) => (
-      <MenuItem key={id} value={value}>
-
-        {text}
-      </MenuItem>
+        <MenuItem key={id} value={value}>
+          {text}
+        </MenuItem>
       ))}
     </Select>
-    )
+  );
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>

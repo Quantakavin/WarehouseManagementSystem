@@ -12,9 +12,9 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import defaultprofile from "../../assets/defaultprofile.png";
 import navbarbrand from "../../assets/navbarbrand.png";
-import { useAppSelector, useAppDispatch } from '../../app/hooks'
-import { removeUser } from '../../app/reducers/CurrentUserSlice'
-import { Reset } from '../../app/reducers/SidebarSlice'
+import { useAppSelector, useAppDispatch } from "../../app/hooks";
+import { removeUser } from "../../app/reducers/CurrentUserSlice";
+import { Reset } from "../../app/reducers/SidebarSlice";
 import { ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 
 const TopBar: React.FC = () => {
@@ -30,11 +30,10 @@ const TopBar: React.FC = () => {
     setAnchorEl(null);
   };
 
-
   const logout = () => {
     setAnchorEl(null);
-    dispatch(removeUser())
-    dispatch(Reset())
+    dispatch(removeUser());
+    dispatch(Reset());
     localStorage.clear();
     navigate("/");
   };
@@ -48,7 +47,7 @@ const TopBar: React.FC = () => {
         onClose={() => setAnchorEl(null)}
         MenuListProps={{
           "aria-labelledby": "headerprofile",
-          onMouseLeave: handleMouseLeave
+          onMouseLeave: handleMouseLeave,
         }}
       >
         <MenuItem

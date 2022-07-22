@@ -23,11 +23,7 @@ DeleteUserAlert.fire({
     /* Read more about handling dismissals below */
     result.dismiss === Swal.DismissReason.cancel
   ) {
-    DeleteUserAlert.fire(
-      "Cancelled",
-      "User was not deleted.",
-      "error"
-    );
+    DeleteUserAlert.fire("Cancelled", "User was not deleted.", "error");
   }
 });
 

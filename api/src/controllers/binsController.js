@@ -97,7 +97,7 @@ module.exports.ItemName = async (req, res) => {
     }
 };
 
-// Get Bin Location, Items, Item Compmany, Capacity by Bin Tag 
+// Get Bin Location, Items, Item Compmany, Capacity by Bin Tag
 module.exports.BinProducts = async (req, res) => {
     let BinTag = req.params.BinTag;
     try {
@@ -121,9 +121,6 @@ module.exports.BinProducts = async (req, res) => {
         return res.status(500).send('Internal Server Error');
     }
 };
-
-
-
 
 // Get Empty Bin List
 // module.exports.BinProducts = async (req, res) => {

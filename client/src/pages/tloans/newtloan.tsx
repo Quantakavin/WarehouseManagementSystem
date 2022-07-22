@@ -557,41 +557,41 @@ function newtloan() {
               whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
               whileTap={{ scale: 0.9 }}
             >
-            <Button
-              size="small"
-              variant="contained"
-              sx={{
-                color: "white",
-                backgroundColor: "#063970",
-                width: 150,
-                height: 50,
-                borderRadius: 10,
-              }}
-              onClick={DraftLoan}
-            >
-              Save Draft
-            </Button>
+              <Button
+                size="small"
+                variant="contained"
+                sx={{
+                  color: "white",
+                  backgroundColor: "#063970",
+                  width: 150,
+                  height: 50,
+                  borderRadius: 10,
+                }}
+                onClick={DraftLoan}
+              >
+                Save Draft
+              </Button>
             </motion.div>
             <motion.div
               className="animatable"
               whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
               whileTap={{ scale: 0.9 }}
             >
-            <Button
-              size="small"
-              variant="contained"
-              sx={{
-                color: "white",
-                backgroundColor: "#31A961",
-                width: 150,
-                height: 50,
-                borderRadius: 10,
-              }}
-              type="submit"
-              onClick={submitLoan}
-            >
-              Submit
-            </Button>
+              <Button
+                size="small"
+                variant="contained"
+                sx={{
+                  color: "white",
+                  backgroundColor: "#31A961",
+                  width: 150,
+                  height: 50,
+                  borderRadius: 10,
+                }}
+                type="submit"
+                onClick={submitLoan}
+              >
+                Submit
+              </Button>
             </motion.div>
           </Box>
         </CardContent>

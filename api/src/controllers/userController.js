@@ -37,26 +37,32 @@ module.exports.loginUser = async (req, res) => {
 };
 
 module.exports.getAllNames = async (req, res) => {
-    const { name=null } = req.query;
+    const { name = null } = req.query;
     try {
         const results = await user.getNames(name);
         return res.status(200).json(results[0]);
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
-}; 
+};
 
 module.exports.getAllUsers = async (req, res) => {
-    const { pageSize=5, pageNo=0, sortColumn=null, sortOrder=null, name=null } = req.query;
+    const {
+        pageSize = 5,
+        pageNo = 0,
+        sortColumn = null,
+        sortOrder = null,
+        name = null
+    } = req.query;
     try {
         const results = await user.getAll(pageSize, pageNo, sortColumn, sortOrder, name);
         return res.status(200).json(results[0][0]);
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
-}; 
+};
 
 // module.exports.getAllUsers = async (req, res) => {
 //     const { limit, page } = req.query;
@@ -100,7 +106,6 @@ module.exports.getUserById = async (req, res) => {
     }
 };
 
-
 module.exports.getUserByName = async (req, res) => {
     const { name } = req.query;
     try {
@@ -116,7 +121,7 @@ module.exports.getUserByName = async (req, res) => {
 
 module.exports.createUser = async (req, res) => {
     const { name, email, password, mobileno, company, usergroup, notificationgroups } = req.body;
-    console.log("noti groups are ", notificationgroups)
+    console.log('noti groups are ', notificationgroups);
     try {
         const hash = await bcrypt.hash(password, 10);
         await user.insert(name, email, hash, mobileno, company, usergroup, notificationgroups);
@@ -130,10 +135,11 @@ module.exports.createUser = async (req, res) => {
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
- 
+
 module.exports.updateUser = async (req, res) => {
     const userID = req.params.id;
-    const { name, email, password, mobileno, company, usergroup, active, notificationgroups } = req.body;
+    const { name, email, password, mobileno, company, usergroup, active, notificationgroups } =
+        req.body;
     try {
         // const notigroups = notificationgroups.map((group) => {
         //     return JSON.parse(group)
@@ -171,7 +177,7 @@ module.exports.deleteUser = async (req, res) => {
         const results = await user.getByID(userID);
         if (results[0].length > 0) {
             const results2 = await user.checkTLoansAndRMA(userID);
-            console.log(results2)
+            console.log(results2);
             if (results2[0][0].Count === 0) {
                 await user.delete(userID);
                 redisClient.del('users');
@@ -179,11 +185,14 @@ module.exports.deleteUser = async (req, res) => {
             }
             return res
                 .status(405)
-                .json({ message: 'This user cannot be deleted as they have outstanding TLoans or RMAs' });
+                .json({
+                    message: 'This user cannot be deleted as they have outstanding TLoans or RMAs'
+                });
         }
-        return res.status(404).json({ message: 'Cannot find User with that id' });2
+        return res.status(404).json({ message: 'Cannot find User with that id' });
+        2;
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };

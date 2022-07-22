@@ -43,7 +43,11 @@ const validation = {
             res.status(400).json({
                 message: 'Please select a user group to assign the user to'
             });
-        } else if (passswordRegex.test(password) && validator.isEmail(email) && phoneRegex.test(mobileno)) {
+        } else if (
+            passswordRegex.test(password) &&
+            validator.isEmail(email) &&
+            phoneRegex.test(mobileno)
+        ) {
             next();
         } else if (!validator.isEmail(email)) {
             res.status(400).json({
@@ -53,7 +57,7 @@ const validation = {
             res.status(400).json({
                 message: 'Please choose a stronger password'
             });
-        } else if(!phoneRegex.test(mobileno)) {
+        } else if (!phoneRegex.test(mobileno)) {
             res.status(400).json({
                 message: 'Please enter a valid phone number'
             });

@@ -6,7 +6,7 @@ import { motion, MotionValue } from "framer-motion";
 import SearchIcon from "@mui/icons-material/Search";
 import { Hidden } from "@mui/material";
 import { useState } from "react";
-import ClearIcon from '@mui/icons-material/Clear';
+import ClearIcon from "@mui/icons-material/Clear";
 
 interface SearchParams {
   searchoptions: string[];
@@ -45,7 +45,7 @@ const SearchBarUpdated = ({
           options={searchoptions}
           onInputChange={(event, value) => handleInputChange(value)}
           onChange={(event, value) => setSelectedOption(value)}
-          clearIcon = {<ClearIcon fontSize="small" sx={{ color: "#0A2540" }} />}
+          clearIcon={<ClearIcon fontSize="small" sx={{ color: "#0A2540" }} />}
           renderInput={(params) => (
             <TextField
               className="searchfield"

@@ -4,44 +4,22 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import config from "../../config/config";
 
-
 function ProductCard() {
+  // Item Details
+  const [ItemDetails, setItemDetails] = useState([]);
 
-// Item Details
-const [ItemDetails, setItemDetails] = useState([]);
-
-// Fetch Item Details Data 
-const getitemDetails = async () => {
-    const response = await axios.get(`${config.baseURL}/testproducts`,  {
-    // offsetNo: 10
-})
-.then((response) =>
-    setItemDetails(response.data))
+  // Fetch Item Details Data
+  const getitemDetails = async () => {
+    const response = await axios
+      .get(`${config.baseURL}/testproducts`, {
+        // offsetNo: 10
+      })
+      .then((response) => setItemDetails(response.data));
   };
 
   useEffect(() => {
     getitemDetails();
   }, []);
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-  
-
-
-
 
   return (
     <div className="featured">

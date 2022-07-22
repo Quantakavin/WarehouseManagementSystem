@@ -2,10 +2,10 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const cookieParser = require("cookie-parser");
+const cookieParser = require('cookie-parser');
 const formData = require('express-form-data');
 const routes = require('./src/routes/index');
-const config = require('./src/config/config')
+const config = require('./src/config/config');
 
 const app = express();
 app.use('*', cors());

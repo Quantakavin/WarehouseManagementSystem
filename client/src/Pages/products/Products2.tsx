@@ -62,20 +62,19 @@ const Products2: React.FC = () => {
     },
   ];
 
-
-
-
   function CustomToolbar() {
     return (
-      <GridToolbarContainer sx={{display: "flex", flexWrap: "wrap", maxWidth: 613, p: 1}}>
+      <GridToolbarContainer
+        sx={{ display: "flex", flexWrap: "wrap", maxWidth: 613, p: 1 }}
+      >
         <Box>
-        <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
+          <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
         </Box>
         <Box>
-        <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
-        <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
-        <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
-        <GridToolbarExport sx={{ color: "#0A2540" }} />
+          <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
+          <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
+          <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
+          <GridToolbarExport sx={{ color: "#0A2540" }} />
         </Box>
       </GridToolbarContainer>
     );
@@ -115,7 +114,9 @@ const Products2: React.FC = () => {
             onFilterModelChange={(newFilterModel) =>
               setFilterModel(newFilterModel)
             }
-            onRowClick={(params: GridRowParams)=>{navigate(`/product/${params.id}`)}}
+            onRowClick={(params: GridRowParams) => {
+              navigate(`/product/${params.id}`);
+            }}
           />
         </Box>
       </Box>

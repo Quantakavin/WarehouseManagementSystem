@@ -27,14 +27,17 @@ const FormTextArea = <T,>({
   defaultvalue,
   errormsg,
   register,
-  rules
-} : FormFieldProps<T>) => {
-
+  rules,
+}: FormFieldProps<T>) => {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <p className="formlabels"> {label} </p>
       <div className="formfieldcontainer" style={{ alignSelf: "center" }}>
-        <Input {...(register && register(name, rules))} defaultValue = {defaultvalue} rows={5}></Input>
+        <Input
+          {...(register && register(name, rules))}
+          defaultValue={defaultvalue}
+          rows={5}
+        ></Input>
       </div>
       <p className="errormsg">{errormsg}</p>
     </div>

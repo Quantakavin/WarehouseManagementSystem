@@ -45,7 +45,7 @@ const EditUser: React.FC = () => {
   const [returnNotiGroups, setReturnNotiGroups] = useState<any[]>([]);
   const params = useParams();
   const navigate = useNavigate();
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -136,9 +136,9 @@ const EditUser: React.FC = () => {
           customClass: "swalpopup",
           timer: 1500,
         });
-        queryClient.invalidateQueries(`user${params.id}`)
-        queryClient.invalidateQueries(`users`)
-        queryClient.invalidateQueries('usernames')
+        queryClient.invalidateQueries(`user${params.id}`);
+        queryClient.invalidateQueries(`users`);
+        queryClient.invalidateQueries("usernames");
         navigate("/users");
       },
     });

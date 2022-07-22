@@ -1,9 +1,14 @@
 import React, { useState } from "react";
-import { useInfiniteQuery, useQuery, useQueryClient, useMutation } from "react-query";
+import {
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+  useMutation,
+} from "react-query";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import PageviewIcon from "@mui/icons-material/Pageview";
-import CancelIcon from '@mui/icons-material/Cancel';
+import CancelIcon from "@mui/icons-material/Cancel";
 import { motion } from "framer-motion";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { Hidden } from "@mui/material";
@@ -92,7 +97,7 @@ const Users: React.FC = () => {
         name: "View Details",
         url: `/user/${id}`,
         icon: <PageviewIcon fontSize="small" />,
-        delete: false
+        delete: false,
       },
       {
         name: "Edit Details",
@@ -104,7 +109,7 @@ const Users: React.FC = () => {
         name: "Delete",
         icon: <DeleteOutlineIcon fontSize="small" />,
         delete: true,
-        deleteFunction: () => SelectDelete(id)
+        deleteFunction: () => SelectDelete(id),
       },
     ];
   };
@@ -122,48 +127,46 @@ const Users: React.FC = () => {
   };
 
   const SelectDelete = (id: string) => {
-    setIdToDelete(id)
-    setShowConfirmation(true)
-  }
+    setIdToDelete(id);
+    setShowConfirmation(true);
+  };
 
   const Delete = (id: string) => {
     mutation.mutate(id, {
       onError: () => {
-        setShowConfirmation(false)
-        setShowError(true)
-        setIdToDelete(null)
+        setShowConfirmation(false);
+        setShowError(true);
+        setIdToDelete(null);
       },
       onSuccess: () => {
-        setShowConfirmation(false)
+        setShowConfirmation(false);
         Toast.fire({
           icon: "success",
           title: "User deleted successfully",
           customClass: "swalpopup",
-          timer: 1500
+          timer: 1500,
         });
-        queryClient.invalidateQueries('users');
+        queryClient.invalidateQueries("users");
         //queryClient.invalidateQueries('filterusergroups');
-        queryClient.invalidateQueries('usernames');
-        setIdToDelete(null)
+        queryClient.invalidateQueries("usernames");
+        setIdToDelete(null);
         navigate("/users");
-      }
+      },
     });
-  }
+  };
 
   const closeConfirmationPopup = () => {
-    setShowConfirmation(false)
-    setIdToDelete(null)
-  }
+    setShowConfirmation(false);
+    setIdToDelete(null);
+  };
 
   const closeErrorPopup = () => {
-    setShowError(false)
-    setIdToDelete(null)
-  }
-
+    setShowError(false);
+    setIdToDelete(null);
+  };
 
   return (
     <>
-
       <Popup
         showpopup={showConfirmation}
         heading="Are you sure you want to delete this user?"
@@ -172,7 +175,12 @@ const Users: React.FC = () => {
         closepopup={closeConfirmationPopup}
         buttons={
           <>
-            <button style={{ alignSelf: "flex-start" }} className="cardbackbutton" onClick={() => setShowConfirmation(false)} type="button">
+            <button
+              style={{ alignSelf: "flex-start" }}
+              className="cardbackbutton"
+              onClick={() => setShowConfirmation(false)}
+              type="button"
+            >
               Cancel
             </button>
             <motion.button
@@ -186,7 +194,6 @@ const Users: React.FC = () => {
             </motion.button>
           </>
         }
-
       />
 
       <Popup
@@ -197,12 +204,21 @@ const Users: React.FC = () => {
         closepopup={closeErrorPopup}
         buttons={
           <>
-            <button style={{ alignSelf: "flex-start", marginLeft: "auto", fontWeight: 700, color: "#0A2540" }} className="buttonremovestyling" onClick={() => setShowError(false)} type="button">
+            <button
+              style={{
+                alignSelf: "flex-start",
+                marginLeft: "auto",
+                fontWeight: 700,
+                color: "#0A2540",
+              }}
+              className="buttonremovestyling"
+              onClick={() => setShowError(false)}
+              type="button"
+            >
               Close
             </button>
           </>
         }
-
       />
 
       <h2 className="pagetitle"> All Users </h2>

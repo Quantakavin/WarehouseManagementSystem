@@ -5,11 +5,10 @@ module.exports.getAll = async () => {
     return knex.raw(query);
 };
 
-module.exports.filter = async (pageSize, pageNo, sortColumn, sortOrder, name ) => {
+module.exports.filter = async (pageSize, pageNo, sortColumn, sortOrder, name) => {
     const query = `Call sp_getAllUserGroups(?,?,?,?,?)`;
-    return knex.raw(query, [Number(pageSize), Number(pageNo), sortColumn, sortOrder, name ]);
+    return knex.raw(query, [Number(pageSize), Number(pageNo), sortColumn, sortOrder, name]);
 };
-
 
 // module.exports.getAll = async (limit, page) => {
 //     const query = `SELECT UserGroupID, UserGroupName, UserGroupDesc, count(UserGroupID) OVER() AS full_count FROM UserGroup LIMIT ? OFFSET ?`;
@@ -21,7 +20,7 @@ module.exports.getByID = async (userGroupID) => {
     return knex.raw(query, [userGroupID]);
 };
 
-module.exports.getNames = async ( name ) => {
+module.exports.getNames = async (name) => {
     const query = `SELECT DISTINCT IFNULL(UserGroupName, NULL) 'Name' FROM UserGroup WHERE UserGroupName LIKE ?`;
     return knex.raw(query, [`%${name}%`]);
 };
@@ -97,5 +96,5 @@ module.exports.getFeatures = async (userGroupID) => {
 };
 
 module.exports.delete = async (userGroupID) => {
-    return knex('UserGroup').where('UserGroupID', userGroupID).del()
+    return knex('UserGroup').where('UserGroupID', userGroupID).del();
 };

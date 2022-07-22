@@ -47,7 +47,6 @@ export default function tloanDisplay() {
       .catch(console.error);
   }, []);
 
-
   console.log(loans.Items);
 
   const table = () => {
@@ -74,19 +73,17 @@ export default function tloanDisplay() {
     // function createData(itemName: string, batchNo: string, quantity: number) {
     //   return { itemName, batchNo, quantity };
 
-      
-  
     //    console.log(loans)
     //   return (
-        
+
     //        <div>
-         
+
     //      <h2 className="pagetitle">{loans.TLoanNumber}</h2>
     //       <Card sx={{ width: 800, height: 400, marginLeft: 'auto', marginRight: 'auto'}}>
     //     <CardMedia
-        
+
     //     />
-    //     <CardContent> 
+    //     <CardContent>
     //        <Typography gutterBottom variant="subtitle2" component="div" sx={{display: 'flex',justifyContent:'center', alignItems:'center', marginTop: 3, marginLeft: -10,color:'#063970', fontWeight: 'bold'}}>
     //        <Box>
     //        <div >Loan No.</div>
@@ -108,14 +105,13 @@ export default function tloanDisplay() {
     //        <div style={{}}>Customer Email</div>
     //        <div style={{color: "black", fontWeight: "normal"}}>{loans.CustomerEmail}</div>
     //        </Box>
-           
-          
+
     //       </Typography>
     //       <Typography gutterBottom variant="subtitle2" component="div" sx={{marginTop: 3 , marginLeft: 6.5,color:'#063970', fontWeight: 'bold'}}>
     //       <div>Item List</div>
-          
+
     //       </Typography>
-    //       <Box sx={{display:'flex'}}> 
+    //       <Box sx={{display:'flex'}}>
     //         {table()}
     //         <Box sx={{ marginLeft : 2 }} >
     //           <TextField
@@ -124,33 +120,31 @@ export default function tloanDisplay() {
     //           multiline
     //           rows={5.5}
     //           disabled
-             
+
     //           defaultValue={loans.TLoanNumber}
-              
+
     //           />
     //         </Box>
     //       </Box>
-         
+
     //       <Typography variant="body2" color="text.secondary">
-            
+
     //       </Typography>
     //     </CardContent>
     //     <Box sx={{display:'flex',justifyContent:'center', alignItems:'center', paddingTop: 3}}>
     //       <Button size="small" >Back</Button>
-         
+
     //       <Button size="small" >Apply Extension</Button>
     //      </Box>
-        
+
     //   </Card>
     //     </div>
-        
-    
+
     //   )
-     
 
     // }
     const items = loans.Items;
-    console.log(items)
+    console.log(items);
     return (
       <TableContainer
         component={Paper}
@@ -288,7 +282,9 @@ export default function tloanDisplay() {
               Back
             </Button>
 
-            <Button size="small" type="submit">Apply Extension</Button>
+            <Button size="small" type="submit">
+              Apply Extension
+            </Button>
           </Box>
         </Card>
       </div>

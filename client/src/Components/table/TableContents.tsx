@@ -29,7 +29,16 @@ const TableContents = ({ pages, menu }: TableContentProps) => {
                     return null;
                   }
                   return (
-                    <TableCell key={key} sx={{ maxWidth: "50px", color: "#0A2540", overflow: "hidden", textOverflow: "ellipsis" }} align="left">
+                    <TableCell
+                      key={key}
+                      sx={{
+                        maxWidth: "50px",
+                        color: "#0A2540",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                      align="left"
+                    >
                       {String(value)}
                     </TableCell>
                   );

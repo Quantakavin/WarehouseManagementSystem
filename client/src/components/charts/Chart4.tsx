@@ -43,10 +43,11 @@ const renderCustomizedLabel = ({
 
 function Chart4() {
   return (
-    <><div className="chart">
-      <h4 style={{ textAlign: "left" }}>
-      TLoan Requests Grouped By Companies
-    </h4>
+    <>
+      <div className="chart">
+        <h4 style={{ textAlign: "left" }}>
+          TLoan Requests Grouped By Companies
+        </h4>
         <ResponsiveContainer width="100%" height="100%" aspect={4 / 1}>
           <PieChart width={600} height={400}>
             <Pie
@@ -60,12 +61,16 @@ function Chart4() {
               dataKey="value"
             >
               {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
               ))}
             </Pie>
           </PieChart>
         </ResponsiveContainer>
-      </div></>
+      </div>
+    </>
   );
 }
 

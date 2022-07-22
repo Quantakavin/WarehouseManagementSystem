@@ -1,30 +1,30 @@
-$primary-color: #0A2540;
+$primary-color: #0a2540;
 
 .tableheader {
-    color: #86898E !important;
+  color: #86898e !important;
 }
 
 .actiondropdown {
-    background-color: white;
-    border: solid 1px #d3d3d3;
-    border-radius: 10px;
-    padding: 5px 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    top: -10px;
-    right: 5%;
-    position: absolute;
-    z-index: 10;
-    a {
-        font-weight: 400;
-        font-size: 12px;
-        margin-top: 5px;
-        margin-bottom: 5px;
-        margin-left: 15px;
-        text-align: left !important;
-        &:hover {
-            color: #6c7c8c !important;
-        }
+  background-color: white;
+  border: solid 1px #d3d3d3;
+  border-radius: 10px;
+  padding: 5px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  top: -10px;
+  right: 5%;
+  position: absolute;
+  z-index: 10;
+  a {
+    font-weight: 400;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 15px;
+    text-align: left !important;
+    &:hover {
+      color: #6c7c8c !important;
     }
+  }
 }

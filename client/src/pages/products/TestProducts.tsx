@@ -67,7 +67,8 @@ function Products() {
       <div className="product-container">
         <div className="product">
           <div className="Table">
-            <input className="Search"
+            <input
+              className="Search"
               type="text"
               value={q}
               onChange={(e) => setQ(e.target.value)}
@@ -75,7 +76,7 @@ function Products() {
 
             <Table data={search(currentItems)} column={column} />
             <div>
-            <ul className="pageNumbers">{renderPageNumbers}</ul>
+              <ul className="pageNumbers">{renderPageNumbers}</ul>
             </div>
           </div>
         </div>

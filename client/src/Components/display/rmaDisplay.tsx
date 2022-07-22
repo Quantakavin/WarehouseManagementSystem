@@ -170,6 +170,16 @@ export default function CreateRMA() {
         console.error("There was an error!", error);
       });
   };
+  //Close RMA
+  const closeRMA = async () => {
+    axios
+      .put(`http://localhost:5000/api/closeRMA/${RmaID}`)
+      .then(() => navigate("/rma"))
+      .catch((error) => {
+        this.setState({ errorMessage: error.message });
+        console.error("There was an error!", error);
+      });
+  };
   // console.log(rma.data.RMAProducts)
   // const products = rma.RMAProducts;
 
@@ -1516,13 +1526,133 @@ export default function CreateRMA() {
     }
   } else if (rma.RmaStatusID == 7) {
     switch (userrole) {
-      case "Sales Admin":
       case "Sales Engineer":
       case "Sales Manager":
       case "Warehouse Worker":
       case "Technical Staff":
+      case "Sales Admin":
       case "Admin":
       default: {
+        return (
+          <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
+            <Typography
+              gutterBottom
+              variant="subtitle2"
+              component="span"
+              sx={{
+                display: "flex",
+                justifyContent: "left",
+                alignItems: "center",
+                marginLeft: 0,
+                color: "#063970",
+                fontWeight: "bold",
+              }}
+            >
+              <Box>
+                <h2>RMA Request #{rma.RmaID}</h2>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box>EMPLOYEE</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.Username}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>DATE APPLIED</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.DateTime}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CUSTOMER NAME</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.ContactPerson}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CUSTOMER EMAIL</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.CustomerEmail}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>COMPANY</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.CompanyName}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CONTACT NUMBER</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.ContactNo}
+                </Box>
+              </Box>
+            </Typography>
+
+            <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
+              <Box sx={{ flexGrow: 1 }}>
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
+                  adapterLocale={locale}
+                >
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 16 }}
+                    rows={rows}
+                    columns={staticcolumns}
+                    editMode="row"
+                    getRowId={(row) => row.id}
+                    rowModesModel={rowModesModel}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    // onRowEditStart={handleRowEditStart}
+                    // onRowEditStop={handleRowEditStop}
+                    // processRowUpdate={processRowUpdate}
+                    // componentsProps={{
+                    //   toolbar: { setRows, setRowModesModel },
+                    // }}
+                    // experimentalFeatures={{ newEditingApi: true }}
+                  />
+                </LocalizationProvider>
+              </Box>
+            </Box>
+
+            <Box
+              component="span"
+              paddingTop={2}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                  }}
+                  onClick={() => navigate("/rma")}
+                >
+                  Back
+                </Button>
+              </motion.div>
+            </Box>
+          </Box>
+        );
+      }
+    }
+  } else if (rma.RmaStatusID == 6) {
+    switch (userrole) {
+      case "Sales Admin": {
         return (
           <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
             <Typography
@@ -1584,14 +1714,206 @@ export default function CreateRMA() {
                 <DataGrid
                   sx={{ background: "white", fontSize: 16 }}
                   rows={rows}
-                  columns={staticcolumns}
+                  columns={coacolumns}
                   editMode="row"
                   getRowId={(row) => row.id}
+                  pageSize={pageSize}
+                  onPageSizeChange={(newPage) => setPageSize(newPage)}
+                  pagination
+                  components={{
+                    Toolbar: CustomToolbar,
+                    NoRowsOverlay: () => (
+                      <Stack
+                        height="100%"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        No products
+                      </Stack>
+                    ),
+                  }}
                   filterModel={filterModel}
                   onFilterModelChange={(newFilterModel) =>
                     setFilterModel(newFilterModel)
                   }
+                  rowModesModel={rowModesModel}
+                  onRowEditStart={handleRowEditStart}
+                  onRowEditStop={handleRowEditStop}
+                  processRowUpdate={processRowUpdate}
+                  componentsProps={{
+                    toolbar: { setRows, setRowModesModel },
+                  }}
+                  experimentalFeatures={{ newEditingApi: true }}
                 />
+              </Box>
+            </Box>
+
+            <Box
+              component="span"
+              paddingTop={2}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                  }}
+                  onClick={() => navigate("/rma")}
+                >
+                  Back
+                </Button>
+              </motion.div>
+              <Box
+                component="span"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#31A961",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                      marginRight: 5,
+                    }}
+                    onClick={COARMA}
+                  >
+                    Update
+                  </Button>
+                </motion.div>
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#D11A2A",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                    }}
+                    onClick={closeRMA}
+                  >
+                    Close
+                  </Button>
+                </motion.div>
+              </Box>
+            </Box>
+          </Box>
+        );
+      }
+      case "Sales Manager":
+      case "Warehouse Worker":
+      case "Technical Staff":
+      case "Sales Engineer":
+      case "Admin":
+      default: {
+        return (
+          <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
+            <Typography
+              gutterBottom
+              variant="subtitle2"
+              component="span"
+              sx={{
+                display: "flex",
+                justifyContent: "left",
+                alignItems: "center",
+                marginLeft: 0,
+                color: "#063970",
+                fontWeight: "bold",
+              }}
+            >
+              <Box>
+                <h2>RMA Request #{rma.RmaID}</h2>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box>EMPLOYEE</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.Username}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>DATE APPLIED</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.DateTime}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CUSTOMER NAME</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.ContactPerson}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CUSTOMER EMAIL</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.CustomerEmail}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>COMPANY</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.CompanyName}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CONTACT NUMBER</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.ContactNo}
+                </Box>
+              </Box>
+            </Typography>
+
+            <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
+              <Box sx={{ flexGrow: 1 }}>
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
+                  adapterLocale={locale}
+                >
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 16 }}
+                    rows={rows}
+                    columns={staticcolumns}
+                    editMode="row"
+                    getRowId={(row) => row.id}
+                    rowModesModel={rowModesModel}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    // onRowEditStart={handleRowEditStart}
+                    // processRowUpdate={processRowUpdate}
+                    // componentsProps={{
+                    //   toolbar: { setRows, setRowModesModel },
+                    // }}
+                    // experimentalFeatures={{ newEditingApi: true }}
+                  />
+                </LocalizationProvider>
               </Box>
             </Box>
 
@@ -1868,20 +2190,26 @@ export default function CreateRMA() {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <Button
-                  size="small"
-                  variant="contained"
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#31A961",
-                    width: 150,
-                    height: 50,
-                    borderRadius: 10,
-                  }}
-                  onClick={receiveRMA}
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
                 >
-                  Verify
-                </Button>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#31A961",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                    }}
+                    onClick={receiveRMA}
+                  >
+                    Verify
+                  </Button>
+                </motion.div>
               </Box>
             </Box>
           </Box>
@@ -2016,20 +2344,26 @@ export default function CreateRMA() {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <Button
-                  size="small"
-                  variant="contained"
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#31A961",
-                    width: 150,
-                    height: 50,
-                    borderRadius: 10,
-                  }}
-                  onClick={verifyRMA}
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
                 >
-                  Verify
-                </Button>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#31A961",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                    }}
+                    onClick={verifyRMA}
+                  >
+                    Verify
+                  </Button>
+                </motion.div>
               </Box>
             </Box>
           </Box>
@@ -2158,11 +2492,10 @@ export default function CreateRMA() {
                   Back
                 </Button>
               </motion.div>
-              <Box
-                component="span"
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
               >
                 <Button
                   size="small"
@@ -2178,7 +2511,7 @@ export default function CreateRMA() {
                 >
                   Update
                 </Button>
-              </Box>
+              </motion.div>
             </Box>
           </Box>
         );

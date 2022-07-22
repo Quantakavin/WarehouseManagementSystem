@@ -55,7 +55,7 @@ const AddUser: React.FC = () => {
     handleSubmit,
     formState: { errors, isValid, isDirty, dirtyFields },
   } = useForm<FormValues>({ mode: "all" });
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   // const companiesQuery = useQuery("companies", GetCompanies);
   // const userGroupsQuery = useQuery("usergroups", GetUserGroups);
@@ -123,8 +123,8 @@ const AddUser: React.FC = () => {
           customClass: "swalpopup",
           timer: 1500,
         });
-        queryClient.invalidateQueries('users')
-        queryClient.invalidateQueries('usernames')
+        queryClient.invalidateQueries("users");
+        queryClient.invalidateQueries("usernames");
         navigate("/users");
       },
     });

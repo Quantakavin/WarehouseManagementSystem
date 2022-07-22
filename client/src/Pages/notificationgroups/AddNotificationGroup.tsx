@@ -15,13 +15,23 @@ import { PostUserGroup } from "../../api/UserGroupDB";
 import FormContainer from "../../components/form/FormContainer";
 import FormTextArea from "../../components/form/FormTextArea";
 import { GetFeatures, GetFeatureRights } from "../../api/FeatureDB";
-import { Option, Feature, FeatureRight, Company, NotiFeature, NotiType } from "../../utils/CommonTypes";
+import {
+  Option,
+  Feature,
+  FeatureRight,
+  Company,
+  NotiFeature,
+  NotiType,
+} from "../../utils/CommonTypes";
 import { Toast } from "../../components/alerts/SweetAlert";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import SelectedList from "../../components/form/SelectedList";
 import { GetCompanies } from "../../api/CompanyDB";
 import SelectDropdown from "../../components/form/SelectDropdown";
-import { GetNotificationFeatures, GetNotificationTypes } from "../../api/NotificationFeatureDB";
+import {
+  GetNotificationFeatures,
+  GetNotificationTypes,
+} from "../../api/NotificationFeatureDB";
 import { PostNotificationGroup } from "../../api/NotificationGroupDB";
 
 interface FormValues {
@@ -42,7 +52,9 @@ const AddNotificationGroup: React.FC = () => {
   const [companyOptions, setCompanyOptions] = useState<Option[]>([]);
   const [notiFeatureOptions, setNotiFeatureOptions] = useState<Option[]>([]);
   const [notiTypeOptions, setNotiTypeOptions] = useState<Option[]>([]);
-  const [selectedNotiFeatures, setSelectedNotiFeatures] = useState<string[]>([]);
+  const [selectedNotiFeatures, setSelectedNotiFeatures] = useState<string[]>(
+    []
+  );
   const [returnNotiFeatures, setReturnNotiFeatures] = useState<any[]>([]);
   const queryClient = useQueryClient();
 
@@ -65,19 +77,23 @@ const AddNotificationGroup: React.FC = () => {
     }
   );
 
-  const notiFeaturesQuery = useQuery("notificationfeatures", GetNotificationFeatures, {
-    onSuccess: (data) => {
-      const notificationfeatures: Option[] = [];
-      data.data.forEach((feature: NotiFeature) => {
-        notificationfeatures.push({
-          id: feature.NotiFeatureID,
-          text: feature.NotiFeature,
-          value: feature.NotiFeatureID,
+  const notiFeaturesQuery = useQuery(
+    "notificationfeatures",
+    GetNotificationFeatures,
+    {
+      onSuccess: (data) => {
+        const notificationfeatures: Option[] = [];
+        data.data.forEach((feature: NotiFeature) => {
+          notificationfeatures.push({
+            id: feature.NotiFeatureID,
+            text: feature.NotiFeature,
+            value: feature.NotiFeatureID,
+          });
         });
-      });
-      setNotiFeatureOptions(notificationfeatures);
+        setNotiFeatureOptions(notificationfeatures);
+      },
     }
-  });
+  );
   const notiTypesQuery = useQuery("notificationtypes", GetNotificationTypes, {
     onSuccess: (data) => {
       const notificationtypes: Option[] = [];
@@ -89,7 +105,7 @@ const AddNotificationGroup: React.FC = () => {
         });
       });
       setNotiTypeOptions(notificationtypes);
-    }
+    },
   });
 
   const mutation = useMutation(PostNotificationGroup);
@@ -103,11 +119,11 @@ const AddNotificationGroup: React.FC = () => {
           icon: "success",
           title: "Notification group created successfully",
           customClass: "swalpopup",
-          timer: 1500
+          timer: 1500,
         });
-        queryClient.invalidateQueries('notificationgroups');
-        queryClient.invalidateQueries('filternotificationgroups');
-        queryClient.invalidateQueries('notificationgroupnames');
+        queryClient.invalidateQueries("notificationgroups");
+        queryClient.invalidateQueries("filternotificationgroups");
+        queryClient.invalidateQueries("notificationgroupnames");
         navigate("/notificationgroups");
       },
     });
@@ -121,7 +137,9 @@ const AddNotificationGroup: React.FC = () => {
     setStep(step - 1);
   };
 
-  const selectNotiFeature = (event: SelectChangeEvent<typeof selectedNotiFeatures>) => {
+  const selectNotiFeature = (
+    event: SelectChangeEvent<typeof selectedNotiFeatures>
+  ) => {
     const {
       target: { value },
     } = event;
@@ -131,7 +149,9 @@ const AddNotificationGroup: React.FC = () => {
     } else {
       valuearray = value;
     }
-    setSelectedNotiFeatures(typeof value === "string" ? value.split(",") : value);
+    setSelectedNotiFeatures(
+      typeof value === "string" ? value.split(",") : value
+    );
     const notifeaturestoset = valuearray.map((notifeature) => {
       if (
         returnNotiFeatures.some(
@@ -181,8 +201,8 @@ const AddNotificationGroup: React.FC = () => {
   const getNotiFeatureName = (notifeature: string) => {
     return notiFeaturesQuery.data.data.find(
       (data) => data.NotiFeatureID === notifeature
-    ).NotiFeature
-  }
+    ).NotiFeature;
+  };
 
   // const StepOne = (
   //   <div className={step === 1 ? "showstep" : "hidestep"}>
@@ -269,79 +289,79 @@ const AddNotificationGroup: React.FC = () => {
       onSubmit={onSubmit}
     >
       {/* Step One */}
-          <div className={step === 1 ? "showstep" : "hidestep"}>
-      <FormField
-        label="Name"
-        name="name"
-        type="text"
-        register={register}
-        errormsg={errors.name?.message}
-        rules={NameValidation}
-      />
-      <FormTextArea
-        label="Description"
-        name="description"
-        register={register}
-        errormsg={errors.description?.message}
-        rules={NameValidation}
-      />
-      <SelectDropdown
-        label="Company"
-        name="company"
-        options={companyOptions}
-        register={register}
-        errormsg={errors.company?.message}
-        rules={SelectValidation}
-        placeholder="Choose a company"
-      />
-      <div className="formnavigationcontainer">
-        <button
-          className="formnavigation"
-          onClick={() => navigate(-1)}
-          type="button"
-        >
-          Cancel
-        </button>
-        <button className="nextbutton" onClick={nextStep} type="button">
-          Next <NavigateNextIcon style={{ marginRight: -10, marginLeft: -7 }} />
-        </button>
-      </div>
-    </div>
-    {/* Step Two */}
-    <div className={step === 2 ? "showstep" : "hidestep"}>
-      <MultiSelectDropdown
-        name="notification features"
-        label="Permitted Notifications"
-        selectedValues={selectedNotiFeatures}
-        changeSelectedValues={selectNotiFeature}
-        placeholder="Select Permitted Notifications..."
-        options={notiFeatureOptions}
-      />
-
-      {selectedNotiFeatures.length > 0 && (
-
-        <SelectedList
-          getname={getNotiFeatureName}
-          label="Feature List"
-          selectedValues={selectedNotiFeatures}
-          unselect={unselectNotiFeature}
-          select={assignNotiType}
-          options={notiTypeOptions}
+      <div className={step === 1 ? "showstep" : "hidestep"}>
+        <FormField
+          label="Name"
+          name="name"
+          type="text"
+          register={register}
+          errormsg={errors.name?.message}
+          rules={NameValidation}
         />
-      )}
-
-      {mutation.isError && axios.isAxiosError(mutation.error) ? (
-        <ErrorAlert error={mutation.error} />
-      ) : null}
-      <div className="formnavigationcontainer">
-        <button className="formnavigation" onClick={prevStep} type="button">
-          <NavigateBeforeIcon style={{ marginRight: -7, marginLeft: -10 }} />{" "}
-          Back
-        </button>
-        <SubmitButton text="Submit" loading={mutation.isLoading} multipart />
+        <FormTextArea
+          label="Description"
+          name="description"
+          register={register}
+          errormsg={errors.description?.message}
+          rules={NameValidation}
+        />
+        <SelectDropdown
+          label="Company"
+          name="company"
+          options={companyOptions}
+          register={register}
+          errormsg={errors.company?.message}
+          rules={SelectValidation}
+          placeholder="Choose a company"
+        />
+        <div className="formnavigationcontainer">
+          <button
+            className="formnavigation"
+            onClick={() => navigate(-1)}
+            type="button"
+          >
+            Cancel
+          </button>
+          <button className="nextbutton" onClick={nextStep} type="button">
+            Next{" "}
+            <NavigateNextIcon style={{ marginRight: -10, marginLeft: -7 }} />
+          </button>
+        </div>
       </div>
-    </div>
+      {/* Step Two */}
+      <div className={step === 2 ? "showstep" : "hidestep"}>
+        <MultiSelectDropdown
+          name="notification features"
+          label="Permitted Notifications"
+          selectedValues={selectedNotiFeatures}
+          changeSelectedValues={selectNotiFeature}
+          placeholder="Select Permitted Notifications..."
+          options={notiFeatureOptions}
+        />
+
+        {selectedNotiFeatures.length > 0 && (
+          <SelectedList
+            getname={getNotiFeatureName}
+            label="Feature List"
+            selectedValues={selectedNotiFeatures}
+            unselect={unselectNotiFeature}
+            select={assignNotiType}
+            options={notiTypeOptions}
+          />
+        )}
+
+        {mutation.isError && axios.isAxiosError(mutation.error) ? (
+          <ErrorAlert error={mutation.error} />
+        ) : null}
+        <div className="formnavigationcontainer">
+          <button className="formnavigation" onClick={prevStep} type="button">
+            <NavigateBeforeIcon style={{ marginRight: -7, marginLeft: -10 }} />{" "}
+            Back
+          </button>
+          <SubmitButton text="Submit" loading={mutation.isLoading} multipart />
+        </div>
+      </div>
     </FormContainer>
   );
 };
-export default AddNotificationGroup; 
+export default AddNotificationGroup;

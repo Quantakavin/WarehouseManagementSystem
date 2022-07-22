@@ -50,7 +50,7 @@ function Dashboards() {
       <Grid item xs={12}>
         <Cards />
       </Grid>
-      <Grid item xs={6} sx={{ height: 350}}>
+      <Grid item xs={6} sx={{ height: 350 }}>
         <PIEChart title={undefined} dataKey={undefined} grid={undefined} />
       </Grid>
       <Grid item xs={6} sx={{ height: 350 }}>

@@ -2,15 +2,25 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function(knex) {
-    return knex.schema.createTable('TLoanExtension', function(table) {
+exports.up = function (knex) {
+    return knex.schema.createTable('TLoanExtension', function (table) {
         table.increments('TLoanExtensionID').primary().unsigned();
         table.bigint('TLoanID').notNullable().unsigned();
         table.integer('TLoanExtensionStatusID').unsigned();
         table.integer('Duration').notNullable().unsigned();
         table.string('Reason', 255);
-        table.foreign('TLoanID').references('TLoanID').inTable('TLoan').onDelete('cascade').onUpdate('cascade');
-        table.foreign('TLoanExtensionStatusID').references('TLoanExtensionStatusID').inTable('TLoanExtensionStatus').onDelete('set null').onUpdate('cascade');
+        table
+            .foreign('TLoanID')
+            .references('TLoanID')
+            .inTable('TLoan')
+            .onDelete('cascade')
+            .onUpdate('cascade');
+        table
+            .foreign('TLoanExtensionStatusID')
+            .references('TLoanExtensionStatusID')
+            .inTable('TLoanExtensionStatus')
+            .onDelete('set null')
+            .onUpdate('cascade');
         table.index(['TLoanID'], 'FK_TLoanExtension_TLoan_TLoanID_idx');
         table.index(['TLoanExtensionStatusID'], 'FK_TLoanExtension_Status_StatusID_idx');
     });
@@ -20,6 +30,6 @@ exports.up = function(knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function(knex) {
+exports.down = function (knex) {
     return knex.schema.dropTable('TLoanExtension');
 };

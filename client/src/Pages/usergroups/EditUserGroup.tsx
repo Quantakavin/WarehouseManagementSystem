@@ -11,7 +11,11 @@ import SubmitButton from "../../components/form/SubmitButton";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormField from "../../components/form/FormField";
 import { NameValidation } from "../../utils/FormValidation";
-import { GetUserGroup, PostUserGroup, UpdateUserGroup } from "../../api/UserGroupDB";
+import {
+  GetUserGroup,
+  PostUserGroup,
+  UpdateUserGroup,
+} from "../../api/UserGroupDB";
 import FormContainer from "../../components/form/FormContainer";
 import FormTextArea from "../../components/form/FormTextArea";
 import { GetFeatures, GetFeatureRights } from "../../api/FeatureDB";
@@ -43,23 +47,29 @@ const EditUserGroup: React.FC = () => {
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [returnFeatures, setReturnFeatures] = useState<any[]>([]);
 
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
-  const UserGroupQuery = useQuery([`usergroup${params.id}`, params.id], () =>
-    GetUserGroup(params.id),
+  const UserGroupQuery = useQuery(
+    [`usergroup${params.id}`, params.id],
+    () => GetUserGroup(params.id),
     {
       onSuccess: (data) => {
-        console.log(JSON.stringify(data.data[0].Features))
-        setSelectedFeatures(data.data[0].Features.map((value) => {
-          return value.FeatureID
-        }))
+        console.log(JSON.stringify(data.data[0].Features));
+        setSelectedFeatures(
+          data.data[0].Features.map((value) => {
+            return value.FeatureID;
+          })
+        );
         setReturnFeatures(
           data.data[0].Features.map((returnfeature) => {
-            return { FeatureID: returnfeature.FeatureID, FeatureRightID: returnfeature.FeatureRightID };
+            return {
+              FeatureID: returnfeature.FeatureID,
+              FeatureRightID: returnfeature.FeatureRightID,
+            };
           })
         );
         setUserGroup(data.data[0]);
-      }
+      },
     }
   );
 
@@ -74,8 +84,7 @@ const EditUserGroup: React.FC = () => {
         });
       });
       setFeatureOptions(features);
-    }
-
+    },
   });
   const featureRightsQuery = useQuery("featurerights", GetFeatureRights, {
     onSuccess: (data) => {
@@ -88,10 +97,12 @@ const EditUserGroup: React.FC = () => {
         });
       });
       setFeatureRightOptions(featurerights);
-    }
+    },
   });
 
-  const mutation = useMutation((data: FormValues) => UpdateUserGroup(data, params.id));
+  const mutation = useMutation((data: FormValues) =>
+    UpdateUserGroup(data, params.id)
+  );
 
   const onSubmit = (data: FormValues) => {
     const postdata = data;
@@ -102,11 +113,11 @@ const EditUserGroup: React.FC = () => {
           icon: "success",
           title: "User group updated successfully",
           customClass: "swalpopup",
-          timer: 1500
+          timer: 1500,
         });
-        queryClient.invalidateQueries('usergroups');
-        queryClient.invalidateQueries('filterusergroups');
-        queryClient.invalidateQueries('usergroupnames');
+        queryClient.invalidateQueries("usergroups");
+        queryClient.invalidateQueries("filterusergroups");
+        queryClient.invalidateQueries("usergroupnames");
         queryClient.invalidateQueries(`usergroup${params.id}`);
         navigate(`/usergroup/${params.id}`);
       },
@@ -179,10 +190,9 @@ const EditUserGroup: React.FC = () => {
   };
 
   const getFeatureName = (feature: string) => {
-    return featuresQuery.data.data.find(
-      (data) => data.FeatureID === feature
-    ).FeatureName
-  }
+    return featuresQuery.data.data.find((data) => data.FeatureID === feature)
+      .FeatureName;
+  };
 
   // const StepOne = (
   //   <div className={step === 1 ? "showstep" : "hidestep"}>
@@ -223,13 +233,12 @@ const EditUserGroup: React.FC = () => {
     if (UserGroupQuery.isSuccess) {
       for (let i = 0; i < UserGroupQuery.data.data[0].Features.length; i++) {
         if (UserGroupQuery.data.data[0].Features[i].FeatureID === feature) {
-          optiontoset = UserGroupQuery.data.data[0].Features[i].FeatureRightID
+          optiontoset = UserGroupQuery.data.data[0].Features[i].FeatureRightID;
         }
       }
     }
     return optiontoset;
-
-  }
+  };
 
   // const StepTwo = (
   //   <div className={step === 2 ? "showstep" : "hidestep"}>
@@ -274,7 +283,7 @@ const EditUserGroup: React.FC = () => {
       handleSubmit={handleSubmit}
       onSubmit={onSubmit}
     >
-      {(UserGroupQuery.isSuccess && featuresQuery.isSuccess) &&
+      {UserGroupQuery.isSuccess && featuresQuery.isSuccess && (
         <>
           {/* Step One */}
           <div className={step === 1 ? "showstep" : "hidestep"}>
@@ -304,7 +313,10 @@ const EditUserGroup: React.FC = () => {
                 Cancel
               </button>
               <button className="nextbutton" onClick={nextStep} type="button">
-                Next <NavigateNextIcon style={{ marginRight: -10, marginLeft: -7 }} />
+                Next{" "}
+                <NavigateNextIcon
+                  style={{ marginRight: -10, marginLeft: -7 }}
+                />
               </button>
             </div>
           </div>
@@ -319,7 +331,6 @@ const EditUserGroup: React.FC = () => {
               options={featureOptions}
             />
             {selectedFeatures.length > 0 && (
-
               <SelectedList
                 getname={getFeatureName}
                 label="Feature List"
@@ -335,16 +346,26 @@ const EditUserGroup: React.FC = () => {
               <ErrorAlert error={mutation.error} />
             ) : null}
             <div className="formnavigationcontainer">
-              <button className="formnavigation" onClick={prevStep} type="button">
-                <NavigateBeforeIcon style={{ marginRight: -7, marginLeft: -10 }} />{" "}
+              <button
+                className="formnavigation"
+                onClick={prevStep}
+                type="button"
+              >
+                <NavigateBeforeIcon
+                  style={{ marginRight: -7, marginLeft: -10 }}
+                />{" "}
                 Back
               </button>
-              <SubmitButton text="Submit" loading={mutation.isLoading} multipart />
+              <SubmitButton
+                text="Submit"
+                loading={mutation.isLoading}
+                multipart
+              />
             </div>
           </div>
         </>
-      }
+      )}
     </FormContainer>
   );
 };
-export default EditUserGroup; 
+export default EditUserGroup;

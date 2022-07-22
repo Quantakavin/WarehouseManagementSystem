@@ -5,11 +5,9 @@ import { OrbitControls } from "@react-three/drei";
 import { DoubleSide, TextureLoader } from "three";
 import Rack from "../../components/3Dmodels/Rack";
 
-
 const Floor = () => {
+  const colorMap = useLoader(TextureLoader, "Concrete030_4K_Color.png");
 
-  const colorMap = useLoader(TextureLoader, 'Concrete030_4K_Color.png')
-  
   return (
     // The mesh is at the origin
     // Since it is inside a group, it is at the origin
