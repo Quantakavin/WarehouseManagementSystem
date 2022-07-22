@@ -1,19 +1,7 @@
-import { Tab, Tabs, Box, Stack, Grid, ThemeProvider } from "@mui/material";
-import { TabList, TabPanel, TabContext } from "@mui/lab";
-import "react-tabs/style/react-tabs.css";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../app/hooks";
-import { selectRole, selectId } from "../../app/reducers/CurrentUserSlice";
-import RmaSearch from "../search/RmaSearch";
-import { Hidden } from "@mui/material";
-import { motion } from "framer-motion";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import SearchBarUpdated from "../../components/search/SearchBarUpdated";
-import Fab from "@mui/material/Fab";
 import PostAddIcon from "@mui/icons-material/PostAdd";
-import theme from "../../styles/muistyle";
+import { TabContext, TabPanel } from "@mui/lab";
+import { Box, Grid, Stack, Tab, Tabs } from "@mui/material";
+import Fab from "@mui/material/Fab";
 import {
   DataGrid,
   GridFilterModel,
@@ -25,6 +13,13 @@ import {
   GridToolbarFilterButton,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
+import axios from "axios";
+import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "react-tabs/style/react-tabs.css";
+import { useAppSelector } from "../../app/hooks";
+import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
 
 const Rmatabs: React.FC = () => {
   const navigate = useNavigate();
@@ -65,7 +60,7 @@ const Rmatabs: React.FC = () => {
     { field: "CustomerEmail", headerName: "Customer Email", flex: 8 },
   ];
 
-  function CustomToolbar() {
+  const CustomToolbar = () => {
     return (
       <GridToolbarContainer
         sx={{ display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1 }}
@@ -81,7 +76,7 @@ const Rmatabs: React.FC = () => {
         </Box>
       </GridToolbarContainer>
     );
-  }
+  };
 
   useEffect(() => {
     fetch("http://localhost:5000/api/pendingRMA")
@@ -123,40 +118,39 @@ const Rmatabs: React.FC = () => {
     // declare the async data fetching function
     const fetchPendingData = async () => {
       // get the data from the api
-      const pendingrma = await axios
+      const pendingrmadata = await axios
         .get(`http://localhost:5000/api/myPendingRMA/${userid}`)
-        .then((pendingrma) => setMPTable(pendingrma.data));
+        .then((pendingrmadata) => setMPTable(pendingrmadata.data));
       // setRma(Object.e)
     };
     // declare the async data fetching function
     const fetchAcceptedData = async () => {
       // get the data from the api
-      const acceptedrma = await axios
+      const acceptedrmadata = await axios
         .get(`http://localhost:5000/api/myAcceptedRMA/${userid}`)
-        .then((acceptedrma) => setMATable(acceptedrma.data));
+        .then((acceptedrmadata) => setMATable(acceptedrmadata.data));
       // setRma(Object.e)
     };
     const fetchRejectedData = async () => {
       // get the data from the api
-      const rejectedrma = await axios
+      const rejectedrmadata = await axios
         .get(`http://localhost:5000/api/myRejectedRMA/${userid}`)
-        .then((rejectedrma) => setMRTable(rejectedrma.data));
+        .then((rejectedrmadata) => setMRTable(rejectedrmadata.data));
       // setRma(Object.e)
     };
     const fetchInProgressData = async () => {
       // get the data from the api
-      const inprogressrma = await axios
+      const inprogressrmadata = await axios
         .get(`http://localhost:5000/api/myIPRMA/${userid}`)
-        .then((inprogressrma) => setMIPTable(inprogressrma.data));
+        .then((inprogressrmadata) => setMIPTable(inprogressrmadata.data));
       // setRma(Object.e)
     };
     // call the function
     fetchPendingData();
     fetchAcceptedData();
     fetchRejectedData();
-    fetchInProgressData()
-      // make sure to catch any error
-      .catch(console.error);
+    fetchInProgressData();
+    // make sure to catch any error
   }, []);
 
   switch (userrole) {
@@ -260,7 +254,7 @@ const Rmatabs: React.FC = () => {
                   <Box sx={{ display: "flex", height: 600, width: "100%" }}>
                     <Box sx={{ flexGrow: 1 }}>
                       <DataGrid
-                        sx={{ background: "white", fontSize: 16 }}
+                        sx={{ background: "white", fontSize: 18 }}
                         rows={myPendingTable}
                         columns={columns}
                         editMode="row"
@@ -297,7 +291,7 @@ const Rmatabs: React.FC = () => {
                       <DataGrid
                         sx={{
                           background: "white",
-                          fontSize: 16,
+                          fontSize: 18,
                         }}
                         rows={myAcceptedTable}
                         columns={columns}
@@ -660,17 +654,6 @@ const Rmatabs: React.FC = () => {
                       toolbar: {
                         showQuickFilter: true,
                         quickFilterProps: { debounceMs: 500 },
-                      },
-                      panel: {
-                        sx: {
-                          "& .MuiTypography-root": {
-                            color: "black",
-                            fontSize: 16,
-                          },
-                          "& .MuiDataGrid-filterForm": {
-                            bgcolor: "white",
-                          },
-                        },
                       },
                     }}
                     filterModel={filterModel}
@@ -1084,17 +1067,6 @@ const Rmatabs: React.FC = () => {
                         showQuickFilter: true,
                         quickFilterProps: { debounceMs: 500 },
                       },
-                      panel: {
-                        sx: {
-                          "& .MuiTypography-root": {
-                            color: "black",
-                            fontSize: 16,
-                          },
-                          "& .MuiDataGrid-filterForm": {
-                            bgcolor: "white",
-                          },
-                        },
-                      },
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1210,7 +1182,7 @@ const Rmatabs: React.FC = () => {
               <Box sx={{ display: "flex", height: 600, width: "100%" }}>
                 <Box sx={{ flexGrow: 1 }}>
                   <DataGrid
-                    sx={{ background: "white", fontSize: 16 }}
+                    sx={{ background: "white", fontSize: 18 }}
                     rows={pendingTable}
                     columns={columns}
                     editMode="row"
@@ -1247,7 +1219,7 @@ const Rmatabs: React.FC = () => {
                   <DataGrid
                     sx={{
                       background: "white",
-                      fontSize: 16,
+                      fontSize: 18,
                     }}
                     rows={approvedTable}
                     columns={columns}

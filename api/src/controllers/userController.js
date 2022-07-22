@@ -183,11 +183,9 @@ module.exports.deleteUser = async (req, res) => {
                 redisClient.del('users');
                 return res.status(200).json({ message: 'User deleted successfully!' });
             }
-            return res
-                .status(405)
-                .json({
-                    message: 'This user cannot be deleted as they have outstanding TLoans or RMAs'
-                });
+            return res.status(405).json({
+                message: 'This user cannot be deleted as they have outstanding TLoans or RMAs'
+            });
         }
         return res.status(404).json({ message: 'Cannot find User with that id' });
         2;
