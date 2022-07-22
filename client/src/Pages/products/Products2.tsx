@@ -47,15 +47,18 @@ const Products2: React.FC = () => {
   });
 
   const columns = [
-    { field: "BinProductPK", headerName: "ID", flex: 2 },
-    { field: "ItemName", headerName: "Item Name", flex: 30 },
-    { field: "BatchNo", headerName: "Batch Number", flex: 10 },
-    { field: "Brand", headerName: "Brand", flex: 10 },
+    { field: "BinTag2", headerName: "Bin Tag", width: 200 },
+    { field: "Brand", headerName: "Brand", width: 250 },
+    { field: "ItemNo", headerName: "Item Code", width: 560 },
+    { field: "ItemName", headerName: "Item Name", width: 950 },
+    { field: "BatchNo", headerName: "Batch Number", width: 300 },
+    { field: "BatchInDate", headerName: "Batch In Date", width: 250 },
+    { field: "WarehouseCode", headerName: "Warehouse Code", width: 200 },
     {
       field: "Quantity",
       headerName: "Available Quantity",
       type: "number",
-      flex: 8,
+      width: 200,
     },
   ];
 

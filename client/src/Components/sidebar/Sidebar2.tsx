@@ -86,14 +86,12 @@ export default function MiniDrawer() {
   const isopen = useAppSelector(selectOpen)
   const username = useAppSelector(selectName)
   const userrole = useAppSelector(selectRole)
-
   const handleDrawerClose = () => {
     dispatch(Close());
   };
   const handleDrawerOpen = () => {
     dispatch(Open());
   };
-
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />

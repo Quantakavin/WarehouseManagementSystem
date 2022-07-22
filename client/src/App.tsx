@@ -73,7 +73,7 @@ const App: React.FC = () => {
         <TopBar />
       </header>
       <Box className="flexcontainer">
-        {isAuthenticated ? <Sidebar2 /> : null}
+        {isAuthenticated ? <Sidebar /> : null}
         <Box className="bluebackground" style={{ flex: 5 }}>
           <Routes>
             <Route element={<ProtectedRoute loginpage={true} />}>
