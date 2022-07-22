@@ -38,14 +38,12 @@ function Charts({ title, dataKey, grid }) {
     };
   }, []);
 
-
   return (
     <>
       <div className="chart">
-      <h4 style={{ textAlign: "left" }}>Current T-Loan Requests</h4>
-      <br></br>
+        <h4 style={{ textAlign: "left" }}>Current T-Loan Requests</h4>
+        <br></br>
         <ResponsiveContainer width="100%" aspect={4 / 1}>
-      
           <LineChart data={tloan}>
             <XAxis dataKey="Month" stroke="#5550bd" />
             <YAxis></YAxis>
@@ -55,7 +53,7 @@ function Charts({ title, dataKey, grid }) {
             {grid && <CartesianGrid stroke="#e0dfdf" strokeDasharray="5 5" />}
           </LineChart>
         </ResponsiveContainer>
-            <h1 className="Date">Last Updated {date.toLocaleTimeString()}</h1>
+        <h1 className="Date">Last Updated {date.toLocaleTimeString()}</h1>
       </div>
     </>
   );

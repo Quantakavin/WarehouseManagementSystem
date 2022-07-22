@@ -1,6 +1,8 @@
 import React from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { Panel } from "react-bootstrap";
+import { Card } from "@mui/material";
+import "../../styles/chart.scss";
 
 const data = [
   { name: "Group A", value: 400 },
