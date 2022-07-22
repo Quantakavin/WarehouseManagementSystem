@@ -115,9 +115,8 @@ const App: React.FC = () => {
               <Route path="/tloandetails/:TLoanNumber" element={<TLoanDisplay2 />} />
               <Route path="/newtloan" element={<NewTLoan />} />
               <Route path="/modal" element={<Modals12 />} />
-              <Route path="/error404" element={<Error404 />} />
               <Route path="/tloanManagerDisplay/:TLoanNumber" element={<TLoanManagerDisplay/>} />
-              
+              <Route path="*" element={<Error404 />} />
             </Route>
           </Routes>
         </Box>

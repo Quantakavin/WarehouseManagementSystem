@@ -1,5 +1,5 @@
 import "../styles/Error404.scss";
-import BrandLogo from "../assets/navbarbrand.png";
+import Image from "../assets/error404.png";
 
 function Error404() {
     const URL = window.location.href;
@@ -10,15 +10,14 @@ function Error404() {
                 <title>Error 404 (Not Found)</title>
             </head>
             <body className="mainBody">
-                <a href="/"><span aria-label="ISDN WMS"><img className="logo" src={BrandLogo}></img></span></a>
+                <a href="/"><img className="image" src={Image}></img></a>
                 <p>
-                    <b>Error 404. Page Not Found</b>
+                    Oops. The page you are looking for cannot be found.
                 </p>
                 <p>
-                    <p>
-                        The requested URL "{URL}" was not found on this server.
-                    </p>
+                    Please return to the homepage.
                 </p>
+                <button className="button">Home</button>
             </body>
         </>
     );
