@@ -1,19 +1,12 @@
-import { Tab, Tabs, Box, Stack, Grid, ThemeProvider } from "@mui/material";
-import { TabList, TabPanel, TabContext } from "@mui/lab";
+import { Tab, Tabs, Box, Stack, Grid } from "@mui/material";
+import { TabPanel, TabContext } from "@mui/lab";
 import "react-tabs/style/react-tabs.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../app/hooks";
-import { selectRole, selectId } from "../../app/reducers/CurrentUserSlice";
-import RmaSearch from "../search/RmaSearch";
-import { Hidden } from "@mui/material";
 import { motion } from "framer-motion";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import SearchBarUpdated from "../../components/search/SearchBarUpdated";
 import Fab from "@mui/material/Fab";
 import PostAddIcon from "@mui/icons-material/PostAdd";
-import theme from "../../styles/muistyle";
 import {
   DataGrid,
   GridFilterModel,
@@ -25,6 +18,8 @@ import {
   GridToolbarFilterButton,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
+import { selectRole, selectId } from "../../app/reducers/CurrentUserSlice";
+import { useAppSelector } from "../../app/hooks";
 
 const Rmatabs: React.FC = () => {
   const navigate = useNavigate();
@@ -65,7 +60,7 @@ const Rmatabs: React.FC = () => {
     { field: "CustomerEmail", headerName: "Customer Email", flex: 8 },
   ];
 
-  function CustomToolbar() {
+  const CustomToolbar = () => {
     return (
       <GridToolbarContainer
         sx={{ display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1 }}
@@ -81,7 +76,7 @@ const Rmatabs: React.FC = () => {
         </Box>
       </GridToolbarContainer>
     );
-  }
+  };
 
   useEffect(() => {
     fetch("http://localhost:5000/api/pendingRMA")
@@ -123,31 +118,31 @@ const Rmatabs: React.FC = () => {
     // declare the async data fetching function
     const fetchPendingData = async () => {
       // get the data from the api
-      const pendingrma = await axios
+      const pendingrmaresults = await axios
         .get(`http://localhost:5000/api/myPendingRMA/${userid}`)
-        .then((pendingrma) => setMPTable(pendingrma.data));
+        .then((pendingrma) => setMPTable(pendingrmaresults.data));
       // setRma(Object.e)
     };
     // declare the async data fetching function
     const fetchAcceptedData = async () => {
       // get the data from the api
-      const acceptedrma = await axios
+      const acceptedrmaresults = await axios
         .get(`http://localhost:5000/api/myAcceptedRMA/${userid}`)
-        .then((acceptedrma) => setMATable(acceptedrma.data));
+        .then((acceptedrma) => setMATable(acceptedrmaresults.data));
       // setRma(Object.e)
     };
     const fetchRejectedData = async () => {
       // get the data from the api
-      const rejectedrma = await axios
+      const rejectedrmaresults = await axios
         .get(`http://localhost:5000/api/myRejectedRMA/${userid}`)
-        .then((rejectedrma) => setMRTable(rejectedrma.data));
+        .then((rejectedrma) => setMRTable(rejectedrmaresults.data));
       // setRma(Object.e)
     };
     const fetchInProgressData = async () => {
       // get the data from the api
-      const inprogressrma = await axios
+      const inprogressrmaresults = await axios
         .get(`http://localhost:5000/api/myIPRMA/${userid}`)
-        .then((inprogressrma) => setMIPTable(inprogressrma.data));
+        .then((inprogressrma) => setMIPTable(inprogressrmaresults.data));
       // setRma(Object.e)
     };
     // call the function
@@ -156,7 +151,7 @@ const Rmatabs: React.FC = () => {
     fetchRejectedData();
     fetchInProgressData()
       // make sure to catch any error
-      .catch(console.error);
+      .catch(error);
   }, []);
 
   switch (userrole) {
