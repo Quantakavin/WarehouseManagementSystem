@@ -53,6 +53,8 @@ import { textAlign } from "@mui/system";
 import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import {
   DataGrid,
   GridFilterModel,
@@ -62,13 +64,11 @@ import {
   GridToolbarFilterButton,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
-import { Row } from "react-bootstrap";
-import { motion } from "framer-motion";
-import { useAppSelector } from "../../app/hooks";
-import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import RejectModalButton from "./RmaModal/rejectModal";
 import ReasonModalButton from "./RmaModal/reasonModal";
 import { verifyRMA } from "../../app/reducers/RmaReducer";
+import { Row } from "react-bootstrap";
+import { motion } from "framer-motion";
 
 export default function CreateRMA() {
   const userrole = useAppSelector(selectRole);
@@ -79,7 +79,7 @@ export default function CreateRMA() {
     {}
   );
 
-  const { RmaID } = useParams();
+  let { RmaID } = useParams();
 
   const rmainstructions = {
     products: rows,
@@ -98,7 +98,7 @@ export default function CreateRMA() {
       },
     ],
   });
-  // Get RMA details
+  //Get RMA details
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
@@ -112,7 +112,7 @@ export default function CreateRMA() {
       // make sure to catch any error
       .catch(console.error);
   }, []);
-  // Get RMA products
+  //Get RMA products
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
@@ -130,7 +130,7 @@ export default function CreateRMA() {
       .catch(console.error);
   }, []);
   console.log(rma.RmaStatusID);
-  // Accept RMA
+  //Accept RMA
   const acceptRMA = async () => {
     axios
       .put(`http://localhost:5000/api/acceptRMA/${RmaID}`)
@@ -140,7 +140,7 @@ export default function CreateRMA() {
         console.error("There was an error!", error);
       });
   };
-  // Receive RMA
+  //Receive RMA
   const receiveRMA = async () => {
     axios
       .put(`http://localhost:5000/api/receiveRMA/${RmaID}`)
@@ -150,7 +150,7 @@ export default function CreateRMA() {
         console.error("There was an error!", error);
       });
   };
-  // Verify RMA
+  //Verify RMA
   const verifyRMA = async () => {
     axios
       .put(`http://localhost:5000/api/verifyRMA/${RmaID}`, rmainstructions)
@@ -160,7 +160,7 @@ export default function CreateRMA() {
         console.error("There was an error!", error);
       });
   };
-  // COA RMA
+  //COA RMA
   const COARMA = async () => {
     axios
       .put(`http://localhost:5000/api/COARMA/${RmaID}`, rmacoa)
@@ -320,11 +320,11 @@ export default function CreateRMA() {
     },
   };
 
-  const GridEditDateCell = ({
+  function GridEditDateCell({
     id,
     field,
     value,
-  }: GridRenderEditCellParams<Date | string | null>) => {
+  }: GridRenderEditCellParams<Date | string | null>) {
     const apiRef = useGridApiContext();
 
     const handleChange = (newValue: unknown) => {
@@ -340,11 +340,11 @@ export default function CreateRMA() {
         views={["day", "month", "year"]}
       />
     );
-  };
+  }
 
-  const GridFilterDateInput = (
+  function GridFilterDateInput(
     props: GridFilterInputValueProps & { showTime?: boolean }
-  ) => {
+  ) {
     const { item, showTime, applyValue, apiRef } = props;
 
     const Component = showTime ? DateTimePicker : DatePicker;
@@ -373,7 +373,7 @@ export default function CreateRMA() {
         onChange={handleFilterChange}
       />
     );
-  };
+  }
 
   interface EditToolbarProps {
     setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
@@ -427,7 +427,7 @@ export default function CreateRMA() {
     return updatedRow;
   };
 
-  const CustomToolbar = () => {
+  function CustomToolbar() {
     return (
       <GridToolbarContainer
         sx={{ display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1 }}
@@ -443,7 +443,7 @@ export default function CreateRMA() {
         </Box>
       </GridToolbarContainer>
     );
-  };
+  }
 
   const columns: GridColumns = [
     { field: "id", headerName: "PK", flex: 1, editable: true },
@@ -740,7 +740,7 @@ export default function CreateRMA() {
 
   const navigate = useNavigate();
 
-  if (rma.RmaStatusID === 3) {
+  if (rma.RmaStatusID == 3) {
     switch (userrole) {
       case "Sales Engineer": {
         return (
@@ -1088,7 +1088,7 @@ export default function CreateRMA() {
         );
       }
     }
-  } else if (rma.RmaStatusID === 1) {
+  } else if (rma.RmaStatusID == 1) {
     switch (userrole) {
       case "Sales Manager": {
         return (
@@ -1514,7 +1514,7 @@ export default function CreateRMA() {
         );
       }
     }
-  } else if (rma.RmaStatusID === 7) {
+  } else if (rma.RmaStatusID == 7) {
     switch (userrole) {
       case "Sales Admin":
       case "Sales Engineer":
