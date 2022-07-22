@@ -38,13 +38,15 @@ import axios from "axios";
 import locale from "date-fns/locale/en-US";
 import { motion } from "framer-motion";
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAppSelector } from "../../app/hooks";
-import { selectId } from "../../app/reducers/CurrentUserSlice";
+import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
 
 const CreateRMA: React.FC = () => {
+  const navigate = useNavigate();
   const sid = useAppSelector(selectId);
+  const userrole = useAppSelector(selectRole)
   const [rows, setRows] = useState([]);
   const [contactperson, setContactperson] = useState("");
   const [contactno, setContactno] = useState("");
@@ -53,6 +55,13 @@ const CreateRMA: React.FC = () => {
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
+
+
+  useEffect(() => {
+    if (userrole != "Sales Engineer") {
+      navigate('*');
+    }
+  }, []);
 
   const dateAdapter = new AdapterDateFns({ locale });
 
@@ -389,8 +398,6 @@ const CreateRMA: React.FC = () => {
       },
     },
   ];
-
-  const navigate = useNavigate();
 
   const EditToolbar = (props: EditToolbarProps) => {
     const { setRows, setRowModesModel } = props;
