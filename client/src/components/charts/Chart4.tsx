@@ -1,5 +1,5 @@
 import React from "react";
-import { ResponsiveContainer, PieChart, Pie } from "recharts";
+import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { Panel } from "react-bootstrap";
 
 const data = [
@@ -39,9 +39,8 @@ const renderCustomizedLabel = ({
 };
 
 function Chart4() {
-  return;
+  return(
   <>
-    <div>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart width={400} height={400}>
           <Pie
@@ -63,9 +62,9 @@ function Chart4() {
           </Pie>
         </PieChart>
       </ResponsiveContainer>
-    </div>
-    ;
-  </>;
+   
+  </>
+  )
 }
 
 export default Chart4;
