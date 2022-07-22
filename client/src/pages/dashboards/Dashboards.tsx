@@ -6,9 +6,8 @@ import Sidebar from "../../components/sidebar/SideBar";
 import TLoanChart from "../../components/charts/Chart";
 import Cards from "../../components/cards/cards";
 import RMAChart from "../../components/charts/Chart2";
-import BARChart  from "../../components/charts/Chart3";
+import BARChart from "../../components/charts/Chart3";
 import PIEChart from "../../components/charts/Chart4";
-
 
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
@@ -51,6 +50,12 @@ function Dashboards() {
       <Grid item xs={12}>
         <Cards />
       </Grid>
+      <Grid item xs={6} sx={{ height: 200 }}>
+        <PIEChart title={undefined} dataKey={undefined} grid={undefined} />
+      </Grid>
+      <Grid item xs={6} sx={{ height: 200 }}>
+        <PIEChart title={undefined} dataKey={undefined} grid={undefined} />
+      </Grid>
       <Grid item xs={12}>
         <TLoanChart title={undefined} dataKey={undefined} grid={undefined} />
       </Grid>
@@ -58,14 +63,9 @@ function Dashboards() {
         <RMAChart title={undefined} dataKey={undefined} grid={undefined} />
       </Grid>
       <Grid item xs={12}>
-       <BARChart title={undefined} dataKey={undefined} grid={undefined} />                              />
-      </Grid>
-      <Grid item xs={12}>
-       <PIEChart title={undefined} dataKey={undefined} grid={undefined} />                              />
+        <BARChart title={undefined} dataKey={undefined} grid={undefined} />
       </Grid>
     </Grid>
-
-
   );
 }
 
