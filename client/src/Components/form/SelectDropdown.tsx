@@ -1,7 +1,6 @@
-import { TransgenderTwoTone } from "@mui/icons-material";
-import { Checkbox, ListItemText, MenuItem, Select } from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
 import React from "react";
-import { UseFormRegister, RegisterOptions } from "react-hook-form";
+import { RegisterOptions, UseFormRegister } from "react-hook-form";
 import { Option } from "../../utils/CommonTypes";
 
 interface SelectProps<IFormValues> {
@@ -23,11 +22,10 @@ const SelectDropdown: React.FC<SelectProps<any>> = ({
   register,
   rules,
   defaultoption,
-  placeholder
+  placeholder,
 }) => {
-
   const field = (
-      <Select
+    <Select
       size="small"
       defaultValue={defaultoption}
       className="selectfield"
@@ -36,24 +34,23 @@ const SelectDropdown: React.FC<SelectProps<any>> = ({
       sx={{ 
         borderRadius: "10px",
         paddingTop: "0px",
-        textOverflow: "ellipsis", 
-        overflow: "hidden", 
-        whiteSpace: "pre"
+        textOverflow: "ellipsis",
+        overflow: "hidden",
+        whiteSpace: "pre",
       }}
       displayEmpty
       label="Company"
     >
       <MenuItem value={""} disabled hidden>
-      {placeholder}
+        {placeholder}
       </MenuItem>
       {options.map(({ id, text, value }) => (
-      <MenuItem key={id} value={value}>
-
-        {text}
-      </MenuItem>
+        <MenuItem key={id} value={value}>
+          {text}
+        </MenuItem>
       ))}
     </Select>
-    )
+  );
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>

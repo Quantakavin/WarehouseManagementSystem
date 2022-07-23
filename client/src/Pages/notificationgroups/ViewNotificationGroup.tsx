@@ -1,47 +1,64 @@
-import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "react-query";
-import { GetNotificationGroup } from "../../api/NotificationGroupDB";
-import CardSkeleton from "../../components/skeletons/CardSkeleton";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { motion } from "framer-motion";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Container } from "@mui/material";
-import DataTable from "../../components/table/DataTable";
 import { GridColDef } from "@mui/x-data-grid";
+import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
+import { GetNotificationGroup } from "../../api/NotificationGroupDB";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import CardSkeleton from "../../components/skeletons/CardSkeleton";
+import DataTable from "../../components/table/DataTable";
 
 const ViewNotificationGroup: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const [notiFeatures,setNotiFeatures] = useState<any[]>([])
+  const userrole = useAppSelector(selectRole)
+  useEffect(() => {
+    if (userrole != "Admin") {
+      navigate('/403');
+    }
+  }, []);
+  const [notiFeatures, setNotiFeatures] = useState<any[]>([]);
 
   const NotificationGroupQuery = useQuery(
     [`notificationgroup${params.id}`, params.id],
-    () => GetNotificationGroup(params.id), {
+    () => GetNotificationGroup(params.id),
+    {
       onSuccess: (data) => {
         const notifeaturestoset = data.data[0].Features.map((feature) => {
-          return {id: feature.NotiFeatureID, name: feature.NotiFeature, type: feature.NotiType}
-        })
-        setNotiFeatures(notifeaturestoset)
-      }
+          return {
+            id: feature.NotiFeatureID,
+            name: feature.NotiFeature,
+            type: feature.NotiType,
+          };
+        });
+        setNotiFeatures(notifeaturestoset);
+      },
     }
   );
 
   const headers: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 60 },
-    { field: 'name', headerName: 'Notification Name', width: 400 },
-    { field: 'type', headerName: 'Notification Type', width: 150 }
+    { field: "id", headerName: "ID", width: 60 },
+    { field: "name", headerName: "Notification Name", width: 400 },
+    { field: "type", headerName: "Notification Type", width: 150 },
   ];
 
   if (NotificationGroupQuery.isLoading || NotificationGroupQuery.isError) {
-    return <CardSkeleton NoOfFields={4} />; 
+    return <CardSkeleton NoOfFields={4} />;
   }
 
   return (
     <>
-      {NotificationGroupQuery.status === "success" &&
+      {NotificationGroupQuery.status === "success" && (
         <Container className="cardcontainer shadow">
-          <h2 className="cardheader">{NotificationGroupQuery.data.data[0].NotiGroupName}</h2>
-          <p className="cardsubheading">{NotificationGroupQuery.data.data[0].NotiGroupDesc}</p>
+          <h2 className="cardheader">
+            {NotificationGroupQuery.data.data[0].NotiGroupName}
+          </h2>
+          <p className="cardsubheading">
+            {NotificationGroupQuery.data.data[0].NotiGroupDesc}
+          </p>
           <div className="flexcontainer cardfield">
             <p className="cardfieldlabel">Company</p>
             <p className="cardfieldvalue">
@@ -49,16 +66,32 @@ const ViewNotificationGroup: React.FC = () => {
             </p>
           </div>
           <div className="flexcontainer cardfield">
-          <p className="cardfieldlabel">Notification List:</p>
+            <p className="cardfieldlabel">Notification List:</p>
           </div>
           <div className="flexcontainer cardtable">
-          {NotificationGroupQuery.data.data[0].Features.length > 0? 
-          <DataTable data={notiFeatures} headers={headers} />
-          : <p className="cardfieldvalue">No notifications assigned</p>}
+            {NotificationGroupQuery.data.data[0].Features.length > 0 ? (
+              <DataTable data={notiFeatures} headers={headers} />
+            ) : (
+              <p className="cardfieldvalue">No notifications assigned</p>
+            )}
           </div>
 
-        <div className="flexcontainer" style={{ flexDirection: "row", marginLeft: "7%", marginRight: "7%", marginTop: 30, marginBottom: 20 }}>
-            <button style={{ alignSelf: "flex-start" }} className="cardbackbutton" onClick={() => navigate(-1)} type="button">
+          <div
+            className="flexcontainer"
+            style={{
+              flexDirection: "row",
+              marginLeft: "7%",
+              marginRight: "7%",
+              marginTop: 30,
+              marginBottom: 20,
+            }}
+          >
+            <button
+              style={{ alignSelf: "flex-start" }}
+              className="cardbackbutton"
+              onClick={() => navigate(-1)}
+              type="button"
+            >
               <ArrowBackIosIcon fontSize="small" /> Back
             </button>
             <motion.button
@@ -72,8 +105,7 @@ const ViewNotificationGroup: React.FC = () => {
             </motion.button>
           </div>
         </Container>
-      }
-
+      )}
     </>
   );
 };

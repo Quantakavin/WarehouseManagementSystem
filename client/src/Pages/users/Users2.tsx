@@ -1,37 +1,34 @@
-import React, { useEffect, useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import {
+  Box, Fab, Stack, Typography,
+  unstable_createMuiStrictModeTheme
+} from "@mui/material";
 import {
   DataGrid,
-  GridFilterModel,
-  GridRowParams,
-  GridToolbarColumnsButton,
+  GridActionsCellItem,
+  GridFilterModel, GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
-  GridToolbarQuickFilter,
+  GridToolbarQuickFilter
 } from "@mui/x-data-grid";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Stack,
-  Theme,
-  Typography,
-  unstable_createMuiStrictModeTheme,
-  withStyles,
-  IconButton,
-  Fab,
-} from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import PostAddIcon from "@mui/icons-material/PostAdd";
-import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
 
 const Users2: React.FC = () => {
   const navigate = useNavigate();
+  const userrole = useAppSelector(selectRole)
+  useEffect(() => {
+    if (userrole != "Admin") {
+      navigate('/403');
+    }
+  }, []);
   const [row, setRow] = useState([]);
   const theme = unstable_createMuiStrictModeTheme();
   const [pageSize, setPageSize] = React.useState(25);
@@ -78,45 +75,36 @@ const Users2: React.FC = () => {
   });
 
   const columns = [
-    { field: "UserID", headerName: "ID", flex: 2 },
-    { field: "Username", headerName: "Username", flex: 5 },
-    { field: "Email", headerName: "Email Address", flex: 7 },
-    { field: "CompanyName", headerName: "Company", flex: 7 },
-    { field: "UserGroupName", headerName: "User Group", flex: 5 },
-    { field: "MobileNo", headerName: "Phone Number", flex: 5 },
+    { field: "UserID", headerName: "ID", flex: 3 },
+    { field: "Username", headerName: "Username", flex: 10 },
+    { field: "Email", headerName: "Email Address", flex: 12 },
+    { field: "CompanyName", headerName: "Company", flex: 12 },
+    { field: "UserGroupName", headerName: "User Group", flex: 10 },
+    { field: "MobileNo", headerName: "Phone Number", flex: 10 },
     {
       field: "actions",
-      headerName: "Actions",
-      flex: 3,
-      sortable: false,
-      disableColumnMenu: true,
-      renderCell: (params) => {
-        if (hoveredRow === params.id) {
-          return (
-            <Box
-              sx={{
-                backgroundColor: "whitesmoke",
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <IconButton onClick={() => navigate(`/user/${params.id}`)}>
-                <VisibilityIcon />
-              </IconButton>
-              <IconButton onClick={() => navigate(`/edituser/${params.id}`)}>
-                <EditIcon />
-              </IconButton>
-              <IconButton onClick={() => navigate(`/dashboard`)}>
-                <DeleteIcon />
-              </IconButton>
-            </Box>
-          );
-        }
-        return null;
-      },
+      type: "actions",
+      flex: 1,
+      getActions: (params) => [
+        <GridActionsCellItem
+          icon={<VisibilityIcon />}
+          label="View"
+          onClick={() => navigate(`/user/${params.id}`)}
+          showInMenu
+        />,
+        <GridActionsCellItem
+          icon={<EditIcon />}
+          label="Edit"
+          onClick={() => navigate(`/edituser/${params.id}`)}
+          showInMenu
+        />,
+        <GridActionsCellItem
+          icon={<DeleteIcon />}
+          label="Delete"
+          onClick={() => navigate(`/dashboard`)}
+          showInMenu
+        />,
+      ],
     },
   ];
 

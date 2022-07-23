@@ -1,27 +1,25 @@
 import { Checkbox, ListItemText, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import React from "react";
-import { UseFormRegister, RegisterOptions } from "react-hook-form";
 import { Option } from "../../utils/CommonTypes";
 
 interface SelectProps {
-    label: string;
-    name: string;
-    selectedValues: any[];
-    changeSelectedValues: (event: SelectChangeEvent<any[]>) => void;
-    placeholder: string;
-    options: Option[];
+  label: string;
+  name: string;
+  selectedValues: any[];
+  changeSelectedValues: (event: SelectChangeEvent<any[]>) => void;
+  placeholder: string;
+  options: Option[];
 }
 
 const MultiSelectDropdown: React.FC<SelectProps> = ({
-    name,
-    label,
-    selectedValues,
-    changeSelectedValues,
-    placeholder,
-    options
+  name,
+  label,
+  selectedValues,
+  changeSelectedValues,
+  placeholder,
+  options,
 }) => {
-
-    console.log("selected values are ", selectedValues)
+  console.log("selected values are ", selectedValues);
 
     const field = (
         <Select

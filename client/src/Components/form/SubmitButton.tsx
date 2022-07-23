@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { Spinner } from "react-bootstrap";
 import { motion } from "framer-motion";
+import React from "react";
+import { Spinner } from "react-bootstrap";
+import styled from "styled-components";
 
 interface ButtonProps {
   $loading: boolean;

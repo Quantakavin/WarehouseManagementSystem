@@ -1,37 +1,35 @@
-import React, { useState } from "react";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { SelectChangeEvent } from "@mui/material";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { SelectChangeEvent } from "@mui/material";
-import FormContainer from "../../components/form/FormContainer";
-import SubmitButton from "../../components/form/SubmitButton";
 import ErrorAlert from "../../components/form/ErrorAlert";
+import FormContainer from "../../components/form/FormContainer";
 import FormField from "../../components/form/FormField";
 import SelectDropdown from "../../components/form/SelectDropdown";
+import SubmitButton from "../../components/form/SubmitButton";
+import { Company, NotiGroup, Option, UserGroup } from "../../utils/CommonTypes";
 import {
-  SelectValidation,
-  EmailValidation,
-  UsernameValidation,
-  PhoneNoValidation,
-  PasswordValidation,
+  EmailValidation, PasswordValidation, PhoneNoValidation, SelectValidation, UsernameValidation
 } from "../../utils/FormValidation";
-import { Option, Company, UserGroup, NotiGroup } from "../../utils/CommonTypes";
 // import GetCompanies from "../../api/company/GetCompanies";
 // import GetUserGroups from "../../api/usergroup/GetUserGroups";
 // import GetNotificationGroups from "../../api/notificationgroup/GetNotificationGroups";
 // import PostUser from "../../api/user/PostUser";
 
 import { GetCompanies } from "../../api/CompanyDB";
-import { GetUserGroups } from "../../api/UserGroupDB";
 import { GetNotificationGroups } from "../../api/NotificationGroupDB";
 import { PostUser } from "../../api/UserDB";
-import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
+import { GetUserGroups } from "../../api/UserGroupDB";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import FormSteps from "../../components/form/FormSteps";
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 
 interface FormValues {
   name: string;
@@ -44,13 +42,19 @@ interface FormValues {
 }
 
 const AddUser: React.FC = () => {
+  const navigate = useNavigate();
+  const userrole = useAppSelector(selectRole)
+  useEffect(() => {
+    if (userrole != "Admin") {
+      navigate('/403');
+    }
+  }, []);
   const [companyOptions, setCompanyOptions] = useState<Option[]>([]);
   const [userGroupOptions, setUserGroupOptions] = useState<Option[]>([]);
   const [notiGroupOptions, setNotiGroupOptions] = useState<Option[]>([]);
   const [step, setStep] = useState<number>(1);
   const [selectedNotiGroups, setSelectedNotiGroups] = useState<string[]>([]);
   const [returnNotiGroups, setReturnNotiGroups] = useState<any[]>([]);
-  const navigate = useNavigate();
   const {
     register,
     trigger,
@@ -58,7 +62,7 @@ const AddUser: React.FC = () => {
     handleSubmit,
     formState: { errors, isValid, isDirty, dirtyFields },
   } = useForm<FormValues>({ mode: "all" });
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   // const companiesQuery = useQuery("companies", GetCompanies);
   // const userGroupsQuery = useQuery("usergroups", GetUserGroups);
@@ -126,8 +130,8 @@ const AddUser: React.FC = () => {
           customClass: "swalpopup",
           timer: 1500,
         });
-        queryClient.invalidateQueries('users')
-        queryClient.invalidateQueries('usernames')
+        queryClient.invalidateQueries("users");
+        queryClient.invalidateQueries("usernames");
         navigate("/users");
       },
     });

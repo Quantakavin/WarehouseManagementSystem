@@ -1,24 +1,21 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import { Box } from "@mui/material";
+import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { Box } from "@mui/material";
 import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 //import { GetDetails }from "../../api/TLoanDB"
 
 export default function tloanDisplay() {
@@ -47,7 +44,6 @@ export default function tloanDisplay() {
       .catch(console.error);
   }, []);
 
-
   console.log(loans.Items);
 
   const table = () => {
@@ -74,19 +70,17 @@ export default function tloanDisplay() {
     // function createData(itemName: string, batchNo: string, quantity: number) {
     //   return { itemName, batchNo, quantity };
 
-      
-  
     //    console.log(loans)
     //   return (
-        
+
     //        <div>
-         
+
     //      <h2 className="pagetitle">{loans.TLoanNumber}</h2>
     //       <Card sx={{ width: 800, height: 400, marginLeft: 'auto', marginRight: 'auto'}}>
     //     <CardMedia
-        
+
     //     />
-    //     <CardContent> 
+    //     <CardContent>
     //        <Typography gutterBottom variant="subtitle2" component="div" sx={{display: 'flex',justifyContent:'center', alignItems:'center', marginTop: 3, marginLeft: -10,color:'#063970', fontWeight: 'bold'}}>
     //        <Box>
     //        <div >Loan No.</div>
@@ -108,14 +102,13 @@ export default function tloanDisplay() {
     //        <div style={{}}>Customer Email</div>
     //        <div style={{color: "black", fontWeight: "normal"}}>{loans.CustomerEmail}</div>
     //        </Box>
-           
-          
+
     //       </Typography>
     //       <Typography gutterBottom variant="subtitle2" component="div" sx={{marginTop: 3 , marginLeft: 6.5,color:'#063970', fontWeight: 'bold'}}>
     //       <div>Item List</div>
-          
+
     //       </Typography>
-    //       <Box sx={{display:'flex'}}> 
+    //       <Box sx={{display:'flex'}}>
     //         {table()}
     //         <Box sx={{ marginLeft : 2 }} >
     //           <TextField
@@ -124,33 +117,31 @@ export default function tloanDisplay() {
     //           multiline
     //           rows={5.5}
     //           disabled
-             
+
     //           defaultValue={loans.TLoanNumber}
-              
+
     //           />
     //         </Box>
     //       </Box>
-         
+
     //       <Typography variant="body2" color="text.secondary">
-            
+
     //       </Typography>
     //     </CardContent>
     //     <Box sx={{display:'flex',justifyContent:'center', alignItems:'center', paddingTop: 3}}>
     //       <Button size="small" >Back</Button>
-         
+
     //       <Button size="small" >Apply Extension</Button>
     //      </Box>
-        
+
     //   </Card>
     //     </div>
-        
-    
+
     //   )
-     
 
     // }
     const items = loans.Items;
-    console.log(items)
+    console.log(items);
     return (
       <TableContainer
         component={Paper}
@@ -288,7 +279,9 @@ export default function tloanDisplay() {
               Back
             </Button>
 
-            <Button size="small" type="submit">Apply Extension</Button>
+            <Button size="small" type="submit">
+              Apply Extension
+            </Button>
           </Box>
         </Card>
       </div>

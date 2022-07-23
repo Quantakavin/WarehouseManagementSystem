@@ -1,12 +1,10 @@
-import * as React from "react";
-import TextField from "@mui/material/TextField";
-import Stack from "@mui/material/Stack";
-import Autocomplete from "@mui/material/Autocomplete";
-import { motion, MotionValue } from "framer-motion";
+import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
-import { Hidden } from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import { motion } from "framer-motion";
 import { useState } from "react";
-import ClearIcon from '@mui/icons-material/Clear';
 
 interface SearchParams {
   searchoptions: string[];
@@ -45,7 +43,7 @@ const SearchBarUpdated = ({
           options={searchoptions}
           onInputChange={(event, value) => handleInputChange(value)}
           onChange={(event, value) => setSelectedOption(value)}
-          clearIcon = {<ClearIcon fontSize="small" sx={{ color: "#0A2540" }} />}
+          clearIcon={<ClearIcon fontSize="small" sx={{ color: "#0A2540" }} />}
           renderInput={(params) => (
             <TextField
               className="searchfield"

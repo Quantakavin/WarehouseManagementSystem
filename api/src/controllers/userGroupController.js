@@ -10,7 +10,7 @@ const redisClient = require('../config/caching');
 //         console.log(error)
 //         return res.status(500).json({ message: 'Internal Server Error!' });
 //     }
-// }; 
+// };
 
 module.exports.getAllUserGroups = async (req, res) => {
     try {
@@ -28,26 +28,32 @@ module.exports.getAllUserGroups = async (req, res) => {
 };
 
 module.exports.filterUserGroups = async (req, res) => {
-    const { pageSize=5, pageNo=0, sortColumn=null, sortOrder=null, name=null } = req.query;
+    const {
+        pageSize = 5,
+        pageNo = 0,
+        sortColumn = null,
+        sortOrder = null,
+        name = null
+    } = req.query;
     try {
         const results = await userGroup.filter(pageSize, pageNo, sortColumn, sortOrder, name);
         return res.status(200).json(results[0][0]);
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
-}; 
+};
 
 module.exports.getAllNames = async (req, res) => {
-    const { name=null } = req.query;
+    const { name = null } = req.query;
     try {
         const results = await userGroup.getNames(name);
         return res.status(200).json(results[0]);
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
-}; 
+};
 
 // module.exports.getAllUserGroups = async (req, res) => {
 //     const { limit, page } = req.query;
@@ -119,16 +125,15 @@ module.exports.getUserGroupByName = async (req, res) => {
     }
 };
 
-
 module.exports.createUserGroup = async (req, res) => {
     const { name, description, features } = req.body;
-    console.log("features are", features)
+    console.log('features are', features);
     try {
         await userGroup.insert(name, description, features);
         redisClient.del('userGroups');
         return res.status(201).json({ message: 'User Group created successfully!' });
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -145,7 +150,7 @@ module.exports.updateUserGroup = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find User Group with that id' });
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };

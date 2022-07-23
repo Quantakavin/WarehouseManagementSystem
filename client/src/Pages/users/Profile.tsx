@@ -1,10 +1,10 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useQuery } from "react-query";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Container } from "@mui/material";
-import CardSkeleton from "../../components/skeletons/CardSkeleton";
+import React from "react";
+import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { GetUser } from "../../api/UserDB";
+import CardSkeleton from "../../components/skeletons/CardSkeleton";
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();

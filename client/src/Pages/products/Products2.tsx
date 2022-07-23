@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from "react";
+import {
+  Box, Stack, Typography,
+  unstable_createMuiStrictModeTheme
+} from "@mui/material";
 import {
   DataGrid,
   GridFilterModel,
@@ -8,18 +11,9 @@ import {
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
-  GridToolbarQuickFilter,
+  GridToolbarQuickFilter
 } from "@mui/x-data-grid";
-import {
-  Box,
-  Card,
-  CardContent,
-  Stack,
-  Theme,
-  Typography,
-  unstable_createMuiStrictModeTheme,
-  withStyles,
-} from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 const Products2: React.FC = () => {
@@ -47,32 +41,34 @@ const Products2: React.FC = () => {
   });
 
   const columns = [
-    { field: "BinProductPK", headerName: "ID", flex: 2 },
-    { field: "ItemName", headerName: "Item Name", flex: 30 },
-    { field: "BatchNo", headerName: "Batch Number", flex: 10 },
-    { field: "Brand", headerName: "Brand", flex: 10 },
+    { field: "BinTag2", headerName: "Bin Tag", width: 200 },
+    { field: "Brand", headerName: "Brand", width: 250 },
+    { field: "ItemNo", headerName: "Item Code", width: 560 },
+    { field: "ItemName", headerName: "Item Name", width: 950 },
+    { field: "BatchNo", headerName: "Batch Number", width: 300 },
+    { field: "BatchInDate", headerName: "Batch In Date", width: 250 },
+    { field: "WarehouseCode", headerName: "Warehouse Code", width: 200 },
     {
       field: "Quantity",
       headerName: "Available Quantity",
       type: "number",
-      flex: 8,
+      width: 200,
     },
   ];
 
-
-
-
   function CustomToolbar() {
     return (
-      <GridToolbarContainer sx={{display: "flex", flexWrap: "wrap", maxWidth: 613, p: 1}}>
+      <GridToolbarContainer
+        sx={{ display: "flex", flexWrap: "wrap", maxWidth: 613, p: 1 }}
+      >
         <Box>
-        <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
+          <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
         </Box>
         <Box>
-        <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
-        <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
-        <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
-        <GridToolbarExport sx={{ color: "#0A2540" }} />
+          <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
+          <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
+          <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
+          <GridToolbarExport sx={{ color: "#0A2540" }} />
         </Box>
       </GridToolbarContainer>
     );
@@ -112,7 +108,9 @@ const Products2: React.FC = () => {
             onFilterModelChange={(newFilterModel) =>
               setFilterModel(newFilterModel)
             }
-            onRowClick={(params: GridRowParams)=>{navigate(`/product/${params.id}`)}}
+            onRowClick={(params: GridRowParams) => {
+              navigate(`/product/${params.id}`);
+            }}
           />
         </Box>
       </Box>

@@ -1,15 +1,23 @@
-import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "react-query";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { motion } from "framer-motion";
 import { Container } from "@mui/material";
-import CardSkeleton from "../../components/skeletons/CardSkeleton";
+import { motion } from "framer-motion";
+import React, { useEffect } from "react";
+import { useQuery } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
 import { GetUser } from "../../api/UserDB";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import CardSkeleton from "../../components/skeletons/CardSkeleton";
 
 const ViewUser: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const userrole = useAppSelector(selectRole)
+  useEffect(() => {
+    if (userrole != "Admin") {
+      navigate('/403');
+    }
+  }, []);
 
   const UserQuery = useQuery([`user${params.id}`, params.id], () =>
     GetUser(params.id)

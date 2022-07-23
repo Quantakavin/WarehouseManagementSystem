@@ -17,26 +17,26 @@ module.exports.loginUser = async (req, res) => {
                     )
                 };
                 const refresh_token = jwt.sign(
-                    {id: results[0][0].UserID},
+                    { id: results[0][0].UserID },
                     config.refreshtokensecret,
                     {
                         expiresIn: 259200
                     }
-                )
+                );
                 res.cookie('refreshToken', refresh_token, {
                     httpOnly: true,
                     secured: true,
-                    signed: true, 
-                    maxAge:259200000, 
-                    sameSite: "none",
-                })
+                    signed: true,
+                    maxAge: 259200000,
+                    sameSite: 'none'
+                });
                 return res.status(200).json(data);
             }
             return res.status(401).json({ message: 'Invalid Email/Password Combination' });
         }
         return res.status(401).json({ message: "User with email doesn't exist" });
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 };

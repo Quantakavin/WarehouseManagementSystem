@@ -1,7 +1,20 @@
 const knex = require('../config/database');
 
 module.exports.getAll = async (limit, page) => {
-    const query = `SELECT BinProductPK, ItemName, BatchNo, Brand, Quantity, count(BinProductPK) OVER() AS full_count FROM BinProduct LIMIT ? OFFSET ?`;
+    const query = ` SELECT
+                    bp.BinProductPK, 
+                    b.BinTag2,
+                    bp.Brand,
+                    bp.ItemNo, 
+                    bp.ItemName,
+                    bp.BatchNo, 
+                    bp.BatchInDate, 
+                    bp.WarehouseCode, 
+                    bp.Quantity,
+                    count(BinProductPK) OVER() AS full_count
+                    FROM BinProduct bp, Bin b 
+                    WHERE bp.BinID = b.BinID
+                    LIMIT ? OFFSET ?`;
     return knex.raw(query, [Number(limit), Number(page)]);
 };
 

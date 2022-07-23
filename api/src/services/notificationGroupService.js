@@ -17,12 +17,12 @@ module.exports.assignToUser = async (userid, notigroupid) => {
     });
 };
 
-module.exports.filter = async (pageSize, pageNo, sortColumn, sortOrder, name ) => {
+module.exports.filter = async (pageSize, pageNo, sortColumn, sortOrder, name) => {
     const query = `Call sp_getAllNotiGroups(?,?,?,?,?)`;
-    return knex.raw(query, [Number(pageSize), Number(pageNo), sortColumn, sortOrder, name ]);
+    return knex.raw(query, [Number(pageSize), Number(pageNo), sortColumn, sortOrder, name]);
 };
 
-module.exports.getNames = async ( name ) => {
+module.exports.getNames = async (name) => {
     const query = `SELECT DISTINCT IFNULL(NotiGroupName, NULL) 'Name' FROM NotiGroup WHERE NotiGroupName LIKE ?`;
     return knex.raw(query, [`%${name}%`]);
 };
@@ -99,9 +99,8 @@ module.exports.update = async (notiGroupID, name, description, company, notifica
     });
 };
 
-
 module.exports.delete = async (notiGroupID) => {
-    return knex('NotiGroup').where('NotiGroupID', notiGroupID).del()
+    return knex('NotiGroup').where('NotiGroupID', notiGroupID).del();
 };
 
 // module.exports.delete = async (notiGroupID) => {

@@ -1,53 +1,70 @@
-import * as React from "react";
+import AddIcon from "@mui/icons-material/Add";
+import CancelIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
+import { Card, CardContent, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import SaveIcon from "@mui/icons-material/Save";
-import CancelIcon from "@mui/icons-material/Close";
+import { randomId } from "@mui/x-data-grid-generator";
 import {
-  GridRowsProp,
-  GridRowModesModel,
-  GridRowModes,
   DataGridPro,
-  GridColumns,
-  GridRowParams,
-  MuiEvent,
-  GridToolbarContainer,
   GridActionsCellItem,
+  GridCellParams,
+  GridColTypeDef,
+  GridColumns,
   GridEventListener,
+  GridFilterInputValueProps,
+  GridFilterItem,
+  GridRenderEditCellParams,
   GridRowId,
   GridRowModel,
-  GridFilterInputValueProps,
-  GridRenderEditCellParams,
-  useGridApiContext,
-  GridColTypeDef,
+  GridRowModes,
+  GridRowModesModel,
+  GridRowParams,
+  GridRowsProp,
+  GridToolbarContainer,
   GRID_DATE_COL_DEF,
-  GridFilterItem,
-  GridCellParams,
+  MuiEvent,
+  useGridApiContext
 } from "@mui/x-data-grid-pro";
-import {
-  randomCreatedDate,
-  randomTraderName,
-  randomUpdatedDate,
-  randomId,
-} from "@mui/x-data-grid-generator";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import {
   DatePicker,
   DateTimePicker,
-  LocalizationProvider,
+  LocalizationProvider
 } from "@mui/x-date-pickers";
-import { Card, CardContent, MenuItem, TextField } from "@mui/material";
-import locale from "date-fns/locale/en-US";
-import { textAlign } from "@mui/system";
-import { useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
+import locale from "date-fns/locale/en-US";
 import { motion } from "framer-motion";
+import * as React from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { useAppSelector } from "../../app/hooks";
+import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
 
-export default function CreateRMA() {
+const CreateRMA: React.FC = () => {
+  const navigate = useNavigate();
+  const sid = useAppSelector(selectId);
+  const userrole = useAppSelector(selectRole)
+  const [rows, setRows] = useState([]);
+  const [contactperson, setContactperson] = useState("");
+  const [contactno, setContactno] = useState("");
+  const [contactemail, setContactemail] = useState("");
+  const [company, setCompany] = useState("");
+  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
+    {}
+  );
+
+
+  useEffect(() => {
+    if (userrole != "Sales Engineer") {
+      navigate('/403');
+    }
+  }, []);
+
+  const dateAdapter = new AdapterDateFns({ locale });
+
   function buildApplyDateFilterFn(
     filterItem: GridFilterItem,
     compareFn: (value1: number, value2: number) => boolean,
@@ -77,6 +94,39 @@ export default function CreateRMA() {
       return compareFn(cellValueMs, filterValueMs);
     };
   }
+
+  const GridFilterDateInput = (
+    props: GridFilterInputValueProps & { showTime?: boolean }
+  ) => {
+    const { item, showTime, applyValue, apiRef } = props;
+
+    const Component = showTime ? DateTimePicker : DatePicker;
+
+    const handleFilterChange = (newValue: unknown) => {
+      applyValue({ ...item, value: newValue });
+    };
+
+    return (
+      <Component
+        value={item.value || null}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            variant="standard"
+            label={apiRef.current.getLocaleText("filterPanelInputLabel")}
+          />
+        )}
+        InputAdornmentProps={{
+          sx: {
+            "& .MuiButtonBase-root": {
+              marginRight: -1,
+            },
+          },
+        }}
+        onChange={handleFilterChange}
+      />
+    );
+  };
 
   function getDateFilterOperators(
     showTime: boolean = false
@@ -175,7 +225,25 @@ export default function CreateRMA() {
     ];
   }
 
-  const dateAdapter = new AdapterDateFns({ locale });
+  const GridEditDateCell = ({
+    id,
+    field,
+    value,
+  }: GridRenderEditCellParams<Date | string | null>) => {
+    const apiRef = useGridApiContext();
+
+    const handleChange = (newValue: unknown) => {
+      apiRef.current.setEditCellValue({ id, field, value: newValue });
+    };
+
+    return (
+      <DatePicker
+        value={value}
+        renderInput={(params) => <TextField {...params} />}
+        onChange={handleChange}
+      />
+    );
+  };
 
   const dateColumnType: GridColTypeDef<Date | string, string> = {
     ...GRID_DATE_COL_DEF,
@@ -195,104 +263,12 @@ export default function CreateRMA() {
     },
   };
 
-  function GridEditDateCell({
-    id,
-    field,
-    value,
-  }: GridRenderEditCellParams<Date | string | null>) {
-    const apiRef = useGridApiContext();
-
-    const handleChange = (newValue: unknown) => {
-      apiRef.current.setEditCellValue({ id, field, value: newValue });
-    };
-
-    return (
-      <DatePicker
-        value={value}
-        renderInput={(params) => <TextField {...params} />}
-        onChange={handleChange}
-      />
-    );
-  }
-
-  function GridFilterDateInput(
-    props: GridFilterInputValueProps & { showTime?: boolean }
-  ) {
-    const { item, showTime, applyValue, apiRef } = props;
-
-    const Component = showTime ? DateTimePicker : DatePicker;
-
-    const handleFilterChange = (newValue: unknown) => {
-      applyValue({ ...item, value: newValue });
-    };
-
-    return (
-      <Component
-        value={item.value || null}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="standard"
-            label={apiRef.current.getLocaleText("filterPanelInputLabel")}
-          />
-        )}
-        InputAdornmentProps={{
-          sx: {
-            "& .MuiButtonBase-root": {
-              marginRight: -1,
-            },
-          },
-        }}
-        onChange={handleFilterChange}
-      />
-    );
-  }
-
   interface EditToolbarProps {
     setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
     setRowModesModel: (
       newModel: (oldModel: GridRowModesModel) => GridRowModesModel
     ) => void;
   }
-
-  function EditToolbar(props: EditToolbarProps) {
-    const { setRows, setRowModesModel } = props;
-
-    const handleClick = () => {
-      const id = randomId();
-      setRows((oldRows) => [
-        ...oldRows,
-        {
-          id,
-          icode: "",
-          invno: "",
-          dono: "",
-          ror: "",
-          ins: "",
-          coa: "",
-          isNew: true,
-        },
-      ]);
-      setRowModesModel((oldModel) => ({
-        ...oldModel,
-        [id]: { mode: GridRowModes.Edit, fieldToFocus: "icode" },
-      }));
-    };
-
-    return (
-      <GridToolbarContainer>
-        <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-          Add record
-        </Button>
-      </GridToolbarContainer>
-    );
-  }
-
-  const [rows, setRows] = React.useState([]);
-
-  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
-    {}
-  );
 
   const handleRowEditStart = (
     params: GridRowParams,
@@ -339,33 +315,44 @@ export default function CreateRMA() {
   };
 
   const columns: GridColumns = [
-    { field: "icode", headerName: "Item Code", width: 150, editable: true },
+    { field: "ItemCode", headerName: "Item Code", width: 150, editable: true },
     {
-      field: "invno",
+      field: "InvoiceNo",
       headerName: "Invoice Number",
       width: 150,
       editable: true,
     },
-    { field: "dono", headerName: "D.O Number", width: 150, editable: true },
     {
-      field: "dop",
+      field: "DoNo",
+      headerName: "D.O Number",
+      width: 150,
+      editable: true,
+      type: "number",
+    },
+    {
+      field: "DateOfPurchase",
       headerName: "Date Of Purchase",
       ...dateColumnType,
       width: 160,
       editable: true,
     },
     {
-      field: "ror",
+      field: "ReturnReason",
       headerName: "Reason For Return",
       width: 400,
       editable: true,
     },
-    { field: "ins", headerName: "Instructions", width: 400, editable: true },
     {
-      field: "coa",
+      field: "Instructions",
+      headerName: "Instructions",
+      width: 400,
+      editable: false,
+    },
+    {
+      field: "CourseOfAction",
       headerName: "Course Of Action",
       width: 400,
-      editable: true,
+      editable: false,
     },
     {
       field: "actions",
@@ -412,49 +399,57 @@ export default function CreateRMA() {
     },
   ];
 
-  const [companies, setCompanies] = useState([]);
-  const [company, setCompany] = useState([]);
+  const EditToolbar = (props: EditToolbarProps) => {
+    const { setRows, setRowModesModel } = props;
 
-  useEffect(() => {
-    // declare the async data fetching function
-    const fetchData = async () => {
-      // get the data from the api
-      const companies = await axios
-        .get(`http://localhost:5000/api/companies2`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then((companies) => setCompanies(companies.data));
-      // setRma(Object.e)
+    const handleClick = () => {
+      const id = randomId();
+      setRows((oldRows) => [
+        ...oldRows,
+        {
+          id,
+          ItemCode: "",
+          InvoiceNo: "",
+          DoNo: "",
+          ReturnReason: "",
+          Instructions: "",
+          CourseOfAction: "",
+          isNew: true,
+        },
+      ]);
+      setRowModesModel((oldModel) => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: "ItemCode" },
+      }));
     };
-    // call the function
-    fetchData()
-      // make sure to catch any error
-      .catch(console.error);
-  }, []);
 
-  const handleChange = (e) => {
-    setCompany(e.target.value);
-    console.log(company);
+    return (
+      <GridToolbarContainer>
+        <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
+          Add record
+        </Button>
+      </GridToolbarContainer>
+    );
   };
 
-  const navigate = useNavigate();
+  const products = rows.map(({ id, isNew, ...rows }) => rows);
 
-  const getInitialState = () => {
-    return {
-      contactperson: "",
-      contactemail: "",
-      company: "",
-      contactno: "",
-      salesmanid: "",
-    };
+  const rmadetails = {
+    contactperson,
+    contactno,
+    salesmanid: sid,
+    contactemail,
+    company,
+    products,
   };
 
-  const _handleTextFieldChange = (e) => {
-    this.setState({
-      textFieldValue: e.target.value,
-    });
+  const submitRMA = async () => {
+    axios
+      .post(`http://localhost:5000/api/newRMA`, rmadetails)
+      .then(() => navigate("/rma"))
+      .catch((error) => {
+        this.setState({ errorMessage: error.message });
+      });
   };
 
   return (
@@ -462,7 +457,7 @@ export default function CreateRMA() {
       sx={{
         width: "98%",
         height: "100%",
-        m: 3
+        m: 3,
       }}
     >
       <CardContent>
@@ -480,41 +475,38 @@ export default function CreateRMA() {
           <h2 style={{ marginLeft: 7, marginBottom: 20 }}>
             RMA Application Form
           </h2>
-          <div>
-            <TextField
-              required
-              id="filled-required"
-              label="Customer Name"
-              variant="filled"
-            />
-            <TextField
-              required
-              id="filled-required"
-              label="Customer Email"
-              variant="filled"
-            />
-            <TextField
-              required
-              id="filled-required"
-              select
-              label="Company"
-              value={company}
-              onChange={handleChange}
-              variant="filled"
-            >
-              {companies.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              required
-              id="filled-required"
-              label="Contact Number"
-              variant="filled"
-            />
-          </div>
+          <TextField
+            value={contactperson}
+            required
+            id="filled-required"
+            label="Customer Name"
+            variant="filled"
+            onChange={(e) => setContactperson(e.target.value)}
+          />
+          <TextField
+            value={contactemail}
+            required
+            id="filled-required"
+            label="Customer Email"
+            variant="filled"
+            onChange={(e) => setContactemail(e.target.value)}
+          />
+          <TextField
+            value={company}
+            required
+            id="filled-required"
+            label="Company"
+            variant="filled"
+            onChange={(e) => setCompany(e.target.value)}
+          />
+          <TextField
+            value={contactno}
+            required
+            id="filled-required"
+            label="Contact Number"
+            variant="filled"
+            onChange={(e) => setContactno(e.target.value)}
+          />
         </Box>
         <Box
           sx={{
@@ -594,7 +586,7 @@ export default function CreateRMA() {
                 height: 50,
                 borderRadius: 10,
               }}
-              onClick={() => navigate("/rma")}
+              onClick={submitRMA}
             >
               Submit
             </Button>
@@ -603,4 +595,6 @@ export default function CreateRMA() {
       </CardContent>
     </Card>
   );
-}
+};
+
+export default CreateRMA;

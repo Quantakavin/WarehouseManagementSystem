@@ -1,34 +1,38 @@
-import React, { useEffect, useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import {
+  Box, Fab, Stack, Typography,
+  unstable_createMuiStrictModeTheme
+} from "@mui/material";
 import {
   DataGrid,
-  GridFilterModel,
-  GridRowParams,
-  GridToolbarColumnsButton,
+  GridActionsCellItem,
+  GridFilterModel, GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
-  GridToolbarQuickFilter,
+  GridToolbarQuickFilter
 } from "@mui/x-data-grid";
-import {
-  Box,
-  Card,
-  CardContent,
-  Fab,
-  IconButton,
-  Stack,
-  Theme,
-  Typography,
-  unstable_createMuiStrictModeTheme,
-  withStyles,
-} from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
 
 const UserGroups2: React.FC = () => {
+  const navigate = useNavigate();
+  const theme = unstable_createMuiStrictModeTheme();
+  const [pageSize, setPageSize] = React.useState(25);
+  const [inputName, setInputName] = useState<string>(null);
+  const [value, setValue] = useState(0); // first tab
+  const userrole = useAppSelector(selectRole)
+  useEffect(() => {
+    if (userrole != "Admin") {
+      navigate('/403');
+    }
+  }, []);
   const [row, setRow] = useState([]);
   const [hoveredRow, setHoveredRow] = React.useState(null);
 
@@ -63,50 +67,33 @@ const UserGroups2: React.FC = () => {
 
   const columns = [
     { field: "UserGroupID", headerName: "ID", flex: 2 },
-    { field: "UserGroupName", headerName: "Name", flex: 38 },
+    { field: "UserGroupName", headerName: "Name", flex: 50 },
     {
       field: "actions",
-      headerName: "Actions",
-      flex: 3,
-      sortable: false,
-      disableColumnMenu: true,
-      renderCell: (params) => {
-        if (hoveredRow === params.id) {
-          return (
-            <Box
-              sx={{
-                backgroundColor: "whitesmoke",
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <IconButton onClick={() => navigate(`/usergroup/${params.id}`)}>
-                <VisibilityIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => navigate(`/editusergroup/${params.id}`)}
-              >
-                <EditIcon />
-              </IconButton>
-              <IconButton onClick={() => navigate(`/dashboard`)}>
-                <DeleteIcon />
-              </IconButton>
-            </Box>
-          );
-        } else return null;
-      },
+      type: "actions",
+      flex: 1,
+      getActions: (params) => [
+        <GridActionsCellItem
+          icon={<VisibilityIcon />}
+          label="View"
+          onClick={() => navigate(`/usergroup/${params.id}`)}
+          showInMenu
+        />,
+        <GridActionsCellItem
+          icon={<EditIcon />}
+          label="Edit"
+          onClick={() => navigate(`/editusergroup/${params.id}`)}
+          showInMenu
+        />,
+        <GridActionsCellItem
+          icon={<DeleteIcon />}
+          label="Delete"
+          onClick={() => navigate(`/dashboard`)}
+          showInMenu
+        />,
+      ],
     },
   ];
-
-  const navigate = useNavigate();
-  const theme = unstable_createMuiStrictModeTheme();
-  const [pageSize, setPageSize] = React.useState(25);
-  const [inputName, setInputName] = useState<string>(null);
-
-  const [value, setValue] = useState(0); // first tab
 
   const handleChange = (_event, newValue) => {
     setValue(newValue);

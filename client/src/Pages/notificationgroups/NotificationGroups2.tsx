@@ -1,6 +1,14 @@
-import React, { useEffect, useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import {
+  Box, Fab, Stack, Typography,
+  unstable_createMuiStrictModeTheme
+} from "@mui/material";
 import {
   DataGrid,
+  GridActionsCellItem,
   GridFilterModel,
   GridRowParams,
   GridToolbarColumnsButton,
@@ -8,35 +16,34 @@ import {
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
-  GridToolbarQuickFilter,
+  GridToolbarQuickFilter
 } from "@mui/x-data-grid";
-import {
-  Box,
-  Card,
-  CardContent,
-  Stack,
-  Theme,
-  Typography,
-  unstable_createMuiStrictModeTheme,
-  withStyles,
-  IconButton,
-  Fab
-} from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
 
 const NotificationGroups2: React.FC = () => {
+  const navigate = useNavigate();
+  const userrole = useAppSelector(selectRole)
+  useEffect(() => {
+    if (userrole != "Admin") {
+      navigate('/403');
+    }
+  }, []);
   const [row, setRow] = useState([]);
+  const theme = unstable_createMuiStrictModeTheme();
+  const [pageSize, setPageSize] = React.useState(25);
+  const [inputName, setInputName] = useState<string>(null);
+  const [value, setValue] = useState(0); // first tab
+  const [hoveredRow, setHoveredRow] = React.useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/notificationgroups`, { 
+    fetch(`http://localhost:5000/api/notificationgroups`, {
       headers: new Headers({
-          'Authorization': `Bearer ${localStorage.getItem("token")}`
-      }), 
-  })
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      }),
+    })
       .then((data) => data.json())
       .then((data) => setRow(data));
   }, []);
@@ -53,48 +60,33 @@ const NotificationGroups2: React.FC = () => {
 
   const columns = [
     { field: "NotiGroupID", headerName: "ID", flex: 2 },
-    { field: "NotiGroupName", headerName: "Name", flex: 38 },
+    { field: "NotiGroupName", headerName: "Name", flex: 50 },
     {
       field: "actions",
-      headerName: "Actions",
-      flex: 3,
-      sortable: false,
-      disableColumnMenu: true,
-      renderCell: (params) => {
-        if (hoveredRow === params.id) {
-          return (
-            <Box
-              sx={{
-                backgroundColor: "whitesmoke",
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <IconButton onClick={() => navigate(`/notificationgroup/${params.id}`)}>
-                <VisibilityIcon />
-              </IconButton>
-              <IconButton onClick={() => navigate(`/editnotificationgroup/${params.id}`)}>
-                <EditIcon />
-              </IconButton>
-              <IconButton onClick={() => navigate(`/dashboard`)}>
-                <DeleteIcon />
-              </IconButton>
-            </Box>
-          );
-        } else return null;
-      },
+      type: "actions",
+      flex: 1,
+      getActions: (params) => [
+        <GridActionsCellItem
+          icon={<VisibilityIcon />}
+          label="View"
+          onClick={() => navigate(`/notificationgroup/${params.id}`)}
+          showInMenu
+        />,
+        <GridActionsCellItem
+          icon={<EditIcon />}
+          label="Edit"
+          onClick={() => navigate(`/editnotificationgroup/${params.id}`)}
+          showInMenu
+        />,
+        <GridActionsCellItem
+          icon={<DeleteIcon />}
+          label="Delete"
+          onClick={() => navigate(`/dashboard`)}
+          showInMenu
+        />,
+      ],
     },
   ];
-
-  const navigate = useNavigate();
-  const theme = unstable_createMuiStrictModeTheme();
-  const [pageSize, setPageSize] = React.useState(25);
-  const [inputName, setInputName] = useState<string>(null);
-  const [value, setValue] = useState(0); // first tab
-  const [hoveredRow, setHoveredRow] = React.useState(null);
 
   const onMouseEnterRow = (event) => {
     const id = Number(event.currentTarget.getAttribute("data-id"));
@@ -111,15 +103,17 @@ const NotificationGroups2: React.FC = () => {
 
   function CustomToolbar() {
     return (
-      <GridToolbarContainer sx={{display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1}}>
+      <GridToolbarContainer
+        sx={{ display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1 }}
+      >
         <Box>
-        <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
+          <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
         </Box>
         <Box>
-        <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
-        <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
-        <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
-        <GridToolbarExport sx={{ color: "#0A2540" }} />
+          <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
+          <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
+          <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
+          <GridToolbarExport sx={{ color: "#0A2540" }} />
         </Box>
       </GridToolbarContainer>
     );
@@ -127,9 +121,9 @@ const NotificationGroups2: React.FC = () => {
 
   return (
     <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
-    <Box sx={{ display: "flex", height: "100%" }}>
-      <Box sx={{ flexGrow: 1 }}>
-      <Box
+      <Box sx={{ display: "flex", height: "100%" }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Box
             component="span"
             display="flex"
             justifyContent="space-between"
@@ -157,46 +151,46 @@ const NotificationGroups2: React.FC = () => {
               </Fab>
             </Box>
           </Box>
-        <DataGrid
-          sx={{ background: "white", fontSize: 18 }}
-          rows={row}
-          columns={columns}
-          getRowId={(row) => row.NotiGroupID}
-          pageSize={pageSize}
-          onPageSizeChange={(newPage) => setPageSize(newPage)}
-          pagination
-          headerHeight={50}
-          // rowHeight={70}
-          // getRowHeight={() => "auto"}
-          components={{
-            Toolbar: CustomToolbar,
-            NoRowsOverlay: () => (
-              <Stack
-                height="100%"
-                alignItems="center"
-                justifyContent="center"
-              >
-                No Notification Groups
-              </Stack>
-            ),
-          }}
-          componentsProps={{
-            row: {
-              onMouseEnter: onMouseEnterRow,
-              onMouseLeave: onMouseLeaveRow,
-            },
-          }}
-          filterModel={filterModel}
-          onFilterModelChange={(newFilterModel) =>
-            setFilterModel(newFilterModel)
-          }
-          onRowClick={(params: GridRowParams) => {
-            navigate(`/notificationgroup/${params.id}`);
-          }}
-        />
+          <DataGrid
+            sx={{ background: "white", fontSize: 18 }}
+            rows={row}
+            columns={columns}
+            getRowId={(row) => row.NotiGroupID}
+            pageSize={pageSize}
+            onPageSizeChange={(newPage) => setPageSize(newPage)}
+            pagination
+            headerHeight={50}
+            // rowHeight={70}
+            // getRowHeight={() => "auto"}
+            components={{
+              Toolbar: CustomToolbar,
+              NoRowsOverlay: () => (
+                <Stack
+                  height="100%"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  No Notification Groups
+                </Stack>
+              ),
+            }}
+            componentsProps={{
+              row: {
+                onMouseEnter: onMouseEnterRow,
+                onMouseLeave: onMouseLeaveRow,
+              },
+            }}
+            filterModel={filterModel}
+            onFilterModelChange={(newFilterModel) =>
+              setFilterModel(newFilterModel)
+            }
+            onRowClick={(params: GridRowParams) => {
+              navigate(`/notificationgroup/${params.id}`);
+            }}
+          />
+        </Box>
       </Box>
     </Box>
-  </Box>
   );
 };
 export default NotificationGroups2;

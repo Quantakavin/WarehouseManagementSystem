@@ -1,15 +1,30 @@
 .mainBody {
-    margin: 5% auto 0;
-    padding: 30px;
-    max-width: 95%;
+  margin: 5% auto 0;
+  padding: 30px;
+  max-width: 95%;
+  max-height: 95%;
+  text-align: center;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
-.p {
-    margin: 11px 0 22px;
-    overflow: hidden;
+.image {
+  padding: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-height: 50%;
+  max-width: 50%;
 }
 
-.logo {
-    height: 50px;
-    width: 150px;
+.button {
+  width: auto;
+  padding: 6px 20px 6px 20px;
+  font-weight: 500;
+  border-radius: 10px;
+  border: solid 1px #0a2540;
+  background-color: #0a2540;
+  font-size: 20px;
+  color: white;
+  align-self: flex-end;
+  transform: none;
 }

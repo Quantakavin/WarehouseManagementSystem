@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from "react";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { SelectChangeEvent } from "@mui/material";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
-import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import SubmitButton from "../../components/form/SubmitButton";
-import ErrorAlert from "../../components/form/ErrorAlert";
-import FormField from "../../components/form/FormField";
-import { NameValidation } from "../../utils/FormValidation";
+import { GetFeatureRights, GetFeatures } from "../../api/FeatureDB";
 import { PostUserGroup } from "../../api/UserGroupDB";
-import FormContainer from "../../components/form/FormContainer";
-import FormTextArea from "../../components/form/FormTextArea";
-import { GetFeatures, GetFeatureRights } from "../../api/FeatureDB";
-import { Option, Feature, FeatureRight } from "../../utils/CommonTypes";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
+import ErrorAlert from "../../components/form/ErrorAlert";
+import FormContainer from "../../components/form/FormContainer";
+import FormField from "../../components/form/FormField";
+import FormTextArea from "../../components/form/FormTextArea";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import SelectedList from "../../components/form/SelectedList";
+import SubmitButton from "../../components/form/SubmitButton";
+import { Feature, FeatureRight, Option } from "../../utils/CommonTypes";
+import { NameValidation } from "../../utils/FormValidation";
 
 interface FormValues {
   name: string;
@@ -28,6 +29,12 @@ interface FormValues {
 
 const AddUserGroup: React.FC = () => {
   const navigate = useNavigate();
+  const userrole = useAppSelector(selectRole)
+  useEffect(() => {
+    if (userrole != "Admin") {
+      navigate('/403');
+    }
+  }, []);
   const {
     register,
     handleSubmit,
@@ -39,7 +46,7 @@ const AddUserGroup: React.FC = () => {
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [returnFeatures, setReturnFeatures] = useState<any[]>([]);
 
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const featuresQuery = useQuery("features", GetFeatures, {
     onSuccess: (data) => {
@@ -52,7 +59,7 @@ const AddUserGroup: React.FC = () => {
         });
       });
       setFeatureOptions(features);
-    }
+    },
   });
   const featureRightsQuery = useQuery("featurerights", GetFeatureRights, {
     onSuccess: (data) => {
@@ -65,7 +72,7 @@ const AddUserGroup: React.FC = () => {
         });
       });
       setFeatureRightOptions(featurerights);
-    }
+    },
   });
 
   const mutation = useMutation(PostUserGroup);
@@ -75,16 +82,15 @@ const AddUserGroup: React.FC = () => {
     postdata.features = returnFeatures;
     mutation.mutate(postdata, {
       onSuccess: () => {
-
         Toast.fire({
           icon: "success",
           title: "User group created successfully",
           customClass: "swalpopup",
-          timer: 1500
+          timer: 1500,
         });
-        queryClient.invalidateQueries('usergroups');
-        queryClient.invalidateQueries('filterusergroups');
-        queryClient.invalidateQueries('usergroupnames');
+        queryClient.invalidateQueries("usergroups");
+        queryClient.invalidateQueries("filterusergroups");
+        queryClient.invalidateQueries("usergroupnames");
         navigate("/usergroups");
       },
     });
@@ -156,10 +162,9 @@ const AddUserGroup: React.FC = () => {
   };
 
   const getFeatureName = (feature: string) => {
-    return featuresQuery.data.data.find(
-      (data) => data.FeatureID === feature
-    ).FeatureName
-  } 
+    return featuresQuery.data.data.find((data) => data.FeatureID === feature)
+      .FeatureName;
+  };
 
   // const StepOne = (
   //   <div className={step === 1 ? "showstep" : "hidestep"}>
@@ -238,69 +243,69 @@ const AddUserGroup: React.FC = () => {
     >
       {/* Step One */}
       <div className={step === 1 ? "showstep" : "hidestep"}>
-      <FormField
-        label="Name"
-        name="name"
-        type="text"
-        register={register}
-        errormsg={errors.name?.message}
-        rules={NameValidation}
-      />
-      <FormTextArea
-        label="Description"
-        name="description"
-        register={register}
-        errormsg={errors.description?.message}
-        rules={NameValidation}
-      />
-      <div className="formnavigationcontainer">
-        <button
-          className="formnavigation"
-          onClick={() => navigate(-1)}
-          type="button"
-        >
-          Cancel
-        </button>
-        <button className="nextbutton" onClick={nextStep} type="button">
-          Next <NavigateNextIcon style={{ marginRight: -10, marginLeft: -7 }} />
-        </button>
+        <FormField
+          label="Name"
+          name="name"
+          type="text"
+          register={register}
+          errormsg={errors.name?.message}
+          rules={NameValidation}
+        />
+        <FormTextArea
+          label="Description"
+          name="description"
+          register={register}
+          errormsg={errors.description?.message}
+          rules={NameValidation}
+        />
+        <div className="formnavigationcontainer">
+          <button
+            className="formnavigation"
+            onClick={() => navigate(-1)}
+            type="button"
+          >
+            Cancel
+          </button>
+          <button className="nextbutton" onClick={nextStep} type="button">
+            Next{" "}
+            <NavigateNextIcon style={{ marginRight: -10, marginLeft: -7 }} />
+          </button>
+        </div>
       </div>
-    </div>
       {/* Step Two */}
       <div className={step === 2 ? "showstep" : "hidestep"}>
-      <MultiSelectDropdown
-        name="features"
-        label="Features"
-        selectedValues={selectedFeatures}
-        changeSelectedValues={selectFeature}
-        placeholder="Select Features..."
-        options={featureOptions}
-      />
-
-      {selectedFeatures.length > 0 && (
-
-        <SelectedList
-          getname={getFeatureName}
-          label="Feature List"
+        <MultiSelectDropdown
+          name="features"
+          label="Features"
           selectedValues={selectedFeatures}
-          unselect={unselectFeature}
-          select={assignFeatureRight}
-          options={featureRightOptions}
+          changeSelectedValues={selectFeature}
+          placeholder="Select Features..."
+          options={featureOptions}
         />
-      )}
 
-      {mutation.isError && axios.isAxiosError(mutation.error) ? (
-        <ErrorAlert error={mutation.error} />
-      ) : null}
-      <div className="formnavigationcontainer">
-        <button className="formnavigation" onClick={prevStep} type="button">
-          <NavigateBeforeIcon style={{ marginRight: -7, marginLeft: -10 }} />{" "}
-          Back
-        </button>
-        <SubmitButton text="Submit" loading={mutation.isLoading} multipart />
+        {selectedFeatures.length > 0 && (
+          <SelectedList
+            getname={getFeatureName}
+            label="Feature List"
+            selectedValues={selectedFeatures}
+            unselect={unselectFeature}
+            select={assignFeatureRight}
+            options={featureRightOptions}
+          />
+        )}
+
+        {mutation.isError && axios.isAxiosError(mutation.error) ? (
+          <ErrorAlert error={mutation.error} />
+        ) : null}
+        <div className="formnavigationcontainer">
+          <button className="formnavigation" onClick={prevStep} type="button">
+            <NavigateBeforeIcon style={{ marginRight: -7, marginLeft: -10 }} />{" "}
+            Back
+          </button>
+          <SubmitButton text="Submit" loading={mutation.isLoading} multipart />
+        </div>
       </div>
-    </div>
     </FormContainer>
   );
 };
-export default AddUserGroup; 
+export default AddUserGroup;

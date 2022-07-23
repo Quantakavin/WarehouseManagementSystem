@@ -1,37 +1,21 @@
+import { TabContext, TabPanel } from "@mui/lab";
 import {
+  Box,
+  Grid,
+  Stack,
   Tab,
   Tabs,
-  Box,
   unstable_createMuiStrictModeTheme,
-  ThemeProvider,
-  MenuItem,
-  Stack,
-  Grid,
-  Typography,
 } from "@mui/material";
-import { TabList, TabPanel, TabContext } from "@mui/lab";
-import "react-tabs/style/react-tabs.css";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import "react-tabs/style/react-tabs.css";
 
-import { Link, useNavigate } from "react-router-dom";
-import TableNew from "../table/InfiniteTable";
-import { useAppSelector } from "../../app/hooks";
-import { selectRole, selectId } from "../../app/reducers/CurrentUserSlice";
-import { Hidden } from "@mui/material";
-import { motion } from "framer-motion";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import SearchBarUpdated from "../../components/search/SearchBarUpdated";
-import Fab from "@mui/material/Fab";
 import PostAddIcon from "@mui/icons-material/PostAdd";
-import theme from "../../styles/muistyle";
+import Fab from "@mui/material/Fab";
 import {
   DataGrid,
   GridFilterModel,
-  GridToolbar,
   GridRowParams,
-  GridRowId,
-  MuiEvent,
   GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarDensitySelector,
@@ -39,7 +23,10 @@ import {
   GridToolbarFilterButton,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
-import { DataGridPro } from "@mui/x-data-grid-pro";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../app/hooks";
+import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
 
 const columns = [
   { field: "TLoanNumber", headerName: "Loan No.", flex: 4 },
@@ -140,99 +127,108 @@ const TLoanTabs2: React.FC = () => {
         <>
           <TabContext value={value || "1"}>
             <Grid container>
-              <Grid item xs={11}>
-                <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                  <h2> TLoans </h2>
-                  <Tabs
-                    onChange={handleChange}
-                    TabIndicatorProps={{
-                      style: { backgroundColor: "#D97D54" },
-                    }}
-                    sx={{
-                      "& button:focus": {
-                        backgroundColor: "#063970",
-                        color: "white",
-                        height: "15%",
-                        width: "15%",
-                      },
-                    }}
-                  >
-                    <Tab
-                      label="Current"
-                      value="1"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Pending"
-                      value="2"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Drafts"
-                      value="3"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="History"
-                      value="4"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                  </Tabs>
-                </Box>
+              <Grid item xs={12} sx={{ paddingLeft: 3, paddingTop: 3 }}>
+                <h2> TLoans </h2>
               </Grid>
-              <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 4, marginTop: 8.75 }}>
-                  <motion.div
-                    className="animatable"
-                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <Fab
-                      variant="extended"
-                      aria-label="add"
-                      onClick={() => navigate("/newtloan")}
-                      style={{ marginTop: 0 }}
+              <Grid item xs={12}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    m: 3,
+                    mb: 0,
+                  }}
+                >
+                  <Box sx={{ width: 1 }}>
+                    <Tabs
+                      onChange={handleChange}
+                      TabIndicatorProps={{
+                        style: { backgroundColor: "#D97D54" },
+                      }}
                       sx={{
-                        color: "white",
-                        backgroundColor: "#063970",
-                        ":hover": { backgroundColor: "#031c38" },
+                        width: "100%",
+                        "& button:focus": {
+                          backgroundColor: "#063970",
+                          color: "white",
+                          width: "30%",
+                          height: "100%",
+                        },
                       }}
                     >
-                      Create
-                      <PostAddIcon sx={{ ml: 2 }} />
-                    </Fab>
-                  </motion.div>
+                      <Tab
+                        label="Current"
+                        value="1"
+                        sx={{
+                          color: "grey",
+                          backgroundColor: "White",
+                          borderRadius: 2,
+                          marginRight: 2,
+                          height: "100%",
+                          width: "15%",
+                        }}
+                      />
+                      <Tab
+                        label="Pending"
+                        value="2"
+                        sx={{
+                          color: "grey",
+                          backgroundColor: "White",
+                          borderRadius: 2,
+                          marginRight: 2,
+                          height: "100%",
+                          width: "15%",
+                        }}
+                      />
+                      <Tab
+                        label="Drafts"
+                        value="3"
+                        sx={{
+                          color: "grey",
+                          backgroundColor: "White",
+                          borderRadius: 2,
+                          marginRight: 2,
+                          height: "100%",
+                          width: "15%",
+                        }}
+                      />
+                      <Tab
+                        label="History"
+                        value="4"
+                        sx={{
+                          color: "grey",
+                          backgroundColor: "White",
+                          borderRadius: 2,
+                          marginRight: 2,
+                          height: "100%",
+                          width: "15%",
+                        }}
+                      />
+                    </Tabs>
+                  </Box>
+                  <Box>
+                    <motion.div
+                      className="animatable"
+                      whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Fab
+                        variant="extended"
+                        aria-label="add"
+                        onClick={() => navigate("/newtloan")}
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          ":hover": { backgroundColor: "#031c38" },
+                        }}
+                      >
+                        Create
+                        <PostAddIcon sx={{ ml: 2 }} />
+                      </Fab>
+                    </motion.div>
+                  </Box>
                 </Box>
+                <Box sx={{ paddingLeft: 3 }}></Box>
               </Grid>
-
               <Grid item xs={12}>
                 <TabPanel value="1">
                   <div style={{ height: 600, width: "100%" }}>
@@ -314,7 +310,7 @@ const TLoanTabs2: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No drafts
+                            No drafted TLoans
                           </Stack>
                         ),
                       }}
@@ -369,99 +365,108 @@ const TLoanTabs2: React.FC = () => {
         <>
           <TabContext value={value || "1"}>
             <Grid container>
-              <Grid item xs={11}>
-                <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                  <h2> TLoans </h2>
-                  <Tabs
-                    onChange={handleChange}
-                    TabIndicatorProps={{
-                      style: { backgroundColor: "#D97D54" },
-                    }}
-                    sx={{
-                      "& button:focus": {
-                        backgroundColor: "#063970",
-                        color: "white",
-                        height: "15%",
-                        width: "15%",
-                      },
-                    }}
-                  >
-                    <Tab
-                      label="Current"
-                      value="1"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Pending"
-                      value="2"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Drafts"
-                      value="3"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="History"
-                      value="4"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                  </Tabs>
-                </Box>
+              <Grid item xs={12} sx={{ paddingLeft: 3, paddingTop: 3 }}>
+                <h2> TLoans </h2>
               </Grid>
-              <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 4, marginTop: 8.75 }}>
-                  <motion.div
-                    className="animatable"
-                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <Fab
-                      variant="extended"
-                      aria-label="add"
-                      onClick={() => navigate("/newtloan")}
-                      style={{ marginTop: 0 }}
+              <Grid item xs={12}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    m: 3,
+                    mb: 0,
+                  }}
+                >
+                  <Box sx={{ width: 1 }}>
+                    <Tabs
+                      onChange={handleChange}
+                      TabIndicatorProps={{
+                        style: { backgroundColor: "#D97D54" },
+                      }}
                       sx={{
-                        color: "white",
-                        backgroundColor: "#063970",
-                        ":hover": { backgroundColor: "#031c38" },
+                        width: "100%",
+                        "& button:focus": {
+                          backgroundColor: "#063970",
+                          color: "white",
+                          width: "30%",
+                          height: "100%",
+                        },
                       }}
                     >
-                      Create
-                      <PostAddIcon sx={{ ml: 2 }} />
-                    </Fab>
-                  </motion.div>
+                      <Tab
+                        label="Current"
+                        value="1"
+                        sx={{
+                          color: "grey",
+                          backgroundColor: "White",
+                          borderRadius: 2,
+                          marginRight: 2,
+                          height: "100%",
+                          width: "15%",
+                        }}
+                      />
+                      <Tab
+                        label="Pending"
+                        value="2"
+                        sx={{
+                          color: "grey",
+                          backgroundColor: "White",
+                          borderRadius: 2,
+                          marginRight: 2,
+                          height: "100%",
+                          width: "15%",
+                        }}
+                      />
+                      <Tab
+                        label="Drafts"
+                        value="3"
+                        sx={{
+                          color: "grey",
+                          backgroundColor: "White",
+                          borderRadius: 2,
+                          marginRight: 2,
+                          height: "100%",
+                          width: "15%",
+                        }}
+                      />
+                      <Tab
+                        label="History"
+                        value="4"
+                        sx={{
+                          color: "grey",
+                          backgroundColor: "White",
+                          borderRadius: 2,
+                          marginRight: 2,
+                          height: "100%",
+                          width: "15%",
+                        }}
+                      />
+                    </Tabs>
+                  </Box>
+                  <Box>
+                    <motion.div
+                      className="animatable"
+                      whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Fab
+                        variant="extended"
+                        aria-label="add"
+                        onClick={() => navigate("/newtloan")}
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          ":hover": { backgroundColor: "#031c38" },
+                        }}
+                      >
+                        Create
+                        <PostAddIcon sx={{ ml: 2 }} />
+                      </Fab>
+                    </motion.div>
+                  </Box>
                 </Box>
+                <Box sx={{ paddingLeft: 3 }}></Box>
               </Grid>
-
               <Grid item xs={12}>
                 <TabPanel value="1">
                   <div style={{ height: 600, width: "100%" }}>
@@ -543,7 +548,7 @@ const TLoanTabs2: React.FC = () => {
                             alignItems="center"
                             justifyContent="center"
                           >
-                            No drafts
+                            No drafted TLoans
                           </Stack>
                         ),
                       }}
@@ -610,8 +615,8 @@ const TLoanTabs2: React.FC = () => {
                       "& button:focus": {
                         backgroundColor: "#063970",
                         color: "white",
-                        height: "15%",
-                        width: "15%",
+                        height: "100%",
+                        width: "30%",
                       },
                     }}
                   >
@@ -719,99 +724,108 @@ const TLoanTabs2: React.FC = () => {
         <>
           <TabContext value={value || "1"}>
             <Grid container>
-              <Grid item xs={11}>
-                <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                  <h2> TLoans </h2>
-                  <Tabs
-                    onChange={handleChange}
-                    TabIndicatorProps={{
-                      style: { backgroundColor: "#D97D54" },
-                    }}
-                    sx={{
-                      "& button:focus": {
-                        backgroundColor: "#063970",
-                        color: "white",
-                        height: "15%",
-                        width: "15%",
-                      },
-                    }}
-                  >
-                    <Tab
-                      label="Current"
-                      value="1"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Pending"
-                      value="2"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Drafts"
-                      value="3"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="History"
-                      value="4"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                  </Tabs>
-                </Box>
+              <Grid item xs={12} sx={{ paddingLeft: 3, paddingTop: 3 }}>
+                <h2> TLoans </h2>
               </Grid>
-              <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 4, marginTop: 8.75 }}>
-                  <motion.div
-                    className="animatable"
-                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <Fab
-                      variant="extended"
-                      aria-label="add"
-                      onClick={() => navigate("/newtloan")}
-                      style={{ marginTop: 0 }}
+              <Grid item xs={12}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    m: 3,
+                    mb: 0,
+                  }}
+                >
+                  <Box sx={{ width: 1 }}>
+                    <Tabs
+                      onChange={handleChange}
+                      TabIndicatorProps={{
+                        style: { backgroundColor: "#D97D54" },
+                      }}
                       sx={{
-                        color: "white",
-                        backgroundColor: "#063970",
-                        ":hover": { backgroundColor: "#031c38" },
+                        width: "100%",
+                        "& button:focus": {
+                          backgroundColor: "#063970",
+                          color: "white",
+                          width: "30%",
+                          height: "100%",
+                        },
                       }}
                     >
-                      Create
-                      <PostAddIcon sx={{ ml: 2 }} />
-                    </Fab>
-                  </motion.div>
+                      <Tab
+                        label="Current"
+                        value="1"
+                        sx={{
+                          color: "grey",
+                          backgroundColor: "White",
+                          borderRadius: 2,
+                          marginRight: 2,
+                          height: "100%",
+                          width: "15%",
+                        }}
+                      />
+                      <Tab
+                        label="Pending"
+                        value="2"
+                        sx={{
+                          color: "grey",
+                          backgroundColor: "White",
+                          borderRadius: 2,
+                          marginRight: 2,
+                          height: "100%",
+                          width: "15%",
+                        }}
+                      />
+                      <Tab
+                        label="Drafts"
+                        value="3"
+                        sx={{
+                          color: "grey",
+                          backgroundColor: "White",
+                          borderRadius: 2,
+                          marginRight: 2,
+                          height: "100%",
+                          width: "15%",
+                        }}
+                      />
+                      <Tab
+                        label="History"
+                        value="4"
+                        sx={{
+                          color: "grey",
+                          backgroundColor: "White",
+                          borderRadius: 2,
+                          marginRight: 2,
+                          height: "100%",
+                          width: "15%",
+                        }}
+                      />
+                    </Tabs>
+                  </Box>
+                  <Box>
+                    <motion.div
+                      className="animatable"
+                      whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Fab
+                        variant="extended"
+                        aria-label="add"
+                        onClick={() => navigate("/newtloan")}
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          ":hover": { backgroundColor: "#031c38" },
+                        }}
+                      >
+                        Create
+                        <PostAddIcon sx={{ ml: 2 }} />
+                      </Fab>
+                    </motion.div>
+                  </Box>
                 </Box>
+                <Box sx={{ paddingLeft: 3 }}></Box>
               </Grid>
-
               <Grid item xs={12}>
                 <TabPanel value="1">
                   <div style={{ height: 600, width: "100%" }}>
@@ -1036,8 +1050,8 @@ const TLoanTabs2: React.FC = () => {
                       "& button:focus": {
                         backgroundColor: "#063970",
                         color: "white",
-                        height: "15%",
-                        width: "15%",
+                        height: "100%",
+                        width: "30%",
                       },
                     }}
                   >
@@ -1253,99 +1267,108 @@ const TLoanTabs2: React.FC = () => {
         <>
           <TabContext value={value || "1"}>
             <Grid container>
-              <Grid item xs={11}>
-                <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                  <h2> TLoans </h2>
-                  <Tabs
-                    onChange={handleChange}
-                    TabIndicatorProps={{
-                      style: { backgroundColor: "#D97D54" },
-                    }}
-                    sx={{
-                      "& button:focus": {
-                        backgroundColor: "#063970",
-                        color: "white",
-                        height: "15%",
-                        width: "15%",
-                      },
-                    }}
-                  >
-                    <Tab
-                      label="Current"
-                      value="1"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Pending"
-                      value="2"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Drafts"
-                      value="3"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="History"
-                      value="4"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                  </Tabs>
-                </Box>
+            <Grid item xs={12} sx={{ paddingLeft: 3, paddingTop: 3 }}>
+                <h2> TLoans </h2>
               </Grid>
-              <Grid item xs={1}>
-                <Box sx={{ paddingLeft: 4, marginTop: 8.75 }}>
-                  <motion.div
-                    className="animatable"
-                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <Fab
-                      variant="extended"
-                      aria-label="add"
-                      onClick={() => navigate("/newtloan")}
-                      style={{ marginTop: 0 }}
+              <Grid item xs={12}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    m: 3,
+                    mb: 0,
+                  }}
+                >
+                  <Box sx={{ width: 1 }}>
+                    <Tabs
+                      onChange={handleChange}
+                      TabIndicatorProps={{
+                        style: { backgroundColor: "#D97D54" },
+                      }}
                       sx={{
-                        color: "white",
-                        backgroundColor: "#063970",
-                        ":hover": { backgroundColor: "#031c38" },
+                        width: "100%",
+                        "& button:focus": {
+                          backgroundColor: "#063970",
+                          color: "white",
+                          width: "30%",
+                          height: "100%",
+                        },
                       }}
                     >
-                      Create
-                      <PostAddIcon sx={{ ml: 2 }} />
-                    </Fab>
-                  </motion.div>
+                      <Tab
+                        label="Current"
+                        value="1"
+                        sx={{
+                          color: "grey",
+                          backgroundColor: "White",
+                          borderRadius: 2,
+                          marginRight: 2,
+                          height: "100%",
+                          width: "15%",
+                        }}
+                      />
+                      <Tab
+                        label="Pending"
+                        value="2"
+                        sx={{
+                          color: "grey",
+                          backgroundColor: "White",
+                          borderRadius: 2,
+                          marginRight: 2,
+                          height: "100%",
+                          width: "15%",
+                        }}
+                      />
+                      <Tab
+                        label="Drafts"
+                        value="3"
+                        sx={{
+                          color: "grey",
+                          backgroundColor: "White",
+                          borderRadius: 2,
+                          marginRight: 2,
+                          height: "100%",
+                          width: "15%",
+                        }}
+                      />
+                      <Tab
+                        label="History"
+                        value="4"
+                        sx={{
+                          color: "grey",
+                          backgroundColor: "White",
+                          borderRadius: 2,
+                          marginRight: 2,
+                          height: "100%",
+                          width: "15%",
+                        }}
+                      />
+                    </Tabs>
+                  </Box>
+                  <Box>
+                    <motion.div
+                      className="animatable"
+                      whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Fab
+                        variant="extended"
+                        aria-label="add"
+                        onClick={() => navigate("/newtloan")}
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          ":hover": { backgroundColor: "#031c38" },
+                        }}
+                      >
+                        Create
+                        <PostAddIcon sx={{ ml: 2 }} />
+                      </Fab>
+                    </motion.div>
+                  </Box>
                 </Box>
+                <Box sx={{ paddingLeft: 3 }}></Box>
               </Grid>
-
               <Grid item xs={12}>
                 <TabPanel value="1">
                   <div style={{ height: 600, width: "100%" }}>

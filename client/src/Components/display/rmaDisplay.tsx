@@ -1,76 +1,55 @@
-import * as React from "react";
+import CancelIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
+import { Stack, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import SaveIcon from "@mui/icons-material/Save";
-import CancelIcon from "@mui/icons-material/Close";
 import {
-  GridRowsProp,
-  GridRowModesModel,
-  GridRowModes,
-  DataGridPro,
-  GridColumns,
-  GridRowParams,
-  MuiEvent,
-  GridToolbarContainer,
-  GridActionsCellItem,
-  GridEventListener,
-  GridRowId,
-  GridRowModel,
-  GridFilterInputValueProps,
-  GridRenderEditCellParams,
-  useGridApiContext,
-  GridColTypeDef,
-  GRID_DATE_COL_DEF,
-  GridFilterItem,
-  GridCellParams,
-} from "@mui/x-data-grid-pro";
+    DataGrid,
+    GridActionsCellItem,
+    GridCellParams,
+    GridColTypeDef,
+    GridColumns,
+    GridEventListener,
+    GridFilterInputValueProps,
+    GridFilterItem,
+    GridFilterModel,
+    GridRenderEditCellParams,
+    GridRowId,
+    GridRowModel,
+    GridRowModes,
+    GridRowModesModel,
+    GridRowParams,
+    GridToolbarColumnsButton,
+    GridToolbarContainer,
+    GridToolbarDensitySelector,
+    GridToolbarExport,
+    GridToolbarFilterButton,
+    GridToolbarQuickFilter,
+    GRID_DATE_COL_DEF,
+    MuiEvent,
+    useGridApiContext
+} from "@mui/x-data-grid";
 import {
-  randomCreatedDate,
-  randomTraderName,
-  randomUpdatedDate,
-  randomId,
-} from "@mui/x-data-grid-generator";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import {
-  DatePicker,
-  DateTimePicker,
-  LocalizationProvider,
+    DatePicker,
+    DateTimePicker,
+    LocalizationProvider
 } from "@mui/x-date-pickers";
-import {
-  Card,
-  CardContent,
-  Grid,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import locale from "date-fns/locale/en-US";
-import { textAlign } from "@mui/system";
-import { useNavigate, useParams } from "react-router";
-import { useEffect, useState } from "react";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
+import locale from "date-fns/locale/en-US";
+import { motion } from "framer-motion";
+import * as React from "react";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
-import {
-  DataGrid,
-  GridFilterModel,
-  GridToolbarColumnsButton,
-  GridToolbarDensitySelector,
-  GridToolbarExport,
-  GridToolbarFilterButton,
-  GridToolbarQuickFilter,
-} from "@mui/x-data-grid";
-import RejectModalButton from "./RmaModal/rejectModal";
 import ReasonModalButton from "./RmaModal/reasonModal";
-import { verifyRMA } from "../../app/reducers/RmaReducer";
-import { Row } from "react-bootstrap";
-import { motion } from "framer-motion";
+import RejectModalButton from "./RmaModal/rejectModal";
 
-export default function CreateRMA() {
+const RmaDisplay: React.FC = () => {
+  const navigate = useNavigate();
   const userrole = useAppSelector(selectRole);
   const [rma, setRma] = useState([]);
   const [rows, setRows] = useState([]);
@@ -79,7 +58,7 @@ export default function CreateRMA() {
     {}
   );
 
-  let { RmaID } = useParams();
+  const { RmaID } = useParams();
 
   const rmainstructions = {
     products: rows,
@@ -98,79 +77,79 @@ export default function CreateRMA() {
       },
     ],
   });
-  //Get RMA details
+  // Get RMA details
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const rma = await axios.get(`http://localhost:5000/api/RMA/${RmaID}`);
+      const rmadata = await axios.get(`http://localhost:5000/api/RMA/${RmaID}`);
 
-      setRma(rma.data);
+      setRma(rmadata.data);
     };
     // call the function
-    fetchData()
-      // make sure to catch any error
-      .catch(console.error);
+    fetchData();
+    // make sure to catch any error
   }, []);
-  //Get RMA products
+  // Get RMA products
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const rows = await axios.get(
+      const rowdata = await axios.get(
         `http://localhost:5000/api/RMA/Product/${RmaID}`
       );
 
-      setRows(rows.data);
-      console.log(rows);
+      setRows(rowdata.data);
     };
     // call the function
-    fetchData()
-      // make sure to catch any error
-      .catch(console.error);
+    fetchData();
+    // make sure to catch any error
   }, []);
-  console.log(rma.RmaStatusID);
-  //Accept RMA
+  // Accept RMA
   const acceptRMA = async () => {
     axios
       .put(`http://localhost:5000/api/acceptRMA/${RmaID}`)
       .then(() => navigate("/rma"))
       .catch((error) => {
         this.setState({ errorMessage: error.message });
-        console.error("There was an error!", error);
       });
   };
-  //Receive RMA
+  // Receive RMA
   const receiveRMA = async () => {
     axios
       .put(`http://localhost:5000/api/receiveRMA/${RmaID}`)
       .then(() => navigate("/rma"))
       .catch((error) => {
         this.setState({ errorMessage: error.message });
-        console.error("There was an error!", error);
       });
   };
-  //Verify RMA
+  // Verify RMA
   const verifyRMA = async () => {
     axios
       .put(`http://localhost:5000/api/verifyRMA/${RmaID}`, rmainstructions)
       .then(() => navigate("/rma"))
       .catch((error) => {
         this.setState({ errorMessage: error.message });
-        console.error("There was an error!", error);
       });
   };
-  //COA RMA
+  // COA RMA
   const COARMA = async () => {
     axios
       .put(`http://localhost:5000/api/COARMA/${RmaID}`, rmacoa)
       .then(() => navigate("/rma"))
       .catch((error) => {
         this.setState({ errorMessage: error.message });
-        console.error("There was an error!", error);
       });
   };
-  // console.log(rma.data.RMAProducts)
+  // Close RMA
+  const closeRMA = async () => {
+    axios
+      .put(`http://localhost:5000/api/closeRMA/${RmaID}`)
+      .then(() => navigate("/rma"))
+      .catch((error) => {
+        this.setState({ errorMessage: error.message });
+      });
+  };
   // const products = rma.RMAProducts;
 
   function buildApplyDateFilterFn(
@@ -202,6 +181,39 @@ export default function CreateRMA() {
       return compareFn(cellValueMs, filterValueMs);
     };
   }
+
+  const GridFilterDateInput = (
+    props: GridFilterInputValueProps & { showTime?: boolean }
+  ) => {
+    const { item, showTime, applyValue, apiRef } = props;
+
+    const Component = showTime ? DateTimePicker : DatePicker;
+
+    const handleFilterChange = (newValue: unknown) => {
+      applyValue({ ...item, value: newValue });
+    };
+
+    return (
+      <Component
+        value={item.value || null}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            variant="standard"
+            label={apiRef.current.getLocaleText("filterPanelInputLabel")}
+          />
+        )}
+        InputAdornmentProps={{
+          sx: {
+            "& .MuiButtonBase-root": {
+              marginRight: -1,
+            },
+          },
+        }}
+        onChange={handleFilterChange}
+      />
+    );
+  };
 
   function getDateFilterOperators(
     showTime: boolean = false
@@ -302,6 +314,27 @@ export default function CreateRMA() {
 
   const dateAdapter = new AdapterDateFns({ locale });
 
+  const GridEditDateCell = ({
+    id,
+    field,
+    value,
+  }: GridRenderEditCellParams<Date | string | null>) => {
+    const apiRef = useGridApiContext();
+
+    const handleChange = (newValue: unknown) => {
+      apiRef.current.setEditCellValue({ id, field, value: newValue });
+    };
+
+    return (
+      <DatePicker
+        value={value}
+        renderInput={(params) => <TextField {...params} />}
+        onChange={handleChange}
+        inputFormat="dd/MM/yy"
+        views={["day", "month", "year"]}
+      />
+    );
+  };
   const dateColumnType: GridColTypeDef<Date | string, string> = {
     ...GRID_DATE_COL_DEF,
     resizable: false,
@@ -319,68 +352,6 @@ export default function CreateRMA() {
       return "";
     },
   };
-
-  function GridEditDateCell({
-    id,
-    field,
-    value,
-  }: GridRenderEditCellParams<Date | string | null>) {
-    const apiRef = useGridApiContext();
-
-    const handleChange = (newValue: unknown) => {
-      apiRef.current.setEditCellValue({ id, field, value: newValue });
-    };
-
-    return (
-      <DatePicker
-        value={value}
-        renderInput={(params) => <TextField {...params} />}
-        onChange={handleChange}
-        inputFormat="dd/MM/yy"
-        views={["day", "month", "year"]}
-      />
-    );
-  }
-
-  function GridFilterDateInput(
-    props: GridFilterInputValueProps & { showTime?: boolean }
-  ) {
-    const { item, showTime, applyValue, apiRef } = props;
-
-    const Component = showTime ? DateTimePicker : DatePicker;
-
-    const handleFilterChange = (newValue: unknown) => {
-      applyValue({ ...item, value: newValue });
-    };
-
-    return (
-      <Component
-        value={item.value || null}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="standard"
-            label={apiRef.current.getLocaleText("filterPanelInputLabel")}
-          />
-        )}
-        InputAdornmentProps={{
-          sx: {
-            "& .MuiButtonBase-root": {
-              marginRight: -1,
-            },
-          },
-        }}
-        onChange={handleFilterChange}
-      />
-    );
-  }
-
-  interface EditToolbarProps {
-    setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
-    setRowModesModel: (
-      newModel: (oldModel: GridRowModesModel) => GridRowModesModel
-    ) => void;
-  }
 
   const handleRowEditStart = (
     params: GridRowParams,
@@ -423,11 +394,10 @@ export default function CreateRMA() {
   const processRowUpdate = (newRow: GridRowModel) => {
     const updatedRow = { ...newRow, isNew: false };
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-    console.log(updatedRow);
     return updatedRow;
   };
 
-  function CustomToolbar() {
+  const CustomToolbar = () => {
     return (
       <GridToolbarContainer
         sx={{ display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1 }}
@@ -443,7 +413,7 @@ export default function CreateRMA() {
         </Box>
       </GridToolbarContainer>
     );
-  }
+  };
 
   const columns: GridColumns = [
     { field: "id", headerName: "PK", flex: 1, editable: true },
@@ -719,28 +689,7 @@ export default function CreateRMA() {
     },
   ];
 
-  // useEffect(() => {
-  //   // declare the async data fetching function
-  //   const fetchData = async () => {
-  //     // get the data from the api
-  //     const companies = await axios
-  //       .get(`http://localhost:5000/api/rmacompanies`)
-  //       .then((companies) => setCompanies(companies.data));
-  //     // setRma(Object.e)
-  //   };
-  //   // call the function
-  //   fetchData()
-  //     // make sure to catch any error
-  //     .catch(console.error);
-  // }, []);
-
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setCompany(event.target.value);
-  // };
-
-  const navigate = useNavigate();
-
-  if (rma.RmaStatusID == 3) {
+  if (rma.RmaStatusID === 3) {
     switch (userrole) {
       case "Sales Engineer": {
         return (
@@ -1088,7 +1037,7 @@ export default function CreateRMA() {
         );
       }
     }
-  } else if (rma.RmaStatusID == 1) {
+  } else if (rma.RmaStatusID === 1) {
     switch (userrole) {
       case "Sales Manager": {
         return (
@@ -1434,7 +1383,7 @@ export default function CreateRMA() {
                   dateAdapter={AdapterDateFns}
                   adapterLocale={locale}
                 >
-                  <DataGridPro
+                  <DataGrid
                     sx={{ background: "white", fontSize: 16 }}
                     rows={rows}
                     columns={staticcolumns}
@@ -1514,15 +1463,135 @@ export default function CreateRMA() {
         );
       }
     }
-  } else if (rma.RmaStatusID == 7) {
+  } else if (rma.RmaStatusID === 7) {
     switch (userrole) {
-      case "Sales Admin":
       case "Sales Engineer":
       case "Sales Manager":
       case "Warehouse Worker":
       case "Technical Staff":
+      case "Sales Admin":
       case "Admin":
       default: {
+        return (
+          <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
+            <Typography
+              gutterBottom
+              variant="subtitle2"
+              component="span"
+              sx={{
+                display: "flex",
+                justifyContent: "left",
+                alignItems: "center",
+                marginLeft: 0,
+                color: "#063970",
+                fontWeight: "bold",
+              }}
+            >
+              <Box>
+                <h2>RMA Request #{rma.RmaID}</h2>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box>EMPLOYEE</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.Username}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>DATE APPLIED</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.DateTime}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CUSTOMER NAME</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.ContactPerson}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CUSTOMER EMAIL</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.CustomerEmail}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>COMPANY</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.CompanyName}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CONTACT NUMBER</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.ContactNo}
+                </Box>
+              </Box>
+            </Typography>
+
+            <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
+              <Box sx={{ flexGrow: 1 }}>
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
+                  adapterLocale={locale}
+                >
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 16 }}
+                    rows={rows}
+                    columns={staticcolumns}
+                    editMode="row"
+                    getRowId={(row) => row.id}
+                    rowModesModel={rowModesModel}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    // onRowEditStart={handleRowEditStart}
+                    // onRowEditStop={handleRowEditStop}
+                    // processRowUpdate={processRowUpdate}
+                    // componentsProps={{
+                    //   toolbar: { setRows, setRowModesModel },
+                    // }}
+                    // experimentalFeatures={{ newEditingApi: true }}
+                  />
+                </LocalizationProvider>
+              </Box>
+            </Box>
+
+            <Box
+              component="span"
+              paddingTop={2}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                  }}
+                  onClick={() => navigate("/rma")}
+                >
+                  Back
+                </Button>
+              </motion.div>
+            </Box>
+          </Box>
+        );
+      }
+    }
+  } else if (rma.RmaStatusID === 6) {
+    switch (userrole) {
+      case "Sales Admin": {
         return (
           <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
             <Typography
@@ -1584,14 +1653,206 @@ export default function CreateRMA() {
                 <DataGrid
                   sx={{ background: "white", fontSize: 16 }}
                   rows={rows}
-                  columns={staticcolumns}
+                  columns={coacolumns}
                   editMode="row"
                   getRowId={(row) => row.id}
+                  pageSize={pageSize}
+                  onPageSizeChange={(newPage) => setPageSize(newPage)}
+                  pagination
+                  components={{
+                    Toolbar: CustomToolbar,
+                    NoRowsOverlay: () => (
+                      <Stack
+                        height="100%"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        No products
+                      </Stack>
+                    ),
+                  }}
                   filterModel={filterModel}
                   onFilterModelChange={(newFilterModel) =>
                     setFilterModel(newFilterModel)
                   }
+                  rowModesModel={rowModesModel}
+                  onRowEditStart={handleRowEditStart}
+                  onRowEditStop={handleRowEditStop}
+                  processRowUpdate={processRowUpdate}
+                  componentsProps={{
+                    toolbar: { setRows, setRowModesModel },
+                  }}
+                  experimentalFeatures={{ newEditingApi: true }}
                 />
+              </Box>
+            </Box>
+
+            <Box
+              component="span"
+              paddingTop={2}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                  }}
+                  onClick={() => navigate("/rma")}
+                >
+                  Back
+                </Button>
+              </motion.div>
+              <Box
+                component="span"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#31A961",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                      marginRight: 5,
+                    }}
+                    onClick={COARMA}
+                  >
+                    Update
+                  </Button>
+                </motion.div>
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#D11A2A",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                    }}
+                    onClick={closeRMA}
+                  >
+                    Close
+                  </Button>
+                </motion.div>
+              </Box>
+            </Box>
+          </Box>
+        );
+      }
+      case "Sales Manager":
+      case "Warehouse Worker":
+      case "Technical Staff":
+      case "Sales Engineer":
+      case "Admin":
+      default: {
+        return (
+          <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
+            <Typography
+              gutterBottom
+              variant="subtitle2"
+              component="span"
+              sx={{
+                display: "flex",
+                justifyContent: "left",
+                alignItems: "center",
+                marginLeft: 0,
+                color: "#063970",
+                fontWeight: "bold",
+              }}
+            >
+              <Box>
+                <h2>RMA Request #{rma.RmaID}</h2>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box>EMPLOYEE</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.Username}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>DATE APPLIED</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.DateTime}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CUSTOMER NAME</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.ContactPerson}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CUSTOMER EMAIL</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.CustomerEmail}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>COMPANY</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.CompanyName}
+                </Box>
+              </Box>
+              <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{}}>CONTACT NUMBER</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {rma.ContactNo}
+                </Box>
+              </Box>
+            </Typography>
+
+            <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
+              <Box sx={{ flexGrow: 1 }}>
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
+                  adapterLocale={locale}
+                >
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 16 }}
+                    rows={rows}
+                    columns={staticcolumns}
+                    editMode="row"
+                    getRowId={(row) => row.id}
+                    rowModesModel={rowModesModel}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    // onRowEditStart={handleRowEditStart}
+                    // processRowUpdate={processRowUpdate}
+                    // componentsProps={{
+                    //   toolbar: { setRows, setRowModesModel },
+                    // }}
+                    // experimentalFeatures={{ newEditingApi: true }}
+                  />
+                </LocalizationProvider>
               </Box>
             </Box>
 
@@ -1868,20 +2129,26 @@ export default function CreateRMA() {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <Button
-                  size="small"
-                  variant="contained"
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#31A961",
-                    width: 150,
-                    height: 50,
-                    borderRadius: 10,
-                  }}
-                  onClick={receiveRMA}
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
                 >
-                  Verify
-                </Button>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#31A961",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                    }}
+                    onClick={receiveRMA}
+                  >
+                    Verify
+                  </Button>
+                </motion.div>
               </Box>
             </Box>
           </Box>
@@ -2016,20 +2283,26 @@ export default function CreateRMA() {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <Button
-                  size="small"
-                  variant="contained"
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#31A961",
-                    width: 150,
-                    height: 50,
-                    borderRadius: 10,
-                  }}
-                  onClick={verifyRMA}
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
                 >
-                  Verify
-                </Button>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#31A961",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                    }}
+                    onClick={verifyRMA}
+                  >
+                    Verify
+                  </Button>
+                </motion.div>
               </Box>
             </Box>
           </Box>
@@ -2158,11 +2431,10 @@ export default function CreateRMA() {
                   Back
                 </Button>
               </motion.div>
-              <Box
-                component="span"
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
               >
                 <Button
                   size="small"
@@ -2178,7 +2450,7 @@ export default function CreateRMA() {
                 >
                   Update
                 </Button>
-              </Box>
+              </motion.div>
             </Box>
           </Box>
         );
@@ -2290,4 +2562,6 @@ export default function CreateRMA() {
       }
     }
   }
-}
+};
+
+export default RmaDisplay;

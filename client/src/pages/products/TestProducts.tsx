@@ -1,11 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
-import "../../styles/Products.scss";
-import TopBar from "../../components/header/TopBar";
-import SideBar from "../../components/sidebar/SideBar";
 import axios from "axios";
-// import "../App.css";
+import { useEffect, useState } from "react";
 import "../../styles/Products.scss";
+// import "../App.css";
 import Table from "../../components/table/Table";
+import "../../styles/Products.scss";
 // import SearchBar from "material-ui-search-bar";
 //import ProductSearchBar from "../../components/search/SearchBar";
 
@@ -67,7 +65,8 @@ function Products() {
       <div className="product-container">
         <div className="product">
           <div className="Table">
-            <input className="Search"
+            <input
+              className="Search"
               type="text"
               value={q}
               onChange={(e) => setQ(e.target.value)}
@@ -75,7 +74,7 @@ function Products() {
 
             <Table data={search(currentItems)} column={column} />
             <div>
-            <ul className="pageNumbers">{renderPageNumbers}</ul>
+              <ul className="pageNumbers">{renderPageNumbers}</ul>
             </div>
           </div>
         </div>

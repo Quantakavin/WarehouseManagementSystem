@@ -32,7 +32,6 @@ export interface NotiType {
   NotiType: string;
 }
 
-
 export interface UserGroup {
   UserGroupID: number;
   UserGroupName: string;
@@ -56,11 +55,11 @@ export interface RMA {
   Instruction: string;
 }
 
-export type ActionMenuItem = { 
-  name: string, 
-  url?: string, 
-  icon: React.ReactNode, 
-  delete: boolean 
-  deleteFunction?: () => void
+export type ActionMenuItem = {
+  name: string;
+  url?: string;
+  icon: React.ReactNode;
+  delete: boolean;
+  deleteFunction?: () => void;
   // deleteFunction?: UseMutationResult<AxiosResponse<any, any>, unknown, string, unknown>
 };

@@ -26,7 +26,7 @@ module.exports.getAllProducts = async (req, res) => {
         redisClient.set(`products?limit=${limit}&page=${page}`, JSON.stringify(results[0]));
         return res.status(200).json(results[0]);
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -103,6 +103,5 @@ module.exports.getAllProductsPag = async (req, res) => {
         return res.status(500).json({
             message: 'Internal Server Error!'
         });
-    };
-    
+    }
 };

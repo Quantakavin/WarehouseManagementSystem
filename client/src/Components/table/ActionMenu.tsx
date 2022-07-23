@@ -1,14 +1,14 @@
-import React from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { useNavigate } from "react-router-dom";
 import {
-  Button,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  TableCell,
+    Button,
+    ListItemIcon,
+    ListItemText,
+    Menu,
+    MenuItem,
+    TableCell
 } from "@mui/material";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { ActionMenuItem } from "../../utils/CommonTypes";
 
 interface MenuProps {
@@ -55,7 +55,7 @@ const ActionMenu: React.FC<MenuProps> = ({ items }) => {
               if (!item.delete) {
                 navigate(item.url);
               } else {
-                item.deleteFunction()
+                item.deleteFunction();
               }
             }}
           >
