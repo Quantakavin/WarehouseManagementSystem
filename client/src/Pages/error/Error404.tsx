@@ -6,7 +6,6 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
-import "../styles/Error404.scss";
 
 function Error404() {
   const navigate = useNavigate();

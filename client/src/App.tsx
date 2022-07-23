@@ -36,8 +36,9 @@ import ViewUser from "./pages/users/ViewUser";
 // import ViewUserGroup2 from "./pages/usergroups/ViewUserGroup2";
 import { Box } from "@mui/material";
 import Modals12 from "./components/display/TloanModal/modal";
-import Error403 from "./pages/Error403";
-import Error404 from "./pages/Error404";
+import Error403 from "./pages/error/Error403";
+import Error404 from "./pages/error/Error404";
+import Error401 from "./pages/error/Error401";
 
 interface ProtectedRouteProps {
   loginpage: boolean;
@@ -53,7 +54,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ loginpage }) => {
     }
   } else {
     if (!token) {
-      return <Navigate replace to="/" />;
+      return <Navigate replace to="/401" />;
     } else {
       return <Outlet />;
     }
@@ -73,6 +74,7 @@ const App: React.FC = () => {
         <Box className="bluebackground" style={{ flex: 5 }}>
           <Routes>
             <Route element={<ProtectedRoute loginpage={true} />}>
+              <Route path="/401" element={<Error401 />} />
               <Route path="/login" element={<Navigate replace to="/" />} />
               <Route path="/" element={<Login />} />
             </Route>

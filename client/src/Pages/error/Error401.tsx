@@ -6,9 +6,8 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
-import "../styles/Error404.scss";
 
-function Error403() {
+function Error401() {
   const navigate = useNavigate();
   const URL = window.location.href;
 
@@ -32,7 +31,7 @@ function Error403() {
                 textAlign: "center",
               }}
             >
-              403
+              401
               <br />
             </Typography>
 
@@ -54,9 +53,9 @@ function Error403() {
               Oops!
               <br />
             </Typography>
-            You aren't allowed to access {URL}
+            You have not been authenticated!
             <br />
-            Please return to the page you were on
+            Please login
           </Box>
           <Box
             component="span"
@@ -80,9 +79,9 @@ function Error403() {
                   height: 50,
                   borderRadius: 10,
                 }}
-                onClick={() => navigate(-2)}
+                onClick={() => navigate('/')}
               >
-                Back
+                Login Page
               </Button>
             </motion.div>
           </Box>
@@ -92,4 +91,4 @@ function Error403() {
   );
 }
 
-export default Error403;
+export default Error401;
