@@ -1,7 +1,6 @@
+import { TableCell, TableRow } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
 import React from "react";
-import { Container, TableCell, TableRow } from "@mui/material";
-import { Tab } from "react-bootstrap";
 
 interface SkeletonProps {
   NoOfCols: number;

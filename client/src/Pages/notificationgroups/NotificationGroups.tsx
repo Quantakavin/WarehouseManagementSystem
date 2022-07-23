@@ -1,44 +1,43 @@
-import React, { useState } from "react";
-import {
-  useInfiniteQuery,
-  useQuery,
-  useQueryClient,
-  useMutation,
-} from "react-query";
-import {
-  GetNotificationGroupNames,
-  FilterNotificationGroups,
-  DeleteNotificationGroup,
-} from "../../api/NotificationGroupDB";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import PageviewIcon from "@mui/icons-material/Pageview";
-import InfiniteTable from "../../components/table/InfiniteTable";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import CancelIcon from "@mui/icons-material/Cancel";
-import {
-  selectSortColumn,
-  selectSortOrder,
-  ChangeSortColumn,
-  SortAsc,
-  SortDesc,
-} from "../../app/reducers/NotiGroupTableFilterSlice";
-import SearchBarUpdated from "../../components/search/SearchBarUpdated";
-import { motion } from "framer-motion";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { Hidden } from "@mui/material";
+import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import {
+  useInfiniteQuery, useMutation, useQuery,
+  useQueryClient
+} from "react-query";
 import { useNavigate } from "react-router-dom";
-import useDebounce from "../../hooks/useDebounce";
-import { Toast } from "../../components/alerts/SweetAlert";
+import {
+  DeleteNotificationGroup, FilterNotificationGroups, GetNotificationGroupNames
+} from "../../api/NotificationGroupDB";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import {
+  ChangeSortColumn, selectSortColumn,
+  selectSortOrder, SortAsc,
+  SortDesc
+} from "../../app/reducers/NotiGroupTableFilterSlice";
 import Popup from "../../components/alerts/Popup";
+import { Toast } from "../../components/alerts/SweetAlert";
+import SearchBarUpdated from "../../components/search/SearchBarUpdated";
+import InfiniteTable from "../../components/table/InfiniteTable";
+import useDebounce from "../../hooks/useDebounce";
 
 const NotificationGroups: React.FC = () => {
+  const navigate = useNavigate();
+  const userrole = useAppSelector(selectRole)
+  useEffect(() => {
+    if (userrole != "Admin") {
+      navigate('/403');
+    }
+  }, []);
   const sortColumn = useAppSelector(selectSortColumn);
   const sortOrder = useAppSelector(selectSortOrder);
   const dispatch = useAppDispatch();
-
-  const navigate = useNavigate();
-
   const [searchOptions, setSearchOptions] = useState<string[]>([]);
   const [inputName, setInputName] = useState<string>(null);
   const [searchName, setSearchName] = useState<string>("");

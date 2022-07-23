@@ -1,35 +1,38 @@
-import React, { useEffect, useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import {
+  Box, Fab, Stack, Typography,
+  unstable_createMuiStrictModeTheme
+} from "@mui/material";
 import {
   DataGrid,
   GridActionsCellItem,
-  GridFilterModel,
-  GridRowParams,
-  GridToolbarColumnsButton,
+  GridFilterModel, GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
-  GridToolbarQuickFilter,
+  GridToolbarQuickFilter
 } from "@mui/x-data-grid";
-import {
-  Box,
-  Card,
-  CardContent,
-  Fab,
-  IconButton,
-  Stack,
-  Theme,
-  Typography,
-  unstable_createMuiStrictModeTheme,
-  withStyles,
-} from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
 
 const UserGroups2: React.FC = () => {
+  const navigate = useNavigate();
+  const theme = unstable_createMuiStrictModeTheme();
+  const [pageSize, setPageSize] = React.useState(25);
+  const [inputName, setInputName] = useState<string>(null);
+  const [value, setValue] = useState(0); // first tab
+  const userrole = useAppSelector(selectRole)
+  useEffect(() => {
+    if (userrole != "Admin") {
+      navigate('/403');
+    }
+  }, []);
   const [row, setRow] = useState([]);
   const [hoveredRow, setHoveredRow] = React.useState(null);
 
@@ -91,13 +94,6 @@ const UserGroups2: React.FC = () => {
       ],
     },
   ];
-
-  const navigate = useNavigate();
-  const theme = unstable_createMuiStrictModeTheme();
-  const [pageSize, setPageSize] = React.useState(25);
-  const [inputName, setInputName] = useState<string>(null);
-
-  const [value, setValue] = useState(0); // first tab
 
   const handleChange = (_event, newValue) => {
     setValue(newValue);

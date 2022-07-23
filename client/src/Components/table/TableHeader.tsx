@@ -1,15 +1,6 @@
-import React, { useState } from "react";
-import { TableHead, TableCell, TableRow } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import {
-  selectSortColumn,
-  selectSortOrder,
-  ChangeSortColumn,
-  SortAsc,
-  SortDesc,
-} from "../../app/reducers/UserTableFilterSlice";
+import { TableCell } from "@mui/material";
 
 interface TableHeaderProps {
   header: string;

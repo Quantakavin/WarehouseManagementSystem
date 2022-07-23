@@ -1,11 +1,5 @@
-import { Container, Paper, TableContainer, Table } from "@mui/material";
-import { AxiosResponse } from "axios";
-import React from "react";
-import { UseInfiniteQueryResult } from "react-query";
+import { Container, Paper, Table, TableContainer } from "@mui/material";
 import TableHeader from "./TableHeader";
-import { ActionMenuItem } from "../../utils/CommonTypes";
-import LoadMoreButton from "./LoadMoreButton";
-import TableContents from "./TableContents";
 
 interface TableProps {
   headers: string[];

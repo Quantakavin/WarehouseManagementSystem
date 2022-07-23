@@ -1,8 +1,4 @@
-import React from "react";
-import "../../styles/chart.scss";
-import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
-import { Panel } from "react-bootstrap";
-import { Card } from "@mui/material";
+import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import "../../styles/chart.scss";
 
 const data = [

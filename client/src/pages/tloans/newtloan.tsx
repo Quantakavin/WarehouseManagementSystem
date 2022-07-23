@@ -1,70 +1,35 @@
-import React from "react";
-import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import AddDeleteTableRows from "./TLoanTable/AddDeleteRows";
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
+import AddIcon from "@mui/icons-material/Add";
+import CancelIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
+import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { Box, Input } from "@mui/material";
-import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
-import {
-  CompanyName,
-  LoanType,
-  CollectionType,
-  DurationOfLoan,
-} from "./Dropdown/dropDown";
-import { useNavigate } from "react-router-dom";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import TableRows from "./TLoanTable/TableRows";
-import "./TLoanTable/table.css";
-import TableRow from "@mui/material/TableRow";
-import TableRowColumn from "@mui/material/TableRow";
-import TableHead from "@mui/material/TableHead";
-import TableBody from "@mui/material/TableBody";
-import Table from "@mui/material/Table";
-import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import SaveIcon from "@mui/icons-material/Save";
-import CancelIcon from "@mui/icons-material/Close";
-import Swal from "sweetalert2";
-import { Toast } from "../../components/alerts/SweetAlert";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import Stack from "@mui/material/Stack";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { selectRole, selectId } from "../../app/reducers/CurrentUserSlice";
-import { useAppSelector } from "../../app/hooks";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import {
-  GridRowsProp,
-  GridRowModesModel,
-  GridRowModes,
-  DataGridPro,
-  GridColumns,
-  GridRowParams,
-  MuiEvent,
-  GridToolbarContainer,
-  GridActionsCellItem,
-  GridEventListener,
-  GridRowId,
-  GridRowModel,
-} from "@mui/x-data-grid-pro";
-import {
-  randomCreatedDate,
-  randomTraderName,
-  randomUpdatedDate,
-  randomId,
+  randomId
 } from "@mui/x-data-grid-generator";
+import {
+  DataGridPro, GridActionsCellItem, GridColumns, GridEventListener,
+  GridRowId,
+  GridRowModel, GridRowModes, GridRowModesModel, GridRowParams, GridRowsProp, GridToolbarContainer, MuiEvent
+} from "@mui/x-data-grid-pro";
+import axios from "axios";
 import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { Toast } from "../../components/alerts/SweetAlert";
+import "./TLoanTable/table.css";
 
 function newtloan() {
   interface EditToolbarProps {

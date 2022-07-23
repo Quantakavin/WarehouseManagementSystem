@@ -1,45 +1,47 @@
-import React, { useState } from "react";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import CancelIcon from "@mui/icons-material/Cancel";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
+import PageviewIcon from "@mui/icons-material/Pageview";
+import { Hidden } from "@mui/material";
+import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
 import {
   useInfiniteQuery,
   useMutation,
   useQuery,
-  useQueryClient,
+  useQueryClient
 } from "react-query";
+import { useNavigate } from "react-router-dom";
 import {
   DeleteUserGroup,
   FilterUserGroups,
-  GetUserGroupNames,
-  GetUserGroups,
+  GetUserGroupNames
 } from "../../api/UserGroupDB";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
-import PageviewIcon from "@mui/icons-material/Pageview";
-import InfiniteTable from "../../components/table/InfiniteTable";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import {
-  selectSortColumn,
-  selectSortOrder,
-  ChangeSortColumn,
-  SortAsc,
-  SortDesc,
+  ChangeSortColumn, selectSortColumn,
+  selectSortOrder, SortAsc,
+  SortDesc
 } from "../../app/reducers/UserGroupTableFilterSlice";
-import { motion } from "framer-motion";
-import SearchBarUpdated from "../../components/search/SearchBarUpdated";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import SearchIcon from "@mui/icons-material/Search";
-import { useNavigate } from "react-router-dom";
-import { Backdrop, Box, Fade, Hidden, Modal, Typography } from "@mui/material";
-import useDebounce from "../../hooks/useDebounce";
-import CancelIcon from "@mui/icons-material/Cancel";
-import { DeleteUser } from "../../api/UserDB";
-import { Toast } from "../../components/alerts/SweetAlert";
 import Popup from "../../components/alerts/Popup";
+import { Toast } from "../../components/alerts/SweetAlert";
+import SearchBarUpdated from "../../components/search/SearchBarUpdated";
+import InfiniteTable from "../../components/table/InfiniteTable";
+import useDebounce from "../../hooks/useDebounce";
 
 const UserGroups: React.FC = () => {
   const sortColumn = useAppSelector(selectSortColumn);
   const sortOrder = useAppSelector(selectSortOrder);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const userrole = useAppSelector(selectRole)
+  useEffect(() => {
+    if (userrole != "Admin") {
+      navigate('/403');
+    }
+  }, []);
   const [searchOptions, setSearchOptions] = useState<string[]>([]);
   const [inputName, setInputName] = useState<string>(null);
   const [searchName, setSearchName] = useState<string>("");

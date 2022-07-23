@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from "react";
+import {
+  Box, Stack, Typography,
+  unstable_createMuiStrictModeTheme
+} from "@mui/material";
 import {
   DataGrid,
   GridFilterModel,
@@ -8,18 +11,9 @@ import {
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
-  GridToolbarQuickFilter,
+  GridToolbarQuickFilter
 } from "@mui/x-data-grid";
-import {
-  Box,
-  Card,
-  CardContent,
-  Stack,
-  Theme,
-  Typography,
-  unstable_createMuiStrictModeTheme,
-  withStyles,
-} from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 const Products2: React.FC = () => {

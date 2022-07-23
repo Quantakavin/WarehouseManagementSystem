@@ -1,30 +1,27 @@
-import React, { useEffect, useState } from "react";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { SelectChangeEvent } from "@mui/material";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
-import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import SubmitButton from "../../components/form/SubmitButton";
-import ErrorAlert from "../../components/form/ErrorAlert";
-import FormField from "../../components/form/FormField";
-import { NameValidation } from "../../utils/FormValidation";
+import { GetFeatureRights, GetFeatures } from "../../api/FeatureDB";
 import {
-  GetUserGroup,
-  PostUserGroup,
-  UpdateUserGroup,
+  GetUserGroup, UpdateUserGroup
 } from "../../api/UserGroupDB";
-import FormContainer from "../../components/form/FormContainer";
-import FormTextArea from "../../components/form/FormTextArea";
-import { GetFeatures, GetFeatureRights } from "../../api/FeatureDB";
-import { Option, Feature, FeatureRight } from "../../utils/CommonTypes";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
-import SelectDropdown from "../../components/form/SelectDropdown";
+import ErrorAlert from "../../components/form/ErrorAlert";
+import FormContainer from "../../components/form/FormContainer";
+import FormField from "../../components/form/FormField";
+import FormTextArea from "../../components/form/FormTextArea";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
-import { FeaturedVideo } from "@mui/icons-material";
 import SelectedList from "../../components/form/SelectedList";
+import SubmitButton from "../../components/form/SubmitButton";
+import { Feature, FeatureRight, Option } from "../../utils/CommonTypes";
+import { NameValidation } from "../../utils/FormValidation";
 
 interface FormValues {
   name: string;
@@ -34,6 +31,12 @@ interface FormValues {
 
 const EditUserGroup: React.FC = () => {
   const navigate = useNavigate();
+  const userrole = useAppSelector(selectRole)
+  useEffect(() => {
+    if (userrole != "Admin") {
+      navigate('/403');
+    }
+  }, []);
   const {
     register,
     handleSubmit,

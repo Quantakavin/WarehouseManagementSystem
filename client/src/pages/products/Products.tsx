@@ -1,10 +1,7 @@
-import React, { useState } from "react";
-import axios, { AxiosResponse } from "axios";
-import { useQuery, useInfiniteQuery } from "react-query";
-import { GetAllProducts } from "../../api/ProductDB";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import PageviewIcon from "@mui/icons-material/Pageview";
+import React from "react";
+import { useInfiniteQuery } from "react-query";
+import { GetAllProducts } from "../../api/ProductDB";
 import SearchBarUpdated from "../../components/search/SearchBarUpdated";
 import TableNew from "../../components/table/InfiniteTable";
 

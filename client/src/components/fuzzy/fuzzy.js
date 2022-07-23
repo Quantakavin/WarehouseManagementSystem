@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./fuzzy.css";
 import Fuse from "fuse.js";
-import { useCart } from "react-use-cart";
+import { useEffect, useState } from "react";
 import { Navbar } from "react-bootstrap";
 import { BsCart3 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "react-use-cart";
+import "./fuzzy.css";
 
 const Fuzzy = () => {
   const [query, setQuery] = useState("");

@@ -1,17 +1,25 @@
-import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "react-query";
-import { GetUserGroup } from "../../api/UserGroupDB";
-import CardSkeleton from "../../components/skeletons/CardSkeleton";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { motion } from "framer-motion";
 import { Container } from "@mui/material";
-import DataTable from "../../components/table/DataTable";
 import { GridColDef } from "@mui/x-data-grid";
+import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
+import { GetUserGroup } from "../../api/UserGroupDB";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import CardSkeleton from "../../components/skeletons/CardSkeleton";
+import DataTable from "../../components/table/DataTable";
 
 const ViewUserGroup: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const userrole = useAppSelector(selectRole)
+  useEffect(() => {
+    if (userrole != "Admin") {
+      navigate('/403');
+    }
+  }, []);
   const [features, setFeatures] = useState<any[]>([]);
 
   const UserGroupQuery = useQuery(

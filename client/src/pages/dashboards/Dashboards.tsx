@@ -1,17 +1,13 @@
-import "../../styles/Dashboard.scss";
-import { Container } from "react-bootstrap";
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Sidebar from "../../components/sidebar/SideBar";
-import TLoanChart from "../../components/charts/Chart";
 import Cards from "../../components/cards/cards";
+import TLoanChart from "../../components/charts/Chart";
 import RMAChart from "../../components/charts/Chart2";
 import BARChart from "../../components/charts/Chart3";
 import PIEChart from "../../components/charts/Chart4";
+import "../../styles/Dashboard.scss";
 
+import { Grid } from "@mui/material";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
-import { Grid } from "@mui/material";
 
 function Dashboards() {
   // implement switch case

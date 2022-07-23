@@ -1,8 +1,5 @@
 import counterReducer, {
-  CounterState,
-  increment,
-  decrement,
-  incrementByAmount,
+    CounterState, decrement, increment, incrementByAmount
 } from "./counterSlice";
 
 describe("counter reducer", () => {

@@ -1,24 +1,22 @@
-import * as React from "react";
-import defaultprofile from "../../assets/defaultprofile.png";
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { selectRole, selectName } from "../../app/reducers/CurrentUserSlice";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import WarehouseIcon from "@mui/icons-material/Warehouse";
-import InventoryIcon from "@mui/icons-material/Inventory";
 import ArticleIcon from "@mui/icons-material/Article";
 import AssignmentReturnIcon from "@mui/icons-material/AssignmentReturn";
-import SidebarLink from "./SidebarLink";
-import {
-  selectCurrentTab,
-  selectOpen,
-  Open,
-  Close,
-} from "../../app/reducers/SidebarSlice";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import PersonIcon from "@mui/icons-material/Person";
-import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import WarehouseIcon from "@mui/icons-material/Warehouse";
+import * as React from "react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectName, selectRole } from "../../app/reducers/CurrentUserSlice";
+import {
+    Close, Open, selectCurrentTab,
+    selectOpen
+} from "../../app/reducers/SidebarSlice";
+import defaultprofile from "../../assets/defaultprofile.png";
+import SidebarLink from "./SidebarLink";
 
 const Sidebar: React.FC = () => {
   const dispatch = useAppDispatch();

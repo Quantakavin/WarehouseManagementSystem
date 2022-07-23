@@ -1,49 +1,42 @@
-import TopBar from "./components/header/TopBar";
-import Sidebar from "./components/sidebar/SideBar";
 import React from "react";
-import Login from "./pages/users/Login";
-import AddUser from "./pages/users/AddUser";
-import EditUser from "./pages/users/EditUser";
-import Users from "./pages/users/Users";
-import ViewUser from "./pages/users/ViewUser";
-import AddUserGroup from "./pages/usergroups/AddUserGroup";
-import EditUserGroup from "./pages/usergroups/EditUserGroup";
-import Profile from "./pages/users/Profile";
-import UserGroups from "./pages/usergroups/UserGroups";
-import ViewUserGroup from "./pages/usergroups/ViewUserGroup";
-import AddNotificationGroup from "./pages/notificationgroups/AddNotificationGroup";
-import EditNotificationGroup from "./pages/notificationgroups/EditNotificationGroup";
-import NotificationGroups from "./pages/notificationgroups/NotificationGroups";
-import ViewNotificationGroup from "./pages/notificationgroups/ViewNotificationGroup";
-import Dashboard from "./pages/dashboards/Dashboards";
-import Products from "./pages/products/Products";
-import ProductsPag from "./pages/products/TestProducts";
-import ViewProduct from "./pages/products/ViewProduct";
-import BinLocations from "./pages/binlocations/BinLocations";
-import TLoan from "./pages/tloans/tloan";
-import RMA from "./pages/rma/rma";
-import CreateRMA from "./pages/rma/createRma";
-import Sidebar2 from "./components/sidebar/Sidebar2";
-import TopNav from "./components/header/TopNav";
-import TLoanDisplay from "./components/display/tloanDisplay";
-import RmaDisplay from "./components/display/rmaDisplay";
-import NewTLoan from "./pages/tloans/newtloan";
-import Products2 from "./pages/products/Products2";
-import TLoanDisplay2 from "./components/display/tloanDisplay2";
-import TLoanManagerDisplay from "./components/display/tloanManagerDisplay";
-import Users2 from "./pages/users/Users2";
-import { Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { useAppSelector } from "./app/hooks";
 import {
-  selectIsAuthenticated,
-  selectName,
+  selectIsAuthenticated
 } from "./app/reducers/CurrentUserSlice";
-import UserGroups2 from "./pages/usergroups/UserGroups2";
+import RmaDisplay from "./components/display/rmaDisplay";
+import TLoanDisplay2 from "./components/display/tloanDisplay2";
+import TLoanManagerDisplay from "./components/display/tloanManagerDisplay";
+import TopBar from "./components/header/TopBar";
+import Sidebar from "./components/sidebar/SideBar";
+import BinLocations from "./pages/binlocations/BinLocations";
+import Dashboard from "./pages/dashboards/Dashboards";
+import AddNotificationGroup from "./pages/notificationgroups/AddNotificationGroup";
+import EditNotificationGroup from "./pages/notificationgroups/EditNotificationGroup";
 import NotificationGroups2 from "./pages/notificationgroups/NotificationGroups2";
+import ViewNotificationGroup from "./pages/notificationgroups/ViewNotificationGroup";
+import Products2 from "./pages/products/Products2";
+import ProductsPag from "./pages/products/TestProducts";
+import ViewProduct from "./pages/products/ViewProduct";
+import CreateRMA from "./pages/rma/createRma";
+import RMA from "./pages/rma/rma";
+import NewTLoan from "./pages/tloans/newtloan";
+import TLoan from "./pages/tloans/tloan";
+import AddUserGroup from "./pages/usergroups/AddUserGroup";
+import EditUserGroup from "./pages/usergroups/EditUserGroup";
+import UserGroups2 from "./pages/usergroups/UserGroups2";
+import ViewUserGroup from "./pages/usergroups/ViewUserGroup";
+import AddUser from "./pages/users/AddUser";
+import EditUser from "./pages/users/EditUser";
+import Login from "./pages/users/Login";
+import Profile from "./pages/users/Profile";
+import Users2 from "./pages/users/Users2";
+import ViewUser from "./pages/users/ViewUser";
 // import ViewUser2 from "./pages/users/ViewUser2";
 // import ViewUserGroup2 from "./pages/usergroups/ViewUserGroup2";
 import { Box } from "@mui/material";
 import Modals12 from "./components/display/TloanModal/modal";
+import Error403 from "./pages/Error403";
 import Error404 from "./pages/Error404";
 
 interface ProtectedRouteProps {
@@ -128,7 +121,8 @@ const App: React.FC = () => {
                 path="/tloanManagerDisplay/:TLoanNumber"
                 element={<TLoanManagerDisplay />}
               />
-              <Route path="*" element={<Error404 />} />
+              <Route path="/404" element={<Error404 />} />
+              <Route path="/403" element={<Error403 />} />
             </Route>
           </Routes>
         </Box>

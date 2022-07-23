@@ -1,4 +1,3 @@
-import supertest from 'supertest';
 import user from '../routes/userRoutes';
 
 describe('Post /login', () => {

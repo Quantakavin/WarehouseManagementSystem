@@ -1,8 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { UseFormRegister, RegisterOptions, Path } from "react-hook-form";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { Path, RegisterOptions, UseFormRegister } from "react-hook-form";
+import styled from "styled-components";
 import useTogglePasword from "../../hooks/useTogglePassword";
 
 type AllowedInputs = "email" | "password" | "text" | "number";

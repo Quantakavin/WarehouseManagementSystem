@@ -6,6 +6,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import { Card, CardContent, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import { randomId } from "@mui/x-data-grid-generator";
 import {
   DataGridPro,
   GridActionsCellItem,
@@ -25,13 +26,12 @@ import {
   GridToolbarContainer,
   GRID_DATE_COL_DEF,
   MuiEvent,
-  useGridApiContext,
+  useGridApiContext
 } from "@mui/x-data-grid-pro";
-import { randomId } from "@mui/x-data-grid-generator";
 import {
   DatePicker,
   DateTimePicker,
-  LocalizationProvider,
+  LocalizationProvider
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
@@ -59,7 +59,7 @@ const CreateRMA: React.FC = () => {
 
   useEffect(() => {
     if (userrole != "Sales Engineer") {
-      navigate('*');
+      navigate('/403');
     }
   }, []);
 

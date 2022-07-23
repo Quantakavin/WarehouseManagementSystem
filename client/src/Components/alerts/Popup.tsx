@@ -1,7 +1,5 @@
 import { Backdrop, Box, Fade, Modal, Typography } from "@mui/material";
-import { motion } from "framer-motion";
-import React, { useState } from "react";
-import CancelIcon from "@mui/icons-material/Cancel";
+import React from "react";
 
 interface PopupProps {
   showpopup: boolean;

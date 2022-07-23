@@ -1,17 +1,10 @@
-import "../../styles/chart.scss";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  YAxis,
-} from "recharts";
-import { Title } from "react-bootstrap/lib/Modal";
-import { useState, useEffect } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import {
+    CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis
+} from "recharts";
 import config from "../../config/config";
+import "../../styles/chart.scss";
 
 function Charts({ title, dataKey, grid }) {
   const [error, setError] = useState(null);

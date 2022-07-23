@@ -1,6 +1,5 @@
-import supertest from 'supertest';
-const request = require('supertest');
 import user from '../routes/userRoutes';
+const request = require('supertest');
 
 describe('Post /login', () => {
     describe('given email,password', () => {

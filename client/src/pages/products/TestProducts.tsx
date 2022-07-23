@@ -1,11 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
-import "../../styles/Products.scss";
-import TopBar from "../../components/header/TopBar";
-import SideBar from "../../components/sidebar/SideBar";
 import axios from "axios";
-// import "../App.css";
+import { useEffect, useState } from "react";
 import "../../styles/Products.scss";
+// import "../App.css";
 import Table from "../../components/table/Table";
+import "../../styles/Products.scss";
 // import SearchBar from "material-ui-search-bar";
 //import ProductSearchBar from "../../components/search/SearchBar";
 

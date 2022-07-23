@@ -1,37 +1,40 @@
-import React, { useState } from "react";
-import {
-  useInfiniteQuery,
-  useQuery,
-  useQueryClient,
-  useMutation,
-} from "react-query";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import PageviewIcon from "@mui/icons-material/Pageview";
-import CancelIcon from "@mui/icons-material/Cancel";
-import { motion } from "framer-motion";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { Hidden } from "@mui/material";
+import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import {
+  useInfiniteQuery, useMutation, useQuery,
+  useQueryClient
+} from "react-query";
 import { useNavigate } from "react-router-dom";
 import { DeleteUser, GetAllUsers, GetUsernames } from "../../api/UserDB";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import {
+  ChangeSortColumn, selectSortColumn,
+  selectSortOrder, SortAsc,
+  SortDesc
+} from "../../app/reducers/UserTableFilterSlice";
+import Popup from "../../components/alerts/Popup";
+import { Toast } from "../../components/alerts/SweetAlert";
 import SearchBarUpdated from "../../components/search/SearchBarUpdated";
 import InfiniteTable from "../../components/table/InfiniteTable";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import {
-  selectSortColumn,
-  selectSortOrder,
-  ChangeSortColumn,
-  SortAsc,
-  SortDesc,
-} from "../../app/reducers/UserTableFilterSlice";
 import useDebounce from "../../hooks/useDebounce";
-import { Toast } from "../../components/alerts/SweetAlert";
-import Popup from "../../components/alerts/Popup";
 
 const Users: React.FC = () => {
   const sortColumn = useAppSelector(selectSortColumn);
   const sortOrder = useAppSelector(selectSortOrder);
   const navigate = useNavigate();
+  const userrole = useAppSelector(selectRole)
+  useEffect(() => {
+    if (userrole != "Admin") {
+      navigate('/403');
+    }
+  }, []);
   const [searchOptions, setSearchOptions] = useState<string[]>([]);
   const [inputName, setInputName] = useState<string>(null);
   const [searchName, setSearchName] = useState<string>("");
@@ -314,3 +317,7 @@ const Users: React.FC = () => {
 };
 
 export default Users;
+// function selectRole(selectRole: any) {
+//   throw new Error("Function not implemented.");
+// }
+

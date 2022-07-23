@@ -1,21 +1,15 @@
 import {
-  Container,
-  Paper,
-  TableContainer,
-  Table,
-  TableCell,
-  TableHead,
-  TableRow,
+    Container,
+    Paper, Table, TableContainer, TableHead,
+    TableRow
 } from "@mui/material";
 import { AxiosResponse } from "axios";
-import React from "react";
 import { UseInfiniteQueryResult } from "react-query";
-import TableHeader from "./TableHeader";
 import { ActionMenuItem } from "../../utils/CommonTypes";
+import TableSkeleton from "../skeletons/TableSkeleton";
 import LoadMoreButton from "./LoadMoreButton";
 import TableContents from "./TableContents";
-import TableSkeleton from "../skeletons/TableSkeleton";
-import { SSRProviderProps } from "react-bootstrap";
+import TableHeader from "./TableHeader";
 
 interface TableProps {
   headers: string[];

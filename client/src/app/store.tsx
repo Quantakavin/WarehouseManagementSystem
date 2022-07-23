@@ -1,14 +1,10 @@
 import {
-  configureStore,
-  createStore,
-  ThunkAction,
-  Action,
+    Action, createStore,
+    ThunkAction
 } from "@reduxjs/toolkit";
-import { persistStore, persistReducer } from "redux-persist";
-import CurrentUserReducer from "./reducers/CurrentUserSlice";
-import SidebarReducer from "./reducers/SidebarSlice";
-import RootReducer from "./reducers/RootReducer";
+import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import RootReducer from "./reducers/RootReducer";
 
 const persistConfig = {
   key: "root",

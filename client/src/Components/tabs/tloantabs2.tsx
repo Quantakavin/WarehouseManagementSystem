@@ -1,45 +1,26 @@
+import { TabContext, TabPanel } from "@mui/lab";
 import {
-  Tab,
-  Tabs,
-  Box,
-  unstable_createMuiStrictModeTheme,
-  ThemeProvider,
-  MenuItem,
-  Stack,
-  Grid,
-  Typography,
+    Box, Grid, Stack, Tab,
+    Tabs, unstable_createMuiStrictModeTheme
 } from "@mui/material";
-import { TabList, TabPanel, TabContext } from "@mui/lab";
-import "react-tabs/style/react-tabs.css";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import "react-tabs/style/react-tabs.css";
 
-import { Link, useNavigate } from "react-router-dom";
-import TableNew from "../table/InfiniteTable";
-import { useAppSelector } from "../../app/hooks";
-import { selectRole, selectId } from "../../app/reducers/CurrentUserSlice";
-import { Hidden } from "@mui/material";
-import { motion } from "framer-motion";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import SearchBarUpdated from "../../components/search/SearchBarUpdated";
-import Fab from "@mui/material/Fab";
 import PostAddIcon from "@mui/icons-material/PostAdd";
-import theme from "../../styles/muistyle";
+import Fab from "@mui/material/Fab";
 import {
-  DataGrid,
-  GridFilterModel,
-  GridToolbar,
-  GridRowParams,
-  GridRowId,
-  MuiEvent,
-  GridToolbarColumnsButton,
-  GridToolbarContainer,
-  GridToolbarDensitySelector,
-  GridToolbarExport,
-  GridToolbarFilterButton,
-  GridToolbarQuickFilter,
+    DataGrid,
+    GridFilterModel, GridRowParams, GridToolbarColumnsButton,
+    GridToolbarContainer,
+    GridToolbarDensitySelector,
+    GridToolbarExport,
+    GridToolbarFilterButton,
+    GridToolbarQuickFilter
 } from "@mui/x-data-grid";
-import { DataGridPro } from "@mui/x-data-grid-pro";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../app/hooks";
+import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
 
 const columns = [
   { field: "TLoanNumber", headerName: "Loan No.", flex: 4 },

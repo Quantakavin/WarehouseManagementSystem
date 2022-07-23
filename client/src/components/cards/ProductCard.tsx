@@ -1,8 +1,7 @@
-import "./cards.scss";
-import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import config from "../../config/config";
+import "./cards.scss";
 
 function ProductCard() {
   // Item Details

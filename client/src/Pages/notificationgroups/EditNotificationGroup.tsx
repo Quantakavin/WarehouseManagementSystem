@@ -1,42 +1,36 @@
-import React, { useEffect, useState } from "react";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { SelectChangeEvent } from "@mui/material";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
-import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import SubmitButton from "../../components/form/SubmitButton";
-import ErrorAlert from "../../components/form/ErrorAlert";
-import FormField from "../../components/form/FormField";
-import { NameValidation, SelectValidation } from "../../utils/FormValidation";
-import { PostUserGroup } from "../../api/UserGroupDB";
-import FormContainer from "../../components/form/FormContainer";
-import FormTextArea from "../../components/form/FormTextArea";
-import { GetFeatures, GetFeatureRights } from "../../api/FeatureDB";
-import {
-  Option,
-  Feature,
-  FeatureRight,
-  Company,
-  NotiFeature,
-  NotiType,
-} from "../../utils/CommonTypes";
-import { Toast } from "../../components/alerts/SweetAlert";
-import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
-import SelectedList from "../../components/form/SelectedList";
 import { GetCompanies } from "../../api/CompanyDB";
-import SelectDropdown from "../../components/form/SelectDropdown";
 import {
   GetNotificationFeatures,
-  GetNotificationTypes,
+  GetNotificationTypes
 } from "../../api/NotificationFeatureDB";
 import {
-  GetNotificationGroup,
-  PostNotificationGroup,
-  UpdateNotificationGroup,
+  GetNotificationGroup, UpdateNotificationGroup
 } from "../../api/NotificationGroupDB";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { Toast } from "../../components/alerts/SweetAlert";
+import ErrorAlert from "../../components/form/ErrorAlert";
+import FormContainer from "../../components/form/FormContainer";
+import FormField from "../../components/form/FormField";
+import FormTextArea from "../../components/form/FormTextArea";
+import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
+import SelectDropdown from "../../components/form/SelectDropdown";
+import SelectedList from "../../components/form/SelectedList";
+import SubmitButton from "../../components/form/SubmitButton";
+import {
+  Company,
+  NotiFeature,
+  NotiType, Option
+} from "../../utils/CommonTypes";
+import { NameValidation, SelectValidation } from "../../utils/FormValidation";
 
 interface FormValues {
   name: string;
@@ -47,6 +41,12 @@ interface FormValues {
 
 const AddNotificationGroup: React.FC = () => {
   const navigate = useNavigate();
+  const userrole = useAppSelector(selectRole)
+  useEffect(() => {
+    if (userrole != "Admin") {
+      navigate('/403');
+    }
+  }, []);
   const {
     register,
     handleSubmit,

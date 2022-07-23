@@ -1,14 +1,14 @@
 import {
-  Box,
-  Button,
-  Card,
-  CardContent, Typography
+    Box,
+    Button,
+    Card,
+    CardContent, Typography
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
 import "../styles/Error404.scss";
 
-function Error404() {
+function Error403() {
   const navigate = useNavigate();
   const URL = window.location.href;
 
@@ -32,7 +32,7 @@ function Error404() {
                 textAlign: "center",
               }}
             >
-              404
+              403
               <br />
             </Typography>
 
@@ -54,7 +54,7 @@ function Error404() {
               Oops!
               <br />
             </Typography>
-            The page you are looking for cannot be found
+            You aren't allowed to access this page
             <br />
             Please return to the page you on
           </Box>
@@ -92,4 +92,4 @@ function Error404() {
   );
 }
 
-export default Error404;
+export default Error403;

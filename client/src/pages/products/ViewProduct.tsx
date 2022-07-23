@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "react-query";
-import { GetProduct } from "../../api/ProductDB";
-import CardField from "../../components/cards/CardField";
-import CardContainer from "../../components/cards/CardContainer";
-import CardSkeleton from "../../components/skeletons/CardSkeleton";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import React from "react";
+import { useQuery } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
+import { GetProduct } from "../../api/ProductDB";
+import CardContainer from "../../components/cards/CardContainer";
+import CardField from "../../components/cards/CardField";
+import CardSkeleton from "../../components/skeletons/CardSkeleton";
 
 const ViewProduct: React.FC = () => {
   const params = useParams();

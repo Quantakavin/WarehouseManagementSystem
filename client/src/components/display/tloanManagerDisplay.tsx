@@ -1,29 +1,16 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import { Box, Grid } from "@mui/material";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import { styled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import { DataGrid, GridColumns } from "@mui/x-data-grid";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 //import { GetDetails }from "../../api/TLoanDB"
-import ModalButton from "./TloanModal/modal";
-import TLoanRejectModalButton from "./TloanModal/tloanRejectModal";
 import { motion } from "framer-motion";
+import TLoanRejectModalButton from "./TloanModal/tloanRejectModal";
 
 export default function TLoanManagerDisplay() {
   const navigate = useNavigate();

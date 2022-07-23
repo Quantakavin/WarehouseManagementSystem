@@ -1,14 +1,10 @@
-import "./cards.scss";
-import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
+import { Box, Card, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { selectRole, selectName } from "../../app/reducers/CurrentUserSlice";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import config from "../../config/config";
-import GetLoansOverview from "../../api/dashboard/GetLoansOverview";
-import GetRMAsOverview from "../../api/dashboard/GetRMAsOverview";
-import GetTLoanRMAChart from "../../api/dashboard/GetTLoanRMAChart";
-import { Box, Card, Grid, Typography } from "@mui/material";
+import "./cards.scss";
 
 function cards() {
   const userrole = useAppSelector(selectRole);

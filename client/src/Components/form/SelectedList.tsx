@@ -1,8 +1,7 @@
+import CloseIcon from "@mui/icons-material/Close";
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import React from "react";
-import { UseFormRegister, RegisterOptions } from "react-hook-form";
 import { Option } from "../../utils/CommonTypes";
-import CloseIcon from "@mui/icons-material/Close";
 
 interface SelectProps {
   label: string;

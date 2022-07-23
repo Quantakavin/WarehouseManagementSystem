@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { selectCurrentTab, ChangeTab } from "../../app/reducers/SidebarSlice";
+import { ChangeTab, selectCurrentTab } from "../../app/reducers/SidebarSlice";
 
 interface SidebarLink {
   url: string;

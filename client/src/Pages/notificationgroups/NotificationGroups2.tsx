@@ -1,4 +1,11 @@
-import React, { useEffect, useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import {
+  Box, Fab, Stack, Typography,
+  unstable_createMuiStrictModeTheme
+} from "@mui/material";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -9,28 +16,27 @@ import {
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
-  GridToolbarQuickFilter,
+  GridToolbarQuickFilter
 } from "@mui/x-data-grid";
-import {
-  Box,
-  Card,
-  CardContent,
-  Stack,
-  Theme,
-  Typography,
-  unstable_createMuiStrictModeTheme,
-  withStyles,
-  IconButton,
-  Fab,
-} from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
 
 const NotificationGroups2: React.FC = () => {
+  const navigate = useNavigate();
+  const userrole = useAppSelector(selectRole)
+  useEffect(() => {
+    if (userrole != "Admin") {
+      navigate('/403');
+    }
+  }, []);
   const [row, setRow] = useState([]);
+  const theme = unstable_createMuiStrictModeTheme();
+  const [pageSize, setPageSize] = React.useState(25);
+  const [inputName, setInputName] = useState<string>(null);
+  const [value, setValue] = useState(0); // first tab
+  const [hoveredRow, setHoveredRow] = React.useState(null);
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/notificationgroups`, {
@@ -81,13 +87,6 @@ const NotificationGroups2: React.FC = () => {
       ],
     },
   ];
-
-  const navigate = useNavigate();
-  const theme = unstable_createMuiStrictModeTheme();
-  const [pageSize, setPageSize] = React.useState(25);
-  const [inputName, setInputName] = useState<string>(null);
-  const [value, setValue] = useState(0); // first tab
-  const [hoveredRow, setHoveredRow] = React.useState(null);
 
   const onMouseEnterRow = (event) => {
     const id = Number(event.currentTarget.getAttribute("data-id"));

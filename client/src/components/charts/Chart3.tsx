@@ -1,15 +1,10 @@
-import React from "react";
-import "../../styles/chart.scss";
-import { render } from "react-dom";
 import {
-  BarChart,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Bar,
-  ResponsiveContainer,
-  Tooltip,
+    Bar, BarChart,
+    CartesianGrid, ResponsiveContainer,
+    Tooltip, XAxis,
+    YAxis
 } from "recharts";
+import "../../styles/chart.scss";
 
 const data = [
   {

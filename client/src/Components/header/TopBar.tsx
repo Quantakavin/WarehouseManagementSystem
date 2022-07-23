@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import SettingsIcon from "@mui/icons-material/Settings";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { motion } from "framer-motion";
-import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import defaultprofile from "../../assets/defaultprofile.png";
-import navbarbrand from "../../assets/navbarbrand.png";
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import LogoutIcon from "@mui/icons-material/Logout";
+import MenuIcon from "@mui/icons-material/Menu";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
+import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { Container, Nav, Navbar } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../app/hooks";
 import { removeUser } from "../../app/reducers/CurrentUserSlice";
 import { Reset } from "../../app/reducers/SidebarSlice";
-import { ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
+import defaultprofile from "../../assets/defaultprofile.png";
+import navbarbrand from "../../assets/navbarbrand.png";
 
 const TopBar: React.FC = () => {
   const navigate = useNavigate();

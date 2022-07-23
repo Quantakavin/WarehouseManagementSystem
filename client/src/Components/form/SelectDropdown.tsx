@@ -1,7 +1,6 @@
-import { TransgenderTwoTone } from "@mui/icons-material";
-import { Checkbox, ListItemText, MenuItem, Select } from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
 import React from "react";
-import { UseFormRegister, RegisterOptions } from "react-hook-form";
+import { RegisterOptions, UseFormRegister } from "react-hook-form";
 import { Option } from "../../utils/CommonTypes";
 
 interface SelectProps<IFormValues> {

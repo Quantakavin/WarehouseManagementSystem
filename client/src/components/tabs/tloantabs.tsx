@@ -1,7 +1,7 @@
-import { Tab, Tabs, Box, Grow } from "@mui/material";
-import { TabList, TabPanel, TabContext } from "@mui/lab";
+import { TabContext, TabPanel } from "@mui/lab";
+import { Box, Tab, Tabs } from "@mui/material";
+import React, { useState } from "react";
 import "react-tabs/style/react-tabs.css";
-import React, { useEffect, useState } from "react";
 // import axios from 'axios';
 // import Table from '@mui/material/Table';
 // import TableBody from '@mui/material/TableBody';
@@ -10,26 +10,19 @@ import React, { useEffect, useState } from "react";
 // import TableHead from '@mui/material/TableHead';
 // import TableRow from '@mui/material/TableRow';
 // import Paper from '@mui/material/Paper';
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import SubmitButton from "../form/SubmitButton";
-import { useQuery, useInfiniteQuery } from "react-query";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import PageviewIcon from "@mui/icons-material/Pageview";
-import ActionMenu from "../../components/table/ActionMenu";
-import {
-  GetCurrent,
-  GetDraft,
-  GetPending,
-  GetHistory,
-} from "../../api/TLoanDB";
-import TableNew from "../table/InfiniteTable";
-import EmptyTable from "../table/EmptyTable";
-import { selectRole, selectId } from "../../app/reducers/CurrentUserSlice";
-import { useAppSelector } from "../../app/hooks";
-import { NavigationRounded } from "@mui/icons-material";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material";
+import { useInfiniteQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
+import {
+    GetCurrent,
+    GetDraft, GetHistory, GetPending
+} from "../../api/TLoanDB";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import EmptyTable from "../table/EmptyTable";
+import TableNew from "../table/InfiniteTable";
 
 const TLoanTabs: React.FC = () => {
   const headers = [

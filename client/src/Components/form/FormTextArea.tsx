@@ -1,6 +1,5 @@
-import React from "react";
+import { Path, RegisterOptions, UseFormRegister } from "react-hook-form";
 import styled from "styled-components";
-import { UseFormRegister, RegisterOptions, Path } from "react-hook-form";
 
 const Input = styled.textarea`
   padding-top: 8px;

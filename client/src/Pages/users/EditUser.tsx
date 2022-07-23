@@ -1,29 +1,27 @@
-import React, { useState } from "react";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { SelectChangeEvent } from "@mui/material";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { SelectChangeEvent } from "@mui/material";
-import FormContainer from "../../components/form/FormContainer";
-import SubmitButton from "../../components/form/SubmitButton";
-import ErrorAlert from "../../components/form/ErrorAlert";
-import FormField from "../../components/form/FormField";
-import SelectDropdown from "../../components/form/SelectDropdown";
-import {
-  SelectValidation,
-  EmailValidation,
-  UsernameValidation,
-  PhoneNoValidation,
-  PasswordValidation,
-} from "../../utils/FormValidation";
-import { Option, Company, UserGroup, NotiGroup } from "../../utils/CommonTypes";
 import { GetCompanies } from "../../api/CompanyDB";
-import { GetUserGroups } from "../../api/UserGroupDB";
 import { GetNotificationGroups } from "../../api/NotificationGroupDB";
-import { UpdateUser, GetUser } from "../../api/UserDB";
-import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
+import { GetUser, UpdateUser } from "../../api/UserDB";
+import { GetUserGroups } from "../../api/UserGroupDB";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
+import ErrorAlert from "../../components/form/ErrorAlert";
+import FormContainer from "../../components/form/FormContainer";
+import FormField from "../../components/form/FormField";
+import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
+import SelectDropdown from "../../components/form/SelectDropdown";
+import SubmitButton from "../../components/form/SubmitButton";
+import { Company, NotiGroup, Option, UserGroup } from "../../utils/CommonTypes";
+import {
+  EmailValidation, PasswordValidation, PhoneNoValidation, SelectValidation, UsernameValidation
+} from "../../utils/FormValidation";
 
 interface FormValues {
   name: string;
@@ -36,6 +34,15 @@ interface FormValues {
 }
 
 const EditUser: React.FC = () => {
+  const params = useParams();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const userrole = useAppSelector(selectRole)
+  useEffect(() => {
+    if (userrole != "Admin") {
+      navigate('/403');
+    }
+  }, []);
   const [companyOptions, setCompanyOptions] = useState<Option[]>([]);
   const [userGroupOptions, setUserGroupOptions] = useState<Option[]>([]);
   const [notiGroupOptions, setNotiGroupOptions] = useState<Option[]>([]);
@@ -43,9 +50,6 @@ const EditUser: React.FC = () => {
   // const [user, setUser] = useState<any>(null);
   const [selectedNotiGroups, setSelectedNotiGroups] = useState<string[]>([]);
   const [returnNotiGroups, setReturnNotiGroups] = useState<any[]>([]);
-  const params = useParams();
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,

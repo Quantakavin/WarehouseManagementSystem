@@ -1,6 +1,6 @@
+import { AxiosError, AxiosResponse } from "axios";
 import React, { useState } from "react";
 import { Alert } from "react-bootstrap";
-import { AxiosError, AxiosResponse } from "axios";
 
 interface ErrorProps {
   error: AxiosError;

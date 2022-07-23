@@ -1,5 +1,4 @@
 import { useState } from "react";
-import TableRows from "./TableRows";
 import "./table.css";
 function AddDeleteTableRows() {
   const [rowsData, setRowsData] = useState([]);
