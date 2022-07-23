@@ -34,13 +34,14 @@ const SelectDropdown: React.FC<SelectProps<any>> = ({
       name={name}
       {...(register && register(name, rules))}
       sx={{ 
-        borderRadius: "15px",
+        borderRadius: "10px",
         paddingTop: "0px",
         textOverflow: "ellipsis", 
         overflow: "hidden", 
         whiteSpace: "pre"
       }}
       displayEmpty
+      label="Company"
     >
       <MenuItem value={""} disabled hidden>
       {placeholder}

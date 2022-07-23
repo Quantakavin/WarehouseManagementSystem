@@ -1,4 +1,4 @@
-import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { Checkbox, ListItemText, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import React from "react";
 import { UseFormRegister, RegisterOptions } from "react-hook-form";
 import { Option } from "../../utils/CommonTypes";
@@ -29,7 +29,7 @@ const MultiSelectDropdown: React.FC<SelectProps> = ({
             className="selectfield"
             name={name}
             sx={{
-                borderRadius: "15px",
+                borderRadius: "10px",
                 paddingTop: "0px",
             }}
             value={selectedValues}
@@ -42,6 +42,8 @@ const MultiSelectDropdown: React.FC<SelectProps> = ({
             </MenuItem>
             {options.map(({ id, text, value }) => (
                 <MenuItem key={id} value={value}>
+                    {/* <Checkbox checked={selectedValues.indexOf(value) > -1} />
+                    <ListItemText primary={text} /> */}
                     {text}
                 </MenuItem>
             ))}

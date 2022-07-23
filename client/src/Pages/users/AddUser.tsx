@@ -29,6 +29,9 @@ import { GetNotificationGroups } from "../../api/NotificationGroupDB";
 import { PostUser } from "../../api/UserDB";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import { Toast } from "../../components/alerts/SweetAlert";
+import FormSteps from "../../components/form/FormSteps";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 
 interface FormValues {
   name: string;
@@ -267,7 +270,17 @@ const AddUser: React.FC = () => {
   //   </div>
   // );
 
+  const steps = ['Enter user details', 'Assign user to groups'];
+
+  const icons = {
+    1: <ManageAccountsIcon />,
+    2: <GroupAddIcon />
+  };
+
   return (
+    <>
+    {/* <FormSteps steps={steps} activestep={step} /> */}
+    <FormSteps steps={steps} activestep={step-1} icons={icons}/>
     <FormContainer
       header="Create User"
       multistep
@@ -364,6 +377,7 @@ const AddUser: React.FC = () => {
         </div>
       </div>
     </FormContainer>
+    </>
   );
 };
 export default AddUser;
