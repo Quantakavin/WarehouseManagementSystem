@@ -3,15 +3,15 @@ import { TabContext, TabPanel } from "@mui/lab";
 import { Box, Grid, Stack, Tab, Tabs } from "@mui/material";
 import Fab from "@mui/material/Fab";
 import {
-    DataGrid,
-    GridFilterModel,
-    GridRowParams,
-    GridToolbarColumnsButton,
-    GridToolbarContainer,
-    GridToolbarDensitySelector,
-    GridToolbarExport,
-    GridToolbarFilterButton,
-    GridToolbarQuickFilter
+  DataGrid,
+  GridFilterModel,
+  GridRowParams,
+  GridToolbarColumnsButton,
+  GridToolbarContainer,
+  GridToolbarDensitySelector,
+  GridToolbarExport,
+  GridToolbarFilterButton,
+  GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import axios from "axios";
 import { motion } from "framer-motion";
@@ -56,7 +56,7 @@ const Rmatabs: React.FC = () => {
     { field: "RmaID", headerName: "ID", flex: 1 },
     { field: "Username", headerName: "Employee", flex: 8 },
     { field: "DateTime", headerName: "Date", flex: 8 },
-    { field: "CompanyName", headerName: "Company", flex: 8 },
+    { field: "Company", headerName: "Company", flex: 8 },
     { field: "CustomerEmail", headerName: "Customer Email", flex: 8 },
   ];
 
@@ -158,76 +158,86 @@ const Rmatabs: React.FC = () => {
       return (
         <TabContext value={value || "1"}>
           <Grid container>
-            <Grid item xs={11}>
-              <Box sx={{ paddingLeft: 3, paddingTop: 3 }}>
-                <h2> RMA Requests </h2>
-                <Tabs
-                  onChange={handleChange}
-                  TabIndicatorProps={{
-                    style: { backgroundColor: "#D97D54" },
-                  }}
-                  sx={{
-                    "& button:focus": {
-                      backgroundColor: "#063970",
-                      color: "white",
-                      width: "15%",
-                      height: "15%",
-                    },
-                  }}
-                >
-                  <Tab
-                    label="Pending"
-                    value="1"
-                    sx={{
-                      color: "grey",
-                      backgroundColor: "White",
-                      borderRadius: 2,
-                      marginRight: 2,
-                      height: "100%",
-                      width: "15%",
-                    }}
-                  />
-                  <Tab
-                    label="Accepted"
-                    value="2"
-                    sx={{
-                      color: "grey",
-                      backgroundColor: "White",
-                      borderRadius: 2,
-                      marginRight: 2,
-                      height: "100%",
-                      width: "15%",
-                    }}
-                  />
-                  <Tab
-                    label="Rejected"
-                    value="3"
-                    sx={{
-                      color: "grey",
-                      backgroundColor: "White",
-                      borderRadius: 2,
-                      marginRight: 2,
-                      height: "100%",
-                      width: "15%",
-                    }}
-                  />
-                  <Tab
-                    label="In Progress"
-                    value="4"
-                    sx={{
-                      color: "grey",
-                      backgroundColor: "White",
-                      borderRadius: 2,
-                      marginRight: 2,
-                      height: "100%",
-                      width: "15%",
-                    }}
-                  />
-                </Tabs>
-              </Box>
+            <Grid item xs={12} sx={{ paddingLeft: 3, paddingTop: 3 }}>
+              <h2> RMA Requests </h2>
             </Grid>
-            <Grid item xs={1} sx={{ paddingLeft: 4, marginTop: 8.75 }}>
-              <motion.div
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  m: 3,
+                  mb: 0
+                }}
+              >
+                <Box sx={{width: 1}}>
+                  <Tabs
+                    onChange={handleChange}
+                    TabIndicatorProps={{
+                      style: { backgroundColor: "#D97D54" },
+                    }}
+                    sx={{
+                      width: "100%",
+                      "& button:focus": {
+                        backgroundColor: "#063970",
+                        color: "white",
+                        width: "30%",
+                        height: "100%",
+                      },
+                    }}
+                  >
+                    <Tab
+                      label="Pending"
+                      value="1"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Accepted"
+                      value="2"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Rejected"
+                      value="3"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="In Progress"
+                      value="4"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                  </Tabs>
+                </Box>
+                <Box>
+                <motion.div
                 className="animatable"
                 whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                 whileTap={{ scale: 0.9 }}
@@ -236,7 +246,6 @@ const Rmatabs: React.FC = () => {
                   variant="extended"
                   aria-label="add"
                   onClick={() => navigate("/createRMA")}
-                  style={{ marginTop: 0 }}
                   sx={{
                     color: "white",
                     backgroundColor: "#063970",
@@ -247,6 +256,9 @@ const Rmatabs: React.FC = () => {
                   <PostAddIcon sx={{ ml: 2 }} />
                 </Fab>
               </motion.div>
+                </Box>
+              </Box>
+              <Box sx={{ paddingLeft: 3 }}></Box>
             </Grid>
             <Grid item xs={12}>
               <Box>
@@ -424,8 +436,8 @@ const Rmatabs: React.FC = () => {
                     "& button:focus": {
                       backgroundColor: "#063970",
                       color: "white",
-                      width: "15%",
-                      height: "15%",
+                      width: "30%",
+                      height: "100%",
                     },
                   }}
                 >
@@ -509,8 +521,8 @@ const Rmatabs: React.FC = () => {
                     "& button:focus": {
                       backgroundColor: "#063970",
                       color: "white",
-                      width: "15%",
-                      height: "15%",
+                      width: "30%",
+                      height: "100%",
                     },
                   }}
                 >
@@ -837,8 +849,8 @@ const Rmatabs: React.FC = () => {
                     "& button:focus": {
                       backgroundColor: "#063970",
                       color: "white",
-                      width: "15%",
-                      height: "15%",
+                      width: "30%",
+                      height: "100%",
                     },
                   }}
                 >
@@ -1018,8 +1030,8 @@ const Rmatabs: React.FC = () => {
                     "& button:focus": {
                       backgroundColor: "#063970",
                       color: "white",
-                      width: "15%",
-                      height: "15%",
+                      width: "30%",
+                      height: "100%",
                     },
                   }}
                 >
@@ -1098,8 +1110,8 @@ const Rmatabs: React.FC = () => {
                 "& button:focus": {
                   backgroundColor: "#063970",
                   color: "white",
-                  width: "15%",
-                  height: "15%",
+                  width: "30%",
+                  height: "100%",
                 },
               }}
             >
