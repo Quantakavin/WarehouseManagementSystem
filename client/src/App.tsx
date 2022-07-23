@@ -121,7 +121,7 @@ const App: React.FC = () => {
                 path="/tloanManagerDisplay/:TLoanNumber"
                 element={<TLoanManagerDisplay />}
               />
-              <Route path="/404" element={<Error404 />} />
+              <Route path="*" element={<Error404 />} />
               <Route path="/403" element={<Error403 />} />
             </Route>
           </Routes>

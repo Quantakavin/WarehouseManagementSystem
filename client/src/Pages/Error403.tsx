@@ -48,15 +48,15 @@ function Error403() {
               sx={{
                 color: "#063970",
                 fontWeight: "bold",
-                fontSize: 40,
+                fontSize: 60,
               }}
             >
               Oops!
               <br />
             </Typography>
-            You aren't allowed to access this page
+            You aren't allowed to access {URL}
             <br />
-            Please return to the page you on
+            Please return to the page you were on
           </Box>
           <Box
             component="span"

@@ -48,15 +48,15 @@ function Error404() {
               sx={{
                 color: "#063970",
                 fontWeight: "bold",
-                fontSize: 40,
+                fontSize: 60,
               }}
             >
               Oops!
               <br />
             </Typography>
             The page you are looking for cannot be found
-            <br />
-            Please return to the page you on
+            <br />The requested URL "{URL}" was not found on this server.
+            <br/>Please return to the page you were on
           </Box>
           <Box
             component="span"
