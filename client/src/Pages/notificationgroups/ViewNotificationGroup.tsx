@@ -15,10 +15,10 @@ import DOMPurify from 'dompurify';
 const ViewNotificationGroup: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const userrole = useAppSelector(selectRole)
+  const userrole = useAppSelector(selectRole);
   useEffect(() => {
-    if (userrole != "Admin") {
-      navigate('/403');
+    if (userrole !== "Admin") {
+      navigate("/403");
     }
   }, []);
   const [notiFeatures, setNotiFeatures] = useState<any[]>([]);

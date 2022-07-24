@@ -3,9 +3,12 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import styles from "./Counter.module.css";
 import {
-    decrement,
-    increment, incrementAsync, incrementByAmount, incrementIfOdd,
-    selectCount
+  decrement,
+  increment,
+  incrementAsync,
+  incrementByAmount,
+  incrementIfOdd,
+  selectCount,
 } from "./counterSlice";
 
 export function Counter() {

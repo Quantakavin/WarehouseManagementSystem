@@ -8,18 +8,18 @@ import { DataGrid, GridColumns } from "@mui/x-data-grid";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-//import { GetDetails }from "../../api/TLoanDB"
+// import { GetDetails }from "../../api/TLoanDB"
 import { motion } from "framer-motion";
 import TLoanRejectModalButton from "./TloanModal/tloanRejectModal";
 
 export default function TLoanManagerDisplay() {
   const navigate = useNavigate();
   const [details, setDetails] = useState([]);
-  //const [loanDetails, setLoanDetails] = useState([]);
+  // const [loanDetails, setLoanDetails] = useState([]);
   const [loans, setLoans] = useState([]);
   const [items, setItems] = useState([]);
 
-  let { TLoanNumber } = useParams();
+  const { TLoanNumber } = useParams();
 
   useEffect(() => {
     // declare the async data fetching function

@@ -23,7 +23,8 @@ module.exports.getRMAProducts = async (RmaID) => {
                     ItemCode,
                     InvoiceNo,      
                     DoNo,
-                    DateOfPurchase,        
+                    DateOfPurchase,
+                    RmaProductStatus,        
                     ReturnReason,
                     Instructions,       
                     CourseOfAction
@@ -276,6 +277,29 @@ module.exports.updateRmaRejected = async (RmaID, rejectreason) => {
                 RejectReason: rejectreason
             })
             .transacting(trx)
+            .then(trx.commit)
+            .catch(trx.rollback);
+    });
+};
+
+module.exports.updateRmaChecklist = async (RmaID, products) => {
+    return await knex.transaction((trx) => {
+        knex('Rma')
+            .where('RmaID', RmaID)
+            .update({
+                RmaStatusID: 2
+            })
+            .transacting(trx)
+            .then(async () => {
+                let rmaproducts = await products.map(async (product) => {
+                    console.log(`${product.id} ${product.RmaProductStatus}`);
+                    return await knex('RmaProduct')
+                        .where('RmaProductPK', product.id)
+                        .update({ RmaProductStatus: product.RmaProductStatus })
+                        .transacting(trx);
+                });
+                return rmaproducts;
+            })
             .then(trx.commit)
             .catch(trx.rollback);
     });

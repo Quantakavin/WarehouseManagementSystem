@@ -10,7 +10,7 @@ import SubmitButton from "../../components/form/SubmitButton";
 import { motion, useAnimation } from "framer-motion";
 import {
   EmailValidation,
-  PasswordValidation
+  PasswordValidation,
 } from "../../utils/FormValidation";
 // import LoginUser from "../../api/user/LoginUser";
 import { LoginUser } from "../../api/UserDB";

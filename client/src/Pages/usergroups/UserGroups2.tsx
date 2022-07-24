@@ -3,18 +3,22 @@ import EditIcon from "@mui/icons-material/Edit";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
-  Box, Fab, Stack, Typography,
-  unstable_createMuiStrictModeTheme
+  Box,
+  Fab,
+  Stack,
+  Typography,
+  unstable_createMuiStrictModeTheme,
 } from "@mui/material";
 import {
   DataGrid,
   GridActionsCellItem,
-  GridFilterModel, GridToolbarColumnsButton,
+  GridFilterModel,
+  GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
-  GridToolbarQuickFilter
+  GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -27,10 +31,10 @@ const UserGroups2: React.FC = () => {
   const [pageSize, setPageSize] = React.useState(25);
   const [inputName, setInputName] = useState<string>(null);
   const [value, setValue] = useState(0); // first tab
-  const userrole = useAppSelector(selectRole)
+  const userrole = useAppSelector(selectRole);
   useEffect(() => {
-    if (userrole != "Admin") {
-      navigate('/403');
+    if (userrole !== "Admin") {
+      navigate("/403");
     }
   }, []);
   const [row, setRow] = useState([]);

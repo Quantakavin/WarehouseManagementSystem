@@ -19,6 +19,7 @@ router.get('/closedRMA', rmaController.getClosedRMA);
 router.post('/newRMA', rmaController.newRMA);
 router.put('/acceptRMA/:RmaID', rmaController.updateRmaAccepted);
 router.put('/rejectRMA/:RmaID', rmaController.updateRmaRejected);
+router.put('/updatechecklistRMA/:RmaID', rmaController.updateRmaChecklist);
 router.put('/receiveRMA/:RmaID', rmaController.updateRmaReceived);
 router.put('/verifyRMA/:RmaID', rmaController.updateRmaInstructions);
 router.put('/COARMA/:RmaID', rmaController.updateRmaCoa);

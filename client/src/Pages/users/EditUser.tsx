@@ -24,7 +24,11 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { Company, NotiGroup, Option, UserGroup } from "../../utils/CommonTypes";
 import {
-  EmailValidation, PasswordValidation, PhoneNoValidation, SelectValidation, UsernameValidation
+  EmailValidation,
+  PasswordValidation,
+  PhoneNoValidation,
+  SelectValidation,
+  UsernameValidation,
 } from "../../utils/FormValidation";
 import FormSteps from "../../components/form/FormSteps";
 
@@ -42,10 +46,10 @@ const EditUser: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const userrole = useAppSelector(selectRole)
+  const userrole = useAppSelector(selectRole);
   useEffect(() => {
-    if (userrole != "Admin") {
-      navigate('/403');
+    if (userrole !== "Admin") {
+      navigate("/403");
     }
   }, []);
   const [companyOptions, setCompanyOptions] = useState<Option[]>([]);

@@ -16,15 +16,15 @@ import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-//import { GetDetails }from "../../api/TLoanDB"
+// import { GetDetails }from "../../api/TLoanDB"
 
 export default function tloanDisplay() {
   const navigate = useNavigate();
   const [details, setDetails] = useState([]);
-  //const [loanDetails, setLoanDetails] = useState([]);
+  // const [loanDetails, setLoanDetails] = useState([]);
   const [loans, setLoans] = useState([]);
 
-  let { TLoanNumber } = useParams();
+  const { TLoanNumber } = useParams();
 
   useEffect(() => {
     // declare the async data fetching function
@@ -265,7 +265,7 @@ export default function tloanDisplay() {
               </Box>
             </Box>
 
-            <Typography variant="body2" color="text.secondary"></Typography>
+            <Typography variant="body2" color="text.secondary" />
           </CardContent>
           <Box
             sx={{

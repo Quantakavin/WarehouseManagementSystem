@@ -24,7 +24,7 @@ const style = {
 };
 
 export default function RejectModalButton() {
-  let { RmaID } = useParams();
+  const { RmaID } = useParams();
   const navigate = useNavigate();
   const [reason, setReason] = useState("");
   const [open, setOpen] = React.useState(false);

@@ -3,8 +3,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
-  Box, Fab, Stack, Typography,
-  unstable_createMuiStrictModeTheme
+  Box,
+  Fab,
+  Stack,
+  Typography,
+  unstable_createMuiStrictModeTheme,
 } from "@mui/material";
 import {
   DataGrid,
@@ -16,7 +19,7 @@ import {
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
-  GridToolbarQuickFilter
+  GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -25,10 +28,10 @@ import { selectRole } from "../../app/reducers/CurrentUserSlice";
 
 const NotificationGroups2: React.FC = () => {
   const navigate = useNavigate();
-  const userrole = useAppSelector(selectRole)
+  const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole != "Admin") {
-      navigate('/403');
+      navigate("/403");
     }
   }, []);
   const [row, setRow] = useState([]);

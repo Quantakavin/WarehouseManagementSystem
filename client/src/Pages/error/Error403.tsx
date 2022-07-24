@@ -1,9 +1,4 @@
-import {
-    Box,
-    Button,
-    Card,
-    CardContent, Typography
-} from "@mui/material";
+import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
 
@@ -23,17 +18,17 @@ function Error403() {
         }}
       >
         <CardContent>
-        <Typography
-              sx={{
-                color: "black",
-                fontWeight: "bold",
-                fontSize: 300,
-                textAlign: "center",
-              }}
-            >
-              403
-              <br />
-            </Typography>
+          <Typography
+            sx={{
+              color: "black",
+              fontWeight: "bold",
+              fontSize: 300,
+              textAlign: "center",
+            }}
+          >
+            403
+            <br />
+          </Typography>
 
           <Box
             sx={{

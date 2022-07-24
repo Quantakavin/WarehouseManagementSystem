@@ -167,10 +167,10 @@ const Rmatabs: React.FC = () => {
                   display: "flex",
                   justifyContent: "space-between",
                   m: 3,
-                  mb: 0
+                  mb: 0,
                 }}
               >
-                <Box sx={{width: 1}}>
+                <Box sx={{ width: 1 }}>
                   <Tabs
                     onChange={handleChange}
                     TabIndicatorProps={{
@@ -237,28 +237,28 @@ const Rmatabs: React.FC = () => {
                   </Tabs>
                 </Box>
                 <Box>
-                <motion.div
-                className="animatable"
-                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <Fab
-                  variant="extended"
-                  aria-label="add"
-                  onClick={() => navigate("/createRMA")}
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#063970",
-                    ":hover": { backgroundColor: "#031c38" },
-                  }}
-                >
-                  Create
-                  <PostAddIcon sx={{ ml: 2 }} />
-                </Fab>
-              </motion.div>
+                  <motion.div
+                    className="animatable"
+                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <Fab
+                      variant="extended"
+                      aria-label="add"
+                      onClick={() => navigate("/createRMA")}
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#063970",
+                        ":hover": { backgroundColor: "#031c38" },
+                      }}
+                    >
+                      Create
+                      <PostAddIcon sx={{ ml: 2 }} />
+                    </Fab>
+                  </motion.div>
                 </Box>
               </Box>
-              <Box sx={{ paddingLeft: 3 }}></Box>
+              <Box sx={{ paddingLeft: 3 }} />
             </Grid>
             <Grid item xs={12}>
               <Box>

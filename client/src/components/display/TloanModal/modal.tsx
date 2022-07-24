@@ -25,8 +25,8 @@ const style = {
   p: 4,
 };
 
-function ModalButton() {
-  let { TLoanNumber } = useParams();
+const ModalButton = () => {
+  const { TLoanNumber } = useParams();
 
   const [reason, setReason] = useState("");
   const [duration, setDuration] = useState("");
@@ -138,12 +138,12 @@ function ModalButton() {
                 size="small"
                 label="Extend By"
               >
-                <MenuItem value={"5"}>5 Days</MenuItem>
-                <MenuItem value={"10"}>10 Days</MenuItem>
-                <MenuItem value={"15"}>15 Days</MenuItem>
-                <MenuItem value={"20"}>20 Days</MenuItem>
-                <MenuItem value={"25"}>25 Days</MenuItem>
-                <MenuItem value={"30"}>30 Days</MenuItem>
+                <MenuItem value="5">5 Days</MenuItem>
+                <MenuItem value="10">10 Days</MenuItem>
+                <MenuItem value="15">15 Days</MenuItem>
+                <MenuItem value="20">20 Days</MenuItem>
+                <MenuItem value="25">25 Days</MenuItem>
+                <MenuItem value="30">30 Days</MenuItem>
               </Select>
             </FormControl>
             {console.log(duration)}
@@ -154,7 +154,7 @@ function ModalButton() {
               rows={5.2}
               label="Reason For Extension"
               onChange={(e) => setReason(e.target.value)}
-            ></TextField>
+            />
 
             {console.log(reason)}
             <Box
@@ -219,6 +219,6 @@ function ModalButton() {
       {/* </form> */}
     </motion.div>
   );
-}
+};
 
 export default ModalButton;

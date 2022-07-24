@@ -7,17 +7,21 @@ import { Hidden } from "@mui/material";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import {
-  useInfiniteQuery, useMutation, useQuery,
-  useQueryClient
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
 } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { DeleteUser, GetAllUsers, GetUsernames } from "../../api/UserDB";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import {
-  ChangeSortColumn, selectSortColumn,
-  selectSortOrder, SortAsc,
-  SortDesc
+  ChangeSortColumn,
+  selectSortColumn,
+  selectSortOrder,
+  SortAsc,
+  SortDesc,
 } from "../../app/reducers/UserTableFilterSlice";
 import Popup from "../../components/alerts/Popup";
 import { Toast } from "../../components/alerts/SweetAlert";
@@ -29,10 +33,10 @@ const Users: React.FC = () => {
   const sortColumn = useAppSelector(selectSortColumn);
   const sortOrder = useAppSelector(selectSortOrder);
   const navigate = useNavigate();
-  const userrole = useAppSelector(selectRole)
+  const userrole = useAppSelector(selectRole);
   useEffect(() => {
-    if (userrole != "Admin") {
-      navigate('/403');
+    if (userrole !== "Admin") {
+      navigate("/403");
     }
   }, []);
   const [searchOptions, setSearchOptions] = useState<string[]>([]);
@@ -320,4 +324,3 @@ export default Users;
 // function selectRole(selectRole: any) {
 //   throw new Error("Function not implemented.");
 // }
-

@@ -26,12 +26,12 @@ import {
   GridToolbarContainer,
   GRID_DATE_COL_DEF,
   MuiEvent,
-  useGridApiContext
+  useGridApiContext,
 } from "@mui/x-data-grid-pro";
 import {
   DatePicker,
   DateTimePicker,
-  LocalizationProvider
+  LocalizationProvider,
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
@@ -46,7 +46,7 @@ import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
 const CreateRMA: React.FC = () => {
   const navigate = useNavigate();
   const sid = useAppSelector(selectId);
-  const userrole = useAppSelector(selectRole)
+  const userrole = useAppSelector(selectRole);
   const [rows, setRows] = useState([]);
   const [contactperson, setContactperson] = useState("");
   const [contactno, setContactno] = useState("");
@@ -56,10 +56,9 @@ const CreateRMA: React.FC = () => {
     {}
   );
 
-
   useEffect(() => {
-    if (userrole != "Sales Engineer") {
-      navigate('/403');
+    if (userrole !== "Sales Engineer") {
+      navigate("/403");
     }
   }, []);
 

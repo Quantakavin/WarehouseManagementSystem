@@ -24,7 +24,7 @@ const style = {
 };
 
 export default function ReasonModalButton() {
-  let { RmaID } = useParams();
+  const { RmaID } = useParams();
   const navigate = useNavigate();
   const [rma, setRma] = useState([]);
   const [open, setOpen] = React.useState(false);

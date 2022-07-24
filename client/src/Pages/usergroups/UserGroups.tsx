@@ -10,20 +10,22 @@ import {
   useInfiniteQuery,
   useMutation,
   useQuery,
-  useQueryClient
+  useQueryClient,
 } from "react-query";
 import { useNavigate } from "react-router-dom";
 import {
   DeleteUserGroup,
   FilterUserGroups,
-  GetUserGroupNames
+  GetUserGroupNames,
 } from "../../api/UserGroupDB";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import {
-  ChangeSortColumn, selectSortColumn,
-  selectSortOrder, SortAsc,
-  SortDesc
+  ChangeSortColumn,
+  selectSortColumn,
+  selectSortOrder,
+  SortAsc,
+  SortDesc,
 } from "../../app/reducers/UserGroupTableFilterSlice";
 import Popup from "../../components/alerts/Popup";
 import { Toast } from "../../components/alerts/SweetAlert";
@@ -36,10 +38,10 @@ const UserGroups: React.FC = () => {
   const sortOrder = useAppSelector(selectSortOrder);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const userrole = useAppSelector(selectRole)
+  const userrole = useAppSelector(selectRole);
   useEffect(() => {
-    if (userrole != "Admin") {
-      navigate('/403');
+    if (userrole !== "Admin") {
+      navigate("/403");
     }
   }, []);
   const [searchOptions, setSearchOptions] = useState<string[]>([]);
