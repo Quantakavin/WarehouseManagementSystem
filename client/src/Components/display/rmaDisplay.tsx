@@ -2272,7 +2272,7 @@ const RmaDisplay: React.FC = () => {
                     }}
                     onClick={receiveRMA}
                   >
-                    Verify
+                    Complete
                   </Button>
                 </motion.div>
               </Box>
