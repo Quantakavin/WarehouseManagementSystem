@@ -2,6 +2,7 @@ import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { SelectChangeEvent } from "@mui/material";
 import axios from "axios";
+import { motion, useAnimation } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -24,13 +25,17 @@ import FormTextArea from "../../components/form/FormTextArea";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import SelectDropdown from "../../components/form/SelectDropdown";
 import SelectedList from "../../components/form/SelectedList";
-import SubmitButton from "../../components/form/SubmitButton";
+import SubmitButton from "../../components/buttons/SubmitButton";
 import {
   Company,
   NotiFeature,
   NotiType, Option
 } from "../../utils/CommonTypes";
-import { NameValidation, SelectValidation } from "../../utils/FormValidation";
+import { DescriptionValidation, NameValidation, SelectValidation } from "../../utils/FormValidation";
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
+import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
+import FormSteps from "../../components/form/FormSteps";
+import GeneralButton from "../../components/buttons/GeneralButton";
 
 interface FormValues {
   name: string;
@@ -50,6 +55,9 @@ const AddNotificationGroup: React.FC = () => {
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
+    trigger,
     formState: { errors },
   } = useForm<FormValues>();
   const [step, setStep] = useState<number>(1);
@@ -158,11 +166,36 @@ const AddNotificationGroup: React.FC = () => {
         queryClient.invalidateQueries(`notificationgroup${params.id}`);
         navigate("/notificationgroups");
       },
+      onError: () => {
+        controls.start("detecterror");
+      }
     });
   };
 
+  const controls = useAnimation();
+
+  const variants = {
+    detecterror: () => ({
+      //rotate: [-1, 1.3, 0],
+      x: [10, -10, 0, 10, -10, 0],
+      transition: {
+        duration: 0.4
+      }
+    })
+  };
+
   const nextStep = () => {
-    setStep(step + 1);
+    trigger(["name", "description", "company"]).then(() => {
+      if (
+        !errors.name &&
+        !errors.description &&
+        !errors.company
+      ) {
+        setStep(step + 1);
+      } else {
+        controls.start("detecterror")
+      }
+    });
   };
 
   const prevStep = () => {
@@ -236,6 +269,14 @@ const AddNotificationGroup: React.FC = () => {
       (data) => data.NotiFeatureID === notifeature
     ).NotiFeature;
   };
+
+  const steps = ["Enter notification group details", "Assign notification features"];
+
+  const icons = {
+    1: <NotificationAddIcon />,
+    2: <FormatListBulletedIcon />
+  };
+
 
   // const StepOne = (
   //   <div className={step === 1 ? "showstep" : "hidestep"}>
@@ -330,6 +371,12 @@ const AddNotificationGroup: React.FC = () => {
   // );
 
   return (
+    <>
+    <FormSteps steps={steps} activestep={step - 1} icons={icons} />
+    <motion.div
+        variants={variants}
+        animate={controls}
+      >
     <FormContainer
       header="Edit Notification Group"
       multistep
@@ -346,7 +393,7 @@ const AddNotificationGroup: React.FC = () => {
               type="text"
               register={register}
               defaultvalue={NotificationGroupQuery.data.data[0].NotiGroupName}
-              errormsg={errors.name?.message}
+              error={errors.name}
               rules={NameValidation}
             />
             <FormTextArea
@@ -354,18 +401,19 @@ const AddNotificationGroup: React.FC = () => {
               name="description"
               register={register}
               defaultvalue={NotificationGroupQuery.data.data[0].NotiGroupDesc}
-              errormsg={errors.description?.message}
-              rules={NameValidation}
+              error={errors.description}
+              rules={DescriptionValidation}
+              setValue={setValue}
+              watch={watch}
             />
             <SelectDropdown
               label="Company"
               name="company"
               options={companyOptions}
               register={register}
-              errormsg={errors.company?.message}
+              error={errors.company}
               defaultoption={NotificationGroupQuery.data.data[0].CompanyID}
               rules={SelectValidation}
-              placeholder="Choose a company"
             />
             <div className="formnavigationcontainer">
               <button
@@ -375,12 +423,12 @@ const AddNotificationGroup: React.FC = () => {
               >
                 Cancel
               </button>
-              <button className="nextbutton" onClick={nextStep} type="button">
-                Next{" "}
+              <GeneralButton text={<>Next{" "}
                 <NavigateNextIcon
-                  style={{ marginRight: -10, marginLeft: -7 }}
-                />
-              </button>
+                  style={{ marginRight: -10, marginLeft: -1 }}
+                /></>}
+                clickfunction={nextStep}
+              />
             </div>
           </div>
           {/* Step Two */}
@@ -423,13 +471,14 @@ const AddNotificationGroup: React.FC = () => {
               <SubmitButton
                 text="Submit"
                 loading={mutation.isLoading}
-                multipart
               />
             </div>
           </div>
         </>
       )}
     </FormContainer>
+    </motion.div>
+    </>
   );
 };
 export default AddNotificationGroup;

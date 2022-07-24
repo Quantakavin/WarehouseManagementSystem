@@ -1,6 +1,6 @@
+import { Alert, AlertTitle } from "@mui/material";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { useState } from "react";
-import { Alert } from "react-bootstrap";
 
 interface ErrorProps {
   error: AxiosError;
@@ -14,7 +14,16 @@ const ErrorAlert: React.FC<ErrorProps> = ({ error }) => {
     <div>
       {!close ? (
         <div className="alertdiv">
-          <Alert
+
+          <Alert severity="error" sx={{ width: "80%" }} onClose={() => setClose(true)}>
+            <AlertTitle>Error</AlertTitle>
+            <p>
+              {typeof response.data === "undefined"
+                ? error.message
+                : response.data.message}
+            </p>
+          </Alert>
+          {/* <Alert
             style={{ width: "80%" }}
             variant="danger"
             onClose={() => setClose(true)}
@@ -26,7 +35,7 @@ const ErrorAlert: React.FC<ErrorProps> = ({ error }) => {
                 ? error.message
                 : response.data.message}
             </p>
-          </Alert>
+          </Alert> */}
         </div>
       ) : null}
     </div>

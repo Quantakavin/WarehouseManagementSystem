@@ -7,6 +7,7 @@ import ErrorAlert from "../../components/form/ErrorAlert";
 import FormContainer from "../../components/form/FormContainer";
 import FormField from "../../components/form/FormField";
 import SubmitButton from "../../components/form/SubmitButton";
+import { motion, useAnimation } from "framer-motion";
 import {
   EmailValidation,
   PasswordValidation
@@ -54,13 +55,32 @@ const Login: React.FC = () => {
       });
       return navigate("/dashboard", { replace: true });
     },
+    onError: (data) => {
+      controls.start("detecterror")
+    }
   });
+
+  const controls = useAnimation();
+
+  const variants = {
+    detecterror: () => ({
+      //rotate: [-1, 1.3, 0],
+      x: [10,-10,0,10,-10,0],
+      transition: {
+        duration: 0.4
+      }
+    })
+  };
 
   const onSubmit = (data: FormValues) => {
     mutation.mutate(data);
   };
 
   return (
+    <motion.div
+    variants={variants}
+    animate={controls}
+    >
     <FormContainer
       header="Login to your account"
       multistep={false}
@@ -72,7 +92,7 @@ const Login: React.FC = () => {
         name="email"
         type="email"
         register={register}
-        errormsg={errors.email?.message}
+        error={errors.email}
         rules={EmailValidation}
       />
       <FormField
@@ -80,7 +100,7 @@ const Login: React.FC = () => {
         name="password"
         type="password"
         register={register}
-        errormsg={errors.password?.message}
+        error={errors.password}
         rules={PasswordValidation}
       />
 
@@ -95,6 +115,7 @@ const Login: React.FC = () => {
         />
       </div>
     </FormContainer>
+    </motion.div>
   );
 };
 

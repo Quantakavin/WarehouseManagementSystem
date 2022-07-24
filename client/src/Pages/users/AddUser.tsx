@@ -1,24 +1,26 @@
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { SelectChangeEvent } from "@mui/material";
+import { Button, SelectChangeEvent } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import { motion, useAnimation } from "framer-motion";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormContainer from "../../components/form/FormContainer";
 import FormField from "../../components/form/FormField";
 import SelectDropdown from "../../components/form/SelectDropdown";
-import SubmitButton from "../../components/form/SubmitButton";
+import SubmitButton from "../../components/buttons/SubmitButton";
 import { Company, NotiGroup, Option, UserGroup } from "../../utils/CommonTypes";
 import {
-  EmailValidation, PasswordValidation, PhoneNoValidation, SelectValidation, UsernameValidation
+  EmailValidation,
+  PasswordValidation,
+  PhoneNoValidation,
+  SelectValidation,
+  UsernameValidation,
 } from "../../utils/FormValidation";
-// import GetCompanies from "../../api/company/GetCompanies";
-// import GetUserGroups from "../../api/usergroup/GetUserGroups";
-// import GetNotificationGroups from "../../api/notificationgroup/GetNotificationGroups";
-// import PostUser from "../../api/user/PostUser";
-
 import { GetCompanies } from "../../api/CompanyDB";
 import { GetNotificationGroups } from "../../api/NotificationGroupDB";
 import { PostUser } from "../../api/UserDB";
@@ -27,9 +29,9 @@ import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import FormSteps from "../../components/form/FormSteps";
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
+import GeneralButton from "../../components/buttons/GeneralButton";
+import { gridDensityValueSelector } from "@mui/x-data-grid";
 
 interface FormValues {
   name: string;
@@ -43,10 +45,10 @@ interface FormValues {
 
 const AddUser: React.FC = () => {
   const navigate = useNavigate();
-  const userrole = useAppSelector(selectRole)
+  const userrole = useAppSelector(selectRole);
   useEffect(() => {
-    if (userrole != "Admin") {
-      navigate('/403');
+    if (userrole !== "Admin") {
+      navigate("/403");
     }
   }, []);
   const [companyOptions, setCompanyOptions] = useState<Option[]>([]);
@@ -58,17 +60,16 @@ const AddUser: React.FC = () => {
   const {
     register,
     trigger,
-    watch,
     handleSubmit,
-    formState: { errors, isValid, isDirty, dirtyFields },
+    getValues,
+    setValue,
+    control,
+    watch,
+    formState: { errors, isDirty },
   } = useForm<FormValues>({ mode: "all" });
   const queryClient = useQueryClient();
 
-  // const companiesQuery = useQuery("companies", GetCompanies);
-  // const userGroupsQuery = useQuery("usergroups", GetUserGroups);
-  // const notiGroupsQuery = useQuery("notificationgroups", GetNotificationGroups);
-
-  const companiesQuery = useQuery(
+  useQuery(
     "companies",
     GetCompanies,
 
@@ -86,7 +87,8 @@ const AddUser: React.FC = () => {
       },
     }
   );
-  const userGroupsQuery = useQuery("usergroups", GetUserGroups, {
+
+  useQuery("usergroups", GetUserGroups, {
     onSuccess: (data) => {
       const usergroups: Option[] = [];
       data.data.forEach((usergroup: UserGroup) => {
@@ -99,25 +101,34 @@ const AddUser: React.FC = () => {
       setUserGroupOptions(usergroups);
     },
   });
-  const notiGroupsQuery = useQuery(
-    "notificationgroups",
-    GetNotificationGroups,
-    {
-      onSuccess: (data) => {
-        const notigroups: Option[] = [];
-        data.data.forEach((notigroup: NotiGroup) => {
-          notigroups.push({
-            id: notigroup.NotiGroupID,
-            text: notigroup.NotiGroupName,
-            value: notigroup.NotiGroupID,
-          });
+  useQuery("notificationgroups", GetNotificationGroups, {
+    onSuccess: (data) => {
+      const notigroups: Option[] = [];
+      data.data.forEach((notigroup: NotiGroup) => {
+        notigroups.push({
+          id: notigroup.NotiGroupID,
+          text: notigroup.NotiGroupName,
+          value: notigroup.NotiGroupID,
         });
-        setNotiGroupOptions(notigroups);
-      },
-    }
-  );
+      });
+      setNotiGroupOptions(notigroups);
+    },
+  });
 
   const mutation = useMutation(PostUser);
+
+  const controls = useAnimation();
+
+  const variants = {
+    detecterror: () => ({
+      //rotate: [-1, 1.3, 0],
+      x: [10,-10,0,10,-10,0],
+      transition: {
+        duration: 0.4
+      }
+    })
+  };
+
 
   const onSubmit = (data: FormValues) => {
     const postdata = data;
@@ -134,20 +145,28 @@ const AddUser: React.FC = () => {
         queryClient.invalidateQueries("usernames");
         navigate("/users");
       },
+      onError: () => {
+        controls.start("detecterror")
+      }
+
     });
   };
 
   const nextStep = () => {
-    // trigger([
-    //   "name",
-    //   "email",
-    //   "mobileno",
-    //   "password",
-    //   "company",
-    // ])
-    // console.log(isDirty)
-    // console.log(dirtyFields)
-    setStep(step + 1);
+    trigger(["name", "email", "mobileno", "password", "company"]).then(() => {
+      if (
+        isDirty &&
+        !errors.name &&
+        !errors.email &&
+        !errors.mobileno &&
+        !errors.password &&
+        !errors.company
+      ) {
+        setStep(step + 1);
+      } else {
+        controls.start("detecterror")
+      }
+    });
   };
 
   const prevStep = () => {
@@ -182,205 +201,128 @@ const AddUser: React.FC = () => {
     setReturnNotiGroups(notigroupstoset);
   };
 
-  // const StepOne = (
-  //   <div className={step === 1 ? "showstep" : "hidestep"}>
-  //     <FormField
-  //       label="Username"
-  //       name="name"
-  //       type="text"
-  //       register={register}
-  //       errormsg={errors.name?.message}
-  //       rules={UsernameValidation}
-  //     />
-  //     <FormField
-  //       label="Email Address"
-  //       name="email"
-  //       type="email"
-  //       register={register}
-  //       errormsg={errors.email?.message}
-  //       rules={EmailValidation}
-  //     />
-  //     <FormField
-  //       label="Phone No"
-  //       name="mobileno"
-  //       type="text"
-  //       register={register}
-  //       errormsg={errors.mobileno?.message}
-  //       rules={PhoneNoValidation}
-  //     />
-  //     <FormField
-  //       label="Password"
-  //       name="password"
-  //       type="password"
-  //       register={register}
-  //       errormsg={errors.password?.message}
-  //       rules={PasswordValidation}
-  //     />
-  //     <SelectDropdown
-  //       label="Company"
-  //       name="company"
-  //       options={companyOptions}
-  //       register={register}
-  //       errormsg={errors.company?.message}
-  //       rules={SelectValidation}
-  //       placeholder="Choose a company"
-  //     />
-  //     <div className="formnavigationcontainer">
-  //       <button
-  //         className="formnavigation"
-  //         onClick={() => navigate(-1)}
-  //         type="button"
-  //       >
-  //         Cancel
-  //       </button>
-  //       <button className="nextbutton" onClick={nextStep} type="button">
-  //         Next <NavigateNextIcon style={{ marginRight: -10, marginLeft: -7 }} />
-  //       </button>
-  //     </div>
-  //   </div>
-  // );
-
-  // const StepTwo = (
-  //   <div className={step === 2 ? "showstep" : "hidestep"}>
-  //     <SelectDropdown
-  //       label="User Group"
-  //       name="usergroup"
-  //       options={userGroupOptions}
-  //       register={register}
-  //       errormsg={errors.usergroup?.message}
-  //       rules={SelectValidation}
-  //       placeholder="Choose a User Group"
-  //     />
-
-  //     <MultiSelectDropdown
-  //       name="notificationgroups"
-  //       label="Notification Groups"
-  //       selectedValues={selectedNotiGroups}
-  //       changeSelectedValues={selectNotiGroup}
-  //       placeholder="Select Notification Groups..."
-  //       options={notiGroupOptions}
-  //     />
-  //     {mutation.isError && axios.isAxiosError(mutation.error) ? (
-  //       <div style={{ marginTop: 25, marginBottom: -15 }}>
-  //         <ErrorAlert error={mutation.error} />
-  //       </div>
-  //     ) : null}
-  //     <div className="formnavigationcontainer">
-  //       <button className="formnavigation" onClick={prevStep} type="button">
-  //         Back
-  //       </button>
-  //       <SubmitButton text="Submit" loading={mutation.isLoading} multipart />
-  //     </div>
-  //   </div>
-  // );
-
-  const steps = ['Enter user details', 'Assign user to groups'];
+  const steps = ["Enter user details", "Assign user to groups"];
 
   const icons = {
     1: <ManageAccountsIcon />,
-    2: <GroupAddIcon />
+    2: <GroupAddIcon />,
   };
 
   return (
     <>
-    {/* <FormSteps steps={steps} activestep={step} /> */}
-    <FormSteps steps={steps} activestep={step-1} icons={icons}/>
-    <FormContainer
-      header="Create User"
-      multistep
-      handleSubmit={handleSubmit}
-      onSubmit={onSubmit}
-    >
-      {/* Step One */}
-      <div className={step === 1 ? "showstep" : "hidestep"}>
-        <FormField
-          label="Username"
-          name="name"
-          type="text"
-          register={register}
-          errormsg={errors.name?.message}
-          rules={UsernameValidation}
-        />
-        <FormField
-          label="Email Address"
-          name="email"
-          type="email"
-          register={register}
-          errormsg={errors.email?.message}
-          rules={EmailValidation}
-        />
-        <FormField
-          label="Phone No"
-          name="mobileno"
-          type="text"
-          register={register}
-          errormsg={errors.mobileno?.message}
-          rules={PhoneNoValidation}
-        />
-        <FormField
-          label="Password"
-          name="password"
-          type="password"
-          register={register}
-          errormsg={errors.password?.message}
-          rules={PasswordValidation}
-        />
-        <SelectDropdown
-          label="Company"
-          name="company"
-          options={companyOptions}
-          register={register}
-          errormsg={errors.company?.message}
-          rules={SelectValidation}
-          placeholder="Choose a company"
-        />
-        <div className="formnavigationcontainer">
-          <button
-            className="formnavigation"
-            onClick={() => navigate(-1)}
-            type="button"
-          >
-            Cancel
-          </button>
-          <button className="nextbutton" onClick={nextStep} type="button">
-            Next{" "}
-            <NavigateNextIcon style={{ marginRight: -10, marginLeft: -7 }} />
-          </button>
-        </div>
-      </div>
-      {/* Step Two */}
-      <div className={step === 2 ? "showstep" : "hidestep"}>
-        <SelectDropdown
-          label="User Group"
-          name="usergroup"
-          options={userGroupOptions}
-          register={register}
-          errormsg={errors.usergroup?.message}
-          rules={SelectValidation}
-          placeholder="Choose a User Group"
-        />
+      <FormSteps steps={steps} activestep={step - 1} icons={icons} />
 
-        <MultiSelectDropdown
-          name="notificationgroups"
-          label="Notification Groups"
-          selectedValues={selectedNotiGroups}
-          changeSelectedValues={selectNotiGroup}
-          placeholder="Select Notification Groups..."
-          options={notiGroupOptions}
-        />
-        {mutation.isError && axios.isAxiosError(mutation.error) ? (
-          <div style={{ marginTop: 25, marginBottom: -15 }}>
-            <ErrorAlert error={mutation.error} />
-          </div>
-        ) : null}
-        <div className="formnavigationcontainer">
-          <button className="formnavigation" onClick={prevStep} type="button">
-            Back
-          </button>
-          <SubmitButton text="Submit" loading={mutation.isLoading} multipart />
-        </div>
-      </div>
-    </FormContainer>
+        <motion.div
+        variants={variants}
+        animate={controls}
+          // exit={{ x: "-100vw", opacity: 0 }}
+          // transition={{ duration: 5 }}
+        >
+          <FormContainer
+            header="Create User"
+            multistep
+            handleSubmit={handleSubmit}
+            onSubmit={onSubmit}
+          >
+            <div className={step === 1 ? "showstep" : "hidestep"}>
+              <FormField
+                label="Username"
+                name="name"
+                type="text"
+                register={register}
+                error={errors.name}
+                rules={UsernameValidation}
+              />
+              <FormField
+                label="Email Address"
+                name="email"
+                type="email"
+                register={register}
+                error={errors.email}
+                rules={EmailValidation}
+              />
+              <FormField
+                label="Phone No"
+                name="mobileno"
+                type="text"
+                register={register}
+                error={errors.mobileno}
+                rules={PhoneNoValidation}
+              />
+              <FormField
+                label="Password"
+                name="password"
+                type="password"
+                register={register}
+                error={errors.password}
+                rules={PasswordValidation}
+              />
+              <SelectDropdown
+                label="Company"
+                name="company"
+                options={companyOptions}
+                register={register}
+                error={errors.company}
+                rules={SelectValidation}
+                defaultoption=""
+              />
+              <div className="formnavigationcontainer">
+                <button
+                  className="formnavigation"
+                  onClick={() => navigate(-1)}
+                  type="button"
+                >
+                  Cancel
+                </button>
+
+                <GeneralButton text={<>Next{" "}
+                  <NavigateNextIcon
+                    style={{ marginRight: -10, marginLeft: -1 }}
+                  /></>}
+                  clickfunction={nextStep}
+                />
+              </div>
+            </div>
+            <div className={step === 2 ? "showstep" : "hidestep"}>
+              <SelectDropdown
+                label="User Group"
+                name="usergroup"
+                options={userGroupOptions}
+                register={register}
+                error={errors.usergroup}
+                rules={SelectValidation}
+                defaultoption=""
+              />
+
+              <MultiSelectDropdown
+                name="notificationgroups"
+                label="Notification Groups"
+                selectedValues={selectedNotiGroups}
+                changeSelectedValues={selectNotiGroup}
+                placeholder="Select Notification Groups..."
+                options={notiGroupOptions}
+              />
+              {mutation.isError && axios.isAxiosError(mutation.error) ? (
+                <div style={{ marginTop: 25, marginBottom: -15 }}>
+                  <ErrorAlert error={mutation.error} />
+                </div>
+              ) : null}
+              <div className="formnavigationcontainer">
+                <button
+                  className="formnavigation"
+                  onClick={prevStep}
+                  type="button"
+                >
+                  Back
+                </button>
+                <SubmitButton
+                  text="Submit"
+                  loading={mutation.isLoading}
+                />
+              </div>
+            </div>
+          </FormContainer>
+        </motion.div>
     </>
   );
 };

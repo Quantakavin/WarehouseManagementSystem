@@ -10,7 +10,7 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import VideoLabelIcon from '@mui/icons-material/VideoLabel';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import { StepIconProps } from '@mui/material/StepIcon';
-import { Container } from '@mui/material';
+import { Container, Hidden } from '@mui/material';
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -93,6 +93,7 @@ const FormSteps: React.FC<FormStepsProps> = ({steps, activestep, icons}) => {
   }
 
   return (
+    <Hidden smDown>
     <Container sx={{width: '65%'}}>
     <Stack sx={{ width: '100%', marginTop: "20px" }} spacing={4}>
       <Stepper alternativeLabel activeStep={activestep} connector={<ColorlibConnector />} >
@@ -104,6 +105,7 @@ const FormSteps: React.FC<FormStepsProps> = ({steps, activestep, icons}) => {
       </Stepper>
     </Stack>
     </Container>
+    </Hidden>
   );
 }
 

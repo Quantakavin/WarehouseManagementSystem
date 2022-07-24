@@ -10,6 +10,7 @@ import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
 import DataTable from "../../components/table/DataTable";
+import DOMPurify from 'dompurify';
 
 const ViewNotificationGroup: React.FC = () => {
   const params = useParams();
@@ -56,9 +57,7 @@ const ViewNotificationGroup: React.FC = () => {
           <h2 className="cardheader">
             {NotificationGroupQuery.data.data[0].NotiGroupName}
           </h2>
-          <p className="cardsubheading">
-            {NotificationGroupQuery.data.data[0].NotiGroupDesc}
-          </p>
+          <div className="cardsubheading" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(NotificationGroupQuery.data.data[0].NotiGroupDesc)}}/>
           <div className="flexcontainer cardfield">
             <p className="cardfieldlabel">Company</p>
             <p className="cardfieldvalue">

@@ -39,6 +39,8 @@ import Modals12 from "./components/display/TloanModal/modal";
 import Error403 from "./pages/error/Error403";
 import Error404 from "./pages/error/Error404";
 import Error401 from "./pages/error/Error401";
+import Sidebar2 from "./components/sidebar/Sidebar2";
+import TopNav from "./components/header/TopNav";
 
 interface ProtectedRouteProps {
   loginpage: boolean;

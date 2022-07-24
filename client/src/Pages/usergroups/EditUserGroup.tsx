@@ -2,6 +2,7 @@ import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { SelectChangeEvent } from "@mui/material";
 import axios from "axios";
+import { motion, useAnimation } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -21,7 +22,12 @@ import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import SelectedList from "../../components/form/SelectedList";
 import SubmitButton from "../../components/form/SubmitButton";
 import { Feature, FeatureRight, Option } from "../../utils/CommonTypes";
-import { NameValidation } from "../../utils/FormValidation";
+import { NameValidation, DescriptionValidation } from "../../utils/FormValidation";
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import FormSteps from "../../components/form/FormSteps";
+import GeneralButton from "../../components/buttons/GeneralButton";
+
 
 interface FormValues {
   name: string;
@@ -40,8 +46,11 @@ const EditUserGroup: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<FormValues>();
+    setValue,
+    watch,
+    trigger,
+    formState: { errors, isDirty},
+  } = useForm<FormValues>({ mode: "all" });
   const [step, setStep] = useState<number>(1);
   const params = useParams();
   const [userGroup, setUserGroup] = useState<any>(null);
@@ -57,7 +66,6 @@ const EditUserGroup: React.FC = () => {
     () => GetUserGroup(params.id),
     {
       onSuccess: (data) => {
-        console.log(JSON.stringify(data.data[0].Features));
         setSelectedFeatures(
           data.data[0].Features.map((value) => {
             return value.FeatureID;
@@ -127,8 +135,30 @@ const EditUserGroup: React.FC = () => {
     });
   };
 
+  const controls = useAnimation();
+
+  const variants = {
+    detecterror: () => ({
+      //rotate: [-1, 1.3, 0],
+      x: [10, -10, 0, 10, -10, 0],
+      transition: {
+        duration: 0.4
+      }
+    })
+  };
+
+
   const nextStep = () => {
-    setStep(step + 1);
+    trigger(["name", "description"]).then(() => {
+      if (
+        !errors.name &&
+        !errors.description
+      ) {
+        setStep(step + 1);
+      } else {
+        controls.start("detecterror")
+      }
+    });
   };
 
   const prevStep = () => {
@@ -197,40 +227,6 @@ const EditUserGroup: React.FC = () => {
       .FeatureName;
   };
 
-  // const StepOne = (
-  //   <div className={step === 1 ? "showstep" : "hidestep"}>
-  //     <FormField
-  //       label="Name"
-  //       name="name"
-  //       type="text"
-  //       register={register}
-  //       defaultvalue={userGroup ? userGroup.UserGroupName : ""}
-  //       errormsg={errors.name?.message}
-  //       rules={NameValidation}
-  //     />
-  //     <FormTextArea
-  //       label="Description"
-  //       name="description"
-  //       register={register}
-  //       errormsg={errors.description?.message}
-  //       defaultvalue={userGroup ? userGroup.UserGroupDesc : ""}
-  //       rules={NameValidation}
-  //     />
-  //     <div className="formnavigationcontainer">
-  //       <button
-  //         className="formnavigation"
-  //         onClick={() => navigate(-1)}
-  //         type="button"
-  //       >
-  //         Cancel
-  //       </button>
-  //       <button className="nextbutton" onClick={nextStep} type="button">
-  //         Next <NavigateNextIcon style={{ marginRight: -10, marginLeft: -7 }} />
-  //       </button>
-  //     </div>
-  //   </div>
-  // );
-
   const SetDefaultOptions = (feature) => {
     let optiontoset = featureRightOptions[0]?.value;
     if (UserGroupQuery.isSuccess) {
@@ -243,43 +239,21 @@ const EditUserGroup: React.FC = () => {
     return optiontoset;
   };
 
-  // const StepTwo = (
-  //   <div className={step === 2 ? "showstep" : "hidestep"}>
-  //     <MultiSelectDropdown
-  //       name="features"
-  //       label="Features"
-  //       selectedValues={selectedFeatures}
-  //       changeSelectedValues={selectFeature}
-  //       placeholder="Select Features..."
-  //       options={featureOptions}
-  //     />
-  //     {selectedFeatures.length > 0 && (
+  const steps = ["Enter user group details", "Assign features to user group"];
 
-  //       <SelectedList
-  //         getname={getFeatureName}
-  //         label="Feature List"
-  //         selectedValues={selectedFeatures}
-  //         unselect={unselectFeature}
-  //         select={assignFeatureRight}
-  //         options={featureRightOptions}
-  //         defaultOptions={SetDefaultOptions}
-  //       />
-  //     )}
+  const icons = {
+    1: <GroupAddIcon />,
+    2: <FormatListBulletedIcon />
+  };
 
-  //     {mutation.isError && axios.isAxiosError(mutation.error) ? (
-  //       <ErrorAlert error={mutation.error} />
-  //     ) : null}
-  //     <div className="formnavigationcontainer">
-  //       <button className="formnavigation" onClick={prevStep} type="button">
-  //         <NavigateBeforeIcon style={{ marginRight: -7, marginLeft: -10 }} />{" "}
-  //         Back
-  //       </button>
-  //       <SubmitButton text="Submit" loading={mutation.isLoading} multipart />
-  //     </div>
-  //   </div>
-  // );
 
   return (
+    <>
+    <FormSteps steps={steps} activestep={step - 1} icons={icons} />
+    <motion.div
+        variants={variants}
+        animate={controls}
+      >
     <FormContainer
       header="Edit User Group"
       multistep
@@ -296,16 +270,18 @@ const EditUserGroup: React.FC = () => {
               type="text"
               register={register}
               defaultvalue={UserGroupQuery.data.data[0].UserGroupName}
-              errormsg={errors.name?.message}
+              error={errors.name}
               rules={NameValidation}
             />
             <FormTextArea
               label="Description"
               name="description"
               register={register}
-              errormsg={errors.description?.message}
+              error={errors.description}
+              setValue={setValue}
+              watch={watch}
               defaultvalue={UserGroupQuery.data.data[0].UserGroupDesc}
-              rules={NameValidation}
+              rules={DescriptionValidation}
             />
             <div className="formnavigationcontainer">
               <button
@@ -315,12 +291,12 @@ const EditUserGroup: React.FC = () => {
               >
                 Cancel
               </button>
-              <button className="nextbutton" onClick={nextStep} type="button">
-                Next{" "}
+              <GeneralButton text={<>Next{" "}
                 <NavigateNextIcon
-                  style={{ marginRight: -10, marginLeft: -7 }}
-                />
-              </button>
+                  style={{ marginRight: -10, marginLeft: -1 }}
+                /></>}
+                clickfunction={nextStep}
+              />
             </div>
           </div>
           {/* Step Two */}
@@ -369,6 +345,8 @@ const EditUserGroup: React.FC = () => {
         </>
       )}
     </FormContainer>
+    </motion.div>
+    </>
   );
 };
 export default EditUserGroup;

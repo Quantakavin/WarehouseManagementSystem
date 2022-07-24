@@ -10,6 +10,7 @@ import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
 import DataTable from "../../components/table/DataTable";
+import DOMPurify from 'dompurify';
 
 const ViewUserGroup: React.FC = () => {
   const params = useParams();
@@ -56,9 +57,7 @@ const ViewUserGroup: React.FC = () => {
           <h2 className="cardheader">
             {UserGroupQuery.data.data[0].UserGroupName}
           </h2>
-          <p className="cardsubheading">
-            {UserGroupQuery.data.data[0].UserGroupDesc}
-          </p>
+          <div className="cardsubheading" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(UserGroupQuery.data.data[0].UserGroupDesc)}}/>
           <div className="flexcontainer cardfield">
             <p className="cardfieldlabel">Feature List:</p>
           </div>

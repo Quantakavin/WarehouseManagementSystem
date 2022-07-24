@@ -1,28 +1,27 @@
 import { MenuItem, Select } from "@mui/material";
 import React from "react";
-import { RegisterOptions, UseFormRegister } from "react-hook-form";
+import { FieldError, RegisterOptions, UseFormRegister } from "react-hook-form";
 import { Option } from "../../utils/CommonTypes";
+import WarningIcon from '@mui/icons-material/Warning';
 
 interface SelectProps<IFormValues> {
   label: string;
   name: string;
   defaultoption?: string;
   options: Option[];
-  errormsg?: string;
+  error?: FieldError;
   register?: UseFormRegister<IFormValues>;
   rules?: RegisterOptions;
-  placeholder?: string;
 }
 
 const SelectDropdown: React.FC<SelectProps<any>> = ({
   label,
   name,
-  errormsg,
+  error,
   options,
   register,
   rules,
-  defaultoption,
-  placeholder,
+  defaultoption
 }) => {
   const field = (
     <Select
@@ -31,19 +30,15 @@ const SelectDropdown: React.FC<SelectProps<any>> = ({
       className="selectfield"
       name={name}
       {...(register && register(name, rules))}
-      sx={{ 
-        borderRadius: "10px",
+      sx={{
+        borderRadius: "15px",
         paddingTop: "0px",
         textOverflow: "ellipsis",
         overflow: "hidden",
         whiteSpace: "pre",
       }}
       displayEmpty
-      label="Company"
     >
-      <MenuItem value={""} disabled hidden>
-        {placeholder}
-      </MenuItem>
       {options.map(({ id, text, value }) => (
         <MenuItem key={id} value={value}>
           {text}
@@ -72,7 +67,7 @@ const SelectDropdown: React.FC<SelectProps<any>> = ({
           ))}
         </select> */}
       </div>
-      <p className="errormsg">{errormsg}</p>
+      <p className="errormsg">{error && <><WarningIcon sx={{ fontSize: "15px", marginBottom: "2px" }} /> {error?.message}</>}</p>
     </div>
   );
 };

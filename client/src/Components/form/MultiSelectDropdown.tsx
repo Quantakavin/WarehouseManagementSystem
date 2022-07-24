@@ -19,7 +19,6 @@ const MultiSelectDropdown: React.FC<SelectProps> = ({
   placeholder,
   options,
 }) => {
-  console.log("selected values are ", selectedValues);
 
     const field = (
         <Select
