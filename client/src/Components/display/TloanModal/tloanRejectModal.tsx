@@ -24,7 +24,7 @@ const style = {
 };
 
 export default function TLoanRejectModalButton() {
-  let { TLoanNumber } = useParams();
+  const { TLoanNumber } = useParams();
   const navigate = useNavigate();
   const [remarks, setRemarks] = useState("");
   const [open, setOpen] = React.useState(false);
@@ -36,7 +36,7 @@ export default function TLoanRejectModalButton() {
   };
 
   const tloanremarks = {
-    remarks: remarks,
+    remarks,
   };
 
   const handleConfirm = async () => {

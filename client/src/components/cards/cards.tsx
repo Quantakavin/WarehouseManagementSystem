@@ -149,7 +149,7 @@ function cards() {
   // '"Apple Color Emoji"',
   // '"Segoe UI Emoji"',
   // '"Segoe UI Symbol"',
-  if (userrole != "Sales Manager") {
+  if (userrole !== "Sales Manager") {
     return (
       <Grid container sx={{ paddingLeft: 2, paddingRight: 2 }}>
         <Grid item xs={6}>

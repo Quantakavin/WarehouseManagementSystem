@@ -16,8 +16,10 @@ import Button from "@mui/material/Button";
 import { useInfiniteQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import {
-    GetCurrent,
-    GetDraft, GetHistory, GetPending
+  GetCurrent,
+  GetDraft,
+  GetHistory,
+  GetPending,
 } from "../../api/TLoanDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
@@ -121,7 +123,7 @@ const TLoanTabs: React.FC = () => {
           <TabContext value={value || "1"}>
             <Box sx={{ marginLeft: -3 }}>
               <Tabs
-                selectionFollowsFocus={true}
+                selectionFollowsFocus
                 onChange={handleChange}
                 TabIndicatorProps={{
                   style: {
@@ -205,54 +207,44 @@ const TLoanTabs: React.FC = () => {
             <Box sx={{ marginTop: -5 }}>
               <TabPanel value="1">
                 {LoansQuery.isLoading || LoansQuery.isError ? null : (
-                  <>
-                    <TableNew
-                      headers={headers}
-                      pages={LoansQuery.data.pages}
-                      query={LoansQuery}
-                      menu={ActionMenu}
-                    />
-                  </>
+                  <TableNew
+                    headers={headers}
+                    pages={LoansQuery.data.pages}
+                    query={LoansQuery}
+                    menu={ActionMenu}
+                  />
                 )}
               </TabPanel>
               <TabPanel value="2">
                 {PendingQuery.isLoading || PendingQuery.isError ? null : (
-                  <>
-                    <TableNew
-                      headers={headers}
-                      pages={PendingQuery.data.pages}
-                      query={PendingQuery}
-                      menu={ActionMenu}
-                    />
-                  </>
+                  <TableNew
+                    headers={headers}
+                    pages={PendingQuery.data.pages}
+                    query={PendingQuery}
+                    menu={ActionMenu}
+                  />
                 )}
               </TabPanel>
               <TabPanel value="3">
                 {DraftQuery.isLoading || DraftQuery.isError ? null : (
-                  <>
-                    <TableNew
-                      headers={headers}
-                      pages={DraftQuery.data.pages}
-                      query={DraftQuery}
-                      menu={ActionMenu}
-                    />
-                  </>
+                  <TableNew
+                    headers={headers}
+                    pages={DraftQuery.data.pages}
+                    query={DraftQuery}
+                    menu={ActionMenu}
+                  />
                 )}
               </TabPanel>
               <TabPanel value="4">
                 {HistoryQuery.isLoading || HistoryQuery.isError ? (
-                  <>
-                    <EmptyTable headers={headers} />
-                  </>
+                  <EmptyTable headers={headers} />
                 ) : (
-                  <>
-                    <TableNew
-                      headers={headers}
-                      pages={HistoryQuery.data.pages}
-                      query={HistoryQuery}
-                      menu={ActionMenu}
-                    />
-                  </>
+                  <TableNew
+                    headers={headers}
+                    pages={HistoryQuery.data.pages}
+                    query={HistoryQuery}
+                    menu={ActionMenu}
+                  />
                 )}
               </TabPanel>
             </Box>
@@ -267,7 +259,7 @@ const TLoanTabs: React.FC = () => {
           <TabContext value={value || "1"}>
             <Box sx={{ marginLeft: -3 }}>
               <Tabs
-                selectionFollowsFocus={true}
+                selectionFollowsFocus
                 onChange={handleChange}
                 TabIndicatorProps={{
                   style: {
@@ -351,54 +343,44 @@ const TLoanTabs: React.FC = () => {
             <Box sx={{ marginTop: -5 }}>
               <TabPanel value="1">
                 {LoansQuery.isLoading || LoansQuery.isError ? null : (
-                  <>
-                    <TableNew
-                      headers={headers}
-                      pages={LoansQuery.data.pages}
-                      query={LoansQuery}
-                      menu={ActionMenu}
-                    />
-                  </>
+                  <TableNew
+                    headers={headers}
+                    pages={LoansQuery.data.pages}
+                    query={LoansQuery}
+                    menu={ActionMenu}
+                  />
                 )}
               </TabPanel>
               <TabPanel value="2">
                 {PendingQuery.isLoading || PendingQuery.isError ? null : (
-                  <>
-                    <TableNew
-                      headers={headers}
-                      pages={PendingQuery.data.pages}
-                      query={PendingQuery}
-                      menu={ActionMenu}
-                    />
-                  </>
+                  <TableNew
+                    headers={headers}
+                    pages={PendingQuery.data.pages}
+                    query={PendingQuery}
+                    menu={ActionMenu}
+                  />
                 )}
               </TabPanel>
               <TabPanel value="3">
                 {DraftQuery.isLoading || DraftQuery.isError ? null : (
-                  <>
-                    <TableNew
-                      headers={headers}
-                      pages={DraftQuery.data.pages}
-                      query={DraftQuery}
-                      menu={ActionMenu}
-                    />
-                  </>
+                  <TableNew
+                    headers={headers}
+                    pages={DraftQuery.data.pages}
+                    query={DraftQuery}
+                    menu={ActionMenu}
+                  />
                 )}
               </TabPanel>
               <TabPanel value="4">
                 {HistoryQuery.isLoading || HistoryQuery.isError ? (
-                  <>
-                    <EmptyTable headers={headers} />
-                  </>
+                  <EmptyTable headers={headers} />
                 ) : (
-                  <>
-                    <TableNew
-                      headers={headers}
-                      pages={HistoryQuery.data.pages}
-                      query={HistoryQuery}
-                      menu={ActionMenu}
-                    />
-                  </>
+                  <TableNew
+                    headers={headers}
+                    pages={HistoryQuery.data.pages}
+                    query={HistoryQuery}
+                    menu={ActionMenu}
+                  />
                 )}
               </TabPanel>
             </Box>
@@ -413,7 +395,7 @@ const TLoanTabs: React.FC = () => {
           <TabContext value={value || "1"}>
             <Box sx={{ marginLeft: -3 }}>
               <Tabs
-                selectionFollowsFocus={true}
+                selectionFollowsFocus
                 onChange={handleChange}
                 TabIndicatorProps={{
                   style: {
@@ -497,54 +479,44 @@ const TLoanTabs: React.FC = () => {
             <Box sx={{ marginTop: -5 }}>
               <TabPanel value="1">
                 {LoansQuery.isLoading || LoansQuery.isError ? null : (
-                  <>
-                    <TableNew
-                      headers={headers}
-                      pages={LoansQuery.data.pages}
-                      query={LoansQuery}
-                      menu={ActionMenu}
-                    />
-                  </>
+                  <TableNew
+                    headers={headers}
+                    pages={LoansQuery.data.pages}
+                    query={LoansQuery}
+                    menu={ActionMenu}
+                  />
                 )}
               </TabPanel>
               <TabPanel value="2">
                 {PendingQuery.isLoading || PendingQuery.isError ? null : (
-                  <>
-                    <TableNew
-                      headers={headers}
-                      pages={PendingQuery.data.pages}
-                      query={PendingQuery}
-                      menu={ActionMenu}
-                    />
-                  </>
+                  <TableNew
+                    headers={headers}
+                    pages={PendingQuery.data.pages}
+                    query={PendingQuery}
+                    menu={ActionMenu}
+                  />
                 )}
               </TabPanel>
               <TabPanel value="3">
                 {DraftQuery.isLoading || DraftQuery.isError ? null : (
-                  <>
-                    <TableNew
-                      headers={headers}
-                      pages={DraftQuery.data.pages}
-                      query={DraftQuery}
-                      menu={ActionMenu}
-                    />
-                  </>
+                  <TableNew
+                    headers={headers}
+                    pages={DraftQuery.data.pages}
+                    query={DraftQuery}
+                    menu={ActionMenu}
+                  />
                 )}
               </TabPanel>
               <TabPanel value="4">
                 {HistoryQuery.isLoading || HistoryQuery.isError ? (
-                  <>
-                    <EmptyTable headers={headers} />
-                  </>
+                  <EmptyTable headers={headers} />
                 ) : (
-                  <>
-                    <TableNew
-                      headers={headers}
-                      pages={HistoryQuery.data.pages}
-                      query={HistoryQuery}
-                      menu={ActionMenu}
-                    />
-                  </>
+                  <TableNew
+                    headers={headers}
+                    pages={HistoryQuery.data.pages}
+                    query={HistoryQuery}
+                    menu={ActionMenu}
+                  />
                 )}
               </TabPanel>
             </Box>
@@ -619,26 +591,22 @@ const TLoanTabs: React.FC = () => {
             <Box sx={{ marginTop: -5 }}>
               <TabPanel value="1">
                 {LoansQuery.isLoading || LoansQuery.isError ? null : (
-                  <>
-                    <TableNew
-                      headers={headers}
-                      pages={LoansQuery.data.pages}
-                      query={LoansQuery}
-                      menu={ActionMenu}
-                    />
-                  </>
+                  <TableNew
+                    headers={headers}
+                    pages={LoansQuery.data.pages}
+                    query={LoansQuery}
+                    menu={ActionMenu}
+                  />
                 )}
               </TabPanel>
               <TabPanel value="2">
                 {PendingQuery.isLoading || PendingQuery.isError ? null : (
-                  <>
-                    <TableNew
-                      headers={headers}
-                      pages={PendingQuery.data.pages}
-                      query={PendingQuery}
-                      menu={ActionMenu}
-                    />
-                  </>
+                  <TableNew
+                    headers={headers}
+                    pages={PendingQuery.data.pages}
+                    query={PendingQuery}
+                    menu={ActionMenu}
+                  />
                 )}
               </TabPanel>
             </Box>
@@ -653,7 +621,7 @@ const TLoanTabs: React.FC = () => {
           <TabContext value={value || "1"}>
             <Box sx={{ marginLeft: -3 }}>
               <Tabs
-                selectionFollowsFocus={true}
+                selectionFollowsFocus
                 onChange={handleChange}
                 TabIndicatorProps={{
                   style: {
@@ -737,54 +705,44 @@ const TLoanTabs: React.FC = () => {
             <Box sx={{ marginTop: -5 }}>
               <TabPanel value="1">
                 {LoansQuery.isLoading || LoansQuery.isError ? null : (
-                  <>
-                    <TableNew
-                      headers={headers}
-                      pages={LoansQuery.data.pages}
-                      query={LoansQuery}
-                      menu={ActionMenu}
-                    />
-                  </>
+                  <TableNew
+                    headers={headers}
+                    pages={LoansQuery.data.pages}
+                    query={LoansQuery}
+                    menu={ActionMenu}
+                  />
                 )}
               </TabPanel>
               <TabPanel value="2">
                 {PendingQuery.isLoading || PendingQuery.isError ? null : (
-                  <>
-                    <TableNew
-                      headers={headers}
-                      pages={PendingQuery.data.pages}
-                      query={PendingQuery}
-                      menu={ActionMenu}
-                    />
-                  </>
+                  <TableNew
+                    headers={headers}
+                    pages={PendingQuery.data.pages}
+                    query={PendingQuery}
+                    menu={ActionMenu}
+                  />
                 )}
               </TabPanel>
               <TabPanel value="3">
                 {DraftQuery.isLoading || DraftQuery.isError ? null : (
-                  <>
-                    <TableNew
-                      headers={headers}
-                      pages={DraftQuery.data.pages}
-                      query={DraftQuery}
-                      menu={ActionMenu}
-                    />
-                  </>
+                  <TableNew
+                    headers={headers}
+                    pages={DraftQuery.data.pages}
+                    query={DraftQuery}
+                    menu={ActionMenu}
+                  />
                 )}
               </TabPanel>
               <TabPanel value="4">
                 {HistoryQuery.isLoading || HistoryQuery.isError ? (
-                  <>
-                    <EmptyTable headers={headers} />
-                  </>
+                  <EmptyTable headers={headers} />
                 ) : (
-                  <>
-                    <TableNew
-                      headers={headers}
-                      pages={HistoryQuery.data.pages}
-                      query={HistoryQuery}
-                      menu={ActionMenu}
-                    />
-                  </>
+                  <TableNew
+                    headers={headers}
+                    pages={HistoryQuery.data.pages}
+                    query={HistoryQuery}
+                    menu={ActionMenu}
+                  />
                 )}
               </TabPanel>
             </Box>

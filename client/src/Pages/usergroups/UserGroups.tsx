@@ -38,7 +38,7 @@ const UserGroups: React.FC = () => {
   const navigate = useNavigate();
   const userrole = useAppSelector(selectRole)
   useEffect(() => {
-    if (userrole != "Admin") {
+    if (userrole !== "Admin") {
       navigate('/403');
     }
   }, []);

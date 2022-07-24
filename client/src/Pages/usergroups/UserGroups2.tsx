@@ -29,7 +29,7 @@ const UserGroups2: React.FC = () => {
   const [value, setValue] = useState(0); // first tab
   const userrole = useAppSelector(selectRole)
   useEffect(() => {
-    if (userrole != "Admin") {
+    if (userrole !== "Admin") {
       navigate('/403');
     }
   }, []);

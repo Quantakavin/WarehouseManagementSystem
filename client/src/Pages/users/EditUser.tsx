@@ -39,7 +39,7 @@ const EditUser: React.FC = () => {
   const queryClient = useQueryClient();
   const userrole = useAppSelector(selectRole)
   useEffect(() => {
-    if (userrole != "Admin") {
+    if (userrole !== "Admin") {
       navigate('/403');
     }
   }, []);
