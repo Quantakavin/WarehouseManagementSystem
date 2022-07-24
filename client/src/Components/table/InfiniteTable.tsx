@@ -1,7 +1,10 @@
 import {
-    Container,
-    Paper, Table, TableContainer, TableHead,
-    TableRow
+  Container,
+  Paper,
+  Table,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from "@mui/material";
 import { AxiosResponse } from "axios";
 import { UseInfiniteQueryResult } from "react-query";

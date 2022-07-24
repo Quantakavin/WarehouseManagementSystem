@@ -1,9 +1,7 @@
 import React from "react";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { useAppSelector } from "./app/hooks";
-import {
-  selectIsAuthenticated
-} from "./app/reducers/CurrentUserSlice";
+import { selectIsAuthenticated } from "./app/reducers/CurrentUserSlice";
 import RmaDisplay from "./components/display/rmaDisplay";
 import TLoanDisplay2 from "./components/display/tloanDisplay2";
 import TLoanManagerDisplay from "./components/display/tloanManagerDisplay";

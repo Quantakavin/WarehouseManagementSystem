@@ -1,9 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardContent, Typography
-} from "@mui/material";
+import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
 
@@ -23,17 +18,17 @@ function Error404() {
         }}
       >
         <CardContent>
-        <Typography
-              sx={{
-                color: "black",
-                fontWeight: "bold",
-                fontSize: 300,
-                textAlign: "center",
-              }}
-            >
-              404
-              <br />
-            </Typography>
+          <Typography
+            sx={{
+              color: "black",
+              fontWeight: "bold",
+              fontSize: 300,
+              textAlign: "center",
+            }}
+          >
+            404
+            <br />
+          </Typography>
 
           <Box
             sx={{
@@ -54,8 +49,10 @@ function Error404() {
               <br />
             </Typography>
             The page you are looking for cannot be found
-            <br />The requested URL "{URL}" was not found on this server.
-            <br/>Please return to the page you were on
+            <br />
+            The requested URL "{URL}" was not found on this server.
+            <br />
+            Please return to the page you were on
           </Box>
           <Box
             component="span"

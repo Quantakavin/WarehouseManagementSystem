@@ -420,7 +420,7 @@ module.exports.updateRmaChecklist = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -446,7 +446,7 @@ module.exports.updateRmaReceived = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };

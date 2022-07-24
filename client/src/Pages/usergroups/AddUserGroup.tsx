@@ -29,10 +29,10 @@ interface FormValues {
 
 const AddUserGroup: React.FC = () => {
   const navigate = useNavigate();
-  const userrole = useAppSelector(selectRole)
+  const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
-      navigate('/403');
+      navigate("/403");
     }
   }, []);
   const {

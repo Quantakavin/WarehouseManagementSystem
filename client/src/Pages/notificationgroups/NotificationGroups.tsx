@@ -7,19 +7,25 @@ import { Hidden } from "@mui/material";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import {
-  useInfiniteQuery, useMutation, useQuery,
-  useQueryClient
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
 } from "react-query";
 import { useNavigate } from "react-router-dom";
 import {
-  DeleteNotificationGroup, FilterNotificationGroups, GetNotificationGroupNames
+  DeleteNotificationGroup,
+  FilterNotificationGroups,
+  GetNotificationGroupNames,
 } from "../../api/NotificationGroupDB";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import {
-  ChangeSortColumn, selectSortColumn,
-  selectSortOrder, SortAsc,
-  SortDesc
+  ChangeSortColumn,
+  selectSortColumn,
+  selectSortOrder,
+  SortAsc,
+  SortDesc,
 } from "../../app/reducers/NotiGroupTableFilterSlice";
 import Popup from "../../components/alerts/Popup";
 import { Toast } from "../../components/alerts/SweetAlert";
@@ -29,10 +35,10 @@ import useDebounce from "../../hooks/useDebounce";
 
 const NotificationGroups: React.FC = () => {
   const navigate = useNavigate();
-  const userrole = useAppSelector(selectRole)
+  const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
-      navigate('/403');
+      navigate("/403");
     }
   }, []);
   const sortColumn = useAppSelector(selectSortColumn);

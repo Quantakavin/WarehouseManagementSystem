@@ -1,6 +1,8 @@
 import {
-  Box, Stack, Typography,
-  unstable_createMuiStrictModeTheme
+  Box,
+  Stack,
+  Typography,
+  unstable_createMuiStrictModeTheme,
 } from "@mui/material";
 import {
   DataGrid,
@@ -11,7 +13,7 @@ import {
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
-  GridToolbarQuickFilter
+  GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";

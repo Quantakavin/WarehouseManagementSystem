@@ -9,7 +9,7 @@ import FormField from "../../components/form/FormField";
 import SubmitButton from "../../components/form/SubmitButton";
 import {
   EmailValidation,
-  PasswordValidation
+  PasswordValidation,
 } from "../../utils/FormValidation";
 // import LoginUser from "../../api/user/LoginUser";
 import { LoginUser } from "../../api/UserDB";

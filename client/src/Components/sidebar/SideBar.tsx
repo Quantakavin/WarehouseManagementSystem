@@ -12,8 +12,10 @@ import * as React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectName, selectRole } from "../../app/reducers/CurrentUserSlice";
 import {
-    Close, Open, selectCurrentTab,
-    selectOpen
+  Close,
+  Open,
+  selectCurrentTab,
+  selectOpen,
 } from "../../app/reducers/SidebarSlice";
 import defaultprofile from "../../assets/defaultprofile.png";
 import SidebarLink from "./SidebarLink";

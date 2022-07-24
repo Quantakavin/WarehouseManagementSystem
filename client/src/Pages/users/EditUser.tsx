@@ -20,7 +20,11 @@ import SelectDropdown from "../../components/form/SelectDropdown";
 import SubmitButton from "../../components/form/SubmitButton";
 import { Company, NotiGroup, Option, UserGroup } from "../../utils/CommonTypes";
 import {
-  EmailValidation, PasswordValidation, PhoneNoValidation, SelectValidation, UsernameValidation
+  EmailValidation,
+  PasswordValidation,
+  PhoneNoValidation,
+  SelectValidation,
+  UsernameValidation,
 } from "../../utils/FormValidation";
 
 interface FormValues {
@@ -37,10 +41,10 @@ const EditUser: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const userrole = useAppSelector(selectRole)
+  const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
-      navigate('/403');
+      navigate("/403");
     }
   }, []);
   const [companyOptions, setCompanyOptions] = useState<Option[]>([]);

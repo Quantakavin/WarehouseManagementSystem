@@ -14,10 +14,10 @@ import DataTable from "../../components/table/DataTable";
 const ViewNotificationGroup: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const userrole = useAppSelector(selectRole)
+  const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
-      navigate('/403');
+      navigate("/403");
     }
   }, []);
   const [notiFeatures, setNotiFeatures] = useState<any[]>([]);

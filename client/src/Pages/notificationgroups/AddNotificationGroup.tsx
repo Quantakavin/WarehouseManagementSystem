@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { GetCompanies } from "../../api/CompanyDB";
 import {
   GetNotificationFeatures,
-  GetNotificationTypes
+  GetNotificationTypes,
 } from "../../api/NotificationFeatureDB";
 import { PostNotificationGroup } from "../../api/NotificationGroupDB";
 import { useAppSelector } from "../../app/hooks";
@@ -26,7 +26,8 @@ import SubmitButton from "../../components/form/SubmitButton";
 import {
   Company,
   NotiFeature,
-  NotiType, Option
+  NotiType,
+  Option,
 } from "../../utils/CommonTypes";
 import { NameValidation, SelectValidation } from "../../utils/FormValidation";
 
@@ -39,10 +40,10 @@ interface FormValues {
 
 const AddNotificationGroup: React.FC = () => {
   const navigate = useNavigate();
-  const userrole = useAppSelector(selectRole)
+  const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
-      navigate('/403');
+      navigate("/403");
     }
   }, []);
   const {
