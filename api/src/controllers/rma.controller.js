@@ -399,12 +399,13 @@ module.exports.updateRmaRejected = async (req, res) => {
     }
 };
 
-module.exports.updateRmaReceived = async (req, res) => {
+module.exports.updateRmaChecklist = async (req, res) => {
     const { RmaID } = req.params;
+    const { products } = req.body;
     try {
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
-            await rmaService.updateRMAReceived(RmaID);
+            await rmaService.updateRmaChecklist(RmaID, products);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaByRmaID#${RmaID}`);
@@ -419,6 +420,33 @@ module.exports.updateRmaReceived = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
     } catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
+module.exports.updateRmaReceived = async (req, res) => {
+    const { RmaID } = req.params;
+    const { products } = req.body;
+    try {
+        const results = await rmaService.getByRmaID(RmaID);
+        if (results.length > 0) {
+            await rmaService.updateRMAReceived(RmaID, products);
+            redisClient.del('allRMA');
+            redisClient.del(`rmaDetails#${RmaID}`);
+            redisClient.del(`rmaByRmaID#${RmaID}`);
+            redisClient.del('PendingRMA');
+            redisClient.del('AcceptedRMA');
+            redisClient.del('RejectedRMA');
+            redisClient.del('ReceivedRMA');
+            redisClient.del('VerifiedRMA');
+            redisClient.del('InProgressRMA');
+            redisClient.del('ClosedRMA');
+            return res.status(204).json({ message: 'RMA receival status updated successfully!' });
+        }
+        return res.status(404).json({ message: 'Cannot find RMA with that number' });
+    } catch (error) {
+        console.log(error)
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };

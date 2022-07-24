@@ -1,4 +1,5 @@
 import CancelIcon from "@mui/icons-material/Close";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
@@ -47,6 +48,7 @@ import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import ReasonModalButton from "./RmaModal/reasonModal";
 import RejectModalButton from "./RmaModal/rejectModal";
+import MoreVert from "@mui/icons-material/MoreVert";
 
 const RmaDisplay: React.FC = () => {
   const navigate = useNavigate();
@@ -60,11 +62,7 @@ const RmaDisplay: React.FC = () => {
 
   const { RmaID } = useParams();
 
-  const rmainstructions = {
-    products: rows,
-  };
-
-  const rmacoa = {
+  const rmabody = {
     products: rows,
   };
 
@@ -114,6 +112,15 @@ const RmaDisplay: React.FC = () => {
         this.setState({ errorMessage: error.message });
       });
   };
+  // Update RMA checklist
+  const updateChecklist = async () => {
+    axios
+      .put(`http://localhost:5000/api/updatechecklistRMA/${RmaID}`, rmabody)
+      .then(() => navigate("/rma"))
+      .catch((error) => {
+        this.setState({ errorMessage: error.message });
+      });
+  };
   // Receive RMA
   const receiveRMA = async () => {
     axios
@@ -126,7 +133,7 @@ const RmaDisplay: React.FC = () => {
   // Verify RMA
   const verifyRMA = async () => {
     axios
-      .put(`http://localhost:5000/api/verifyRMA/${RmaID}`, rmainstructions)
+      .put(`http://localhost:5000/api/verifyRMA/${RmaID}`, rmabody)
       .then(() => navigate("/rma"))
       .catch((error) => {
         this.setState({ errorMessage: error.message });
@@ -135,7 +142,7 @@ const RmaDisplay: React.FC = () => {
   // COA RMA
   const COARMA = async () => {
     axios
-      .put(`http://localhost:5000/api/COARMA/${RmaID}`, rmacoa)
+      .put(`http://localhost:5000/api/COARMA/${RmaID}`, rmabody)
       .then(() => navigate("/rma"))
       .catch((error) => {
         this.setState({ errorMessage: error.message });
@@ -371,6 +378,19 @@ const RmaDisplay: React.FC = () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
+  const markAsReceived = React.useCallback(
+    (id: GridRowId) => () => {
+      setRows((prevRows) =>
+        prevRows.map((row) =>
+          row.id === id
+            ? { ...row, RmaProductStatus: !row.RmaProductStatus }
+            : row
+        )
+      );
+    },
+    []
+  );
+
   const handleSaveClick = (id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
@@ -531,6 +551,73 @@ const RmaDisplay: React.FC = () => {
     },
   ];
 
+  const whcolumns: GridColumns = [
+    { field: "id", headerName: "PK", flex: 1, editable: false },
+    { field: "ItemCode", headerName: "Item Code", flex: 2, editable: false },
+    {
+      field: "InvoiceNo",
+      headerName: "Invoice Number",
+      flex: 3,
+      editable: false,
+    },
+    { field: "DoNo", headerName: "D.O Number", flex: 3, editable: false },
+    {
+      field: "DateOfPurchase",
+      headerName: "Date Of Purchase",
+      ...dateColumnType,
+      flex: 5,
+      editable: false,
+    },
+    {
+      field: "ReturnReason",
+      headerName: "Reason For Return",
+      flex: 10,
+      editable: false,
+    },
+    {
+      field: "RmaProductStatus",
+      headerName: "Status",
+      type: "boolean",
+      flex: 2,
+      editable: false,
+      cellClassName: "status--cell",
+    },
+    {
+      field: "actions",
+      type: "actions",
+      headerName: "Actions",
+      flex: 2,
+      cellClassName: "actions",
+      getActions: ({ id }) => {
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+
+        if (isInEditMode) {
+          return [
+            <GridActionsCellItem
+              icon={<BorderColorIcon />}
+              label="Mark As Received"
+              onClick={markAsReceived(id)}
+            />,
+            <GridActionsCellItem
+              icon={<SaveIcon />}
+              label="Save"
+              onClick={handleSaveClick(id)}
+            />,
+          ];
+        }
+        return [
+          <GridActionsCellItem
+            icon={<MoreVert />}
+            label="Edit"
+            className="textPrimary"
+            onClick={handleEditClick(id)}
+            color="inherit"
+          />,
+        ];
+      },
+    },
+  ];
+
   const icolumns: GridColumns = [
     { field: "id", headerName: "PK", flex: 1, editable: false },
     { field: "ItemCode", headerName: "Item Code", flex: 2, editable: false },
@@ -559,6 +646,7 @@ const RmaDisplay: React.FC = () => {
       headerName: "Instructions",
       flex: 9,
       editable: true,
+      cellClassName: "ins--cell",
     },
     {
       field: "CourseOfAction",
@@ -644,6 +732,7 @@ const RmaDisplay: React.FC = () => {
       headerName: "Course Of Action",
       flex: 9,
       editable: true,
+      cellClassName: "coa--cell",
     },
     {
       field: "actions",
@@ -2066,13 +2155,29 @@ const RmaDisplay: React.FC = () => {
             </Typography>
 
             <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
-              <Box sx={{ flexGrow: 1 }}>
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  "& .status--cell": {
+                    backgroundColor: "#E6E6E6",
+                    fontWeight: "600",
+                  },
+                }}
+              >
                 <DataGrid
                   sx={{ background: "white", fontSize: 16 }}
                   rows={rows}
-                  columns={staticcolumns}
+                  columns={whcolumns}
                   editMode="row"
                   getRowId={(row) => row.id}
+                  rowModesModel={rowModesModel}
+                  onRowEditStart={handleRowEditStart}
+                  onRowEditStop={handleRowEditStop}
+                  processRowUpdate={processRowUpdate}
+                  componentsProps={{
+                    toolbar: { setRows, setRowModesModel },
+                  }}
+                  experimentalFeatures={{ newEditingApi: true }}
                   pageSize={pageSize}
                   onPageSizeChange={(newPage) => setPageSize(newPage)}
                   pagination
@@ -2129,6 +2234,27 @@ const RmaDisplay: React.FC = () => {
                 justifyContent="space-between"
                 alignItems="center"
               >
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#31A961",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                      marginRight: 5,
+                    }}
+                    onClick={updateChecklist}
+                  >
+                    Update
+                  </Button>
+                </motion.div>
                 <motion.div
                   className="animatable"
                   whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
@@ -2212,7 +2338,15 @@ const RmaDisplay: React.FC = () => {
             </Typography>
 
             <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
-              <Box sx={{ flexGrow: 1 }}>
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  "& .ins--cell": {
+                    backgroundColor: "#E6E6E6",
+                    fontWeight: "600",
+                  },
+                }}
+              >
                 <DataGrid
                   sx={{ background: "white", fontSize: 16 }}
                   rows={rows}
@@ -2366,7 +2500,15 @@ const RmaDisplay: React.FC = () => {
             </Typography>
 
             <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
-              <Box sx={{ flexGrow: 1 }}>
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  "& .coa--cell": {
+                    backgroundColor: "#E6E6E6",
+                    fontWeight: "600",
+                  },
+                }}
+              >
                 <DataGrid
                   sx={{ background: "white", fontSize: 16 }}
                   rows={rows}
