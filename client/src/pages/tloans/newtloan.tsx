@@ -31,13 +31,14 @@ import {
 import axios from "axios";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
+import { useFormState } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import "./TLoanTable/table.css";
-
+import {useCart} from 'react-use-cart'
 
 function newtloan() {
 
@@ -76,21 +77,44 @@ function newtloan() {
   const itemStorage = localStorage.getItem('react-use-cart') 
   const cartItems = JSON.parse(itemStorage).items
   const newProduct = cartItems.map(
-      ({  ItemNo, ItemName, BatchNo, WarehouseCode, quantity  }) => ({
-          ItemNo: ItemNo,
-          ItemName: ItemName,
-          BatchNo: BatchNo,
-          WarehouseCode: WarehouseCode,
-          Quantity: quantity
-        
-      })
-  )
+    ({  ItemNo, ItemName, BatchNo, WarehouseCode, quantity  }) => ({
+        ItemNo: ItemNo,
+        ItemName: ItemName,
+        BatchNo: BatchNo,
+        WarehouseCode: WarehouseCode,
+        Quantity: quantity
+      
+    })
+)
+
+  const {
+    isEmpty,
+    totalUniqueItems,
+    updateItemQuantity,
+    removeItem,
+  } = useCart();
+  const [newItemTable, setNewItemTable] = useState([])
+
+  useEffect(()=>{
+    setNewItemTable(cartItems)
+  }, [cartItems])
+   
+  
+  console.log(newProduct)
 
 
-  const [rows, setRows] = React.useState(newProduct);
+  const [rows, setRows] = React.useState([]);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
+
+  useEffect(()=>{
+    setRows(newItemTable)
+  }, [newItemTable])
+   
+  
+  
+  console.log(rows)
   const FullFeaturedCrudGrid = () => {
     const handleRowEditStart = (
       params: GridRowParams,
@@ -114,8 +138,8 @@ function newtloan() {
       setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
     };
 
-    const handleDeleteClick = (id: GridRowId) => () => {
-      setRows(rows.filter((row) => row.id !== id));
+    const handleDeleteClick = (id: GridRowId) => () => { 
+      setRows(rows.filter((row) => row.id === id && removeItem(row.id) ));
     };
 
     const handleCancelClick = (id: GridRowId) => () => {
@@ -136,19 +160,19 @@ function newtloan() {
 
       return updatedRow;
     };
-
+console.log(rows)
     const columns: GridColumns = [
-      { field: "ItemNo", headerName: "Item No.", width: 180, editable: true },
+      { field: "ItemNo", headerName: "Item No.", width: 180, editable: false},
       {
         field: "ItemName",
         headerName: "Item Name",
         width: 180,
-        editable: true,
+        editable: false,
       },
-      { field: "BatchNo", headerName: "Batch No.", width: 180, editable: true },
-      { field: "WarehouseCode", headerName: "WarehouseCode", width: 180, editable: true },
+      { field: "BatchNo", headerName: "Batch No.", width: 180, editable: false },
+      { field: "WarehouseCode", headerName: "WarehouseCode", width: 180, editable: false },
       {
-        field: "Quantity",
+        field: "quantity",
         headerName: "Quantity",
         type: "number",
         editable: true,
@@ -216,7 +240,7 @@ function newtloan() {
           rows={rows}
           columns={columns}
           editMode="row"
-          getRowId={(row) => row.ItemNo}
+          getRowId={(row) => row.id}
           rowModesModel={rowModesModel}
           onRowEditStart={handleRowEditStart}
           onRowEditStop={handleRowEditStop}
@@ -249,9 +273,13 @@ function newtloan() {
   const userRole = useAppSelector(selectRole);
 
   console.log(userRole);
-
-  const items = rows.map(({ id, isNew, ...rows }) => rows);
-  console.log(items);
+  
+    const [items, setItems] = useState([])
+    useEffect(()=>{
+      setItems(newProduct)
+    })
+  // const items = rows.map(({ id, isNew, ...rows }) => rows);
+  // console.log(items);
 
   const handleChangeCompany = (event: SelectChangeEvent) => {
     setCompany(event.target.value);

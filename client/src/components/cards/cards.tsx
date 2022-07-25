@@ -1,4 +1,4 @@
-import { Box, Card, Grid, Typography } from "@mui/material";
+import { Box, Card, Grid, Typography, Divider, Chip } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../app/hooks";
@@ -151,101 +151,115 @@ function cards() {
   // '"Segoe UI Symbol"',
   if (userrole !== "Sales Manager") {
     return (
-      <Grid container sx={{ paddingLeft: 2, paddingRight: 2 }}>
+      <Grid container sx={{ marginTop: -2 }}>
         <Grid item xs={6}>
-          <Card sx={{ height: "100%", width: "98%" }}>
+          <Card
+            sx={{ height: "100%", width: "98%", pt: 2, pb: 2, pl: 6, pr: 6 }}
+          >
             <Typography
-              gutterBottom
               variant="subtitle2"
-              component="span"
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
               sx={{
-                paddingTop: 5,
-                paddingLeft: 5,
-                paddingRight: 50,
                 color: "#063970",
                 fontWeight: "bold",
-                fontSize: 38,
+                fontSize: 28,
                 fontFamily: "Roboto",
               }}
             >
-              <Box>
-                <Box>Current</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {CurrentTloans.length}
-                </Box>
-                <Box>Pending</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {PendingTloans.length}
-                </Box>
-              </Box>
-              <Box>
-                <Box sx={{}}>Drafts</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {DraftTloans.length}
-                </Box>
-                <Box sx={{}}>On Extension</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {PendingTloans.length}
-                </Box>
-              </Box>
+              <Grid container>
+                <Grid item xs={6}>
+                  <Box>Pending</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {PendingRMAs.length}
+                  </Box>
+                </Grid>
+                <Grid item xs={6} sx={{paddingLeft: 5}}>
+                  <Box>Approved</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {ApprovedRMAs.length}
+                  </Box>
+                </Grid>
+                <Grid item xs={12}>
+                  <Divider >
+                    <Chip label="RMA" />
+                  </Divider>
+                </Grid>
+                <Grid item xs={6}>
+                  <Box sx={{}}>Rejected</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {RejectedRMAs.length}
+                  </Box>
+                </Grid>
+                <Grid item xs={6} sx={{paddingLeft: 5}}>
+                  <Box sx={{}}>Received</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {ReceivedRMAs.length}
+                  </Box>
+                </Grid>
+                <Grid item xs={12}>
+                  <Divider >
+                    <Chip label="RMA" />
+                  </Divider>
+                </Grid>
+                <Grid item xs={6}>
+                  <Box>Verified</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {VerifiedRMAs.length}
+                  </Box>
+                </Grid>
+                <Grid item xs={6} sx={{paddingLeft: 5}}>
+                  <Box>In Progress</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {InprogressRMAs.length}
+                  </Box>
+                </Grid>
+              </Grid>
             </Typography>
           </Card>
         </Grid>
         <Grid item xs={6}>
-          <Card sx={{ height: "100%", width: "100%" }}>
+          <Card
+            sx={{ height: "100%", width: "100%", pt: 2, pb: 2, pl: 6, pr: 6 }}
+          >
             <Typography
-              gutterBottom
               variant="subtitle2"
-              component="span"
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
               sx={{
-                paddingTop: 5,
-                paddingLeft: 5,
-                paddingRight: 50,
-                paddingBottom: 5,
                 color: "#063970",
                 fontWeight: "bold",
-                fontSize: 38,
+                fontSize: 28,
                 fontFamily: "Roboto",
               }}
             >
-              <Box>
-                <Box>Pending</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {PendingRMAs.length}
-                </Box>
-                <Box>Approved</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {ApprovedRMAs.length}
-                </Box>
-                <Box sx={{}}>Rejected</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {RejectedRMAs.length}
-                </Box>
-                <Box sx={{}}>Received</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {ReceivedRMAs.length}
-                </Box>
-              </Box>
-              <Box sx={{ marginTop: -15 }}>
-                <Box sx={{}}>Verified</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {VerifiedRMAs.length}
-                </Box>
-                <Box sx={{}}>In Progress</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {InprogressRMAs.length}
-                </Box>
-                <Box sx={{}}>Closed</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {ClosedRMAs.length}
-                </Box>
-              </Box>
+              <Grid container>
+                <Grid item xs={6}>
+                  <Box>Draft</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {DraftTloans.length}
+                  </Box>
+                </Grid>
+                <Grid item xs={6} sx={{paddingLeft: 6}}>
+                  <Box>Pending</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {PendingTloans.length}
+                  </Box>
+                </Grid>
+                <Grid item xs={12}>
+                  <Divider >
+                    <Chip label="TLoans"/>
+                  </Divider>
+                </Grid>
+                <Grid item xs={6}>
+                  <Box>Current</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {CurrentTloans.length}
+                  </Box>
+                </Grid>
+                <Grid item xs={6} sx={{paddingLeft: 6}}>
+                  <Box>On Extension</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {ExtendedTloans.length}
+                  </Box>
+                </Grid>
+              </Grid>
             </Typography>
           </Card>
         </Grid>
@@ -253,13 +267,13 @@ function cards() {
     );
   } else {
     return (
-      <Grid container sx={{ paddingLeft: 2, paddingRight: 2 }}>
+      <Grid container sx={{ paddingLeft: 3, paddingRight: 3, marginTop: -2 }}>
         <Grid item xs={6}>
           <Card sx={{ height: "100%", width: "98%" }}>
             <Typography
               gutterBottom
               variant="subtitle2"
-              component="Box"
+              component="span"
               sx={{
                 paddingTop: 2,
                 paddingLeft: 2,
@@ -285,7 +299,7 @@ function cards() {
             <Typography
               gutterBottom
               variant="subtitle2"
-              component="Box"
+              component="span"
               sx={{
                 paddingTop: 2,
                 paddingLeft: 2,

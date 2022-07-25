@@ -1,21 +1,24 @@
-import CancelIcon from "@mui/icons-material/Close";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
+import CancelIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import EditIcon from "@mui/icons-material/Edit";
+import MoreVert from "@mui/icons-material/MoreVert";
 import SaveIcon from "@mui/icons-material/Save";
 import { Stack, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
 import {
   DataGrid,
   GridActionsCellItem,
   GridCellParams,
-  GridColTypeDef,
-  GridColumns,
-  GridEventListener,
+  GridColDef,
+  GridColTypeDef, GridEventListener,
   GridFilterInputValueProps,
   GridFilterItem,
   GridFilterModel,
+  GridRenderCellParams,
   GridRenderEditCellParams,
   GridRowId,
   GridRowModel,
@@ -30,12 +33,12 @@ import {
   GridToolbarQuickFilter,
   GRID_DATE_COL_DEF,
   MuiEvent,
-  useGridApiContext,
+  useGridApiContext
 } from "@mui/x-data-grid";
 import {
   DatePicker,
   DateTimePicker,
-  LocalizationProvider,
+  LocalizationProvider
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
@@ -48,7 +51,6 @@ import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import ReasonModalButton from "./RmaModal/reasonModal";
 import RejectModalButton from "./RmaModal/rejectModal";
-import MoreVert from "@mui/icons-material/MoreVert";
 
 const RmaDisplay: React.FC = () => {
   const navigate = useNavigate();
@@ -360,6 +362,115 @@ const RmaDisplay: React.FC = () => {
     },
   };
 
+  interface GridCellExpandProps {
+    value: string;
+    width: number;
+  }
+  
+  function isOverflown(element: Element): boolean {
+    return (
+      element.scrollHeight > element.clientHeight ||
+      element.scrollWidth > element.clientWidth
+    );
+  }
+  
+  const GridCellExpand = React.memo(function GridCellExpand(
+    props: GridCellExpandProps,
+  ) {
+    const { width, value } = props;
+    const wrapper = React.useRef<HTMLDivElement | null>(null);
+    const cellDiv = React.useRef(null);
+    const cellValue = React.useRef(null);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [showFullCell, setShowFullCell] = React.useState(false);
+    const [showPopper, setShowPopper] = React.useState(false);
+  
+    const handleMouseEnter = () => {
+      const isCurrentlyOverflown = isOverflown(cellValue.current!);
+      setShowPopper(isCurrentlyOverflown);
+      setAnchorEl(cellDiv.current);
+      setShowFullCell(true);
+    };
+  
+    const handleMouseLeave = () => {
+      setShowFullCell(false);
+    };
+  
+    React.useEffect(() => {
+      if (!showFullCell) {
+        return undefined;
+      }
+  
+      function handleKeyDown(nativeEvent: KeyboardEvent) {
+        // IE11, Edge (prior to using Bink?) use 'Esc'
+        if (nativeEvent.key === 'Escape' || nativeEvent.key === 'Esc') {
+          setShowFullCell(false);
+        }
+      }
+  
+      document.addEventListener('keydown', handleKeyDown);
+  
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }, [setShowFullCell, showFullCell]);
+  
+    return (
+      <Box
+        ref={wrapper}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        sx={{
+          alignItems: 'center',
+          lineHeight: '24px',
+          width: '100%',
+          height: '100%',
+          position: 'relative',
+          display: 'flex',
+        }}
+      >
+        <Box
+          ref={cellDiv}
+          sx={{
+            height: '100%',
+            width,
+            display: 'block',
+            position: 'absolute',
+            top: 0,
+          }}
+        />
+        <Box
+          ref={cellValue}
+          sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+        >
+          {value}
+        </Box>
+        {showPopper && (
+          <Popper
+            open={showFullCell && anchorEl !== null}
+            anchorEl={anchorEl}
+            style={{ width, marginLeft: -17 }}
+          >
+            <Paper
+              elevation={1}
+              style={{ minHeight: wrapper.current!.offsetHeight - 3 }}
+            >
+              <Typography variant="body2" style={{ padding: 8 }}>
+                {value}
+              </Typography>
+            </Paper>
+          </Popper>
+        )}
+      </Box>
+    );
+  });
+  
+  function renderCellExpand(params: GridRenderCellParams<string>) {
+    return (
+      <GridCellExpand value={params.value || ''} width={params.colDef.computedWidth} />
+    );
+  }
+
   const handleRowEditStart = (
     params: GridRowParams,
     event: MuiEvent<React.SyntheticEvent>
@@ -435,7 +546,7 @@ const RmaDisplay: React.FC = () => {
     );
   };
 
-  const columns: GridColumns = [
+  const columns: GridColDef[] = [
     { field: "id", headerName: "PK", flex: 1, editable: true },
     { field: "ItemCode", headerName: "Item Code", flex: 2, editable: true },
     {
@@ -514,7 +625,7 @@ const RmaDisplay: React.FC = () => {
     },
   ];
 
-  const staticcolumns: GridColumns = [
+  const staticcolumns: GridColDef[] = [
     { field: "id", headerName: "PK", flex: 1, editable: false },
     { field: "ItemCode", headerName: "Item Code", flex: 2, editable: false },
     {
@@ -530,28 +641,32 @@ const RmaDisplay: React.FC = () => {
       ...dateColumnType,
       flex: 3,
       editable: false,
+      renderCell: renderCellExpand,
     },
     {
       field: "ReturnReason",
       headerName: "Reason For Return",
       flex: 9,
       editable: false,
+      renderCell: renderCellExpand,
     },
     {
       field: "Instructions",
       headerName: "Instructions",
       flex: 9,
       editable: false,
+      renderCell: renderCellExpand,
     },
     {
       field: "CourseOfAction",
       headerName: "Course Of Action",
       flex: 9,
       editable: false,
+      renderCell: renderCellExpand,
     },
   ];
 
-  const whcolumns: GridColumns = [
+  const whcolumns: GridColDef[] = [
     { field: "id", headerName: "PK", flex: 1, editable: false },
     { field: "ItemCode", headerName: "Item Code", flex: 2, editable: false },
     {
@@ -567,12 +682,14 @@ const RmaDisplay: React.FC = () => {
       ...dateColumnType,
       flex: 5,
       editable: false,
+      renderCell: renderCellExpand,
     },
     {
       field: "ReturnReason",
       headerName: "Reason For Return",
       flex: 10,
       editable: false,
+      renderCell: renderCellExpand,
     },
     {
       field: "RmaProductStatus",
@@ -618,7 +735,7 @@ const RmaDisplay: React.FC = () => {
     },
   ];
 
-  const icolumns: GridColumns = [
+  const icolumns: GridColDef[] = [
     { field: "id", headerName: "PK", flex: 1, editable: false },
     { field: "ItemCode", headerName: "Item Code", flex: 2, editable: false },
     {
@@ -634,12 +751,14 @@ const RmaDisplay: React.FC = () => {
       ...dateColumnType,
       flex: 3,
       editable: false,
+      renderCell: renderCellExpand,
     },
     {
       field: "ReturnReason",
       headerName: "Reason For Return",
       flex: 9,
       editable: false,
+      renderCell: renderCellExpand,
     },
     {
       field: "Instructions",
@@ -647,12 +766,14 @@ const RmaDisplay: React.FC = () => {
       flex: 9,
       editable: true,
       cellClassName: "ins--cell",
+      renderCell: renderCellExpand,
     },
     {
       field: "CourseOfAction",
       headerName: "Course Of Action",
       flex: 9,
       editable: false,
+      renderCell: renderCellExpand,
     },
     {
       field: "actions",
@@ -698,7 +819,7 @@ const RmaDisplay: React.FC = () => {
     },
   ];
 
-  const coacolumns: GridColumns = [
+  const coacolumns: GridColDef[] = [
     { field: "id", headerName: "PK", flex: 1, editable: false },
     { field: "ItemCode", headerName: "Item Code", flex: 2, editable: false },
     {
@@ -714,18 +835,21 @@ const RmaDisplay: React.FC = () => {
       ...dateColumnType,
       flex: 3,
       editable: false,
+      renderCell: renderCellExpand,
     },
     {
       field: "ReturnReason",
       headerName: "Reason For Return",
       flex: 9,
       editable: false,
+      renderCell: renderCellExpand,
     },
     {
       field: "Instructions",
       headerName: "Instructions",
       flex: 9,
       editable: false,
+      renderCell: renderCellExpand,
     },
     {
       field: "CourseOfAction",
@@ -733,6 +857,7 @@ const RmaDisplay: React.FC = () => {
       flex: 9,
       editable: true,
       cellClassName: "coa--cell",
+      renderCell: renderCellExpand,
     },
     {
       field: "actions",
@@ -2244,7 +2369,7 @@ const RmaDisplay: React.FC = () => {
                     variant="contained"
                     sx={{
                       color: "white",
-                      backgroundColor: "#31A961",
+                      backgroundColor: "#063970",
                       width: 150,
                       height: 50,
                       borderRadius: 10,
