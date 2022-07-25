@@ -3,7 +3,7 @@ import { Container } from "@mui/material";
 import React from "react";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { GetUser } from "../../api/UserDB";
+import { GetProfile } from "../../api/UserDB";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
 
 const Profile: React.FC = () => {
@@ -11,7 +11,7 @@ const Profile: React.FC = () => {
 
   const UserQuery = useQuery(
     [`user${localStorage.getItem("user_id")}`, localStorage.getItem("user_id")],
-    () => GetUser(localStorage.getItem("user_id"))
+    () => GetProfile(localStorage.getItem("user_id"))
   );
 
   if (UserQuery.isLoading || UserQuery.isError) {

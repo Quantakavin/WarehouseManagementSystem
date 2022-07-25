@@ -4,7 +4,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import { Toolbar } from "@mui/material";
 import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline"; 
+import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import MuiDrawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
@@ -19,6 +19,18 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectName, selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Close, Open, selectOpen } from "../../app/reducers/SidebarSlice";
 import defaultprofile from "../../assets/defaultprofile.png";
+import SidebarLink from "./SidebarLink";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import ArticleIcon from "@mui/icons-material/Article";
+import AssignmentReturnIcon from "@mui/icons-material/AssignmentReturn";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import PersonIcon from "@mui/icons-material/Person";
+import WarehouseIcon from "@mui/icons-material/Warehouse";
+import { useState } from "react";
 
 const drawerWidth = 240;
 
@@ -39,9 +51,9 @@ const closedMixin = (theme: Theme): CSSObject => ({
   }),
   overflowX: "hidden",
   backgroundColor: "#0a2540",
-  width: `calc(${theme.spacing(7)} + 1px)`,
+  width: `calc(${theme.spacing(9)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
+    width: `calc(${theme.spacing(9)} + 1px)`,
   },
 });
 
@@ -71,7 +83,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function MiniDrawer() {
+const Sidebar = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -92,19 +104,19 @@ export default function MiniDrawer() {
       <CssBaseline />
       <Drawer variant="permanent" open={isopen}>
         <Toolbar />
-        <DrawerHeader sx={{backgroundColor: "#0a2540"}}>
-          <Box className="flexcontainer sidebarprofile" sx={{marginRight: "auto", marginTop: "5px", marginBottom: "5px"}}>
-            <Box style={{ flex: 1 }}>
+        <DrawerHeader sx={{ backgroundColor: "#0a2540"}} onClick={() => navigate("/profile")}>
+          <Box className="flexcontainer sidebarprofile" sx={{ marginRight: "auto", marginTop: "15px", marginBottom: "5px" }}>
+            <Box sx={{ flex: 1, margin: isopen? "0px": "10px -6px 10px 6px"}}>
               <img
                 alt="ISDN Logo"
                 src={defaultprofile}
                 width="40"
                 height="40"
                 className="d-inline-block align-top"
-                style={{ marginRight: 15 }}
+                style={{ marginRight: 15}}
               />
             </Box>
-            {isopen && (
+            {isopen ? (
               <Box style={{ flex: 3, marginTop: 8, marginBottom: -8 }}>
                 <p
                   style={{
@@ -122,236 +134,59 @@ export default function MiniDrawer() {
                   {userrole}
                 </p>
               </Box>
-            )}
+            ) : null}
           </Box>
-          <IconButton onClick={toggleDrawer}>
+          {/* <IconButton onClick={toggleDrawer}>
             {!isopen ? (
-              <ChevronRightIcon sx={{color: "#bfc3cb"}} />
+              <ChevronRightIcon sx={{ color: "#bfc3cb", marginLeft: "-15px", marginTop: "15px", marginbottom: "-5px" }} />
             ) : (
-              <ChevronLeftIcon sx={{color: "#bfc3cb"}} />
+              <ChevronLeftIcon sx={{ color: "#bfc3cb"}} />
             )}
-          </IconButton>
+          </IconButton> */}
         </DrawerHeader>
-        <Divider />
-        <List>
-          <ListItem
-            onClick={() => navigate("/dashboard")}
-            disablePadding
-            sx={{ display: "block" }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary={"Dashboard"}
-                sx={{ opacity: open ? 1 : 0 }}
-              />
-            </ListItemButton>
-          </ListItem>
-          <ListItem
-            onClick={() => navigate("/products")}
-            disablePadding
-            sx={{ display: "block" }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                <MailIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary={"Products"}
-                sx={{ opacity: open ? 1 : 0 }}
-              />
-            </ListItemButton>
-          </ListItem>
-          <ListItem
-            onClick={() => navigate("/binlocations")}
-            disablePadding
-            sx={{ display: "block" }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                <MailIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary={"Bin Location"}
-                sx={{ opacity: open ? 1 : 0 }}
-              />
-            </ListItemButton>
-          </ListItem>
-        </List>
-        <Divider />
-        <List>
-          <ListItem
-            onClick={() => navigate("/tloan")}
-            disablePadding
-            sx={{ display: "block" }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary={"TLoans"} sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-          <ListItem
-            onClick={() => navigate("/rma")}
-            disablePadding
-            sx={{ display: "block" }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                <MailIcon />
-              </ListItemIcon>
-              <ListItemText primary={"RMA"} sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-        </List>
-        <Divider />
-        <List>
-          <ListItem
-            onClick={() => navigate("/users")}
-            disablePadding
-            sx={{ display: "block" }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Users"} sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-          <ListItem
-            onClick={() => navigate("/usergroups")}
-            disablePadding
-            sx={{ display: "block" }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                <MailIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary={"User Groups"}
-                sx={{ opacity: open ? 1 : 0 }}
-              />
-            </ListItemButton>
-          </ListItem>
-          <ListItem
-            onClick={() => navigate("/notificationgroups")}
-            disablePadding
-            sx={{ display: "block" }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                <MailIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary={"Notification Groups"}
-                sx={{ opacity: open ? 1 : 0 }}
-              />
-            </ListItemButton>
-          </ListItem>
+        <hr className="solid" style={{ height: 2, color: "#A4AAB6" }} />
+        <p
+          style={{
+            color: "#BFC3CB",
+            fontSize: 12,
+            fontWeight: 500,
+            marginTop: 10,
+            marginBottom: 10,
+            marginLeft: "10%",
+          }}
+        >
+          {isopen ? "MENU" : null}
+        </p>
+
+        {/* <Divider className="solid" sx={{ height: 2, color: "#A4AAB6" }} /> */}
+        <List sx={{ flexDirection: "column", paddingRight: "10px", paddingLeft: "10px" }} className="flexcontainer">
+          <SidebarLink url="/dashboard" name="Dashboard" icon={<DashboardIcon />} />
+          <SidebarLink url="/products" name="Products" icon={<InventoryIcon />} />
+          <SidebarLink
+            url="/binlocations"
+            name="Bin Locations"
+            icon={<WarehouseIcon />}
+          />
+          <SidebarLink url="/users" name="Users" icon={<PersonIcon />} />
+          <SidebarLink
+            url="/usergroups"
+            name="User Groups"
+            icon={<PeopleAltIcon />}
+          />
+          <SidebarLink
+            url="/notificationgroups"
+            name="Notification Groups"
+            icon={<NotificationAddIcon />}
+          />
+          <SidebarLink url="/Tloan" name="T-Loan" icon={<ArticleIcon />} />
+          <SidebarLink url="/RMA" name="RMA" icon={<AssignmentReturnIcon />} />
         </List>
       </Drawer>
     </Box>
   );
 }
+
+export default Sidebar;
 
 
 // export default function MiniDrawer() {

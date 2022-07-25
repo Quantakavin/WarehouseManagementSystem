@@ -25,6 +25,14 @@ export const GetUser = async (id: string) => {
   });
 };
 
+export const GetProfile = async (id: string) => {
+  return axios.get(`${config.baseURL}/profile/${id}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
 export const GetUsernames = async (name: string) => {
   return axios.get(`${config.baseURL}/usernames?name=${name}`, {
     headers: {

@@ -299,6 +299,7 @@ const TopNav = () => {
                 </IconButton>,
                 <div
                   className="navprofile flexcontainer"
+                  style={{flexDirection: "row"}}
                   aria-label="account of current user"
                   aria-controls={menuId}
                   aria-haspopup="true"
@@ -311,7 +312,7 @@ const TopNav = () => {
                     src={defaultprofile}
                     width="30"
                     height="30"
-                    style={{ marginRight: 10, marginLeft: -10 }}
+                    style={{ marginRight: 10}}
                   />
                   <p className="navprofilename">{username}</p>
                   {isMenuOpen ? (
