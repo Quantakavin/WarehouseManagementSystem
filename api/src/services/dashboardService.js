@@ -91,7 +91,7 @@ module.exports.getClosedRMAs = async () => {
 
 // Get Total TLoan Request, Month WHERE Status = 3
 module.exports.getTLoanCurrentStats = async () => {
-    const query = `SELECT COUNT(TLoanNumber) AS Requests,  MONTHNAME(ApplicationDate) as Month FROM TLoan WHERE TLoanStatusID = "3"  GROUP BY ApplicationDate`;
+    const query = `SELECT COUNT(TLoanNumber) AS Requests,  MONTHNAME(ApplicationDate) as Month FROM TLoan WHERE TLoanStatusID = "2"  GROUP BY ApplicationDate`;
     // const query = `select (select count(TLoanNumber) from TLoan) as TLoanRequests,
     // (select count(RmaID) from Rma) as RMARequest`;
     return knex.raw(query);
