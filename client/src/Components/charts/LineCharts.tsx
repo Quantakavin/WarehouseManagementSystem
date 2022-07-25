@@ -47,7 +47,7 @@ function LineCharts({ title, dataKey, grid }) {
   }, []);
 
   return (
-    <Grid container sx={{ paddingLeft: 3, paddingRight: 3 }}>
+    <Grid container>
       <Grid item xs={6}>
         <Card sx={{height: "100%", width: "98%", p: 2}}>
           <Grid container>

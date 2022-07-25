@@ -4,7 +4,7 @@ import BarCharts from "../../components/charts/BarCharts";
 import PieCharts from "../../components/charts/PieCharts";
 import "../../styles/Dashboard.scss";
 
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 
@@ -36,28 +36,30 @@ function Dashboards() {
   // end of switch case
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <h1 className="homeTitle">
-          {localStorage.getItem("username")}'s Dashboard{""}
-        </h1>
-      </Grid>
-      <Grid item xs={12}>
-        <Cards />
-      </Grid>
-      <Grid item xs={12}>
-        <PieCharts title={undefined} dataKey={undefined} grid={undefined} />
-      </Grid>
-      <Grid item xs={12}>
-        <LineCharts title={undefined} dataKey={undefined} grid={undefined} />
-      </Grid>
-      {/* <Grid item xs={6}>
+    <Box sx={{ pl: 3, pr: 3 }}>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <h1>
+            {localStorage.getItem("username")}'s Dashboard{""}
+          </h1>
+        </Grid>
+        <Grid item xs={12}>
+          <Cards />
+        </Grid>
+        <Grid item xs={12}>
+          <PieCharts title={undefined} dataKey={undefined} grid={undefined} />
+        </Grid>
+        <Grid item xs={12}>
+          <LineCharts title={undefined} dataKey={undefined} grid={undefined} />
+        </Grid>
+        {/* <Grid item xs={6}>
         <RMAChart title={undefined} dataKey={undefined} grid={undefined} />
       </Grid> */}
-      <Grid item xs={12}>
-        <BarCharts title={undefined} dataKey={undefined} grid={undefined} />
+        <Grid item xs={12}>
+          <BarCharts title={undefined} dataKey={undefined} grid={undefined} />
+        </Grid>
       </Grid>
-    </Grid>
+    </Box>
   );
 }
 

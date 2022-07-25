@@ -151,7 +151,7 @@ function cards() {
   // '"Segoe UI Symbol"',
   if (userrole !== "Sales Manager") {
     return (
-      <Grid container sx={{ paddingLeft: 3, paddingRight: 3 }}>
+      <Grid container sx={{ marginTop: -2 }}>
         <Grid item xs={6}>
           <Card sx={{ height: "100%", width: "98%" }}>
             <Typography
@@ -253,7 +253,7 @@ function cards() {
     );
   } else {
     return (
-      <Grid container sx={{ paddingLeft: 3, paddingRight: 3 }}>
+      <Grid container sx={{ paddingLeft: 3, paddingRight: 3, marginTop: -2 }}>
         <Grid item xs={6}>
           <Card sx={{ height: "100%", width: "98%" }}>
             <Typography
