@@ -11,7 +11,7 @@ module.exports.getAllRMA = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await rmaService.getAllRMA();
-        redisClient.set('allRMA', JSON.stringify(results[0]));
+        redisClient.set('allRMA', JSON.stringify(results[0]), {EX: 60*60*24});
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -26,7 +26,13 @@ module.exports.getAllRMA = async (req, res) => {
 module.exports.getRMAProducts = async (req, res) => {
     const { RmaID } = req.params;
     try {
+        const Rma = await redisClient.get('RmaProduct');
+        if (RmaProduct !== null) {
+            const redisresults = JSON.parse(RmaProduct);
+            return res.status(200).json(redisresults);
+        }
         const results = await rmaService.getRMAProducts(RmaID);
+        redisClient.set(`rmaProducts#${RmaID}`, JSON.stringify(results[0]), {EX: 60*60*24});
         if (results[0].length > 0) {
             return res.status(200).send(results[0]);
         } else if (!results) {
@@ -59,7 +65,7 @@ module.exports.getRMADetails = async (req, res) => {
                 [output[0].RMAProducts] = results2;
                 output = output[0];
             }
-            redisClient.set(`rmaDetails#${RmaID}`, JSON.stringify(output));
+            redisClient.set(`rmaDetails#${RmaID}`, JSON.stringify(output), {EX: 60*60*24});
             return res.status(200).send(output);
         }
         return res.status(404).json({ message: 'Cannot find RMA with that RMA No.!' });
@@ -81,7 +87,7 @@ module.exports.getByRmaID = async (req, res) => {
         const results = await rmaService.getByRmaID(RmaID);
         if (results[0].length > 0) {
             [output] = results;
-            redisClient.set(`rmaByRmaID#${RmaID}`, JSON.stringify(output[0]));
+            redisClient.set(`rmaByRmaID#${RmaID}`, JSON.stringify(output[0]), {EX: 60*60*24});
             return res.status(200).send(output[0]);
         }
         return res.status(404).json({ message: 'Cannot find RMA with that RMA No.!' });
@@ -101,7 +107,7 @@ module.exports.getMyPendingRMA = async (req, res) => {
         }
         const results = await rmaService.getSalesmanPendingRMA(SalesmanID);
         if (results[0].length > 0) {
-            redisClient.set(`myPendingRMA#${SalesmanID}`, JSON.stringify(results[0]));
+            redisClient.set(`myPendingRMA#${SalesmanID}`, JSON.stringify(results[0]), {EX: 60*60*24});
             return res.status(200).send(results[0]);
         }
         return res.status(404).json({ message: 'Cannot find RMA requests under you!' });
@@ -121,7 +127,7 @@ module.exports.getMyAcceptedRMA = async (req, res) => {
         }
         const results = await rmaService.getSalesmanAcceptedRMA(SalesmanID);
         if (results[0].length > 0) {
-            redisClient.set(`myAcceptedRMA#${SalesmanID}`, JSON.stringify(results[0]));
+            redisClient.set(`myAcceptedRMA#${SalesmanID}`, JSON.stringify(results[0]), {EX: 60*60*24});
             return res.status(200).send(results[0]);
         }
         return res.status(404).json({ message: 'Cannot find RMA requests under you!' });
@@ -141,7 +147,7 @@ module.exports.getMyRejectedRMA = async (req, res) => {
         }
         const results = await rmaService.getSalesmanRejectedRMA(SalesmanID);
         if (results[0].length > 0) {
-            redisClient.set(`myRejectedRMA#${SalesmanID}`, JSON.stringify(results[0]));
+            redisClient.set(`myRejectedRMA#${SalesmanID}`, JSON.stringify(results[0]), {EX: 60*60*24});
             return res.status(200).send(results[0]);
         }
         return res.status(404).json({ message: 'Cannot find RMA requests under you!' });
@@ -161,7 +167,7 @@ module.exports.getMyIPRMA = async (req, res) => {
         }
         const results = await rmaService.getSalesmanIPRMA(SalesmanID);
         if (results[0].length > 0) {
-            redisClient.set(`myIPRMA#${SalesmanID}`, JSON.stringify(results[0]));
+            redisClient.set(`myIPRMA#${SalesmanID}`, JSON.stringify(results[0], {EX: 60*60*24}));
             return res.status(200).send(results[0]);
         }
         return res.status(404).json({ message: 'Cannot find RMA requests under you!' });
@@ -179,7 +185,7 @@ module.exports.getPendingRMA = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await rmaService.getPendingRMA();
-        redisClient.set('PendingRMA', JSON.stringify(results[0]));
+        redisClient.set('PendingRMA', JSON.stringify(results[0]), {EX: 60*60*24});
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -199,7 +205,7 @@ module.exports.getAcceptedRMA = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await rmaService.getAcceptedRMA();
-        redisClient.set('AcceptedRMA', JSON.stringify(results[0]));
+        redisClient.set('AcceptedRMA', JSON.stringify(results[0]), {EX: 60*60*24});
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -219,7 +225,7 @@ module.exports.getRejectedRMA = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await rmaService.getRejectedRMA();
-        redisClient.set('RejectedRMA', JSON.stringify(results[0]));
+        redisClient.set('RejectedRMA', JSON.stringify(results[0]), {EX: 60*60*24});
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -239,7 +245,7 @@ module.exports.getReceivedRMA = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await rmaService.getReceivedRMA();
-        redisClient.set('ReceivedRMA', JSON.stringify(results[0]));
+        redisClient.set('ReceivedRMA', JSON.stringify(results[0]), {EX: 60*60*24});
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -259,7 +265,7 @@ module.exports.getVerifiedRMA = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await rmaService.getVerifiedRMA();
-        redisClient.set('VerifiedRMA', JSON.stringify(results[0]));
+        redisClient.set('VerifiedRMA', JSON.stringify(results[0]), {EX: 60*60*24});
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -279,7 +285,7 @@ module.exports.getIPRMA = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await rmaService.getIPRMA();
-        redisClient.set('InProgressRMA', JSON.stringify(results[0]));
+        redisClient.set('InProgressRMA', JSON.stringify(results[0]), {EX: 60*60*24});
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -299,7 +305,7 @@ module.exports.getClosedRMA = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await rmaService.getClosedRMA();
-        redisClient.set('ClosedRMA', JSON.stringify(results[0]));
+        redisClient.set('ClosedRMA', JSON.stringify(results[0]), {EX: 60*60*24});
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
@@ -358,6 +364,7 @@ module.exports.updateRmaAccepted = async (req, res) => {
             await rmaService.updateRmaAccepted(RmaID);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
+            redisClient.del(`rmaProducts#${RmaID}`);
             redisClient.del(`rmaByRmaID#${RmaID}`);
             redisClient.del('PendingRMA');
             redisClient.del('AcceptedRMA');
@@ -383,6 +390,7 @@ module.exports.updateRmaRejected = async (req, res) => {
             await rmaService.updateRmaRejected(RmaID, rejectreason);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
+            redisClient.del(`rmaProducts#${RmaID}`);
             redisClient.del(`rmaByRmaID#${RmaID}`);
             redisClient.del('PendingRMA');
             redisClient.del('AcceptedRMA');
@@ -408,6 +416,7 @@ module.exports.updateRmaChecklist = async (req, res) => {
             await rmaService.updateRmaChecklist(RmaID, products);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
+            redisClient.del(`rmaProducts#${RmaID}`);
             redisClient.del(`rmaByRmaID#${RmaID}`);
             redisClient.del('PendingRMA');
             redisClient.del('AcceptedRMA');
@@ -434,6 +443,7 @@ module.exports.updateRmaReceived = async (req, res) => {
             await rmaService.updateRMAReceived(RmaID, products);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
+            redisClient.del(`rmaProducts#${RmaID}`);
             redisClient.del(`rmaByRmaID#${RmaID}`);
             redisClient.del('PendingRMA');
             redisClient.del('AcceptedRMA');
@@ -460,6 +470,7 @@ module.exports.updateRmaInstructions = async (req, res) => {
             await rmaService.updateRmaInstructions(RmaID, products);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
+            redisClient.del(`rmaProducts#${RmaID}`);
             redisClient.del(`rmaByRmaID#${RmaID}`);
             redisClient.del('PendingRMA');
             redisClient.del('AcceptedRMA');
@@ -486,6 +497,7 @@ module.exports.updateRmaCoa = async (req, res) => {
             await rmaService.updateRmaCOA(RmaID, products);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
+            redisClient.del(`rmaProducts#${RmaID}`);
             redisClient.del(`rmaByRmaID#${RmaID}`);
             redisClient.del('PendingRMA');
             redisClient.del('AcceptedRMA');
@@ -511,6 +523,7 @@ module.exports.closeRma = async (req, res) => {
             await rmaService.closeRma(RmaID);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
+            redisClient.del(`rmaProducts#${RmaID}`);
             redisClient.del(`rmaByRmaID#${RmaID}`);
             redisClient.del('PendingRMA');
             redisClient.del('AcceptedRMA');

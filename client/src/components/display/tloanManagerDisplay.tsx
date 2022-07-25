@@ -4,13 +4,14 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { DataGrid, GridColumns } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { GetDetails }from "../../api/TLoanDB"
 import { motion } from "framer-motion";
 import TLoanRejectModalButton from "./TloanModal/tloanRejectModal";
+import React from "react";
 
 export default function TLoanManagerDisplay() {
   const navigate = useNavigate();
@@ -57,6 +58,119 @@ export default function TLoanManagerDisplay() {
       .catch(console.error);
   }, []);
 
+  interface GridCellExpandProps {
+    value: string;
+    width: number;
+  }
+
+  function isOverflown(element: Element): boolean {
+    return (
+      element.scrollHeight > element.clientHeight ||
+      element.scrollWidth > element.clientWidth
+    );
+  }
+
+  const GridCellExpand = React.memo(function GridCellExpand(
+    props: GridCellExpandProps
+  ) {
+    const { width, value } = props;
+    const wrapper = React.useRef<HTMLDivElement | null>(null);
+    const cellDiv = React.useRef(null);
+    const cellValue = React.useRef(null);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [showFullCell, setShowFullCell] = React.useState(false);
+    const [showPopper, setShowPopper] = React.useState(false);
+
+    const handleMouseEnter = () => {
+      const isCurrentlyOverflown = isOverflown(cellValue.current!);
+      setShowPopper(isCurrentlyOverflown);
+      setAnchorEl(cellDiv.current);
+      setShowFullCell(true);
+    };
+
+    const handleMouseLeave = () => {
+      setShowFullCell(false);
+    };
+
+    React.useEffect(() => {
+      if (!showFullCell) {
+        return undefined;
+      }
+
+      function handleKeyDown(nativeEvent: KeyboardEvent) {
+        // IE11, Edge (prior to using Bink?) use 'Esc'
+        if (nativeEvent.key === "Escape" || nativeEvent.key === "Esc") {
+          setShowFullCell(false);
+        }
+      }
+
+      document.addEventListener("keydown", handleKeyDown);
+
+      return () => {
+        document.removeEventListener("keydown", handleKeyDown);
+      };
+    }, [setShowFullCell, showFullCell]);
+
+    return (
+      <Box
+        ref={wrapper}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        sx={{
+          alignItems: "center",
+          lineHeight: "24px",
+          width: "100%",
+          height: "100%",
+          position: "relative",
+          display: "flex",
+        }}
+      >
+        <Box
+          ref={cellDiv}
+          sx={{
+            height: "100%",
+            width,
+            display: "block",
+            position: "absolute",
+            top: 0,
+          }}
+        />
+        <Box
+          ref={cellValue}
+          sx={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {value}
+        </Box>
+        {showPopper && (
+          <Popper
+            open={showFullCell && anchorEl !== null}
+            anchorEl={anchorEl}
+            style={{ width, marginLeft: -17 }}
+          >
+            <Paper
+              elevation={1}
+              style={{ minHeight: wrapper.current!.offsetHeight - 3 }}
+            >
+              <Typography variant="body2" style={{ padding: 8 }}>
+                {value}
+              </Typography>
+            </Paper>
+          </Popper>
+        )}
+      </Box>
+    );
+  });
+
+  function renderCellExpand(params: GridRenderCellParams<string>) {
+    return (
+      <GridCellExpand value={params.value || ''} width={params.colDef.computedWidth} />
+    );
+  }
+
   const ApproveLoan = async () => {
     axios
       .put(`http://localhost:5000/api/tloan/approve/${TLoanID}`)
@@ -66,18 +180,20 @@ export default function TLoanManagerDisplay() {
       });
   };
 
-  const columns: GridColumns = [
+  const columns: GridColDef[] = [
     {
       field: "ItemNo",
       headerName: "Item Number",
       flex: 10,
       editable: false,
+      renderCell: renderCellExpand,
     },
     {
       field: "BatchNo",
       headerName: "Batch Number",
       flex: 10,
       editable: false,
+      renderCell: renderCellExpand,
     },
     {
       field: "Quantity",
@@ -85,6 +201,7 @@ export default function TLoanManagerDisplay() {
       flex: 2,
       editable: false,
       type: "number",
+      renderCell: renderCellExpand,
     },
   ];
 
