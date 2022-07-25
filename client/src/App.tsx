@@ -39,6 +39,7 @@ import Error404 from "./pages/error/Error404";
 import Error401 from "./pages/error/Error401";
 import Sidebar2 from "./components/sidebar/Sidebar2";
 import TopNav from "./components/header/TopNav";
+import { CartProvider} from 'react-use-cart'
 
 interface ProtectedRouteProps {
   loginpage: boolean;
@@ -80,9 +81,9 @@ const App: React.FC = () => {
             </Route>
             <Route element={<ProtectedRoute loginpage={false} />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/products" element={<Products2 />} />
+              <Route path="/products" element={<Products2 />}/>
               <Route path="/productspag" element={<ProductsPag />} />
-              <Route path="/product/:id" element={<ViewProduct />} />
+              <Route path="/product/:id" element={<CartProvider><ViewProduct /></CartProvider>} />
               <Route path="/binlocations" element={<BinLocations />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/user/:id" element={<ViewUser />} />
@@ -114,13 +115,13 @@ const App: React.FC = () => {
               <Route path="/createRma" element={<CreateRMA />} />
               <Route path="/rmaDetails/:RmaID" element={<RmaDisplay />} />
               <Route
-                path="/tloandetails/:TLoanNumber"
+                path="/tloandetails/:TLoanID"
                 element={<TLoanDisplay2 />}
               />
-              <Route path="/newtloan" element={<NewTLoan />} />
+              <Route path="/newtloan" element={<CartProvider><NewTLoan /></CartProvider>} />
               <Route path="/modal" element={<Modals12 />} />
               <Route
-                path="/tloanManagerDisplay/:TLoanNumber"
+                path="/tloanManagerDisplay/:TLoanID"
                 element={<TLoanManagerDisplay />}
               />
               <Route path="*" element={<Error404 />} />

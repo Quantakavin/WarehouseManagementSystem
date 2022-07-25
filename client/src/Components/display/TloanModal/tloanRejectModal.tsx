@@ -24,7 +24,7 @@ const style = {
 };
 
 export default function TLoanRejectModalButton() {
-  const { TLoanNumber } = useParams();
+  const { TLoanID } = useParams();
   const navigate = useNavigate();
   const [remarks, setRemarks] = useState("");
   const [open, setOpen] = React.useState(false);
@@ -42,7 +42,7 @@ export default function TLoanRejectModalButton() {
   const handleConfirm = async () => {
     axios
       .put(
-        `http://localhost:5000/api/tloan/reject/${TLoanNumber}`,
+        `http://localhost:5000/api/tloan/reject/${TLoanID}`,
         tloanremarks
       )
       .then(() => navigate("/tloan"))

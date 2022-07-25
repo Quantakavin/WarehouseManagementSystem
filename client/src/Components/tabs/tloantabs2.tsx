@@ -29,7 +29,7 @@ import { useAppSelector } from "../../app/hooks";
 import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
 
 const columns = [
-  { field: "TLoanNumber", headerName: "Loan No.", flex: 4 },
+  { field: "TLoanID", headerName: "Loan No.", flex: 4 },
   { field: "StartDate", headerName: "Start Date", flex: 1 },
   { field: "EndDate", headerName: "End Date", flex: 4 },
   { field: "CompanyName", headerName: "Company Name", flex: 3 },
@@ -37,7 +37,7 @@ const columns = [
 ];
 
 const managerColumns = [
-  { field: "TLoanNumber", headerName: "Loan No.", flex: 2.5 },
+  { field: "TLoanID", headerName: "Loan No.", flex: 2.5 },
   { field: "StartDate", headerName: "Start Date", flex: 1 },
   { field: "Requestor", headerName: "Employee Name", flex: 3 },
   { field: "TLoanType", headerName: "Loan Type", flex: 3 },
@@ -81,6 +81,8 @@ const TLoanTabs2: React.FC = () => {
       .then((data) => data.json())
       .then((data) => setManagerLoan(data));
   }, []);
+
+  console.log(managerLoan)
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [
@@ -213,7 +215,7 @@ const TLoanTabs2: React.FC = () => {
                     <Fab
                       variant="extended"
                       aria-label="add"
-                      onClick={() => navigate("/newtloan")}
+                      onClick={() => navigate("/products")}
                       sx={{
                         color: "white",
                         backgroundColor: "#063970",
@@ -235,7 +237,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={currentTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={pageSize}
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
@@ -267,7 +269,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={pendingTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={pageSize}
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
@@ -299,7 +301,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={draftTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
                       Toolbar: CustomToolbar,
@@ -329,7 +331,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={historyTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
                       Toolbar: CustomToolbar,
@@ -449,7 +451,7 @@ const TLoanTabs2: React.FC = () => {
                     <Fab
                       variant="extended"
                       aria-label="add"
-                      onClick={() => navigate("/newtloan")}
+                      onClick={() => navigate("/products")}
                       sx={{
                         color: "white",
                         backgroundColor: "#063970",
@@ -471,7 +473,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={currentTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={pageSize}
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
@@ -503,7 +505,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={pendingTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={pageSize}
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
@@ -535,7 +537,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={draftTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
                       Toolbar: CustomToolbar,
@@ -565,7 +567,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={historyTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
                       Toolbar: CustomToolbar,
@@ -650,7 +652,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={managerLoan}
                     columns={managerColumns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={pageSize}
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
@@ -682,7 +684,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={extensionsTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={pageSize}
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
@@ -804,7 +806,7 @@ const TLoanTabs2: React.FC = () => {
                     <Fab
                       variant="extended"
                       aria-label="add"
-                      onClick={() => navigate("/newtloan")}
+                      onClick={() => navigate("/products")}
                       sx={{
                         color: "white",
                         backgroundColor: "#063970",
@@ -826,7 +828,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={currentTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={pageSize}
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
@@ -858,7 +860,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={pendingTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={pageSize}
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
@@ -890,7 +892,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={draftTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
                       Toolbar: CustomToolbar,
@@ -920,7 +922,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={historyTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
                       Toolbar: CustomToolbar,
@@ -992,7 +994,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={approvedTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={pageSize}
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
@@ -1105,7 +1107,7 @@ const TLoanTabs2: React.FC = () => {
                   <Fab
                     variant="extended"
                     aria-label="add"
-                    onClick={() => navigate("/newtloan")}
+                    onClick={() => navigate("/products")}
                     style={{ marginTop: 0 }}
                     sx={{
                       color: "white",
@@ -1127,7 +1129,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={currentTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={pageSize}
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
@@ -1159,7 +1161,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={pendingTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={pageSize}
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
@@ -1191,7 +1193,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={draftTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
                       Toolbar: CustomToolbar,
@@ -1221,7 +1223,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={historyTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
                       Toolbar: CustomToolbar,
@@ -1341,7 +1343,7 @@ const TLoanTabs2: React.FC = () => {
                     <Fab
                       variant="extended"
                       aria-label="add"
-                      onClick={() => navigate("/newtloan")}
+                      onClick={() => navigate("/products")}
                       sx={{
                         color: "white",
                         backgroundColor: "#063970",
@@ -1363,7 +1365,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={currentTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={pageSize}
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
@@ -1395,7 +1397,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={pendingTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={pageSize}
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
@@ -1427,7 +1429,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={draftTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
                       Toolbar: CustomToolbar,
@@ -1457,7 +1459,7 @@ const TLoanTabs2: React.FC = () => {
                     sx={{ background: "white", fontSize: 18 }}
                     rows={historyTable}
                     columns={columns}
-                    getRowId={(row) => row.TLoanNumber}
+                    getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
                       Toolbar: CustomToolbar,

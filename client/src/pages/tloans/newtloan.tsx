@@ -38,7 +38,11 @@ import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import "./TLoanTable/table.css";
 
+
 function newtloan() {
+
+ 
+  
   interface EditToolbarProps {
     setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
     setRowModesModel: (
@@ -69,7 +73,21 @@ function newtloan() {
       </GridToolbarContainer>
     );
   }
-  const [rows, setRows] = React.useState([]);
+  const itemStorage = localStorage.getItem('react-use-cart') 
+  const cartItems = JSON.parse(itemStorage).items
+  const newProduct = cartItems.map(
+      ({  ItemNo, ItemName, BatchNo, WarehouseCode, quantity  }) => ({
+          ItemNo: ItemNo,
+          ItemName: ItemName,
+          BatchNo: BatchNo,
+          WarehouseCode: WarehouseCode,
+          Quantity: quantity
+        
+      })
+  )
+
+
+  const [rows, setRows] = React.useState(newProduct);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
@@ -128,6 +146,7 @@ function newtloan() {
         editable: true,
       },
       { field: "BatchNo", headerName: "Batch No.", width: 180, editable: true },
+      { field: "WarehouseCode", headerName: "WarehouseCode", width: 180, editable: true },
       {
         field: "Quantity",
         headerName: "Quantity",
@@ -197,6 +216,7 @@ function newtloan() {
           rows={rows}
           columns={columns}
           editMode="row"
+          getRowId={(row) => row.ItemNo}
           rowModesModel={rowModesModel}
           onRowEditStart={handleRowEditStart}
           onRowEditStop={handleRowEditStop}
@@ -216,7 +236,7 @@ function newtloan() {
 
   const [type, setType] = useState("");
   const [company, setCompany] = useState("");
-  const [number, setNumber] = useState("");
+  // const [number, setNumber] = useState("");
   const [name, setName] = useState("");
   const [purpose, setPurpose] = useState("");
   const [applicationdate, setADate] = useState("");
@@ -262,7 +282,6 @@ function newtloan() {
         .post("http://localhost:5000/api/tloan/newloan", {
           type,
           company,
-          number,
           name,
           purpose,
           applicationdate,
@@ -282,6 +301,7 @@ function newtloan() {
             width: 700,
           });
           navigate("/tloan");
+          localStorage.removeItem('react-use-cart')
         });
 
       console.log(results);
@@ -297,7 +317,6 @@ function newtloan() {
         .post("http://localhost:5000/api/tloan/loanDrafting", {
           type,
           company,
-          number,
           name,
           purpose,
           applicationdate,
@@ -309,6 +328,7 @@ function newtloan() {
           items,
         })
         .then(() => {
+         
           Toast.fire({
             icon: "info",
             title: "TLoan has been put into Draft",
@@ -317,6 +337,8 @@ function newtloan() {
             width: 700,
           });
           navigate("/tloan");
+          localStorage.removeItem('react-use-cart')
+          
         });
 
       console.log(results);
@@ -336,10 +358,7 @@ function newtloan() {
     setRDate(date);
   });
 
-  useEffect(() => {
-    const loanNumber = "1ccccdewewcwe";
-    setNumber(loanNumber);
-  });
+ 
 
   useEffect(() => {
     const uid = localStorage.getItem("user_id");
@@ -352,7 +371,6 @@ function newtloan() {
   });
 
   console.log(user);
-  console.log(localStorage);
   const getCard = () => {
     const loanDuration = [
       { "1 Week": "7" },
@@ -572,6 +590,9 @@ function newtloan() {
     );
   };
   return getCard();
+ 
+
+ 
 }
 
 export default newtloan;
