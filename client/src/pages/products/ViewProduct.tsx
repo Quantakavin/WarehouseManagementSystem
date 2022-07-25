@@ -9,6 +9,8 @@ import CardSkeleton from "../../components/skeletons/CardSkeleton";
 import { useCart} from "react-use-cart";
 import _ from "lodash"
 import axios from 'axios'
+import Button from "@mui/material/Button";
+
 
 
 const ViewProduct: React.FC = () => {
@@ -152,6 +154,19 @@ console.log(newProducts)
           </div>
         </CardContainer>
       )}
+
+      <Button 
+      size="small"
+      variant="contained"
+      sx={{
+        color: "white",
+        backgroundColor: "#31A961",
+        width: 150,
+        height: 50,
+        borderRadius: 10,
+        float: "right"
+      }}
+      onClick={() => navigate('/newtloan')}> button </Button>
     </>
   );
 };
