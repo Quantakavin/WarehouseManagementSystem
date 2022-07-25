@@ -39,10 +39,10 @@ const renderCustomizedLabel = ({
 
 function Chart4() {
   return (
-    <>
+    <>x 
       <div className="chart">
         <h4 style={{ textAlign: "left" }}>
-          TLoan Requests Grouped By Companies
+          TLoan Requests Grouped By Type
         </h4>
         <ResponsiveContainer width="100%" height="100%" aspect={4 / 1}>
           <PieChart width={600} height={400}>
