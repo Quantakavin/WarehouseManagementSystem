@@ -153,19 +153,12 @@ function cards() {
     return (
       <Grid container sx={{ marginTop: -2 }}>
         <Grid item xs={6}>
-          <Card sx={{ height: "100%", width: "98%" }}>
+          <Card
+            sx={{ height: "100%", width: "98%", pt: 2, pb: 2, pl: 6, pr: 6 }}
+          >
             <Typography
-              gutterBottom
               variant="subtitle2"
-              component="span"
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
               sx={{
-                paddingTop: 5,
-                paddingLeft: 5,
-                paddingRight: 50,
-                paddingBottom: 5,
                 color: "#063970",
                 fontWeight: "bold",
                 fontSize: 28,
@@ -173,77 +166,50 @@ function cards() {
               }}
             >
               <Grid container>
-                <Grid item xs={12}>
-                  <Box
-                    component="span"
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Box>
-                      <Box>Pending</Box>
-                      <Box sx={{ color: "black", fontWeight: "normal" }}>
-                        {PendingRMAs.length}
-                      </Box>
-                    </Box>
-                    <Box>
-                      <Box>Approved</Box>
-                      <Box sx={{ color: "black", fontWeight: "normal" }}>
-                        {ApprovedRMAs.length}
-                      </Box>
-                    </Box>
+                <Grid item xs={6}>
+                  <Box>Pending</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {PendingRMAs.length}
+                  </Box>
+                </Grid>
+                <Grid item xs={6} sx={{paddingLeft: 5}}>
+                  <Box>Approved</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {ApprovedRMAs.length}
                   </Box>
                 </Grid>
                 <Grid item xs={12}>
-                  <Divider style={{ width: "100%" }}>
+                  <Divider >
                     <Chip label="RMA" />
                   </Divider>
                 </Grid>
-                <Grid item xs={12}>
-                  <Box
-                    component="span"
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Box>
-                      <Box sx={{}}>Rejected</Box>
-                      <Box sx={{ color: "black", fontWeight: "normal" }}>
-                        {RejectedRMAs.length}
-                      </Box>
-                    </Box>
-                    <Box>
-                      <Box sx={{}}>Received</Box>
-                      <Box sx={{ color: "black", fontWeight: "normal" }}>
-                        {ReceivedRMAs.length}
-                      </Box>
-                    </Box>
+                <Grid item xs={6}>
+                  <Box sx={{}}>Rejected</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {RejectedRMAs.length}
+                  </Box>
+                </Grid>
+                <Grid item xs={6} sx={{paddingLeft: 5}}>
+                  <Box sx={{}}>Received</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {ReceivedRMAs.length}
                   </Box>
                 </Grid>
                 <Grid item xs={12}>
-                  <Divider>
+                  <Divider >
                     <Chip label="RMA" />
                   </Divider>
                 </Grid>
-                <Grid item xs={12}>
-                  <Box
-                    component="span"
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Box>
-                      <Box sx={{}}>Verified</Box>
-                      <Box sx={{ color: "black", fontWeight: "normal" }}>
-                        {VerifiedRMAs.length}
-                      </Box>
-                    </Box>
-                    <Box>
-                      <Box sx={{}}>In Progress</Box>
-                      <Box sx={{ color: "black", fontWeight: "normal" }}>
-                        {InprogressRMAs.length}
-                      </Box>
-                    </Box>
+                <Grid item xs={6}>
+                  <Box>Verified</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {VerifiedRMAs.length}
+                  </Box>
+                </Grid>
+                <Grid item xs={6} sx={{paddingLeft: 5}}>
+                  <Box>In Progress</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {InprogressRMAs.length}
                   </Box>
                 </Grid>
               </Grid>
@@ -251,18 +217,12 @@ function cards() {
           </Card>
         </Grid>
         <Grid item xs={6}>
-          <Card sx={{ height: "100%", width: "100%" }}>
+          <Card
+            sx={{ height: "100%", width: "100%", pt: 2, pb: 2, pl: 6, pr: 6 }}
+          >
             <Typography
-              gutterBottom
               variant="subtitle2"
-              component="span"
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
               sx={{
-                paddingTop: 5,
-                paddingLeft: 5,
-                paddingRight: 50,
                 color: "#063970",
                 fontWeight: "bold",
                 fontSize: 28,
@@ -270,51 +230,33 @@ function cards() {
               }}
             >
               <Grid container>
-                <Grid item xs={12}>
-                  <Box
-                    component="span"
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Box>
-                      <Box>Current</Box>
-                      <Box sx={{ color: "black", fontWeight: "normal" }}>
-                        {CurrentTloans.length}
-                      </Box>
-                    </Box>
-                    <Box>
-                      <Box>Pending</Box>
-                      <Box sx={{ color: "black", fontWeight: "normal" }}>
-                        {PendingTloans.length}
-                      </Box>
-                    </Box>
+                <Grid item xs={6}>
+                  <Box>Draft</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {DraftTloans.length}
+                  </Box>
+                </Grid>
+                <Grid item xs={6} sx={{paddingLeft: 6}}>
+                  <Box>Pending</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {PendingTloans.length}
                   </Box>
                 </Grid>
                 <Grid item xs={12}>
-                  <Divider light>
-                    <Chip label="TLOANS" />
+                  <Divider >
+                    <Chip label="TLoans"/>
                   </Divider>
                 </Grid>
-                <Grid item xs={12}>
-                  <Box
-                    component="span"
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Box>
-                      <Box>Drafts</Box>
-                      <Box sx={{ color: "black", fontWeight: "normal" }}>
-                        {DraftTloans.length}
-                      </Box>
-                    </Box>
-                    <Box sx={{}}>
-                      <Box>On Extension</Box>
-                      <Box sx={{ color: "black", fontWeight: "normal" }}>
-                        {PendingTloans.length}
-                      </Box>
-                    </Box>
+                <Grid item xs={6}>
+                  <Box>Current</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {CurrentTloans.length}
+                  </Box>
+                </Grid>
+                <Grid item xs={6} sx={{paddingLeft: 6}}>
+                  <Box>On Extension</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {ExtendedTloans.length}
                   </Box>
                 </Grid>
               </Grid>
