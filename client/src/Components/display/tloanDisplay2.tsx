@@ -19,14 +19,14 @@ export default function TLoanDisplay2() {
   const [loans, setLoans] = useState([]);
   const [items, setItems] = useState([]);
 
-  const { TLoanNumber } = useParams();
+  const { TLoanID } = useParams();
 
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
       const loans = await axios.get(
-        `http://localhost:5000/api/tloans/${TLoanNumber}`
+        `http://localhost:5000/api/tloans/${TLoanID}`
       );
 
       setLoans(loans.data);
@@ -44,7 +44,7 @@ export default function TLoanDisplay2() {
     const fetchData = async () => {
       // get the data from the api
       const items = await axios.get(
-        `http://localhost:5000/api/tloanitems/${TLoanNumber}`
+        `http://localhost:5000/api/tloanitems/${TLoanID}`
       );
 
       setItems(items.data);
@@ -103,11 +103,11 @@ export default function TLoanDisplay2() {
                         fontWeight: "bold",
                       }}
                     >
-                      <h2>TLoan {loans.TLoanNumber}</h2>
+                      <h2>TLoan {loans.TLoanID}</h2>
                       <Box sx={{ marginLeft: 5 }}>
                         <div>Loan No.</div>
                         <div style={{ color: "black", fontWeight: "normal" }}>
-                          {loans.TLoanNumber}
+                          {loans.TLoanID}
                         </div>
                       </Box>
                       <Box sx={{ marginLeft: 5 }}>
@@ -154,7 +154,7 @@ export default function TLoanDisplay2() {
                       multiline
                       rows={11.5}
                       disabled
-                      defaultValue={loans.TLoanNumber}
+                      defaultValue={loans.TLoanID}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -179,7 +179,7 @@ export default function TLoanDisplay2() {
                         </div>
                       </Box>
                       <Box sx={{ marginLeft: 5 }}>
-                        <div>TypeStart Date:</div>
+                        <div>Type:</div>
                         <div style={{ color: "black", fontWeight: "normal" }}>
                           External
                         </div>
@@ -219,7 +219,7 @@ export default function TLoanDisplay2() {
                           height: 50,
                           borderRadius: 10,
                         }}
-                        onClick={() => navigate("/tloan")}
+                        onClick={() => navigate(-1)}
                       >
                         Back
                       </Button>
