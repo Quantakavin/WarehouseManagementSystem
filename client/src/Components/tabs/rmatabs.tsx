@@ -156,7 +156,7 @@ const Rmatabs: React.FC = () => {
   switch (userrole) {
     case "Sales Engineer": {
       return (
-        <TabContext value={"1" || value.toString()}>
+        <TabContext value={value || "1"}>
           <Grid container>
             <Grid item xs={12} sx={{ paddingLeft: 3, paddingTop: 3 }}>
               <h2> RMA Requests </h2>
@@ -423,7 +423,7 @@ const Rmatabs: React.FC = () => {
             width: "100%",
           }}
         >
-          <TabContext value={"3" || value.toString()}>
+          <TabContext value={value || "3"}>
             <Grid item xs={12}>
               <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
                 <h2> RMA Requests </h2>
@@ -508,7 +508,7 @@ const Rmatabs: React.FC = () => {
             width: "100%",
           }}
         >
-          <TabContext value={"1" || value.toString()}>
+          <TabContext value={value || "1"}>
             <Grid item xs={12}>
               <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
                 <h2> RMA Requests </h2>
@@ -836,7 +836,7 @@ const Rmatabs: React.FC = () => {
             width: "100%",
           }}
         >
-          <TabContext value={"4" || value.toString()}>
+          <TabContext value={value || "4"}>
             <Grid item xs={12}>
               <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
                 <h2> RMA Requests </h2>
@@ -1017,7 +1017,7 @@ const Rmatabs: React.FC = () => {
             width: "100%",
           }}
         >
-          <TabContext value={"2" || value.toString()}>
+          <TabContext value={value || "2"}>
             <Grid item xs={12}>
               <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
                 <h2> RMA Requests </h2>
@@ -1098,7 +1098,7 @@ const Rmatabs: React.FC = () => {
     case "Admin":
     default: {
       return (
-        <TabContext value={"1" || value.toString()}>
+        <TabContext value={ value ||"1"}>
           <Box sx={{ paddingLeft: 3, paddingTop: 3 }}>
             <h2> RMA Requests </h2>
             <Tabs

@@ -14,7 +14,7 @@ import axios from 'axios'
 const ViewProduct: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const [newProducts, setNewProducts] = useState()
+  const [newProducts, setNewProducts] = useState([])
   const [productGet, setProductGet] = useState([])
 
 
