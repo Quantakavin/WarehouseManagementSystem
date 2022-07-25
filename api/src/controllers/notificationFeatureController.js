@@ -9,7 +9,7 @@ module.exports.getAllNotificationFeatures = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await notificationFeature.getAll();
-        redisClient.set('notificationfeatures', JSON.stringify(results[0]));
+        redisClient.set('notificationfeatures', JSON.stringify(results[0]),{EX: 60*60*24});
         return res.status(200).json(results[0]);
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error!' });
@@ -24,7 +24,7 @@ module.exports.getAllNotificationTypes = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await notificationFeature.getAllTypes();
-        redisClient.set('notificationtypes', JSON.stringify(results[0]));
+        redisClient.set('notificationtypes', JSON.stringify(results[0]),{EX: 60*60*24});
         return res.status(200).json(results[0]);
     } catch (error) {
         console.log(error);

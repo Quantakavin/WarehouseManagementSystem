@@ -2,7 +2,7 @@ import axios from "axios";
 import config from "../config/config";
 
 export const GetProduct = async (id: string) => {
-  return await axios.get(`${config.baseURL}/product/${id}`, {
+  return axios.get(`${config.baseURL}/product/${id}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },

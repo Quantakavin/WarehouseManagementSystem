@@ -223,21 +223,19 @@ const UserGroups: React.FC = () => {
         popupimage={<CancelIcon sx={{ color: "#D11A2A", fontSize: "150px" }} />}
         closepopup={closeErrorPopup}
         buttons={
-          <>
-            <button
-              style={{
-                alignSelf: "flex-start",
-                marginLeft: "auto",
-                fontWeight: 700,
-                color: "#0A2540",
-              }}
-              className="buttonremovestyling"
-              onClick={() => setShowError(false)}
-              type="button"
-            >
-              Close
-            </button>
-          </>
+          <button
+            style={{
+              alignSelf: "flex-start",
+              marginLeft: "auto",
+              fontWeight: 700,
+              color: "#0A2540",
+            }}
+            className="buttonremovestyling"
+            onClick={() => setShowError(false)}
+            type="button"
+          >
+            Close
+          </button>
         }
       />
       {/* <Modal

@@ -1,8 +1,8 @@
 import axios from "axios";
 import config from "../../config/config";
 
-function GetRMAsOverview() {
+const GetRMAsOverview = () => {
   return <div>GetRMAsOverview</div>;
-}
+};
 
 export default GetRMAsOverview;

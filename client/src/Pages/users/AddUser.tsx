@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { motion, useAnimation } from "framer-motion";
+import { gridDensityValueSelector } from "@mui/x-data-grid";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormContainer from "../../components/form/FormContainer";
 import FormField from "../../components/form/FormField";
@@ -31,7 +32,6 @@ import { Toast } from "../../components/alerts/SweetAlert";
 import FormSteps from "../../components/form/FormSteps";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import GeneralButton from "../../components/buttons/GeneralButton";
-import { gridDensityValueSelector } from "@mui/x-data-grid";
 
 interface FormValues {
   name: string;
@@ -121,14 +121,13 @@ const AddUser: React.FC = () => {
 
   const variants = {
     detecterror: () => ({
-      //rotate: [-1, 1.3, 0],
-      x: [10,-10,0,10,-10,0],
+      // rotate: [-1, 1.3, 0],
+      x: [10, -10, 0, 10, -10, 0],
       transition: {
-        duration: 0.4
-      }
-    })
+        duration: 0.4,
+      },
+    }),
   };
-
 
   const onSubmit = (data: FormValues) => {
     const postdata = data;
@@ -146,9 +145,8 @@ const AddUser: React.FC = () => {
         navigate("/users");
       },
       onError: () => {
-        controls.start("detecterror")
-      }
-
+        controls.start("detecterror");
+      },
     });
   };
 
@@ -164,7 +162,7 @@ const AddUser: React.FC = () => {
       ) {
         setStep(step + 1);
       } else {
-        controls.start("detecterror")
+        controls.start("detecterror");
       }
     });
   };
@@ -212,117 +210,119 @@ const AddUser: React.FC = () => {
     <>
       <FormSteps steps={steps} activestep={step - 1} icons={icons} />
 
-        <motion.div
+      <motion.div
         variants={variants}
         animate={controls}
-          // exit={{ x: "-100vw", opacity: 0 }}
-          // transition={{ duration: 5 }}
+        // exit={{ x: "-100vw", opacity: 0 }}
+        // transition={{ duration: 5 }}
+      >
+        <FormContainer
+          header="Create User"
+          multistep
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
         >
-          <FormContainer
-            header="Create User"
-            multistep
-            handleSubmit={handleSubmit}
-            onSubmit={onSubmit}
-          >
-            <div className={step === 1 ? "showstep" : "hidestep"}>
-              <FormField
-                label="Username"
-                name="name"
-                type="text"
-                register={register}
-                error={errors.name}
-                rules={UsernameValidation}
-              />
-              <FormField
-                label="Email Address"
-                name="email"
-                type="email"
-                register={register}
-                error={errors.email}
-                rules={EmailValidation}
-              />
-              <FormField
-                label="Phone No"
-                name="mobileno"
-                type="text"
-                register={register}
-                error={errors.mobileno}
-                rules={PhoneNoValidation}
-              />
-              <FormField
-                label="Password"
-                name="password"
-                type="password"
-                register={register}
-                error={errors.password}
-                rules={PasswordValidation}
-              />
-              <SelectDropdown
-                label="Company"
-                name="company"
-                options={companyOptions}
-                register={register}
-                error={errors.company}
-                rules={SelectValidation}
-                defaultoption=""
-              />
-              <div className="formnavigationcontainer">
-                <button
-                  className="formnavigation"
-                  onClick={() => navigate(-1)}
-                  type="button"
-                >
-                  Cancel
-                </button>
+          <div className={step === 1 ? "showstep" : "hidestep"}>
+            <FormField
+              label="Username"
+              name="name"
+              type="text"
+              register={register}
+              error={errors.name}
+              rules={UsernameValidation}
+            />
+            <FormField
+              label="Email Address"
+              name="email"
+              type="email"
+              register={register}
+              error={errors.email}
+              rules={EmailValidation}
+            />
+            <FormField
+              label="Phone No"
+              name="mobileno"
+              type="text"
+              register={register}
+              error={errors.mobileno}
+              rules={PhoneNoValidation}
+            />
+            <FormField
+              label="Password"
+              name="password"
+              type="password"
+              register={register}
+              error={errors.password}
+              rules={PasswordValidation}
+            />
+            <SelectDropdown
+              label="Company"
+              name="company"
+              options={companyOptions}
+              register={register}
+              error={errors.company}
+              rules={SelectValidation}
+              defaultoption=""
+            />
+            <div className="formnavigationcontainer">
+              <button
+                className="formnavigation"
+                onClick={() => navigate(-1)}
+                type="button"
+              >
+                Cancel
+              </button>
 
-                <GeneralButton text={<>Next{" "}
-                  <NavigateNextIcon
-                    style={{ marginRight: -10, marginLeft: -1 }}
-                  /></>}
-                  clickfunction={nextStep}
-                />
-              </div>
-            </div>
-            <div className={step === 2 ? "showstep" : "hidestep"}>
-              <SelectDropdown
-                label="User Group"
-                name="usergroup"
-                options={userGroupOptions}
-                register={register}
-                error={errors.usergroup}
-                rules={SelectValidation}
-                defaultoption=""
+              <GeneralButton
+                text={
+                  <>
+                    Next{" "}
+                    <NavigateNextIcon
+                      style={{ marginRight: -10, marginLeft: -1 }}
+                    />
+                  </>
+                }
+                clickfunction={nextStep}
               />
+            </div>
+          </div>
+          <div className={step === 2 ? "showstep" : "hidestep"}>
+            <SelectDropdown
+              label="User Group"
+              name="usergroup"
+              options={userGroupOptions}
+              register={register}
+              error={errors.usergroup}
+              rules={SelectValidation}
+              defaultoption=""
+            />
 
-              <MultiSelectDropdown
-                name="notificationgroups"
-                label="Notification Groups"
-                selectedValues={selectedNotiGroups}
-                changeSelectedValues={selectNotiGroup}
-                placeholder="Select Notification Groups..."
-                options={notiGroupOptions}
-              />
-              {mutation.isError && axios.isAxiosError(mutation.error) ? (
-                <div style={{ marginTop: 25, marginBottom: -15 }}>
-                  <ErrorAlert error={mutation.error} />
-                </div>
-              ) : null}
-              <div className="formnavigationcontainer">
-                <button
-                  className="formnavigation"
-                  onClick={prevStep}
-                  type="button"
-                >
-                  Back
-                </button>
-                <SubmitButton
-                  text="Submit"
-                  loading={mutation.isLoading}
-                />
+            <MultiSelectDropdown
+              name="notificationgroups"
+              label="Notification Groups"
+              selectedValues={selectedNotiGroups}
+              changeSelectedValues={selectNotiGroup}
+              placeholder="Select Notification Groups..."
+              options={notiGroupOptions}
+            />
+            {mutation.isError && axios.isAxiosError(mutation.error) ? (
+              <div style={{ marginTop: 25, marginBottom: -15 }}>
+                <ErrorAlert error={mutation.error} />
               </div>
+            ) : null}
+            <div className="formnavigationcontainer">
+              <button
+                className="formnavigation"
+                onClick={prevStep}
+                type="button"
+              >
+                Back
+              </button>
+              <SubmitButton text="Submit" loading={mutation.isLoading} />
             </div>
-          </FormContainer>
-        </motion.div>
+          </div>
+        </FormContainer>
+      </motion.div>
     </>
   );
 };

@@ -103,7 +103,7 @@ const UserGroups2: React.FC = () => {
     setValue(newValue);
   };
 
-  function CustomToolbar() {
+  const CustomToolbar = () => {
     return (
       <GridToolbarContainer
         sx={{ display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1 }}
@@ -119,7 +119,7 @@ const UserGroups2: React.FC = () => {
         </Box>
       </GridToolbarContainer>
     );
-  }
+  };
 
   return (
     <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>

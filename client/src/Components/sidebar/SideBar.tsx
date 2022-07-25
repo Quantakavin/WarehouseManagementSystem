@@ -36,7 +36,7 @@ const Sidebar: React.FC = () => {
     }
   };
 
-  return (
+  return ( 
     <div className="sidebar">
       <div className="flexcontainer sidebarprofile">
         <div style={{ flex: 1 }}>
@@ -56,6 +56,9 @@ const Sidebar: React.FC = () => {
                 fontSize: 18,
                 fontWeight: 500,
                 textTransform: "capitalize",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                width: "50px"
               }}
             >
               {username}

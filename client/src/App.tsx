@@ -66,11 +66,11 @@ const App: React.FC = () => {
 
   return (
     <>
-      <header>
-        <TopBar />
+      <header style={{zIndex: 1500}}>
+        <TopNav />
       </header>
       <Box className="flexcontainer">
-        {isAuthenticated ? <Sidebar /> : null}
+        {isAuthenticated ? <Sidebar2 /> : null}
         <Box className="bluebackground" style={{ flex: 5 }}>
           <Routes>
             <Route element={<ProtectedRoute loginpage={true} />}>

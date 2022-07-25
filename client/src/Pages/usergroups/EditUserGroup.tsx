@@ -7,6 +7,8 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import { GetFeatureRights, GetFeatures } from "../../api/FeatureDB";
 import { GetUserGroup, UpdateUserGroup } from "../../api/UserGroupDB";
 import { useAppSelector } from "../../app/hooks";
@@ -20,12 +22,12 @@ import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import SelectedList from "../../components/form/SelectedList";
 import SubmitButton from "../../components/form/SubmitButton";
 import { Feature, FeatureRight, Option } from "../../utils/CommonTypes";
-import { NameValidation, DescriptionValidation } from "../../utils/FormValidation";
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import {
+  NameValidation,
+  DescriptionValidation,
+} from "../../utils/FormValidation";
 import FormSteps from "../../components/form/FormSteps";
 import GeneralButton from "../../components/buttons/GeneralButton";
-
 
 interface FormValues {
   name: string;
@@ -47,7 +49,7 @@ const EditUserGroup: React.FC = () => {
     setValue,
     watch,
     trigger,
-    formState: { errors, isDirty},
+    formState: { errors, isDirty },
   } = useForm<FormValues>({ mode: "all" });
   const [step, setStep] = useState<number>(1);
   const params = useParams();
@@ -137,24 +139,20 @@ const EditUserGroup: React.FC = () => {
 
   const variants = {
     detecterror: () => ({
-      //rotate: [-1, 1.3, 0],
+      // rotate: [-1, 1.3, 0],
       x: [10, -10, 0, 10, -10, 0],
       transition: {
-        duration: 0.4
-      }
-    })
+        duration: 0.4,
+      },
+    }),
   };
-
 
   const nextStep = () => {
     trigger(["name", "description"]).then(() => {
-      if (
-        !errors.name &&
-        !errors.description
-      ) {
+      if (!errors.name && !errors.description) {
         setStep(step + 1);
       } else {
-        controls.start("detecterror")
+        controls.start("detecterror");
       }
     });
   };
@@ -241,109 +239,110 @@ const EditUserGroup: React.FC = () => {
 
   const icons = {
     1: <GroupAddIcon />,
-    2: <FormatListBulletedIcon />
+    2: <FormatListBulletedIcon />,
   };
-
 
   return (
     <>
-    <FormSteps steps={steps} activestep={step - 1} icons={icons} />
-    <motion.div
-        variants={variants}
-        animate={controls}
-      >
-    <FormContainer
-      header="Edit User Group"
-      multistep
-      handleSubmit={handleSubmit}
-      onSubmit={onSubmit}
-    >
-      {UserGroupQuery.isSuccess && featuresQuery.isSuccess && (
-        <>
-          {/* Step One */}
-          <div className={step === 1 ? "showstep" : "hidestep"}>
-            <FormField
-              label="Name"
-              name="name"
-              type="text"
-              register={register}
-              defaultvalue={UserGroupQuery.data.data[0].UserGroupName}
-              error={errors.name}
-              rules={NameValidation}
-            />
-            <FormTextArea
-              label="Description"
-              name="description"
-              register={register}
-              error={errors.description}
-              setValue={setValue}
-              watch={watch}
-              defaultvalue={UserGroupQuery.data.data[0].UserGroupDesc}
-              rules={DescriptionValidation}
-            />
-            <div className="formnavigationcontainer">
-              <button
-                className="formnavigation"
-                onClick={() => navigate(-1)}
-                type="button"
-              >
-                Cancel
-              </button>
-              <GeneralButton text={<>Next{" "}
-                <NavigateNextIcon
-                  style={{ marginRight: -10, marginLeft: -1 }}
-                /></>}
-                clickfunction={nextStep}
-              />
-            </div>
-          </div>
-          {/* Step Two */}
-          <div className={step === 2 ? "showstep" : "hidestep"}>
-            <MultiSelectDropdown
-              name="features"
-              label="Features"
-              selectedValues={selectedFeatures}
-              changeSelectedValues={selectFeature}
-              placeholder="Select Features..."
-              options={featureOptions}
-            />
-            {selectedFeatures.length > 0 && (
-              <SelectedList
-                getname={getFeatureName}
-                label="Feature List"
-                selectedValues={selectedFeatures}
-                unselect={unselectFeature}
-                select={assignFeatureRight}
-                options={featureRightOptions}
-                defaultOptions={SetDefaultOptions}
-              />
-            )}
+      <FormSteps steps={steps} activestep={step - 1} icons={icons} />
+      <motion.div variants={variants} animate={controls}>
+        <FormContainer
+          header="Edit User Group"
+          multistep
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
+        >
+          {UserGroupQuery.isSuccess && featuresQuery.isSuccess && (
+            <>
+              {/* Step One */}
+              <div className={step === 1 ? "showstep" : "hidestep"}>
+                <FormField
+                  label="Name"
+                  name="name"
+                  type="text"
+                  register={register}
+                  defaultvalue={UserGroupQuery.data.data[0].UserGroupName}
+                  error={errors.name}
+                  rules={NameValidation}
+                />
+                <FormTextArea
+                  label="Description"
+                  name="description"
+                  register={register}
+                  error={errors.description}
+                  setValue={setValue}
+                  watch={watch}
+                  defaultvalue={UserGroupQuery.data.data[0].UserGroupDesc}
+                  rules={DescriptionValidation}
+                />
+                <div className="formnavigationcontainer">
+                  <button
+                    className="formnavigation"
+                    onClick={() => navigate(-1)}
+                    type="button"
+                  >
+                    Cancel
+                  </button>
+                  <GeneralButton
+                    text={
+                      <>
+                        Next{" "}
+                        <NavigateNextIcon
+                          style={{ marginRight: -10, marginLeft: -1 }}
+                        />
+                      </>
+                    }
+                    clickfunction={nextStep}
+                  />
+                </div>
+              </div>
+              {/* Step Two */}
+              <div className={step === 2 ? "showstep" : "hidestep"}>
+                <MultiSelectDropdown
+                  name="features"
+                  label="Features"
+                  selectedValues={selectedFeatures}
+                  changeSelectedValues={selectFeature}
+                  placeholder="Select Features..."
+                  options={featureOptions}
+                />
+                {selectedFeatures.length > 0 && (
+                  <SelectedList
+                    getname={getFeatureName}
+                    label="Feature List"
+                    selectedValues={selectedFeatures}
+                    unselect={unselectFeature}
+                    select={assignFeatureRight}
+                    options={featureRightOptions}
+                    defaultOptions={SetDefaultOptions}
+                  />
+                )}
 
-            {mutation.isError && axios.isAxiosError(mutation.error) ? (
-              <ErrorAlert error={mutation.error} />
-            ) : null}
-            <div className="formnavigationcontainer">
-              <button
-                className="formnavigation"
-                onClick={prevStep}
-                type="button"
-              >
-                <NavigateBeforeIcon
-                  style={{ marginRight: -7, marginLeft: -10 }}
-                />{" "}
-                Back
-              </button>
-              <SubmitButton
-                text="Submit"
-                loading={mutation.isLoading}
-                multipart
-              />
-            </div>
-          </div>
-        </>
-      )}
-    </FormContainer>
-    </motion.div>
+                {mutation.isError && axios.isAxiosError(mutation.error) ? (
+                  <ErrorAlert error={mutation.error} />
+                ) : null}
+                <div className="formnavigationcontainer">
+                  <button
+                    className="formnavigation"
+                    onClick={prevStep}
+                    type="button"
+                  >
+                    <NavigateBeforeIcon
+                      style={{ marginRight: -7, marginLeft: -10 }}
+                    />{" "}
+                    Back
+                  </button>
+                  <SubmitButton
+                    text="Submit"
+                    loading={mutation.isLoading}
+                    multipart
+                  />
+                </div>
+              </div>
+            </>
+          )}
+        </FormContainer>
+      </motion.div>
     </>
   );
 };

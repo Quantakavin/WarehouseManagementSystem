@@ -20,7 +20,7 @@ export const FilterUserGroups = async ({ pageParam = 0, queryKey }) => {
 };
 
 export const GetUserGroups = async () => {
-  return await axios.get(`${config.baseURL}/usergroups`, {
+  return axios.get(`${config.baseURL}/usergroups`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
@@ -28,7 +28,7 @@ export const GetUserGroups = async () => {
 };
 
 export const GetUserGroupNames = async (name: string) => {
-  return await axios.get(`${config.baseURL}/usergroupnames?name=${name}`, {
+  return axios.get(`${config.baseURL}/usergroupnames?name=${name}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
@@ -36,7 +36,7 @@ export const GetUserGroupNames = async (name: string) => {
 };
 
 export const GetUserGroup = async (id: string) => {
-  return await axios.get(`${config.baseURL}/usergroup/${id}`, {
+  return axios.get(`${config.baseURL}/usergroup/${id}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
@@ -44,7 +44,7 @@ export const GetUserGroup = async (id: string) => {
 };
 
 export const PostUserGroup = async (formData) => {
-  return await axios.post(`${config.baseURL}/usergroup`, formData, {
+  return axios.post(`${config.baseURL}/usergroup`, formData, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -53,7 +53,7 @@ export const PostUserGroup = async (formData) => {
 };
 
 export const UpdateUserGroup = async (formData, id: string) => {
-  return await axios.put(`${config.baseURL}/usergroup/${id}`, formData, {
+  return axios.put(`${config.baseURL}/usergroup/${id}`, formData, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -62,7 +62,7 @@ export const UpdateUserGroup = async (formData, id: string) => {
 };
 
 export const DeleteUserGroup = async (id: string) => {
-  return await axios.delete(`${config.baseURL}/usergroup/${id}`, {
+  return axios.delete(`${config.baseURL}/usergroup/${id}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,

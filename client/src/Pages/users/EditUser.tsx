@@ -6,6 +6,8 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { GetCompanies } from "../../api/CompanyDB";
 import { GetNotificationGroups } from "../../api/NotificationGroupDB";
 import { GetUser, UpdateUser } from "../../api/UserDB";
@@ -20,8 +22,6 @@ import FormField from "../../components/form/FormField";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import SelectDropdown from "../../components/form/SelectDropdown";
 import SubmitButton from "../../components/buttons/SubmitButton";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { Company, NotiGroup, Option, UserGroup } from "../../utils/CommonTypes";
 import {
   EmailValidation,
@@ -118,23 +118,19 @@ const EditUser: React.FC = () => {
       setUserGroupOptions(usergroups);
     },
   });
-  useQuery(
-    "notificationgroups",
-    GetNotificationGroups,
-    {
-      onSuccess: (data) => {
-        const notigroups: Option[] = [];
-        data.data.forEach((notigroup: NotiGroup) => {
-          notigroups.push({
-            id: notigroup.NotiGroupID,
-            text: notigroup.NotiGroupName,
-            value: notigroup.NotiGroupID,
-          });
+  useQuery("notificationgroups", GetNotificationGroups, {
+    onSuccess: (data) => {
+      const notigroups: Option[] = [];
+      data.data.forEach((notigroup: NotiGroup) => {
+        notigroups.push({
+          id: notigroup.NotiGroupID,
+          text: notigroup.NotiGroupName,
+          value: notigroup.NotiGroupID,
         });
-        setNotiGroupOptions(notigroups);
-      },
-    }
-  );
+      });
+      setNotiGroupOptions(notigroups);
+    },
+  });
 
   const mutation = useMutation((data: FormValues) =>
     UpdateUser(data, params.id)
@@ -144,12 +140,12 @@ const EditUser: React.FC = () => {
 
   const variants = {
     detecterror: () => ({
-      //rotate: [-1, 1.3, 0],
+      // rotate: [-1, 1.3, 0],
       x: [10, -10, 0, 10, -10, 0],
       transition: {
-        duration: 0.4
-      }
-    })
+        duration: 0.4,
+      },
+    }),
   };
 
   const onSubmit = (data: FormValues) => {
@@ -183,7 +179,7 @@ const EditUser: React.FC = () => {
       ) {
         setStep(step + 1);
       } else {
-        controls.start("detecterror")
+        controls.start("detecterror");
       }
     });
   };
@@ -234,8 +230,8 @@ const EditUser: React.FC = () => {
       <motion.div
         variants={variants}
         animate={controls}
-      // exit={{ x: "-100vw", opacity: 0 }}
-      // transition={{ duration: 5 }}
+        // exit={{ x: "-100vw", opacity: 0 }}
+        // transition={{ duration: 5 }}
       >
         <FormContainer
           header="Edit User"
@@ -299,10 +295,15 @@ const EditUser: React.FC = () => {
                   >
                     Cancel
                   </button>
-                  <GeneralButton text={<>Next{" "}
-                    <NavigateNextIcon
-                      style={{ marginRight: -10, marginLeft: -1 }}
-                    /></>}
+                  <GeneralButton
+                    text={
+                      <>
+                        Next{" "}
+                        <NavigateNextIcon
+                          style={{ marginRight: -10, marginLeft: -1 }}
+                        />
+                      </>
+                    }
                     clickfunction={nextStep}
                   />
                 </div>
@@ -341,10 +342,7 @@ const EditUser: React.FC = () => {
                   >
                     Back
                   </button>
-                  <SubmitButton
-                    text="Submit"
-                    loading={mutation.isLoading}
-                  />
+                  <SubmitButton text="Submit" loading={mutation.isLoading} />
                 </div>
               </div>
             </>

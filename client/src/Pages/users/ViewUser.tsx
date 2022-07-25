@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
+import DOMPurify from "dompurify";
 import { GetUser } from "../../api/UserDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
-import DOMPurify from 'dompurify';
 
 const ViewUser: React.FC = () => {
   const params = useParams();
@@ -33,7 +33,12 @@ const ViewUser: React.FC = () => {
       {UserQuery.status === "success" && (
         <Container className="cardcontainer shadow">
           <h2 className="cardheader">{UserQuery.data.data[0].Username}</h2>
-          <div className="cardsubheading" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(UserQuery.data.data[0].UserGroupName)}}/>
+          <div
+            className="cardsubheading"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(UserQuery.data.data[0].UserGroupName),
+            }}
+          />
           <div className="flexcontainer cardfield">
             <p className="cardfieldlabel">Company</p>
             <p className="cardfieldvalue">

@@ -3,11 +3,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
+import { motion, useAnimation } from "framer-motion";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormContainer from "../../components/form/FormContainer";
 import FormField from "../../components/form/FormField";
 import SubmitButton from "../../components/form/SubmitButton";
-import { motion, useAnimation } from "framer-motion";
 import {
   EmailValidation,
   PasswordValidation,
@@ -56,20 +56,20 @@ const Login: React.FC = () => {
       return navigate("/dashboard", { replace: true });
     },
     onError: (data) => {
-      controls.start("detecterror")
-    }
+      controls.start("detecterror");
+    },
   });
 
   const controls = useAnimation();
 
   const variants = {
     detecterror: () => ({
-      //rotate: [-1, 1.3, 0],
-      x: [10,-10,0,10,-10,0],
+      // rotate: [-1, 1.3, 0],
+      x: [10, -10, 0, 10, -10, 0],
       transition: {
-        duration: 0.4
-      }
-    })
+        duration: 0.4,
+      },
+    }),
   };
 
   const onSubmit = (data: FormValues) => {
@@ -77,44 +77,41 @@ const Login: React.FC = () => {
   };
 
   return (
-    <motion.div
-    variants={variants}
-    animate={controls}
-    >
-    <FormContainer
-      header="Login to your account"
-      multistep={false}
-      handleSubmit={handleSubmit}
-      onSubmit={onSubmit}
-    >
-      <FormField
-        label="Email Address"
-        name="email"
-        type="email"
-        register={register}
-        error={errors.email}
-        rules={EmailValidation}
-      />
-      <FormField
-        label="Password"
-        name="password"
-        type="password"
-        register={register}
-        error={errors.password}
-        rules={PasswordValidation}
-      />
-
-      {mutation.isError && axios.isAxiosError(mutation.error) ? (
-        <ErrorAlert error={mutation.error} />
-      ) : null}
-      <div className="flexcontainer" style={{ marginTop: 20 }}>
-        <SubmitButton
-          text="Continue"
-          loading={mutation.isLoading}
-          multipart={false}
+    <motion.div variants={variants} animate={controls}>
+      <FormContainer
+        header="Login to your account"
+        multistep={false}
+        handleSubmit={handleSubmit}
+        onSubmit={onSubmit}
+      >
+        <FormField
+          label="Email Address"
+          name="email"
+          type="email"
+          register={register}
+          error={errors.email}
+          rules={EmailValidation}
         />
-      </div>
-    </FormContainer>
+        <FormField
+          label="Password"
+          name="password"
+          type="password"
+          register={register}
+          error={errors.password}
+          rules={PasswordValidation}
+        />
+
+        {mutation.isError && axios.isAxiosError(mutation.error) ? (
+          <ErrorAlert error={mutation.error} />
+        ) : null}
+        <div className="flexcontainer" style={{ marginTop: 20 }}>
+          <SubmitButton
+            text="Continue"
+            loading={mutation.isLoading}
+            multipart={false}
+          />
+        </div>
+      </FormContainer>
     </motion.div>
   );
 };

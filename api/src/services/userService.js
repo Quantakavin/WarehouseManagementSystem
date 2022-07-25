@@ -11,15 +11,16 @@ module.exports.getNames = async (name) => {
     return knex.raw(query, [`%${name}%`]);
 };
 
-module.exports.getAll = async (pageSize, pageNo, sortColumn, sortOrder, name) => {
+module.exports.filter = async (pageSize, pageNo, sortColumn, sortOrder, name) => {
     const query = `Call sp_getAllUsers(?,?,?,?,?)`;
     return knex.raw(query, [Number(pageSize), Number(pageNo), sortColumn, sortOrder, name]);
 };
 
-// module.exports.getAll = async (limit, page) => {
-//     const query = `SELECT u.UserID, u.Username, u.Email, c.CompanyName, g.UserGroupName, IFNULL(u.MobileNo, 'NULL') 'MobileNo', count(UserID) OVER() AS full_count FROM User u LEFT JOIN Company c ON u.CompanyID = c.CompanyID LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID LIMIT ? OFFSET ?`;
-//     return knex.raw(query, [Number(limit), Number(page)]);
-// };
+
+module.exports.getAll = async () => {
+    const query = `SELECT u.UserID, u.Username, u.Email, c.CompanyName, g.UserGroupName, IFNULL(u.MobileNo, 'NULL') 'MobileNo' FROM User u LEFT JOIN Company c ON u.CompanyID = c.CompanyID LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID`;
+    return knex.raw(query);
+};
 
 module.exports.getByID = async (userID) => {
     const query = `SELECT u.Username, u.Email, c.CompanyName, c.CompanyID, g.UserGroupName, g.UserGroupID, IFNULL(u.MobileNo, 'NULL') 'MobileNo'  FROM User u LEFT JOIN Company c ON u.CompanyID = c.CompanyID LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID WHERE u.UserID = ?`;

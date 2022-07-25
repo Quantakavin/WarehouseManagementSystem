@@ -61,7 +61,7 @@ module.exports.getAllNotificationGroups = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await notificationGroup.getAll();
-        redisClient.set('notificationGroups', JSON.stringify(results[0]));
+        redisClient.set('notificationGroups', JSON.stringify(results[0]),{EX: 60*60*24});
         return res.status(200).json(results[0]);
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error!' });
@@ -86,7 +86,7 @@ module.exports.getNotificationGroupById = async (req, res) => {
             if (results2.length > 0) {
                 [output[0].Features] = results2;
             }
-            redisClient.set(`notificationGroup#${notificationGroupID}`, JSON.stringify(output));
+            redisClient.set(`notificationGroup#${notificationGroupID}`, JSON.stringify(output),{EX: 60*60*24});
             return res.status(200).send(output);
         }
         return res.status(404).json({ message: 'Cannot find notification group with that id' });

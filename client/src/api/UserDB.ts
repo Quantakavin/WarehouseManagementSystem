@@ -10,7 +10,7 @@ import config from "../config/config";
 //   };
 
 export const LoginUser = async (formData) => {
-  return await axios.post(`${config.baseURL}/login`, formData, {
+  return axios.post(`${config.baseURL}/login`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -18,7 +18,7 @@ export const LoginUser = async (formData) => {
 };
 
 export const GetUser = async (id: string) => {
-  return await axios.get(`${config.baseURL}/user/${id}`, {
+  return axios.get(`${config.baseURL}/user/${id}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
@@ -26,7 +26,7 @@ export const GetUser = async (id: string) => {
 };
 
 export const GetUsernames = async (name: string) => {
-  return await axios.get(`${config.baseURL}/usernames?name=${name}`, {
+  return axios.get(`${config.baseURL}/usernames?name=${name}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
@@ -52,7 +52,7 @@ export const GetAllUsers = async ({ pageParam = 0, queryKey }) => {
 };
 
 export const PostUser = async (formData) => {
-  return await axios.post(`${config.baseURL}/user`, formData, {
+  return axios.post(`${config.baseURL}/user`, formData, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -61,7 +61,7 @@ export const PostUser = async (formData) => {
 };
 
 export const UpdateUser = async (formData, id: string) => {
-  return await axios.put(`${config.baseURL}/user/${id}`, formData, {
+  return axios.put(`${config.baseURL}/user/${id}`, formData, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -70,7 +70,7 @@ export const UpdateUser = async (formData, id: string) => {
 };
 
 export const DeleteUser = async (id: string) => {
-  return await axios.delete(`${config.baseURL}/user/${id}`, {
+  return axios.delete(`${config.baseURL}/user/${id}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
@@ -78,7 +78,7 @@ export const DeleteUser = async (id: string) => {
 };
 
 export const SearchUser = async (name: string) => {
-  return await axios.get(`${config.baseURL}/user?name=${name}`, {
+  return axios.get(`${config.baseURL}/user?name=${name}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },

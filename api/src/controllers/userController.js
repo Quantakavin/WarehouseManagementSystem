@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 // const sgMail = require('@sendgrid/mail');
 const user = require('../services/userService');
 const notificationGroup = require('../services/notificationGroupService');
+const userGroup = require('../services/userGroupService');
 const config = require('../config/config');
 const redisClient = require('../config/caching');
 
@@ -48,6 +49,22 @@ module.exports.getAllNames = async (req, res) => {
 };
 
 module.exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await redisClient.get('users');
+        if (users !== null) {
+            const redisresults = JSON.parse(users);
+            return res.status(200).json(redisresults);
+        }
+        const results = await user.getAll();
+        redisClient.set('users', JSON.stringify(results[0]),'EX', 60*60*24);
+        return res.status(200).json(results[0]);
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
+module.exports.filterUsers = async (req, res) => {
     const {
         pageSize = 5,
         pageNo = 0,
@@ -56,7 +73,7 @@ module.exports.getAllUsers = async (req, res) => {
         name = null
     } = req.query;
     try {
-        const results = await user.getAll(pageSize, pageNo, sortColumn, sortOrder, name);
+        const results = await user.filter(pageSize, pageNo, sortColumn, sortOrder, name);
         return res.status(200).json(results[0][0]);
     } catch (error) {
         console.log(error);
@@ -94,10 +111,14 @@ module.exports.getUserById = async (req, res) => {
         if (results[0].length > 0) {
             [output] = results;
             const results2 = await notificationGroup.getByUser(userID);
+            const results3 = await userGroup.getFeatures(results[0][0].UserGroupID)
             if (results2.length > 0) {
                 [output[0].NotificationGroups] = results2;
             }
-            redisClient.set(`user#${userID}`, JSON.stringify(output));
+            if (results3.length > 0) {
+                [output[0].Permissions] = results3;
+            }
+            redisClient.set(`user#${userID}`, JSON.stringify(output),{EX: 60*60*24});
             return res.status(200).send(output);
         }
         return res.status(404).json({ message: 'Cannot find user with that id' });

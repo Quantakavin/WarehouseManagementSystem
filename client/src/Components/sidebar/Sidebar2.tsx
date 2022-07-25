@@ -2,8 +2,9 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MailIcon from "@mui/icons-material/Mail";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
+import { Toolbar } from "@mui/material";
 import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
+import CssBaseline from "@mui/material/CssBaseline"; 
 import Divider from "@mui/material/Divider";
 import MuiDrawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
@@ -28,6 +29,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
     duration: theme.transitions.duration.enteringScreen,
   }),
   overflowX: "hidden",
+  backgroundColor: "#0a2540"
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
@@ -36,13 +38,14 @@ const closedMixin = (theme: Theme): CSSObject => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: "hidden",
+  backgroundColor: "#0a2540",
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
 
-const DrawerHeader = styled("Box")(({ theme }) => ({
+const DrawerHeader = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-end",
@@ -72,22 +75,25 @@ export default function MiniDrawer() {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const open = useAppSelector(selectOpen);
   const isopen = useAppSelector(selectOpen);
   const username = useAppSelector(selectName);
   const userrole = useAppSelector(selectRole);
-  const handleDrawerClose = () => {
-    dispatch(Close());
-  };
-  const handleDrawerOpen = () => {
-    dispatch(Open());
-  };
+
+  const toggleDrawer = () => {
+    if (isopen) {
+      dispatch(Close());
+    } else {
+      dispatch(Open());
+    }
+  }
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <Box className="flexcontainer sidebarprofile">
+      <Drawer variant="permanent" open={isopen}>
+        <Toolbar />
+        <DrawerHeader sx={{backgroundColor: "#0a2540"}}>
+          <Box className="flexcontainer sidebarprofile" sx={{marginRight: "auto", marginTop: "5px", marginBottom: "5px"}}>
             <Box style={{ flex: 1 }}>
               <img
                 alt="ISDN Logo"
@@ -105,6 +111,9 @@ export default function MiniDrawer() {
                     fontSize: 18,
                     fontWeight: 500,
                     textTransform: "capitalize",
+                    textOverflow: "ellipsis",
+                    overflow: "hidden",
+                    width: "100px"
                   }}
                 >
                   {username}
@@ -115,11 +124,11 @@ export default function MiniDrawer() {
               </Box>
             )}
           </Box>
-          <IconButton onClick={handleDrawerOpen}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
+          <IconButton onClick={toggleDrawer}>
+            {!isopen ? (
+              <ChevronRightIcon sx={{color: "#bfc3cb"}} />
             ) : (
-              <ChevronLeftIcon />
+              <ChevronLeftIcon sx={{color: "#bfc3cb"}} />
             )}
           </IconButton>
         </DrawerHeader>
@@ -343,3 +352,46 @@ export default function MiniDrawer() {
     </Box>
   );
 }
+
+
+// export default function MiniDrawer() {
+
+// return(
+// <Drawer
+// variant="permanent"
+// sx={{
+//   width: drawerWidth,
+//   flexShrink: 0,
+//   [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+// }}
+// >
+// <Toolbar />
+// <Box sx={{ overflow: 'auto' }}>
+//   <List>
+//     {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+//       <ListItem key={text} disablePadding>
+//         <ListItemButton>
+//           <ListItemIcon>
+//             {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+//           </ListItemIcon>
+//           <ListItemText primary={text} />
+//         </ListItemButton>
+//       </ListItem>
+//     ))}
+//   </List>
+//   <Divider />
+//   <List>
+//     {['All mail', 'Trash', 'Spam'].map((text, index) => (
+//       <ListItem key={text} disablePadding>
+//         <ListItemButton>
+//           <ListItemIcon>
+//             {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+//           </ListItemIcon>
+//           <ListItemText primary={text} />
+//         </ListItemButton>
+//       </ListItem>
+//     ))}
+//   </List>
+// </Box>
+// </Drawer>)
+// }

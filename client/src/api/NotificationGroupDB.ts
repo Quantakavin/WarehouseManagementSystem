@@ -2,7 +2,7 @@ import axios from "axios";
 import config from "../config/config";
 
 export const GetNotificationGroup = async (id: string) => {
-  return await axios.get(`${config.baseURL}/notificationgroup/${id}`, {
+  return axios.get(`${config.baseURL}/notificationgroup/${id}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
@@ -10,18 +10,15 @@ export const GetNotificationGroup = async (id: string) => {
 };
 
 export const GetNotificationGroupNames = async (name: string) => {
-  return await axios.get(
-    `${config.baseURL}/notificationgroupnames?name=${name}`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }
-  );
+  return axios.get(`${config.baseURL}/notificationgroupnames?name=${name}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
 };
 
 export const GetNotificationGroups = async () => {
-  return await axios.get(`${config.baseURL}/notificationgroups`, {
+  return axios.get(`${config.baseURL}/notificationgroups`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
@@ -39,8 +36,6 @@ export const FilterNotificationGroups = async ({ pageParam = 0, queryKey }) => {
       },
     }
   );
-  console.log("query key is ", queryKey);
-  console.log("response is ", response);
   return {
     response,
     nextPage: pageParam + 1,
@@ -49,7 +44,7 @@ export const FilterNotificationGroups = async ({ pageParam = 0, queryKey }) => {
 };
 
 export const PostNotificationGroup = async (formData) => {
-  return await axios.post(`${config.baseURL}/notificationgroup`, formData, {
+  return axios.post(`${config.baseURL}/notificationgroup`, formData, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -58,20 +53,16 @@ export const PostNotificationGroup = async (formData) => {
 };
 
 export const UpdateNotificationGroup = async (formData, id: string) => {
-  return await axios.put(
-    `${config.baseURL}/notificationgroup/${id}`,
-    formData,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }
-  );
+  return axios.put(`${config.baseURL}/notificationgroup/${id}`, formData, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
 };
 
 export const DeleteNotificationGroup = async (id: string) => {
-  return await axios.delete(`${config.baseURL}/notificationgroup/${id}`, {
+  return axios.delete(`${config.baseURL}/notificationgroup/${id}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,

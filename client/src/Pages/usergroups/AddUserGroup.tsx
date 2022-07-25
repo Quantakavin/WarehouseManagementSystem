@@ -7,6 +7,8 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import { GetFeatureRights, GetFeatures } from "../../api/FeatureDB";
 import { PostUserGroup } from "../../api/UserGroupDB";
 import { useAppSelector } from "../../app/hooks";
@@ -21,9 +23,10 @@ import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import SelectedList from "../../components/form/SelectedList";
 import SubmitButton from "../../components/buttons/SubmitButton";
 import { Feature, FeatureRight, Option } from "../../utils/CommonTypes";
-import { NameValidation, DescriptionValidation } from "../../utils/FormValidation";
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import {
+  NameValidation,
+  DescriptionValidation,
+} from "../../utils/FormValidation";
 import FormSteps from "../../components/form/FormSteps";
 
 interface FormValues {
@@ -103,7 +106,7 @@ const AddUserGroup: React.FC = () => {
       },
       onError: () => {
         controls.start("detecterror");
-      }
+      },
     });
   };
 
@@ -111,27 +114,23 @@ const AddUserGroup: React.FC = () => {
 
   const variants = {
     detecterror: () => ({
-      //rotate: [-1, 1.3, 0],
+      // rotate: [-1, 1.3, 0],
       x: [10, -10, 0, 10, -10, 0],
       transition: {
-        duration: 0.4
-      }
-    })
+        duration: 0.4,
+      },
+    }),
   };
 
   const nextStep = () => {
     trigger(["name", "description"]).then(() => {
-      if (
-        isDirty &&
-        !errors.name &&
-        !errors.description
-      ) {
+      if (isDirty && !errors.name && !errors.description) {
         setStep(step + 1);
       } else {
-        controls.start("detecterror")
+        controls.start("detecterror");
       }
     });
-    //setStep(step + 1);
+    // setStep(step + 1);
   };
 
   const prevStep = () => {
@@ -204,7 +203,7 @@ const AddUserGroup: React.FC = () => {
 
   const icons = {
     1: <GroupAddIcon />,
-    2: <FormatListBulletedIcon />
+    2: <FormatListBulletedIcon />,
   };
 
   return (
@@ -213,8 +212,8 @@ const AddUserGroup: React.FC = () => {
       <motion.div
         variants={variants}
         animate={controls}
-      // exit={{ x: "-100vw", opacity: 0 }}
-      // transition={{ duration: 5 }}
+        // exit={{ x: "-100vw", opacity: 0 }}
+        // transition={{ duration: 5 }}
       >
         <FormContainer
           header="Create User Group"
@@ -250,10 +249,15 @@ const AddUserGroup: React.FC = () => {
               >
                 Cancel
               </button>
-              <GeneralButton text={<>Next{" "}
-                <NavigateNextIcon
-                  style={{ marginRight: -10, marginLeft: -1 }}
-                /></>}
+              <GeneralButton
+                text={
+                  <>
+                    Next{" "}
+                    <NavigateNextIcon
+                      style={{ marginRight: -10, marginLeft: -1 }}
+                    />
+                  </>
+                }
                 clickfunction={nextStep}
               />
             </div>
@@ -284,14 +288,17 @@ const AddUserGroup: React.FC = () => {
               <ErrorAlert error={mutation.error} />
             ) : null}
             <div className="formnavigationcontainer">
-              <button className="formnavigation" onClick={prevStep} type="button">
-                <NavigateBeforeIcon style={{ marginRight: -7, marginLeft: -10 }} />{" "}
+              <button
+                className="formnavigation"
+                onClick={prevStep}
+                type="button"
+              >
+                <NavigateBeforeIcon
+                  style={{ marginRight: -7, marginLeft: -10 }}
+                />{" "}
                 Back
               </button>
-              <SubmitButton
-                text="Submit"
-                loading={mutation.isLoading}
-              />
+              <SubmitButton text="Submit" loading={mutation.isLoading} />
             </div>
           </div>
         </FormContainer>
