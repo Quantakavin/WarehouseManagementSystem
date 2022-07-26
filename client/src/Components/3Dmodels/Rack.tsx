@@ -155,10 +155,10 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
       <Bin position={[8.5, 9.5, 8]} areatag="A03" racktag="R03" leveltag="L01" sectiontag="S01" /> */}
       <mesh
         geometry={nodes.Cube006.geometry}
-        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube006ial}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('gray'), transparent: true })}.Cube006ial}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -169,7 +169,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -178,10 +178,10 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
       />
       <mesh
         geometry={nodes.Cube007.geometry}
-        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube007ial}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('gray'), transparent: true })}.Cube007ial}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -192,7 +192,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube008.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -203,7 +203,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube009.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -214,7 +214,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube010.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -225,7 +225,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube011.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -236,7 +236,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube012.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -247,7 +247,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube013.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -258,7 +258,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube015.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -269,7 +269,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube016.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -281,7 +281,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube014.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -290,10 +290,10 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
       />
       <mesh
         geometry={nodes.Cube017.geometry}
-        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube017ial}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('gray'), transparent: true })}.Cube017ial}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -302,10 +302,10 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
       />
       <mesh
         geometry={nodes.Cube018.geometry}
-        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube018ial}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('gray'), transparent: true })}.Cube018ial}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -315,10 +315,10 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
       />
       <mesh
         geometry={nodes.Cube019.geometry}
-        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube019ial}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('gray'), transparent: true })}.Cube019ial}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -328,10 +328,10 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
       />
       <mesh
         geometry={nodes.Cube020.geometry}
-        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube020ial}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('gray'), transparent: true })}.Cube020ial}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -341,10 +341,10 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
       />
       <mesh
         geometry={nodes.Cube021.geometry}
-        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube021ial}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('gray'), transparent: true })}.Cube021ial}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -354,10 +354,10 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
       />
       <mesh
         geometry={nodes.Cube022.geometry}
-        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube022ial}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('gray'), transparent: true })}.Cube022ial}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -367,10 +367,10 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
       />
       <mesh
         geometry={nodes.Cube002.geometry}
-        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube002ial}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('gray'), transparent: true })}.Cube002ial}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -380,10 +380,10 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
       />
       <mesh
         geometry={nodes.Cube004.geometry}
-        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube004ial}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('gray'), transparent: true })}.Cube004ial}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -393,10 +393,10 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
       />
       <mesh
         geometry={nodes.Cube023.geometry}
-        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube023ial}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('gray'), transparent: true })}.Cube023ial}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -406,10 +406,10 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
       />
       <mesh
         geometry={nodes.Cube024.geometry}
-        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube024ial}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('gray'), transparent: true })}.Cube024ial}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -421,7 +421,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube025.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -433,7 +433,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube026.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -444,7 +444,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube027.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -456,7 +456,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube028.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -467,7 +467,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube029.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -478,7 +478,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube030.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -489,7 +489,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube031.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -500,7 +500,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube032.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -511,7 +511,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube033.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -522,7 +522,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube034.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -533,7 +533,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube035.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -544,7 +544,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube036.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -555,7 +555,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube037.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -566,7 +566,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube038.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -577,7 +577,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube039.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -588,7 +588,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube040.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -599,7 +599,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube049.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -610,7 +610,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube052.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -621,7 +621,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube072.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -632,7 +632,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube003.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -640,10 +640,10 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
       />
       <mesh
         geometry={nodes.Cube001.geometry}
-        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('orange'), transparent: true })}.Cube001ial}
+        // material={new THREE.MeshBasicMaterial({ color: new THREE.Color('gray'), transparent: true })}.Cube001ial}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -654,7 +654,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube005.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -665,7 +665,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube041.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -676,7 +676,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube042.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -686,7 +686,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube043.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -697,7 +697,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube044.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -708,7 +708,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube045.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -719,7 +719,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube046.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -731,7 +731,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube047.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -743,7 +743,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube048.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -755,7 +755,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube050.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -767,7 +767,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube051.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -779,7 +779,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube053.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -790,7 +790,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube054.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -801,7 +801,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube055.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -812,7 +812,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube056.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -823,7 +823,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube057.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -834,7 +834,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube058.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -845,7 +845,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube059.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -856,7 +856,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube060.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -867,7 +867,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube061.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -878,7 +878,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube062.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -888,7 +888,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube063.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -898,7 +898,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube064.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -909,7 +909,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube065.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -920,7 +920,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube066.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -931,7 +931,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube067.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -942,7 +942,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube068.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -953,7 +953,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube069.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -965,7 +965,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube070.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -977,7 +977,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube071.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -988,7 +988,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube073.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -999,7 +999,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube074.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1009,7 +1009,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube075.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1019,7 +1019,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube076.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1030,7 +1030,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube077.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1041,7 +1041,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube078.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1052,7 +1052,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube079.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1063,7 +1063,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube080.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1074,7 +1074,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube081.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1085,7 +1085,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube082.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1097,7 +1097,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube083.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1109,7 +1109,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube084.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1121,7 +1121,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube085.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1133,7 +1133,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube086.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1145,7 +1145,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube087.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1156,7 +1156,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube088.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1167,7 +1167,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube089.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1178,7 +1178,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube090.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1189,7 +1189,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube091.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1200,7 +1200,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube092.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1211,7 +1211,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube093.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1222,7 +1222,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube094.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1233,7 +1233,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube095.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1244,7 +1244,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube096.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1255,7 +1255,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube097.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1266,7 +1266,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube098.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }
@@ -1277,7 +1277,7 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position }) => {
         geometry={nodes.Cube099.geometry}
         material={
           new THREE.MeshBasicMaterial({
-            color: new THREE.Color("orange"),
+            color: new THREE.Color("gray"),
             transparent: true,
           })
         }

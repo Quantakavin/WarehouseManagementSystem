@@ -35,34 +35,43 @@ const Model: React.FC<ModelProps> = ({
   position,
 }) => {
   const group = useRef<THREE.Group>();
+  const [BinsData, setBinsData ] = useState<string>(null);
+  const [isSelected, setIsSelected] = useState<boolean>(false);
   const { nodes, materials } = useGLTF("/box.glb") as GLTFResult;
-  const bintag = `${areatag}${racktag}${leveltag}${sectiontag}`;
+  const bintag = `${areatag}${racktag}${leveltag}${sectiontag}`
+  
 
 
   // Get Bin Information
-  function Bins () {
-    const [BinsData, setBinsData ] = useState([]);
+  // function Bins () {
+  //   const [BinsData, setBinsData ] = useState([]);
 
-    const getBinsData = async () => {
-      const response = await axios.get(`${config.baseURL}/getcurentTloans`);
+  //   const getBinsData = async () => {
+  //     const response = await axios.get(`${config.baseURL}/bintag/${bintag}`);
 
-      setBinsData(response.data); 
-    };
-
-    useEffect(() => {
-      getBinsData();
-    }, []);
+  //     setBinsData(response.data); 
+  //   };
 
 
 
-  }
+  // }
+
+  useEffect(() => {
+    axios
+    .get(`${config.baseURL}/bintag/${bintag}`).then((data) => {
+      setBinsData(data.data[0]) 
+    });
+  }, []);
+  
 
 
   return (
     <group
       onClick={() => {
-        alert(bintag);
+        alert(JSON.stringify(BinsData));
       }}
+      onPointerOver={()=> setIsSelected(true)}
+      onPointerOut={()=> setIsSelected(false)}
       ref={group}
       dispose={null}
       position={position}
@@ -73,7 +82,9 @@ const Model: React.FC<ModelProps> = ({
         material={nodes.Cube024.material}
         position={[-1.42, 0.55, -3.13]}
         scale={[0.85, 0.29, 0.51]}
-      />
+      >
+      <meshStandardMaterial color={ isSelected? '#8b0000' : 'gray' } />
+      </mesh>
     </group>
   );
 };
