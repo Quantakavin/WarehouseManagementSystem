@@ -42,6 +42,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAppSelector } from "../../app/hooks";
 import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
+import { Toast } from "../alerts/SweetAlert";
 
 const CreateRMA: React.FC = () => {
   const navigate = useNavigate();
@@ -445,7 +446,16 @@ const CreateRMA: React.FC = () => {
   const submitRMA = async () => {
     axios
       .post(`http://localhost:5000/api/newRMA`, rmadetails)
-      .then(() => navigate("/rma"))
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: "RMA Successfully Submitted",
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 700,
+        })
+        navigate("/rma");
+      })
       .catch((error) => {
         this.setState({ errorMessage: error.message });
       });

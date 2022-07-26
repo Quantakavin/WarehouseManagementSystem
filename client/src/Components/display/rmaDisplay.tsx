@@ -53,6 +53,7 @@ import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import ReasonModalButton from "./RmaModal/reasonModal";
 import RejectModalButton from "./RmaModal/rejectModal";
 import clsx from 'clsx';
+import { Toast } from "../alerts/SweetAlert";
 
 const RmaDisplay: React.FC = () => {
   const navigate = useNavigate();
@@ -111,16 +112,35 @@ const RmaDisplay: React.FC = () => {
   const acceptRMA = async () => {
     axios
       .put(`http://localhost:5000/api/acceptRMA/${RmaID}`)
-      .then(() => navigate("/rma"))
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: "RMA Successfully Accepted",
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 700,
+        })
+        navigate("/rma");
+      })
       .catch((error) => {
         this.setState({ errorMessage: error.message });
       });
+      
   };
   // Update RMA checklist
   const updateChecklist = async () => {
     axios
       .put(`http://localhost:5000/api/updatechecklistRMA/${RmaID}`, rmabody)
-      .then(() => navigate("/rma"))
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: "RMA Checklist Updated",
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 700,
+        })
+        navigate("/rma");
+      })
       .catch((error) => {
         this.setState({ errorMessage: error.message });
       });
@@ -129,7 +149,16 @@ const RmaDisplay: React.FC = () => {
   const receiveRMA = async () => {
     axios
       .put(`http://localhost:5000/api/receiveRMA/${RmaID}`)
-      .then(() => navigate("/rma"))
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: "RMA Received",
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 700,
+        })
+        navigate("/rma");
+      })
       .catch((error) => {
         this.setState({ errorMessage: error.message });
       });
@@ -138,7 +167,16 @@ const RmaDisplay: React.FC = () => {
   const verifyRMA = async () => {
     axios
       .put(`http://localhost:5000/api/verifyRMA/${RmaID}`, rmabody)
-      .then(() => navigate("/rma"))
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: "RMA Products Verified",
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 700,
+        });
+        navigate("/rma");
+      })
       .catch((error) => {
         this.setState({ errorMessage: error.message });
       });
@@ -147,7 +185,16 @@ const RmaDisplay: React.FC = () => {
   const COARMA = async () => {
     axios
       .put(`http://localhost:5000/api/COARMA/${RmaID}`, rmabody)
-      .then(() => navigate("/rma"))
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: "RMA Progress Updated",
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 700,
+        });
+        navigate("/rma");
+      })
       .catch((error) => {
         this.setState({ errorMessage: error.message });
       });
@@ -156,7 +203,16 @@ const RmaDisplay: React.FC = () => {
   const closeRMA = async () => {
     axios
       .put(`http://localhost:5000/api/closeRMA/${RmaID}`)
-      .then(() => navigate("/rma"))
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: "RMA Successfully Closed",
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 700,
+        });
+        navigate("/rma");
+      })
       .catch((error) => {
         this.setState({ errorMessage: error.message });
       });
