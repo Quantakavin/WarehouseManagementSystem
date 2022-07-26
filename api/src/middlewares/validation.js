@@ -120,6 +120,50 @@ const validation = {
     },
 
     
+    validateRmaSubmission: (req, res, next) => {
+        const { contactperson, contactno, salesmanid, contactemail, company, products } = req.body;
+
+        if (products === null) {
+            res.status(400).json({
+                message: 'Please add at least 1 product to the table'
+            });
+        } else if (contactperson && contactno & salesmanid && contactemail && company === null) {
+            res.status(400).json({
+                message: 'Please fill in the form fields'
+            });
+        } else if (contactperson === null) {
+            res.status(400).json({
+                message: 'Please enter the customer name'
+            });
+        } else if (contactno === null) {
+            res.status(400).json({
+                message: 'Please enter the customer contact number'
+            });
+        } else if (contactemail === null) {
+            res.status(400).json({
+                message: 'Please enter the customer email'
+            });
+        } else if (company === null) {
+            res.status(400).json({
+                message: 'Please enter the customer company'
+            });
+        } else {
+            next();
+        }
+    },
+
+    validateRmaInstruction: (req, res, next) => {
+        const {products} = req.body;
+        products.map((product) => {
+            if (product.Instructions === null) {
+                res.status(400).json({
+                    message: 'Please provide instructions for each product'
+                });
+            } else {
+                next();
+            }
+        })
+    }
 };
 
 module.exports = validation;

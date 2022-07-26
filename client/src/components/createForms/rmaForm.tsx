@@ -241,6 +241,7 @@ const CreateRMA: React.FC = () => {
         value={value}
         renderInput={(params) => <TextField {...params} />}
         onChange={handleChange}
+        inputFormat="dd-MM-yyyy"
       />
     );
   };
@@ -433,6 +434,11 @@ const CreateRMA: React.FC = () => {
   };
 
   const products = rows.map(({ id, isNew, ...rows }) => rows);
+  const trimDate = products.map((product) => {
+    const trimdate = new Date(product.DateOfPurchase);
+    product.DateOfPurchase = ((trimdate.getMonth() > 8) ? (trimdate.getMonth() + 1) : ('0' + (trimdate.getMonth() + 1))) + '-' + ((trimdate.getDate() > 9) ? trimdate.getDate() : ('0' + trimdate.getDate())) + '-' + trimdate.getFullYear()
+  });
+  // console.log(products);
 
   const rmadetails = {
     contactperson,
@@ -453,7 +459,7 @@ const CreateRMA: React.FC = () => {
           customClass: "swalpopup",
           timer: 1500,
           width: 700,
-        })
+        });
         navigate("/rma");
       })
       .catch((error) => {

@@ -39,46 +39,6 @@ const Rmatabs: React.FC = () => {
   const [myInProgressTable, setMIPTable] = useState([]);
   const [value, setValue] = useState(0); // first tab
 
-  const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
-    items: [
-      {
-        columnField: "Company Name",
-        operatorValue: "=",
-        value: "SERVO_LIVE",
-      },
-    ],
-  });
-
-  const handleChange = (_event, newValue) => {
-    setValue(newValue);
-  };
-
-  const columns = [
-    { field: "RmaID", headerName: "ID", flex: 1 },
-    { field: "Username", headerName: "Employee", flex: 8 },
-    { field: "DateTime", headerName: "Date", flex: 8 },
-    { field: "Company", headerName: "Company", flex: 8 },
-    { field: "CustomerEmail", headerName: "Customer Email", flex: 8 },
-  ];
-
-  const CustomToolbar = () => {
-    return (
-      <GridToolbarContainer
-        sx={{ display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1 }}
-      >
-        <Box>
-          <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
-        </Box>
-        <Box>
-          <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
-          <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
-          <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
-          <GridToolbarExport sx={{ color: "#0A2540" }} />
-        </Box>
-      </GridToolbarContainer>
-    );
-  };
-
   useEffect(() => {
     fetch("http://localhost:5000/api/pendingRMA")
       .then((data) => data.json())
@@ -159,6 +119,48 @@ const Rmatabs: React.FC = () => {
     fetchInProgressData();
     // make sure to catch any error
   }, []);
+
+  const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
+    items: [
+      {
+        columnField: "Company Name",
+        operatorValue: "=",
+        value: "SERVO_LIVE",
+      },
+    ],
+  });
+
+  const handleChange = (_event, newValue) => {
+    setValue(newValue);
+  };
+
+  const columns = [
+    { field: "RmaID", headerName: "ID", flex: 1 },
+    { field: "Username", headerName: "Employee", flex: 8 },
+    { field: "DateTime", headerName: "Date", flex: 8 },
+    { field: "Company", headerName: "Company", flex: 8 },
+    { field: "CustomerEmail", headerName: "Customer Email", flex: 8 },
+  ];
+
+  const CustomToolbar = () => {
+    return (
+      <GridToolbarContainer
+        sx={{ display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1 }}
+      >
+        <Box>
+          <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
+        </Box>
+        <Box>
+          <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
+          <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
+          <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
+          <GridToolbarExport sx={{ color: "#0A2540" }} />
+        </Box>
+      </GridToolbarContainer>
+    );
+  };
+
+  console.log(pendingTable)
 
   switch (userrole) {
     case "Sales Engineer": {
