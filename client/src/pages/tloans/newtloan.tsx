@@ -270,18 +270,18 @@ function newtloan() {
     );
   };
 
-  const [type, setType] = useState("");
-  const [company, setCompany] = useState("");
+  const [type, setType] = useState('');
+  const [company, setCompany] = useState('');
   // const [number, setNumber] = useState("");
-  const [name, setName] = useState("");
-  const [purpose, setPurpose] = useState("");
-  const [applicationdate, setADate] = useState("");
-  const [duration, setDuration] = useState("");
-  const [user, setUser] = useState("");
-  const [email, setEmail] = useState("");
-  const [collection, setCollection] = useState("");
-  const [requireddate, setRDate] = useState("");
-  const [localDate, setLocalDate] = useState("");
+  const [name, setName] = useState('');
+  const [purpose, setPurpose] = useState('');
+  const [applicationdate, setADate] = useState('');
+  const [duration, setDuration] = useState('');
+  const [user, setUser] = useState('');
+  const [email, setEmail] = useState('');
+  const [collection, setCollection] = useState('');
+  const [requireddate, setRDate] = useState('');
+  const [localDate, setLocalDate] = useState('');
   const userRole = useAppSelector(selectRole);
   const [dateForm, setDateForm] = useState('')
 
