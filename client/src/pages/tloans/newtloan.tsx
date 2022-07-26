@@ -39,6 +39,11 @@ import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import "./TLoanTable/table.css";
 import {useCart} from 'react-use-cart'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import Stack from '@mui/material/Stack';
+import dateFormat, { masks } from "dateformat";
 
 
 function newtloan() {
@@ -265,7 +270,7 @@ function newtloan() {
   const [requireddate, setRDate] = useState("");
   const [localDate, setLocalDate] = useState("");
   const userRole = useAppSelector(selectRole);
-
+  const [dateForm, setDateForm] = useState('')
 
   
     const [items, setItems] = useState([])
@@ -291,13 +296,17 @@ function newtloan() {
     setCollection(event.target.value);
   };
 
-  // const handleChangeRequiredDate = (newValue: Date | null) => {
-  //   setRdate(newValue);
-  // };
+  const handleChangeRequiredDate = (newValue: '' | null) => {
+    setDateForm(newValue);
+  };
 
   const navigate = useNavigate();
 
-  
+  useEffect(()=>{
+
+    const correctFormat = dateFormat(dateForm, "yyyy-mm-dd")
+    setRDate(correctFormat)
+  },[dateForm])
 
 
   const submitLoan = (e) => {
@@ -377,11 +386,11 @@ function newtloan() {
     setADate(date);
   });
 
-  useEffect(() => {
-    var date = new Date().toISOString().split("T")[0];
+  // useEffect(() => {
+  //   var date = new Date().toISOString().split("T")[0];
 
-    setRDate(date);
-  });
+  //   setRDate(date);
+  // });
 
  
 
@@ -416,12 +425,13 @@ function newtloan() {
       { "12 Months": "365" },
     ];
     return (
-      <Card sx={{ width: "98%", height: "100%", margin: 3 }}>
+      <div style={{overflow:"auto"}}>
+      <Card sx={{ width: "95%", height: "100%", margin: 3, overflow: "auto" }}>
         <CardContent>
           <h2>Apply TLoan</h2>
           {FullFeaturedCrudGrid()}
-          <form onSubmit={submitLoan}>
-          <Box sx={{ marginTop: 1, display: "flex" }}>
+          <form onSubmit={submitLoan} style={{width:"100%"}}>
+          <Box sx={{ marginTop: 1, display: "flex", marginLeft: 2 }}>
             <TextField
               id="outlined-basic"
               label="Employee Name"
@@ -438,11 +448,8 @@ function newtloan() {
               size="small"
               name="customerEmail"
               sx={{ marginLeft: 3 }}
-              {...(email)}
-              error={errors.email? true : false}
               required
               onChange={(e) => setEmail(e.target.value)}
-              helperText={errors.email?.message}
             />
 
             <FormControl sx={{ width: 200, marginLeft: 3 }}>
@@ -463,21 +470,7 @@ function newtloan() {
                 <MenuItem value={"6"}>ALL</MenuItem>
               </Select>
             </FormControl>
-    
-          </Box>
-
-          <Box sx={{ display: "flex" }}>
-            <TextField
-              sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
-              multiline
-              rows={7.65}
-              label="Purpose"           
-              onChange={(e) => setPurpose(e.target.value)}
-              required
-            ></TextField>
-            <Box sx={{ marginLeft: 0.3, float: "right" }}>
-              {/* Duration */}
-              <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+            <FormControl sx={{ width: 200, marginLeft: 3 }}>
                 <InputLabel>Duration</InputLabel>
                 <Select
                   id="outlined-basic"
@@ -497,9 +490,26 @@ function newtloan() {
                   })}
                 </Select>
               </FormControl>
+    
+          </Box>
+
+          <Box sx={{ display: "flex" }}>
+            <TextField
+              sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
+              multiline
+              rows={7.65}
+              label="Purpose"           
+              onChange={(e) => setPurpose(e.target.value)}
+              required
+            ></TextField>
+          
+          </Box>
+          <Box sx={{ marginLeft: 2, display:"flex"}}>
+            
+          
 
               {/* Collection */}
-              <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+              <FormControl sx={{ width: 200,  marginTop: 2 }}>
                 <InputLabel>Collection Type</InputLabel>
                 <Select
                   id="outlined-basic"
@@ -533,7 +543,7 @@ function newtloan() {
                 </Select>
               </FormControl>
 
-              {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Stack >
         <DesktopDatePicker
           label="Required Date"
@@ -541,14 +551,13 @@ function newtloan() {
           value={requireddate}
           onChange={handleChangeRequiredDate}
           renderInput={(params) => <TextField size="small" {...params} sx={{width: 200, marginLeft:3, marginTop: 2}} />}
-        
+         
         />
         </Stack>
-        </LocalizationProvider> */}
+        </LocalizationProvider>
             </Box>
-          </Box>
 
-          <Typography variant="body2" color="text.secondary"></Typography>
+        
 
           <Box
             component="span"
@@ -577,6 +586,7 @@ function newtloan() {
                 Back
               </Button>
             </motion.div>
+            <Box display="flex">
             <motion.div
               className="animatable"
               whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
@@ -591,6 +601,7 @@ function newtloan() {
                   width: 150,
                   height: 50,
                   borderRadius: 10,
+                  marginRight: 10
                 }}
                 onClick={DraftLoan}
               >
@@ -618,10 +629,12 @@ function newtloan() {
                 Submit
               </Button>
             </motion.div>
+            </Box>
           </Box>
           </form>
         </CardContent>
       </Card>
+      </div>
     );
   };
   return getCard();
