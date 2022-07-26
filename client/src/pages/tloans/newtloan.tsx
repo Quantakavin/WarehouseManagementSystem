@@ -510,7 +510,7 @@ function newtloan() {
             <TextField
               sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
               multiline
-              rows={7.65}
+              rows={4}
               label="Purpose"           
               onChange={(e) => setPurpose(e.target.value)}
               required

@@ -15,6 +15,8 @@ router.get('/tloan/pending/:UserID', TLoanController.pendingLoan);
 // router.put('/tloan/ready', TLoanController.readyLoan);
 router.put('/tloan/approve/:TLoanID', TLoanController.approveLoan);
 router.put('/tloan/reject/:TLoanID', TLoanController.rejectLoan);
+router.put('/tloan/approveExtension/:TLoanID', TLoanController.approveExtension);
+router.put('/tloan/rejectExtension/:TLoanID', TLoanController.rejectExtension);
 // router.put('/tloan/due', TLoanController.dueLoan);
 // router.put('/tloan/draft', TLoanController.draftLoan);
 // router.put('/tloan/issued', TLoanController.issuedLoan);
