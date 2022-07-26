@@ -99,6 +99,7 @@ module.exports.newLoan = async (req, res) => {
         items
     } = req.body;
     try {
+        console.log("req: " + req.body)
         const tloanItems = items.map((item) => {
             return item;
         });

@@ -35,7 +35,7 @@ const Login: React.FC = () => {
 
   const mutation = useMutation(LoginUser, {
     onSuccess: (data) => {
-      const { token, id, name, usergroup } = data.data;
+      const { token, id, name, usergroup, permissions } = data.data;
       localStorage.setItem("token", token);
       localStorage.setItem("user_id", id);
       localStorage.setItem("username", name);
@@ -44,6 +44,7 @@ const Login: React.FC = () => {
           id,
           role: usergroup,
           name,
+          permissions
         })
       );
       dispatch(ChangeTab({ currenttab: "Dashboard" }));

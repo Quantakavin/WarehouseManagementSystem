@@ -253,7 +253,7 @@ console.log(rows)
           }}
           experimentalFeatures={{ newEditingApi: true }}
         />
-        {console.log(rows)}
+        {/* {console.log(rows)} */}
       </Box>
     );
   };
@@ -460,7 +460,7 @@ console.log(rows)
                 <MenuItem value={"6"}>ALL</MenuItem>
               </Select>
             </FormControl>
-            {console.log(company)}
+            {/* {console.log(company)} */}
           </Box>
 
           <Box sx={{ display: "flex" }}>
