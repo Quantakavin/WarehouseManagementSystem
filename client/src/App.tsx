@@ -5,6 +5,7 @@ import { selectIsAuthenticated } from "./app/reducers/CurrentUserSlice";
 import RmaDisplay from "./components/display/rmaDisplay";
 import TLoanDisplay2 from "./components/display/tloanDisplay2";
 import TLoanManagerDisplay from "./components/display/tloanManagerDisplay";
+import TLoanManagerExtensionDisplay from "./components/display/tloanManagerExtensionDisplay"
 import TopBar from "./components/header/TopBar";
 import Sidebar from "./components/sidebar/SideBar";
 import BinLocations from "./pages/binlocations/BinLocations";
@@ -123,6 +124,10 @@ const App: React.FC = () => {
               <Route
                 path="/tloanManagerDisplay/:TLoanID"
                 element={<TLoanManagerDisplay />}
+              />
+               <Route
+                path="/tloanManagerExtension/:TLoanID"
+                element={<TLoanManagerExtensionDisplay />}
               />
               <Route path="*" element={<Error404 />} />
               <Route path="/403" element={<Error403 />} />

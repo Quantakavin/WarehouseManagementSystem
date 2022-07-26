@@ -334,6 +334,12 @@ export default function TLoanDisplay2() {
                           {loans.TLoanStatus}
                         </div>
                       </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{}}>Extension:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.TLoanExtensionStatus}
+                        </div>
+                      </Box>
                     </Typography>
                   </Grid>
                   <Grid

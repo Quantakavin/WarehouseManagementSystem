@@ -77,11 +77,11 @@ const Products2: React.FC = () => {
   }
 
   return (
-    <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
+    <Box sx={{ pl: 3, pr: 3, height: "100%", width: "100%" }}>
       <Box sx={{ display: "flex", height: "100%" }}>
         <Box sx={{ flexGrow: 1 }}>
-          <Typography sx={{ color: "#063970", fontWeight: "bold" }}>
-            <h2>Products</h2>
+          <Typography sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}>
+            Products
           </Typography>
           <DataGrid
             sx={{ background: "white", fontSize: 18 }}

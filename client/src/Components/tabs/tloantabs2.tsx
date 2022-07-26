@@ -81,6 +81,11 @@ const TLoanTabs2: React.FC = () => {
       .then((data) => data.json())
       .then((data) => setManagerLoan(data));
   }, []);
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/tloan/ManagerExtension`)
+      .then((data) => data.json())
+      .then((data) => setExtensionTable(data));
+  }, []);
 
   console.log(managerLoan)
 
@@ -705,7 +710,7 @@ const TLoanTabs2: React.FC = () => {
                       setFilterModel(newFilterModel)
                     }
                     onRowClick={(params: GridRowParams) => {
-                      navigate(`/tloandetails/${params.id}`);
+                      navigate(`/tloanManagerExtension/${params.id}`);
                     }}
                   />
                 </div>
