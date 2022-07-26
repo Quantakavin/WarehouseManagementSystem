@@ -16,7 +16,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { CSSObject, styled, Theme, useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { selectName, selectRole } from "../../app/reducers/CurrentUserSlice";
+import { selectName, selectRole, selectPermissions } from "../../app/reducers/CurrentUserSlice";
 import { Close, Open, selectOpen } from "../../app/reducers/SidebarSlice";
 import defaultprofile from "../../assets/defaultprofile.png";
 import SidebarLink from "./SidebarLink";
@@ -90,7 +90,10 @@ const Sidebar = () => {
   const isopen = useAppSelector(selectOpen);
   const username = useAppSelector(selectName);
   const userrole = useAppSelector(selectRole);
+  const userpermissions = useAppSelector(selectPermissions);
 
+  console.log("the permissions are: ", userpermissions)
+  console.log("has user group access:", userpermissions.some(p => p.FeatureName==="User Group Management" && p.FeatureRight ==="Full Access"))
   const toggleDrawer = () => {
     if (isopen) {
       dispatch(Close());

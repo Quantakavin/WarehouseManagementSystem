@@ -15,10 +15,12 @@ module.exports.loginUser = async (req, res) => {
             if (results[0][0].Active !== 'Y') {
                 return res.status(401).json({ message: 'Your account has been inactivated' });
             } else if (bcrypt.compareSync(password, results[0][0].Password) === true) {
+                const results2 = await userGroup.getFeatures(results[0][0].UserGroupID)
                 const data = {
                     id: results[0][0].UserID,
                     name: results[0][0].Username,
                     usergroup: results[0][0].UserGroupName,
+                    permissions: results2[0],
                     token: jwt.sign(
                         { id: results[0][0].UserID, role: results[0][0].UserGroupName },
                         config.JWTKey,

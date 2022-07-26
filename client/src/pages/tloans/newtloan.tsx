@@ -1,7 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import CancelIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import EditIcon from "@mui/icons-material/Edit";
+import RemoveIcon from "@mui/icons-material/Remove";
 import SaveIcon from "@mui/icons-material/Save";
 import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -31,7 +31,7 @@ import {
 import axios from "axios";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { useFormState } from "react-hook-form";
+import { useFormState, useForm, appendErrors } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { useAppSelector } from "../../app/hooks";
@@ -39,6 +39,12 @@ import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import "./TLoanTable/table.css";
 import {useCart} from 'react-use-cart'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import Stack from '@mui/material/Stack';
+import dateFormat, { masks } from "dateformat";
+
 
 function newtloan() {
 
@@ -54,25 +60,27 @@ function newtloan() {
   function EditToolbar(props: EditToolbarProps) {
     const { setRows, setRowModesModel } = props;
 
-    const handleClick = () => {
-      const id = randomId();
-      setRows((oldRows) => [
-        ...oldRows,
-        { id, ItemNo: "", ItemName: "", isNew: true },
-      ]);
-      setRowModesModel((oldModel) => ({
-        ...oldModel,
-        [id]: { mode: GridRowModes.Edit, fieldToFocus: "ItemNo" },
-      }));
-    };
+    // const handleClick = () => {
+    //   const id = randomId();
+    //   setRows((oldRows) => [
+    //     ...oldRows,
+    //     { id, ItemNo: "", ItemName: "", isNew: true },
+    //   ]);
+    //   setRowModesModel((oldModel) => ({
+    //     ...oldModel,
+    //     [id]: { mode: GridRowModes.Edit, fieldToFocus: "ItemNo" },
+    //   }));
+      
+    // };
 
-    return (
-      <GridToolbarContainer>
-        <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-          Add record
-        </Button>
-      </GridToolbarContainer>
-    );
+    // return (
+    //   <GridToolbarContainer>
+    //     <Button color="primary" startIcon={<AddIcon />} onClick={handleClick()}>
+    //       Add Record
+    //     </Button>
+    //   </GridToolbarContainer>
+     
+    // );
   }
   const itemStorage = localStorage.getItem('react-use-cart') 
   const cartItems = JSON.parse(itemStorage).items
@@ -93,15 +101,6 @@ function newtloan() {
     updateItemQuantity,
     removeItem,
   } = useCart();
-  const [newItemTable, setNewItemTable] = useState([])
-
-  useEffect(()=>{
-    setNewItemTable(cartItems)
-  }, [cartItems])
-   
-  
-  console.log(newProduct)
-
 
   const [rows, setRows] = React.useState([]);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
@@ -109,12 +108,12 @@ function newtloan() {
   );
 
   useEffect(()=>{
-    setRows(newItemTable)
-  }, [newItemTable])
+    setRows(cartItems)
+  }, [cartItems])
    
   
   
-  console.log(rows)
+
   const FullFeaturedCrudGrid = () => {
     const handleRowEditStart = (
       params: GridRowParams,
@@ -141,6 +140,12 @@ function newtloan() {
     const handleDeleteClick = (id: GridRowId) => () => { 
       setRows(rows.filter((row) => row.id === id && removeItem(row.id) ));
     };
+    const handleMinusClick = (id: GridRowId) => () => { 
+      setRows(rows.filter((row) => row.id === id && updateItemQuantity(row.id, row.quantity - 1) ));
+    };
+    const handleAddClick = (id: GridRowId) => () => { 
+      setRows(rows.filter((row) => row.id === id && updateItemQuantity(row.id, row.quantity + 1) ));
+    };
 
     const handleCancelClick = (id: GridRowId) => () => {
       setRowModesModel({
@@ -160,7 +165,7 @@ function newtloan() {
 
       return updatedRow;
     };
-console.log(rows)
+
     const columns: GridColumns = [
       { field: "ItemNo", headerName: "Item No.", width: 180, editable: false},
       {
@@ -182,7 +187,7 @@ console.log(rows)
         field: "actions",
         type: "actions",
         headerName: "Actions",
-        width: 80,
+        width: 120,
         cellClassName: "actions",
         getActions: ({ id }) => {
           const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
@@ -206,10 +211,17 @@ console.log(rows)
 
           return [
             <GridActionsCellItem
-              icon={<EditIcon />}
+            icon={<RemoveIcon />}
+            label="Edit"
+            className="textPrimary"
+            onClick={handleMinusClick(id)}
+            color="inherit"
+          />,
+            <GridActionsCellItem
+              icon={<AddIcon />}
               label="Edit"
               className="textPrimary"
-              onClick={handleEditClick(id)}
+              onClick={handleAddClick(id)}
               color="inherit"
             />,
             <GridActionsCellItem
@@ -253,7 +265,7 @@ console.log(rows)
           }}
           experimentalFeatures={{ newEditingApi: true }}
         />
-        {/* {console.log(rows)} */}
+      
       </Box>
     );
   };
@@ -271,8 +283,8 @@ console.log(rows)
   const [requireddate, setRDate] = useState("");
   const [localDate, setLocalDate] = useState("");
   const userRole = useAppSelector(selectRole);
+  const [dateForm, setDateForm] = useState('')
 
-  console.log(userRole);
   
     const [items, setItems] = useState([])
     useEffect(()=>{
@@ -297,11 +309,18 @@ console.log(rows)
     setCollection(event.target.value);
   };
 
-  // const handleChangeRequiredDate = (newValue: Date | null) => {
-  //   setRdate(newValue);
-  // };
+  const handleChangeRequiredDate = (newValue: '' | null) => {
+    setDateForm(newValue);
+  };
 
   const navigate = useNavigate();
+
+  useEffect(()=>{
+
+    const correctFormat = dateFormat(dateForm, "yyyy-mm-dd")
+    setRDate(correctFormat)
+  },[dateForm])
+
 
   const submitLoan = (e) => {
     e.preventDefault();
@@ -380,11 +399,11 @@ console.log(rows)
     setADate(date);
   });
 
-  useEffect(() => {
-    var date = new Date().toISOString().split("T")[0];
+  // useEffect(() => {
+  //   var date = new Date().toISOString().split("T")[0];
 
-    setRDate(date);
-  });
+  //   setRDate(date);
+  // });
 
  
 
@@ -398,7 +417,8 @@ console.log(rows)
     setName(Employee);
   });
 
-  console.log(user);
+
+
   const getCard = () => {
     const loanDuration = [
       { "1 Week": "7" },
@@ -418,13 +438,13 @@ console.log(rows)
       { "12 Months": "365" },
     ];
     return (
-      <Card sx={{ width: "98%", height: "100%", margin: 3 }}>
-        {/* <form onSubmit={submitLoan}> */}
+      <div style={{overflow:"auto"}}>
+      <Card sx={{ width: "95%", height: "100%", margin: 3, overflow: "auto" }}>
         <CardContent>
           <h2>Apply TLoan</h2>
           {FullFeaturedCrudGrid()}
-
-          <Box sx={{ marginTop: 1, display: "flex" }}>
+          <form onSubmit={submitLoan} style={{width:"100%"}}>
+          <Box sx={{ marginTop: 1, display: "flex", marginLeft: 2 }}>
             <TextField
               id="outlined-basic"
               label="Employee Name"
@@ -439,7 +459,9 @@ console.log(rows)
               label="Customer Email"
               variant="outlined"
               size="small"
+              name="customerEmail"
               sx={{ marginLeft: 3 }}
+              required
               onChange={(e) => setEmail(e.target.value)}
             />
 
@@ -451,6 +473,7 @@ console.log(rows)
                 onChange={handleChangeCompany}
                 size="small"
                 label="Customer Company"
+                required
               >
                 <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
                 <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
@@ -460,20 +483,7 @@ console.log(rows)
                 <MenuItem value={"6"}>ALL</MenuItem>
               </Select>
             </FormControl>
-            {/* {console.log(company)} */}
-          </Box>
-
-          <Box sx={{ display: "flex" }}>
-            <TextField
-              sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
-              multiline
-              rows={7.65}
-              label="Purpose"
-              onChange={(e) => setPurpose(e.target.value)}
-            ></TextField>
-            <Box sx={{ marginLeft: 0.3, float: "right" }}>
-              {/* Duration */}
-              <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+            <FormControl sx={{ width: 200, marginLeft: 3 }}>
                 <InputLabel>Duration</InputLabel>
                 <Select
                   id="outlined-basic"
@@ -481,6 +491,7 @@ console.log(rows)
                   onChange={handleChangeDuration}
                   label="Duration"
                   size="small"
+                  required
                 >
                   {loanDuration.map((element) => {
                     const [[key, val]] = Object.entries(element);
@@ -492,9 +503,26 @@ console.log(rows)
                   })}
                 </Select>
               </FormControl>
+    
+          </Box>
+
+          <Box sx={{ display: "flex" }}>
+            <TextField
+              sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
+              multiline
+              rows={7.65}
+              label="Purpose"           
+              onChange={(e) => setPurpose(e.target.value)}
+              required
+            ></TextField>
+          
+          </Box>
+          <Box sx={{ marginLeft: 2, display:"flex"}}>
+            
+          
 
               {/* Collection */}
-              <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+              <FormControl sx={{ width: 200,  marginTop: 2 }}>
                 <InputLabel>Collection Type</InputLabel>
                 <Select
                   id="outlined-basic"
@@ -502,6 +530,7 @@ console.log(rows)
                   onChange={handleChangeCollection}
                   label="Collection Type"
                   size="small"
+                  required
                 >
                   {/* <MenuItem value="">
             <em>None</em>
@@ -520,13 +549,14 @@ console.log(rows)
                   onChange={handleChangeType}
                   label="Loan Type"
                   size="small"
-                >
+                  required
+                >                  
                   <MenuItem value={"1"}>Internal</MenuItem>
                   <MenuItem value={"2"}>External</MenuItem>
                 </Select>
               </FormControl>
 
-              {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Stack >
         <DesktopDatePicker
           label="Required Date"
@@ -534,14 +564,13 @@ console.log(rows)
           value={requireddate}
           onChange={handleChangeRequiredDate}
           renderInput={(params) => <TextField size="small" {...params} sx={{width: 200, marginLeft:3, marginTop: 2}} />}
-        
+         
         />
         </Stack>
-        </LocalizationProvider> */}
+        </LocalizationProvider>
             </Box>
-          </Box>
 
-          <Typography variant="body2" color="text.secondary"></Typography>
+        
 
           <Box
             component="span"
@@ -565,11 +594,12 @@ console.log(rows)
                   height: 50,
                   borderRadius: 10,
                 }}
-                onClick={() => navigate("/tloan")}
+                onClick={() => navigate(-1)}
               >
                 Back
               </Button>
             </motion.div>
+            <Box display="flex">
             <motion.div
               className="animatable"
               whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
@@ -584,6 +614,7 @@ console.log(rows)
                   width: 150,
                   height: 50,
                   borderRadius: 10,
+                  marginRight: 10
                 }}
                 onClick={DraftLoan}
               >
@@ -606,15 +637,17 @@ console.log(rows)
                   borderRadius: 10,
                 }}
                 type="submit"
-                onClick={submitLoan}
+                // onClick={submitLoan}
               >
                 Submit
               </Button>
             </motion.div>
+            </Box>
           </Box>
+          </form>
         </CardContent>
-        {/* </form> */}
       </Card>
+      </div>
     );
   };
   return getCard();

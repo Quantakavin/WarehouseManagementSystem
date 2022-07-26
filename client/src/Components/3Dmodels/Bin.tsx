@@ -6,6 +6,9 @@ import { useGLTF } from "@react-three/drei";
 import React, { useRef } from "react";
 import * as THREE from "three";
 import { GLTF } from "three-stdlib";
+import axios from "axios";
+import config from "../../config/config";
+import { useEffect, useState } from "react";
 // import { color } from "@mui/system";
 
 type GLTFResult = GLTF & {
@@ -34,6 +37,27 @@ const Model: React.FC<ModelProps> = ({
   const group = useRef<THREE.Group>();
   const { nodes, materials } = useGLTF("/box.glb") as GLTFResult;
   const bintag = `${areatag}${racktag}${leveltag}${sectiontag}`;
+
+
+  // Get Bin Information
+  function Bins () {
+    const [BinsData, setBinsData ] = useState([]);
+
+    const getBinsData = async () => {
+      const response = await axios.get(`${config.baseURL}/getcurentTloans`);
+
+      setBinsData(response.data); 
+    };
+
+    useEffect(() => {
+      getBinsData();
+    }, []);
+
+
+
+  }
+
+
   return (
     <group
       onClick={() => {
