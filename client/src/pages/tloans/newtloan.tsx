@@ -108,7 +108,11 @@ function newtloan() {
   );
 
   useEffect(()=>{
-    setRows(cartItems)
+    if(cartItems === []){ 
+      return console.log('Nothing in cart')
+    }else {
+      setRows(cartItems)
+    }
   }, [cartItems])
    
   
@@ -290,6 +294,7 @@ function newtloan() {
     useEffect(()=>{
       setItems(newProduct)
     })
+
   // const items = rows.map(({ id, isNew, ...rows }) => rows);
   // console.log(items);
 

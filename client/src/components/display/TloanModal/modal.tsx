@@ -26,7 +26,7 @@ const style = {
 };
 
 const ModalButton = () => {
-  const { TLoanNumber } = useParams();
+  const { TLoanID } = useParams();
 
   const [reason, setReason] = useState("");
   const [duration, setDuration] = useState("");
@@ -44,7 +44,7 @@ const ModalButton = () => {
     const fetchData = async () => {
       // get the data from the api
       const loans = await axios.get(
-        `http://localhost:5000/api/tloanid/${TLoanNumber}`
+        `http://localhost:5000/api/tloanid/${TLoanID}`
       );
 
       setLoan(loans.data[0].TLoanID);
