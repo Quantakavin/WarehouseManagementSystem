@@ -138,7 +138,6 @@ module.exports.SendDraft = async (req, res) => {
         items
     } = req.body;
     try {
-        console.log("req: " + JSON.stringify(req.body))
         const tloanItems = items.map((item) => {
             return item;
         });
