@@ -7,14 +7,15 @@ import SaveIcon from "@mui/icons-material/Save";
 import { Stack, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
+import Paper from "@mui/material/Paper";
+import Popper from "@mui/material/Popper";
 import {
   DataGrid,
   GridActionsCellItem,
   GridCellParams,
   GridColDef,
-  GridColTypeDef, GridEventListener,
+  GridColTypeDef,
+  GridEventListener,
   GridFilterInputValueProps,
   GridFilterItem,
   GridFilterModel,
@@ -33,12 +34,12 @@ import {
   GridToolbarQuickFilter,
   GRID_DATE_COL_DEF,
   MuiEvent,
-  useGridApiContext
+  useGridApiContext,
 } from "@mui/x-data-grid";
 import {
   DatePicker,
   DateTimePicker,
-  LocalizationProvider
+  LocalizationProvider,
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
@@ -51,6 +52,7 @@ import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import ReasonModalButton from "./RmaModal/reasonModal";
 import RejectModalButton from "./RmaModal/rejectModal";
+import clsx from 'clsx';
 
 const RmaDisplay: React.FC = () => {
   const navigate = useNavigate();
@@ -366,16 +368,16 @@ const RmaDisplay: React.FC = () => {
     value: string;
     width: number;
   }
-  
+
   function isOverflown(element: Element): boolean {
     return (
       element.scrollHeight > element.clientHeight ||
       element.scrollWidth > element.clientWidth
     );
   }
-  
+
   const GridCellExpand = React.memo(function GridCellExpand(
-    props: GridCellExpandProps,
+    props: GridCellExpandProps
   ) {
     const { width, value } = props;
     const wrapper = React.useRef<HTMLDivElement | null>(null);
@@ -384,64 +386,68 @@ const RmaDisplay: React.FC = () => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [showFullCell, setShowFullCell] = React.useState(false);
     const [showPopper, setShowPopper] = React.useState(false);
-  
+
     const handleMouseEnter = () => {
       const isCurrentlyOverflown = isOverflown(cellValue.current!);
       setShowPopper(isCurrentlyOverflown);
       setAnchorEl(cellDiv.current);
       setShowFullCell(true);
     };
-  
+
     const handleMouseLeave = () => {
       setShowFullCell(false);
     };
-  
+
     React.useEffect(() => {
       if (!showFullCell) {
         return undefined;
       }
-  
+
       function handleKeyDown(nativeEvent: KeyboardEvent) {
         // IE11, Edge (prior to using Bink?) use 'Esc'
-        if (nativeEvent.key === 'Escape' || nativeEvent.key === 'Esc') {
+        if (nativeEvent.key === "Escape" || nativeEvent.key === "Esc") {
           setShowFullCell(false);
         }
       }
-  
-      document.addEventListener('keydown', handleKeyDown);
-  
+
+      document.addEventListener("keydown", handleKeyDown);
+
       return () => {
-        document.removeEventListener('keydown', handleKeyDown);
+        document.removeEventListener("keydown", handleKeyDown);
       };
     }, [setShowFullCell, showFullCell]);
-  
+
     return (
       <Box
         ref={wrapper}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         sx={{
-          alignItems: 'center',
-          lineHeight: '24px',
-          width: '100%',
-          height: '100%',
-          position: 'relative',
-          display: 'flex',
+          alignItems: "center",
+          lineHeight: "24px",
+          width: "100%",
+          height: "100%",
+          position: "relative",
+          display: "flex",
         }}
       >
         <Box
           ref={cellDiv}
           sx={{
-            height: '100%',
+            height: "100%",
             width,
-            display: 'block',
-            position: 'absolute',
+            display: "block",
+            position: "absolute",
             top: 0,
           }}
         />
         <Box
           ref={cellValue}
-          sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+          sx={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
         >
           {value}
         </Box>
@@ -464,10 +470,13 @@ const RmaDisplay: React.FC = () => {
       </Box>
     );
   });
-  
+
   function renderCellExpand(params: GridRenderCellParams<string>) {
     return (
-      <GridCellExpand value={params.value || ''} width={params.colDef.computedWidth} />
+      <GridCellExpand
+        value={params.value || ""}
+        width={params.colDef.computedWidth}
+      />
     );
   }
 
@@ -697,7 +706,11 @@ const RmaDisplay: React.FC = () => {
       type: "boolean",
       flex: 2,
       editable: false,
-      cellClassName: "status--cell",
+      cellClassName: (params: GridCellParams<boolean>) =>
+        clsx('status-cell', {
+          true: params.value == true,
+          false: params.value == false,
+        }),
     },
     {
       field: "actions",
@@ -903,7 +916,7 @@ const RmaDisplay: React.FC = () => {
     },
   ];
 
-  if (rma.RmaStatusID === 3) {
+  if (rma.RmaStatusID === 4) {
     switch (userrole) {
       case "Sales Engineer": {
         return (
@@ -951,7 +964,7 @@ const RmaDisplay: React.FC = () => {
               <Box sx={{ marginLeft: 5 }}>
                 <Box sx={{}}>COMPANY</Box>
                 <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {rma.CompanyName}
+                  {rma.Company}
                 </Box>
               </Box>
               <Box sx={{ marginLeft: 5 }}>
@@ -987,7 +1000,7 @@ const RmaDisplay: React.FC = () => {
                         alignItems="center"
                         justifyContent="center"
                       >
-                        No approved RMA requests
+                        No products
                       </Stack>
                     ),
                   }}
@@ -1077,7 +1090,7 @@ const RmaDisplay: React.FC = () => {
               <Box sx={{ marginLeft: 5 }}>
                 <Box sx={{}}>COMPANY</Box>
                 <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {rma.CompanyName}
+                  {rma.Company}
                 </Box>
               </Box>
               <Box sx={{ marginLeft: 5 }}>
@@ -1186,7 +1199,7 @@ const RmaDisplay: React.FC = () => {
               <Box sx={{ marginLeft: 5 }}>
                 <Box sx={{}}>COMPANY</Box>
                 <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {rma.CompanyName}
+                  {rma.Company}
                 </Box>
               </Box>
               <Box sx={{ marginLeft: 5 }}>
@@ -1299,7 +1312,7 @@ const RmaDisplay: React.FC = () => {
               <Box sx={{ marginLeft: 5 }}>
                 <Box sx={{}}>COMPANY</Box>
                 <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {rma.CompanyName}
+                  {rma.Company}
                 </Box>
               </Box>
               <Box sx={{ marginLeft: 5 }}>
@@ -1457,7 +1470,7 @@ const RmaDisplay: React.FC = () => {
               <Box sx={{ marginLeft: 5 }}>
                 <Box sx={{}}>COMPANY</Box>
                 <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {rma.CompanyName}
+                  {rma.Company}
                 </Box>
               </Box>
               <Box sx={{ marginLeft: 5 }}>
@@ -1580,7 +1593,7 @@ const RmaDisplay: React.FC = () => {
               <Box sx={{ marginLeft: 5 }}>
                 <Box sx={{}}>COMPANY</Box>
                 <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {rma.CompanyName}
+                  {rma.Company}
                 </Box>
               </Box>
               <Box sx={{ marginLeft: 5 }}>
@@ -1677,7 +1690,7 @@ const RmaDisplay: React.FC = () => {
         );
       }
     }
-  } else if (rma.RmaStatusID === 7) {
+  } else if (rma.RmaStatusID === 8) {
     switch (userrole) {
       case "Sales Engineer":
       case "Sales Manager":
@@ -1731,7 +1744,7 @@ const RmaDisplay: React.FC = () => {
               <Box sx={{ marginLeft: 5 }}>
                 <Box sx={{}}>COMPANY</Box>
                 <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {rma.CompanyName}
+                  {rma.Company}
                 </Box>
               </Box>
               <Box sx={{ marginLeft: 5 }}>
@@ -1803,7 +1816,7 @@ const RmaDisplay: React.FC = () => {
         );
       }
     }
-  } else if (rma.RmaStatusID === 6) {
+  } else if (rma.RmaStatusID === 7) {
     switch (userrole) {
       case "Sales Admin": {
         return (
@@ -1851,7 +1864,7 @@ const RmaDisplay: React.FC = () => {
               <Box sx={{ marginLeft: 5 }}>
                 <Box sx={{}}>COMPANY</Box>
                 <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {rma.CompanyName}
+                  {rma.Company}
                 </Box>
               </Box>
               <Box sx={{ marginLeft: 5 }}>
@@ -2031,7 +2044,7 @@ const RmaDisplay: React.FC = () => {
               <Box sx={{ marginLeft: 5 }}>
                 <Box sx={{}}>COMPANY</Box>
                 <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {rma.CompanyName}
+                  {rma.Company}
                 </Box>
               </Box>
               <Box sx={{ marginLeft: 5 }}>
@@ -2151,7 +2164,7 @@ const RmaDisplay: React.FC = () => {
               <Box sx={{ marginLeft: 5 }}>
                 <Box sx={{}}>COMPANY</Box>
                 <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {rma.CompanyName}
+                  {rma.Company}
                 </Box>
               </Box>
               <Box sx={{ marginLeft: 5 }}>
@@ -2268,7 +2281,7 @@ const RmaDisplay: React.FC = () => {
               <Box sx={{ marginLeft: 5 }}>
                 <Box sx={{}}>COMPANY</Box>
                 <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {rma.CompanyName}
+                  {rma.Company}
                 </Box>
               </Box>
               <Box sx={{ marginLeft: 5 }}>
@@ -2283,8 +2296,12 @@ const RmaDisplay: React.FC = () => {
               <Box
                 sx={{
                   flexGrow: 1,
-                  "& .status--cell": {
-                    backgroundColor: "#E6E6E6",
+                  "& .status-cell.true": {
+                    backgroundColor: "rgba(49, 169, 97, 0.5)",
+                    fontWeight: "600",
+                  },
+                  "& .status-cell.false": {
+                    backgroundColor: "rgba(209, 26, 42, 0.5)",
                     fontWeight: "600",
                   },
                 }}
@@ -2314,7 +2331,7 @@ const RmaDisplay: React.FC = () => {
                         alignItems="center"
                         justifyContent="center"
                       >
-                        No approved RMA requests
+                        No products
                       </Stack>
                     ),
                   }}
@@ -2451,7 +2468,7 @@ const RmaDisplay: React.FC = () => {
               <Box sx={{ marginLeft: 5 }}>
                 <Box sx={{}}>COMPANY</Box>
                 <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {rma.CompanyName}
+                  {rma.Company}
                 </Box>
               </Box>
               <Box sx={{ marginLeft: 5 }}>
@@ -2489,7 +2506,7 @@ const RmaDisplay: React.FC = () => {
                         alignItems="center"
                         justifyContent="center"
                       >
-                        No approved RMA requests
+                        No products
                       </Stack>
                     ),
                   }}
@@ -2613,7 +2630,7 @@ const RmaDisplay: React.FC = () => {
               <Box sx={{ marginLeft: 5 }}>
                 <Box sx={{}}>COMPANY</Box>
                 <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {rma.CompanyName}
+                  {rma.Company}
                 </Box>
               </Box>
               <Box sx={{ marginLeft: 5 }}>
@@ -2769,7 +2786,7 @@ const RmaDisplay: React.FC = () => {
               <Box sx={{ marginLeft: 5 }}>
                 <Box sx={{}}>COMPANY</Box>
                 <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {rma.CompanyName}
+                  {rma.Company}
                 </Box>
               </Box>
               <Box sx={{ marginLeft: 5 }}>

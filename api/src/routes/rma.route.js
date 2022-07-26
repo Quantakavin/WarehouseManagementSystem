@@ -11,6 +11,7 @@ router.get('/myRejectedRMA/:SalesmanID', rmaController.getMyRejectedRMA);
 router.get('/myIPRMA/:SalesmanID', rmaController.getMyIPRMA);
 router.get('/pendingRMA', rmaController.getPendingRMA);
 router.get('/acceptedRMA', rmaController.getAcceptedRMA);
+router.get('/checklistRMA', rmaController.getInProgressChecklist);
 router.get('/rejectedRMA', rmaController.getRejectedRMA);
 router.get('/receivedRMA', rmaController.getReceivedRMA);
 router.get('/verifiedRMA', rmaController.getVerifiedRMA);
