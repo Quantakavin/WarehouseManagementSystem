@@ -4,7 +4,6 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -12,6 +11,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import ModalButton from "./TloanModal/modal";
 import React from "react";
+import Popper from '@mui/material/Popper';
+import Paper from '@mui/material/Paper';
+import {
+  DataGrid,
+  GridColDef,
+  GridRenderCellParams,
+} from "@mui/x-data-grid";
 
 export default function TLoanDisplay2() {
   const navigate = useNavigate();
@@ -183,16 +189,30 @@ export default function TLoanDisplay2() {
       renderCell: renderCellExpand,
     },
     {
+      field: "ItemName",
+      headerName: "Item Name",
+      flex: 10,
+      editable: false,
+      renderCell: renderCellExpand,
+    },
+    {
       field: "BatchNo",
       headerName: "Batch Number",
-      flex: 10,
+      flex: 8,
+      editable: false,
+      renderCell: renderCellExpand,
+    },
+    {
+      field: "WarehouseCode",
+      headerName: "WarehouseCode",
+      flex: 8,
       editable: false,
       renderCell: renderCellExpand,
     },
     {
       field: "Quantity",
       headerName: "Quantity",
-      flex: 2,
+      flex: 0,
       editable: false,
       type: "number",
       renderCell: renderCellExpand,
@@ -268,13 +288,17 @@ export default function TLoanDisplay2() {
                   </Grid>
                   <Grid item xs={3}>
                     <TextField
-                      sx={{ display: "flex" }}
-                      id="With normal TextField"
-                      // label="Shipping Address"
+                      sx={{ display: "flex"}}
+                      id="outlined-purpose"
                       multiline
                       rows={11.5}
-                      disabled
-                      defaultValue={loans.TLoanID}
+                      label="Purpose"
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="filled"
+                      defaultValue={loans.Purpose}
+                      
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -293,21 +317,21 @@ export default function TLoanDisplay2() {
                       }}
                     >
                       <Box>
-                        <div>Collection Type</div>
+                        <div>Collection Type:</div>
                         <div style={{ color: "black", fontWeight: "normal" }}>
-                          Self-Collection
+                          {loans.Collection}
                         </div>
                       </Box>
                       <Box sx={{ marginLeft: 5 }}>
                         <div>Type:</div>
                         <div style={{ color: "black", fontWeight: "normal" }}>
-                          External
+                          {loans.TLoanType}
                         </div>
                       </Box>
                       <Box sx={{ marginLeft: 5 }}>
-                        <div style={{}}>Status</div>
-                        <div style={{ color: "black", fontWeight: "normal" }}>
-                          Pending
+                        <div style={{}}>Status:</div>
+                        <div style={{ color: "green", fontWeight: "normal" }}>
+                          {loans.TLoanStatus}
                         </div>
                       </Box>
                     </Typography>

@@ -31,7 +31,7 @@ import {
 import axios from "axios";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { useFormState } from "react-hook-form";
+import { useFormState, useForm, appendErrors } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { useAppSelector } from "../../app/hooks";
@@ -39,6 +39,7 @@ import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import "./TLoanTable/table.css";
 import {useCart} from 'react-use-cart'
+
 
 function newtloan() {
 
@@ -54,25 +55,27 @@ function newtloan() {
   function EditToolbar(props: EditToolbarProps) {
     const { setRows, setRowModesModel } = props;
 
-    const handleClick = () => {
-      const id = randomId();
-      setRows((oldRows) => [
-        ...oldRows,
-        { id, ItemNo: "", ItemName: "", isNew: true },
-      ]);
-      setRowModesModel((oldModel) => ({
-        ...oldModel,
-        [id]: { mode: GridRowModes.Edit, fieldToFocus: "ItemNo" },
-      }));
-    };
+    // const handleClick = () => {
+    //   const id = randomId();
+    //   setRows((oldRows) => [
+    //     ...oldRows,
+    //     { id, ItemNo: "", ItemName: "", isNew: true },
+    //   ]);
+    //   setRowModesModel((oldModel) => ({
+    //     ...oldModel,
+    //     [id]: { mode: GridRowModes.Edit, fieldToFocus: "ItemNo" },
+    //   }));
+      
+    // };
 
-    return (
-      <GridToolbarContainer>
-        <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-          Add record
-        </Button>
-      </GridToolbarContainer>
-    );
+    // return (
+    //   <GridToolbarContainer>
+    //     <Button color="primary" startIcon={<AddIcon />} onClick={handleClick()}>
+    //       Add Record
+    //     </Button>
+    //   </GridToolbarContainer>
+     
+    // );
   }
   const itemStorage = localStorage.getItem('react-use-cart') 
   const cartItems = JSON.parse(itemStorage).items
@@ -93,15 +96,6 @@ function newtloan() {
     updateItemQuantity,
     removeItem,
   } = useCart();
-  const [newItemTable, setNewItemTable] = useState([])
-
-  useEffect(()=>{
-    setNewItemTable(cartItems)
-  }, [cartItems])
-   
-  
-  console.log(newProduct)
-
 
   const [rows, setRows] = React.useState([]);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
@@ -109,12 +103,12 @@ function newtloan() {
   );
 
   useEffect(()=>{
-    setRows(newItemTable)
-  }, [newItemTable])
+    setRows(cartItems)
+  }, [cartItems])
    
   
   
-  console.log(rows)
+
   const FullFeaturedCrudGrid = () => {
     const handleRowEditStart = (
       params: GridRowParams,
@@ -160,7 +154,7 @@ function newtloan() {
 
       return updatedRow;
     };
-console.log(rows)
+
     const columns: GridColumns = [
       { field: "ItemNo", headerName: "Item No.", width: 180, editable: false},
       {
@@ -253,7 +247,7 @@ console.log(rows)
           }}
           experimentalFeatures={{ newEditingApi: true }}
         />
-        {console.log(rows)}
+      
       </Box>
     );
   };
@@ -272,7 +266,7 @@ console.log(rows)
   const [localDate, setLocalDate] = useState("");
   const userRole = useAppSelector(selectRole);
 
-  console.log(userRole);
+
   
     const [items, setItems] = useState([])
     useEffect(()=>{
@@ -302,6 +296,9 @@ console.log(rows)
   // };
 
   const navigate = useNavigate();
+
+  
+
 
   const submitLoan = (e) => {
     e.preventDefault();
@@ -398,7 +395,8 @@ console.log(rows)
     setName(Employee);
   });
 
-  console.log(user);
+
+
   const getCard = () => {
     const loanDuration = [
       { "1 Week": "7" },
@@ -419,11 +417,10 @@ console.log(rows)
     ];
     return (
       <Card sx={{ width: "98%", height: "100%", margin: 3 }}>
-        {/* <form onSubmit={submitLoan}> */}
         <CardContent>
           <h2>Apply TLoan</h2>
           {FullFeaturedCrudGrid()}
-
+          <form onSubmit={submitLoan}>
           <Box sx={{ marginTop: 1, display: "flex" }}>
             <TextField
               id="outlined-basic"
@@ -439,8 +436,13 @@ console.log(rows)
               label="Customer Email"
               variant="outlined"
               size="small"
+              name="customerEmail"
               sx={{ marginLeft: 3 }}
+              {...(email)}
+              error={errors.email? true : false}
+              required
               onChange={(e) => setEmail(e.target.value)}
+              helperText={errors.email?.message}
             />
 
             <FormControl sx={{ width: 200, marginLeft: 3 }}>
@@ -451,6 +453,7 @@ console.log(rows)
                 onChange={handleChangeCompany}
                 size="small"
                 label="Customer Company"
+                required
               >
                 <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
                 <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
@@ -460,7 +463,7 @@ console.log(rows)
                 <MenuItem value={"6"}>ALL</MenuItem>
               </Select>
             </FormControl>
-            {console.log(company)}
+    
           </Box>
 
           <Box sx={{ display: "flex" }}>
@@ -468,8 +471,9 @@ console.log(rows)
               sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
               multiline
               rows={7.65}
-              label="Purpose"
+              label="Purpose"           
               onChange={(e) => setPurpose(e.target.value)}
+              required
             ></TextField>
             <Box sx={{ marginLeft: 0.3, float: "right" }}>
               {/* Duration */}
@@ -481,6 +485,7 @@ console.log(rows)
                   onChange={handleChangeDuration}
                   label="Duration"
                   size="small"
+                  required
                 >
                   {loanDuration.map((element) => {
                     const [[key, val]] = Object.entries(element);
@@ -502,6 +507,7 @@ console.log(rows)
                   onChange={handleChangeCollection}
                   label="Collection Type"
                   size="small"
+                  required
                 >
                   {/* <MenuItem value="">
             <em>None</em>
@@ -520,7 +526,8 @@ console.log(rows)
                   onChange={handleChangeType}
                   label="Loan Type"
                   size="small"
-                >
+                  required
+                >                  
                   <MenuItem value={"1"}>Internal</MenuItem>
                   <MenuItem value={"2"}>External</MenuItem>
                 </Select>
@@ -565,7 +572,7 @@ console.log(rows)
                   height: 50,
                   borderRadius: 10,
                 }}
-                onClick={() => navigate("/tloan")}
+                onClick={() => navigate(-1)}
               >
                 Back
               </Button>
@@ -606,14 +613,14 @@ console.log(rows)
                   borderRadius: 10,
                 }}
                 type="submit"
-                onClick={submitLoan}
+                // onClick={submitLoan}
               >
                 Submit
               </Button>
             </motion.div>
           </Box>
+          </form>
         </CardContent>
-        {/* </form> */}
       </Card>
     );
   };

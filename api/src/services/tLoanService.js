@@ -113,9 +113,15 @@ module.exports.getLoanByNumber = async (TLoanID) => {
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS 'EndDate',
   c.CompanyName,
-  t.CustomerEmail
+  t.CustomerEmail,
+  ts.TLoanStatus,
+  tt.TLoanType,
+  t.Collection,
+  t.Purpose
   FROM TLoan t 
   LEFT JOIN Company c ON t.CompanyID = c.CompanyID
+  JOIN TLoanStatus ts ON ts.TLoanStatusID = t.TLoanStatusID
+  JOIN TLoanType tt on tt.TLoanTypeID = t.TLoanTypeID
   WHERE t.TLoanID = ?
  `;
     return knex.raw(query, [TLoanID]);
@@ -125,8 +131,10 @@ module.exports.getTLoanOutItem = async (TLoanID) => {
     const query = `SELECT 
   tl.TLoanID,
   tl.ItemNo,
+  tl.ItemName,
   tl.BatchNo,
-  tl.Quantity
+  tl.Quantity,
+  tl.WarehouseCode
   FROM TLoanOutItem tl 
   WHERE tl.TLoanID = ?
   `;
@@ -215,7 +223,7 @@ module.exports.getManagerLoan = async () => {
     const query = `
   SELECT
   t.TLoanID,
-  DATE_FORMAT(t.ApplicationDate, "%d-%m-%Y") AS 'StartDate',
+  DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   t.Requestor,
   tt.TLoanType
   FROM TLoan t, TLoanType tt where t.TLoanStatusID = "4" AND 
@@ -226,7 +234,7 @@ module.exports.getManagerLoan = async () => {
 module.exports.getManagerExtension = async () => {
     const query = `
   SELECT 
-  DATE_FORMAT(t.ApplicationDate, "%d-%m-%Y") AS 'StartDate',
+  DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   t.Requestor,
   tt.TLoanType
   count(t.TLoanID) OVER() AS full_count
