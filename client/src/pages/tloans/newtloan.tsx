@@ -270,18 +270,18 @@ function newtloan() {
     );
   };
 
-  const [type, setType] = useState("");
-  const [company, setCompany] = useState("");
+  const [type, setType] = useState('');
+  const [company, setCompany] = useState('');
   // const [number, setNumber] = useState("");
-  const [name, setName] = useState("");
-  const [purpose, setPurpose] = useState("");
-  const [applicationdate, setADate] = useState("");
-  const [duration, setDuration] = useState("");
-  const [user, setUser] = useState("");
-  const [email, setEmail] = useState("");
-  const [collection, setCollection] = useState("");
-  const [requireddate, setRDate] = useState("");
-  const [localDate, setLocalDate] = useState("");
+  const [name, setName] = useState('');
+  const [purpose, setPurpose] = useState('');
+  const [applicationdate, setADate] = useState('');
+  const [duration, setDuration] = useState('');
+  const [user, setUser] = useState('');
+  const [email, setEmail] = useState('');
+  const [collection, setCollection] = useState('');
+  const [requireddate, setRDate] = useState('');
+  const [localDate, setLocalDate] = useState('');
   const userRole = useAppSelector(selectRole);
   const [dateForm, setDateForm] = useState('')
 
@@ -510,7 +510,7 @@ function newtloan() {
             <TextField
               sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
               multiline
-              rows={7.65}
+              rows={4}
               label="Purpose"           
               onChange={(e) => setPurpose(e.target.value)}
               required

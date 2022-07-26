@@ -269,6 +269,38 @@ module.exports.rejectLoan = async (req, res) => {
     }
 };
 
+module.exports.approveExtension = async (req, res) => {
+    const { TLoanID } = req.params;
+    try {
+        const results = await TLoan.approveExtension(TLoanID);
+        if (results) {
+            return res.status(200).send('Status has been Updated');
+        } else {
+            return res.status(500).send('Status failed to Update');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
+module.exports.rejectExtension = async (req, res) => {
+    const { TLoanID } = req.params;
+    const { remarks } = req.body;
+    try {
+        const results = await TLoan.getLoanByNumber(TLoanID);
+        if (results.length > 0) {
+            await TLoan.rejectExtension(TLoanID, remarks);
+            return res.status(200).send('Status has been Updated');
+        } else {
+            return res.status(500).send('Status failed to Update');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
 // module.exports.pickingLoan = async (req, res) => {
 //     const { number } = req.body;
 //     try {
