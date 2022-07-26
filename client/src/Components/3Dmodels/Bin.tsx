@@ -44,7 +44,7 @@ const Model: React.FC<ModelProps> = ({
     const [BinsData, setBinsData ] = useState([]);
 
     const getBinsData = async () => {
-      const response = await axios.get(`${config.baseURL}/getcurentTloans`);
+      const response = await axios.get(`${config.baseURL}/bintag/${bintag}`);
 
       setBinsData(response.data); 
     };
