@@ -94,7 +94,32 @@ const validation = {
         } else {
             next();
         }
-    }
+    },
+
+    validateLoan: (req, res, next) => {
+        const {  type, company, name, purpose, applicationdate, duration, requireddate, user, email, collection, items } = req.body;
+
+        if (type === '' || email === '' || name === '' ||purpose === '' || company === '' || applicationdate === '' || duration === '' || requireddate === '' ||user === '' || collection === '' || items === [] ) {
+            res.status(400).json({
+                message: 'Please fill up all fields correctly'
+            });
+        } else if (
+            validator.isEmail(email)     
+        ) {
+            next();
+        } else if (!validator.isEmail(email)) {
+            res.status(400).json({
+                message: 'Please enter a valid email'
+            });
+        
+        } else {
+            res.status(400).json({
+                message: 'Please fill up all fields correctly'
+            });
+        }
+    },
+
+    
 };
 
 module.exports = validation;

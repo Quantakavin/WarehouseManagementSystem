@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { GetDetails }from "../../api/TLoanDB"
 import { motion } from "framer-motion";
-import TLoanRejectModalButton from "./TloanModal/tloanRejectModal";
+import TLoanRejectModalButton from "./TloanModal/tloanRejectExtension";
 import React from "react";
 
 export default function TLoanManagerDisplay() {
@@ -173,7 +173,7 @@ export default function TLoanManagerDisplay() {
 
   const ApproveLoan = async () => {
     axios
-      .put(`http://localhost:5000/api/tloan/approve/${TLoanID}`)
+      .put(`http://localhost:5000/api/tloan/approveExtension/${TLoanID}`)
       .then(() => navigate("/tloan"))
       .catch((error) => {
         console.error("There was an error!", error);

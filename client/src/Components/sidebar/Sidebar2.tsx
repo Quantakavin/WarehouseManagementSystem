@@ -90,12 +90,11 @@ const Sidebar = () => {
   const isopen = useAppSelector(selectOpen);
   const username = useAppSelector(selectName);
   const userrole = useAppSelector(selectRole);
-  const userpermissions = useAppSelector(selectPermissions);
+  // const userpermissions = useAppSelector(selectPermissions);
 
-  {/*console.log("the permissions are: ", userpermissions)
-  console.log("has user group access:", userpermissions.some(p => p.FeatureName==="User Group Management" && p.FeatureRight ==="Full Access"))
-*/}
-const toggleDrawer = () => {
+  // console.log("the permissions are: ", userpermissions)
+  // console.log("has user group access:", userpermissions.some(p => p.FeatureName==="User Group Management" && p.FeatureRight ==="Full Access"))
+  const toggleDrawer = () => {
     if (isopen) {
       dispatch(Close());
     } else {

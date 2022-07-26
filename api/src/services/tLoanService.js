@@ -364,3 +364,31 @@ module.exports.getID = async (TLoanID) => {
  `;
     return knex.raw(query, [TLoanID]);
 };
+
+module.exports.approveExtension = async (TLoanID) => {
+    return knex.transaction((trx) => {
+        knex('TLoanExtension')
+            .where('TLoanID', TLoanID)
+            .update({
+                TLoanExtensionStatusID: 2
+            })
+            .transacting(trx)
+            .then(trx.commit)
+            .catch(trx.rollback);
+    });
+};
+
+//Add status to db
+module.exports.rejectExtension = async (TLoanID, remarks) => {
+    return knex.transaction((trx) => {
+        knex('TLoanExtension')
+            .where('TLoanID', TLoanID)
+            .update({
+                TLoanExtensionStatusID: 3,
+                Remarks: remarks
+            })
+            .transacting(trx)
+            .then(trx.commit)
+            .catch(trx.rollback);
+    });
+};
