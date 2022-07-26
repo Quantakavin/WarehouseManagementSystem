@@ -28,6 +28,7 @@ const Rmatabs: React.FC = () => {
   const userrole = useAppSelector(selectRole);
   const [pendingTable, setPendingTable] = useState([]);
   const [approvedTable, setApprovedTable] = useState([]);
+  const [checklistTable, setChecklistTable] = useState([]);
   const [receivedTable, setReceivedTable] = useState([]);
   const [verifiedTable, setVerifiedTable] = useState([]);
   const [inprogressTable, setInProgressTable] = useState([]);
@@ -88,6 +89,12 @@ const Rmatabs: React.FC = () => {
     fetch("http://localhost:5000/api/acceptedRMA")
       .then((data) => data.json())
       .then((data) => setApprovedTable(data));
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/checklistRMA")
+      .then((data) => data.json())
+      .then((data) => setChecklistTable(data));
   }, []);
 
   useEffect(() => {
@@ -1036,8 +1043,20 @@ const Rmatabs: React.FC = () => {
                   }}
                 >
                   <Tab
-                    label="Accepted"
+                    label="Inbound"
                     value="2"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                  <Tab
+                    label="Processing"
+                    value="3"
                     sx={{
                       color: "grey",
                       backgroundColor: "White",
@@ -1090,6 +1109,44 @@ const Rmatabs: React.FC = () => {
                   />
                 </Box>
               </TabPanel>
+              <TabPanel value="3" sx={{ height: "inherit", width: "inherit" }}>
+                <Box sx={{ height: "inherit", width: "inherit" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={checklistTable}
+                    columns={columns}
+                    getRowId={(row) => row.RmaID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No RMA product checklists in progress
+                        </Stack>
+                      ),
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
+                      },
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/rmaDetails/${params.id}`);
+                    }}
+                  />
+                </Box>
+              </TabPanel>
             </Grid>
           </TabContext>
         </Grid>
@@ -1098,7 +1155,7 @@ const Rmatabs: React.FC = () => {
     case "Admin":
     default: {
       return (
-        <TabContext value={ value ||"1"}>
+        <TabContext value={value || "1"}>
           <Box sx={{ paddingLeft: 3, paddingTop: 3 }}>
             <h2> RMA Requests </h2>
             <Tabs

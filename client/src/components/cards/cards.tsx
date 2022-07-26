@@ -138,17 +138,7 @@ function cards() {
   useEffect(() => {
     getclosedRMAs();
   }, []);
-
-  // '-apple-system',
-  // '',
-  // '""',
-  // 'Roboto',
-  // '"Helvetica Neue"',
-  // 'Arial',
-  // 'sans-serif',
-  // '"Apple Color Emoji"',
-  // '"Segoe UI Emoji"',
-  // '"Segoe UI Symbol"',
+  
   if (userrole !== "Sales Manager") {
     return (
       <Grid container sx={{ marginTop: -2 }}>
@@ -267,57 +257,74 @@ function cards() {
     );
   } else {
     return (
-      <Grid container sx={{ paddingLeft: 3, paddingRight: 3, marginTop: -2 }}>
+      <Grid container sx={{ marginTop: -2 }}>
         <Grid item xs={6}>
-          <Card sx={{ height: "100%", width: "98%" }}>
+          <Card
+            sx={{ height: "100%", width: "98%", pt: 2, pb: 2, pl: 6, pr: 6 }}
+          >
             <Typography
-              gutterBottom
               variant="subtitle2"
-              component="span"
               sx={{
-                paddingTop: 2,
-                paddingLeft: 2,
                 color: "#063970",
                 fontWeight: "bold",
+                fontSize: 28,
+                fontFamily: "Roboto",
               }}
             >
-              <Box>
-                <Box>Approved</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {CurrentTloans.length}
-                </Box>
-                <Box sx={{}}>Rejected</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {DraftTloans.length}
-                </Box>
-              </Box>
+              <Grid container>
+                <Grid item xs={6}>
+                  <Box>Approved</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {ApprovedRMAs.length}
+                  </Box>
+                </Grid>
+                <Grid item xs={6} sx={{paddingLeft: 5}}>
+                  <Box sx={{}}>Rejected</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {RejectedRMAs.length}
+                  </Box>
+                </Grid>
+                <Grid item xs={12}>
+                  <Divider >
+                    <Chip label="RMA" />
+                  </Divider>
+                </Grid>
+              </Grid>
             </Typography>
           </Card>
         </Grid>
         <Grid item xs={6}>
-          <Card sx={{ height: "100%", width: "100%" }}>
+          <Card
+            sx={{ height: "100%", width: "100%", pt: 2, pb: 2, pl: 6, pr: 6 }}
+          >
             <Typography
-              gutterBottom
               variant="subtitle2"
-              component="span"
               sx={{
-                paddingTop: 2,
-                paddingLeft: 2,
-                paddingBottom: 2,
                 color: "#063970",
                 fontWeight: "bold",
+                fontSize: 28,
+                fontFamily: "Roboto",
               }}
             >
-              <Box>
-                <Box>Approved</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {ApprovedRMAs.length}
-                </Box>
-                <Box sx={{}}>Rejected</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
-                  {RejectedRMAs.length}
-                </Box>
-              </Box>
+              <Grid container>
+                <Grid item xs={6}>
+                  <Box>Draft</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {DraftTloans.length}
+                  </Box>
+                </Grid>
+                <Grid item xs={6} sx={{paddingLeft: 6}}>
+                  <Box>Current</Box>
+                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                    {CurrentTloans.length}
+                  </Box>
+                </Grid>
+                <Grid item xs={12}>
+                  <Divider >
+                    <Chip label="TLoans"/>
+                  </Divider>
+                </Grid>
+              </Grid>
             </Typography>
           </Card>
         </Grid>

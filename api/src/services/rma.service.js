@@ -78,7 +78,7 @@ module.exports.getSalesmanRejectedRMA = async (SalesmanID) => {
                     r.CustomerEmail
                     FROM Rma r, User u 
                     WHERE SalesmanID = ? 
-                    AND RmaStatusID = 3
+                    AND RmaStatusID = 4
                     AND r.SalesmanID = u.UserID;`;
     return knex.raw(query, [SalesmanID]);
 };
@@ -91,7 +91,7 @@ module.exports.getSalesmanIPRMA = async (SalesmanID) => {
                     r.CustomerEmail
                     FROM Rma r, User u 
                     WHERE SalesmanID = ? 
-                    AND RmaStatusID = 6
+                    AND RmaStatusID = 7
                     AND r.SalesmanID = u.UserID;`;
     return knex.raw(query, [SalesmanID]);
 };
@@ -126,25 +126,27 @@ module.exports.getAcceptedRMA = async () => {
                     DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
                     r.Company,
                     r.CustomerEmail
-                    FROM Rma r, User u 
+                    FROM Rma r, User u
                     WHERE RmaStatusID = 2
-                    AND r.SalesmanID = u.UserID;`;
+                    AND r.SalesmanID = u.UserID
+                    GROUP BY r.RmaID;`;
     return knex.raw(query);
 };
 
-module.exports.getRejectedRMA = async () => {
-    const query = ` SELECT r.RmaID, 
+module.exports.getInProgressChecklist = async () => {
+    const query = ` SELECT r.RmaID,
                     u.Username,
                     DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
                     r.Company,
                     r.CustomerEmail
-                    FROM Rma r, User u 
+                    FROM Rma r, User u
                     WHERE RmaStatusID = 3
-                    AND r.SalesmanID = u.UserID;`;
+                    AND r.SalesmanID = u.UserID
+                    GROUP BY r.RmaID;`;
     return knex.raw(query);
 };
 
-module.exports.getReceivedRMA = async () => {
+module.exports.getRejectedRMA = async () => {
     const query = ` SELECT r.RmaID, 
                     u.Username,
                     DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
@@ -156,6 +158,18 @@ module.exports.getReceivedRMA = async () => {
     return knex.raw(query);
 };
 
+module.exports.getReceivedRMA = async () => {
+    const query = ` SELECT r.RmaID, 
+                    u.Username,
+                    DATE_FORMAT(r.DateTime, "%d-%m-%Y") AS 'DateTime' ,
+                    r.Company,
+                    r.CustomerEmail
+                    FROM Rma r, User u 
+                    WHERE RmaStatusID = 5
+                    AND r.SalesmanID = u.UserID;`;
+    return knex.raw(query);
+};
+
 module.exports.getVerifiedRMA = async () => {
     const query = `SELECT r.RmaID,
                     u.Username,
@@ -163,7 +177,7 @@ module.exports.getVerifiedRMA = async () => {
                     r.Company,
                     r.CustomerEmail
                     FROM Rma r, User u 
-                    WHERE RmaStatusID = 5
+                    WHERE RmaStatusID = 6
                     AND r.SalesmanID = u.UserID;`;
     return knex.raw(query);
 };
@@ -175,7 +189,7 @@ module.exports.getIPRMA = async () => {
                     r.Company,
                     r.CustomerEmail
                     FROM Rma r, User u 
-                    WHERE RmaStatusID = 6
+                    WHERE RmaStatusID = 7
                     AND r.SalesmanID = u.UserID;`;
     return knex.raw(query);
 };
@@ -187,7 +201,7 @@ module.exports.getClosedRMA = async () => {
                     r.Company,
                     r.CustomerEmail
                     FROM Rma r, User u 
-                    WHERE RmaStatusID = 7 
+                    WHERE RmaStatusID = 8
                     AND r.SalesmanID = u.UserID;`;
     return knex.raw(query);
 };
@@ -268,26 +282,12 @@ module.exports.updateRmaAccepted = async (RmaID) => {
     });
 };
 
-module.exports.updateRmaRejected = async (RmaID, rejectreason) => {
-    return knex.transaction((trx) => {
-        knex('Rma')
-            .where('RmaID', RmaID)
-            .update({
-                RmaStatusID: 3,
-                RejectReason: rejectreason
-            })
-            .transacting(trx)
-            .then(trx.commit)
-            .catch(trx.rollback);
-    });
-};
-
 module.exports.updateRmaChecklist = async (RmaID, products) => {
     return await knex.transaction((trx) => {
         knex('Rma')
             .where('RmaID', RmaID)
             .update({
-                RmaStatusID: 2
+                RmaStatusID: 3
             })
             .transacting(trx)
             .then(async () => {
@@ -305,14 +305,34 @@ module.exports.updateRmaChecklist = async (RmaID, products) => {
     });
 };
 
+module.exports.updateRmaRejected = async (RmaID, rejectreason) => {
+    return knex.transaction((trx) => {
+        knex('Rma')
+            .where('RmaID', RmaID)
+            .update({
+                RmaStatusID: 4,
+                RejectReason: rejectreason
+            })
+            .transacting(trx)
+            .then(trx.commit)
+            .catch(trx.rollback);
+    });
+};
+
 module.exports.updateRMAReceived = async (RmaID) => {
     return knex.transaction((trx) => {
         knex('Rma')
             .where('RmaID', RmaID)
             .update({
-                RmaStatusID: 4
+                RmaStatusID: 5
             })
             .transacting(trx)
+            .then(async () => {
+                return await knex('RmaProduct')
+                .where('RmaID', RmaID)
+                .update({RmaProductStatus: 1})
+                .transacting(trx)
+            })
             .then(trx.commit)
             .catch(trx.rollback);
     });
@@ -323,7 +343,7 @@ module.exports.updateRmaInstructions = async (RmaID, products) => {
         knex('Rma')
             .where('RmaID', RmaID)
             .update({
-                RmaStatusID: 5
+                RmaStatusID: 6
             })
             .transacting(trx)
             .then(async () => {
@@ -346,7 +366,7 @@ module.exports.updateRmaCOA = async (RmaID, products) => {
         knex('Rma')
             .where('RmaID', RmaID)
             .update({
-                RmaStatusID: 6
+                RmaStatusID: 7
             })
             .transacting(trx)
             .then(async () => {
@@ -369,7 +389,7 @@ module.exports.closeRma = async (RmaID) => {
         knex('Rma')
             .where('RmaID', RmaID)
             .update({
-                RmaStatusID: 7
+                RmaStatusID: 8
             })
             .transacting(trx)
             .then(trx.commit)
