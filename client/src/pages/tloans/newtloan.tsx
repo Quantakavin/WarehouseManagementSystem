@@ -1,7 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import CancelIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import EditIcon from "@mui/icons-material/Edit";
+import RemoveIcon from "@mui/icons-material/Remove";
 import SaveIcon from "@mui/icons-material/Save";
 import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -140,6 +140,12 @@ function newtloan() {
     const handleDeleteClick = (id: GridRowId) => () => { 
       setRows(rows.filter((row) => row.id === id && removeItem(row.id) ));
     };
+    const handleMinusClick = (id: GridRowId) => () => { 
+      setRows(rows.filter((row) => row.id === id && updateItemQuantity(row.id, row.quantity - 1) ));
+    };
+    const handleAddClick = (id: GridRowId) => () => { 
+      setRows(rows.filter((row) => row.id === id && updateItemQuantity(row.id, row.quantity + 1) ));
+    };
 
     const handleCancelClick = (id: GridRowId) => () => {
       setRowModesModel({
@@ -181,7 +187,7 @@ function newtloan() {
         field: "actions",
         type: "actions",
         headerName: "Actions",
-        width: 80,
+        width: 120,
         cellClassName: "actions",
         getActions: ({ id }) => {
           const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
@@ -205,10 +211,17 @@ function newtloan() {
 
           return [
             <GridActionsCellItem
-              icon={<EditIcon />}
+            icon={<RemoveIcon />}
+            label="Edit"
+            className="textPrimary"
+            onClick={handleMinusClick(id)}
+            color="inherit"
+          />,
+            <GridActionsCellItem
+              icon={<AddIcon />}
               label="Edit"
               className="textPrimary"
-              onClick={handleEditClick(id)}
+              onClick={handleAddClick(id)}
               color="inherit"
             />,
             <GridActionsCellItem
