@@ -356,7 +356,27 @@ module.exports.ManagerLoan = async (req, res) => {
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
-            return res.status(404).send('You have not made any TLoans');
+            return res.status(404).send('No Loans that are in need of approval');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
+module.exports.ManagerExtension = async (req, res) => {
+    try {
+        const TLoans = await redisClient.get('ManagerExtension');
+        if (TLoans !== null) {
+            const redisresults = JSON.parse(TLoans);
+            return res.status(200).json(redisresults);
+        }
+        const results = await TLoan.getManagerExtension();
+        redisClient.set('ManagerExtension', JSON.stringify(results[0]));
+        if (results.length > 0) {
+            return res.status(200).json(results[0]);
+        } else {
+            return res.status(404).send('No Extensions that are in need of approval');
         }
     } catch (error) {
         console.log(error);

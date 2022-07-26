@@ -205,6 +205,7 @@ export default function TLoanManagerDisplay() {
     },
   ];
 
+  console.log(loans)
   const getData = () => {
     return (
       <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
@@ -280,44 +281,10 @@ export default function TLoanManagerDisplay() {
                       multiline
                       rows={11.5}
                       disabled
-                      defaultValue={loans.Purpose}
+                      defaultValue={loans.Reason}
                     />
                   </Grid>
-                  <Grid item xs={12}>
-                    <Typography
-                      gutterBottom
-                      variant="subtitle2"
-                      component="div"
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: -5,
-                        marginLeft: -10,
-                        color: "#063970",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      <Box>
-                        <div>Collection Type:</div>
-                        <div style={{ color: "black", fontWeight: "normal" }}>
-                          {loans.Collection}
-                        </div>
-                      </Box>
-                      <Box sx={{ marginLeft: 5 }}>
-                        <div>Type:</div>
-                        <div style={{ color: "black", fontWeight: "normal" }}>
-                          {loans.TLoanType}
-                        </div>
-                      </Box>
-                      <Box sx={{ marginLeft: 5 }}>
-                        <div style={{}}>Status:</div>
-                        <div style={{ color: "black", fontWeight: "normal" }}>
-                          {loans.TLoanStatus}
-                        </div>
-                      </Box>
-                    </Typography>
-                  </Grid>
+                 
                   <Grid
                     item
                     xs={12}

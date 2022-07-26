@@ -117,11 +117,16 @@ module.exports.getLoanByNumber = async (TLoanID) => {
   ts.TLoanStatus,
   tt.TLoanType,
   t.Collection,
-  t.Purpose
+  t.Purpose,
+  te.Reason,
+  nullif(max(tes.TLoanExtensionStatus), min(tes.TLoanExtensionStatus)),
+  IFNULL(tes.TLoanExtensionStatus,'NIL') AS 'TLoanExtensionStatus'
   FROM TLoan t 
   LEFT JOIN Company c ON t.CompanyID = c.CompanyID
   JOIN TLoanStatus ts ON ts.TLoanStatusID = t.TLoanStatusID
   JOIN TLoanType tt on tt.TLoanTypeID = t.TLoanTypeID
+  JOIN TLoanExtension te on te.TLoanID = t.TLoanID 
+  LEFT JOIN TLoanExtensionStatus tes ON tes.TLoanExtensionStatusID = te.TLoanExtensionStatusID
   WHERE t.TLoanID = ?
  `;
     return knex.raw(query, [TLoanID]);
@@ -233,13 +238,19 @@ module.exports.getManagerLoan = async () => {
 
 module.exports.getManagerExtension = async () => {
     const query = `
-  SELECT 
-  DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
-  t.Requestor,
-  tt.TLoanType
-  count(t.TLoanID) OVER() AS full_count
-  FROM TLoan t, TLoanType tt where t.TLoanStatusID = "" AND 
-  t.TLoanTypeID = tt.TLoanTypeID;`;
+    SELECT
+    t.TLoanID,
+     DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
+     t.Requestor,
+     tt.TLoanType,
+     te.TLoanExtensionStatusID,
+     te.Reason
+     FROM TLoan t
+     JOIN TLoanType tt ON t.TLoanTypeID = tt.TLoanTypeID
+     JOIN TLoanExtension te ON te.TLoanID = t.TLoanID
+      JOIN TLoanExtensionStatus tes ON tes.TLoanExtensionStatusID = te.TLoanExtensionStatusID
+      where te.TLoanExtensionStatusID = "1"
+  `;
     return knex.raw(query);
 };
 

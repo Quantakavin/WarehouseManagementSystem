@@ -167,15 +167,15 @@ function newtloan() {
     };
 
     const columns: GridColumns = [
-      { field: "ItemNo", headerName: "Item No.", width: 180, editable: false},
+      { field: "ItemNo", headerName: "Item No.", width: 165, editable: false},
       {
         field: "ItemName",
         headerName: "Item Name",
         width: 180,
         editable: false,
       },
-      { field: "BatchNo", headerName: "Batch No.", width: 180, editable: false },
-      { field: "WarehouseCode", headerName: "WarehouseCode", width: 180, editable: false },
+      { field: "BatchNo", headerName: "Batch No.", width: 165, editable: false },
+      { field: "WarehouseCode", headerName: "WarehouseCode", width: 165, editable: false },
       {
         field: "quantity",
         headerName: "Quantity",
@@ -211,14 +211,14 @@ function newtloan() {
 
           return [
             <GridActionsCellItem
-            icon={<RemoveIcon />}
+            icon={<RemoveIcon style={{ color: 'red' }}/>}
             label="Edit"
             className="textPrimary"
             onClick={handleMinusClick(id)}
             color="inherit"
           />,
             <GridActionsCellItem
-              icon={<AddIcon />}
+              icon={<AddIcon style={{ color: 'green' }} />}
               label="Edit"
               className="textPrimary"
               onClick={handleAddClick(id)}

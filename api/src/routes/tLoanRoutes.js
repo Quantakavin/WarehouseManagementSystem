@@ -20,6 +20,7 @@ router.put('/tloan/reject/:TLoanID', TLoanController.rejectLoan);
 // router.put('/tloan/issued', TLoanController.issuedLoan);
 // router.put('/tloan/picking', TLoanController.pickingLoan);
 router.get('/tloan/ManagerLoan', TLoanController.ManagerLoan);
+router.get('/tloan/ManagerExtension', TLoanController.ManagerExtension);
 router.post('/tloan/extension', TLoanController.LoanExtend);
 router.get('/tloanid/:TLoanID', TLoanController.getIDofLoan);
 
