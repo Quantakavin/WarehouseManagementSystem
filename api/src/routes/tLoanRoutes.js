@@ -9,6 +9,7 @@ router.post('/tloan/newloan',
 router.post('/tloan/loanDrafting', TLoanController.SendDraft);
 router.get('/tloans/:TLoanID', TLoanController.getLoanByNo);
 router.get('/tloanitems/:TLoanID', TLoanController.getItemsByTloan);
+router.get('/tloanExtensionStatus/:TLoanID', TLoanController.extensionStatus);
 router.post('/tloan/tloanextension', TLoanController.loanExtension);
 router.get('/tloan/current/:UserID', TLoanController.currentLoan);
 router.get('/tloan/drafts/:UserID', TLoanController.draftsLoan);

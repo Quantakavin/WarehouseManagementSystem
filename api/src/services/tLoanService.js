@@ -392,3 +392,16 @@ module.exports.rejectExtension = async (TLoanID, remarks) => {
             .catch(trx.rollback);
     });
 };
+
+module.exports.getExtensionStatus = async (TLoanID) => {
+    const query = `  SELECT 
+	t.TLoanID,
+    nullif(max(tes.TLoanExtensionStatus), min(tes.TLoanExtensionStatus)),
+    IFNULL(tes.TLoanExtensionStatus, 'NIL') As 'ExtensionStatus'
+  FROM TLoan t 
+  JOIN TLoanExtension te ON t.TLoanID = te.TLoanID
+  LEFT JOIN TLoanExtensionStatus tes ON te.TLoanExtensionStatusID = tes.TLoanExtensionStatusID
+  WHERE t.TLoanID = ?
+ `;
+    return knex.raw(query, [TLoanID]);
+}

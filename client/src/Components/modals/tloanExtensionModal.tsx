@@ -12,6 +12,7 @@ import TextField from "@mui/material/TextField";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useNavigate, useParams } from "react-router-dom";
+import { extendSxProp } from "@mui/system";
 
 const style = {
   position: "absolute" as "absolute",
@@ -32,7 +33,7 @@ const ModalButton = () => {
   const [duration, setDuration] = useState("");
   const [loan, setLoan] = useState("");
   const [tloanid, setLoanID] = useState("");
-
+  const [extensionStatus, setExtensionStatus] = useState('')
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -46,9 +47,11 @@ const ModalButton = () => {
       const loans = await axios.get(
         `http://localhost:5000/api/tloanid/${TLoanID}`
       );
-
+      const extension = await axios.get(
+        `http://localhost:5000/api//tloanExtensionStatus/${TLoanID}`
+      );
       setLoan(loans.data[0].TLoanID);
-
+      setExtensionStatus(extension.data[0].ExtensionStatus)
       // setLoan(Object.e)
     };
     // call the function
@@ -57,6 +60,7 @@ const ModalButton = () => {
       .catch(console.error);
   }, []);
 
+  console.log(extensionStatus)
   useEffect(() => {
     const loanNo = JSON.stringify(loan);
     setLoanID(loanNo);
@@ -86,138 +90,172 @@ const ModalButton = () => {
     setDuration(event.target.value);
   };
 
-  return (
-    <motion.div
-      className="animatable"
-      whileHover={{
-        scale: 1.1,
-        transition: { duration: 0.3 },
-      }}
-      whileTap={{ scale: 0.9 }}
-    >
+  const buttonDecision = () =>{
+    if(extensionStatus !== 'NIL') {
+      return (
       <Button
-        size="small"
-        variant="contained"
-        sx={{
-          color: "white",
-          backgroundColor: "#063970",
-          width: 300,
-          height: 50,
-          borderRadius: 10,
+      size="small"
+      variant="contained"
+      sx={{
+        color: "white",
+        backgroundColor: "#063970",
+        width: 300,
+        height: 50,
+        borderRadius: 10,
+      }}
+      onClick={handleOpen}
+      disabled
+    >
+      Apply For Extension
+    </Button>
+      )
+    }else(extensionStatus === 'NIL'); {
+      return(
+        <motion.div
+        className="animatable"
+        whileHover={{
+          scale: 1.1,
+          transition: { duration: 0.3 },
         }}
-        onClick={handleOpen}
+        whileTap={{ scale: 0.9 }}
       >
-        Apply For Extension
-      </Button>
-      {/* <form onSubmit={submitExtension}> */}
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <>
-            <h2
-              style={{
-                color: "#063970",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              Extension For Loan
-            </h2>
-
-            <FormControl sx={{ width: 150, marginLeft: 3, marginTop: 2 }}>
-              <InputLabel>Extend By</InputLabel>
-              <Select
-                id="outlined-basic"
-                value={duration}
-                onChange={handleDuration}
-                size="small"
-                label="Extend By"
-              >
-                <MenuItem value="5">5 Days</MenuItem>
-                <MenuItem value="10">10 Days</MenuItem>
-                <MenuItem value="15">15 Days</MenuItem>
-                <MenuItem value="20">20 Days</MenuItem>
-                <MenuItem value="25">25 Days</MenuItem>
-                <MenuItem value="30">30 Days</MenuItem>
-              </Select>
-            </FormControl>
-            {console.log(duration)}
-
-            <TextField
-              sx={{ width: 400, marginLeft: 3, marginTop: 2 }}
-              multiline
-              rows={5.2}
-              label="Reason For Extension"
-              onChange={(e) => setReason(e.target.value)}
-            />
-
-            {console.log(reason)}
-            <Box
-              component="span"
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <motion.div
-                className="animatable"
-                whileHover={{
-                  scale: 1.1,
-                  transition: { duration: 0.3 },
+        <Button
+          size="small"
+          variant="contained"
+          sx={{
+            color: "white",
+            backgroundColor: "#063970",
+            width: 300,
+            height: 50,
+            borderRadius: 10,
+          }}
+          onClick={handleOpen}
+        >
+          Apply For Extension
+        </Button>
+        {/* <form onSubmit={submitExtension}> */}
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <>
+              <h2
+                style={{
+                  color: "#063970",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
-                whileTap={{ scale: 0.9 }}
               >
-                <Button
+                Extension For Loan
+              </h2>
+  
+              <FormControl sx={{ width: 150, marginLeft: 3, marginTop: 2 }}>
+                <InputLabel>Extend By</InputLabel>
+                <Select
+                  id="outlined-basic"
+                  value={duration}
+                  onChange={handleDuration}
                   size="small"
-                  variant="contained"
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#063970",
-                    width: 100,
-                    height: 35,
-                    borderRadius: 10,
-                    marginTop: 5,
-                  }}
-                  onClick={handleClose}
+                  label="Extend By"
+                  required
                 >
-                  Back
-                </Button>
-              </motion.div>
-              <motion.div
-                className="animatable"
-                whileHover={{
-                  scale: 1.1,
-                  transition: { duration: 0.3 },
-                }}
-                whileTap={{ scale: 0.9 }}
+                  <MenuItem value="5">5 Days</MenuItem>
+                  <MenuItem value="10">10 Days</MenuItem>
+                  <MenuItem value="15">15 Days</MenuItem>
+                  <MenuItem value="20">20 Days</MenuItem>
+                  <MenuItem value="25">25 Days</MenuItem>
+                  <MenuItem value="30">30 Days</MenuItem>
+                </Select>
+              </FormControl>
+              {console.log(duration)}
+  
+              <TextField
+                sx={{ width: 400, marginLeft: 3, marginTop: 2 }}
+                multiline
+                rows={5.2}
+                label="Reason For Extension"
+                required
+                onChange={(e) => setReason(e.target.value)}
+                
+              />
+  
+              {console.log(reason)}
+              <Box
+                component="span"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
               >
-                <Button
-                  size="small"
-                  variant="contained"
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#063970",
-                    width: 100,
-                    height: 35,
-                    borderRadius: 10,
-                    marginTop: 5,
+                <motion.div
+                  className="animatable"
+                  whileHover={{
+                    scale: 1.1,
+                    transition: { duration: 0.3 },
                   }}
-                  type="submit"
-                  onClick={submitExtension}
+                  whileTap={{ scale: 0.9 }}
                 >
-                  Submit
-                </Button>
-              </motion.div>
-            </Box>
-          </>
-        </Box>
-      </Modal>
-      {/* </form> */}
-    </motion.div>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#063970",
+                      width: 100,
+                      height: 35,
+                      borderRadius: 10,
+                      marginTop: 5,
+                    }}
+                    onClick={handleClose}
+                  >
+                    Back
+                  </Button>
+                </motion.div>
+                <motion.div
+                  className="animatable"
+                  whileHover={{
+                    scale: 1.1,
+                    transition: { duration: 0.3 },
+                  }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#063970",
+                      width: 100,
+                      height: 35,
+                      borderRadius: 10,
+                      marginTop: 5,
+                    }}
+                    type="submit"
+                    onClick={submitExtension}
+                  >
+                    Submit
+                  </Button>
+                </motion.div>
+              </Box>
+            </>
+          </Box>
+        </Modal>
+        {/* </form> */}
+      </motion.div>
+      )
+    }
+        
+      
+  }
+  
+  return (
+    <>
+    {buttonDecision()}
+    </>
+    
   );
 };
 
