@@ -11,6 +11,7 @@ const tloanRoutes = require('./tLoanRoutes');
 const dashboardRoutes = require('./dashboardRoutes');
 const binRoutes = require('./binRoutes');
 const rmaRoutes = require('./rma.route');
+const resetPassword = require('./resetPassword');
 
 router.use(rmaRoutes);
 router.use(companyRoute);
@@ -23,5 +24,6 @@ router.use(notificationGroupRoutes);
 router.use(tloanRoutes);
 router.use(dashboardRoutes);
 router.use(binRoutes);
+router.use(resetPassword);
 
 module.exports = router;
