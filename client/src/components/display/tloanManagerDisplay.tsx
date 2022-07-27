@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { GetDetails }from "../../api/TLoanDB"
 import { motion } from "framer-motion";
-import TLoanRejectModalButton from "./TloanModal/tloanRejectModal";
+import TLoanRejectModalButton from "../modals/tloanRejectModal";
 import React from "react";
 
 export default function TLoanManagerDisplay() {
