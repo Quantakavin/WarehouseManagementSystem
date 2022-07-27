@@ -31,6 +31,7 @@ import Login from "./pages/users/Login";
 import Profile from "./pages/users/Profile";
 import Users2 from "./pages/users/Users2";
 import ViewUser from "./pages/users/ViewUser";
+import TLoanWarehouseDisplay from "./components/display/tloanWarehouseWorkerDisplay"
 // import ViewUser2 from "./pages/users/ViewUser2";
 // import ViewUserGroup2 from "./pages/usergroups/ViewUserGroup2";
 import { Box } from "@mui/material";
@@ -128,6 +129,10 @@ const App: React.FC = () => {
                <Route
                 path="/tloanManagerExtension/:TLoanID"
                 element={<TLoanManagerExtensionDisplay />}
+              />
+               <Route
+                path="/tloanWarehouse/:TLoanID"
+                element={<TLoanWarehouseDisplay />}
               />
               <Route path="*" element={<Error404 />} />
               <Route path="/403" element={<Error403 />} />

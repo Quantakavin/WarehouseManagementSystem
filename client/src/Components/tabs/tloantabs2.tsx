@@ -51,6 +51,7 @@ const TLoanTabs2: React.FC = () => {
   const [historyTable, setHistoryTable] = useState([]);
   const [managerLoan, setManagerLoan] = useState([]);
   const [extensionsTable, setExtensionTable] = useState([]);
+  const [approvedTable, setApprovedTable] = useState([])
   // Get and set current tloans data
   useEffect(() => {
     fetch(`http://localhost:5000/api/tloan/current/${userid}`)
@@ -85,6 +86,11 @@ const TLoanTabs2: React.FC = () => {
     fetch(`http://localhost:5000/api/tloan/ManagerExtension`)
       .then((data) => data.json())
       .then((data) => setExtensionTable(data));
+  }, []);
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/tloan/approvedLoans`)
+      .then((data) => data.json())
+      .then((data) => setApprovedTable(data));
   }, []);
 
   console.log(managerLoan)
@@ -958,12 +964,12 @@ const TLoanTabs2: React.FC = () => {
     }
     case "Warehouse Worker": {
       return (
-        <TabContext value={value || "1"}>
+        // <TabContext value={value || "1"}>
           <Grid container>
             <Grid item xs={12}>
               <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
                 <h2> TLoans </h2>
-                <Tabs
+                {/* <Tabs
                   onChange={handleChange}
                   TabIndicatorProps={{
                     style: { backgroundColor: "#D97D54" },
@@ -989,11 +995,11 @@ const TLoanTabs2: React.FC = () => {
                       width: "15%",
                     }}
                   />
-                </Tabs>
+                </Tabs> */}
               </Box>
             </Grid>
             <Grid item xs={12}>
-              <TabPanel value="1">
+              {/* <TabPanel value="1"> */}
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
                     sx={{ background: "white", fontSize: 18 }}
@@ -1020,14 +1026,14 @@ const TLoanTabs2: React.FC = () => {
                       setFilterModel(newFilterModel)
                     }
                     onRowClick={(params: GridRowParams) => {
-                      navigate(`/tloandetails/${params.id}`);
+                      navigate(`/tloanWarehouse/${params.id}`);
                     }}
                   />
                 </div>
-              </TabPanel>
+              {/* </TabPanel> */}
             </Grid>
           </Grid>
-        </TabContext>
+        // </TabContext>
       );
     }
     case "Admin": {

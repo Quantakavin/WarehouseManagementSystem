@@ -405,3 +405,18 @@ module.exports.getExtensionStatus = async (TLoanID) => {
  `;
     return knex.raw(query, [TLoanID]);
 }
+
+module.exports.getApproved = async () => {
+    const query = `   SELECT
+    t.TLoanID,
+    DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
+    DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
+    c.CompanyName,
+    t.CustomerEmail,
+    count(t.TLoanID) OVER() AS full_count
+    FROM TLoan t JOIN Company c
+    ON t.CompanyID = c.CompanyID 
+    WHERE t.TLoanStatusID = 3
+ `;
+    return knex.raw(query);
+}
