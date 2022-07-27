@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { GetDetails }from "../../api/TLoanDB"
 import { motion } from "framer-motion";
-import ModalButton from "./TloanModal/modal";
+import ModalButton from "../modals/tloanExtensionModal";
 import React from "react";
 import Popper from '@mui/material/Popper';
 import Paper from '@mui/material/Paper';

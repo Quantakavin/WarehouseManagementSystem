@@ -34,7 +34,7 @@ import ViewUser from "./pages/users/ViewUser";
 // import ViewUser2 from "./pages/users/ViewUser2";
 // import ViewUserGroup2 from "./pages/usergroups/ViewUserGroup2";
 import { Box } from "@mui/material";
-import Modals12 from "./components/display/TloanModal/modal";
+import Modals12 from "./components/modals/tloanExtensionModal";
 import Error403 from "./pages/error/Error403";
 import Error404 from "./pages/error/Error404";
 import Error401 from "./pages/error/Error401";

@@ -50,8 +50,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
-import ReasonModalButton from "./RmaModal/reasonModal";
-import RejectModalButton from "./RmaModal/rejectModal";
+import ReasonModalButton from "../modals/rmaReasonModal";
+import RejectModalButton from "../modals/rmaRejectModal";
 import clsx from 'clsx';
 import { Toast } from "../alerts/SweetAlert";
 
