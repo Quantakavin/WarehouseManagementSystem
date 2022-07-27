@@ -242,6 +242,7 @@ module.exports.approveLoan = async (req, res) => {
     try {
         const results = await TLoan.approveLoan(TLoanID);
         if (results) {
+            redisClient.del('ManagerLoan');
             return res.status(200).send('Status has been Updated');
         } else {
             return res.status(500).send('Status failed to Update');
@@ -258,6 +259,7 @@ module.exports.rejectLoan = async (req, res) => {
     try {
         const results = await TLoan.getLoanByNumber(TLoanID);
         if (results.length > 0) {
+            redisClient.del('ManagerLoan');
             await TLoan.rejectLoan(TLoanID, remarks);
             return res.status(200).send('Status has been Updated');
         } else {
@@ -274,6 +276,7 @@ module.exports.approveExtension = async (req, res) => {
     try {
         const results = await TLoan.approveExtension(TLoanID);
         if (results) {
+            redisClient.del('ManagerExtension');
             return res.status(200).send('Status has been Updated');
         } else {
             return res.status(500).send('Status failed to Update');
@@ -290,6 +293,7 @@ module.exports.rejectExtension = async (req, res) => {
     try {
         const results = await TLoan.getLoanByNumber(TLoanID);
         if (results.length > 0) {
+            redisClient.del('ManagerExtension');
             await TLoan.rejectExtension(TLoanID, remarks);
             return res.status(200).send('Status has been Updated');
         } else {
@@ -386,6 +390,7 @@ module.exports.ManagerLoan = async (req, res) => {
         const results = await TLoan.getManagerLoan();
         redisClient.set('ManagerLoan', JSON.stringify(results[0]));
         if (results.length > 0) {
+            
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('No Loans that are in need of approval');
@@ -404,8 +409,9 @@ module.exports.ManagerExtension = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await TLoan.getManagerExtension();
-        redisClient.set('ManagerExtension', JSON.stringify(results[0]));
+       redisClient.set('ManagerExtension', JSON.stringify(results[0]));
         if (results.length > 0) {
+           
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('No Extensions that are in need of approval');

@@ -10,8 +10,9 @@ import { useCart} from "react-use-cart";
 import _ from "lodash"
 import axios from 'axios'
 import Button from "@mui/material/Button";
-
-
+import { Toast } from "../../components/alerts/SweetAlert";
+import PostAddIcon from "@mui/icons-material/PostAdd";
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 
 const ViewProduct: React.FC = () => {
   const params = useParams();
@@ -70,20 +71,73 @@ console.log(newProducts)
   }
 
 
-  const { addItem } = useCart();
+  const { totalItems,
+    addItem } = useCart();
+
+
+    const newLoanButton = () =>{
+
+      if(totalItems > 0){
+        return(
+          <Button 
+          size="big"
+          variant="contained"
+          sx={{
+            color: "white",
+            backgroundColor: "#063970",
+            width: 180,
+            height: 60,
+            borderRadius: 10,
+            float: "right",
+            marginTop:8,
+            marginRight: "5%"
+          }}
+          onClick={() => navigate('/newtloan')}> <ShoppingBasketIcon style={{marginRight: 1}}/><span/> New Loan ({totalItems}) </Button>
+          )
+      }else{
+        return
+      }
+
+     
+  }
 
     const addProduct = () =>{
 
       let html =[]
-
+    
       html.push(
 
         newProducts.map((product)=>{
 
           const {id, ItemName, BatchNo, WarehouseCode} = product
-  
+          const addItemWithAlert =() =>{
+              addItem(product)
+              Toast.fire({
+                icon: "success",
+                title: "Item Added!",
+                customClass: "swalpopup",
+                timer: 1000,
+                width: 700,
+              });
+           
+           
+    
+          }
           return (
-            <button onClick={() => addItem(product)}> Add Item to Loan</button>
+            <Button 
+            size="normal"
+            variant="contained"
+            sx={{
+              color: "white",
+              backgroundColor: "#063970",
+              height: "100%",
+              width: 200,
+              height: 65,
+              borderRadius: 10,
+            }}
+            onClick={addItemWithAlert}
+            > Add Item to Loan
+            </Button>
           )
         })
       )
@@ -93,6 +147,7 @@ console.log(newProducts)
 
   return (
     <>
+    {newLoanButton()}
       {ProductQuery.status === "success" && (
         <CardContainer
           header={ProductQuery.data.data[0].ItemName}
@@ -155,18 +210,7 @@ console.log(newProducts)
         </CardContainer>
       )}
 
-      <Button 
-      size="small"
-      variant="contained"
-      sx={{
-        color: "white",
-        backgroundColor: "#31A961",
-        width: 150,
-        height: 50,
-        borderRadius: 10,
-        float: "right"
-      }}
-      onClick={() => navigate('/newtloan')}> button </Button>
+     
     </>
   );
 };
