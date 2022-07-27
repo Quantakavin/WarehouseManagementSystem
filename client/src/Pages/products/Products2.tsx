@@ -21,9 +21,12 @@ import { useNavigate } from "react-router";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { motion } from "framer-motion";
 import { useCart } from "react-use-cart";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
 
 const Products2: React.FC = () => {
   const [row, setRow] = useState([]);
+  const userrole = useAppSelector(selectRole)
   const navigate = useNavigate();
   const theme = unstable_createMuiStrictModeTheme();
   const [pageSize, setPageSize] = React.useState(25);
@@ -81,79 +84,136 @@ const Products2: React.FC = () => {
     );
   }
 
-  return (
-    <Box sx={{ pl: 3, pr: 3, pt: 1, height: "100%", width: "100%" }}>
-      <Box sx={{ display: "flex", height: "100%" }}>
-        <Box sx={{ flexGrow: 1 }}>
-        <Box
-            component="span"
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Typography
-              sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+  if (userrole == "Sales Admin" || userrole == "Sales Engineer" || userrole == "Technical Staff") {
+    return (
+      <Box sx={{ pl: 3, pr: 3, pt: 1, height: "100%", width: "100%" }}>
+        <Box sx={{ display: "flex", height: "100%" }}>
+          <Box sx={{ flexGrow: 1 }}>
+          <Box
+              component="span"
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
             >
-              Products
-            </Typography>
-            <Box>
-              <motion.div
-                className="animatable"
-                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                whileTap={{ scale: 0.9 }}
+              <Typography
+                sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
               >
-                <Fab
-                  variant="extended"
-                  aria-label="add"
-                  onClick={() => navigate("/newtloan")}
-                  style={{ marginBottom: 10 }}
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#063970",
-                    ":hover": { backgroundColor: "#031c38" },
-                  }}
+                Products
+              </Typography>
+              <Box>
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
                 >
-                  Loan Basket
-                  {/* Loan Basket ({totalItems}){" "} */}
-                  <ShoppingBasketIcon sx={{ ml: 1}} />
-                </Fab>
-              </motion.div>
+                  <Fab
+                    variant="extended"
+                    aria-label="add"
+                    onClick={() => navigate("/newtloan")}
+                    style={{ marginBottom: 10 }}
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#063970",
+                      ":hover": { backgroundColor: "#031c38" },
+                    }}
+                  >
+                    Loan Basket
+                    {/* Loan Basket ({totalItems}){" "} */}
+                    <ShoppingBasketIcon sx={{ ml: 1}} />
+                  </Fab>
+                </motion.div>
+              </Box>
             </Box>
+            <DataGrid
+              sx={{ background: "white", fontSize: 18 }}
+              rows={row}
+              columns={columns}
+              getRowId={(row) => row.BinProductPK}
+              pageSize={pageSize}
+              onPageSizeChange={(newPage) => setPageSize(newPage)}
+              pagination
+              headerHeight={50}
+              // rowHeight={70}
+              // getRowHeight={() => "auto"}
+              components={{
+                Toolbar: CustomToolbar,
+                NoRowsOverlay: () => (
+                  <Stack
+                    height="100%"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    No Products
+                  </Stack>
+                ),
+              }}
+              filterModel={filterModel}
+              onFilterModelChange={(newFilterModel) =>
+                setFilterModel(newFilterModel)
+              }
+              onRowClick={(params: GridRowParams) => {
+                navigate(`/product/${params.id}`);
+              }}
+            />
           </Box>
-          <DataGrid
-            sx={{ background: "white", fontSize: 18 }}
-            rows={row}
-            columns={columns}
-            getRowId={(row) => row.BinProductPK}
-            pageSize={pageSize}
-            onPageSizeChange={(newPage) => setPageSize(newPage)}
-            pagination
-            headerHeight={50}
-            // rowHeight={70}
-            // getRowHeight={() => "auto"}
-            components={{
-              Toolbar: CustomToolbar,
-              NoRowsOverlay: () => (
-                <Stack
-                  height="100%"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  No Products
-                </Stack>
-              ),
-            }}
-            filterModel={filterModel}
-            onFilterModelChange={(newFilterModel) =>
-              setFilterModel(newFilterModel)
-            }
-            onRowClick={(params: GridRowParams) => {
-              navigate(`/product/${params.id}`);
-            }}
-          />
         </Box>
       </Box>
-    </Box>
-  );
+    );
+  } else {
+    return (
+      <Box sx={{ pl: 3, pr: 3, pt: 1, height: "100%", width: "100%" }}>
+        <Box sx={{ display: "flex", height: "100%" }}>
+          <Box sx={{ flexGrow: 1 }}>
+          <Box
+              component="span"
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Typography
+                sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+                style={{marginTop: 4}}
+              >
+                Products
+              </Typography>
+            </Box>
+            <DataGrid
+              sx={{ background: "white", fontSize: 18 }}
+              rows={row}
+              columns={columns}
+              getRowId={(row) => row.BinProductPK}
+              pageSize={pageSize}
+              onPageSizeChange={(newPage) => setPageSize(newPage)}
+              pagination
+              headerHeight={50}
+              // rowHeight={70}
+              // getRowHeight={() => "auto"}
+              components={{
+                Toolbar: CustomToolbar,
+                NoRowsOverlay: () => (
+                  <Stack
+                    height="100%"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    No Products
+                  </Stack>
+                ),
+              }}
+              filterModel={filterModel}
+              onFilterModelChange={(newFilterModel) =>
+                setFilterModel(newFilterModel)
+              }
+              onRowClick={(params: GridRowParams) => {
+                navigate(`/product/${params.id}`);
+              }}
+            />
+          </Box>
+        </Box>
+      </Box>
+    );
+  }
+
+
 };
 export default Products2;
