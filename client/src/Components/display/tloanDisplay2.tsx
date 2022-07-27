@@ -8,16 +8,16 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { GetDetails }from "../../api/TLoanDB"
-import { motion } from "framer-motion";
-import ModalButton from "../modals/tloanExtensionModal";
-import React from "react";
-import Popper from '@mui/material/Popper';
 import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
 import {
   DataGrid,
   GridColDef,
-  GridRenderCellParams,
+  GridRenderCellParams
 } from "@mui/x-data-grid";
+import { motion } from "framer-motion";
+import React from "react";
+import ModalButton from "../modals/tloanExtensionModal";
 
 export default function TLoanDisplay2() {
   const navigate = useNavigate();

@@ -1,4 +1,4 @@
-import { Box, Card, Grid } from "@mui/material";
+import { Card, Grid } from "@mui/material";
 import {
   Bar,
   BarChart,
@@ -6,7 +6,7 @@ import {
   ResponsiveContainer,
   Tooltip,
   XAxis,
-  YAxis,
+  YAxis
 } from "recharts";
 import "../../styles/chart.scss";
 

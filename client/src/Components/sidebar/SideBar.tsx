@@ -15,7 +15,7 @@ import {
   Close,
   Open,
   selectCurrentTab,
-  selectOpen,
+  selectOpen
 } from "../../app/reducers/SidebarSlice";
 import defaultprofile from "../../assets/defaultprofile.png";
 import SidebarLink from "./SidebarLink";

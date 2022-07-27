@@ -20,6 +20,7 @@ import {
   GridToolbarFilterButton,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAppSelector } from "../../app/hooks";
@@ -137,20 +138,26 @@ const UserGroups2: React.FC = () => {
               User Groups
             </Typography>
             <Box>
-              <Fab
-                variant="extended"
-                aria-label="add"
-                onClick={() => navigate("/addusergroup")}
-                style={{ marginBottom: 10 }}
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  ":hover": { backgroundColor: "#031c38" },
-                }}
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
               >
-                Create
-                <GroupAddIcon sx={{ ml: 2 }} />
-              </Fab>
+                <Fab
+                  variant="extended"
+                  aria-label="add"
+                  onClick={() => navigate("/addusergroup")}
+                  style={{ marginBottom: 10 }}
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    ":hover": { backgroundColor: "#031c38" },
+                  }}
+                >
+                  Create
+                  <GroupAddIcon sx={{ ml: 2 }} />
+                </Fab>
+              </motion.div>
             </Box>
           </Box>
           <DataGrid

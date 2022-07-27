@@ -79,16 +79,12 @@
 
 // export default FormField;
 
-import React from "react";
-import styled from "styled-components";
-import { UseFormRegister, RegisterOptions, Path, FieldError } from "react-hook-form";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { IconButton, InputAdornment, TextField, OutlinedInput } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import useTogglePasword from "../../hooks/useTogglePassword";
 import WarningIcon from '@mui/icons-material/Warning';
+import { IconButton, InputAdornment, OutlinedInput, TextField } from "@mui/material";
+import { FieldError, Path, RegisterOptions, UseFormRegister } from "react-hook-form";
+import useTogglePasword from "../../hooks/useTogglePassword";
 
 type AllowedInputs = "email" | "password" | "text" | "number";
 

@@ -5,7 +5,7 @@ import {
   Stack,
   Tab,
   Tabs,
-  unstable_createMuiStrictModeTheme,
+  unstable_createMuiStrictModeTheme
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "react-tabs/style/react-tabs.css";
@@ -21,7 +21,7 @@ import {
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
-  GridToolbarQuickFilter,
+  GridToolbarQuickFilter
 } from "@mui/x-data-grid";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";

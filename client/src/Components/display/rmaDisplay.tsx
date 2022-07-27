@@ -34,15 +34,16 @@ import {
   GridToolbarQuickFilter,
   GRID_DATE_COL_DEF,
   MuiEvent,
-  useGridApiContext,
+  useGridApiContext
 } from "@mui/x-data-grid";
 import {
   DatePicker,
   DateTimePicker,
-  LocalizationProvider,
+  LocalizationProvider
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
+import clsx from 'clsx';
 import locale from "date-fns/locale/en-US";
 import { motion } from "framer-motion";
 import * as React from "react";
@@ -50,10 +51,9 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { Toast } from "../alerts/SweetAlert";
 import ReasonModalButton from "../modals/rmaReasonModal";
 import RejectModalButton from "../modals/rmaRejectModal";
-import clsx from 'clsx';
-import { Toast } from "../alerts/SweetAlert";
 
 const RmaDisplay: React.FC = () => {
   const navigate = useNavigate();

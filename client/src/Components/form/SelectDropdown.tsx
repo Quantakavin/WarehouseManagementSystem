@@ -1,8 +1,8 @@
+import WarningIcon from '@mui/icons-material/Warning';
 import { MenuItem, Select } from "@mui/material";
 import React from "react";
 import { FieldError, RegisterOptions, UseFormRegister } from "react-hook-form";
 import { Option } from "../../utils/CommonTypes";
-import WarningIcon from '@mui/icons-material/Warning';
 
 interface SelectProps<IFormValues> {
   label: string;

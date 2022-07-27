@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PageviewIcon from '@mui/icons-material/Pageview';
+import { Button, ListItemIcon, ListItemText, Menu, MenuItem, TableCell } from "@mui/material";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Divider, ListItemIcon, ListItemText, Menu, MenuItem, MenuList, Paper, TableCell, Typography } from "@mui/material";
-import { ContentCut, ContentCopy, ContentPaste, Cloud } from "@mui/icons-material";
 
 interface MenuProps {
     id: number | string;

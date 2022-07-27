@@ -26,12 +26,12 @@ import {
   GridToolbarContainer,
   GRID_DATE_COL_DEF,
   MuiEvent,
-  useGridApiContext,
+  useGridApiContext
 } from "@mui/x-data-grid-pro";
 import {
   DatePicker,
   DateTimePicker,
-  LocalizationProvider,
+  LocalizationProvider
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
