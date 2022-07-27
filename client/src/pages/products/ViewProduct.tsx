@@ -1,25 +1,24 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import React, {useState, useEffect, Component} from "react";
+import React, { useState, useEffect, Component } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetProduct } from "../../api/ProductDB";
 import CardContainer from "../../components/cards/CardContainer";
 import CardField from "../../components/cards/CardField";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
-import { useCart} from "react-use-cart";
-import _ from "lodash"
-import axios from 'axios'
+import { useCart } from "react-use-cart";
+import _ from "lodash";
+import axios from "axios";
 import Button from "@mui/material/Button";
 import { Toast } from "../../components/alerts/SweetAlert";
 import PostAddIcon from "@mui/icons-material/PostAdd";
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 
 const ViewProduct: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const [newProducts, setNewProducts] = useState([])
-  const [productGet, setProductGet] = useState([])
-
+  const [newProducts, setNewProducts] = useState([]);
+  const [productGet, setProductGet] = useState([]);
 
   useEffect(() => {
     // declare the async data fetching function
@@ -29,7 +28,7 @@ const ViewProduct: React.FC = () => {
         `http://localhost:5000/api/product/${params.id}`
       );
 
-      setProductGet(product.data)
+      setProductGet(product.data);
 
       // setLoan(Object.e)
     };
@@ -39,92 +38,80 @@ const ViewProduct: React.FC = () => {
       .catch(console.error);
   }, []);
 
-  console.log(productGet)
+  console.log(productGet);
 
   useEffect(() => {
-
     const newProduct = productGet.map(
-        ({ BinProductPK, ItemNo, ItemName, BatchNo, WarehouseCode  }) => ({
-            id: BinProductPK,
-            ItemNo: ItemNo,
-            ItemName: ItemName,
-            BatchNo: BatchNo,
-            WarehouseCode: WarehouseCode,
-            price: 0
-        })
-    )
-    setNewProducts(newProduct)
+      ({ BinProductPK, ItemNo, ItemName, BatchNo, WarehouseCode }) => ({
+        id: BinProductPK,
+        ItemNo: ItemNo,
+        ItemName: ItemName,
+        BatchNo: BatchNo,
+        WarehouseCode: WarehouseCode,
+        price: 0,
+      })
+    );
+    setNewProducts(newProduct);
+  }, [productGet]);
 
-}, [productGet])
+  console.log(newProducts);
 
-console.log(newProducts)
-
-  
   const ProductQuery = useQuery([`product${params.id}`, params.id], () =>
     GetProduct(params.id)
   );
-
-  
 
   if (ProductQuery.isLoading || ProductQuery.isError) {
     return <CardSkeleton NoOfFields={4} />;
   }
 
+  const { totalItems, addItem } = useCart();
 
-  const { totalItems,
-    addItem } = useCart();
-
-
-    const newLoanButton = () =>{
-
-      if(totalItems > 0){
-        return(
-          <Button 
+  const newLoanButton = () => {
+    if (totalItems > 0) {
+      return (
+        <Button
           size="big"
           variant="contained"
           sx={{
             color: "white",
             backgroundColor: "#063970",
             width: 180,
-            height: 60,
+            height: 65,
             borderRadius: 10,
             float: "right",
-            marginTop:8,
-            marginRight: "5%"
+            marginTop: 8,
+            marginRight: "5%",
           }}
-          onClick={() => navigate('/newtloan')}> <ShoppingBasketIcon style={{marginRight: 1}}/><span/> New Loan ({totalItems}) </Button>
-          )
-      }else{
-        return
-      }
+          onClick={() => navigate("/newtloan")}
+        >
+          {" "}
+          <ShoppingBasketIcon sx={{ mr: 1 }} />
+          <span /> New Loan ({totalItems}){" "}
+        </Button>
+      );
+    } else {
+      return;
+    }
+  };
 
-     
-  }
+  const addProduct = () => {
+    let html = [];
 
-    const addProduct = () =>{
-
-      let html =[]
-    
-      html.push(
-
-        newProducts.map((product)=>{
-
-          const {id, ItemName, BatchNo, WarehouseCode} = product
-          const addItemWithAlert =() =>{
-              addItem(product)
-              Toast.fire({
-                icon: "success",
-                title: "Item Added!",
-                customClass: "swalpopup",
-                timer: 1000,
-                width: 700,
-              });
-           
-           
-    
-          }
-          return (
-            <Button 
+    html.push(
+      newProducts.map((product) => {
+        const { id, ItemName, BatchNo, WarehouseCode } = product;
+        const addItemWithAlert = () => {
+          addItem(product);
+          Toast.fire({
+            icon: "success",
+            title: "Item Added!",
+            customClass: "swalpopup",
+            timer: 1000,
+            width: 700,
+          });
+        };
+        return (
+          <Button
             size="normal"
             variant="contained"
             sx={{
@@ -136,18 +123,20 @@ console.log(newProducts)
               borderRadius: 10,
             }}
             onClick={addItemWithAlert}
-            > Add Item to Loan
-            </Button>
-          )
-        })
-      )
-    
-      return html
-    }
+          >
+            {" "}
+            Add Item to Loan
+          </Button>
+        );
+      })
+    );
+
+    return html;
+  };
 
   return (
     <>
-    {newLoanButton()}
+      {newLoanButton()}
       {ProductQuery.status === "success" && (
         <CardContainer
           header={ProductQuery.data.data[0].ItemName}
@@ -209,8 +198,6 @@ console.log(newProducts)
           </div>
         </CardContainer>
       )}
-
-     
     </>
   );
 };
