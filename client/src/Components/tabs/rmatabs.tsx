@@ -1,6 +1,6 @@
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import { TabContext, TabPanel } from "@mui/lab";
-import { Box, Grid, Stack, Tab, Tabs } from "@mui/material";
+import { Box, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
 import Fab from "@mui/material/Fab";
 import {
   DataGrid,
@@ -11,7 +11,7 @@ import {
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
-  GridToolbarQuickFilter
+  GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import axios from "axios";
 import { motion } from "framer-motion";
@@ -160,23 +160,28 @@ const Rmatabs: React.FC = () => {
     );
   };
 
-  console.log(pendingTable)
+  console.log(pendingTable);
 
   switch (userrole) {
     case "Sales Engineer": {
       return (
         <TabContext value={value || "1"}>
           <Grid container>
-            <Grid item xs={12} sx={{ paddingLeft: 3, paddingTop: 3 }}>
-              <h2> RMA Requests </h2>
+            <Grid item xs={12} sx={{ paddingLeft: 3, paddingTop: 1 }}>
+              <Typography
+                sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+              >
+                {" "}
+                RMA Requests{" "}
+              </Typography>
             </Grid>
             <Grid item xs={12}>
               <Box
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",
-                  m: 3,
-                  mb: 0,
+                  ml: 3,
+                  mr: 3,
                 }}
               >
                 <Box sx={{ width: 1 }}>
@@ -425,17 +430,22 @@ const Rmatabs: React.FC = () => {
     }
     case "Technical Staff": {
       return (
-        <Grid
-          container
-          sx={{
-            height: 800,
-            width: "100%",
-          }}
-        >
-          <TabContext value={value || "3"}>
+        <TabContext value={value || "3"}>
+          <Grid
+            container
+            sx={{
+              height: 800,
+              width: "100%",
+            }}
+          >
             <Grid item xs={12}>
-              <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                <h2> RMA Requests </h2>
+              <Box sx={{ paddingLeft: 3, paddingTop: 1 }}>
+                <Typography
+                  sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+                >
+                  {" "}
+                  RMA Requests{" "}
+                </Typography>
                 <Tabs
                   onChange={handleChange}
                   TabIndicatorProps={{
@@ -504,23 +514,28 @@ const Rmatabs: React.FC = () => {
                 </Box>
               </TabPanel>
             </Grid>
-          </TabContext>
-        </Grid>
+          </Grid>
+        </TabContext>
       );
     }
     case "Sales Manager": {
       return (
-        <Grid
-          container
-          sx={{
-            height: 800,
-            width: "100%",
-          }}
-        >
-          <TabContext value={value || "1"}>
+        <TabContext value={value || "1"}>
+          <Grid
+            container
+            sx={{
+              height: 800,
+              width: "100%",
+            }}
+          >
             <Grid item xs={12}>
-              <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                <h2> RMA Requests </h2>
+              <Box sx={{ pl: 3, pt: 1 }}>
+                <Typography
+                  sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+                >
+                  {" "}
+                  RMA Requests{" "}
+                </Typography>
                 <Tabs
                   onChange={handleChange}
                   TabIndicatorProps={{
@@ -832,8 +847,8 @@ const Rmatabs: React.FC = () => {
                 </Box>
               </TabPanel>
             </Grid>
-          </TabContext>
-        </Grid>
+          </Grid>
+        </TabContext>
       );
     }
     case "Sales Admin": {
@@ -847,8 +862,13 @@ const Rmatabs: React.FC = () => {
         >
           <TabContext value={value || "4"}>
             <Grid item xs={12}>
-              <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                <h2> RMA Requests </h2>
+              <Box sx={{ pl: 3, pt: 1 }}>
+                <Typography
+                  sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+                >
+                  {" "}
+                  RMA Requests{" "}
+                </Typography>
                 <Tabs
                   onChange={handleChange}
                   TabIndicatorProps={{
@@ -1028,8 +1048,13 @@ const Rmatabs: React.FC = () => {
         >
           <TabContext value={value || "2"}>
             <Grid item xs={12}>
-              <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                <h2> RMA Requests </h2>
+              <Box sx={{ pl: 3, pt: 1 }}>
+                <Typography
+                  sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+                >
+                  {" "}
+                  RMA Requests{" "}
+                </Typography>
                 <Tabs
                   onChange={handleChange}
                   TabIndicatorProps={{
@@ -1158,8 +1183,12 @@ const Rmatabs: React.FC = () => {
     default: {
       return (
         <TabContext value={value || "1"}>
-          <Box sx={{ paddingLeft: 3, paddingTop: 3 }}>
-            <h2> RMA Requests </h2>
+          <Box sx={{ pl: 3, pt: 1 }}>
+            <Typography
+              sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+            >
+              RMA Requests
+            </Typography>
             <Tabs
               onChange={handleChange}
               TabIndicatorProps={{

@@ -1,5 +1,6 @@
 import {
   Box,
+  Fab,
   Stack,
   Typography,
   unstable_createMuiStrictModeTheme,
@@ -17,6 +18,9 @@ import {
 } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import { motion } from "framer-motion";
+import { useCart } from "react-use-cart";
 
 const Products2: React.FC = () => {
   const [row, setRow] = useState([]);
@@ -25,6 +29,7 @@ const Products2: React.FC = () => {
   const [pageSize, setPageSize] = React.useState(25);
   const [inputName, setInputName] = useState<string>(null);
   const [value, setValue] = useState(0); // first tab
+  const { totalItems, addItem } = useCart();
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/products?limit=100000&page=0`)
@@ -80,9 +85,41 @@ const Products2: React.FC = () => {
     <Box sx={{ pl: 3, pr: 3, pt: 1, height: "100%", width: "100%" }}>
       <Box sx={{ display: "flex", height: "100%" }}>
         <Box sx={{ flexGrow: 1 }}>
-          <Typography sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}>
-            Products
-          </Typography>
+        <Box
+            component="span"
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography
+              sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+            >
+              Products
+            </Typography>
+            <Box>
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <Fab
+                  variant="extended"
+                  aria-label="add"
+                  onClick={() => navigate("/newtloan")}
+                  style={{ marginBottom: 10 }}
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    ":hover": { backgroundColor: "#031c38" },
+                  }}
+                >
+                  Loan Basket
+                  {/* Loan Basket ({totalItems}){" "} */}
+                  <ShoppingBasketIcon sx={{ ml: 1}} />
+                </Fab>
+              </motion.div>
+            </Box>
+          </Box>
           <DataGrid
             sx={{ background: "white", fontSize: 18 }}
             rows={row}

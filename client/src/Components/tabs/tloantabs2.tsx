@@ -5,7 +5,8 @@ import {
   Stack,
   Tab,
   Tabs,
-  unstable_createMuiStrictModeTheme
+  Typography,
+  unstable_createMuiStrictModeTheme,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "react-tabs/style/react-tabs.css";
@@ -21,7 +22,7 @@ import {
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
-  GridToolbarQuickFilter
+  GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -51,7 +52,7 @@ const TLoanTabs2: React.FC = () => {
   const [historyTable, setHistoryTable] = useState([]);
   const [managerLoan, setManagerLoan] = useState([]);
   const [extensionsTable, setExtensionTable] = useState([]);
-  const [approvedTable, setApprovedTable] = useState([])
+  const [approvedTable, setApprovedTable] = useState([]);
   // Get and set current tloans data
   useEffect(() => {
     fetch(`http://localhost:5000/api/tloan/current/${userid}`)
@@ -93,7 +94,7 @@ const TLoanTabs2: React.FC = () => {
       .then((data) => setApprovedTable(data));
   }, []);
 
-  console.log(managerLoan)
+  console.log(managerLoan);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [
@@ -139,16 +140,20 @@ const TLoanTabs2: React.FC = () => {
       return (
         <TabContext value={value || "1"}>
           <Grid container>
-            <Grid item xs={12} sx={{ paddingLeft: 3, paddingTop: 3 }}>
-              <h2> TLoans </h2>
+            <Grid item xs={12} sx={{ pl: 3, pt: 1 }}>
+              <Typography
+                sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+              >
+                TLoans
+              </Typography>
             </Grid>
             <Grid item xs={12}>
               <Box
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",
-                  m: 3,
-                  mb: 0,
+                  ml: 3,
+                  mr: 3,
                 }}
               >
                 <Box sx={{ width: 1 }}>
@@ -375,16 +380,20 @@ const TLoanTabs2: React.FC = () => {
       return (
         <TabContext value={value || "1"}>
           <Grid container>
-            <Grid item xs={12} sx={{ paddingLeft: 3, paddingTop: 3 }}>
-              <h2> TLoans </h2>
+            <Grid item xs={12} sx={{ pl: 3, pt: 1 }}>
+              <Typography
+                sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+              >
+                TLoans
+              </Typography>
             </Grid>
             <Grid item xs={12}>
               <Box
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",
-                  m: 3,
-                  mb: 0,
+                  ml: 3,
+                  mr: 3,
                 }}
               >
                 <Box sx={{ width: 1 }}>
@@ -612,8 +621,12 @@ const TLoanTabs2: React.FC = () => {
         <TabContext value={value || "1"}>
           <Grid container>
             <Grid item xs={12}>
-              <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                <h2> TLoans </h2>
+              <Box sx={{ pl: 3, pt: 1 }}>
+                <Typography
+                  sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+                >
+                  TLoans
+                </Typography>
                 <Tabs
                   onChange={handleChange}
                   TabIndicatorProps={{
@@ -730,16 +743,20 @@ const TLoanTabs2: React.FC = () => {
       return (
         <TabContext value={value || "1"}>
           <Grid container>
-            <Grid item xs={12} sx={{ paddingLeft: 3, paddingTop: 3 }}>
-              <h2> TLoans </h2>
+            <Grid item xs={12} sx={{ pl: 3, pt: 1 }}>
+              <Typography
+                sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+              >
+                TLoans
+              </Typography>
             </Grid>
             <Grid item xs={12}>
               <Box
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",
-                  m: 3,
-                  mb: 0,
+                  ml: 3,
+                  mr: 3,
                 }}
               >
                 <Box sx={{ width: 1 }}>
@@ -964,12 +981,16 @@ const TLoanTabs2: React.FC = () => {
     }
     case "Warehouse Worker": {
       return (
-        // <TabContext value={value || "1"}>
+        <TabContext value={value || "1"}>
           <Grid container>
             <Grid item xs={12}>
-              <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                <h2> TLoans </h2>
-                {/* <Tabs
+              <Box sx={{ pl: 3, pt: 1 }}>
+                <Typography
+                  sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+                >
+                  TLoans
+                </Typography>
+                <Tabs
                   onChange={handleChange}
                   TabIndicatorProps={{
                     style: { backgroundColor: "#D97D54" },
@@ -995,11 +1016,11 @@ const TLoanTabs2: React.FC = () => {
                       width: "15%",
                     }}
                   />
-                </Tabs> */}
+                </Tabs>
               </Box>
             </Grid>
             <Grid item xs={12}>
-              {/* <TabPanel value="1"> */}
+              <TabPanel value="1">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
                     sx={{ background: "white", fontSize: 18 }}
@@ -1030,112 +1051,128 @@ const TLoanTabs2: React.FC = () => {
                     }}
                   />
                 </div>
-              {/* </TabPanel> */}
+              </TabPanel>
             </Grid>
           </Grid>
-        // </TabContext>
+        </TabContext>
       );
     }
     case "Admin": {
       return (
         <TabContext value={value || "1"}>
           <Grid container>
-            <Grid item xs={11}>
-              <Box sx={{ paddingLeft: 3, marginTop: 3 }}>
-                <h2> TLoans </h2>
-                <Tabs
-                  onChange={handleChange}
-                  TabIndicatorProps={{
-                    style: { backgroundColor: "#D97D54" },
-                  }}
-                  sx={{
-                    "& button:focus": {
-                      backgroundColor: "#063970",
-                      color: "white",
-                      height: "100%",
-                      width: "30%",
-                    },
-                  }}
+            <Grid item xs={12}>
+              <Box sx={{ pl: 3, pt: 1 }}>
+                <Typography
+                  sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
                 >
-                  <Tab
-                    label="Current"
-                    value="1"
-                    sx={{
-                      color: "grey",
-                      backgroundColor: "White",
-                      borderRadius: 2,
-                      marginRight: 2,
-                      height: "100%",
-                      width: "15%",
-                    }}
-                  />
-                  <Tab
-                    label="Pending"
-                    value="2"
-                    sx={{
-                      color: "grey",
-                      backgroundColor: "White",
-                      borderRadius: 2,
-                      marginRight: 2,
-                      height: "100%",
-                      width: "15%",
-                    }}
-                  />
-                  <Tab
-                    label="Drafts"
-                    value="3"
-                    sx={{
-                      color: "grey",
-                      backgroundColor: "White",
-                      borderRadius: 2,
-                      marginRight: 2,
-                      height: "100%",
-                      width: "15%",
-                    }}
-                  />
-                  <Tab
-                    label="History"
-                    value="4"
-                    sx={{
-                      color: "grey",
-                      backgroundColor: "White",
-                      borderRadius: 2,
-                      marginRight: 2,
-                      height: "100%",
-                      width: "15%",
-                    }}
-                  />
-                </Tabs>
+                  TLoans
+                </Typography>
               </Box>
             </Grid>
-            <Grid item xs={1}>
-              <Box sx={{ marginLeft: 4, marginTop: 8.75 }}>
-                <motion.div
-                  className="animatable"
-                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <Fab
-                    variant="extended"
-                    aria-label="add"
-                    onClick={() => navigate("/products")}
-                    style={{ marginTop: 0 }}
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  ml: 3,
+                  mr: 3,
+                }}
+              >
+                <Box sx={{ width: 1 }}>
+                  <Tabs
+                    onChange={handleChange}
+                    TabIndicatorProps={{
+                      style: { backgroundColor: "#D97D54" },
+                    }}
                     sx={{
-                      color: "white",
-                      backgroundColor: "#063970",
-                      ":hover": { backgroundColor: "#031c38" },
+                      width: "100%",
+                      "& button:focus": {
+                        backgroundColor: "#063970",
+                        color: "white",
+                        width: "30%",
+                        height: "100%",
+                      },
                     }}
                   >
-                    Create
-                    <PostAddIcon sx={{ ml: 2 }} />
-                  </Fab>
-                </motion.div>
+                    <Tab
+                      label="Current"
+                      value="1"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Pending"
+                      value="2"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Drafts"
+                      value="3"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="History"
+                      value="4"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                  </Tabs>
+                </Box>
+                <Box>
+                  <motion.div
+                    className="animatable"
+                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <Fab
+                      variant="extended"
+                      aria-label="add"
+                      onClick={() => navigate("/products")}
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#063970",
+                        ":hover": { backgroundColor: "#031c38" },
+                      }}
+                    >
+                      Create
+                      <PostAddIcon sx={{ ml: 2 }} />
+                    </Fab>
+                  </motion.div>
+                </Box>
               </Box>
+              <Box sx={{ paddingLeft: 3 }} />
             </Grid>
 
             <Grid item xs={12}>
               <TabPanel value="1">
-                <div style={{ height: 600, width: "100%" }}>
+                <div style={{ display: "flex", height: 600, width: "100%" }}>
                   <DataGrid
                     sx={{ background: "white", fontSize: 18 }}
                     rows={currentTable}
@@ -1267,16 +1304,20 @@ const TLoanTabs2: React.FC = () => {
       return (
         <TabContext value={value || "1"}>
           <Grid container>
-            <Grid item xs={12} sx={{ paddingLeft: 3, paddingTop: 3 }}>
-              <h2> TLoans </h2>
+            <Grid item xs={12} sx={{ pl: 3, pt: 1 }}>
+              <Typography
+                sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+              >
+                TLoans
+              </Typography>
             </Grid>
             <Grid item xs={12}>
               <Box
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",
-                  m: 3,
-                  mb: 0,
+                  ml: 3,
+                  mr: 3,
                 }}
               >
                 <Box sx={{ width: 1 }}>
