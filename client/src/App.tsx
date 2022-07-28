@@ -5,7 +5,7 @@ import { selectIsAuthenticated } from "./app/reducers/CurrentUserSlice";
 import RmaDisplay from "./components/display/rmaDisplay";
 import TLoanDisplay2 from "./components/display/tloanDisplay2";
 import TLoanManagerDisplay from "./components/display/tloanManagerDisplay";
-import TLoanManagerExtensionDisplay from "./components/display/tloanManagerExtensionDisplay"
+import TLoanManagerExtensionDisplay from "./components/display/tloanManagerExtensionDisplay";
 import TopBar from "./components/header/TopBar";
 import Sidebar from "./components/sidebar/SideBar";
 import BinLocations from "./pages/binlocations/BinLocations";
@@ -31,7 +31,7 @@ import Login from "./pages/users/Login";
 import Profile from "./pages/users/Profile";
 import Users2 from "./pages/users/Users2";
 import ViewUser from "./pages/users/ViewUser";
-import TLoanWarehouseDisplay from "./components/display/tloanWarehouseWorkerDisplay"
+import TLoanWarehouseDisplay from "./components/display/tloanWarehouseWorkerDisplay";
 // import ViewUser2 from "./pages/users/ViewUser2";
 // import ViewUserGroup2 from "./pages/usergroups/ViewUserGroup2";
 import { Box } from "@mui/material";
@@ -41,7 +41,7 @@ import Error404 from "./pages/error/Error404";
 import Error401 from "./pages/error/Error401";
 import Sidebar2 from "./components/sidebar/Sidebar2";
 import TopNav from "./components/header/TopNav";
-import { CartProvider} from 'react-use-cart'
+import { CartProvider } from "react-use-cart";
 
 interface ProtectedRouteProps {
   loginpage: boolean;
@@ -69,11 +69,11 @@ const App: React.FC = () => {
 
   return (
     <>
-      <header style={{zIndex: 1500}}>
+      <header style={{ zIndex: 1500 }}>
         <TopNav />
       </header>
       <Box className="flexcontainer">
-        {isAuthenticated ? <Sidebar2 /> : null}
+        {isAuthenticated ? <Sidebar2   /> : null}
         <Box className="bluebackground" style={{ flex: 5 }}>
           <Routes>
             <Route element={<ProtectedRoute loginpage={true} />}>
@@ -83,9 +83,16 @@ const App: React.FC = () => {
             </Route>
             <Route element={<ProtectedRoute loginpage={false} />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/products" element={<Products2 />}/>
+              <Route path="/products" element={<Products2 />} />
               <Route path="/productspag" element={<ProductsPag />} />
-              <Route path="/product/:id" element={<CartProvider><ViewProduct /></CartProvider>} />
+              <Route
+                path="/product/:id"
+                element={
+                  <CartProvider>
+                    <ViewProduct />
+                  </CartProvider>
+                }
+              />
               <Route path="/binlocations" element={<BinLocations />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/user/:id" element={<ViewUser />} />
@@ -120,17 +127,24 @@ const App: React.FC = () => {
                 path="/tloandetails/:TLoanID"
                 element={<TLoanDisplay2 />}
               />
-              <Route path="/newtloan" element={<CartProvider><NewTLoan /></CartProvider>} />
+              <Route
+                path="/newtloan"
+                element={
+                  <CartProvider>
+                    <NewTLoan />
+                  </CartProvider>
+                }
+              />
               <Route path="/modal" element={<Modals12 />} />
               <Route
                 path="/tloanManagerDisplay/:TLoanID"
                 element={<TLoanManagerDisplay />}
               />
-               <Route
+              <Route
                 path="/tloanManagerExtension/:TLoanID"
                 element={<TLoanManagerExtensionDisplay />}
               />
-               <Route
+              <Route
                 path="/tloanWarehouse/:TLoanID"
                 element={<TLoanWarehouseDisplay />}
               />
