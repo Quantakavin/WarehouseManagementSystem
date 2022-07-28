@@ -53,33 +53,39 @@ module.exports.getApprovedRMAs = async () => {
     return knex.raw(query);
 };
 
+// Processing RMAs
+module.exports.getProcessingRMAs = async () => {
+    const query = `SELECT * FROM Rma WHERE RMAStatusID = "3"`;
+    return knex.raw(query);
+};
+
 // Rejected RMAs
 module.exports.getRejectedRMAs = async () => {
-    const query = `SELECT * FROM Rma WHERE RMAStatusID = "3"`;
+    const query = `SELECT * FROM Rma WHERE RMAStatusID = "4"`;
     return knex.raw(query);
 };
 
 // Received RMAs
 module.exports.getReceivedRMAs = async () => {
-    const query = `SELECT * FROM Rma WHERE RMAStatusID = "4"`;
+    const query = `SELECT * FROM Rma WHERE RMAStatusID = "5"`;
     return knex.raw(query);
 };
 
 // Verified RMAs
 module.exports.getVerifiedRMAs = async () => {
-    const query = `SELECT * FROM Rma WHERE RMAStatusID = "5"`;
+    const query = `SELECT * FROM Rma WHERE RMAStatusID = "6"`;
     return knex.raw(query);
 };
 
 // In Progress RMAs
 module.exports.getIPRMAs = async () => {
-    const query = `SELECT * FROM Rma WHERE RMAStatusID = "6"`;
+    const query = `SELECT * FROM Rma WHERE RMAStatusID = "7"`;
     return knex.raw(query);
 };
 
 // Closed RMAs
 module.exports.getClosedRMAs = async () => {
-    const query = `SELECT * FROM Rma WHERE RMAStatusID = "7"`;
+    const query = `SELECT * FROM Rma WHERE RMAStatusID = "8"`;
     return knex.raw(query);
 };
 

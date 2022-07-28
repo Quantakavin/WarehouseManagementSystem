@@ -10,6 +10,7 @@ import {
   CardContent,
   IconButton,
   Snackbar,
+  Stack,
   styled,
   TextField,
   Tooltip,
@@ -20,7 +21,24 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { randomId } from "@mui/x-data-grid-generator";
 import {
-  DataGridPro,
+  DatePicker,
+  DateTimePicker,
+  LocalizationProvider,
+} from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import axios from "axios";
+import locale from "date-fns/locale/en-US";
+import { motion, useAnimation } from "framer-motion";
+import * as React from "react";
+import { useEffect, useState } from "react";
+import { useMutation } from "react-query";
+import { useNavigate } from "react-router";
+import { useAppSelector } from "../../app/hooks";
+import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
+import { Toast } from "../alerts/SweetAlert";
+import ErrorAlert from "../form/ErrorAlert";
+import {
+  DataGrid,
   GridActionsCellItem,
   GridCellParams,
   GridColTypeDef,
@@ -41,24 +59,7 @@ import {
   GRID_DATE_COL_DEF,
   MuiEvent,
   useGridApiContext,
-} from "@mui/x-data-grid-pro";
-import {
-  DatePicker,
-  DateTimePicker,
-  LocalizationProvider,
-} from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import axios from "axios";
-import locale from "date-fns/locale/en-US";
-import { motion, useAnimation } from "framer-motion";
-import * as React from "react";
-import { useEffect, useState } from "react";
-import { useMutation } from "react-query";
-import { useNavigate } from "react-router";
-import { useAppSelector } from "../../app/hooks";
-import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
-import { Toast } from "../alerts/SweetAlert";
-import ErrorAlert from "../form/ErrorAlert";
+} from "@mui/x-data-grid";
 
 const CreateRMA: React.FC = () => {
   const navigate = useNavigate();
@@ -678,8 +679,11 @@ const CreateRMA: React.FC = () => {
     products,
   };
 
-  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -702,7 +706,7 @@ const CreateRMA: React.FC = () => {
         title: "Please add a product",
         customClass: "swalpopup",
         timer: 1500,
-        width: 700,
+        width: 315,
       });
     }
     if (contactperson == "") {
@@ -834,7 +838,7 @@ const CreateRMA: React.FC = () => {
               dateAdapter={AdapterDateFns}
               adapterLocale={locale}
             >
-              <DataGridPro
+              <DataGrid
                 rows={rows}
                 columns={columns}
                 editMode="row"
@@ -844,6 +848,15 @@ const CreateRMA: React.FC = () => {
                 processRowUpdate={processRowUpdate}
                 components={{
                   Toolbar: EditToolbar,
+                  NoRowsOverlay: () => (
+                    <Stack
+                      height="100%"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      No products added
+                    </Stack>
+                  ),
                 }}
                 componentsProps={{
                   toolbar: { setRows, setRowModesModel },

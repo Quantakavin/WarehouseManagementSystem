@@ -41,7 +41,9 @@ import Error404 from "./pages/error/Error404";
 import Error401 from "./pages/error/Error401";
 import Sidebar2 from "./components/sidebar/Sidebar2";
 import TopNav from "./components/header/TopNav";
+import { BasketProvider } from '../src/components/context/basketContext'
 import { CartProvider } from "react-use-cart";
+
 
 interface ProtectedRouteProps {
   loginpage: boolean;
@@ -69,6 +71,7 @@ const App: React.FC = () => {
 
   return (
     <>
+    <BasketProvider>
       <header style={{ zIndex: 1500 }}>
         <TopNav />
       </header>
@@ -83,16 +86,11 @@ const App: React.FC = () => {
             </Route>
             <Route element={<ProtectedRoute loginpage={false} />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/products" element={<Products2 />} />
+              <Route path="/products" element={<CartProvider><Products2 /></CartProvider>} />
               <Route path="/productspag" element={<ProductsPag />} />
               <Route
                 path="/product/:id"
-                element={
-                  <CartProvider>
-                    <ViewProduct />
-                  </CartProvider>
-                }
-              />
+                element={<CartProvider><ViewProduct /></CartProvider>}/>
               <Route path="/binlocations" element={<BinLocations />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/user/:id" element={<ViewUser />} />
@@ -129,12 +127,7 @@ const App: React.FC = () => {
               />
               <Route
                 path="/newtloan"
-                element={
-                  <CartProvider>
-                    <NewTLoan />
-                  </CartProvider>
-                }
-              />
+                element={<CartProvider><NewTLoan /> </CartProvider>} />
               <Route path="/modal" element={<Modals12 />} />
               <Route
                 path="/tloanManagerDisplay/:TLoanID"
@@ -152,10 +145,11 @@ const App: React.FC = () => {
               <Route path="/403" element={<Error403 />} />
             </Route>
           </Routes>
-        </Box>
-      </Box>
+          </Box>
+          </Box>
+        </BasketProvider>
     </>
-  );
+  )
 };
 
 export default App;

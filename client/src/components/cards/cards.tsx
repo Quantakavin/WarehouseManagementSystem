@@ -17,6 +17,7 @@ function cards() {
   // RMA Overview
   const [PendingRMAs, setPendingRMAs] = useState([]);
   const [ApprovedRMAs, setApprovedRMAs] = useState([]);
+  const [ProcessingRMAs, setProcessingRMAs] = useState([]);
   const [RejectedRMAs, setRejecteRMAs] = useState([]);
   const [ReceivedRMAs, setReceivedRMAs] = useState([]);
   const [VerifiedRMAs, setVerifiedRMAs] = useState([]);
@@ -95,6 +96,17 @@ function cards() {
     getRejectedRMAs();
   }, []);
 
+  // getprocessingRMAs
+  const getProcessingRMAs = async () => {
+    const response = await axios.get(`${config.baseURL}/getprocessingRMAs`);
+
+    setProcessingRMAs(response.data);
+  };
+
+  useEffect(() => {
+    getProcessingRMAs();
+  }, []);
+
   // getreceivedRMAs
   const getReceivedRMAs = async () => {
     const response = await axios.get(`${config.baseURL}/getreceivedRMAs`);
@@ -138,7 +150,7 @@ function cards() {
   useEffect(() => {
     getclosedRMAs();
   }, []);
-  
+
   if (userrole !== "Sales Manager") {
     return (
       <Grid container sx={{ marginTop: -2 }}>
@@ -162,31 +174,31 @@ function cards() {
                     {PendingRMAs.length}
                   </Box>
                 </Grid>
-                <Grid item xs={6} sx={{paddingLeft: 5}}>
+                <Grid item xs={6} sx={{ paddingLeft: 5 }}>
                   <Box>Approved</Box>
                   <Box sx={{ color: "black", fontWeight: "normal" }}>
                     {ApprovedRMAs.length}
                   </Box>
                 </Grid>
                 <Grid item xs={12}>
-                  <Divider >
+                  <Divider>
                     <Chip label="RMA" />
                   </Divider>
                 </Grid>
                 <Grid item xs={6}>
-                  <Box sx={{}}>Rejected</Box>
+                  <Box sx={{}}>Processing</Box>
                   <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {RejectedRMAs.length}
+                    {ProcessingRMAs.length}
                   </Box>
                 </Grid>
-                <Grid item xs={6} sx={{paddingLeft: 5}}>
+                <Grid item xs={6} sx={{ paddingLeft: 5 }}>
                   <Box sx={{}}>Received</Box>
                   <Box sx={{ color: "black", fontWeight: "normal" }}>
                     {ReceivedRMAs.length}
                   </Box>
                 </Grid>
                 <Grid item xs={12}>
-                  <Divider >
+                  <Divider>
                     <Chip label="RMA" />
                   </Divider>
                 </Grid>
@@ -196,7 +208,7 @@ function cards() {
                     {VerifiedRMAs.length}
                   </Box>
                 </Grid>
-                <Grid item xs={6} sx={{paddingLeft: 5}}>
+                <Grid item xs={6} sx={{ paddingLeft: 5 }}>
                   <Box>In Progress</Box>
                   <Box sx={{ color: "black", fontWeight: "normal" }}>
                     {InprogressRMAs.length}
@@ -226,15 +238,15 @@ function cards() {
                     {DraftTloans.length}
                   </Box>
                 </Grid>
-                <Grid item xs={6} sx={{paddingLeft: 6}}>
+                <Grid item xs={6} sx={{ paddingLeft: 6 }}>
                   <Box>Pending</Box>
                   <Box sx={{ color: "black", fontWeight: "normal" }}>
                     {PendingTloans.length}
                   </Box>
                 </Grid>
                 <Grid item xs={12}>
-                  <Divider >
-                    <Chip label="TLoans"/>
+                  <Divider>
+                    <Chip label="TLoans" />
                   </Divider>
                 </Grid>
                 <Grid item xs={6}>
@@ -243,7 +255,7 @@ function cards() {
                     {CurrentTloans.length}
                   </Box>
                 </Grid>
-                <Grid item xs={6} sx={{paddingLeft: 6}}>
+                <Grid item xs={6} sx={{ paddingLeft: 6 }}>
                   <Box>On Extension</Box>
                   <Box sx={{ color: "black", fontWeight: "normal" }}>
                     {ExtendedTloans.length}
@@ -278,14 +290,14 @@ function cards() {
                     {ApprovedRMAs.length}
                   </Box>
                 </Grid>
-                <Grid item xs={6} sx={{paddingLeft: 5}}>
+                <Grid item xs={6} sx={{ paddingLeft: 5 }}>
                   <Box sx={{}}>Rejected</Box>
                   <Box sx={{ color: "black", fontWeight: "normal" }}>
                     {RejectedRMAs.length}
                   </Box>
                 </Grid>
                 <Grid item xs={12}>
-                  <Divider >
+                  <Divider>
                     <Chip label="RMA" />
                   </Divider>
                 </Grid>
@@ -313,15 +325,15 @@ function cards() {
                     {DraftTloans.length}
                   </Box>
                 </Grid>
-                <Grid item xs={6} sx={{paddingLeft: 6}}>
+                <Grid item xs={6} sx={{ paddingLeft: 6 }}>
                   <Box>Current</Box>
                   <Box sx={{ color: "black", fontWeight: "normal" }}>
                     {CurrentTloans.length}
                   </Box>
                 </Grid>
                 <Grid item xs={12}>
-                  <Divider >
-                    <Chip label="TLoans"/>
+                  <Divider>
+                    <Chip label="TLoans" />
                   </Divider>
                 </Grid>
               </Grid>

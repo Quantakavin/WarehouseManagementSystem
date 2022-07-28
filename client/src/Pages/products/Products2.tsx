@@ -117,8 +117,7 @@ const Products2: React.FC = () => {
                       ":hover": { backgroundColor: "#031c38" },
                     }}
                   >
-                    Loan Basket
-                    {/* Loan Basket ({totalItems}){" "} */}
+                    New Loan ({totalItems})
                     <ShoppingBasketIcon sx={{ ml: 1}} />
                   </Fab>
                 </motion.div>
