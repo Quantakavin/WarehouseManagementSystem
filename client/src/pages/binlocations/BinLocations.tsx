@@ -1,7 +1,7 @@
 import { Camera } from "@mui/icons-material";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import Rack from "../../components/3Dmodels/Rack";
 import "../../styles/BinLocation.scss";
@@ -67,15 +67,23 @@ const Scene = () => {
 
   const {
     gl,
-    camera,
-    controls,
+    camera
   } = useThree();
 
+  const controls = useRef<any>()
+  useFrame(() => controls.current.update())
+
   const changeCameraPosition = (newPosition: [x: number, y: number, z: number]) => {
-    /*
-    camera.position.set(newPosition[0], newPosition[1], newPosition[2] + 10)
-    camera.lookAt(new THREE.Vector3(0,0,0));
-    */alert(newPosition)
+    camera.position.set(newPosition[0], newPosition[1] + 20, newPosition[2] + 30)
+    //camera.rotation.y = 180;
+    //camera.lookAt(new THREE.Vector3(newPosition[0],newPosition[1],newPosition[2]));
+    controls.current.target = new THREE.Vector3(newPosition[0],newPosition[1],newPosition[2])
+    controls.current.update()
+    //camera.rotation.y = 90;
+    //camera.up.set( 0, 0, 1 );
+    //camera.zoom = 1.5
+    //
+   //alert(newPosition)
     //camera.lookAt( new THREE.Vector3(newPosition[0], newPosition[1], newPosition[2]))
     //alert(newPosition);
   }
@@ -85,7 +93,7 @@ const Scene = () => {
      <color attach="background" args={["#c4e5d0"]} />
      <ambientLight />
      <pointLight position={[40, 40, 40]} />
-     <OrbitControls maxPolarAngle={Math.PI/2} maxDistance={150}/>
+     <OrbitControls maxPolarAngle={Math.PI/2} maxDistance={150} ref={controls}/>
      {/* <OrbitControls maxPolarAngle={Math.PI/2} maxDistance={150}/> */}
      <Suspense fallback={null}>
      {/* <ContextBridge> */}
