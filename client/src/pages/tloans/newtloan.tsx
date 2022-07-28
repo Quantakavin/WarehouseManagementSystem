@@ -14,20 +14,6 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { randomId } from "@mui/x-data-grid-generator";
-import {
-  DataGridPro,
-  GridActionsCellItem,
-  GridColumns,
-  GridEventListener,
-  GridRowId,
-  GridRowModel,
-  GridRowModes,
-  GridRowModesModel,
-  GridRowParams,
-  GridRowsProp,
-  GridToolbarContainer,
-  MuiEvent,
-} from "@mui/x-data-grid-pro";
 import axios from "axios";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
@@ -38,18 +24,27 @@ import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import "./TLoanTable/table.css";
-import {useCart} from 'react-use-cart'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import Stack from '@mui/material/Stack';
+import { useCart } from "react-use-cart";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import Stack from "@mui/material/Stack";
 import dateFormat, { masks } from "dateformat";
-
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridColumns,
+  GridEventListener,
+  GridRowId,
+  GridRowModel,
+  GridRowModes,
+  GridRowModesModel,
+  GridRowParams,
+  GridRowsProp,
+  MuiEvent,
+} from "@mui/x-data-grid";
 
 function newtloan() {
-
- 
-  
   interface EditToolbarProps {
     setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
     setRowModesModel: (
@@ -70,7 +65,7 @@ function newtloan() {
     //     ...oldModel,
     //     [id]: { mode: GridRowModes.Edit, fieldToFocus: "ItemNo" },
     //   }));
-      
+
     // };
 
     // return (
@@ -79,44 +74,36 @@ function newtloan() {
     //       Add Record
     //     </Button>
     //   </GridToolbarContainer>
-     
+
     // );
   }
-  const itemStorage = localStorage.getItem('react-use-cart') 
-  const cartItems = JSON.parse(itemStorage).items
+  const itemStorage = localStorage.getItem("react-use-cart");
+  const cartItems = JSON.parse(itemStorage).items;
   const newProduct = cartItems.map(
-    ({  ItemNo, ItemName, BatchNo, WarehouseCode, quantity  }) => ({
-        ItemNo: ItemNo,
-        ItemName: ItemName,
-        BatchNo: BatchNo,
-        WarehouseCode: WarehouseCode,
-        Quantity: quantity
-      
+    ({ ItemNo, ItemName, BatchNo, WarehouseCode, quantity }) => ({
+      ItemNo: ItemNo,
+      ItemName: ItemName,
+      BatchNo: BatchNo,
+      WarehouseCode: WarehouseCode,
+      Quantity: quantity,
     })
-)
+  );
 
-  const {
-    isEmpty,
-    totalUniqueItems,
-    updateItemQuantity,
-    removeItem,
-  } = useCart();
+  const { isEmpty, totalUniqueItems, updateItemQuantity, removeItem } =
+    useCart();
 
   const [rows, setRows] = React.useState([]);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
 
-  useEffect(()=>{
-    if(cartItems === []){ 
-      return console.log('Nothing in cart')
-    }else {
-      setRows(cartItems)
+  useEffect(() => {
+    if (cartItems === []) {
+      return console.log("Nothing in cart");
+    } else {
+      setRows(cartItems);
     }
-  }, [cartItems])
-   
-  
-  
+  }, [cartItems]);
 
   const FullFeaturedCrudGrid = () => {
     const handleRowEditStart = (
@@ -141,14 +128,22 @@ function newtloan() {
       setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
     };
 
-    const handleDeleteClick = (id: GridRowId) => () => { 
-      setRows(rows.filter((row) => row.id === id && removeItem(row.id) ));
+    const handleDeleteClick = (id: GridRowId) => () => {
+      setRows(rows.filter((row) => row.id === id && removeItem(row.id)));
     };
-    const handleMinusClick = (id: GridRowId) => () => { 
-      setRows(rows.filter((row) => row.id === id && updateItemQuantity(row.id, row.quantity - 1) ));
+    const handleMinusClick = (id: GridRowId) => () => {
+      setRows(
+        rows.filter(
+          (row) => row.id === id && updateItemQuantity(row.id, row.quantity - 1)
+        )
+      );
     };
-    const handleAddClick = (id: GridRowId) => () => { 
-      setRows(rows.filter((row) => row.id === id && updateItemQuantity(row.id, row.quantity + 1) ));
+    const handleAddClick = (id: GridRowId) => () => {
+      setRows(
+        rows.filter(
+          (row) => row.id === id && updateItemQuantity(row.id, row.quantity + 1)
+        )
+      );
     };
 
     const handleCancelClick = (id: GridRowId) => () => {
@@ -171,15 +166,25 @@ function newtloan() {
     };
 
     const columns: GridColumns = [
-      { field: "ItemNo", headerName: "Item No.", width: 165, editable: false},
+      { field: "ItemNo", headerName: "Item No.", width: 165, editable: false },
       {
         field: "ItemName",
         headerName: "Item Name",
         width: 180,
         editable: false,
       },
-      { field: "BatchNo", headerName: "Batch No.", width: 165, editable: false },
-      { field: "WarehouseCode", headerName: "WarehouseCode", width: 165, editable: false },
+      {
+        field: "BatchNo",
+        headerName: "Batch No.",
+        width: 165,
+        editable: false,
+      },
+      {
+        field: "WarehouseCode",
+        headerName: "WarehouseCode",
+        width: 165,
+        editable: false,
+      },
       {
         field: "quantity",
         headerName: "Quantity",
@@ -215,14 +220,14 @@ function newtloan() {
 
           return [
             <GridActionsCellItem
-            icon={<RemoveIcon style={{ color: 'red' }}/>}
-            label="Edit"
-            className="textPrimary"
-            onClick={handleMinusClick(id)}
-            color="inherit"
-          />,
+              icon={<RemoveIcon style={{ color: "red" }} />}
+              label="Edit"
+              className="textPrimary"
+              onClick={handleMinusClick(id)}
+              color="inherit"
+            />,
             <GridActionsCellItem
-              icon={<AddIcon style={{ color: 'green' }} />}
+              icon={<AddIcon style={{ color: "green" }} />}
               label="Edit"
               className="textPrimary"
               onClick={handleAddClick(id)}
@@ -252,7 +257,7 @@ function newtloan() {
           },
         }}
       >
-        <DataGridPro
+        <DataGrid
           rows={rows}
           columns={columns}
           editMode="row"
@@ -263,37 +268,44 @@ function newtloan() {
           processRowUpdate={processRowUpdate}
           components={{
             Toolbar: EditToolbar,
+            NoRowsOverlay: () => (
+              <Stack
+                height="100%"
+                alignItems="center"
+                justifyContent="center"
+              >
+                No products added
+              </Stack>
+            ),
           }}
           componentsProps={{
             toolbar: { setRows, setRowModesModel },
           }}
           experimentalFeatures={{ newEditingApi: true }}
         />
-      
       </Box>
     );
   };
 
-  const [type, setType] = useState('');
-  const [company, setCompany] = useState('');
+  const [type, setType] = useState("");
+  const [company, setCompany] = useState("");
   // const [number, setNumber] = useState("");
-  const [name, setName] = useState('');
-  const [purpose, setPurpose] = useState('');
-  const [applicationdate, setADate] = useState('');
-  const [duration, setDuration] = useState('');
-  const [user, setUser] = useState('');
-  const [email, setEmail] = useState('');
-  const [collection, setCollection] = useState('');
-  const [requireddate, setRDate] = useState('');
-  const [localDate, setLocalDate] = useState('');
+  const [name, setName] = useState("");
+  const [purpose, setPurpose] = useState("");
+  const [applicationdate, setADate] = useState("");
+  const [duration, setDuration] = useState("");
+  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
+  const [collection, setCollection] = useState("");
+  const [requireddate, setRDate] = useState("");
+  const [localDate, setLocalDate] = useState("");
   const userRole = useAppSelector(selectRole);
-  const [dateForm, setDateForm] = useState('')
+  const [dateForm, setDateForm] = useState("");
 
-  
-    const [items, setItems] = useState([])
-    useEffect(()=>{
-      setItems(newProduct)
-    })
+  const [items, setItems] = useState([]);
+  useEffect(() => {
+    setItems(newProduct);
+  });
 
   // const items = rows.map(({ id, isNew, ...rows }) => rows);
   // console.log(items);
@@ -314,18 +326,16 @@ function newtloan() {
     setCollection(event.target.value);
   };
 
-  const handleChangeRequiredDate = (newValue: '' | null) => {
+  const handleChangeRequiredDate = (newValue: "" | null) => {
     setDateForm(newValue);
   };
 
   const navigate = useNavigate();
 
-  useEffect(()=>{
-
-    const correctFormat = dateFormat(dateForm, "yyyy-mm-dd")
-    setRDate(correctFormat)
-  },[dateForm])
-
+  useEffect(() => {
+    const correctFormat = dateFormat(dateForm, "yyyy-mm-dd");
+    setRDate(correctFormat);
+  }, [dateForm]);
 
   const submitLoan = (e) => {
     e.preventDefault();
@@ -353,7 +363,7 @@ function newtloan() {
             width: 700,
           });
           navigate("/tloan");
-          localStorage.removeItem('react-use-cart')
+          localStorage.removeItem("react-use-cart");
         });
 
       console.log(results);
@@ -380,7 +390,6 @@ function newtloan() {
           items,
         })
         .then(() => {
-         
           Toast.fire({
             icon: "info",
             title: "TLoan has been put into Draft",
@@ -389,8 +398,7 @@ function newtloan() {
             width: 700,
           });
           navigate("/tloan");
-          localStorage.removeItem('react-use-cart')
-          
+          localStorage.removeItem("react-use-cart");
         });
 
       console.log(results);
@@ -410,8 +418,6 @@ function newtloan() {
   //   setRDate(date);
   // });
 
- 
-
   useEffect(() => {
     const uid = localStorage.getItem("user_id");
     setUser(uid);
@@ -421,8 +427,6 @@ function newtloan() {
     const Employee = localStorage.getItem("username");
     setName(Employee);
   });
-
-
 
   const getCard = () => {
     const loanDuration = [
@@ -443,222 +447,221 @@ function newtloan() {
       { "12 Months": "365" },
     ];
     return (
-      <div style={{overflow:"auto"}}>
-      <Card sx={{ width: "95%", height: "100%", margin: 3, overflow: "auto" }}>
-        <CardContent>
-          <h2>Apply TLoan</h2>
-          {FullFeaturedCrudGrid()}
-          <form onSubmit={submitLoan} style={{width:"100%"}}>
-          <Box sx={{ marginTop: 1, display: "flex", marginLeft: 2 }}>
-            <TextField
-              id="outlined-basic"
-              label="Employee Name"
-              variant="outlined"
-              size="small"
-              value={name}
-              disabled
-            />
-
-            <TextField
-              id="outlined-basic"
-              label="Customer Email"
-              variant="outlined"
-              size="small"
-              name="customerEmail"
-              sx={{ marginLeft: 3 }}
-              required
-              onChange={(e) => setEmail(e.target.value)}
-            />
-
-            <FormControl sx={{ width: 200, marginLeft: 3 }}>
-              <InputLabel>Customer Company</InputLabel>
-              <Select
-                id="outlined-basic"
-                value={company}
-                onChange={handleChangeCompany}
-                size="small"
-                label="Customer Company"
-                required
-              >
-                <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
-                <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
-                <MenuItem value={"3"}>DIRAK181025</MenuItem>
-                <MenuItem value={"4"}>PMC_LIVE</MenuItem>
-                <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
-                <MenuItem value={"6"}>ALL</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl sx={{ width: 200, marginLeft: 3 }}>
-                <InputLabel>Duration</InputLabel>
-                <Select
+      <div style={{ overflow: "auto" }}>
+        <Card
+          sx={{ width: "95%", height: "100%", margin: 3, overflow: "auto" }}
+        >
+          <CardContent>
+            <h2>Apply TLoan</h2>
+            {FullFeaturedCrudGrid()}
+            <form onSubmit={submitLoan} style={{ width: "100%" }}>
+              <Box sx={{ marginTop: 1, display: "flex", marginLeft: 2 }}>
+                <TextField
                   id="outlined-basic"
-                  value={duration}
-                  onChange={handleChangeDuration}
-                  label="Duration"
+                  label="Employee Name"
+                  variant="outlined"
                   size="small"
-                  required
-                >
-                  {loanDuration.map((element) => {
-                    const [[key, val]] = Object.entries(element);
-                    return (
-                      <MenuItem value={val} key={key}>
-                        {key}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-    
-          </Box>
+                  value={name}
+                  disabled
+                />
 
-          <Box sx={{ display: "flex" }}>
-            <TextField
-              sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
-              multiline
-              rows={4}
-              label="Purpose"           
-              onChange={(e) => setPurpose(e.target.value)}
-              required
-            ></TextField>
-          
-          </Box>
-          <Box sx={{ marginLeft: 2, display:"flex"}}>
-            
-          
-
-              {/* Collection */}
-              <FormControl sx={{ width: 200,  marginTop: 2 }}>
-                <InputLabel>Collection Type</InputLabel>
-                <Select
+                <TextField
                   id="outlined-basic"
-                  value={collection}
-                  onChange={handleChangeCollection}
-                  label="Collection Type"
+                  label="Customer Email"
+                  variant="outlined"
                   size="small"
+                  name="customerEmail"
+                  sx={{ marginLeft: 3 }}
                   required
-                >
-                  {/* <MenuItem value="">
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+
+                <FormControl sx={{ width: 200, marginLeft: 3 }}>
+                  <InputLabel>Customer Company</InputLabel>
+                  <Select
+                    id="outlined-basic"
+                    value={company}
+                    onChange={handleChangeCompany}
+                    size="small"
+                    label="Customer Company"
+                    required
+                  >
+                    <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
+                    <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
+                    <MenuItem value={"3"}>DIRAK181025</MenuItem>
+                    <MenuItem value={"4"}>PMC_LIVE</MenuItem>
+                    <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
+                    <MenuItem value={"6"}>ALL</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl sx={{ width: 200, marginLeft: 3 }}>
+                  <InputLabel>Duration</InputLabel>
+                  <Select
+                    id="outlined-basic"
+                    value={duration}
+                    onChange={handleChangeDuration}
+                    label="Duration"
+                    size="small"
+                    required
+                  >
+                    {loanDuration.map((element) => {
+                      const [[key, val]] = Object.entries(element);
+                      return (
+                        <MenuItem value={val} key={key}>
+                          {key}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Box>
+
+              <Box sx={{ display: "flex" }}>
+                <TextField
+                  sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
+                  multiline
+                  rows={4}
+                  label="Purpose"
+                  onChange={(e) => setPurpose(e.target.value)}
+                  required
+                ></TextField>
+              </Box>
+              <Box sx={{ marginLeft: 2, display: "flex" }}>
+                {/* Collection */}
+                <FormControl sx={{ width: 200, marginTop: 2 }}>
+                  <InputLabel>Collection Type</InputLabel>
+                  <Select
+                    id="outlined-basic"
+                    value={collection}
+                    onChange={handleChangeCollection}
+                    label="Collection Type"
+                    size="small"
+                    required
+                  >
+                    {/* <MenuItem value="">
             <em>None</em>
           </MenuItem> */}
-                  <MenuItem value={"Self-Collection"}>Self-Collection</MenuItem>
-                  <MenuItem value={"Delivery"}>Delivery</MenuItem>
-                </Select>
-              </FormControl>
+                    <MenuItem value={"Self-Collection"}>
+                      Self-Collection
+                    </MenuItem>
+                    <MenuItem value={"Delivery"}>Delivery</MenuItem>
+                  </Select>
+                </FormControl>
 
-              {/* Type */}
-              <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
-                <InputLabel>Loan Type</InputLabel>
-                <Select
-                  id="outlined-basic"
-                  value={type}
-                  onChange={handleChangeType}
-                  label="Loan Type"
-                  size="small"
-                  required
-                >                  
-                  <MenuItem value={"1"}>Internal</MenuItem>
-                  <MenuItem value={"2"}>External</MenuItem>
-                </Select>
-              </FormControl>
+                {/* Type */}
+                <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+                  <InputLabel>Loan Type</InputLabel>
+                  <Select
+                    id="outlined-basic"
+                    value={type}
+                    onChange={handleChangeType}
+                    label="Loan Type"
+                    size="small"
+                    required
+                  >
+                    <MenuItem value={"1"}>Internal</MenuItem>
+                    <MenuItem value={"2"}>External</MenuItem>
+                  </Select>
+                </FormControl>
 
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Stack >
-        <DesktopDatePicker
-          label="Required Date"
-          inputFormat="yyyy-MM-dd"
-          value={requireddate}
-          onChange={handleChangeRequiredDate}
-          renderInput={(params) => <TextField size="small" {...params} sx={{width: 200, marginLeft:3, marginTop: 2}} />}
-         
-        />
-        </Stack>
-        </LocalizationProvider>
-            </Box>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <Stack>
+                    <DesktopDatePicker
+                      label="Required Date"
+                      inputFormat="yyyy-MM-dd"
+                      value={requireddate}
+                      onChange={handleChangeRequiredDate}
+                      renderInput={(params) => (
+                        <TextField
+                          size="small"
+                          {...params}
+                          sx={{ width: 200, marginLeft: 3, marginTop: 2 }}
+                        />
+                      )}
+                    />
+                  </Stack>
+                </LocalizationProvider>
+              </Box>
 
-        
-
-          <Box
-            component="span"
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            sx={{ paddingTop: 2 }}
-          >
-            <motion.div
-              className="animatable"
-              whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                }}
-                onClick={() => navigate(-1)}
+              <Box
+                component="span"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                sx={{ paddingTop: 2 }}
               >
-                Back
-              </Button>
-            </motion.div>
-            <Box display="flex">
-            <motion.div
-              className="animatable"
-              whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                  marginRight: 10
-                }}
-                onClick={DraftLoan}
-              >
-                Save Draft
-              </Button>
-            </motion.div>
-            <motion.div
-              className="animatable"
-              whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#31A961",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                }}
-                type="submit"
-                // onClick={submitLoan}
-              >
-                Submit
-              </Button>
-            </motion.div>
-            </Box>
-          </Box>
-          </form>
-        </CardContent>
-      </Card>
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#063970",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                    }}
+                    onClick={() => navigate(-1)}
+                  >
+                    Back
+                  </Button>
+                </motion.div>
+                <Box display="flex">
+                  <motion.div
+                    className="animatable"
+                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <Button
+                      size="small"
+                      variant="contained"
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#063970",
+                        width: 150,
+                        height: 50,
+                        borderRadius: 10,
+                        marginRight: 10,
+                      }}
+                      onClick={DraftLoan}
+                    >
+                      Save Draft
+                    </Button>
+                  </motion.div>
+                  <motion.div
+                    className="animatable"
+                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <Button
+                      size="small"
+                      variant="contained"
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#31A961",
+                        width: 150,
+                        height: 50,
+                        borderRadius: 10,
+                      }}
+                      type="submit"
+                      // onClick={submitLoan}
+                    >
+                      Submit
+                    </Button>
+                  </motion.div>
+                </Box>
+              </Box>
+            </form>
+          </CardContent>
+        </Card>
       </div>
     );
   };
   return getCard();
- 
-
- 
 }
 
 export default newtloan;

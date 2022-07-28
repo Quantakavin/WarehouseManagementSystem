@@ -115,10 +115,10 @@ const RmaDisplay: React.FC = () => {
       .then(() => {
         Toast.fire({
           icon: "success",
-          title: "RMA Successfully Accepted",
+          title: "RMA Accepted",
           customClass: "swalpopup",
           timer: 1500,
-          width: 700,
+          width: 270,
         });
         navigate("/rma");
       })
@@ -136,7 +136,7 @@ const RmaDisplay: React.FC = () => {
           title: "RMA Checklist Updated",
           customClass: "swalpopup",
           timer: 1500,
-          width: 700,
+          width: 340,
         });
         navigate("/rma");
       })
@@ -154,7 +154,7 @@ const RmaDisplay: React.FC = () => {
           title: "RMA Received",
           customClass: "swalpopup",
           timer: 1500,
-          width: 700,
+          width: 270,
         });
         navigate("/rma");
       })
@@ -172,12 +172,20 @@ const RmaDisplay: React.FC = () => {
           title: "RMA Products Verified",
           customClass: "swalpopup",
           timer: 1500,
-          width: 700,
+          width: 340,
         });
         navigate("/rma");
       })
       .catch((error) => {
         console.log(error.response.data.message);
+        Toast.fire({
+          icon: "error",
+          title: "Please enter instructions for each product!",
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 480,
+        });
+        
       });
   };
   // COA RMA
@@ -190,12 +198,19 @@ const RmaDisplay: React.FC = () => {
           title: "RMA Progress Updated",
           customClass: "swalpopup",
           timer: 1500,
-          width: 700,
+          width: 330,
         });
         navigate("/rma");
       })
       .catch((error) => {
         console.log(error.response.data.message);
+        Toast.fire({
+          icon: "error",
+          title: "Please update the COA for each product!",
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 460,
+        });
       });
   };
   // Close RMA
@@ -205,10 +220,10 @@ const RmaDisplay: React.FC = () => {
       .then(() => {
         Toast.fire({
           icon: "success",
-          title: "RMA Successfully Closed",
+          title: "RMA Closed",
           customClass: "swalpopup",
           timer: 1500,
-          width: 700,
+          width: 270,
         });
         navigate("/rma");
       })
