@@ -44,10 +44,62 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Stack from '@mui/material/Stack';
 import dateFormat, { masks } from "dateformat";
+import { useBasket } from "../../components/context/basketContext"
+
+
 
 function newtloan() {
+  const {
+    getItemQuantity,
+    increaseCartQuantity,
+    decreaseCartQuantity,
+    removeFromCart,
+  } = useBasket()
 
- 
+  const [productGet, setProductGet] = useState([]);
+useEffect(() => {
+  // declare the async data fetching function
+  const fetchData = async () => {
+    // get the data from the api
+    const product = await axios.get(
+      `http://localhost:5000/api/products?limit=100000&page=0`
+    );
+    setProductGet(product.data);
+    // setLoan(Object.e)
+  };
+  // call the function
+  fetchData()
+    // make sure to catch any error
+    .catch(console.error);
+}, []);
+
+
+
+  const newProduct = productGet.map(
+    ({  BinProductPK, ItemNo, ItemName, BatchNo, WarehouseCode, quantity }) => ({
+        id: BinProductPK,
+        ItemNo: ItemNo,
+        ItemName: ItemName,
+        BatchNo: BatchNo,
+        WarehouseCode: WarehouseCode,
+        Quantity: quantity
+      
+    })
+  )
+
+  
+  const itemStorage = localStorage.getItem('Loan-Basket') 
+  const cartItems = JSON.parse(itemStorage)
+
+
+  // for(var item of cartItems){
+  //   cartItems.push(item.id); 
+    
+  
+  //   const basketItem = newProduct.find(p => p.id === item.id)
+  //   if (basketItem == null) return null
+  //   console.log(basketItem)
+  // }
   
   interface EditToolbarProps {
     setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
@@ -81,25 +133,8 @@ function newtloan() {
      
     // );
   }
-  const itemStorage = localStorage.getItem('react-use-cart') 
-  const cartItems = JSON.parse(itemStorage).items
-  const newProduct = cartItems.map(
-    ({  ItemNo, ItemName, BatchNo, WarehouseCode, quantity  }) => ({
-        ItemNo: ItemNo,
-        ItemName: ItemName,
-        BatchNo: BatchNo,
-        WarehouseCode: WarehouseCode,
-        Quantity: quantity
-      
-    })
-)
 
-  const {
-    isEmpty,
-    totalUniqueItems,
-    updateItemQuantity,
-    removeItem,
-  } = useCart();
+
 
   const [rows, setRows] = React.useState([]);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
@@ -108,7 +143,7 @@ function newtloan() {
 
   useEffect(()=>{
     if(cartItems === []){ 
-      return console.log('Nothing in cart')
+      return console.log('Nothing in basket')
     }else {
       setRows(cartItems)
     }
@@ -141,13 +176,13 @@ function newtloan() {
     };
 
     const handleDeleteClick = (id: GridRowId) => () => { 
-      setRows(rows.filter((row) => row.id === id && removeItem(row.id) ));
+      setRows(rows.filter((row) => row.id === id && removeFromCart(row.id) ));
     };
     const handleMinusClick = (id: GridRowId) => () => { 
-      setRows(rows.filter((row) => row.id === id && updateItemQuantity(row.id, row.quantity - 1) ));
+      setRows(rows.filter((row) => row.id === id && decreaseCartQuantity(row.id) ));
     };
     const handleAddClick = (id: GridRowId) => () => { 
-      setRows(rows.filter((row) => row.id === id && updateItemQuantity(row.id, row.quantity + 1) ));
+      setRows(rows.filter((row) => row.id === id && increaseCartQuantity(row.id) ));
     };
 
     const handleCancelClick = (id: GridRowId) => () => {

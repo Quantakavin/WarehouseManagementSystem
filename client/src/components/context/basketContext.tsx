@@ -16,10 +16,8 @@ type CartItem = {
 }
 
 type BasketContext = {
-  openCart: () => void
-  closeCart: () => void
   getItemQuantity: (id: number) => number
-  increaseCartQuantity: (id: number, ItemNo: string, ItemName: string, BatchNo: string, WarehouseCode: string) => void
+  increaseCartQuantity: (id: number,ItemNo: string, ItemName: string, BatchNo: string, WarehouseCode: string) => void
   decreaseCartQuantity: (id: number) => void
   removeFromCart: (id: number) => void
   cartQuantity: number
@@ -67,7 +65,7 @@ export function BasketProvider({ children }: BasketProviderProps) {
   
       setCartItems(currItems => {
         if (currItems.find(item => item.id === id) == null) {
-          return [...currItems, { id, ItemNo, ItemName:'', BatchNo: '', WarehouseCode: '', quantity: 1 }]
+          return [...currItems, { id, ItemNo:'', ItemName:'', BatchNo: '', WarehouseCode: '', quantity: 1 }]
         } else {
           return currItems.map(item => {
             if (item.id === id) {

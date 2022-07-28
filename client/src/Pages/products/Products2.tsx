@@ -84,7 +84,7 @@ const Products2: React.FC = () => {
     );
   }
 
-  if (userrole == "Sales Admin" || userrole == "Sales Engineer" || userrole == "Technical Staff") {
+  if (userrole == "Sales Admin" || userrole == "Admin" || userrole == "Technical Staff") {
     return (
       <Box sx={{ pl: 3, pr: 3, pt: 1, height: "100%", width: "100%" }}>
         <Box sx={{ display: "flex", height: "100%" }}>
@@ -117,8 +117,7 @@ const Products2: React.FC = () => {
                       ":hover": { backgroundColor: "#031c38" },
                     }}
                   >
-                    Loan Basket
-                    {/* Loan Basket ({totalItems}){" "} */}
+                    New Loan ({totalItems})
                     <ShoppingBasketIcon sx={{ ml: 1}} />
                   </Fab>
                 </motion.div>
