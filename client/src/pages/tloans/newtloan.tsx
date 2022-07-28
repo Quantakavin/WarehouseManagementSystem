@@ -11,25 +11,8 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import { randomId } from "@mui/x-data-grid-generator";
-import axios from "axios";
-import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
-import { useFormState, useForm, appendErrors } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import { useAppSelector } from "../../app/hooks";
-import { selectRole } from "../../app/reducers/CurrentUserSlice";
-import { Toast } from "../../components/alerts/SweetAlert";
-import "./TLoanTable/table.css";
-import { useCart } from "react-use-cart";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Stack from "@mui/material/Stack";
-import dateFormat, { masks } from "dateformat";
+import TextField from "@mui/material/TextField";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -43,8 +26,68 @@ import {
   GridRowsProp,
   MuiEvent,
 } from "@mui/x-data-grid";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import axios from "axios";
+import dateFormat from "dateformat";
+import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { Toast } from "../../components/alerts/SweetAlert";
+import "./TLoanTable/table.css";
+import { useBasket } from "../../components/context/basketContext";
 
 function newtloan() {
+  const {
+    getItemQuantity,
+    increaseCartQuantity,
+    decreaseCartQuantity,
+    removeFromCart,
+  } = useBasket();
+
+  const [productGet, setProductGet] = useState([]);
+  useEffect(() => {
+    // declare the async data fetching function
+    const fetchData = async () => {
+      // get the data from the api
+      const product = await axios.get(
+        `http://localhost:5000/api/products?limit=100000&page=0`
+      );
+      setProductGet(product.data);
+      // setLoan(Object.e)
+    };
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  }, []);
+
+  const newProduct = productGet.map(
+    ({ BinProductPK, ItemNo, ItemName, BatchNo, WarehouseCode, quantity }) => ({
+      id: BinProductPK,
+      ItemNo: ItemNo,
+      ItemName: ItemName,
+      BatchNo: BatchNo,
+      WarehouseCode: WarehouseCode,
+      Quantity: quantity,
+    })
+  );
+
+  const itemStorage = localStorage.getItem("Loan-Basket");
+  const cartItems = JSON.parse(itemStorage);
+
+  // for(var item of cartItems){
+  //   cartItems.push(item.id);
+
+  //   const basketItem = newProduct.find(p => p.id === item.id)
+  //   if (basketItem == null) return null
+  //   console.log(basketItem)
+  // }
+
   interface EditToolbarProps {
     setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
     setRowModesModel: (
@@ -77,20 +120,6 @@ function newtloan() {
 
     // );
   }
-  const itemStorage = localStorage.getItem("react-use-cart");
-  const cartItems = JSON.parse(itemStorage).items;
-  const newProduct = cartItems.map(
-    ({ ItemNo, ItemName, BatchNo, WarehouseCode, quantity }) => ({
-      ItemNo: ItemNo,
-      ItemName: ItemName,
-      BatchNo: BatchNo,
-      WarehouseCode: WarehouseCode,
-      Quantity: quantity,
-    })
-  );
-
-  const { isEmpty, totalUniqueItems, updateItemQuantity, removeItem } =
-    useCart();
 
   const [rows, setRows] = React.useState([]);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
@@ -99,7 +128,7 @@ function newtloan() {
 
   useEffect(() => {
     if (cartItems === []) {
-      return console.log("Nothing in cart");
+      return console.log("Nothing in basket");
     } else {
       setRows(cartItems);
     }
@@ -129,20 +158,16 @@ function newtloan() {
     };
 
     const handleDeleteClick = (id: GridRowId) => () => {
-      setRows(rows.filter((row) => row.id === id && removeItem(row.id)));
+      setRows(rows.filter((row) => row.id === id && removeFromCart(row.id)));
     };
     const handleMinusClick = (id: GridRowId) => () => {
       setRows(
-        rows.filter(
-          (row) => row.id === id && updateItemQuantity(row.id, row.quantity - 1)
-        )
+        rows.filter((row) => row.id === id && decreaseCartQuantity(row.id))
       );
     };
     const handleAddClick = (id: GridRowId) => () => {
       setRows(
-        rows.filter(
-          (row) => row.id === id && updateItemQuantity(row.id, row.quantity + 1)
-        )
+        rows.filter((row) => row.id === id && increaseCartQuantity(row.id))
       );
     };
 
@@ -269,11 +294,7 @@ function newtloan() {
           components={{
             Toolbar: EditToolbar,
             NoRowsOverlay: () => (
-              <Stack
-                height="100%"
-                alignItems="center"
-                justifyContent="center"
-              >
+              <Stack height="100%" alignItems="center" justifyContent="center">
                 No products added
               </Stack>
             ),
