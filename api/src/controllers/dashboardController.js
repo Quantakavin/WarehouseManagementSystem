@@ -93,6 +93,20 @@ module.exports.approvedRMAs = async (req, res) => {
     }
 };
 
+module.exports.processingRMAs = async (req, res) => {
+    try {
+        const results = await dashboard.getProcessingRMAs();
+        if (results.length > 0) {
+            return res.status(200).json(results[0]);
+        } else {
+            return res.status(404).send('There are no RMAs being processed');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
 module.exports.rejectedRMAs = async (req, res) => {
     try {
         const results = await dashboard.getRejectedRMAs();
@@ -113,7 +127,7 @@ module.exports.receivedRMAs = async (req, res) => {
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         } else {
-            return res.status(404).send('There are no rejected RMAs');
+            return res.status(404).send('There are no received RMAs');
         }
     } catch (error) {
         console.log(error);
