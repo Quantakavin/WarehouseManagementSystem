@@ -43,7 +43,7 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
-import clsx from 'clsx';
+import clsx from "clsx";
 import locale from "date-fns/locale/en-US";
 import { motion } from "framer-motion";
 import * as React from "react";
@@ -119,13 +119,12 @@ const RmaDisplay: React.FC = () => {
           customClass: "swalpopup",
           timer: 1500,
           width: 700,
-        })
+        });
         navigate("/rma");
       })
       .catch((error) => {
-        this.setState({ errorMessage: error.message });
+        console.log(error.response.data.message);
       });
-      
   };
   // Update RMA checklist
   const updateChecklist = async () => {
@@ -138,11 +137,11 @@ const RmaDisplay: React.FC = () => {
           customClass: "swalpopup",
           timer: 1500,
           width: 700,
-        })
+        });
         navigate("/rma");
       })
       .catch((error) => {
-        this.setState({ errorMessage: error.message });
+        console.log(error.response.data.message);
       });
   };
   // Receive RMA
@@ -156,11 +155,11 @@ const RmaDisplay: React.FC = () => {
           customClass: "swalpopup",
           timer: 1500,
           width: 700,
-        })
+        });
         navigate("/rma");
       })
       .catch((error) => {
-        this.setState({ errorMessage: error.message });
+        console.log(error.response.data.message);
       });
   };
   // Verify RMA
@@ -178,7 +177,7 @@ const RmaDisplay: React.FC = () => {
         navigate("/rma");
       })
       .catch((error) => {
-        this.setState({ errorMessage: error.message });
+        console.log(error.response.data.message);
       });
   };
   // COA RMA
@@ -196,7 +195,7 @@ const RmaDisplay: React.FC = () => {
         navigate("/rma");
       })
       .catch((error) => {
-        this.setState({ errorMessage: error.message });
+        console.log(error.response.data.message);
       });
   };
   // Close RMA
@@ -214,7 +213,7 @@ const RmaDisplay: React.FC = () => {
         navigate("/rma");
       })
       .catch((error) => {
-        this.setState({ errorMessage: error.message });
+        console.log(error.response.data.message);
       });
   };
   // const products = rma.RMAProducts;
@@ -569,6 +568,7 @@ const RmaDisplay: React.FC = () => {
 
   const handleSaveClick = (id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+    console.log(rows);
   };
 
   const handleDeleteClick = (id: GridRowId) => () => {
@@ -763,7 +763,7 @@ const RmaDisplay: React.FC = () => {
       flex: 2,
       editable: false,
       cellClassName: (params: GridCellParams<boolean>) =>
-        clsx('status-cell', {
+        clsx("status-cell", {
           true: params.value == true,
           false: params.value == false,
         }),
@@ -1932,7 +1932,15 @@ const RmaDisplay: React.FC = () => {
             </Typography>
 
             <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
-              <Box sx={{ flexGrow: 1 }}>
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  "& .coa--cell": {
+                    backgroundColor: "#E6E6E6",
+                    fontWeight: "600",
+                  },
+                }}
+              >
                 <DataGrid
                   sx={{ background: "white", fontSize: 16 }}
                   rows={rows}

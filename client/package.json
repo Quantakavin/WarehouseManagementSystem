@@ -26,6 +26,7 @@
     "@testing-library/user-event": "^14.2.0",
     "@types/aria-query": "^5.0.0",
     "@types/react-bootstrap": "^0.32.30",
+    "@types/react-data-grid": "^4.0.8",
     "@types/react-router": "^5.1.18",
     "@types/three": "^0.141.0",
     "axios": "^0.27.2",

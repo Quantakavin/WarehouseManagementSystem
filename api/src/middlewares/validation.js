@@ -1,3 +1,4 @@
+const { json } = require('body-parser');
 const validator = require('validator');
 
 const validation = {
@@ -97,21 +98,42 @@ const validation = {
     },
 
     validateLoan: (req, res, next) => {
-        const {  type, company, name, purpose, applicationdate, duration, requireddate, user, email, collection, items } = req.body;
+        const {
+            type,
+            company,
+            name,
+            purpose,
+            applicationdate,
+            duration,
+            requireddate,
+            user,
+            email,
+            collection,
+            items
+        } = req.body;
 
-        if (type === '' || email === '' || name === '' ||purpose === '' || company === '' || applicationdate === '' || duration === '' || requireddate === '' ||user === '' || collection === '' || items === []) {
+        if (
+            type === '' ||
+            email === '' ||
+            name === '' ||
+            purpose === '' ||
+            company === '' ||
+            applicationdate === '' ||
+            duration === '' ||
+            requireddate === '' ||
+            user === '' ||
+            collection === '' ||
+            items === []
+        ) {
             res.status(400).json({
                 message: 'Please fill up all fields correctly'
             });
-        } else if (
-            validator.isEmail(email)     
-        ) {
+        } else if (validator.isEmail(email)) {
             next();
         } else if (!validator.isEmail(email)) {
             res.status(400).json({
                 message: 'Please enter a valid email'
             });
-        
         } else {
             res.status(400).json({
                 message: 'Please fill up all fields correctly'
@@ -119,31 +141,37 @@ const validation = {
         }
     },
 
-    
     validateRmaSubmission: (req, res, next) => {
         const { contactperson, contactno, salesmanid, contactemail, company, products } = req.body;
-
-        if (products === null) {
+        console.log('Body ' + JSON.stringify(req.body));
+        if (products.length === 0) {
+            console.log("no products")
             res.status(400).json({
                 message: 'Please add at least 1 product to the table'
             });
-        } else if (contactperson && contactno & salesmanid && contactemail && company === null) {
+        } else if (
+            contactperson === '' ||
+            contactno === '' ||
+            salesmanid === '' ||
+            contactemail === '' ||
+            company === ''
+        ) {
             res.status(400).json({
                 message: 'Please fill in the form fields'
             });
-        } else if (contactperson === null) {
+        } else if (contactperson === '') {
             res.status(400).json({
                 message: 'Please enter the customer name'
             });
-        } else if (contactno === null) {
-            res.status(400).json({
-                message: 'Please enter the customer contact number'
-            });
-        } else if (contactemail === null) {
+        } else if (contactemail === '') {
             res.status(400).json({
                 message: 'Please enter the customer email'
             });
-        } else if (company === null) {
+        } else if (company === '') {
+            res.status(400).json({
+                message: 'Please enter the customer contact number'
+            });
+        } else if (contactno === '') {
             res.status(400).json({
                 message: 'Please enter the customer company'
             });
@@ -153,16 +181,29 @@ const validation = {
     },
 
     validateRmaInstruction: (req, res, next) => {
-        const {products} = req.body;
+        const { products } = req.body;
         products.map((product) => {
-            if (product.Instructions === null) {
+            if (product.Instructions === '') {
                 res.status(400).json({
                     message: 'Please provide instructions for each product'
                 });
             } else {
                 next();
             }
-        })
+        });
+    },
+
+    validateRmaCOA: (req, res, next) => {
+        const { products } = req.body;
+        products.map((product) => {
+            if (product.CourseOfAction === '') {
+                res.status(400).json({
+                    message: 'Please provide an update to the course of action for each product!'
+                });
+            } else {
+                next();
+            }
+        });
     }
 };
 

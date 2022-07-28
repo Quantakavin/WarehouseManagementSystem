@@ -366,7 +366,6 @@ module.exports.newRMA = async (req, res) => {
             redisClient.del('PendingRMA', function (err, reply) {
                 console.log('Redis Del', reply);
             });
-            console.log('amogus');
             redisClient.del('AcceptedRMA');
             redisClient.del(`myPendingRMA#${salesmanid}`);
             redisClient.del(`myAcceptedRMA#${salesmanid}`);

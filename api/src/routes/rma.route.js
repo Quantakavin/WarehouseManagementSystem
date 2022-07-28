@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const rmaController = require('../controllers/rma.controller');
+const validation = require('../middlewares/validation');
 
 router.get('/AllRMA', rmaController.getAllRMA);
 router.get('/RMA/:RmaID', rmaController.getByRmaID);
@@ -17,13 +18,13 @@ router.get('/receivedRMA', rmaController.getReceivedRMA);
 router.get('/verifiedRMA', rmaController.getVerifiedRMA);
 router.get('/inprogressRMA', rmaController.getIPRMA);
 router.get('/closedRMA', rmaController.getClosedRMA);
-router.post('/newRMA', rmaController.newRMA);
+router.post('/newRMA', validation.validateRmaSubmission, rmaController.newRMA);
 router.put('/acceptRMA/:RmaID', rmaController.updateRmaAccepted);
 router.put('/rejectRMA/:RmaID', rmaController.updateRmaRejected);
 router.put('/updatechecklistRMA/:RmaID', rmaController.updateRmaChecklist);
 router.put('/receiveRMA/:RmaID', rmaController.updateRmaReceived);
-router.put('/verifyRMA/:RmaID', rmaController.updateRmaInstructions);
-router.put('/COARMA/:RmaID', rmaController.updateRmaCoa);
+router.put('/verifyRMA/:RmaID', validation.validateRmaInstruction, rmaController.updateRmaInstructions);
+router.put('/COARMA/:RmaID', validation.validateRmaCOA, rmaController.updateRmaCoa);
 router.put('/closeRMA/:RmaID', rmaController.closeRma);
 
 module.exports = router;
