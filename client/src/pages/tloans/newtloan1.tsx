@@ -15,7 +15,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { randomId } from "@mui/x-data-grid-generator";
 import {
-  DataGridPro,
+  DataGrid,
   GridActionsCellItem,
   GridColumns,
   GridEventListener,
@@ -25,9 +25,8 @@ import {
   GridRowModesModel,
   GridRowParams,
   GridRowsProp,
-  GridToolbarContainer,
   MuiEvent,
-} from "@mui/x-data-grid-pro";
+} from "@mui/x-data-grid";
 import axios from "axios";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
@@ -286,7 +285,7 @@ useEffect(() => {
           },
         }}
       >
-        <DataGridPro
+        <DataGrid
           rows={rows}
           columns={columns}
           editMode="row"
