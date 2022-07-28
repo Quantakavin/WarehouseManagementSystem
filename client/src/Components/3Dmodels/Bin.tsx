@@ -8,6 +8,8 @@ import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTF } from "three-stdlib";
 import config from "../../config/config";
+import { Html } from "@react-three/drei";
+import "../../styles/BinLocation.scss";
 // import { color } from "@mui/system";
 
 type GLTFResult = GLTF & {
@@ -34,12 +36,11 @@ const Model: React.FC<ModelProps> = ({
   position,
 }) => {
   const group = useRef<THREE.Group>();
-  const [BinsData, setBinsData ] = useState<string>(null);
+  const [BinsData, setBinsData] = useState<any>(null);
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const { nodes, materials } = useGLTF("/box.glb") as GLTFResult;
-  const bintag = `${areatag}${racktag}${leveltag}${sectiontag}`
-  
-
+  const [CurrentBinID, setCurrentBinID] = useState([]);
+  const bintag = `${areatag}${racktag}${leveltag}${sectiontag}`;
 
   // Get Bin Information
   // function Bins () {
@@ -48,29 +49,37 @@ const Model: React.FC<ModelProps> = ({
   //   const getBinsData = async () => {
   //     const response = await axios.get(`${config.baseURL}/bintag/${bintag}`);
 
-  //     setBinsData(response.data); 
+  //     setBinsData(response.data);
   //   };
-
-
 
   // }
 
+  // get bin tag by bin tag
+
   useEffect(() => {
-    axios
-    .get(`${config.baseURL}/bintag/${bintag}`).then((data) => {
-      setBinsData(data.data[0]) 
+    axios.get(`${config.baseURL}/bintag/${bintag}`).then((data) => {
+      setBinsData(data.data[0]);
     });
   }, []);
-  
 
+  // // get bin qty by bin id
+
+  //    useEffect(() => {
+  //     axios.get(`${config.baseURL}/binqtybinid/${binid}`).then((data) => {
+  //         setCurrentBinID(data.data[0])
+  //     });
+
+  //    }, []);
+
+  //   console.log(BinsData);
 
   return (
     <group
       onClick={() => {
         alert(JSON.stringify(BinsData));
       }}
-      onPointerOver={()=> setIsSelected(true)}
-      onPointerOut={()=> setIsSelected(false)}
+      onPointerOver={() => setIsSelected(true)}
+      onPointerOut={() => setIsSelected(false)}
       ref={group}
       dispose={null}
       position={position}
@@ -82,7 +91,26 @@ const Model: React.FC<ModelProps> = ({
         position={[-1.42, 0.55, -3.13]}
         scale={[0.85, 0.29, 0.51]}
       >
-      <meshStandardMaterial color={ isSelected? '#8b0000' : 'gray' } />
+        {isSelected ? (
+          <Html distanceFactor={10}>
+            <div className="content">
+              BinTag:{BinsData.BinTag}
+              <br />
+              Column:
+              <br />
+              Rack:
+              <br />
+              Level:
+              <br />
+              Capacity:{BinsData.Volume} cm3
+              <br />
+              Amount of Items:
+              <br />
+            </div>
+          </Html>
+        ) : null}
+
+        <meshStandardMaterial color={isSelected ? "#8b0000" : "gray"} />
       </mesh>
     </group>
   );
