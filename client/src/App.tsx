@@ -43,6 +43,7 @@ import Sidebar2 from "./components/sidebar/Sidebar2";
 import TopNav from "./components/header/TopNav";
 import { BasketProvider } from '../src/components/context/basketContext'
 import { CartProvider } from "react-use-cart";
+import { StateContext } from '../src/components/context/newBasketContext'
 
 
 interface ProtectedRouteProps {
@@ -71,7 +72,7 @@ const App: React.FC = () => {
 
   return (
     <>
-    <BasketProvider>
+    <StateContext>
       <header style={{ zIndex: 1500 }}>
         <TopNav />
       </header>
@@ -147,7 +148,7 @@ const App: React.FC = () => {
           </Routes>
           </Box>
           </Box>
-        </BasketProvider>
+        </StateContext>
     </>
   )
 };

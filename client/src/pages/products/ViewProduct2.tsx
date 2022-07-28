@@ -1,5 +1,5 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import React, { useState, useEffect, createContext, ReactNode, useContext } from "react";
+import React, { useState, useEffect, Component } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetProduct } from "../../api/ProductDB";
@@ -15,18 +15,15 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import { motion } from "framer-motion";
 import Fab from "@mui/material/Fab";
+import { useStateContext } from '../../components/context/newBasketContext';
 
-
-
-
-
-
-export default function ViewProduct ( ) {
-  
+const ViewProduct: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const [newProducts, setNewProducts] = useState([]);
   const [productGet, setProductGet] = useState([]);
-  const [newProducts, setNewProducts] = useState({});
+
+  const { totalQuantities, cartItems, setShowCart, toggleCartItemQuanitity, onRemove, onAdd, qty } = useStateContext();
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
@@ -34,7 +31,9 @@ export default function ViewProduct ( ) {
       const product = await axios.get(
         `http://localhost:5000/api/product/${params.id}`
       );
+
       setProductGet(product.data);
+
       // setLoan(Object.e)
     };
     // call the function
@@ -42,139 +41,155 @@ export default function ViewProduct ( ) {
       // make sure to catch any error
       .catch(console.error);
   }, []);
+
+  console.log(productGet);
+
+
+
   useEffect(() => {
-   const newProduct = productGet.map(
+    const newProduct = productGet.map(
       ({ BinProductPK, ItemNo, ItemName, BatchNo, WarehouseCode }) => ({
         id: BinProductPK,
         ItemNo: ItemNo,
         ItemName: ItemName,
         BatchNo: BatchNo,
         WarehouseCode: WarehouseCode,
+        
       })
     );
-    setNewProducts(newProduct[0]);
+    setNewProducts(newProduct);
   }, [productGet]);
-  
- 
-  const ItemArray = []
-  localStorage.setItem('Basket', JSON.stringify(ItemArray))
 
-   if(newProducts == {}) {
-   return null
- function ()
-}else{
-    var existingObj = JSON.parse(localStorage.getItem('Basket'));
-    if(existingObj == null) existingObj=[]
-    var ItemNo = newProducts.ItemNo 
-    var id = newProducts.id
-    var ItemName = newProducts.ItemName
-    var BatchNo = newProducts.BatchNo 
-    var WarehouseCode = newProducts.WarehouseCode
-    var entry = {
-        "id": id,
-        "ItemNo": ItemNo,
-        "ItemName": ItemName,
-        "BatchNo": BatchNo,
-        "WarehouseCode": WarehouseCode,
-        "Quantity":1
-    };
-    localStorage.setItem("entry", JSON.stringify(entry));
-    // Save allEntries back to local storage
-    existingObj.push(entry);
-    localStorage.setItem("Basket", JSON.stringify(existingObj));
-}
-
-  
-
- const newLoanButton = () => {
-    
-      if( productGet.length > 0){
-      return(
-        <motion.div
-        className="animatable"
-        whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
-        whileTap={{ scale: 0.98 }}
-      >
-        <Fab
-          variant="extended"
-          aria-label="add"
-          onClick={() => navigate("/newtloan")}
-          sx={{
-            color: "white",
-            backgroundColor: "#063970",
-            ":hover": { backgroundColor: "#031c38" },
-            float: "right",
-            marginTop:8,
-            marginRight: "5%",
-            width: 180
-          }}
-        >
-          New Loan <ShoppingBasketIcon sx={{ml:0.5, mr:0.5}} /> 
-        </Fab>
-      </motion.div>
-        )
-    }else{
-      return
-    }   
-  }
+  console.log(newProducts);
 
   const ProductQuery = useQuery([`product${params.id}`, params.id], () =>
-   GetProduct(params.id)
+    GetProduct(params.id)
   );
 
   if (ProductQuery.isLoading || ProductQuery.isError) {
     return <CardSkeleton NoOfFields={4} />;
   }
 
+ 
+    const newLoanButton = () =>{
 
-   
-  const addProduct = () =>{
-
-        const addItemWithAlert =() =>{
-            {addItemToBasket}
-            Toast.fire({
-              icon: "success",
-              title: "Item Added!",
-              customClass: "swalpopup",
-              timer: 1000,
-              width: 700,
-            });
-         
-         
-  
-        }
-        return (
-
+      if( newProducts.length > 0){
+        return(
           <motion.div
           className="animatable"
-          whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+          whileTap={{ scale: 0.98 }}
         >
           <Fab
             variant="extended"
             aria-label="add"
-            onClick={addItemWithAlert}
+            onClick={() => navigate("/newtloan")}
             sx={{
               color: "white",
               backgroundColor: "#063970",
               ":hover": { backgroundColor: "#031c38" },
               float: "right",
-             
+              marginTop:8,
               marginRight: "5%",
-              height: "100%",
-              width: 200,
-              height: 65,
-              borderRadius: 10,
+              width: 180
             }}
           >
-            Add Item To Loan
+            New Loan 
+           
+            <ShoppingBasketIcon sx={{ml:0.5, mr:0.5}}/> 
           </Fab>
         </motion.div>
-        )
+          // <Button 
+          // size="big"
+          // variant="contained"
+          // sx={{
+          //   color: "white",
+          //   backgroundColor: "#063970",
+          //   width: 180,
+          //   height: 60,
+          //   borderRadius: 10,
+          //   float: "right",
+          //   marginTop:8,
+          //   marginRight: "5%"
+          // }}
+          // onClick={() => navigate('/newtloan')}> <ShoppingBasketIcon style={{marginRight: 1}}/><span/> New Loan ({totalItems}) </Button>
+          )
+      }else{
+        return
       }
 
+     
+  }
 
+    const addProduct = () =>{
 
+      let html =[]
+    
+      html.push(
+
+        newProducts.map((product)=>{
+          console.log(newProducts)
+          const addItemWithAlert =() =>{
+            onAdd(product, qty)
+              Toast.fire({
+                icon: "success",
+                title: "Item Added!",
+                customClass: "swalpopup",
+                timer: 1000,
+                width: 700,
+              });
+           
+           
+    
+          }
+          return (
+
+            <motion.div
+            className="animatable"
+            whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Fab
+              variant="extended"
+              aria-label="add"
+              onClick={addItemWithAlert}
+              sx={{
+                color: "white",
+                backgroundColor: "#063970",
+                ":hover": { backgroundColor: "#031c38" },
+                float: "right",
+               
+                marginRight: "5%",
+                height: "100%",
+                width: 200,
+                height: 65,
+                borderRadius: 10,
+              }}
+            >
+              Add Item To Loan
+            </Fab>
+          </motion.div>
+            // <Button 
+            // size="normal"
+            // variant="contained"
+            // sx={{
+            //   color: "white",
+            //   backgroundColor: "#063970",
+            //   height: "100%",
+            //   width: 200,
+            //   height: 65,
+            //   borderRadius: 10,
+            // }}
+            // onClick={addItemWithAlert}
+            // > Add Item to Loan
+            // </Button>
+          )
+        })
+      )
+    
+      return html
+    }
+console.log(cartItems)
   return (
     <>
       {newLoanButton()}
@@ -240,8 +255,9 @@ export default function ViewProduct ( ) {
         </CardContainer>
       )}
 
-   
+{/* {addInside()} */}
      
     </>
   );
 };
+export default ViewProduct;
