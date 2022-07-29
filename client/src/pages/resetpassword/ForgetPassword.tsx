@@ -27,10 +27,10 @@ const ForgetPassword: React.FC = () => {
   const mutation = useMutation(ForgotPassword, {
     onSuccess: (data) => {
       Toast.fire({
-        icon: "success",
-        title: "Please check your email for reset password link",
+        icon: "info",
+        title: "Please check your email for the link to reset your password.",
         customClass: "swalpopup",
-        timer: 1500,
+        timer: 5000,
       });
     },
     onError: (data) => {

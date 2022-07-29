@@ -55,7 +55,7 @@ const ResetToNewPassword: React.FC = () => {
                 icon: "success",
                 title: "New password set",
                 customClass: "swalpopup",
-                timer: 1500,
+                timer: 3000,
             });
             return navigate("/login", { replace: true });
         },
