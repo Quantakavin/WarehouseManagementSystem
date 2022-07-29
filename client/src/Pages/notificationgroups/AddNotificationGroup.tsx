@@ -1,5 +1,7 @@
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
 import { SelectChangeEvent } from "@mui/material";
 import axios from "axios";
 import { motion, useAnimation } from "framer-motion";
@@ -9,14 +11,15 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { GetCompanies } from "../../api/CompanyDB";
 import {
-  GetNotificationFeatures,
-  GetNotificationTypes,
+    GetNotificationFeatures,
+    GetNotificationTypes
 } from "../../api/NotificationFeatureDB";
 import { PostNotificationGroup } from "../../api/NotificationGroupDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import GeneralButton from "../../components/buttons/GeneralButton";
+import SubmitButton from "../../components/buttons/SubmitButton";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormContainer from "../../components/form/FormContainer";
 import FormField from "../../components/form/FormField";
@@ -25,16 +28,13 @@ import FormTextArea from "../../components/form/FormTextArea";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import SelectDropdown from "../../components/form/SelectDropdown";
 import SelectedList from "../../components/form/SelectedList";
-import SubmitButton from "../../components/buttons/SubmitButton";
 import {
-  Company,
-  NotiFeature,
-  NotiType,
-  Option,
+    Company,
+    NotiFeature,
+    NotiType,
+    Option
 } from "../../utils/CommonTypes";
-import { NameValidation, SelectValidation, DescriptionValidation } from "../../utils/FormValidation";
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
-import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
+import { DescriptionValidation, NameValidation, SelectValidation } from "../../utils/FormValidation";
 
 interface FormValues {
   name: string;

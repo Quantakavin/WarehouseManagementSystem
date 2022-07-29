@@ -1,4 +1,4 @@
-import {useCart} from 'react-use-cart'
+import { useCart } from 'react-use-cart';
 
 function Cart() {
     const {

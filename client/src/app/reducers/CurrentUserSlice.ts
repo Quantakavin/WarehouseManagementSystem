@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Root } from "react-dom/client";
 import type { RootState } from "../../app/store";
 
 // Define a type for the slice state

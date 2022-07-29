@@ -1,6 +1,6 @@
 import Cards from "../../components/cards/cards";
-import LineCharts from "../../components/charts/LineCharts";
 import BarCharts from "../../components/charts/BarCharts";
+import LineCharts from "../../components/charts/LineCharts";
 import PieCharts from "../../components/charts/PieCharts";
 import "../../styles/Dashboard.scss";
 

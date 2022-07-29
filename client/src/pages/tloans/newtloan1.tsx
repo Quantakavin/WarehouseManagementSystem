@@ -11,39 +11,35 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Stack from '@mui/material/Stack';
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import { randomId } from "@mui/x-data-grid-generator";
 import {
-  DataGrid,
-  GridActionsCellItem,
-  GridColumns,
-  GridEventListener,
-  GridRowId,
-  GridRowModel,
-  GridRowModes,
-  GridRowModesModel,
-  GridRowParams,
-  GridRowsProp,
-  MuiEvent,
+    DataGrid,
+    GridActionsCellItem,
+    GridColumns,
+    GridEventListener,
+    GridRowId,
+    GridRowModel,
+    GridRowModes,
+    GridRowModesModel,
+    GridRowParams,
+    GridRowsProp,
+    MuiEvent
 } from "@mui/x-data-grid";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import axios from "axios";
+import dateFormat from "dateformat";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { useFormState, useForm, appendErrors } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
+import { useBasket } from "../../components/context/basketContext";
 import "./TLoanTable/table.css";
-import {useCart} from 'react-use-cart'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import Stack from '@mui/material/Stack';
-import dateFormat, { masks } from "dateformat";
-import { useBasket } from "../../components/context/basketContext"
 
 
 

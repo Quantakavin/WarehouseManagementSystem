@@ -16,10 +16,10 @@ import Button from "@mui/material/Button";
 import { useInfiniteQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import {
-  GetCurrent,
-  GetDraft,
-  GetHistory,
-  GetPending,
+    GetCurrent,
+    GetDraft,
+    GetHistory,
+    GetPending
 } from "../../api/TLoanDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";

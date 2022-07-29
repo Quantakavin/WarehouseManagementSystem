@@ -1,40 +1,26 @@
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import MailIcon from "@mui/icons-material/Mail";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
+import ArticleIcon from "@mui/icons-material/Article";
+import AssignmentReturnIcon from "@mui/icons-material/AssignmentReturn";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import PersonIcon from "@mui/icons-material/Person";
+import WarehouseIcon from "@mui/icons-material/Warehouse";
 import { Toolbar } from "@mui/material";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import MuiDrawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import { CSSObject, styled, Theme, useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
-  selectName,
-  selectRole,
-  selectPermissions,
+    selectName, selectPermissions, selectRole
 } from "../../app/reducers/CurrentUserSlice";
 import { Close, Open, selectOpen } from "../../app/reducers/SidebarSlice";
 import defaultprofile from "../../assets/defaultprofile.png";
 import SidebarLink from "./SidebarLink";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import InventoryIcon from "@mui/icons-material/Inventory";
-import ArticleIcon from "@mui/icons-material/Article";
-import AssignmentReturnIcon from "@mui/icons-material/AssignmentReturn";
-import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import PersonIcon from "@mui/icons-material/Person";
-import WarehouseIcon from "@mui/icons-material/Warehouse";
-import { useState } from "react";
 
 const drawerWidth = 240;
 

@@ -14,18 +14,21 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import {
-  DataGrid,
-  GridActionsCellItem,
-  GridColumns,
-  GridEventListener,
-  GridRowId,
-  GridRowModel,
-  GridRowModes,
-  GridRowModesModel,
-  GridRowParams,
-  GridRowsProp,
-  MuiEvent,
+    DataGrid,
+    GridActionsCellItem,
+    GridColumns,
+    GridEventListener,
+    GridRowId,
+    GridRowModel,
+    GridRowModes,
+    GridRowModesModel,
+    GridRowParams,
+    GridRowsProp,
+    MuiEvent
 } from "@mui/x-data-grid";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import axios from "axios";
 import dateFormat from "dateformat";
 import { motion } from "framer-motion";
@@ -37,9 +40,6 @@ import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import "./TLoanTable/table.css";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 function newtloan() {
   interface EditToolbarProps {

@@ -11,9 +11,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import {
-  DataGrid,
-  GridColDef,
-  GridRenderCellParams
+    DataGrid,
+    GridColDef,
+    GridRenderCellParams
 } from "@mui/x-data-grid";
 import { motion } from "framer-motion";
 import React from "react";

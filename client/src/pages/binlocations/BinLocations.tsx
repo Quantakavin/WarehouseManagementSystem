@@ -1,7 +1,6 @@
-import { Camera } from "@mui/icons-material";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useRef } from "react";
 import * as THREE from "three";
 import Rack from "../../components/3Dmodels/Rack";
 import "../../styles/BinLocation.scss";

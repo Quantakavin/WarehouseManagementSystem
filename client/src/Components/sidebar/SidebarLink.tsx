@@ -3,7 +3,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { ChangeTab, selectCurrentTab, selectOpen } from "../../app/reducers/SidebarSlice";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 
 interface SidebarLink {
   url: string;

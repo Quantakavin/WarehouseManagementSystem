@@ -1,5 +1,3 @@
-import { AxiosResponse } from "axios";
-import { UseMutationResult } from "react-query";
 
 export type Option = {
   id: number;

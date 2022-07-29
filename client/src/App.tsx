@@ -1,21 +1,28 @@
+import { Box } from "@mui/material";
 import React from "react";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { CartProvider } from "react-use-cart";
+import { StateContext } from '../src/components/context/newBasketContext';
 import { useAppSelector } from "./app/hooks";
 import { selectIsAuthenticated } from "./app/reducers/CurrentUserSlice";
 import RmaDisplay from "./components/display/rmaDisplay";
 import TLoanDisplay2 from "./components/display/tloanDisplay2";
 import TLoanManagerDisplay from "./components/display/tloanManagerDisplay";
 import TLoanManagerExtensionDisplay from "./components/display/tloanManagerExtensionDisplay";
-import TopBar from "./components/header/TopBar";
-import Sidebar from "./components/sidebar/SideBar";
+import TLoanWarehouseDisplay from "./components/display/tloanWarehouseWorkerDisplay";
+import TopNav from "./components/header/TopNav";
+import Modals12 from "./components/modals/tloanExtensionModal";
+import Sidebar2 from "./components/sidebar/Sidebar2";
 import BinLocations from "./pages/binlocations/BinLocations";
 import Dashboard from "./pages/dashboards/Dashboards";
+import Error401 from "./pages/error/Error401";
+import Error403 from "./pages/error/Error403";
+import Error404 from "./pages/error/Error404";
 import AddNotificationGroup from "./pages/notificationgroups/AddNotificationGroup";
 import EditNotificationGroup from "./pages/notificationgroups/EditNotificationGroup";
 import NotificationGroups2 from "./pages/notificationgroups/NotificationGroups2";
 import ViewNotificationGroup from "./pages/notificationgroups/ViewNotificationGroup";
 import Products2 from "./pages/products/Products2";
-import ProductsPag from "./pages/products/TestProducts";
 import ViewProduct from "./pages/products/ViewProduct";
 import CreateRMA from "./pages/rma/createRma";
 import RMA from "./pages/rma/rma";
@@ -31,19 +38,6 @@ import Login from "./pages/users/Login";
 import Profile from "./pages/users/Profile";
 import Users2 from "./pages/users/Users2";
 import ViewUser from "./pages/users/ViewUser";
-import TLoanWarehouseDisplay from "./components/display/tloanWarehouseWorkerDisplay";
-// import ViewUser2 from "./pages/users/ViewUser2";
-// import ViewUserGroup2 from "./pages/usergroups/ViewUserGroup2";
-import { Box } from "@mui/material";
-import Modals12 from "./components/modals/tloanExtensionModal";
-import Error403 from "./pages/error/Error403";
-import Error404 from "./pages/error/Error404";
-import Error401 from "./pages/error/Error401";
-import Sidebar2 from "./components/sidebar/Sidebar2";
-import TopNav from "./components/header/TopNav";
-import { BasketProvider } from '../src/components/context/basketContext'
-import { CartProvider } from "react-use-cart";
-import { StateContext } from '../src/components/context/newBasketContext'
 
 
 interface ProtectedRouteProps {
@@ -88,7 +82,6 @@ const App: React.FC = () => {
             <Route element={<ProtectedRoute loginpage={false} />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/products" element={<CartProvider><Products2 /></CartProvider>} />
-              <Route path="/productspag" element={<ProductsPag />} />
               <Route
                 path="/product/:id"
                 element={<CartProvider><ViewProduct /></CartProvider>}/>

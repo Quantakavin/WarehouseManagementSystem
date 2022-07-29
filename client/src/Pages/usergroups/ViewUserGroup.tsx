@@ -1,11 +1,11 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Container } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
+import DOMPurify from "dompurify";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import DOMPurify from "dompurify";
 import { GetUserGroup } from "../../api/UserGroupDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";

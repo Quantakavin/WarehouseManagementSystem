@@ -1,22 +1,17 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import React, { useState, useEffect, createContext, ReactNode, useContext } from "react";
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import Fab from "@mui/material/Fab";
+import axios from "axios";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetProduct } from "../../api/ProductDB";
+import { Toast } from "../../components/alerts/SweetAlert";
 import CardContainer from "../../components/cards/CardContainer";
 import CardField from "../../components/cards/CardField";
+import { useBasket } from "../../components/context/basketContext";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
-import { useCart } from "react-use-cart";
-import _ from "lodash";
-import axios from "axios";
-import Button from "@mui/material/Button";
-import { Toast } from "../../components/alerts/SweetAlert";
-import PostAddIcon from "@mui/icons-material/PostAdd";
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import { motion } from "framer-motion";
-import Fab from "@mui/material/Fab";
-import { useBasket} from "../../components/context/basketContext"
-import { useLocalStorage } from "../../hooks/useLocalStorage"
 
 // type ShoppingCartProviderProps = {
 //   children: ReactNode

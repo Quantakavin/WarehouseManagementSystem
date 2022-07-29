@@ -1,4 +1,4 @@
-import { Box, Card, Grid } from "@mui/material";
+import { Card, Grid } from "@mui/material";
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import "../../styles/chart.scss";
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const useTogglePassword = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);

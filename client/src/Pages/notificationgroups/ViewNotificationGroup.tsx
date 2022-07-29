@@ -1,6 +1,7 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Container } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
+import DOMPurify from 'dompurify';
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
@@ -10,7 +11,6 @@ import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
 import DataTable from "../../components/table/DataTable";
-import DOMPurify from 'dompurify';
 
 const ViewNotificationGroup: React.FC = () => {
   const params = useParams();
