@@ -54,11 +54,12 @@ import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../alerts/SweetAlert";
 import ReasonModalButton from "../modals/rmaReasonModal";
 import RejectModalButton from "../modals/rmaRejectModal";
+import { RMA } from "../../utils/CommonTypes";
 
 const RmaDisplay: React.FC = () => {
   const navigate = useNavigate();
   const userrole = useAppSelector(selectRole);
-  const [rma, setRma] = useState([]);
+  const [rma, setRma] = useState<RMA>([]);
   const [rows, setRows] = useState([]);
   const [pageSize, setPageSize] = React.useState(25);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
@@ -122,9 +123,7 @@ const RmaDisplay: React.FC = () => {
         });
         navigate("/rma");
       })
-      .catch((error) => {
-        console.log(error.response.data.message);
-      });
+      .catch((error) => {});
   };
   // Update RMA checklist
   const updateChecklist = async () => {
@@ -140,9 +139,7 @@ const RmaDisplay: React.FC = () => {
         });
         navigate("/rma");
       })
-      .catch((error) => {
-        console.log(error.response.data.message);
-      });
+      .catch((error) => {});
   };
   // Receive RMA
   const receiveRMA = async () => {
@@ -158,9 +155,7 @@ const RmaDisplay: React.FC = () => {
         });
         navigate("/rma");
       })
-      .catch((error) => {
-        console.log(error.response.data.message);
-      });
+      .catch((error) => {});
   };
   // Verify RMA
   const verifyRMA = async () => {
@@ -177,7 +172,6 @@ const RmaDisplay: React.FC = () => {
         navigate("/rma");
       })
       .catch((error) => {
-        console.log(error.response.data.message);
         Toast.fire({
           icon: "error",
           title: "Please enter instructions for each product!",
@@ -202,7 +196,6 @@ const RmaDisplay: React.FC = () => {
         navigate("/rma");
       })
       .catch((error) => {
-        console.log(error.response.data.message);
         Toast.fire({
           icon: "error",
           title: "Please update the COA for each product!",
@@ -226,9 +219,7 @@ const RmaDisplay: React.FC = () => {
         });
         navigate("/rma");
       })
-      .catch((error) => {
-        console.log(error.response.data.message);
-      });
+      .catch((error) => {});
   };
   // const products = rma.RMAProducts;
 
@@ -582,7 +573,6 @@ const RmaDisplay: React.FC = () => {
 
   const handleSaveClick = (id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    console.log(rows);
   };
 
   const handleDeleteClick = (id: GridRowId) => () => {
@@ -625,84 +615,84 @@ const RmaDisplay: React.FC = () => {
     );
   };
 
-  const columns: GridColDef[] = [
-    { field: "id", headerName: "PK", flex: 1, editable: true },
-    { field: "ItemCode", headerName: "Item Code", flex: 2, editable: true },
-    {
-      field: "InvoiceNo",
-      headerName: "Invoice Number",
-      flex: 3,
-      editable: true,
-    },
-    { field: "DoNo", headerName: "D.O Number", flex: 3, editable: true },
-    {
-      field: "DateOfPurchase",
-      headerName: "Date Of Purchase",
-      ...dateColumnType,
-      flex: 3,
-      editable: true,
-    },
-    {
-      field: "ReturnReason",
-      headerName: "Reason For Return",
-      flex: 9,
-      editable: true,
-    },
-    {
-      field: "Instructions",
-      headerName: "Instructions",
-      flex: 9,
-      editable: true,
-    },
-    {
-      field: "CourseOfAction",
-      headerName: "Course Of Action",
-      flex: 9,
-      editable: true,
-    },
-    {
-      field: "actions",
-      type: "actions",
-      headerName: "Actions",
-      flex: 2,
-      cellClassName: "actions",
-      getActions: ({ id }) => {
-        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+  // const columns: GridColDef[] = [
+  //   { field: "id", headerName: "PK", flex: 1, editable: true },
+  //   { field: "ItemCode", headerName: "Item Code", flex: 2, editable: true },
+  //   {
+  //     field: "InvoiceNo",
+  //     headerName: "Invoice Number",
+  //     flex: 3,
+  //     editable: true,
+  //   },
+  //   { field: "DoNo", headerName: "D.O Number", flex: 3, editable: true },
+  //   {
+  //     field: "DateOfPurchase",
+  //     headerName: "Date Of Purchase",
+  //     ...dateColumnType,
+  //     flex: 3,
+  //     editable: true,
+  //   },
+  //   {
+  //     field: "ReturnReason",
+  //     headerName: "Reason For Return",
+  //     flex: 9,
+  //     editable: true,
+  //   },
+  //   {
+  //     field: "Instructions",
+  //     headerName: "Instructions",
+  //     flex: 9,
+  //     editable: true,
+  //   },
+  //   {
+  //     field: "CourseOfAction",
+  //     headerName: "Course Of Action",
+  //     flex: 9,
+  //     editable: true,
+  //   },
+  //   {
+  //     field: "actions",
+  //     type: "actions",
+  //     headerName: "Actions",
+  //     flex: 2,
+  //     cellClassName: "actions",
+  //     getActions: ({ id }) => {
+  //       const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
-        if (isInEditMode) {
-          return [
-            <GridActionsCellItem
-              icon={<SaveIcon />}
-              label="Save"
-              onClick={handleSaveClick(id)}
-            />,
-            <GridActionsCellItem
-              icon={<CancelIcon />}
-              label="Cancel"
-              className="textPrimary"
-              onClick={handleCancelClick(id)}
-              color="inherit"
-            />,
-          ];
-        }
-        return [
-          <GridActionsCellItem
-            icon={<EditIcon />}
-            label="Edit"
-            className="textPrimary"
-            onClick={handleEditClick(id)}
-            color="inherit"
-          />,
-          <GridActionsCellItem
-            icon={<DeleteIcon />}
-            label="Delete"
-            onClick={handleDeleteClick(id)}
-            color="inherit"
-          />,
-        ];
-      },
-    },
-  ];
+  //       if (isInEditMode) {
+  //         return [
+  //           <GridActionsCellItem
+  //             icon={<SaveIcon />}
+  //             label="Save"
+  //             onClick={handleSaveClick(id)}
+  //           />,
+  //           <GridActionsCellItem
+  //             icon={<CancelIcon />}
+  //             label="Cancel"
+  //             className="textPrimary"
+  //             onClick={handleCancelClick(id)}
+  //             color="inherit"
+  //           />,
+  //         ];
+  //       }
+  //       return [
+  //         <GridActionsCellItem
+  //           icon={<EditIcon />}
+  //           label="Edit"
+  //           className="textPrimary"
+  //           onClick={handleEditClick(id)}
+  //           color="inherit"
+  //         />,
+  //         <GridActionsCellItem
+  //           icon={<DeleteIcon />}
+  //           label="Delete"
+  //           onClick={handleDeleteClick(id)}
+  //           color="inherit"
+  //         />,
+  //       ];
+  //     },
+  //   },
+  // ];
 
   const staticcolumns: GridColDef[] = [
     { field: "id", headerName: "PK", flex: 1, editable: false },
@@ -778,8 +768,8 @@ const RmaDisplay: React.FC = () => {
       editable: false,
       cellClassName: (params: GridCellParams<boolean>) =>
         clsx("status-cell", {
-          true: params.value == true,
-          false: params.value == false,
+          true: params.value === true,
+          false: params.value === false,
         }),
     },
     {

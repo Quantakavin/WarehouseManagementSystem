@@ -37,7 +37,7 @@ const Rmatabs: React.FC = () => {
   const [myAcceptedTable, setMATable] = useState([]);
   const [myRejectedTable, setMRTable] = useState([]);
   const [myInProgressTable, setMIPTable] = useState([]);
-  const [value, setValue] = useState(0); // first tab
+  const [value, setValue] = useState(); // first tab
 
   useEffect(() => {
     fetch("http://localhost:5000/api/pendingRMA")
@@ -296,7 +296,7 @@ const Rmatabs: React.FC = () => {
                               alignItems="center"
                               justifyContent="center"
                             >
-                              No approved RMA requests
+                              No pending RMA requests
                             </Stack>
                           ),
                         }}
@@ -333,7 +333,7 @@ const Rmatabs: React.FC = () => {
                               alignItems="center"
                               justifyContent="center"
                             >
-                              No pending RMA requests
+                              No accepted RMA requests
                             </Stack>
                           ),
                         }}
@@ -370,7 +370,7 @@ const Rmatabs: React.FC = () => {
                               alignItems="center"
                               justifyContent="center"
                             >
-                              No pending RMA requests
+                              No rejected RMA requests
                             </Stack>
                           ),
                         }}
@@ -1298,7 +1298,7 @@ const Rmatabs: React.FC = () => {
                           alignItems="center"
                           justifyContent="center"
                         >
-                          No approved RMA requests
+                          No pending RMA requests
                         </Stack>
                       ),
                     }}
@@ -1335,7 +1335,7 @@ const Rmatabs: React.FC = () => {
                           alignItems="center"
                           justifyContent="center"
                         >
-                          No pending RMA requests
+                          No accepted RMA requests
                         </Stack>
                       ),
                     }}
@@ -1372,7 +1372,7 @@ const Rmatabs: React.FC = () => {
                           alignItems="center"
                           justifyContent="center"
                         >
-                          No pending RMA requests
+                          No RMA requests received
                         </Stack>
                       ),
                     }}
@@ -1409,7 +1409,7 @@ const Rmatabs: React.FC = () => {
                           alignItems="center"
                           justifyContent="center"
                         >
-                          No pending RMA requests
+                          No verified RMA requests
                         </Stack>
                       ),
                     }}
@@ -1446,7 +1446,7 @@ const Rmatabs: React.FC = () => {
                           alignItems="center"
                           justifyContent="center"
                         >
-                          No pending RMA requests
+                          No RMA requests in progress
                         </Stack>
                       ),
                     }}
@@ -1483,7 +1483,7 @@ const Rmatabs: React.FC = () => {
                           alignItems="center"
                           justifyContent="center"
                         >
-                          No pending RMA requests
+                          No closed RMA requests
                         </Stack>
                       ),
                     }}

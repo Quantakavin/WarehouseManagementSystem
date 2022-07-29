@@ -129,7 +129,7 @@ const TLoanTabs2: React.FC = () => {
   const [pageSize, setPageSize] = React.useState(25);
   const [inputName, setInputName] = useState<string>(null);
 
-  const [value, setValue] = useState(0); // first tab
+  const [value, setValue] = useState(); // first tab
 
   const handleChange = (_event, newValue) => {
     setValue(newValue);

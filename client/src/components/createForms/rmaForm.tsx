@@ -57,7 +57,6 @@ import { Toast } from "../alerts/SweetAlert";
 
 const CreateRMA: React.FC = () => {
   const navigate = useNavigate();
-  const [open, setOpen] = React.useState(true);
   const sid = useAppSelector(selectId);
   const userrole = useAppSelector(selectRole);
   const [rows, setRows] = useState([]);
@@ -348,29 +347,11 @@ const CreateRMA: React.FC = () => {
     return updatedRow;
   };
 
-  const StyledBox = styled(Box)(({ theme }) => ({
-    height: 400,
-    width: "100%",
-    "& .MuiDataGrid-cell--editable": {
-      backgroundColor:
-        theme.palette.mode === "dark" ? "#376331" : "rgb(217 243 190)",
-      "& .MuiInputBase-root": {
-        height: "100%",
-      },
-    },
-    "& .Mui-error": {
-      backgroundColor: `rgb(126,10,15, ${
-        theme.palette.mode === "dark" ? 0 : 0.1
-      })`,
-      color: theme.palette.mode === "dark" ? "#ff4343" : "#750f0f",
-    },
-  }));
-
   let promiseTimeout: any;
   function validateItemCode(ItemCode: string): Promise<boolean> {
     return new Promise<any>((resolve) => {
       promiseTimeout = setTimeout(() => {
-        const exists = ItemCode == "";
+        const exists = ItemCode === "";
         resolve(exists ? `Required` : null);
       }); // simulate network latency
     });
@@ -379,7 +360,7 @@ const CreateRMA: React.FC = () => {
   function validateInvNo(InvoiceNo: string): Promise<boolean> {
     return new Promise<any>((resolve) => {
       promiseTimeout = setTimeout(() => {
-        const exists = InvoiceNo == "";
+        const exists = InvoiceNo === "";
         resolve(exists ? `Required` : null);
       }); // simulate network latency
     });
@@ -388,7 +369,7 @@ const CreateRMA: React.FC = () => {
   function validateDoNo(DoNo: string): Promise<boolean> {
     return new Promise<any>((resolve) => {
       promiseTimeout = setTimeout(() => {
-        const exists = DoNo == "";
+        const exists = DoNo === "";
         resolve(exists ? `Required` : null);
       }); // simulate network latency
     });
@@ -397,7 +378,7 @@ const CreateRMA: React.FC = () => {
   function validateDOP(DateOfPurchase: string): Promise<boolean> {
     return new Promise<any>((resolve) => {
       promiseTimeout = setTimeout(() => {
-        const exists = DateOfPurchase == "";
+        const exists = DateOfPurchase === "";
         resolve(exists ? `Please enter an Date of Purchase` : null);
       }); // simulate network latency
     });
@@ -406,7 +387,7 @@ const CreateRMA: React.FC = () => {
   function validateROR(ReturnReason: string): Promise<boolean> {
     return new Promise<any>((resolve) => {
       promiseTimeout = setTimeout(() => {
-        const exists = ReturnReason == "";
+        const exists = ReturnReason === "";
         resolve(exists ? `Required` : null);
       }); // simulate network latency
     });
@@ -421,7 +402,7 @@ const CreateRMA: React.FC = () => {
     },
   }));
 
-  function ItemCodeEditInputCell(props: GridRenderEditCellParams) {
+  const ItemCodeEditInputCell = (props: GridRenderEditCellParams) => {
     const { itemcodeerror } = props;
 
     return (
@@ -429,13 +410,13 @@ const CreateRMA: React.FC = () => {
         <GridEditInputCell {...props} />
       </StyledTooltip>
     );
-  }
+  };
 
   function renderEditItemCode(params: GridRenderEditCellParams) {
     return <ItemCodeEditInputCell {...params} />;
   }
 
-  function InvNoEditInputCell(props: GridRenderEditCellParams) {
+  const InvNoEditInputCell = (props: GridRenderEditCellParams) => {
     const { invnoerror } = props;
 
     return (
@@ -443,13 +424,13 @@ const CreateRMA: React.FC = () => {
         <GridEditInputCell {...props} />
       </StyledTooltip>
     );
-  }
+  };
 
   function renderEditInvNo(params: GridRenderEditCellParams) {
     return <InvNoEditInputCell {...params} />;
   }
 
-  function DoNoEditInputCell(props: GridRenderEditCellParams) {
+  const DoNoEditInputCell = (props: GridRenderEditCellParams) => {
     const { donoerror } = props;
 
     return (
@@ -457,27 +438,13 @@ const CreateRMA: React.FC = () => {
         <GridEditInputCell {...props} />
       </StyledTooltip>
     );
-  }
+  };
 
   function renderEditDoNo(params: GridRenderEditCellParams) {
     return <DoNoEditInputCell {...params} />;
   }
 
-  function DOPEditInputCell(props: GridRenderEditCellParams) {
-    const { doperror } = props;
-
-    return (
-      <StyledTooltip open={!!doperror} title={doperror}>
-        <GridEditInputCell {...props} />
-      </StyledTooltip>
-    );
-  }
-
-  function renderEditDOP(params: GridRenderEditCellParams) {
-    return <DOPEditInputCell {...params} />;
-  }
-
-  function ROREditInputCell(props: GridRenderEditCellParams) {
+  const ROREditInputCell = (props: GridRenderEditCellParams) => {
     const { rorerror } = props;
 
     return (
@@ -485,7 +452,7 @@ const CreateRMA: React.FC = () => {
         <GridEditInputCell {...props} />
       </StyledTooltip>
     );
-  }
+  };
 
   function renderEditROR(params: GridRenderEditCellParams) {
     return <ROREditInputCell {...params} />;
@@ -653,16 +620,14 @@ const CreateRMA: React.FC = () => {
   const products = rows.map(({ id, isNew, ...rows }) => rows);
   const trimDate = products.map((product) => {
     const trimdate = new Date(product.DateOfPurchase);
-    product.DateOfPurchase =
-      (trimdate.getMonth() > 8
+    product.DateOfPurchase = `${
+      trimdate.getMonth() > 8
         ? trimdate.getMonth() + 1
-        : "0" + (trimdate.getMonth() + 1)) +
-      "-" +
-      (trimdate.getDate() > 9 ? trimdate.getDate() : "0" + trimdate.getDate()) +
-      "-" +
-      trimdate.getFullYear();
+        : `0${trimdate.getMonth() + 1}`
+    }-${
+      trimdate.getDate() > 9 ? trimdate.getDate() : `0${trimdate.getDate()}`
+    }-${trimdate.getFullYear()}`;
   });
-  // console.log(products);
 
   const rmadetails = {
     contactperson,
@@ -671,17 +636,6 @@ const CreateRMA: React.FC = () => {
     contactemail,
     company,
     products,
-  };
-
-  const handleClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
   };
 
   const handleSubmit = async (e) => {
@@ -703,22 +657,22 @@ const CreateRMA: React.FC = () => {
         width: 315,
       });
     }
-    if (contactperson == "") {
+    if (contactperson === "") {
       setNameError(true);
       setNameErrorText("Required");
     }
-    if (contactemail == "") {
+    if (contactemail === "") {
       setEmailError(true);
       setEmailErrorText("Required");
     } else if (!contactemail.match(emailRegex)) {
       setEmailError(true);
       setEmailErrorText("Invalid email");
     }
-    if (company == "") {
+    if (company === "") {
       setCompError(true);
       setCompErrorText("Required");
     }
-    if (contactno == "") {
+    if (contactno === "") {
       setNumError(true);
       setNumErrorText("Required");
     } else if (!contactno.match(phoneRegex)) {
