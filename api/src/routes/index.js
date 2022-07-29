@@ -1,5 +1,4 @@
 const router = require('express').Router();
-//const rmaRoute = require('./rma.route');
 const companyRoute = require('./companyRoutes');
 const featureRoute = require('./featureRoutes');
 const notificationFeatureRoutes = require('./notificationFeatureRoutes');
@@ -11,9 +10,8 @@ const tloanRoutes = require('./tLoanRoutes');
 const dashboardRoutes = require('./dashboardRoutes');
 const binRoutes = require('./binRoutes');
 const rmaRoutes = require('./rma.route');
-const resetPassword = require('./resetPassword');
+const resetPasswordRoutes = require('./resetPasswordRoutes');
 
-router.use(rmaRoutes);
 router.use(companyRoute);
 router.use(featureRoute);
 router.use(notificationFeatureRoutes);
@@ -24,6 +22,7 @@ router.use(notificationGroupRoutes);
 router.use(tloanRoutes);
 router.use(dashboardRoutes);
 router.use(binRoutes);
-router.use(resetPassword);
+router.use(rmaRoutes);
+router.use(resetPasswordRoutes);
 
 module.exports = router;

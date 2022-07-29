@@ -1,11 +1,12 @@
 const express = require('express');
 const resetPassword = express.Router();
 const userService = require('../services/userService');
-const { hashSync, genSaltSync } = require('bcrypt');
+const resetPasswordService = require('../services/resetPasswordService');
+const { hashSync, genSaltSync } = require("bcrypt");
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
-resetPassword.post('/forgotPassword', async (req, res, next) => {
+module.exports.forgotPassword = async (req, res, next) => {
     try {
         const email = req.body.email;
         console.log(email);
@@ -17,12 +18,12 @@ resetPassword.post('/forgotPassword', async (req, res, next) => {
 
         if (user[0].length > 0) {
             if (user[0][0].Active !== 'Y') {
-                res.json({
-                    message: 'User account is inactive'
+                res.status(401).json({
+                    message: 'User account has been deactivated.'
                 });
             } else if (user[0][0].Active == 'Y') {
-                // Get all tokens that were previously set for this user and set used to 1. Prevents old and expired tokens from being used.
-                await userService.expireOldTokens(email, 1);
+                // Get all tokens that were previously set for this user and set used to 1. Prevents old and expired tokens from being used. 
+                await resetPasswordService.expireOldTokens(email, 1);
 
                 // Create reset token that expires after 1 hours.
                 const resetToken = crypto.randomBytes(40).toString('hex');
@@ -32,23 +33,23 @@ resetPassword.post('/forgotPassword', async (req, res, next) => {
                 const expiredAt = resetTokenExpires;
 
                 // Insert new token into resetPasswordToken table.
-                await userService.insertResetToken(email, resetToken, createdAt, expiredAt, 0);
+                await resetPasswordService.insertResetToken(email, resetToken, createdAt, expiredAt, 0);
 
                 // Send email
                 await sendPasswordResetEmail(email, resetToken, origin);
-                res.json({
-                    message: 'Please check your email for a new password'
+                res.status(200).json({
+                    message: 'Please check your email for the reset password link.'
                 });
             }
         } else {
-            res.json({
-                message: 'Invalid user'
+            res.status(404).json({
+                message: 'User email address not found in database.'
             });
         }
     } catch (e) {
         console.log(e);
     }
-});
+};
 
 async function sendEmail({
     from = process.env.EMAIL_FROM, // stored in .env file
@@ -60,8 +61,8 @@ async function sendEmail({
         host: 'smtp.ethereal.email', // change when not using ethereal host email (e.g. to gmail)
         port: 587,
         auth: {
-            user: 'cordell17@ethereal.email', // use user email address OR ethereal email address (when testing)
-            pass: 'uCerXJx5Tq3wUzs6C6' // use user email password OR ethereal email password (when testing)
+            user: 'westley11@ethereal.email', // use user email address OR ethereal email address (when testing)
+            pass: 'wGD5eENxbZ9RjHhMt8' // use user email password OR ethereal email password (when testing)
         },
         tls: {
             rejectUnauthorized: false
@@ -82,7 +83,7 @@ async function sendPasswordResetEmail(email, resetToken, origin) {
     let message;
 
     if (origin) {
-        const resetUrl = `${origin}/api/resetPassword?token=${resetToken} email=${email}`;
+        const resetUrl = `${origin}/resetpassword?token=${resetToken}&email=${email}`;
         message = `<p>Please click the below link to reset your password, the link will be valid for 1 hour:</p>
                        <p><a href="${resetUrl}">${resetUrl}</a></p>`;
     } else {
@@ -97,36 +98,17 @@ async function sendPasswordResetEmail(email, resetToken, origin) {
         html: `<h4>Reset Password </h4>
                    ${message}`
     });
-}
+};
 
-// Reset token validation
-async function validateResetToken(req, res, next) {
-    const email = req.body.email;
-    const resetToken = req.body.token;
-
-    if (!resetToken || !email) {
-        return res.sendStatus(400);
-    }
-
-    // Verify if token exists in the resetPasswordToken and not expired.
-    const currentTime = new Date(Date.now());
-
-    const token = await userService.findValidToken(resetToken, email, currentTime);
-
-    if (!token) {
-        res.json('Invalid token, please try again.');
-    }
-
-    next();
-}
-
-resetPassword.post('/resetPassword', validateResetToken, async (req, res, next) => {
+module.exports.resetPassword = async (req, res, next) => {
     try {
         const newPassword = req.body.password;
         const email = req.body.email;
 
         if (!newPassword) {
-            return res.sendStatus(400);
+            return res.status(400).json({
+                message: 'Please enter a new password.'
+            });
         }
 
         const user = await userService.getByEmail(email);
@@ -135,13 +117,12 @@ resetPassword.post('/resetPassword', validateResetToken, async (req, res, next) 
         const password = hashSync(newPassword, salt);
 
         await userService.updateUserPassword(password, user[0][0].UserID);
+        await resetPasswordService.expireOldTokens(email, 1);
 
-        res.json({
-            message: 'Password reset successful, you can now login with the new password'
+        res.status(200).json({
+            message: 'Password reset successful, you can now login with the new password.'
         });
     } catch (e) {
         console.log(e);
     }
-});
-
-module.exports = resetPassword;
+};

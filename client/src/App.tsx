@@ -38,6 +38,8 @@ import Login from "./pages/users/Login";
 import Profile from "./pages/users/Profile";
 import Users2 from "./pages/users/Users2";
 import ViewUser from "./pages/users/ViewUser";
+import ForgetPassword from "./pages/resetpassword/ForgetPassword";
+import ResetPassword from "./pages/resetpassword/ResetPassword";
 
 interface ProtectedRouteProps {
   loginpage: boolean;
@@ -77,6 +79,8 @@ const App: React.FC = () => {
                 <Route path="/401" element={<Error401 />} />
                 <Route path="/login" element={<Navigate replace to="/" />} />
                 <Route path="/" element={<Login />} />
+                <Route path="/forgetpassword" element={<ForgetPassword />} />
+                <Route path="/resetpassword" element={<ResetPassword />} />
               </Route>
               <Route element={<ProtectedRoute loginpage={false} />}>
                 <Route path="/dashboard" element={<Dashboard />} />

@@ -13,7 +13,7 @@ module.exports.loginUser = async (req, res) => {
         const results = await user.getByEmail(email);
         if (results[0].length > 0) {
             if (results[0][0].Active !== 'Y') {
-                return res.status(401).json({ message: 'Your account has been inactivated' });
+                return res.status(401).json({ message: 'Your account has been deactivated' });
             } else if (bcrypt.compareSync(password, results[0][0].Password) === true) {
                 const results2 = await userGroup.getFeatures(results[0][0].UserGroupID);
                 const data = {

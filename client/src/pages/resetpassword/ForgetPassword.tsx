@@ -8,54 +8,30 @@ import ErrorAlert from "../../components/form/ErrorAlert";
 import FormContainer from "../../components/form/FormContainer";
 import FormField from "../../components/form/FormField";
 import SubmitButton from "../../components/form/SubmitButton";
-import {
-  EmailValidation,
-  PasswordValidation,
-} from "../../utils/FormValidation";
-// import LoginUser from "../../api/user/LoginUser";
-import { LoginUser } from "../../api/UserDB";
-import { useAppDispatch } from "../../app/hooks";
-import { setUser } from "../../app/reducers/CurrentUserSlice";
-import { ChangeTab } from "../../app/reducers/SidebarSlice";
+import { EmailValidation } from "../../utils/FormValidation";
+import { ForgotPassword } from "../../api/ResetPasswordDB";
 import { Toast } from "../../components/alerts/SweetAlert";
 import { Link } from "@mui/material";
 
 interface FormValues {
   email: string;
-  password: string;
 }
 
-const Login: React.FC = () => {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+const ForgetPassword: React.FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({ mode: "onSubmit" });
 
-  const mutation = useMutation(LoginUser, {
+  const mutation = useMutation(ForgotPassword, {
     onSuccess: (data) => {
-      const { token, id, name, usergroup, permissions } = data.data;
-      localStorage.setItem("token", token);
-      localStorage.setItem("user_id", id);
-      localStorage.setItem("username", name);
-      dispatch(
-        setUser({
-          id,
-          role: usergroup,
-          name,
-          permissions,
-        })
-      );
-      dispatch(ChangeTab({ currenttab: "Dashboard" }));
       Toast.fire({
         icon: "success",
-        title: "Logged in successfully",
+        title: "Please check your email for reset password link",
         customClass: "swalpopup",
         timer: 1500,
       });
-      return navigate("/dashboard", { replace: true });
     },
     onError: (data) => {
       controls.start("detecterror");
@@ -81,7 +57,7 @@ const Login: React.FC = () => {
   return (
     <motion.div variants={variants} animate={controls}>
       <FormContainer
-        header="Login to your account"
+        header="Password Recovery"
         multistep={false}
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
@@ -94,31 +70,22 @@ const Login: React.FC = () => {
           error={errors.email}
           rules={EmailValidation}
         />
-        <FormField
-          label="Password"
-          name="password"
-          type="password"
-          register={register}
-          error={errors.password}
-          rules={PasswordValidation}
-        />
 
         {mutation.isError && axios.isAxiosError(mutation.error) ? (
           <ErrorAlert error={mutation.error} />
         ) : null}
-
-        <Link href="/forgetpassword" underline="hover" style={{ marginLeft: 50 }}>I forgot my password</Link>
-
         <div className="flexcontainer" style={{ marginTop: 20 }}>
           <SubmitButton
-            text="Continue"
+            text="Send email"
             loading={mutation.isLoading}
             multipart={false}
           />
         </div>
+
+        <Link href="/login" underline="hover" style={{ textAlign: "center", display: "block", marginLeft: "auto", marginRight: "auto" }}>Back to login</Link>
       </FormContainer>
     </motion.div>
   );
 };
 
-export default Login;
+export default ForgetPassword;

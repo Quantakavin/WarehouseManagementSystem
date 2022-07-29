@@ -4,6 +4,7 @@ const notificationGroupService = require('./notificationGroupService');
 const productService = require('./productService');
 const tLoanService = require('./tLoanService');
 const rmaService = require('./rma.service');
+const resetPasswordService = require('./resetPasswordService');
 
 module.exports = {
     userService,
@@ -11,5 +12,6 @@ module.exports = {
     notificationGroupService,
     productService,
     tLoanService,
-    rmaService
+    rmaService,
+    resetPasswordService
 };

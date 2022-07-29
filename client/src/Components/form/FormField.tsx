@@ -106,6 +106,7 @@ interface FormFieldProps<T> {
   register?: UseFormRegister<T>;
   rules?: RegisterOptions;
   error?: FieldError;
+  readOnly?;
 }
 
 const inputProps = {
@@ -125,6 +126,7 @@ const FormField = <T,>({
   register,
   rules,
   error,
+  readOnly
 }: FormFieldProps<T>) => {
   const { toggle, passwordType, showPassword } = useTogglePasword();
 
@@ -249,6 +251,7 @@ const FormField = <T,>({
             )
           }
           label={label}
+          readOnly={readOnly}
         />
       </div>
       <p className="errormsg">

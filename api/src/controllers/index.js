@@ -6,6 +6,7 @@ const tLoanController = require('./tLoanController');
 const rmaController = require('./rma.controller');
 const dashboardController = require('./dashboardController');
 const binsController = require('./binsController');
+const resetPasswordController = require('../controllers/resetPasswordController');
 
 module.exports = {
     userController,
@@ -15,5 +16,6 @@ module.exports = {
     tLoanController,
     rmaController,
     dashboardController,
-    binsController
+    binsController,
+    resetPasswordController
 };
