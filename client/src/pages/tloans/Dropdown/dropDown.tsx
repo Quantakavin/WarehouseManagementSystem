@@ -138,4 +138,3 @@ function DurationOfLoan() {
 }
 
 export { CompanyName, LoanType, CollectionType, DurationOfLoan };
-

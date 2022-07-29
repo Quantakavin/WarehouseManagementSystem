@@ -64,42 +64,68 @@ const Floor = () => {
 const Scene = () => {
   // const [cameraPosition, setCameraPosition] = useState<[x: number, y: number, z: number]>([0, 40, 150])
 
-  const {
-    gl,
-    camera
-  } = useThree();
+  const { gl, camera } = useThree();
 
-  const controls = useRef<any>()
-  useFrame(() => controls.current.update())
+  const controls = useRef<any>();
+  useFrame(() => controls.current.update());
 
-  const changeCameraPosition = (newPosition: [x: number, y: number, z: number]) => {
-    camera.position.set(newPosition[0], newPosition[1] + 20, newPosition[2] + 30)
+  const changeCameraPosition = (
+    newPosition: [x: number, y: number, z: number]
+  ) => {
+    camera.position.set(
+      newPosition[0],
+      newPosition[1] + 20,
+      newPosition[2] + 30
+    );
     //camera.rotation.y = 180;
     //camera.lookAt(new THREE.Vector3(newPosition[0],newPosition[1],newPosition[2]));
-    controls.current.target = new THREE.Vector3(newPosition[0],newPosition[1],newPosition[2])
-    controls.current.update()
+    controls.current.target = new THREE.Vector3(
+      newPosition[0],
+      newPosition[1],
+      newPosition[2]
+    );
+    controls.current.update();
     //camera.rotation.y = 90;
     //camera.up.set( 0, 0, 1 );
     //camera.zoom = 1.5
     //
-   //alert(newPosition)
+    //alert(newPosition)
     //camera.lookAt( new THREE.Vector3(newPosition[0], newPosition[1], newPosition[2]))
     //alert(newPosition);
-  }
+  };
 
   return (
     <>
-     <color attach="background" args={["#c4e5d0"]} />
-     <ambientLight />
-     <pointLight position={[40, 40, 40]} />
-     <OrbitControls maxPolarAngle={Math.PI/2} maxDistance={150} ref={controls}/>
-     {/* <OrbitControls maxPolarAngle={Math.PI/2} maxDistance={150}/> */}
-     <Suspense fallback={null}>
-     {/* <ContextBridge> */}
-       <Rack position={[0, 0, 0]} areatag="A01" racktag="R01" changeposition={changeCameraPosition}/>
-       <Rack position={[20, 0, 0]} areatag="A01" racktag="R02" changeposition={changeCameraPosition}/>
-       <Rack position={[40, 0, 0]} areatag="A01" racktag="R03" changeposition={changeCameraPosition}/>
-       {/* <Rack position={[60, 0, 0]} areatag="A01" racktag="R04" changeposition={changeCameraPosition}/>
+      <color attach="background" args={["#c4e5d0"]} />
+      <ambientLight />
+      <pointLight position={[40, 40, 40]} />
+      <OrbitControls
+        maxPolarAngle={Math.PI / 2}
+        maxDistance={150}
+        ref={controls}
+      />
+      {/* <OrbitControls maxPolarAngle={Math.PI/2} maxDistance={150}/> */}
+      <Suspense fallback={null}>
+        {/* <ContextBridge> */}
+        <Rack
+          position={[0, 0, 0]}
+          areatag="A01"
+          racktag="R01"
+          changeposition={changeCameraPosition}
+        />
+        <Rack
+          position={[20, 0, 0]}
+          areatag="A01"
+          racktag="R02"
+          changeposition={changeCameraPosition}
+        />
+        <Rack
+          position={[40, 0, 0]}
+          areatag="A01"
+          racktag="R03"
+          changeposition={changeCameraPosition}
+        />
+        {/* <Rack position={[60, 0, 0]} areatag="A01" racktag="R04" changeposition={changeCameraPosition}/>
        <Rack position={[60, 0, 18]} areatag="A01" racktag="R05" changeposition={changeCameraPosition}/>
        <Rack position={[40, 0, 18]} areatag="A01" racktag="R06" changeposition={changeCameraPosition}/>
        <Rack position={[20, 0, 18]} areatag="A01" racktag="R07" changeposition={changeCameraPosition}/>
@@ -108,18 +134,16 @@ const Scene = () => {
        <Rack position={[40, 0, -18]} areatag="A01" racktag="R10" changeposition={changeCameraPosition}/>
        <Rack position={[60, 0, -18]} areatag="A01" racktag="R11" changeposition={changeCameraPosition}/>
        <Rack position={[-20, 0, -18]} areatag="A01" racktag="R12" changeposition={changeCameraPosition}/> */}
-       <Floor />
-       {/* </ContextBridge> */}
-     </Suspense>
+        <Floor />
+        {/* </ContextBridge> */}
+      </Suspense>
 
-     {/* <Suspense fallback={<p>Hi</p>}>
+      {/* <Suspense fallback={<p>Hi</p>}>
  <primitive object={gltf.scene} />
 </Suspense> */}
-</>
-  )
-
-
-}
+    </>
+  );
+};
 
 const BinLocations = () => {
   // const gltf = useLoader(GLTFLoader, '/binsgrouped.glb')
@@ -135,16 +159,16 @@ const BinLocations = () => {
     <div className="binlocation">
       <h1 className="binlocationTitle">Warehouse Visualisation</h1>
       <div className="flexcontainer">
-      <Canvas
-    camera={{ fov: 45, position: [0, 40, 150]}}
-     style={{
-       border: "solid 1px black",
-       height: 600,
-       marginTop: 20,
-       width: "80%",
-     }}
-   >
-        <Scene />
+        <Canvas
+          camera={{ fov: 45, position: [0, 40, 150] }}
+          style={{
+            border: "solid 1px black",
+            height: 600,
+            marginTop: 20,
+            width: "80%",
+          }}
+        >
+          <Scene />
         </Canvas>
       </div>
     </div>

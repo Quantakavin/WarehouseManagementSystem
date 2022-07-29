@@ -41,10 +41,7 @@ export default function TLoanRejectModalButton() {
 
   const handleConfirm = async () => {
     axios
-      .put(
-        `http://localhost:5000/api/tloan/reject/${TLoanID}`,
-        tloanremarks
-      )
+      .put(`http://localhost:5000/api/tloan/reject/${TLoanID}`, tloanremarks)
       .then(() => navigate("/tloan"))
       .catch((error) => {
         this.setState({ errorMessage: error.message });

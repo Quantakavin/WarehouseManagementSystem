@@ -123,11 +123,15 @@ interface ModelProps {
   areatag: string;
   racktag: string;
   position: [x: number, y: number, z: number];
-  changeposition?: (num: [x: number, y: number, z: number]) => void
+  changeposition?: (num: [x: number, y: number, z: number]) => void;
 }
 
-const Model: React.FC<ModelProps> = ({ areatag, racktag, position, changeposition }) => {
-
+const Model: React.FC<ModelProps> = ({
+  areatag,
+  racktag,
+  position,
+  changeposition,
+}) => {
   const group = useRef<THREE.Group>();
   const { nodes, materials } = useGLTF("/rackrow.gltf") as GLTFResult;
   // const dispatch = useAppDispatch();
@@ -153,7 +157,12 @@ const Model: React.FC<ModelProps> = ({ areatag, racktag, position, changepositio
   };
 
   return (
-    <group ref={group} dispose={null} position={position} onClick={() => changeposition(position)}>
+    <group
+      ref={group}
+      dispose={null}
+      position={position}
+      onClick={() => changeposition(position)}
+    >
       {CreateBoxes()}
       {/* <Bin position={[3.5, 1.5, 8]} areatag="A03" racktag="R03" leveltag="L01" sectiontag="S01" />
       <Bin position={[3.5, -0.5, 8]} areatag="A03" racktag="R03" leveltag="L01" sectiontag="S01" />

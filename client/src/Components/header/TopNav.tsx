@@ -1,7 +1,7 @@
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import LoginIcon from '@mui/icons-material/Login';
+import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import MoreIcon from "@mui/icons-material/MoreVert";
@@ -17,15 +17,20 @@ import Toolbar from "@mui/material/Toolbar";
 import { motion } from "framer-motion";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { removeUser, selectName } from "../../app/reducers/CurrentUserSlice";
-import { Close, Open, Reset, selectOpen } from '../../app/reducers/SidebarSlice';
+import {
+  Close,
+  Open,
+  Reset,
+  selectOpen,
+} from "../../app/reducers/SidebarSlice";
 import defaultprofile from "../../assets/defaultprofile.png";
 import navbarbrand from "../../assets/navbarbrand.png";
 
 const TopNav = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const isopen = useAppSelector(selectOpen);
   const username = useAppSelector(selectName);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -66,7 +71,7 @@ const TopNav = () => {
     } else {
       dispatch(Open());
     }
-  }
+  };
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -87,7 +92,7 @@ const TopNav = () => {
       MenuListProps={{
         onMouseLeave: handleMenuClose,
       }}
-      sx={{zIndex: 2000, marginTop: "25px"}}
+      sx={{ zIndex: 2000, marginTop: "25px" }}
     >
       <MenuItem
         sx={{ color: "#0A2540" }}
@@ -99,7 +104,11 @@ const TopNav = () => {
           <AccountCircle fontSize="small" />
         </ListItemIcon>
         <ListItemText
-          primaryTypographyProps={{ fontWeight: 500, fontSize: "15px", marginLeft: "-7px" }}
+          primaryTypographyProps={{
+            fontWeight: 500,
+            fontSize: "15px",
+            marginLeft: "-7px",
+          }}
         >
           Profile
         </ListItemText>
@@ -115,7 +124,11 @@ const TopNav = () => {
           <SettingsIcon fontSize="small" />
         </ListItemIcon>
         <ListItemText
-          primaryTypographyProps={{ fontWeight: 500, fontSize: "15px", marginLeft: "-7px" }}
+          primaryTypographyProps={{
+            fontWeight: 500,
+            fontSize: "15px",
+            marginLeft: "-7px",
+          }}
         >
           Settings
         </ListItemText>
@@ -131,7 +144,11 @@ const TopNav = () => {
           <LogoutIcon fontSize="small" />
         </ListItemIcon>
         <ListItemText
-          primaryTypographyProps={{ fontWeight: 500, fontSize: "15px", marginLeft: "-7px" }}
+          primaryTypographyProps={{
+            fontWeight: 500,
+            fontSize: "15px",
+            marginLeft: "-7px",
+          }}
         >
           Logout
         </ListItemText>
@@ -155,9 +172,9 @@ const TopNav = () => {
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
-      sx={{zIndex: 2000, marginTop: "25px"}}
+      sx={{ zIndex: 2000, marginTop: "25px" }}
     >
-      {localStorage.getItem("token") !== null ?
+      {localStorage.getItem("token") !== null ? (
         [
           <MenuItem
             sx={{ color: "#0A2540" }}
@@ -169,7 +186,11 @@ const TopNav = () => {
               <NotificationsIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText
-              primaryTypographyProps={{ fontWeight: 500, fontSize: "14px", marginLeft: "-7px" }}
+              primaryTypographyProps={{
+                fontWeight: 500,
+                fontSize: "14px",
+                marginLeft: "-7px",
+              }}
             >
               Notifications
             </ListItemText>
@@ -184,23 +205,31 @@ const TopNav = () => {
               <AccountCircle fontSize="small" />
             </ListItemIcon>
             <ListItemText
-              primaryTypographyProps={{ fontWeight: 500, fontSize: "14px", marginLeft: "-7px" }}
+              primaryTypographyProps={{
+                fontWeight: 500,
+                fontSize: "14px",
+                marginLeft: "-7px",
+              }}
             >
               Profile
             </ListItemText>
           </MenuItem>,
 
           <MenuItem
-            sx={{ color: "#0A2540"}}
+            sx={{ color: "#0A2540" }}
             onClick={() => {
               navigate("/settings");
             }}
           >
             <ListItemIcon sx={{ color: "#0A2540" }}>
-              <SettingsIcon fontSize="small"/>
+              <SettingsIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText
-              primaryTypographyProps={{ fontWeight: 500, fontSize: "14px", marginLeft: "-7px" }}
+              primaryTypographyProps={{
+                fontWeight: 500,
+                fontSize: "14px",
+                marginLeft: "-7px",
+              }}
             >
               Settings
             </ListItemText>
@@ -216,33 +245,47 @@ const TopNav = () => {
               <LogoutIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText
-              primaryTypographyProps={{ fontWeight: 500, fontSize: "14px", marginLeft: "-7px" }}
+              primaryTypographyProps={{
+                fontWeight: 500,
+                fontSize: "14px",
+                marginLeft: "-7px",
+              }}
             >
               Logout
             </ListItemText>
-          </MenuItem>] : <MenuItem
-            sx={{ color: "#0A2540" }}
-            onClick={() => {
-              navigate("/login");
-            }}
-          >
+          </MenuItem>,
+        ]
+      ) : (
+        <MenuItem
+          sx={{ color: "#0A2540" }}
+          onClick={() => {
+            navigate("/login");
+          }}
+        >
           <ListItemIcon sx={{ color: "#0A2540" }}>
             <LoginIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText
-            primaryTypographyProps={{ fontWeight: 500,fontSize: "14px", marginLeft: "-7px" }}
+            primaryTypographyProps={{
+              fontWeight: 500,
+              fontSize: "14px",
+              marginLeft: "-7px",
+            }}
           >
             Login
           </ListItemText>
         </MenuItem>
-      }
+      )}
     </Menu>
   );
 
   return (
     <>
-     {/* <Box sx={{ flexGrow: 1, zIndex: '1500' }}> */}
-      <AppBar position="fixed"  sx={{ backgroundColor: "white", color: "#0a2540", width: "100%"}}>
+      {/* <Box sx={{ flexGrow: 1, zIndex: '1500' }}> */}
+      <AppBar
+        position="fixed"
+        sx={{ backgroundColor: "white", color: "#0a2540", width: "100%" }}
+      >
         <Toolbar>
           <IconButton
             size="large"
@@ -252,24 +295,19 @@ const TopNav = () => {
             sx={{ mr: 2 }}
             onClick={toggleDrawer}
           >
-            {localStorage.getItem("token") !== null &&
-              <MenuIcon />
-            }
+            {localStorage.getItem("token") !== null && <MenuIcon />}
           </IconButton>
           <a className="" href="/">
-            <img
-              alt="ISDN Logo"
-              src={navbarbrand}
-              width="130"
-              height="40"
-            />
+            <img alt="ISDN Logo" src={navbarbrand} width="130" height="40" />
           </a>
           {/* <Typography variant="h6" noWrap component="div">
             Leaptron
           </Typography> */}
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex", marginRight: "25px" } }}>
-            {localStorage.getItem("token") === null ?
+          <Box
+            sx={{ display: { xs: "none", md: "flex", marginRight: "25px" } }}
+          >
+            {localStorage.getItem("token") === null ? (
               <a href="/login">
                 <motion.button
                   className="mainbutton"
@@ -279,8 +317,7 @@ const TopNav = () => {
                   Login
                 </motion.button>
               </a>
-
-             :
+            ) : (
               [
                 <IconButton
                   size="large"
@@ -294,7 +331,7 @@ const TopNav = () => {
                 </IconButton>,
                 <div
                   className="navprofile flexcontainer"
-                  style={{flexDirection: "row"}}
+                  style={{ flexDirection: "row" }}
                   aria-label="account of current user"
                   aria-controls={menuId}
                   aria-haspopup="true"
@@ -307,7 +344,7 @@ const TopNav = () => {
                     src={defaultprofile}
                     width="30"
                     height="30"
-                    style={{ marginRight: 10}}
+                    style={{ marginRight: 10 }}
                   />
                   <p className="navprofilename">{username}</p>
                   {isMenuOpen ? (
@@ -319,8 +356,9 @@ const TopNav = () => {
                   ) : (
                     <KeyboardArrowDownIcon />
                   )}
-                </div>
-              ]}
+                </div>,
+              ]
+            )}
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -339,10 +377,9 @@ const TopNav = () => {
       {renderMobileMenu}
     </>
   );
-}
+};
 
 export default TopNav;
-
 
 // import * as React from 'react';
 // import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';

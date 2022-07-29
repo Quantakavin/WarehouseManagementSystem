@@ -26,7 +26,7 @@ import { selectRole } from "../../app/reducers/CurrentUserSlice";
 
 const Products2: React.FC = () => {
   const [row, setRow] = useState([]);
-  const userrole = useAppSelector(selectRole)
+  const userrole = useAppSelector(selectRole);
   const navigate = useNavigate();
   const theme = unstable_createMuiStrictModeTheme();
   const [pageSize, setPageSize] = React.useState(25);
@@ -84,12 +84,16 @@ const Products2: React.FC = () => {
     );
   }
 
-  if (userrole == "Sales Admin" || userrole == "Sales Engineer" || userrole == "Technical Staff") {
+  if (
+    userrole == "Sales Admin" ||
+    userrole == "Sales Engineer" ||
+    userrole == "Technical Staff"
+  ) {
     return (
       <Box sx={{ pl: 3, pr: 3, pt: 1, height: "100%", width: "100%" }}>
         <Box sx={{ display: "flex", height: "100%" }}>
           <Box sx={{ flexGrow: 1 }}>
-          <Box
+            <Box
               component="span"
               display="flex"
               justifyContent="space-between"
@@ -118,7 +122,7 @@ const Products2: React.FC = () => {
                     }}
                   >
                     New Loan ({totalItems})
-                    <ShoppingBasketIcon sx={{ ml: 1}} />
+                    <ShoppingBasketIcon sx={{ ml: 1 }} />
                   </Fab>
                 </motion.div>
               </Box>
@@ -163,7 +167,7 @@ const Products2: React.FC = () => {
       <Box sx={{ pl: 3, pr: 3, pt: 1, height: "100%", width: "100%" }}>
         <Box sx={{ display: "flex", height: "100%" }}>
           <Box sx={{ flexGrow: 1 }}>
-          <Box
+            <Box
               component="span"
               display="flex"
               justifyContent="space-between"
@@ -171,7 +175,7 @@ const Products2: React.FC = () => {
             >
               <Typography
                 sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
-                style={{marginTop: 4}}
+                style={{ marginTop: 4 }}
               >
                 Products
               </Typography>
@@ -212,7 +216,5 @@ const Products2: React.FC = () => {
       </Box>
     );
   }
-
-
 };
 export default Products2;

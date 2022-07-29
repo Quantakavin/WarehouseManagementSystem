@@ -14,7 +14,7 @@ const RootReducer = combineReducers({
   userTableFilter: UserTableFilterSlice,
   userGroupTableFilter: UserGroupTableFilterSlice,
   notiGroupTableFilter: NotiGroupTableFilterSlice,
-  binlocation: BinLocationSlice
+  binlocation: BinLocationSlice,
 });
 
 export default RootReducer;

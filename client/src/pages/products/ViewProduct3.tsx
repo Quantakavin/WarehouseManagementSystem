@@ -1,5 +1,5 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import Fab from "@mui/material/Fab";
 import axios from "axios";
 import { motion } from "framer-motion";
@@ -17,32 +17,34 @@ import CardSkeleton from "../../components/skeletons/CardSkeleton";
 //   children: ReactNode
 // }
 
-type productItems  = {
-  id: number
-  ItemNo: string
-  ItemName: string
-  BatchNo: string
-  WarehouseCode: string
-} 
+type productItems = {
+  id: number;
+  ItemNo: string;
+  ItemName: string;
+  BatchNo: string;
+  WarehouseCode: string;
+};
 
-export default function ViewProduct ({ id, ItemNo, ItemName, BatchNo, WarehouseCode } : productItems ) {
-
+export default function ViewProduct({
+  id,
+  ItemNo,
+  ItemName,
+  BatchNo,
+  WarehouseCode,
+}: productItems) {
   const {
     getItemQuantity,
     increaseCartQuantity,
     decreaseCartQuantity,
     removeFromCart,
-    cartQuantity
-  } = useBasket()
-  
- 
-    
-  
+    cartQuantity,
+  } = useBasket();
+
   const params = useParams();
   const navigate = useNavigate();
   const [productGet, setProductGet] = useState([]);
   const [newProducts, setNewProducts] = useState([]);
-  const [productSelf, setProductSelf] = useState()
+  const [productSelf, setProductSelf] = useState();
 
   useEffect(() => {
     // declare the async data fetching function
@@ -64,10 +66,8 @@ export default function ViewProduct ({ id, ItemNo, ItemName, BatchNo, WarehouseC
 
   console.log(productGet);
 
-
-  
   useEffect(() => {
-   const newProduct = productGet.map(
+    const newProduct = productGet.map(
       ({ BinProductPK, ItemNo, ItemName, BatchNo, WarehouseCode }) => ({
         id: BinProductPK,
         ItemNo: ItemNo,
@@ -79,102 +79,94 @@ export default function ViewProduct ({ id, ItemNo, ItemName, BatchNo, WarehouseC
     setNewProducts(newProduct);
   }, [productGet]);
 
- const newLoanButton = () => {
-    
-      if( cartQuantity > 0){
-      return(
+  const newLoanButton = () => {
+    if (cartQuantity > 0) {
+      return (
         <motion.div
-        className="animatable"
-        whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
-        whileTap={{ scale: 0.98 }}
-      >
-        <Fab
-          variant="extended"
-          aria-label="add"
-          onClick={() => navigate("/newtloan")}
-          sx={{
-            color: "white",
-            backgroundColor: "#063970",
-            ":hover": { backgroundColor: "#031c38" },
-            float: "right",
-            marginTop:8,
-            marginRight: "5%",
-            width: 180
-          }}
+          className="animatable"
+          whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+          whileTap={{ scale: 0.98 }}
         >
-          New Loan <ShoppingBasketIcon sx={{ml:0.5, mr:0.5}} /> {cartQuantity}
-        </Fab>
-      </motion.div>
-        )
-    }else{
-      return
-    }   
-  }
+          <Fab
+            variant="extended"
+            aria-label="add"
+            onClick={() => navigate("/newtloan")}
+            sx={{
+              color: "white",
+              backgroundColor: "#063970",
+              ":hover": { backgroundColor: "#031c38" },
+              float: "right",
+              marginTop: 8,
+              marginRight: "5%",
+              width: 180,
+            }}
+          >
+            New Loan <ShoppingBasketIcon sx={{ ml: 0.5, mr: 0.5 }} />{" "}
+            {cartQuantity}
+          </Fab>
+        </motion.div>
+      );
+    } else {
+      return;
+    }
+  };
 
   const ProductQuery = useQuery([`product${params.id}`, params.id], () =>
-   GetProduct(params.id)
+    GetProduct(params.id)
   );
 
   if (ProductQuery.isLoading || ProductQuery.isError) {
     return <CardSkeleton NoOfFields={4} />;
   }
 
+  const addProduct = () => {
+    let html = [];
 
-   
-  const addProduct = () =>{
-
-    let html =[]
-  
     html.push(
-
-     newProducts.map((product)=>{
-        const {id, ItemNo, ItemName, BatchNo, WarehouseCode} = product
-        const addItemWithAlert =() =>{
-            increaseCartQuantity(id, ItemNo, ItemName, BatchNo, WarehouseCode)
-            Toast.fire({
-              icon: "success",
-              title: "Item Added!",
-              customClass: "swalpopup",
-              timer: 1000,
-              width: 700,
-            });
-         
-         
-  
-        }
+      newProducts.map((product) => {
+        const { id, ItemNo, ItemName, BatchNo, WarehouseCode } = product;
+        const addItemWithAlert = () => {
+          increaseCartQuantity(id, ItemNo, ItemName, BatchNo, WarehouseCode);
+          Toast.fire({
+            icon: "success",
+            title: "Item Added!",
+            customClass: "swalpopup",
+            timer: 1000,
+            width: 700,
+          });
+        };
         return (
-
           <motion.div
-          className="animatable"
-          whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-          whileTap={{ scale: 0.9 }}
-        >
-          <Fab
-            variant="extended"
-            aria-label="add"
-            onClick={addItemWithAlert}
-            sx={{
-              color: "white",
-              backgroundColor: "#063970",
-              ":hover": { backgroundColor: "#031c38" },
-              float: "right",
-             
-              marginRight: "5%",
-              height: "100%",
-              width: 200,
-              height: 65,
-              borderRadius: 10,
-            }}
+            className="animatable"
+            whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+            whileTap={{ scale: 0.9 }}
           >
-            Add Item To Loan
-          </Fab>
-        </motion.div>
-        )
+            <Fab
+              variant="extended"
+              aria-label="add"
+              onClick={addItemWithAlert}
+              sx={{
+                color: "white",
+                backgroundColor: "#063970",
+                ":hover": { backgroundColor: "#031c38" },
+                float: "right",
+
+                marginRight: "5%",
+                height: "100%",
+                width: 200,
+                height: 65,
+                borderRadius: 10,
+              }}
+            >
+              Add Item To Loan
+            </Fab>
+          </motion.div>
+        );
       })
-    )
-  
-    return html
-  }
+    );
+
+    return html;
+  };
   return (
     <>
       {newLoanButton()}
@@ -240,8 +232,7 @@ export default function ViewProduct ({ id, ItemNo, ItemName, BatchNo, WarehouseC
         </CardContainer>
       )}
 
-{/* {addInside()} */}
-     
+      {/* {addInside()} */}
     </>
   );
-};
+}

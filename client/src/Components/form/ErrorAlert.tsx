@@ -14,8 +14,11 @@ const ErrorAlert: React.FC<ErrorProps> = ({ error }) => {
     <div>
       {!close ? (
         <div className="alertdiv">
-
-          <Alert severity="error" sx={{ width: "80%" }} onClose={() => setClose(true)}>
+          <Alert
+            severity="error"
+            sx={{ width: "80%" }}
+            onClose={() => setClose(true)}
+          >
             <AlertTitle>Error</AlertTitle>
             <p>
               {typeof response.data === "undefined"

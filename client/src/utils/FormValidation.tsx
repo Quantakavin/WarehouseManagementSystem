@@ -12,7 +12,9 @@ export const PasswordValidation = {
 };
 export const UsernameValidation = { required: "Username cannot be empty" };
 export const NameValidation = { required: "Name cannot be empty" };
-export const DescriptionValidation = { required: "Description cannot be empty" };
+export const DescriptionValidation = {
+  required: "Description cannot be empty",
+};
 export const PhoneNoValidation = {
   required: "Mobile no cannot be empty",
   pattern: {

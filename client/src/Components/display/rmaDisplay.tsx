@@ -10,36 +10,36 @@ import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import {
-    DataGrid,
-    GridActionsCellItem,
-    GridCellParams,
-    GridColDef,
-    GridColTypeDef,
-    GridEventListener,
-    GridFilterInputValueProps,
-    GridFilterItem,
-    GridFilterModel,
-    GridRenderCellParams,
-    GridRenderEditCellParams,
-    GridRowId,
-    GridRowModel,
-    GridRowModes,
-    GridRowModesModel,
-    GridRowParams,
-    GridToolbarColumnsButton,
-    GridToolbarContainer,
-    GridToolbarDensitySelector,
-    GridToolbarExport,
-    GridToolbarFilterButton,
-    GridToolbarQuickFilter,
-    GRID_DATE_COL_DEF,
-    MuiEvent,
-    useGridApiContext
+  DataGrid,
+  GridActionsCellItem,
+  GridCellParams,
+  GridColDef,
+  GridColTypeDef,
+  GridEventListener,
+  GridFilterInputValueProps,
+  GridFilterItem,
+  GridFilterModel,
+  GridRenderCellParams,
+  GridRenderEditCellParams,
+  GridRowId,
+  GridRowModel,
+  GridRowModes,
+  GridRowModesModel,
+  GridRowParams,
+  GridToolbarColumnsButton,
+  GridToolbarContainer,
+  GridToolbarDensitySelector,
+  GridToolbarExport,
+  GridToolbarFilterButton,
+  GridToolbarQuickFilter,
+  GRID_DATE_COL_DEF,
+  MuiEvent,
+  useGridApiContext,
 } from "@mui/x-data-grid";
 import {
-    DatePicker,
-    DateTimePicker,
-    LocalizationProvider
+  DatePicker,
+  DateTimePicker,
+  LocalizationProvider,
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
@@ -185,7 +185,6 @@ const RmaDisplay: React.FC = () => {
           timer: 1500,
           width: 480,
         });
-        
       });
   };
   // COA RMA

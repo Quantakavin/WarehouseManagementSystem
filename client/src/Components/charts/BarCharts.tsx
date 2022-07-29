@@ -1,12 +1,12 @@
 import { Card, Grid } from "@mui/material";
 import {
-    Bar,
-    BarChart,
-    CartesianGrid,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
-    YAxis
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from "recharts";
 import "../../styles/chart.scss";
 
@@ -37,7 +37,7 @@ function Chart3() {
   return (
     <Grid container>
       <Grid item xs={6}>
-        <Card sx={{height: "100%", width: "98%", p: 2}}>
+        <Card sx={{ height: "100%", width: "98%", p: 2 }}>
           <Grid container>
             <Grid item xs={12}>
               <h4 style={{ textAlign: "left" }}>
@@ -59,7 +59,7 @@ function Chart3() {
         </Card>
       </Grid>
       <Grid item xs={6}>
-        <Card sx={{height: "100%", width: "100%", p: 2}}>
+        <Card sx={{ height: "100%", width: "100%", p: 2 }}>
           <Grid container>
             <Grid item xs={12}>
               <h4 style={{ textAlign: "left" }}>

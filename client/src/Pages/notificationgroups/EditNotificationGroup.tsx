@@ -1,7 +1,7 @@
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
+import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
 import { SelectChangeEvent } from "@mui/material";
 import axios from "axios";
 import { motion, useAnimation } from "framer-motion";
@@ -11,12 +11,12 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetCompanies } from "../../api/CompanyDB";
 import {
-    GetNotificationFeatures,
-    GetNotificationTypes
+  GetNotificationFeatures,
+  GetNotificationTypes,
 } from "../../api/NotificationFeatureDB";
 import {
-    GetNotificationGroup,
-    UpdateNotificationGroup
+  GetNotificationGroup,
+  UpdateNotificationGroup,
 } from "../../api/NotificationGroupDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
@@ -32,12 +32,16 @@ import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import SelectDropdown from "../../components/form/SelectDropdown";
 import SelectedList from "../../components/form/SelectedList";
 import {
-    Company,
-    NotiFeature,
-    NotiType,
-    Option
+  Company,
+  NotiFeature,
+  NotiType,
+  Option,
 } from "../../utils/CommonTypes";
-import { DescriptionValidation, NameValidation, SelectValidation } from "../../utils/FormValidation";
+import {
+  DescriptionValidation,
+  NameValidation,
+  SelectValidation,
+} from "../../utils/FormValidation";
 
 interface FormValues {
   name: string;
@@ -170,7 +174,7 @@ const AddNotificationGroup: React.FC = () => {
       },
       onError: () => {
         controls.start("detecterror");
-      }
+      },
     });
   };
 
@@ -181,21 +185,17 @@ const AddNotificationGroup: React.FC = () => {
       //rotate: [-1, 1.3, 0],
       x: [10, -10, 0, 10, -10, 0],
       transition: {
-        duration: 0.4
-      }
-    })
+        duration: 0.4,
+      },
+    }),
   };
 
   const nextStep = () => {
     trigger(["name", "description", "company"]).then(() => {
-      if (
-        !errors.name &&
-        !errors.description &&
-        !errors.company
-      ) {
+      if (!errors.name && !errors.description && !errors.company) {
         setStep(step + 1);
       } else {
-        controls.start("detecterror")
+        controls.start("detecterror");
       }
     });
   };
@@ -272,13 +272,15 @@ const AddNotificationGroup: React.FC = () => {
     ).NotiFeature;
   };
 
-  const steps = ["Enter notification group details", "Assign notification features"];
+  const steps = [
+    "Enter notification group details",
+    "Assign notification features",
+  ];
 
   const icons = {
     1: <NotificationAddIcon />,
-    2: <FormatListBulletedIcon />
+    2: <FormatListBulletedIcon />,
   };
-
 
   // const StepOne = (
   //   <div className={step === 1 ? "showstep" : "hidestep"}>
@@ -374,112 +376,115 @@ const AddNotificationGroup: React.FC = () => {
 
   return (
     <>
-    <FormSteps steps={steps} activestep={step - 1} icons={icons} />
-    <motion.div
-        variants={variants}
-        animate={controls}
-      >
-    <FormContainer
-      header="Edit Notification Group"
-      multistep
-      handleSubmit={handleSubmit}
-      onSubmit={onSubmit}
-    >
-      {NotificationGroupQuery.isSuccess && notiFeaturesQuery.isSuccess && (
-        <>
-          {/* Step One */}
-          <div className={step === 1 ? "showstep" : "hidestep"}>
-            <FormField
-              label="Name"
-              name="name"
-              type="text"
-              register={register}
-              defaultvalue={NotificationGroupQuery.data.data[0].NotiGroupName}
-              error={errors.name}
-              rules={NameValidation}
-            />
-            <FormTextArea
-              label="Description"
-              name="description"
-              register={register}
-              defaultvalue={NotificationGroupQuery.data.data[0].NotiGroupDesc}
-              error={errors.description}
-              rules={DescriptionValidation}
-              setValue={setValue}
-              watch={watch}
-            />
-            <SelectDropdown
-              label="Company"
-              name="company"
-              options={companyOptions}
-              register={register}
-              error={errors.company}
-              defaultoption={NotificationGroupQuery.data.data[0].CompanyID}
-              rules={SelectValidation}
-            />
-            <div className="formnavigationcontainer">
-              <button
-                className="formnavigation"
-                onClick={() => navigate(-1)}
-                type="button"
-              >
-                Cancel
-              </button>
-              <GeneralButton text={<>Next{" "}
-                <NavigateNextIcon
-                  style={{ marginRight: -10, marginLeft: -1 }}
-                /></>}
-                clickfunction={nextStep}
-              />
-            </div>
-          </div>
-          {/* Step Two */}
-          <div className={step === 2 ? "showstep" : "hidestep"}>
-            <MultiSelectDropdown
-              name="notification features"
-              label="Permitted Notifications"
-              selectedValues={selectedNotiFeatures}
-              changeSelectedValues={selectNotiFeature}
-              placeholder="Select Permitted Notifications..."
-              options={notiFeatureOptions}
-            />
+      <FormSteps steps={steps} activestep={step - 1} icons={icons} />
+      <motion.div variants={variants} animate={controls}>
+        <FormContainer
+          header="Edit Notification Group"
+          multistep
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
+        >
+          {NotificationGroupQuery.isSuccess && notiFeaturesQuery.isSuccess && (
+            <>
+              {/* Step One */}
+              <div className={step === 1 ? "showstep" : "hidestep"}>
+                <FormField
+                  label="Name"
+                  name="name"
+                  type="text"
+                  register={register}
+                  defaultvalue={
+                    NotificationGroupQuery.data.data[0].NotiGroupName
+                  }
+                  error={errors.name}
+                  rules={NameValidation}
+                />
+                <FormTextArea
+                  label="Description"
+                  name="description"
+                  register={register}
+                  defaultvalue={
+                    NotificationGroupQuery.data.data[0].NotiGroupDesc
+                  }
+                  error={errors.description}
+                  rules={DescriptionValidation}
+                  setValue={setValue}
+                  watch={watch}
+                />
+                <SelectDropdown
+                  label="Company"
+                  name="company"
+                  options={companyOptions}
+                  register={register}
+                  error={errors.company}
+                  defaultoption={NotificationGroupQuery.data.data[0].CompanyID}
+                  rules={SelectValidation}
+                />
+                <div className="formnavigationcontainer">
+                  <button
+                    className="formnavigation"
+                    onClick={() => navigate(-1)}
+                    type="button"
+                  >
+                    Cancel
+                  </button>
+                  <GeneralButton
+                    text={
+                      <>
+                        Next{" "}
+                        <NavigateNextIcon
+                          style={{ marginRight: -10, marginLeft: -1 }}
+                        />
+                      </>
+                    }
+                    clickfunction={nextStep}
+                  />
+                </div>
+              </div>
+              {/* Step Two */}
+              <div className={step === 2 ? "showstep" : "hidestep"}>
+                <MultiSelectDropdown
+                  name="notification features"
+                  label="Permitted Notifications"
+                  selectedValues={selectedNotiFeatures}
+                  changeSelectedValues={selectNotiFeature}
+                  placeholder="Select Permitted Notifications..."
+                  options={notiFeatureOptions}
+                />
 
-            {selectedNotiFeatures.length > 0 && (
-              <SelectedList
-                getname={getNotiFeatureName}
-                label="Feature List"
-                selectedValues={selectedNotiFeatures}
-                unselect={unselectNotiFeature}
-                select={assignNotiType}
-                options={notiTypeOptions}
-                defaultOptions={SetDefaultOptions}
-              />
-            )}
+                {selectedNotiFeatures.length > 0 && (
+                  <SelectedList
+                    getname={getNotiFeatureName}
+                    label="Feature List"
+                    selectedValues={selectedNotiFeatures}
+                    unselect={unselectNotiFeature}
+                    select={assignNotiType}
+                    options={notiTypeOptions}
+                    defaultOptions={SetDefaultOptions}
+                  />
+                )}
 
-            {mutation.isError && axios.isAxiosError(mutation.error) ? (
-              <ErrorAlert error={mutation.error} />
-            ) : null}
-            <div className="formnavigationcontainer">
-              <button
-                className="formnavigation"
-                onClick={prevStep}
-                type="button"
-              >
-                <NavigateBeforeIcon
-                  style={{ marginRight: -7, marginLeft: -10 }}
-                />{" "}
-                Back
-              </button>
-              <SubmitButton
-                text="Submit"
-                loading={mutation.isLoading}
-              />
-            </div>
-          </div>
-        </>
-      )}
-    </FormContainer>
-    </motion.div>
+                {mutation.isError && axios.isAxiosError(mutation.error) ? (
+                  <ErrorAlert error={mutation.error} />
+                ) : null}
+                <div className="formnavigationcontainer">
+                  <button
+                    className="formnavigation"
+                    onClick={prevStep}
+                    type="button"
+                  >
+                    <NavigateBeforeIcon
+                      style={{ marginRight: -7, marginLeft: -10 }}
+                    />{" "}
+                    Back
+                  </button>
+                  <SubmitButton text="Submit" loading={mutation.isLoading} />
+                </div>
+              </div>
+            </>
+          )}
+        </FormContainer>
+      </motion.div>
     </>
   );
 };

@@ -16,7 +16,9 @@ import { CSSObject, styled, Theme, useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
-    selectName, selectPermissions, selectRole
+  selectName,
+  selectPermissions,
+  selectRole,
 } from "../../app/reducers/CurrentUserSlice";
 import { Close, Open, selectOpen } from "../../app/reducers/SidebarSlice";
 import defaultprofile from "../../assets/defaultprofile.png";
@@ -111,7 +113,11 @@ const Sidebar = () => {
           >
             <Box
               className="flexcontainer sidebarprofile"
-              sx={{ marginRight: "auto", marginTop: "15px", marginBottom: "5px" }}
+              sx={{
+                marginRight: "auto",
+                marginTop: "15px",
+                marginBottom: "5px",
+              }}
             >
               <Box
                 sx={{ flex: 1, margin: isopen ? "0px" : "10px -6px 10px 6px" }}
@@ -210,7 +216,11 @@ const Sidebar = () => {
             className="flexcontainer"
           >
             <SidebarLink url="/Tloan" name="T-Loan" icon={<ArticleIcon />} />
-            <SidebarLink url="/RMA" name="RMA" icon={<AssignmentReturnIcon />} />
+            <SidebarLink
+              url="/RMA"
+              name="RMA"
+              icon={<AssignmentReturnIcon />}
+            />
           </List>
           {/* <hr className="solid" style={{ height: 2, color: "#A4AAB6" }} /> */}
         </Drawer>
@@ -228,7 +238,11 @@ const Sidebar = () => {
           >
             <Box
               className="flexcontainer sidebarprofile"
-              sx={{ marginRight: "auto", marginTop: "15px", marginBottom: "5px" }}
+              sx={{
+                marginRight: "auto",
+                marginTop: "15px",
+                marginBottom: "5px",
+              }}
             >
               <Box
                 sx={{ flex: 1, margin: isopen ? "0px" : "10px -6px 10px 6px" }}
@@ -327,7 +341,11 @@ const Sidebar = () => {
             className="flexcontainer"
           >
             <SidebarLink url="/Tloan" name="T-Loan" icon={<ArticleIcon />} />
-            <SidebarLink url="/RMA" name="RMA" icon={<AssignmentReturnIcon />} />
+            <SidebarLink
+              url="/RMA"
+              name="RMA"
+              icon={<AssignmentReturnIcon />}
+            />
           </List>
           <Divider />
           <List
@@ -354,7 +372,6 @@ const Sidebar = () => {
       </Box>
     );
   }
-
 };
 
 export default Sidebar;

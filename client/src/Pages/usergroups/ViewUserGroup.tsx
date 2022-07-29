@@ -62,7 +62,10 @@ const ViewUserGroup: React.FC = () => {
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(
                 UserGroupQuery.data.data[0].UserGroupDesc
-              ).replace(/href/g, `target='_blank' rel="noreferrer noopener" href`),
+              ).replace(
+                /href/g,
+                `target='_blank' rel="noreferrer noopener" href`
+              ),
             }}
           />
           <div className="flexcontainer cardfield">

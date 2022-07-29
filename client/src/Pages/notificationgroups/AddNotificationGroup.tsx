@@ -1,7 +1,7 @@
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
+import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
 import { SelectChangeEvent } from "@mui/material";
 import axios from "axios";
 import { motion, useAnimation } from "framer-motion";
@@ -11,8 +11,8 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { GetCompanies } from "../../api/CompanyDB";
 import {
-    GetNotificationFeatures,
-    GetNotificationTypes
+  GetNotificationFeatures,
+  GetNotificationTypes,
 } from "../../api/NotificationFeatureDB";
 import { PostNotificationGroup } from "../../api/NotificationGroupDB";
 import { useAppSelector } from "../../app/hooks";
@@ -29,12 +29,16 @@ import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import SelectDropdown from "../../components/form/SelectDropdown";
 import SelectedList from "../../components/form/SelectedList";
 import {
-    Company,
-    NotiFeature,
-    NotiType,
-    Option
+  Company,
+  NotiFeature,
+  NotiType,
+  Option,
 } from "../../utils/CommonTypes";
-import { DescriptionValidation, NameValidation, SelectValidation } from "../../utils/FormValidation";
+import {
+  DescriptionValidation,
+  NameValidation,
+  SelectValidation,
+} from "../../utils/FormValidation";
 
 interface FormValues {
   name: string;
@@ -139,7 +143,7 @@ const AddNotificationGroup: React.FC = () => {
       },
       onError: () => {
         controls.start("detecterror");
-      }
+      },
     });
   };
 
@@ -150,23 +154,17 @@ const AddNotificationGroup: React.FC = () => {
       //rotate: [-1, 1.3, 0],
       x: [10, -10, 0, 10, -10, 0],
       transition: {
-        duration: 0.4
-      }
-    })
+        duration: 0.4,
+      },
+    }),
   };
-
 
   const nextStep = () => {
     trigger(["name", "description", "company"]).then(() => {
-      if (
-        isDirty &&
-        !errors.name &&
-        !errors.description &&
-        !errors.company
-      ) {
+      if (isDirty && !errors.name && !errors.description && !errors.company) {
         setStep(step + 1);
       } else {
-        controls.start("detecterror")
+        controls.start("detecterror");
       }
     });
     //setStep(step + 1);
@@ -243,11 +241,14 @@ const AddNotificationGroup: React.FC = () => {
     ).NotiFeature;
   };
 
-  const steps = ["Enter notification group details", "Assign notification features"];
+  const steps = [
+    "Enter notification group details",
+    "Assign notification features",
+  ];
 
   const icons = {
     1: <NotificationAddIcon />,
-    2: <FormatListBulletedIcon />
+    2: <FormatListBulletedIcon />,
   };
 
   // const StepOne = (
@@ -330,10 +331,7 @@ const AddNotificationGroup: React.FC = () => {
   return (
     <>
       <FormSteps steps={steps} activestep={step - 1} icons={icons} />
-      <motion.div
-        variants={variants}
-        animate={controls}
-      >
+      <motion.div variants={variants} animate={controls}>
         <FormContainer
           header="Create Notification Group"
           multistep
@@ -377,10 +375,15 @@ const AddNotificationGroup: React.FC = () => {
               >
                 Cancel
               </button>
-              <GeneralButton text={<>Next{" "}
-                <NavigateNextIcon
-                  style={{ marginRight: -10, marginLeft: -1 }}
-                /></>}
+              <GeneralButton
+                text={
+                  <>
+                    Next{" "}
+                    <NavigateNextIcon
+                      style={{ marginRight: -10, marginLeft: -1 }}
+                    />
+                  </>
+                }
                 clickfunction={nextStep}
               />
             </div>
@@ -411,8 +414,14 @@ const AddNotificationGroup: React.FC = () => {
               <ErrorAlert error={mutation.error} />
             ) : null}
             <div className="formnavigationcontainer">
-              <button className="formnavigation" onClick={prevStep} type="button">
-                <NavigateBeforeIcon style={{ marginRight: -7, marginLeft: -10 }} />{" "}
+              <button
+                className="formnavigation"
+                onClick={prevStep}
+                type="button"
+              >
+                <NavigateBeforeIcon
+                  style={{ marginRight: -7, marginLeft: -10 }}
+                />{" "}
                 Back
               </button>
               <SubmitButton text="Submit" loading={mutation.isLoading} />

@@ -165,7 +165,10 @@ export default function TLoanManagerDisplay() {
 
   function renderCellExpand(params: GridRenderCellParams<string>) {
     return (
-      <GridCellExpand value={params.value || ''} width={params.colDef.computedWidth} />
+      <GridCellExpand
+        value={params.value || ""}
+        width={params.colDef.computedWidth}
+      />
     );
   }
 
@@ -268,7 +271,7 @@ export default function TLoanManagerDisplay() {
                       editMode="row"
                       getRowId={(item) => item.ItemNo}
                       experimentalFeatures={{ newEditingApi: true }}
-                      sx={{height: 300, width: "100%"}}
+                      sx={{ height: 300, width: "100%" }}
                     />
                   </Grid>
                   <Grid item xs={12}>

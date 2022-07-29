@@ -1,8 +1,11 @@
 import {
-    Bar, BarChart,
-    CartesianGrid, ResponsiveContainer,
-    Tooltip, XAxis,
-    YAxis
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from "recharts";
 import "../../styles/chart.scss";
 

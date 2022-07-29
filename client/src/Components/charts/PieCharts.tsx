@@ -42,7 +42,7 @@ function Chart4() {
   return (
     <Grid container>
       <Grid item xs={6}>
-        <Card sx={{height: "100%", width: "98%", p: 2}}>
+        <Card sx={{ height: "100%", width: "98%", p: 2 }}>
           <h4 style={{ textAlign: "left" }}>TLoan Requests Grouped By Type</h4>
           <ResponsiveContainer width="100%" height="100%" aspect={4 / 1}>
             <PieChart width={600} height={400}>
@@ -68,7 +68,7 @@ function Chart4() {
         </Card>
       </Grid>
       <Grid item xs={6}>
-        <Card sx={{height: "100%", width: "100%", p: 2}}>
+        <Card sx={{ height: "100%", width: "100%", p: 2 }}>
           <h4 style={{ textAlign: "left" }}>TLoan Requests Grouped By Type</h4>
           <ResponsiveContainer width="100%" height="100%" aspect={4 / 1}>
             <PieChart width={600} height={400}>

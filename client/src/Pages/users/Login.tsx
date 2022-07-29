@@ -44,7 +44,7 @@ const Login: React.FC = () => {
           id,
           role: usergroup,
           name,
-          permissions
+          permissions,
         })
       );
       dispatch(ChangeTab({ currenttab: "Dashboard" }));

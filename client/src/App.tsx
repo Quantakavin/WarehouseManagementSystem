@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import React from "react";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { CartProvider } from "react-use-cart";
-import { StateContext } from '../src/components/context/newBasketContext';
+import { StateContext } from "../src/components/context/newBasketContext";
 import { useAppSelector } from "./app/hooks";
 import { selectIsAuthenticated } from "./app/reducers/CurrentUserSlice";
 import RmaDisplay from "./components/display/rmaDisplay";
@@ -39,7 +39,6 @@ import Profile from "./pages/users/Profile";
 import Users2 from "./pages/users/Users2";
 import ViewUser from "./pages/users/ViewUser";
 
-
 interface ProtectedRouteProps {
   loginpage: boolean;
 }
@@ -66,84 +65,101 @@ const App: React.FC = () => {
 
   return (
     <>
-    <StateContext>
-      <header style={{ zIndex: 1500 }}>
-        <TopNav />
-      </header>
-      <Box className="flexcontainer">
-        {isAuthenticated ? <Sidebar2   /> : null}
-        <Box className="bluebackground" style={{ flex: 5 }}>
-          <Routes>
-            <Route element={<ProtectedRoute loginpage={true} />}>
-              <Route path="/401" element={<Error401 />} />
-              <Route path="/login" element={<Navigate replace to="/" />} />
-              <Route path="/" element={<Login />} />
-            </Route>
-            <Route element={<ProtectedRoute loginpage={false} />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/products" element={<CartProvider><Products2 /></CartProvider>} />
-              <Route
-                path="/product/:id"
-                element={<CartProvider><ViewProduct /></CartProvider>}/>
-              <Route path="/binlocations" element={<BinLocations />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/user/:id" element={<ViewUser />} />
-              <Route path="/users" element={<Users2 />} />
-              <Route path="/adduser" element={<AddUser />} />
-              <Route path="/edituser/:id" element={<EditUser />} />
-              <Route path="/usergroups" element={<UserGroups2 />} />
-              <Route path="/usergroup/:id" element={<ViewUserGroup />} />
-              <Route path="/addusergroup" element={<AddUserGroup />} />
-              <Route path="/editusergroup/:id" element={<EditUserGroup />} />
-              <Route
-                path="/notificationgroups"
-                element={<NotificationGroups2 />}
-              />
-              <Route
-                path="/notificationgroup/:id"
-                element={<ViewNotificationGroup />}
-              />
-              <Route
-                path="/addnotificationgroup"
-                element={<AddNotificationGroup />}
-              />
-              <Route
-                path="/editnotificationgroup/:id"
-                element={<EditNotificationGroup />}
-              />
-              <Route path="/tloan" element={<TLoan />} />
-              <Route path="/rma" element={<RMA />} />
-              <Route path="/createRma" element={<CreateRMA />} />
-              <Route path="/rmaDetails/:RmaID" element={<RmaDisplay />} />
-              <Route
-                path="/tloandetails/:TLoanID"
-                element={<TLoanDisplay2 />}
-              />
-              <Route
-                path="/newtloan"
-                element={<CartProvider><NewTLoan /> </CartProvider>} />
-              <Route path="/modal" element={<Modals12 />} />
-              <Route
-                path="/tloanManagerDisplay/:TLoanID"
-                element={<TLoanManagerDisplay />}
-              />
-              <Route
-                path="/tloanManagerExtension/:TLoanID"
-                element={<TLoanManagerExtensionDisplay />}
-              />
-              <Route
-                path="/tloanWarehouse/:TLoanID"
-                element={<TLoanWarehouseDisplay />}
-              />
-              <Route path="*" element={<Error404 />} />
-              <Route path="/403" element={<Error403 />} />
-            </Route>
-          </Routes>
+      <StateContext>
+        <header style={{ zIndex: 1500 }}>
+          <TopNav />
+        </header>
+        <Box className="flexcontainer">
+          {isAuthenticated ? <Sidebar2 /> : null}
+          <Box className="bluebackground" style={{ flex: 5 }}>
+            <Routes>
+              <Route element={<ProtectedRoute loginpage={true} />}>
+                <Route path="/401" element={<Error401 />} />
+                <Route path="/login" element={<Navigate replace to="/" />} />
+                <Route path="/" element={<Login />} />
+              </Route>
+              <Route element={<ProtectedRoute loginpage={false} />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route
+                  path="/products"
+                  element={
+                    <CartProvider>
+                      <Products2 />
+                    </CartProvider>
+                  }
+                />
+                <Route
+                  path="/product/:id"
+                  element={
+                    <CartProvider>
+                      <ViewProduct />
+                    </CartProvider>
+                  }
+                />
+                <Route path="/binlocations" element={<BinLocations />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/user/:id" element={<ViewUser />} />
+                <Route path="/users" element={<Users2 />} />
+                <Route path="/adduser" element={<AddUser />} />
+                <Route path="/edituser/:id" element={<EditUser />} />
+                <Route path="/usergroups" element={<UserGroups2 />} />
+                <Route path="/usergroup/:id" element={<ViewUserGroup />} />
+                <Route path="/addusergroup" element={<AddUserGroup />} />
+                <Route path="/editusergroup/:id" element={<EditUserGroup />} />
+                <Route
+                  path="/notificationgroups"
+                  element={<NotificationGroups2 />}
+                />
+                <Route
+                  path="/notificationgroup/:id"
+                  element={<ViewNotificationGroup />}
+                />
+                <Route
+                  path="/addnotificationgroup"
+                  element={<AddNotificationGroup />}
+                />
+                <Route
+                  path="/editnotificationgroup/:id"
+                  element={<EditNotificationGroup />}
+                />
+                <Route path="/tloan" element={<TLoan />} />
+                <Route path="/rma" element={<RMA />} />
+                <Route path="/createRma" element={<CreateRMA />} />
+                <Route path="/rmaDetails/:RmaID" element={<RmaDisplay />} />
+                <Route
+                  path="/tloandetails/:TLoanID"
+                  element={<TLoanDisplay2 />}
+                />
+                <Route
+                  path="/newtloan"
+                  element={
+                    <CartProvider>
+                      <NewTLoan />{" "}
+                    </CartProvider>
+                  }
+                />
+                <Route path="/modal" element={<Modals12 />} />
+                <Route
+                  path="/tloanManagerDisplay/:TLoanID"
+                  element={<TLoanManagerDisplay />}
+                />
+                <Route
+                  path="/tloanManagerExtension/:TLoanID"
+                  element={<TLoanManagerExtensionDisplay />}
+                />
+                <Route
+                  path="/tloanWarehouse/:TLoanID"
+                  element={<TLoanWarehouseDisplay />}
+                />
+                <Route path="*" element={<Error404 />} />
+                <Route path="/403" element={<Error403 />} />
+              </Route>
+            </Routes>
           </Box>
-          </Box>
-        </StateContext>
+        </Box>
+      </StateContext>
     </>
-  )
+  );
 };
 
 export default App;
