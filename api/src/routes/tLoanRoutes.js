@@ -3,9 +3,7 @@ const validation = require('../middlewares/validation');
 const TLoanController = require('../controllers/tloanController');
 
 router.get('/tloan', TLoanController.allLoan);
-router.post('/tloan/newloan', 
-    validation.validateLoan,
-    TLoanController.newLoan);
+router.post('/tloan/newloan', validation.validateLoan, TLoanController.newLoan);
 router.post('/tloan/loanDrafting', TLoanController.SendDraft);
 router.get('/tloans/:TLoanID', TLoanController.getLoanByNo);
 router.get('/tloanitems/:TLoanID', TLoanController.getItemsByTloan);

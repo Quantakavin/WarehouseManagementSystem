@@ -390,7 +390,6 @@ module.exports.ManagerLoan = async (req, res) => {
         const results = await TLoan.getManagerLoan();
         redisClient.set('ManagerLoan', JSON.stringify(results[0]));
         if (results.length > 0) {
-            
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('No Loans that are in need of approval');
@@ -409,9 +408,8 @@ module.exports.ManagerExtension = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await TLoan.getManagerExtension();
-       redisClient.set('ManagerExtension', JSON.stringify(results[0]));
+        redisClient.set('ManagerExtension', JSON.stringify(results[0]));
         if (results.length > 0) {
-           
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('No Extensions that are in need of approval');
@@ -443,7 +441,7 @@ module.exports.extensionStatus = async (req, res) => {
     try {
         const results = await TLoan.getExtensionStatus(TLoanID);
         if (results.length > 0) {
-            return res.status(200).json(results[0])
+            return res.status(200).json(results[0]);
         } else {
             return res.status(500).send('Does not Exist!');
         }
@@ -454,7 +452,6 @@ module.exports.extensionStatus = async (req, res) => {
 };
 
 module.exports.getApprovedLoan = async (req, res) => {
-   
     try {
         const results = await TLoan.getApproved();
         if (results.length > 0) {

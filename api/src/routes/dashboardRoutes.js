@@ -21,14 +21,12 @@ router.get('/getclosedRMAs', dashboardController.closedRMAs);
 router.get('/getTloanStats', dashboardController.TLoanCurrentStats);
 router.get('/getRMAStats', dashboardController.RMACurrentStats);
 
-// // T-Loan an RMA Request Grouped by Type 
+// // T-Loan an RMA Request Grouped by Type
 // router.get()
 // router.get()
 
-// T-Loan an RMA Request Grouped by Companies 
+// T-Loan an RMA Request Grouped by Companies
 // router.get()
 // router.get()
-
-
 
 module.exports = router;

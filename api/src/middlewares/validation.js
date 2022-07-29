@@ -145,7 +145,7 @@ const validation = {
         const { contactperson, contactno, salesmanid, contactemail, company, products } = req.body;
         console.log('Body ' + JSON.stringify(req.body));
         if (products.length === 0) {
-            console.log("no products")
+            console.log('no products');
             res.status(400).json({
                 message: 'Please add at least 1 product to the table'
             });

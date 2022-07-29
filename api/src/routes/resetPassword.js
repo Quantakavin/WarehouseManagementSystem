@@ -1,10 +1,7 @@
 const express = require('express');
 const resetPassword = express.Router();
 const userService = require('../services/userService');
-const {
-    hashSync,
-    genSaltSync
-} = require("bcrypt");
+const { hashSync, genSaltSync } = require('bcrypt');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
@@ -23,9 +20,8 @@ resetPassword.post('/forgotPassword', async (req, res, next) => {
                 res.json({
                     message: 'User account is inactive'
                 });
-
             } else if (user[0][0].Active == 'Y') {
-                // Get all tokens that were previously set for this user and set used to 1. Prevents old and expired tokens from being used. 
+                // Get all tokens that were previously set for this user and set used to 1. Prevents old and expired tokens from being used.
                 await userService.expireOldTokens(email, 1);
 
                 // Create reset token that expires after 1 hours.
@@ -49,7 +45,6 @@ resetPassword.post('/forgotPassword', async (req, res, next) => {
                 message: 'Invalid user'
             });
         }
-
     } catch (e) {
         console.log(e);
     }
@@ -61,7 +56,6 @@ async function sendEmail({
     subject,
     html
 }) {
-
     const transporter = nodemailer.createTransport({
         host: 'smtp.ethereal.email', // change when not using ethereal host email (e.g. to gmail)
         port: 587,
@@ -72,7 +66,7 @@ async function sendEmail({
         tls: {
             rejectUnauthorized: false
         }
-    })
+    });
 
     await transporter.sendMail({
         from,
@@ -81,9 +75,8 @@ async function sendEmail({
         html
     });
 
-    console.log("Email sent sucessfully");
-
-};
+    console.log('Email sent sucessfully');
+}
 
 async function sendPasswordResetEmail(email, resetToken, origin) {
     let message;
@@ -108,7 +101,6 @@ async function sendPasswordResetEmail(email, resetToken, origin) {
 
 // Reset token validation
 async function validateResetToken(req, res, next) {
-
     const email = req.body.email;
     const resetToken = req.body.token;
 
@@ -126,11 +118,10 @@ async function validateResetToken(req, res, next) {
     }
 
     next();
-};
+}
 
 resetPassword.post('/resetPassword', validateResetToken, async (req, res, next) => {
     try {
-
         const newPassword = req.body.password;
         const email = req.body.email;
 
@@ -148,10 +139,9 @@ resetPassword.post('/resetPassword', validateResetToken, async (req, res, next) 
         res.json({
             message: 'Password reset successful, you can now login with the new password'
         });
-
     } catch (e) {
         console.log(e);
     }
-})
+});
 
 module.exports = resetPassword;

@@ -23,7 +23,11 @@ router.put('/acceptRMA/:RmaID', rmaController.updateRmaAccepted);
 router.put('/rejectRMA/:RmaID', rmaController.updateRmaRejected);
 router.put('/updatechecklistRMA/:RmaID', rmaController.updateRmaChecklist);
 router.put('/receiveRMA/:RmaID', rmaController.updateRmaReceived);
-router.put('/verifyRMA/:RmaID', validation.validateRmaInstruction, rmaController.updateRmaInstructions);
+router.put(
+    '/verifyRMA/:RmaID',
+    validation.validateRmaInstruction,
+    rmaController.updateRmaInstructions
+);
 router.put('/COARMA/:RmaID', validation.validateRmaCOA, rmaController.updateRmaCoa);
 router.put('/closeRMA/:RmaID', rmaController.closeRma);
 

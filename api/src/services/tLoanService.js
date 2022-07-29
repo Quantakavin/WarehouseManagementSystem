@@ -5,7 +5,7 @@ module.exports.getAll = async () => {
     return knex.raw(query);
 };
 
-module.exports.tloanOutItem = async (itemno, itemname, quantity, batchno,warehousecode) => {
+module.exports.tloanOutItem = async (itemno, itemname, quantity, batchno, warehousecode) => {
     return knex('TLoanOutItem').insert({
         itemno,
         itemname,
@@ -404,7 +404,7 @@ module.exports.getExtensionStatus = async (TLoanID) => {
   WHERE t.TLoanID = ?
  `;
     return knex.raw(query, [TLoanID]);
-}
+};
 
 module.exports.getApproved = async () => {
     const query = `   SELECT
@@ -419,4 +419,4 @@ module.exports.getApproved = async () => {
     WHERE t.TLoanStatusID = 3
  `;
     return knex.raw(query);
-}
+};

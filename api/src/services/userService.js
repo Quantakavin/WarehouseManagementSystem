@@ -16,7 +16,6 @@ module.exports.filter = async (pageSize, pageNo, sortColumn, sortOrder, name) =>
     return knex.raw(query, [Number(pageSize), Number(pageNo), sortColumn, sortOrder, name]);
 };
 
-
 module.exports.getAll = async () => {
     const query = `SELECT u.UserID, u.Username, u.Email, c.CompanyName, g.UserGroupName, IFNULL(u.MobileNo, 'NULL') 'MobileNo' FROM User u LEFT JOIN Company c ON u.CompanyID = c.CompanyID LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID`;
     return knex.raw(query);
@@ -143,7 +142,6 @@ module.exports.checkTLoansAndRMA = async (userID) => {
 module.exports.delete = async (userID) => {
     return knex('User').where('UserID', userID).del();
 };
-
 
 module.exports.expireOldTokens = async (email, used) => {
     const query = `UPDATE ResetPasswordToken SET Used = ? WHERE Email = ?`;

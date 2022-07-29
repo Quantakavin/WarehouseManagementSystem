@@ -208,14 +208,13 @@ module.exports.RMACurrentStats = async (req, res) => {
     }
 };
 
-
-// // TLoans Request Grouped By Companies 
+// // TLoans Request Grouped By Companies
 // module.exports.TloanCompanies = async (req, res) => {
 //     try {
 //         const results =  await dashboard.getTloanCompanies();
 //         if (results.length > 0) {
 //             return res.status(200).json(results[0]);
-//         } else { 
+//         } else {
 //             return res.status(404).send('Error retriving TloanCompanies')
 //         }
 //         } catch (error) {
@@ -224,13 +223,13 @@ module.exports.RMACurrentStats = async (req, res) => {
 //     }
 // };
 
-// // TLoans Request Grouped By Type 
+// // TLoans Request Grouped By Type
 // module.exports.TloanTye = async (req, res) => {
 //     try {
 //         const results =  await dashboard.getTloanType();
 //         if (results.length > 0) {
 //             return res.status(200).json(results[0]);
-//         } else { 
+//         } else {
 //             return res.status(404).send('Error retriving TloanCompanies')
 //         }
 //         } catch (error) {
