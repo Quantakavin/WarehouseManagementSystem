@@ -18,30 +18,37 @@ resetPassword.post('/forgotPassword', async (req, res, next) => {
 
         const user = await userService.getByEmail(email);
 
-        if (!user) {
-            return res.json({
-                status: 'ok'
+        if (user[0].length > 0) {
+            if (user[0][0].Active !== 'Y') {
+                res.json({
+                    message: 'User account is inactive'
+                });
+
+            } else if (user[0][0].Active == 'Y') {
+                // Get all tokens that were previously set for this user and set used to 1. Prevents old and expired tokens from being used. 
+                await userService.expireOldTokens(email, 1);
+
+                // Create reset token that expires after 1 hours.
+                const resetToken = crypto.randomBytes(40).toString('hex');
+                const resetTokenExpires = new Date(Date.now() + 60 * 60 * 1000);
+                const createdAt = new Date(Date.now());
+
+                const expiredAt = resetTokenExpires;
+
+                // Insert new token into resetPasswordToken table.
+                await userService.insertResetToken(email, resetToken, createdAt, expiredAt, 0);
+
+                // Send email
+                await sendPasswordResetEmail(email, resetToken, origin);
+                res.json({
+                    message: 'Please check your email for a new password'
+                });
+            }
+        } else {
+            res.json({
+                message: 'Invalid user'
             });
         }
-
-        // Get all tokens that were previously set for this user and set used to 1. Prevents old and expired tokens from being used. 
-        await userService.expireOldTokens(email, 1);
-
-        // Create reset token that expires after 1 hours.
-        const resetToken = crypto.randomBytes(40).toString('hex');
-        const resetTokenExpires = new Date(Date.now() + 60 * 60 * 1000);
-        const createdAt = new Date(Date.now());
-
-        const expiredAt = resetTokenExpires;
-
-        // Insert new token into resetPasswordToken table.
-        await userService.insertResetToken(email, resetToken, createdAt, expiredAt, 0);
-
-        // Send email
-        await sendPasswordResetEmail(email, resetToken, origin);
-        res.json({
-            message: 'Please check your email for a new password'
-        });
 
     } catch (e) {
         console.log(e);
@@ -49,18 +56,18 @@ resetPassword.post('/forgotPassword', async (req, res, next) => {
 });
 
 async function sendEmail({
+    from = process.env.EMAIL_FROM, // stored in .env file
     to,
     subject,
-    html,
-    from = process.env.EMAIL_FROM
+    html
 }) {
 
     const transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
+        host: 'smtp.ethereal.email', // change when not using ethereal host email (e.g. to gmail)
         port: 587,
         auth: {
-            user: process.env.USER, // ethereal-generated email address
-            pass: process.env.PASS // ethereal-generated emailpassword
+            user: 'cordell17@ethereal.email', // use user email address OR ethereal email address (when testing)
+            pass: 'uCerXJx5Tq3wUzs6C6' // use user email password OR ethereal email password (when testing)
         },
         tls: {
             rejectUnauthorized: false
