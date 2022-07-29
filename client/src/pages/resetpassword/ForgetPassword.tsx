@@ -11,13 +11,14 @@ import SubmitButton from "../../components/form/SubmitButton";
 import { EmailValidation } from "../../utils/FormValidation";
 import { ForgotPassword } from "../../api/ResetPasswordDB";
 import { Toast } from "../../components/alerts/SweetAlert";
-import { Link } from "@mui/material";
+import { Box, Link } from "@mui/material";
 
 interface FormValues {
   email: string;
 }
 
 const ForgetPassword: React.FC = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -75,15 +76,29 @@ const ForgetPassword: React.FC = () => {
         {mutation.isError && axios.isAxiosError(mutation.error) ? (
           <ErrorAlert error={mutation.error} />
         ) : null}
-        <div className="flexcontainer" style={{ marginTop: 20 }}>
+        <Box className="flexcontainer" style={{ marginTop: 20 }}>
           <SubmitButton
             text="Send email"
             loading={mutation.isLoading}
             multipart={false}
           />
-        </div>
+        </Box>
 
-        <Link href="/login" underline="hover" style={{ textAlign: "center", display: "block", marginLeft: "auto", marginRight: "auto" }}>Back to login</Link>
+        <Link
+          onClick={() => {
+            navigate("/login");
+          }}
+          underline="hover"
+          sx={{
+            textAlign: "center",
+            display: "block",
+            ml: "auto",
+            mr: "auto",
+            pt: 2,
+          }}
+        >
+          Back to login
+        </Link>
       </FormContainer>
     </motion.div>
   );
