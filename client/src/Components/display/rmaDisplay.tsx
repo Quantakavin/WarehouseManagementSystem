@@ -5,10 +5,15 @@ import EditIcon from "@mui/icons-material/Edit";
 import MoreVert from "@mui/icons-material/MoreVert";
 import SaveIcon from "@mui/icons-material/Save";
 import { Stack, TextField, Typography } from "@mui/material";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
+import UpdateIcon from "@mui/icons-material/Update";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import FactCheckIcon from "@mui/icons-material/FactCheck";
+import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -55,16 +60,19 @@ import { Toast } from "../alerts/SweetAlert";
 import ReasonModalButton from "../modals/rmaReasonModal";
 import RejectModalButton from "../modals/rmaRejectModal";
 import { RMA } from "../../utils/CommonTypes";
+import { LoadingButton } from "@mui/lab";
+import DoneIcon from "@mui/icons-material/Done";
 
 const RmaDisplay: React.FC = () => {
   const navigate = useNavigate();
   const userrole = useAppSelector(selectRole);
   const [rma, setRma] = useState<RMA>([]);
   const [rows, setRows] = useState([]);
-  const [pageSize, setPageSize] = React.useState(25);
-  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
-    {}
-  );
+  const [pageSize, setPageSize] = useState(25);
+  const [loading, setLoading] = useState(false);
+  const [closeLoading, setCloseLoading] = useState(false);
+  const [completeLoading, setCompleteLoading] = useState(false);
+  const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
 
   const { RmaID } = useParams();
 
@@ -111,117 +119,144 @@ const RmaDisplay: React.FC = () => {
   }, []);
   // Accept RMA
   const acceptRMA = async () => {
-    axios
-      .put(`http://localhost:5000/api/acceptRMA/${RmaID}`)
-      .then(() => {
-        Toast.fire({
-          icon: "success",
-          title: "RMA Accepted",
-          customClass: "swalpopup",
-          timer: 1500,
-          width: 270,
+    setLoading(true);
+    setTimeout(() => {
+      axios
+        .put(`http://localhost:5000/api/acceptRMA/${RmaID}`)
+        .then(() => {
+          Toast.fire({
+            icon: "success",
+            title: "RMA Accepted",
+            customClass: "swalpopup",
+            timer: 1500,
+            width: 270,
+          });
+          navigate("/rma");
+        })
+        .catch((error) => {
+          setLoading(false);
         });
-        navigate("/rma");
-      })
-      .catch((error) => {});
+    }, 500);
   };
   // Update RMA checklist
   const updateChecklist = async () => {
-    axios
-      .put(`http://localhost:5000/api/updatechecklistRMA/${RmaID}`, rmabody)
-      .then(() => {
-        Toast.fire({
-          icon: "success",
-          title: "RMA Checklist Updated",
-          customClass: "swalpopup",
-          timer: 1500,
-          width: 340,
+    setLoading(true);
+    setTimeout(() => {
+      axios
+        .put(`http://localhost:5000/api/updatechecklistRMA/${RmaID}`, rmabody)
+        .then(() => {
+          Toast.fire({
+            icon: "success",
+            title: "RMA Checklist Updated",
+            customClass: "swalpopup",
+            timer: 1500,
+            width: 340,
+          });
+          navigate("/rma");
+        })
+        .catch((error) => {
+          setLoading(false);
         });
-        navigate("/rma");
-      })
-      .catch((error) => {});
+    }, 500);
   };
   // Receive RMA
   const receiveRMA = async () => {
-    axios
-      .put(`http://localhost:5000/api/receiveRMA/${RmaID}`)
-      .then(() => {
-        Toast.fire({
-          icon: "success",
-          title: "RMA Received",
-          customClass: "swalpopup",
-          timer: 1500,
-          width: 270,
+    setCompleteLoading(true);
+    setTimeout(() => {
+      axios
+        .put(`http://localhost:5000/api/receiveRMA/${RmaID}`)
+        .then(() => {
+          Toast.fire({
+            icon: "success",
+            title: "RMA Received",
+            customClass: "swalpopup",
+            timer: 1500,
+            width: 270,
+          });
+          navigate("/rma");
+        })
+        .catch((error) => {
+          setCompleteLoading(false);
         });
-        navigate("/rma");
-      })
-      .catch((error) => {});
+    }, 500);
   };
   // Verify RMA
   const verifyRMA = async () => {
-    axios
-      .put(`http://localhost:5000/api/verifyRMA/${RmaID}`, rmabody)
-      .then(() => {
-        Toast.fire({
-          icon: "success",
-          title: "RMA Products Verified",
-          customClass: "swalpopup",
-          timer: 1500,
-          width: 340,
+    setLoading(true);
+    setTimeout(() => {
+      axios
+        .put(`http://localhost:5000/api/verifyRMA/${RmaID}`, rmabody)
+        .then(() => {
+          Toast.fire({
+            icon: "success",
+            title: "RMA Products Verified",
+            customClass: "swalpopup",
+            timer: 1500,
+            width: 340,
+          });
+          navigate("/rma");
+        })
+        .catch((error) => {
+          Toast.fire({
+            icon: "error",
+            title: "Please enter instructions for each product!",
+            customClass: "swalpopup",
+            timer: 1500,
+            width: 480,
+          });
+          setLoading(false);
         });
-        navigate("/rma");
-      })
-      .catch((error) => {
-        Toast.fire({
-          icon: "error",
-          title: "Please enter instructions for each product!",
-          customClass: "swalpopup",
-          timer: 1500,
-          width: 480,
-        });
-      });
+    }, 500);
   };
   // COA RMA
   const COARMA = async () => {
-    axios
-      .put(`http://localhost:5000/api/COARMA/${RmaID}`, rmabody)
-      .then(() => {
-        Toast.fire({
-          icon: "success",
-          title: "RMA Progress Updated",
-          customClass: "swalpopup",
-          timer: 1500,
-          width: 330,
+    setLoading(true);
+    setTimeout(() => {
+      axios
+        .put(`http://localhost:5000/api/COARMA/${RmaID}`, rmabody)
+        .then(() => {
+          Toast.fire({
+            icon: "success",
+            title: "RMA Progress Updated",
+            customClass: "swalpopup",
+            timer: 1500,
+            width: 330,
+          });
+          navigate("/rma");
+        })
+        .catch((error) => {
+          Toast.fire({
+            icon: "error",
+            title: "Please update the COA for each product!",
+            customClass: "swalpopup",
+            timer: 1500,
+            width: 460,
+          });
+          setLoading(false);
         });
-        navigate("/rma");
-      })
-      .catch((error) => {
-        Toast.fire({
-          icon: "error",
-          title: "Please update the COA for each product!",
-          customClass: "swalpopup",
-          timer: 1500,
-          width: 460,
-        });
-      });
+    }, 500);
   };
   // Close RMA
   const closeRMA = async () => {
-    axios
-      .put(`http://localhost:5000/api/closeRMA/${RmaID}`)
-      .then(() => {
-        Toast.fire({
-          icon: "success",
-          title: "RMA Closed",
-          customClass: "swalpopup",
-          timer: 1500,
-          width: 270,
+    setCloseLoading(true);
+    setTimeout(() => {
+      axios
+        .put(`http://localhost:5000/api/closeRMA/${RmaID}`)
+        .then(() => {
+          Toast.fire({
+            icon: "success",
+            title: "RMA Closed",
+            customClass: "swalpopup",
+            timer: 1500,
+            width: 270,
+          });
+          navigate("/rma");
+        })
+        .catch((error) => {
+          setCloseLoading(false);
         });
-        navigate("/rma");
-      })
-      .catch((error) => {});
+    }, 500);
   };
-  // const products = rma.RMAProducts;
 
   function buildApplyDateFilterFn(
     filterItem: GridFilterItem,
@@ -1084,7 +1119,7 @@ const RmaDisplay: React.FC = () => {
                 whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -1093,11 +1128,13 @@ const RmaDisplay: React.FC = () => {
                     width: 150,
                     height: 50,
                     borderRadius: 10,
+                    paddingRight: 4,
                   }}
+                  startIcon={<ArrowBackIosNewIcon />}
                   onClick={() => navigate("/rma")}
                 >
                   Back
-                </Button>
+                </LoadingButton>
               </motion.div>
               <ReasonModalButton />
             </Box>
@@ -1190,7 +1227,7 @@ const RmaDisplay: React.FC = () => {
                 whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -1199,11 +1236,13 @@ const RmaDisplay: React.FC = () => {
                     width: 150,
                     height: 50,
                     borderRadius: 10,
+                    paddingRight: 4,
                   }}
+                  startIcon={<ArrowBackIosNewIcon />}
                   onClick={() => navigate("/rma")}
                 >
                   Back
-                </Button>
+                </LoadingButton>
               </motion.div>
             </Box>
           </Box>
@@ -1304,7 +1343,7 @@ const RmaDisplay: React.FC = () => {
                 whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -1313,11 +1352,13 @@ const RmaDisplay: React.FC = () => {
                     width: 150,
                     height: 50,
                     borderRadius: 10,
+                    paddingRight: 4,
                   }}
+                  startIcon={<ArrowBackIosNewIcon />}
                   onClick={() => navigate("/rma")}
                 >
                   Back
-                </Button>
+                </LoadingButton>
               </motion.div>
             </Box>
           </Box>
@@ -1423,13 +1464,10 @@ const RmaDisplay: React.FC = () => {
             >
               <motion.div
                 className="animatable"
-                whileHover={{
-                  scale: 1.1,
-                  transition: { duration: 0.3 },
-                }}
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -1438,11 +1476,13 @@ const RmaDisplay: React.FC = () => {
                     width: 150,
                     height: 50,
                     borderRadius: 10,
+                    paddingRight: 4,
                   }}
+                  startIcon={<ArrowBackIosNewIcon />}
                   onClick={() => navigate("/rma")}
                 >
                   Back
-                </Button>
+                </LoadingButton>
               </motion.div>
 
               <Box
@@ -1459,7 +1499,7 @@ const RmaDisplay: React.FC = () => {
                   }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <Button
+                  <LoadingButton
                     size="small"
                     variant="contained"
                     sx={{
@@ -1470,10 +1510,13 @@ const RmaDisplay: React.FC = () => {
                       borderRadius: 10,
                       marginRight: 5,
                     }}
+                    loadingPosition="end"
+                    loading={loading}
+                    endIcon={<DoneIcon />}
                     onClick={acceptRMA}
                   >
                     Accept
-                  </Button>
+                  </LoadingButton>
                 </motion.div>
                 <RejectModalButton />
               </Box>
@@ -1581,13 +1624,10 @@ const RmaDisplay: React.FC = () => {
             >
               <motion.div
                 className="animatable"
-                whileHover={{
-                  scale: 1.1,
-                  transition: { duration: 0.3 },
-                }}
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -1596,11 +1636,13 @@ const RmaDisplay: React.FC = () => {
                     width: 150,
                     height: 50,
                     borderRadius: 10,
+                    paddingRight: 4,
                   }}
+                  startIcon={<ArrowBackIosNewIcon />}
                   onClick={() => navigate("/rma")}
                 >
                   Back
-                </Button>
+                </LoadingButton>
               </motion.div>
             </Box>
           </Box>
@@ -1701,7 +1743,7 @@ const RmaDisplay: React.FC = () => {
                 whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -1710,11 +1752,13 @@ const RmaDisplay: React.FC = () => {
                     width: 150,
                     height: 50,
                     borderRadius: 10,
+                    paddingRight: 4,
                   }}
+                  startIcon={<ArrowBackIosNewIcon />}
                   onClick={() => navigate("/rma")}
                 >
                   Back
-                </Button>
+                </LoadingButton>
               </motion.div>
               <Box
                 component="span"
@@ -1724,10 +1768,13 @@ const RmaDisplay: React.FC = () => {
               >
                 <motion.div
                   className="animatable"
-                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileHover={{
+                    scale: 1.1,
+                    transition: { duration: 0.3 },
+                  }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <Button
+                  <LoadingButton
                     size="small"
                     variant="contained"
                     sx={{
@@ -1738,10 +1785,13 @@ const RmaDisplay: React.FC = () => {
                       borderRadius: 10,
                       marginRight: 5,
                     }}
+                    loadingPosition="end"
+                    loading={loading}
+                    endIcon={<DoneIcon />}
                     onClick={acceptRMA}
                   >
                     Accept
-                  </Button>
+                  </LoadingButton>
                 </motion.div>
                 <RejectModalButton />
               </Box>
@@ -1856,7 +1906,7 @@ const RmaDisplay: React.FC = () => {
                 whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -1865,11 +1915,13 @@ const RmaDisplay: React.FC = () => {
                     width: 150,
                     height: 50,
                     borderRadius: 10,
+                    paddingRight: 4,
                   }}
+                  startIcon={<ArrowBackIosNewIcon />}
                   onClick={() => navigate("/rma")}
                 >
                   Back
-                </Button>
+                </LoadingButton>
               </motion.div>
             </Box>
           </Box>
@@ -1994,7 +2046,7 @@ const RmaDisplay: React.FC = () => {
                 whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -2003,11 +2055,13 @@ const RmaDisplay: React.FC = () => {
                     width: 150,
                     height: 50,
                     borderRadius: 10,
+                    paddingRight: 4,
                   }}
+                  startIcon={<ArrowBackIosNewIcon />}
                   onClick={() => navigate("/rma")}
                 >
                   Back
-                </Button>
+                </LoadingButton>
               </motion.div>
               <Box
                 component="span"
@@ -2020,7 +2074,7 @@ const RmaDisplay: React.FC = () => {
                   whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <Button
+                  <LoadingButton
                     size="small"
                     variant="contained"
                     sx={{
@@ -2031,17 +2085,20 @@ const RmaDisplay: React.FC = () => {
                       borderRadius: 10,
                       marginRight: 5,
                     }}
+                    loading={loading}
+                    loadingPosition="end"
+                    endIcon={<UpdateIcon />}
                     onClick={COARMA}
                   >
                     Update
-                  </Button>
+                  </LoadingButton>
                 </motion.div>
                 <motion.div
                   className="animatable"
                   whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <Button
+                  <LoadingButton
                     size="small"
                     variant="contained"
                     sx={{
@@ -2051,10 +2108,13 @@ const RmaDisplay: React.FC = () => {
                       height: 50,
                       borderRadius: 10,
                     }}
+                    loading={closeLoading}
+                    loadingPosition="end"
+                    endIcon={<DoDisturbIcon />}
                     onClick={closeRMA}
                   >
                     Close
-                  </Button>
+                  </LoadingButton>
                 </motion.div>
               </Box>
             </Box>
@@ -2163,7 +2223,7 @@ const RmaDisplay: React.FC = () => {
                 whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -2172,11 +2232,13 @@ const RmaDisplay: React.FC = () => {
                     width: 150,
                     height: 50,
                     borderRadius: 10,
+                    paddingRight: 4,
                   }}
+                  startIcon={<ArrowBackIosNewIcon />}
                   onClick={() => navigate("/rma")}
                 >
                   Back
-                </Button>
+                </LoadingButton>
               </motion.div>
             </Box>
           </Box>
@@ -2284,7 +2346,7 @@ const RmaDisplay: React.FC = () => {
                 whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -2293,11 +2355,13 @@ const RmaDisplay: React.FC = () => {
                     width: 150,
                     height: 50,
                     borderRadius: 10,
+                    paddingRight: 4,
                   }}
+                  startIcon={<ArrowBackIosNewIcon />}
                   onClick={() => navigate("/rma")}
                 >
                   Back
-                </Button>
+                </LoadingButton>
               </motion.div>
             </Box>
           </Box>
@@ -2423,7 +2487,7 @@ const RmaDisplay: React.FC = () => {
                 whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -2432,11 +2496,13 @@ const RmaDisplay: React.FC = () => {
                     width: 150,
                     height: 50,
                     borderRadius: 10,
+                    paddingRight: 4,
                   }}
+                  startIcon={<ArrowBackIosNewIcon />}
                   onClick={() => navigate("/rma")}
                 >
                   Back
-                </Button>
+                </LoadingButton>
               </motion.div>
               <Box
                 component="span"
@@ -2449,7 +2515,7 @@ const RmaDisplay: React.FC = () => {
                   whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <Button
+                  <LoadingButton
                     size="small"
                     variant="contained"
                     sx={{
@@ -2460,17 +2526,20 @@ const RmaDisplay: React.FC = () => {
                       borderRadius: 10,
                       marginRight: 5,
                     }}
+                    loading={loading}
+                    loadingPosition="end"
+                    endIcon={<UpdateIcon />}
                     onClick={updateChecklist}
                   >
                     Update
-                  </Button>
+                  </LoadingButton>
                 </motion.div>
                 <motion.div
                   className="animatable"
                   whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <Button
+                  <LoadingButton
                     size="small"
                     variant="contained"
                     sx={{
@@ -2480,10 +2549,13 @@ const RmaDisplay: React.FC = () => {
                       height: 50,
                       borderRadius: 10,
                     }}
+                    loading={completeLoading}
+                    loadingPosition="end"
+                    endIcon={<FactCheckIcon />}
                     onClick={receiveRMA}
                   >
                     Complete
-                  </Button>
+                  </LoadingButton>
                 </motion.div>
               </Box>
             </Box>
@@ -2606,7 +2678,7 @@ const RmaDisplay: React.FC = () => {
                 whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -2615,11 +2687,13 @@ const RmaDisplay: React.FC = () => {
                     width: 150,
                     height: 50,
                     borderRadius: 10,
+                    paddingRight: 4,
                   }}
+                  startIcon={<ArrowBackIosNewIcon />}
                   onClick={() => navigate("/rma")}
                 >
                   Back
-                </Button>
+                </LoadingButton>
               </motion.div>
               <Box
                 component="span"
@@ -2632,7 +2706,7 @@ const RmaDisplay: React.FC = () => {
                   whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <Button
+                  <LoadingButton
                     size="small"
                     variant="contained"
                     sx={{
@@ -2642,10 +2716,13 @@ const RmaDisplay: React.FC = () => {
                       height: 50,
                       borderRadius: 10,
                     }}
+                    loading={loading}
+                    loadingPosition="end"
+                    endIcon={<DoneAllIcon />}
                     onClick={verifyRMA}
                   >
                     Verify
-                  </Button>
+                  </LoadingButton>
                 </motion.div>
               </Box>
             </Box>
@@ -2768,7 +2845,7 @@ const RmaDisplay: React.FC = () => {
                 whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -2777,18 +2854,20 @@ const RmaDisplay: React.FC = () => {
                     width: 150,
                     height: 50,
                     borderRadius: 10,
+                    paddingRight: 4,
                   }}
+                  startIcon={<ArrowBackIosNewIcon />}
                   onClick={() => navigate("/rma")}
                 >
                   Back
-                </Button>
+                </LoadingButton>
               </motion.div>
               <motion.div
                 className="animatable"
                 whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -2798,10 +2877,13 @@ const RmaDisplay: React.FC = () => {
                     height: 50,
                     borderRadius: 10,
                   }}
+                  loading={loading}
+                  loadingPosition="end"
+                  endIcon={<UpdateIcon />}
                   onClick={COARMA}
                 >
                   Update
-                </Button>
+                </LoadingButton>
               </motion.div>
             </Box>
           </Box>
@@ -2893,7 +2975,7 @@ const RmaDisplay: React.FC = () => {
                 whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -2902,11 +2984,13 @@ const RmaDisplay: React.FC = () => {
                     width: 150,
                     height: 50,
                     borderRadius: 10,
+                    paddingRight: 4,
                   }}
+                  startIcon={<ArrowBackIosNewIcon />}
                   onClick={() => navigate("/rma")}
                 >
                   Back
-                </Button>
+                </LoadingButton>
               </motion.div>
             </Box>
           </Box>

@@ -1,7 +1,7 @@
 import { TextField } from "@material-ui/core";
+import { LoadingButton } from "@mui/lab";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Fade from "@mui/material/Fade";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
@@ -9,6 +9,9 @@ import { motion } from "framer-motion";
 import * as React from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
   position: "absolute" as "absolute",
@@ -27,7 +30,8 @@ export default function RejectModalButton() {
   const { RmaID } = useParams();
   const navigate = useNavigate();
   const [reason, setReason] = useState("");
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false)
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleChange = (e) => {
@@ -40,13 +44,16 @@ export default function RejectModalButton() {
   };
 
   const handleConfirm = async () => {
-    axios
+    setLoading(true);
+    setTimeout(() => {
+      axios
       .put(`http://localhost:5000/api/rejectRMA/${RmaID}`, rejectreason)
       .then(() => navigate("/rma"))
       .catch((error) => {
         this.setState({ errorMessage: error.message });
         console.error("There was an error!", error);
       });
+    }, 500)
   };
 
   return (
@@ -58,7 +65,7 @@ export default function RejectModalButton() {
       }}
       whileTap={{ scale: 0.9 }}
     >
-      <Button
+      <LoadingButton
         size="small"
         variant="contained"
         sx={{
@@ -68,10 +75,11 @@ export default function RejectModalButton() {
           height: 50,
           borderRadius: 10,
         }}
+        endIcon={<CloseIcon/>}
         onClick={handleOpen}
       >
         Reject
-      </Button>
+      </LoadingButton>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -106,6 +114,28 @@ export default function RejectModalButton() {
                 paddingTop: 3.7,
               }}
             >
+            <motion.div
+              className="animatable"
+              whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <LoadingButton
+                size="small"
+                variant="contained"
+                sx={{
+                  color: "white",
+                  backgroundColor: "#063970",
+                  width: 150,
+                  height: 50,
+                  borderRadius: 10,
+                  paddingRight: 4
+                }}
+                startIcon={<ArrowBackIosNewIcon/>}
+                onClick={handleClose}
+              >
+                Back
+              </LoadingButton>
+            </motion.div>
               <motion.div
                 whileHover={{
                   scale: 1.1,
@@ -113,29 +143,7 @@ export default function RejectModalButton() {
                 }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
-                  size="small"
-                  variant="contained"
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#063970",
-                    width: 150,
-                    height: 50,
-                    borderRadius: 10,
-                  }}
-                  onClick={handleClose}
-                >
-                  Back
-                </Button>
-              </motion.div>
-              <motion.div
-                whileHover={{
-                  scale: 1.1,
-                  transition: { duration: 0.3 },
-                }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -145,10 +153,13 @@ export default function RejectModalButton() {
                     height: 50,
                     borderRadius: 10,
                   }}
+                  loading={loading}
+                  loadingPosition="end"
+                  endIcon={<DoneAllIcon/>}
                   onClick={handleConfirm}
                 >
                   Confirm
-                </Button>
+                </LoadingButton>
               </motion.div>
             </Box>
           </Box>

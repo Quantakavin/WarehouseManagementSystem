@@ -3,6 +3,9 @@ import CancelIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
+import SendIcon from '@mui/icons-material/Send';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { LoadingButton } from "@mui/lab";
 import {
   Card,
   CardContent,
@@ -59,6 +62,7 @@ const CreateRMA: React.FC = () => {
   const navigate = useNavigate();
   const sid = useAppSelector(selectId);
   const userrole = useAppSelector(selectRole);
+  const [loading, setLoading] = useState(false);
   const [rows, setRows] = useState([]);
   const [contactperson, setContactperson] = useState("");
   const [contactno, setContactno] = useState("");
@@ -639,6 +643,7 @@ const CreateRMA: React.FC = () => {
   };
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     setNameError(false);
     setEmailError(false);
@@ -660,24 +665,30 @@ const CreateRMA: React.FC = () => {
     if (contactperson === "") {
       setNameError(true);
       setNameErrorText("Required");
+      setLoading(false);
     }
     if (contactemail === "") {
       setEmailError(true);
       setEmailErrorText("Required");
+      setLoading(false);
     } else if (!contactemail.match(emailRegex)) {
       setEmailError(true);
       setEmailErrorText("Invalid email");
+      setLoading(false);
     }
     if (company === "") {
       setCompError(true);
       setCompErrorText("Required");
+      setLoading(false);
     }
     if (contactno === "") {
       setNumError(true);
       setNumErrorText("Required");
+      setLoading(false);
     } else if (!contactno.match(phoneRegex)) {
       setNumError(true);
       setNumErrorText("Invalid phone number");
+      setLoading(false);
     }
     if (
       contactperson &&
@@ -685,21 +696,23 @@ const CreateRMA: React.FC = () => {
       company &&
       contactno.match(phoneRegex)
     ) {
-      axios
-        .post(`http://localhost:5000/api/newRMA`, rmadetails)
-        .then(() => {
-          Toast.fire({
-            icon: "success",
-            title: "RMA Successfully Submitted",
-            customClass: "swalpopup",
-            timer: 1500,
-            width: 700,
+      setTimeout(() => {
+        axios
+          .post(`http://localhost:5000/api/newRMA`, rmadetails)
+          .then(() => {
+            Toast.fire({
+              icon: "success",
+              title: "RMA Successfully Submitted",
+              customClass: "swalpopup",
+              timer: 1500,
+              width: 700,
+            });
+            navigate("/rma");
+          })
+          .catch((error) => {
+            console.log(error.response.data.message);
           });
-          navigate("/rma");
-        })
-        .catch((error) => {
-          console.log(error.response.data.message);
-        });
+      }, 2000);
     }
   };
 
@@ -825,7 +838,7 @@ const CreateRMA: React.FC = () => {
               whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
               whileTap={{ scale: 0.9 }}
             >
-              <Button
+              <LoadingButton
                 size="small"
                 variant="contained"
                 sx={{
@@ -834,11 +847,13 @@ const CreateRMA: React.FC = () => {
                   width: 150,
                   height: 50,
                   borderRadius: 10,
+                  paddingRight: 4
                 }}
+                startIcon={<ArrowBackIosNewIcon/>}
                 onClick={() => navigate("/rma")}
               >
                 Back
-              </Button>
+              </LoadingButton>
             </motion.div>
             <motion.div
               variants={variants}
@@ -847,7 +862,7 @@ const CreateRMA: React.FC = () => {
               whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
               whileTap={{ scale: 0.9 }}
             >
-              <Button
+              <LoadingButton
                 type="submit"
                 size="small"
                 variant="contained"
@@ -858,10 +873,13 @@ const CreateRMA: React.FC = () => {
                   height: 50,
                   borderRadius: 10,
                 }}
+                loading={loading}
+                endIcon={<SendIcon />}
+                loadingPosition="end"
                 onClick={handleSubmit}
               >
                 Submit
-              </Button>
+              </LoadingButton>
             </motion.div>
           </Box>
         </form>
