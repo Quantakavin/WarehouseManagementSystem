@@ -32,7 +32,7 @@ const ForgetPassword: React.FC = () => {
         title: "Please check your email for the link to reset your password.",
         customClass: "swalpopup",
         timer: 1500,
-        width: 590,
+        width: 500,
       });
     },
     onError: (data) => {
