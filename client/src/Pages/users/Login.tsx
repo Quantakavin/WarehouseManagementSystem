@@ -18,7 +18,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { setUser } from "../../app/reducers/CurrentUserSlice";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
-import { Box, Link } from "@mui/material";
+import { Link } from "@mui/material";
 
 interface FormValues {
   email: string;
@@ -107,23 +107,15 @@ const Login: React.FC = () => {
           <ErrorAlert error={mutation.error} />
         ) : null}
 
-        <Link
-          onClick={() => {
-            navigate("/forgetpassword");
-          }}
-          underline="hover"
-          sx={{ ml: 10 }}
-        >
-          I forgot my password
-        </Link>
+        <Link href="/forgetpassword" underline="hover" style={{ marginLeft: 50 }}>I forgot my password</Link>
 
-        <Box className="flexcontainer" style={{ marginTop: 20 }}>
+        <div className="flexcontainer" style={{ marginTop: 20 }}>
           <SubmitButton
             text="Continue"
             loading={mutation.isLoading}
             multipart={false}
           />
-        </Box>
+        </div>
       </FormContainer>
     </motion.div>
   );
