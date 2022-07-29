@@ -15,7 +15,7 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import { motion } from "framer-motion";
 import Fab from "@mui/material/Fab";
-
+import { useStateContext } from '../../components/context/newBasketContext';
 
 const ViewProduct: React.FC = () => {
   const params = useParams();
@@ -23,6 +23,7 @@ const ViewProduct: React.FC = () => {
   const [newProducts, setNewProducts] = useState([]);
   const [productGet, setProductGet] = useState([]);
 
+  const { totalQuantities, cartItems, setShowCart, toggleCartItemQuanitity, onRemove, onAdd, qty } = useStateContext();
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
@@ -53,7 +54,7 @@ const ViewProduct: React.FC = () => {
         ItemName: ItemName,
         BatchNo: BatchNo,
         WarehouseCode: WarehouseCode,
-        price: 0,
+        
       })
     );
     setNewProducts(newProduct);
@@ -70,29 +71,9 @@ const ViewProduct: React.FC = () => {
   }
 
  
-  const { totalItems,
-    addItem } = useCart();
-
-    const addInside = () =>{
-      const itemsss = { 'id':1, 'Ware':'fewfq'}
-      const setLOL = localStorage.getItem('react-use-cart')
-      console.log(JSON.parse(setLOL).items)
-     
-      function handleaddi(){
-        const setItemlist = localStorage.setItem(localStorage.getItem('react-use-cart'.items), JSON.stringify(itemsss))
-      }
-      return (
-        <button onClick={handleaddi}>
-          press
-        </button>
-      )
-    }
-   
-
-
     const newLoanButton = () =>{
 
-      if(totalItems > 0){
+      if( newProducts.length > 0){
         return(
           <motion.div
           className="animatable"
@@ -114,7 +95,7 @@ const ViewProduct: React.FC = () => {
             }}
           >
             New Loan 
-            ({totalItems}) 
+           
             <ShoppingBasketIcon sx={{ml:0.5, mr:0.5}}/> 
           </Fab>
         </motion.div>
@@ -147,10 +128,9 @@ const ViewProduct: React.FC = () => {
       html.push(
 
         newProducts.map((product)=>{
-
-          const {id, ItemName, BatchNo, WarehouseCode} = product
+          console.log(newProducts)
           const addItemWithAlert =() =>{
-              addItem(product)
+            onAdd(product, qty)
               Toast.fire({
                 icon: "success",
                 title: "Item Added!",
@@ -209,7 +189,7 @@ const ViewProduct: React.FC = () => {
     
       return html
     }
-
+console.log(cartItems)
   return (
     <>
       {newLoanButton()}
