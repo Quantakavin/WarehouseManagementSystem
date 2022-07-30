@@ -52,17 +52,17 @@ module.exports.forgotPassword = async (req, res, next) => {
 };
 
 async function sendEmail({
-    from = process.env.EMAIL_FROM, // stored in .env file
+    from,
     to,
     subject,
     html
 }) {
     const transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email', // change when not using ethereal host email (e.g. to gmail)
+        host: 'smtp.office365.com', // change when not using ethereal host email (e.g. to gmail)
         port: 587,
         auth: {
-            user: 'westley11@ethereal.email', // use user email address OR ethereal email address (when testing)
-            pass: 'wGD5eENxbZ9RjHhMt8' // use user email password OR ethereal email password (when testing)
+            user: process.env.USER, // use user email address OR ethereal email address (when testing)
+            pass: process.env.PASS // use user email password OR ethereal email password (when testing)
         },
         tls: {
             rejectUnauthorized: false
@@ -87,15 +87,15 @@ async function sendPasswordResetEmail(email, resetToken, origin) {
         message = `<p>Please click the below link to reset your password, the link will be valid for 1 hour:</p>
                        <p><a href="${resetUrl}">${resetUrl}</a></p>`;
     } else {
-        message = `<p>Please use the below token to reset your password with the <code>/api/reset-password</code> api route:</p>
+        message = `<p>Please use the below token to reset your password with the <code>/resetpassword</code> api route:</p>
                        <p><code>${resetToken}</code></p>`;
     }
 
     await sendEmail({
-        from: process.env.EMAIL_FROM,
+        from: process.env.USER,
         to: email,
-        subject: ' Reset your Password',
-        html: `<h4>Reset Password </h4>
+        subject: 'Reset your Password',
+        html: `<h4>Reset Password</h4>
                    ${message}`
     });
 };
