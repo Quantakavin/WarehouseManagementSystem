@@ -1,18 +1,28 @@
+import { Box, Grid } from "@mui/material";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+// import { GetDetails }from "../../api/TLoanDB"
+import Paper from "@mui/material/Paper";
+import Popper from "@mui/material/Popper";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { motion } from "framer-motion";
+import React from "react";
 import AddIcon from "@mui/icons-material/Add";
 import CancelIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import RemoveIcon from "@mui/icons-material/Remove";
 import SaveIcon from "@mui/icons-material/Save";
-import { Box } from "@mui/material";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -29,53 +39,453 @@ import {
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import axios from "axios";
 import dateFormat from "dateformat";
-import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useCart } from "react-use-cart";
-import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
-import "./TLoanTable/table.css";
+import "../../pages/tloans/TLoanTable/table.css";
 
-function newtloan() {
+import { useCart } from "react-use-cart";
+
+export default function TLoanDraftDisplay() {
+  const navigate = useNavigate();
+  const [details, setDetails] = useState([]);
+  // const [loanDetails, setLoanDetails] = useState([]);
+  const [loans, setLoans] = useState([]);
+  const [itemLists, setItemLists] = useState([]); 
+  const [isEditable, setIsEditable] = useState(false)
+  const { TLoanID } = useParams();
+  const [type, setType] = useState("");
+  const [company, setCompany] = useState("");
+  // const [number, setNumber] = useState("");
+  const [name, setName] = useState("");
+  const [purpose, setPurpose] = useState("");
+  const [applicationdate, setADate] = useState("");
+  const [duration, setDuration] = useState("");
+  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
+  const [collection, setCollection] = useState("");
+  const [requireddate, setRDate] = useState("");
+  const [localDate, setLocalDate] = useState("");
+  const userRole = useAppSelector(selectRole);
+  const [dateForm, setDateForm] = useState("");
+
+  const [items, setItems] = useState([]);
+const [rows, setRows] = React.useState([]);
+  useEffect(() => {
+    // declare the async data fetching function
+    const fetchData = async () => {
+      // get the data from the api
+      const loans = await axios.get(
+        `http://localhost:5000/api/tloans/${TLoanID}`
+      );
+
+      setLoans(loans.data);
+
+      // setLoan(Object.e)
+    };
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    // declare the async data fetching function
+    const fetchData = async () => {
+      // get the data from the api
+      const items = await axios.get(
+        `http://localhost:5000/api/tloanitems/${TLoanID}`
+      );
+
+      setItemLists(items.data);
+
+      // setLoan(Object.e)
+    };
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  }, []);
+
+ 
+  interface GridCellExpandProps {
+    value: string;
+    width: number;
+  }
+
+  function isOverflown(element: Element): boolean {
+    return (
+      element.scrollHeight > element.clientHeight ||
+      element.scrollWidth > element.clientWidth
+    );
+  }
+
+  const GridCellExpand = React.memo(function GridCellExpand(
+    props: GridCellExpandProps
+  ) {
+    const { width, value } = props;
+    const wrapper = React.useRef<HTMLDivElement | null>(null);
+    const cellDiv = React.useRef(null);
+    const cellValue = React.useRef(null);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [showFullCell, setShowFullCell] = React.useState(false);
+    const [showPopper, setShowPopper] = React.useState(false);
+
+    const handleMouseEnter = () => {
+      const isCurrentlyOverflown = isOverflown(cellValue.current!);
+      setShowPopper(isCurrentlyOverflown);
+      setAnchorEl(cellDiv.current);
+      setShowFullCell(true);
+    };
+
+    const handleMouseLeave = () => {
+      setShowFullCell(false);
+    };
+
+    React.useEffect(() => {
+      if (!showFullCell) {
+        return undefined;
+      }
+
+      function handleKeyDown(nativeEvent: KeyboardEvent) {
+        // IE11, Edge (prior to using Bink?) use 'Esc'
+        if (nativeEvent.key === "Escape" || nativeEvent.key === "Esc") {
+          setShowFullCell(false);
+        }
+      }
+
+      document.addEventListener("keydown", handleKeyDown);
+
+      return () => {
+        document.removeEventListener("keydown", handleKeyDown);
+      };
+    }, [setShowFullCell, showFullCell]);
+
+    return (
+      <Box
+        ref={wrapper}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        sx={{
+          alignItems: "center",
+          lineHeight: "24px",
+          width: "100%",
+          height: "100%",
+          position: "relative",
+          display: "flex",
+        }}
+      >
+        <Box
+          ref={cellDiv}
+          sx={{
+            height: "100%",
+            width,
+            display: "block",
+            position: "absolute",
+            top: 0,
+          }}
+        />
+        <Box
+          ref={cellValue}
+          sx={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {value}
+        </Box>
+        {showPopper && (
+          <Popper
+            open={showFullCell && anchorEl !== null}
+            anchorEl={anchorEl}
+            style={{ width, marginLeft: -17 }}
+          >
+            <Paper
+              elevation={1}
+              style={{ minHeight: wrapper.current!.offsetHeight - 3 }}
+            >
+              <Typography variant="body2" style={{ padding: 8 }}>
+                {value}
+              </Typography>
+            </Paper>
+          </Popper>
+        )}
+      </Box>
+    );
+  });
+
+  function renderCellExpand(params: GridRenderCellParams<string>) {
+    return (
+      <GridCellExpand
+        value={params.value || ""}
+        width={params.colDef.computedWidth}
+      />
+    );
+  }
+
+  const columns: GridColDef[] = [
+    {
+      field: "ItemNo",
+      headerName: "Item Number",
+      flex: 10,
+      editable: false,
+      renderCell: renderCellExpand,
+    },
+    {
+      field: "ItemName",
+      headerName: "Item Name",
+      flex: 10,
+      editable: false,
+      renderCell: renderCellExpand,
+    },
+    {
+      field: "BatchNo",
+      headerName: "Batch Number",
+      flex: 8,
+      editable: false,
+      renderCell: renderCellExpand,
+    },
+    {
+      field: "WarehouseCode",
+      headerName: "WarehouseCode",
+      flex: 8,
+      editable: false,
+      renderCell: renderCellExpand,
+    },
+    {
+      field: "Quantity",
+      headerName: "Quantity",
+      flex: 0,
+      editable: false,
+      type: "number",
+      renderCell: renderCellExpand,
+    },
+  ];
+  const { addItem, emptyCart } = useCart();
+  const newBasket = itemLists.map(
+    ({ BasketItemID, ItemNo, ItemName, BatchNo, WarehouseCode, Quantity }) => ({
+      id: BasketItemID,
+      ItemNo: ItemNo,
+      ItemName: ItemName,
+      BatchNo: BatchNo,
+      WarehouseCode: WarehouseCode,
+      quantity: Quantity,
+      price: 0
+    })
+  );
+  const itemStorage = localStorage.getItem("react-use-cart");
+  const cartItems = JSON.parse(itemStorage).items;
+  const addItemArray = () =>{
+    emptyCart()
+    const addByIndex = () =>{
+      for (let i = 0; i < newBasket.length; i++) {
+        addItem(newBasket[i])
+      }
+      
+      setIsEditable(true)
+     
+    }
+   
+    return (
+        <motion.div
+        className="animatable"
+        whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <Button
+          size="small"
+          variant="contained"
+          sx={{
+            color: "white",
+            backgroundColor: "#063970",
+            height: "100%",
+            width: 150,
+            height: 50,
+            borderRadius: 10,
+          }}
+          onClick={addByIndex}
+        >
+          Edit
+        </Button>
+      </motion.div>
+    )
+  }
+
+  const getData = () => {
+    return (
+      <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
+        <Box sx={{ display: "flex", height: "100%" }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Card>
+              <CardContent>
+                <Grid container spacing={8}>
+                  <Grid item xs={12}>
+                    <Typography
+                      gutterBottom
+                      variant="subtitle2"
+                      component="div"
+                      sx={{
+                        display: "flex",
+                        // justifyContent: "center",
+                        // alignItems: "center",
+                        // marginTop: 2,
+                        // marginBottom: -5,
+                        // marginLeft: -10,
+                        color: "#063970",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      <h2>TLoan {loans.TLoanID}</h2>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div>Loan No.</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.TLoanID}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div>Start Date:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.StartDate}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{}}>End Date:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.EndDate}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{}}>Company Name:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.CompanyName}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{}}>Customer Email:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.CustomerEmail}
+                        </div>
+                      </Box>
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 16 }}
+                      rows={itemLists}
+                      columns={columns}
+                      editMode="row"
+                      getRowId={(item) => item.ItemNo}
+                      experimentalFeatures={{ newEditingApi: true }}
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <TextField
+                      sx={{ display: "flex" }}
+                      id="outlined-purpose"
+                      multiline
+                      rows={11.5}
+                      label="Purpose"
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="filled"
+                      defaultValue={loans.Purpose}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography
+                      gutterBottom
+                      variant="subtitle2"
+                      component="div"
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginTop: -5,
+                        marginLeft: -10,
+                        color: "#063970",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      <Box>
+                        <div>Collection Type:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.Collection}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div>Type:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.TLoanType}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{}}>Status:</div>
+                        <div style={{ color: "green", fontWeight: "normal" }}>
+                          {loans.TLoanStatus}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{}}>Extension:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.TLoanExtensionStatus}
+                        </div>
+                      </Box>
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    component="span"
+                    sx={{
+                      component: "span",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <motion.div
+                      className="animatable"
+                      whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Button
+                        size="small"
+                        variant="contained"
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          height: "100%",
+                          width: 150,
+                          height: 50,
+                          borderRadius: 10,
+                        }}
+                        onClick={() => navigate(-1)}
+                      >
+                        Back
+                      </Button>
+                    </motion.div>
+                    {addItemArray()}
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          </Box>
+        </Box>
+      </Box>
+    );
+  };
   interface EditToolbarProps {
     setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
     setRowModesModel: (
       newModel: (oldModel: GridRowModesModel) => GridRowModesModel
     ) => void;
   }
-
   function EditToolbar(props: EditToolbarProps) {
     const { setRows, setRowModesModel } = props;
-
-    // const handleClick = () => {
-    //   const id = randomId();
-    //   setRows((oldRows) => [
-    //     ...oldRows,
-    //     { id, ItemNo: "", ItemName: "", isNew: true },
-    //   ]);
-    //   setRowModesModel((oldModel) => ({
-    //     ...oldModel,
-    //     [id]: { mode: GridRowModes.Edit, fieldToFocus: "ItemNo" },
-    //   }));
-
-    // };
-
-    // return (
-    //   <GridToolbarContainer>
-    //     <Button color="primary" startIcon={<AddIcon />} onClick={handleClick()}>
-    //       Add Record
-    //     </Button>
-    //   </GridToolbarContainer>
-
-    // );
   }
-  const itemStorage = localStorage.getItem("react-use-cart");
-  const cartItems = JSON.parse(itemStorage).items;
 
   const newProduct = cartItems.map(
     ({ id, ItemNo, ItemName, BatchNo, WarehouseCode, quantity }) => ({
@@ -87,31 +497,25 @@ function newtloan() {
       Quantity: quantity,
     })
   );
-
-  const { isEmpty, totalUniqueItems, updateItemQuantity, removeItem } =
+  const { updateItemQuantity, removeItem } =
     useCart();
-
-  const [rows, setRows] = React.useState([]);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
-
   useEffect(() => {
     if (cartItems === []) {
       return console.log("Nothing in cart");
     } else {
       setRows(cartItems);
     }
-  }, [cartItems]);
-
+  }, [cartItems]); 
   const FullFeaturedCrudGrid = () => {
     const handleRowEditStart = (
       params: GridRowParams,
       event: MuiEvent<React.SyntheticEvent>
     ) => {
       event.defaultMuiPrevented = true;
-    };
-
+    };       
     const handleRowEditStop: GridEventListener<"rowEditStop"> = (
       params,
       event
@@ -278,22 +682,7 @@ function newtloan() {
     );
   };
 
-  const [type, setType] = useState("");
-  const [company, setCompany] = useState("");
-  // const [number, setNumber] = useState("");
-  const [name, setName] = useState("");
-  const [purpose, setPurpose] = useState("");
-  const [applicationdate, setADate] = useState("");
-  const [duration, setDuration] = useState("");
-  const [user, setUser] = useState("");
-  const [email, setEmail] = useState("");
-  const [collection, setCollection] = useState("");
-  const [requireddate, setRDate] = useState("");
-  const [localDate, setLocalDate] = useState("");
-  const userRole = useAppSelector(selectRole);
-  const [dateForm, setDateForm] = useState("");
-
-  const [items, setItems] = useState([]);
+ 
   useEffect(() => {
     setItems(newProduct);
   });
@@ -321,7 +710,6 @@ function newtloan() {
     setDateForm(newValue);
   };
 
-  const navigate = useNavigate();
 
   useEffect(() => {
     const correctFormat = dateFormat(dateForm, "yyyy-mm-dd");
@@ -403,12 +791,6 @@ function newtloan() {
     setADate(date);
   });
 
-  // useEffect(() => {
-  //   var date = new Date().toISOString().split("T")[0];
-
-  //   setRDate(date);
-  // });
-
   useEffect(() => {
     const uid = localStorage.getItem("user_id");
     setUser(uid);
@@ -443,7 +825,7 @@ function newtloan() {
           sx={{ width: "95%", height: "100%", margin: 3, overflow: "auto" }}
         >
           <CardContent>
-            <h2>Apply TLoan</h2>
+            <h2>Edit Loan Draft</h2>
             {FullFeaturedCrudGrid()}
             <form onSubmit={submitLoan} style={{ width: "100%" }}>
               <Box sx={{ marginTop: 1, display: "flex", marginLeft: 2 }}>
@@ -652,7 +1034,14 @@ function newtloan() {
       </div>
     );
   };
-  return getCard();
-}
+ 
 
-export default newtloan;
+
+    switch(isEditable){
+        case false: 
+        return <div>{getData()}</div>;
+
+        case true:
+            return getCard();
+    }
+}

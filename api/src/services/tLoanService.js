@@ -5,13 +5,14 @@ module.exports.getAll = async () => {
     return knex.raw(query);
 };
 
-module.exports.tloanOutItem = async (itemno, itemname, quantity, batchno, warehousecode) => {
+module.exports.tloanOutItem = async (itemno, itemname, quantity, batchno, warehousecode,basketitemid) => {
     return knex('TLoanOutItem').insert({
         itemno,
         itemname,
         quantity,
         batchno,
-        warehousecode
+        warehousecode,
+        basketitemid
     });
 };
 
@@ -139,7 +140,8 @@ module.exports.getTLoanOutItem = async (TLoanID) => {
   tl.ItemName,
   tl.BatchNo,
   tl.Quantity,
-  tl.WarehouseCode
+  tl.WarehouseCode,
+  tl.BasketItemID
   FROM TLoanOutItem tl 
   WHERE tl.TLoanID = ?
   `;

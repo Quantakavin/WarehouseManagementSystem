@@ -65,20 +65,6 @@ const ViewProduct: React.FC = () => {
 
   const { totalItems, addItem } = useCart();
 
-  const addInside = () => {
-    const itemsss = { id: 1, Ware: "fewfq" };
-    const setLOL = localStorage.getItem("react-use-cart");
-    console.log(JSON.parse(setLOL).items);
-
-    function handleaddi() {
-      const setItemlist = localStorage.setItem(
-        localStorage.getItem("react-use-cart".items),
-        JSON.stringify(itemsss)
-      );
-    }
-    return <button onClick={handleaddi}>press</button>;
-  };
-
   const newLoanButton = () => {
     if (totalItems > 0) {
       return (
@@ -187,7 +173,21 @@ const ViewProduct: React.FC = () => {
 
     return html;
   };
+  const itemStorage = localStorage.getItem("react-use-cart");
+  const cartItems = JSON.parse(itemStorage).items;
+  console.log(cartItems)
 
+  const addItemArray = () =>{
+    const addByIndex = () =>{
+      for (let i = 0; i < cartItems.length; i++) {
+        addItem(cartItems[i])
+      }
+    }
+   
+    return (
+      <button onClick={addByIndex}></button>
+    )
+  }
   return (
     <>
       {newLoanButton()}
@@ -252,7 +252,7 @@ const ViewProduct: React.FC = () => {
           </div>
         </CardContainer>
       )}
-
+      {addItemArray()}
       {/* {addInside()} */}
     </>
   );

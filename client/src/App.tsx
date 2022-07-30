@@ -40,6 +40,7 @@ import Users2 from "./pages/users/Users2";
 import ViewUser from "./pages/users/ViewUser";
 import ForgetPassword from "./pages/resetpassword/ForgetPassword";
 import ResetPassword from "./pages/resetpassword/ResetPassword";
+import TLoanDraftDisplay from './components/display/tloanDraftDisplay'
 
 interface ProtectedRouteProps {
   loginpage: boolean;
@@ -157,6 +158,7 @@ const App: React.FC = () => {
                 />
                 <Route path="*" element={<Error404 />} />
                 <Route path="/403" element={<Error403 />} />
+                <Route path="/tloanDraftDetails/:TLoanID" element={<CartProvider><TLoanDraftDisplay /></CartProvider>} />
               </Route>
             </Routes>
           </Box>

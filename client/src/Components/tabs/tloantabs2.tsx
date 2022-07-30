@@ -336,7 +336,7 @@ const TLoanTabs2: React.FC = () => {
                       setFilterModel(newFilterModel)
                     }
                     onRowClick={(params: GridRowParams) => {
-                      navigate(`/tloandetails/${params.id}`);
+                      navigate(`/tloanDraftDetails/${params.id}`);
                     }}
                   />
                 </div>
@@ -576,7 +576,7 @@ const TLoanTabs2: React.FC = () => {
                       setFilterModel(newFilterModel)
                     }
                     onRowClick={(params: GridRowParams) => {
-                      navigate(`/tloandetails/${params.id}`);
+                      navigate(`/tloanDraftDetails/${params.id}`);
                     }}
                   />
                 </div>
@@ -939,7 +939,7 @@ const TLoanTabs2: React.FC = () => {
                       setFilterModel(newFilterModel)
                     }
                     onRowClick={(params: GridRowParams) => {
-                      navigate(`/tloandetails/${params.id}`);
+                      navigate(`/tloanDraftDetails/${params.id}`);
                     }}
                   />
                 </div>
@@ -1260,7 +1260,7 @@ const TLoanTabs2: React.FC = () => {
                       setFilterModel(newFilterModel)
                     }
                     onRowClick={(params: GridRowParams) => {
-                      navigate(`/tloandetails/${params.id}`);
+                      navigate(`/tloanDraftDetails/${params.id}`);
                     }}
                   />
                 </div>
