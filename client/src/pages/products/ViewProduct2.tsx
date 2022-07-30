@@ -6,11 +6,11 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { useCart } from "react-use-cart";
 import { GetProduct } from "../../api/ProductDB";
 import { Toast } from "../../components/alerts/SweetAlert";
 import CardContainer from "../../components/cards/CardContainer";
 import CardField from "../../components/cards/CardField";
+import { useStateContext } from "../../components/context/newBasketContext";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
 
 const ViewProduct: React.FC = () => {
@@ -19,6 +19,15 @@ const ViewProduct: React.FC = () => {
   const [newProducts, setNewProducts] = useState([]);
   const [productGet, setProductGet] = useState([]);
 
+  const {
+    totalQuantities,
+    cartItems,
+    setShowCart,
+    toggleCartItemQuanitity,
+    onRemove,
+    onAdd,
+    qty,
+  } = useStateContext();
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
@@ -47,7 +56,6 @@ const ViewProduct: React.FC = () => {
         ItemName: ItemName,
         BatchNo: BatchNo,
         WarehouseCode: WarehouseCode,
-        price: 0,
       })
     );
     setNewProducts(newProduct);
@@ -63,24 +71,8 @@ const ViewProduct: React.FC = () => {
     return <CardSkeleton NoOfFields={4} />;
   }
 
-  const { totalItems, addItem } = useCart();
-
-  const addInside = () => {
-    const itemsss = { id: 1, Ware: "fewfq" };
-    const setLOL = localStorage.getItem("react-use-cart");
-    console.log(JSON.parse(setLOL).items);
-
-    function handleaddi() {
-      const setItemlist = localStorage.setItem(
-        localStorage.getItem("react-use-cart".items),
-        JSON.stringify(itemsss)
-      );
-    }
-    return <button onClick={handleaddi}>press</button>;
-  };
-
   const newLoanButton = () => {
-    if (totalItems > 0) {
+    if (newProducts.length > 0) {
       return (
         <motion.div
           className="animatable"
@@ -101,7 +93,7 @@ const ViewProduct: React.FC = () => {
               width: 180,
             }}
           >
-            New Loan ({totalItems})
+            New Loan
             <ShoppingBasketIcon sx={{ ml: 0.5, mr: 0.5 }} />
           </Fab>
         </motion.div>
@@ -130,9 +122,9 @@ const ViewProduct: React.FC = () => {
 
     html.push(
       newProducts.map((product) => {
-        const { id, ItemName, BatchNo, WarehouseCode } = product;
+        console.log(newProducts);
         const addItemWithAlert = () => {
-          addItem(product);
+          onAdd(product, qty);
           Toast.fire({
             icon: "success",
             title: "Item Added!",
@@ -187,7 +179,7 @@ const ViewProduct: React.FC = () => {
 
     return html;
   };
-
+  console.log(cartItems);
   return (
     <>
       {newLoanButton()}
