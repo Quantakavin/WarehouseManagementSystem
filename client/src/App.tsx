@@ -41,6 +41,7 @@ import ViewUser from "./pages/users/ViewUser";
 import ForgetPassword from "./pages/resetpassword/ForgetPassword";
 import ResetPassword from "./pages/resetpassword/ResetPassword";
 import TLoanDraftDisplay from './components/display/tloanDraftDisplay'
+import IsEditableProvider, { EditableContext } from './components/context/isEditableContext'
 
 interface ProtectedRouteProps {
   loginpage: boolean;
@@ -68,7 +69,7 @@ const App: React.FC = () => {
 
   return (
     <>
-      <StateContext>
+      <IsEditableProvider>
         <header style={{ zIndex: 1500 }}>
           <TopNav />
         </header>
@@ -163,8 +164,8 @@ const App: React.FC = () => {
             </Routes>
           </Box>
         </Box>
-      </StateContext>
-    </>
+      </IsEditableProvider>
+      </>
   );
 };
 

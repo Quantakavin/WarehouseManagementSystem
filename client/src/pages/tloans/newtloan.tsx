@@ -32,7 +32,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import axios from "axios";
 import dateFormat from "dateformat";
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "react-use-cart";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
@@ -87,8 +87,8 @@ function newtloan() {
       Quantity: quantity,
     })
   );
-
-  const { isEmpty, totalUniqueItems, updateItemQuantity, removeItem } =
+    console.log(newProduct)
+  const { isEmpty, totalUniqueItems, updateItemQuantity, removeItem, emptyCart } =
     useCart();
 
   const [rows, setRows] = React.useState([]);
@@ -102,7 +102,7 @@ function newtloan() {
     } else {
       setRows(cartItems);
     }
-  }, [cartItems]);
+  }, []);
 
   const FullFeaturedCrudGrid = () => {
     const handleRowEditStart = (
@@ -296,7 +296,7 @@ function newtloan() {
   const [items, setItems] = useState([]);
   useEffect(() => {
     setItems(newProduct);
-  });
+  },[]);
 
   // const items = rows.map(({ id, isNew, ...rows }) => rows);
   // console.log(items);
@@ -326,7 +326,7 @@ function newtloan() {
   useEffect(() => {
     const correctFormat = dateFormat(dateForm, "yyyy-mm-dd");
     setRDate(correctFormat);
-  }, [dateForm]);
+  }, []);
 
   const submitLoan = (e) => {
     e.preventDefault();
@@ -354,7 +354,7 @@ function newtloan() {
             width: 700,
           });
           navigate("/tloan");
-          localStorage.removeItem("react-use-cart");
+          emptyCart();
         });
 
       console.log(results);
@@ -389,7 +389,7 @@ function newtloan() {
             width: 700,
           });
           navigate("/tloan");
-          localStorage.removeItem("react-use-cart");
+          emptyCart();
         });
 
       console.log(results);
@@ -399,22 +399,9 @@ function newtloan() {
   };
   useEffect(() => {
     var date = new Date().toISOString().split("T")[0];
-
-    setADate(date);
-  });
-
-  // useEffect(() => {
-  //   var date = new Date().toISOString().split("T")[0];
-
-  //   setRDate(date);
-  // });
-
-  useEffect(() => {
     const uid = localStorage.getItem("user_id");
     setUser(uid);
-  });
-
-  useEffect(() => {
+    setADate(date);
     const Employee = localStorage.getItem("username");
     setName(Employee);
   });
@@ -618,7 +605,7 @@ function newtloan() {
                         borderRadius: 10,
                         marginRight: 10,
                       }}
-                      onClick={DraftLoan}
+                      onClick={()=>DraftLoan()}
                     >
                       Save Draft
                     </Button>

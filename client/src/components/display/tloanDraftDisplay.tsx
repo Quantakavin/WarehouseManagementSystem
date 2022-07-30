@@ -5,7 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { GetDetails }from "../../api/TLoanDB"
 import Paper from "@mui/material/Paper";
@@ -44,7 +44,7 @@ import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import "../../pages/tloans/TLoanTable/table.css";
-
+import { EditableContext } from '../../components/context/isEditableContext'
 import { useCart } from "react-use-cart";
 
 export default function TLoanDraftDisplay() {
@@ -53,7 +53,6 @@ export default function TLoanDraftDisplay() {
   // const [loanDetails, setLoanDetails] = useState([]);
   const [loans, setLoans] = useState([]);
   const [itemLists, setItemLists] = useState([]); 
-  const [isEditable, setIsEditable] = useState(false)
   const { TLoanID } = useParams();
   const [type, setType] = useState("");
   const [company, setCompany] = useState("");
@@ -72,6 +71,10 @@ export default function TLoanDraftDisplay() {
 
   const [items, setItems] = useState([]);
 const [rows, setRows] = React.useState([]);
+
+const context = useContext(EditableContext)
+const {isEditable, setIsEditable} = context
+
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
@@ -275,19 +278,22 @@ const [rows, setRows] = React.useState([]);
       price: 0
     })
   );
+
   const itemStorage = localStorage.getItem("react-use-cart");
   const cartItems = JSON.parse(itemStorage).items;
   const addItemArray = () =>{
     emptyCart()
+    
     const addByIndex = () =>{
-      for (let i = 0; i < newBasket.length; i++) {
-        addItem(newBasket[i])
-      }
       
-      setIsEditable(true)
-     
-    }
+      for (let i = 0; i < newBasket.length; i++) {
+        addItem(newBasket[i], newBasket[i].quantity)
+      }
    
+      setIsEditable(!isEditable)
+
+    }
+  
     return (
         <motion.div
         className="animatable"
@@ -306,6 +312,7 @@ const [rows, setRows] = React.useState([]);
             borderRadius: 10,
           }}
           onClick={addByIndex}
+
         >
           Edit
         </Button>
@@ -477,6 +484,7 @@ const [rows, setRows] = React.useState([]);
       </Box>
     );
   };
+
   interface EditToolbarProps {
     setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
     setRowModesModel: (
@@ -497,6 +505,7 @@ const [rows, setRows] = React.useState([]);
       Quantity: quantity,
     })
   );
+
   const { updateItemQuantity, removeItem } =
     useCart();
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
@@ -508,7 +517,7 @@ const [rows, setRows] = React.useState([]);
     } else {
       setRows(cartItems);
     }
-  }, [cartItems]); 
+  }, []); 
   const FullFeaturedCrudGrid = () => {
     const handleRowEditStart = (
       params: GridRowParams,
@@ -685,7 +694,7 @@ const [rows, setRows] = React.useState([]);
  
   useEffect(() => {
     setItems(newProduct);
-  });
+  },[]);
 
   // const items = rows.map(({ id, isNew, ...rows }) => rows);
   // console.log(items);
@@ -742,7 +751,7 @@ const [rows, setRows] = React.useState([]);
             width: 700,
           });
           navigate("/tloan");
-          localStorage.removeItem("react-use-cart");
+          emptyCart()
         });
 
       console.log(results);
@@ -777,7 +786,7 @@ const [rows, setRows] = React.useState([]);
             width: 700,
           });
           navigate("/tloan");
-          localStorage.removeItem("react-use-cart");
+          emptyCart()
         });
 
       console.log(results);
@@ -1031,17 +1040,23 @@ const [rows, setRows] = React.useState([]);
             </form>
           </CardContent>
         </Card>
+        <button onClick={()=>setIsEditable(false)}>Press me</button>
       </div>
     );
   };
- 
+  console.log(isEditable)
+    // switch(isEditable){
+    //     case false: 
+    //     return getData()
 
+    //     case true:
+    //         return getCard();
+    // }
 
-    switch(isEditable){
-        case false: 
-        return <div>{getData()}</div>;
-
-        case true:
-            return getCard();
-    }
+    return (
+      <>
+      {isEditable ? getCard(): getData() }
+      </>
+      
+    )
 }

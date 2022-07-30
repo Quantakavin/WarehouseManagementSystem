@@ -16,14 +16,14 @@ import {
   GridToolbarFilterButton,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { motion } from "framer-motion";
 import { useCart } from "react-use-cart";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
-
+import IsEditableProvider, { EditableContext } from '../../components/context/isEditableContext'
 const Products2: React.FC = () => {
   const [row, setRow] = useState([]);
   const userrole = useAppSelector(selectRole);
@@ -33,7 +33,9 @@ const Products2: React.FC = () => {
   const [inputName, setInputName] = useState<string>(null);
   const [value, setValue] = useState(0); // first tab
   const { totalItems, addItem } = useCart();
-
+  const context = useContext(EditableContext)
+  const {isEditable, setIsEditable} = context
+  console.log(isEditable)
   useEffect(() => {
     fetch(`http://localhost:5000/api/products?limit=100000&page=0`)
       .then((data) => data.json())
