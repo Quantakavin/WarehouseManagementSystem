@@ -54,6 +54,7 @@ const Login: React.FC = () => {
         title: "Logged in successfully",
         customClass: "swalpopup",
         timer: 1500,
+        width: 330
       });
       return navigate("/dashboard", { replace: true });
     },
