@@ -113,7 +113,7 @@ module.exports.getRMACurrentStats = async () => {
 
 
 // Get TLoans Request Grouped By Type 
-module.exports.getTloanCompanies = async () => {
+module.exports.getTLoanCompanies = async () => {
     const query = `SELECT COUNT(TLoanID) AS Requests,  CompanyID as Company FROM TLoan  GROUP BY Company`;
     return knex.raw(query);
 };
