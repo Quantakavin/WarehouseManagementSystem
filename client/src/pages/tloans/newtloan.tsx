@@ -28,7 +28,7 @@ import {
   GridRowModesModel,
   GridRowParams,
   GridRowsProp,
-  MuiEvent
+  MuiEvent,
 } from "@mui/x-data-grid";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
@@ -408,42 +408,56 @@ function newtloan() {
       setCollectionErrorText("Selection required");
       setSubmitLoading(false);
     }
-    setTimeout(() => {
-      try {
-        const results = axios
-          .post("http://localhost:5000/api/tloan/newloan", {
-            type,
-            company,
-            name,
-            purpose,
-            applicationdate,
-            duration,
-            requireddate,
-            user,
-            email,
-            collection,
-            items,
-          })
-          .then(() => {
-            Toast.fire({
-              icon: "success",
-              title: "TLoan Successfully Submitted",
-              customClass: "swalpopup",
-              timer: 1500,
-              width: 700,
+    if (
+      items.length !== 0 &&
+      type !== "" &&
+      company !== "" &&
+      purpose !== "" &&
+      duration !== "" &&
+      requireddate !== "" &&
+      email !== "" &&
+      email.match(emailRegex) &&
+      collection !== ""
+    ) {
+      setTimeout(() => {
+        try {
+          const results = axios
+            .post("http://localhost:5000/api/tloan/newloan", {
+              type,
+              company,
+              name,
+              purpose,
+              applicationdate,
+              duration,
+              requireddate,
+              user,
+              email,
+              collection,
+              items,
+            })
+            .then(() => {
+             
+              Toast.fire({
+                icon: "success",
+                title: "TLoan Successfully Submitted",
+                customClass: "swalpopup",
+                timer: 1500,
+                width: 700,
+              });
+              navigate("/tloan");
+              
             });
-            navigate("/tloan");
-            emptyCart();
-          });
-
-        console.log(results);
-      } catch (error) {
-        console.log(error.response);
-        setSubmitLoading(false);
-      }
-    }, 500);
+           
+          console.log(results);
+        } catch (error) {
+          console.log(error.response);
+          setSubmitLoading(false);
+        }
+      }, 500);
+      emptyCart()
+    }
   };
-
+  
   const DraftLoan = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -454,39 +468,9 @@ function newtloan() {
     setEmailError(false);
     setCollectionError(false);
     setRDateError(false);
-    if (items.length === 0) {
-      Toast.fire({
-        icon: "error",
-        title: "Please add an item",
-        customClass: "swalpopup",
-        timer: 1500,
-        width: 315,
-      });
-      setLoading(false);
-    }
-    if (type === "") {
-      setTypeError(true);
-      setTypeErrorText("Selection required");
-      setLoading(false);
-    }
     if (company === "") {
       setCompanyError(true);
       setCompanyErrorText("Selection required");
-      setLoading(false);
-    }
-    if (purpose === "") {
-      setPurposeError(true);
-      setPurposeErrorText("Required");
-      setLoading(false);
-    }
-    if (duration === "") {
-      setDurationError(true);
-      setDurationErrorText("Selection required");
-      setLoading(false);
-    }
-    if (requireddate === "") {
-      setRDateError(true);
-      setRDateErrorText("Select a date");
       setLoading(false);
     }
     if (email === "") {
@@ -498,45 +482,47 @@ function newtloan() {
       setEmailErrorText("Invalid Email");
       setLoading(false);
     }
-    if (collection === "") {
-      setCollectionError(true);
-      setCollectionErrorText("Selection required");
-      setLoading(false);
-    }
-    setTimeout(() => {
-      try {
-        const results = axios
-          .post("http://localhost:5000/api/tloan/loanDrafting", {
-            type,
-            company,
-            name,
-            purpose,
-            applicationdate,
-            duration,
-            requireddate,
-            user,
-            email,
-            collection,
-            items,
-          })
-          .then(() => {
-            Toast.fire({
-              icon: "info",
-              title: "TLoan has been put into Draft",
-              customClass: "swalpopup",
-              timer: 1500,
-              width: 700,
+    if (
+      company !== "" &&
+      email !== "" &&
+      email.match(emailRegex)
+    ) {
+      setTimeout(() => {
+        try {
+          const results = axios
+            .post("http://localhost:5000/api/tloan/loanDrafting", {
+              type,
+              company,
+              name,
+              purpose,
+              applicationdate,
+              duration,
+              requireddate,
+              user,
+              email,
+              collection,
+              items,
+            })
+            .then(() => {
+              Toast.fire({
+                icon: "info",
+                title: "TLoan has been put into Draft",
+                customClass: "swalpopup",
+                timer: 1500,
+                width: 700,
+              });
+              navigate("/tloan");
+              // emptyCart();
             });
-            navigate("/tloan");
-            emptyCart();
-          });
 
-        console.log(results);
-      } catch (error) {
-        console.log(error.response);
-        setLoading(false);
-      }
-    }, 500);
+          console.log(results);
+        } catch (error) {
+          console.log(error.response);
+          setLoading(false);
+        }
+      }, 500);
+      emptyCart()
+    }
   };
   useEffect(() => {
     var date = new Date().toISOString().split("T")[0];
@@ -744,7 +730,7 @@ function newtloan() {
                     <DesktopDatePicker
                       label="Required Date"
                       inputFormat="yyyy-MM-dd"
-                      value={requireddate}
+                      value={dateForm}
                       onClose={() => {
                         if (requireddate === "") {
                           setRDateError(true);
