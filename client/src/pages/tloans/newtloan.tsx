@@ -28,7 +28,7 @@ import {
   GridRowModesModel,
   GridRowParams,
   GridRowsProp,
-  MuiEvent
+  MuiEvent,
 } from "@mui/x-data-grid";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
@@ -408,40 +408,52 @@ function newtloan() {
       setCollectionErrorText("Selection required");
       setSubmitLoading(false);
     }
-    setTimeout(() => {
-      try {
-        const results = axios
-          .post("http://localhost:5000/api/tloan/newloan", {
-            type,
-            company,
-            name,
-            purpose,
-            applicationdate,
-            duration,
-            requireddate,
-            user,
-            email,
-            collection,
-            items,
-          })
-          .then(() => {
-            Toast.fire({
-              icon: "success",
-              title: "TLoan Successfully Submitted",
-              customClass: "swalpopup",
-              timer: 1500,
-              width: 700,
+    if (
+      items.length !== 0 &&
+      type !== "" &&
+      company !== "" &&
+      purpose !== "" &&
+      duration !== "" &&
+      requireddate !== "" &&
+      email !== "" &&
+      email.match(emailRegex) &&
+      collection !== ""
+    ) {
+      setTimeout(() => {
+        try {
+          const results = axios
+            .post("http://localhost:5000/api/tloan/newloan", {
+              type,
+              company,
+              name,
+              purpose,
+              applicationdate,
+              duration,
+              requireddate,
+              user,
+              email,
+              collection,
+              items,
+            })
+            .then(() => {
+              Toast.fire({
+                icon: "success",
+                title: "TLoan Successfully Submitted",
+                customClass: "swalpopup",
+                timer: 1500,
+                width: 700,
+              });
+              navigate("/tloan");
+              emptyCart();
             });
-            navigate("/tloan");
-            emptyCart();
-          });
 
-        console.log(results);
-      } catch (error) {
-        console.log(error.response);
-        setSubmitLoading(false);
-      }
-    }, 500);
+          console.log(results);
+        } catch (error) {
+          console.log(error.response);
+          setSubmitLoading(false);
+        }
+      }, 500);
+    }
   };
 
   const DraftLoan = (e) => {
@@ -503,40 +515,52 @@ function newtloan() {
       setCollectionErrorText("Selection required");
       setLoading(false);
     }
-    setTimeout(() => {
-      try {
-        const results = axios
-          .post("http://localhost:5000/api/tloan/loanDrafting", {
-            type,
-            company,
-            name,
-            purpose,
-            applicationdate,
-            duration,
-            requireddate,
-            user,
-            email,
-            collection,
-            items,
-          })
-          .then(() => {
-            Toast.fire({
-              icon: "info",
-              title: "TLoan has been put into Draft",
-              customClass: "swalpopup",
-              timer: 1500,
-              width: 700,
+    if (
+      items.length !== 0 &&
+      type !== "" &&
+      company !== "" &&
+      purpose !== "" &&
+      duration !== "" &&
+      requireddate !== "" &&
+      email !== "" &&
+      email.match(emailRegex) &&
+      collection !== ""
+    ) {
+      setTimeout(() => {
+        try {
+          const results = axios
+            .post("http://localhost:5000/api/tloan/loanDrafting", {
+              type,
+              company,
+              name,
+              purpose,
+              applicationdate,
+              duration,
+              requireddate,
+              user,
+              email,
+              collection,
+              items,
+            })
+            .then(() => {
+              Toast.fire({
+                icon: "info",
+                title: "TLoan has been put into Draft",
+                customClass: "swalpopup",
+                timer: 1500,
+                width: 700,
+              });
+              navigate("/tloan");
+              emptyCart();
             });
-            navigate("/tloan");
-            emptyCart();
-          });
 
-        console.log(results);
-      } catch (error) {
-        console.log(error.response);
-        setLoading(false);
-      }
-    }, 500);
+          console.log(results);
+        } catch (error) {
+          console.log(error.response);
+          setLoading(false);
+        }
+      }, 500);
+    }
   };
   useEffect(() => {
     var date = new Date().toISOString().split("T")[0];
