@@ -22,7 +22,7 @@ router.get('/getTloanStats', dashboardController.TLoanCurrentStats);
 router.get('/getRMAStats', dashboardController.RMACurrentStats);
 
 // T-Loan an RMA Request Grouped by Type
-router.get('/getTloanType', dashboardController.TloanCompanies);
+router.get('/getTloanType', dashboardController.TLoanCompanies);
 
 // T-Loan an RMA Request Grouped by Companies
 // router.get()
