@@ -104,6 +104,68 @@ module.exports.SendTLoanToDraft = async (
     });
 };
 
+module.exports.DeleteProductsByID = async(TLoanID)=>{
+    return knex.transaction((trx)=>{
+        knex('TLoanOutItem')
+        .where('TLoanID', TLoanID)
+        .del()
+        .transacting(trx)
+        .then(trx.commit)
+        .catch(trx.rollback);
+    })   
+}
+
+module.exports.TLoanOutByID = async (TLoanID,itemno, itemname, quantity, batchno, warehousecode,basketitemid) => {
+    return knex('TLoanOutItem').insert({
+        TLoanID,
+        itemno,
+        itemname,
+        quantity,
+        batchno,
+        warehousecode,
+        basketitemid
+    });
+};
+module.exports.SubmitAfterEdit = async (
+    TLoanID,
+    type,
+    company,
+    purpose,
+    applicationdate,
+    duration,
+    requireddate,
+    email,
+    collection,
+    tloanItems
+    ) =>{
+        return knex.transaction((trx) => {
+            knex('TLoan')
+            .where('TLoanID', TLoanID)
+            .update({ 
+                TLoanTypeID: type,
+                CompanyID: company,
+                Purpose: purpose,
+                ApplicationDate: applicationdate,
+                Duration: duration,
+                RequiredDate: requireddate,
+                TLoanStatusID: 4,
+                CustomerEmail: email,
+                Collection: collection
+            },
+            'TLoanID')
+                .transacting(trx)
+                .then(function () {
+                    // tloanItems.forEach((item) => (item.TLoanID = TLoanID));
+                    return knex('TLoanOutItem').insert(tloanItems).transacting(trx);
+                })
+                .then(trx.commit)
+                .catch(trx.rollback);
+        });
+      
+}
+
+
+
 module.exports.getLoanByNumber = async (TLoanID) => {
     // const query = `SELECT t.TLoanNumber,DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
     // DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
@@ -119,6 +181,7 @@ module.exports.getLoanByNumber = async (TLoanID) => {
   tt.TLoanType,
   t.Collection,
   t.Purpose,
+  t.CompanyID,
   te.Reason,
   nullif(max(tes.TLoanExtensionStatus), min(tes.TLoanExtensionStatus)),
   IFNULL(tes.TLoanExtensionStatus,'NIL') AS 'TLoanExtensionStatus'

@@ -74,7 +74,6 @@ const [rows, setRows] = React.useState([]);
 
 const context = useContext(EditableContext)
 const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
-
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
@@ -493,7 +492,7 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
   function EditToolbar(props: EditToolbarProps) {
     const { setRows, setRowModesModel } = props;
   }
-
+  
   const newProduct = cartItems.map(
     ({ id, ItemNo, ItemName, BatchNo, WarehouseCode, quantity }) => ({
       BasketItemID: id,
@@ -502,8 +501,10 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
       BatchNo: BatchNo,
       WarehouseCode: WarehouseCode,
       Quantity: quantity,
+      TLoanID: TLoanIDGlobal
     })
   );
+console.log(newProduct)
 
   const { updateItemQuantity, removeItem } =
     useCart();
@@ -728,15 +729,13 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
     e.preventDefault();
     try {
       const results = axios
-        .post("http://localhost:5000/api/tloan/newloan", {
+        .put(`http://localhost:5000/api/tloan/submitEditedDraft/${TLoanID}`, {
           type,
           company,
-          name,
           purpose,
           applicationdate,
           duration,
           requireddate,
-          user,
           email,
           collection,
           items,
@@ -858,7 +857,8 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
                   size="small"
                   name="customerEmail"
                   sx={{ marginLeft: 3 }}
-                  required
+                  
+                  value={email || loans.CustomerEmail }
                   onChange={(e) => setEmail(e.target.value)}
                 />
 
@@ -866,7 +866,7 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
                   <InputLabel>Customer Company</InputLabel>
                   <Select
                     id="outlined-basic"
-                    value={company}
+                    value={company || loans.CompanyID}
                     onChange={handleChangeCompany}
                     size="small"
                     label="Customer Company"

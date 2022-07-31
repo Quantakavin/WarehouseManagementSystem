@@ -84,6 +84,59 @@ module.exports.allLoan = async (req, res) => {
     }
 };
 
+module.exports.SubmitAfterEdit = async(req,res) =>{
+    const { TLoanID } = req.params;
+    const {
+        type,
+        company,
+        purpose,
+        applicationdate,
+        duration,
+        requireddate,
+        email,
+        collection,
+        items
+    } = req.body
+
+    try{
+    
+        const results = await TLoan.getLoanByNumber(TLoanID);
+        const tloanItems = items.map((item) => {
+            return item;
+        });
+       
+        if (results.length > 0) {
+        await TLoan.DeleteProductsByID(TLoanID)
+        await TLoan.SubmitAfterEdit(
+                TLoanID,
+                type,
+                company,
+                purpose,
+                applicationdate,
+                duration,
+                requireddate,
+                email,
+                collection,
+                tloanItems
+            )
+        // await TLoan.TLoanOutByID(
+        //     TLoanID,
+        //     itemno,
+        //     itemname,
+        //     quantity, 
+        //     batchno, 
+        //     warehousecode,
+        //     basketitemid)
+        return res.status(200).send('Draft has been submitted');
+    } else {
+        return res.status(500).send('Submit draft failed');
+    }
+    }catch (error){
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+}
+
 module.exports.newLoan = async (req, res) => {
     const {
         type,
