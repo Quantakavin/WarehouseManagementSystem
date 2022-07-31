@@ -494,7 +494,7 @@ const CreateRMA: React.FC = () => {
     {
       field: "ItemCode",
       headerName: "Item Code",
-      width: 150,
+      flex: 2,
       editable: true,
       preProcessEditCellProps,
       renderEditCell: renderEditItemCode,
@@ -502,7 +502,7 @@ const CreateRMA: React.FC = () => {
     {
       field: "InvoiceNo",
       headerName: "Invoice Number",
-      width: 150,
+      flex: 2,
       editable: true,
       preProcessEditCellProps,
       renderEditCell: renderEditInvNo,
@@ -510,7 +510,7 @@ const CreateRMA: React.FC = () => {
     {
       field: "DoNo",
       headerName: "D.O Number",
-      width: 150,
+      flex: 2,
       editable: true,
       type: "number",
       preProcessEditCellProps,
@@ -520,34 +520,22 @@ const CreateRMA: React.FC = () => {
       field: "DateOfPurchase",
       headerName: "Date Of Purchase",
       ...dateColumnType,
-      width: 160,
+      flex: 2,
       editable: true,
     },
     {
       field: "ReturnReason",
       headerName: "Reason For Return",
-      width: 400,
+      flex: 20,
       editable: true,
       preProcessEditCellProps,
       renderEditCell: renderEditROR,
     },
     {
-      field: "Instructions",
-      headerName: "Instructions",
-      width: 400,
-      editable: false,
-    },
-    {
-      field: "CourseOfAction",
-      headerName: "Course Of Action",
-      width: 400,
-      editable: false,
-    },
-    {
       field: "actions",
       type: "actions",
       headerName: "Actions",
-      width: 100,
+      flex: 1,
       cellClassName: "actions",
       getActions: ({ id }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
@@ -661,6 +649,7 @@ const CreateRMA: React.FC = () => {
         timer: 1500,
         width: 315,
       });
+      setLoading(false);
     }
     if (contactperson === "") {
       setNameError(true);
