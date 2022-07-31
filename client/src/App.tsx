@@ -12,6 +12,7 @@ import TLoanManagerExtensionDisplay from "./components/display/tloanManagerExten
 import TLoanWarehouseDisplay from "./components/display/tloanWarehouseWorkerDisplay";
 import TopNav from "./components/header/TopNav";
 import Modals12 from "./components/modals/tloanExtensionModal";
+import Sidebar from "./components/sidebar/SideBar";
 import Sidebar2 from "./components/sidebar/Sidebar2";
 import BinLocations from "./pages/binlocations/BinLocations";
 import Dashboard from "./pages/dashboards/Dashboards";
@@ -40,8 +41,10 @@ import Users2 from "./pages/users/Users2";
 import ViewUser from "./pages/users/ViewUser";
 import ForgetPassword from "./pages/resetpassword/ForgetPassword";
 import ResetPassword from "./pages/resetpassword/ResetPassword";
-import TLoanDraftDisplay from './components/display/tloanDraftDisplay'
-import IsEditableProvider, { EditableContext } from './components/context/isEditableContext'
+import TLoanDraftDisplay from "./components/display/tloanDraftDisplay";
+import IsEditableProvider, {
+  EditableContext,
+} from "./components/context/isEditableContext";
 
 interface ProtectedRouteProps {
   loginpage: boolean;
@@ -159,13 +162,20 @@ const App: React.FC = () => {
                 />
                 <Route path="*" element={<Error404 />} />
                 <Route path="/403" element={<Error403 />} />
-                <Route path="/tloanDraftDetails/:TLoanID" element={<CartProvider><TLoanDraftDisplay /></CartProvider>} />
+                <Route
+                  path="/tloanDraftDetails/:TLoanID"
+                  element={
+                    <CartProvider>
+                      <TLoanDraftDisplay />
+                    </CartProvider>
+                  }
+                />
               </Route>
             </Routes>
           </Box>
         </Box>
       </IsEditableProvider>
-      </>
+    </>
   );
 };
 

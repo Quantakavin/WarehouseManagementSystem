@@ -110,3 +110,13 @@ module.exports.getRMACurrentStats = async () => {
     // (select count(RmaID) from Rma) as RMARequest`;
     return knex.raw(query);
 };
+
+
+// Get TLoans Request Grouped By Type 
+module.exports.getTloanCompanies = async () => {
+    const query = `SELECT COUNT(TLoanID) AS Requests,  CompanyID as Company FROM TLoan  GROUP BY Company`;
+    return knex.raw(query);
+};
+
+
+// Get RMA Request

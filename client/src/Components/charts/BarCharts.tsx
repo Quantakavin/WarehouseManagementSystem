@@ -1,4 +1,6 @@
 import { Card, Grid } from "@mui/material";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -8,7 +10,23 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import config from "../../config/config";
 import "../../styles/chart.scss";
+
+
+
+function Chart3({}) {
+
+  const [tloanrequest, settloanRequest] = useState(null);
+
+
+
+
+
+
+
+
+
 
 const data = [
   {
@@ -33,7 +51,7 @@ const data = [
   },
 ];
 
-function Chart3() {
+// function Chart3() {
   return (
     <Grid container>
       <Grid item xs={6}>

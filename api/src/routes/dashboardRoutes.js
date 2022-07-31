@@ -21,9 +21,8 @@ router.get('/getclosedRMAs', dashboardController.closedRMAs);
 router.get('/getTloanStats', dashboardController.TLoanCurrentStats);
 router.get('/getRMAStats', dashboardController.RMACurrentStats);
 
-// // T-Loan an RMA Request Grouped by Type
-// router.get()
-// router.get()
+// T-Loan an RMA Request Grouped by Type
+router.get('/getTloanType', dashboardController.TloanCompanies);
 
 // T-Loan an RMA Request Grouped by Companies
 // router.get()
