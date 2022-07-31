@@ -735,6 +735,14 @@ const CreateRMA: React.FC = () => {
               id="filled-required"
               label="Customer Name"
               variant="filled"
+              onBlur={() => {
+                setNameError(false)
+                setNameErrorText("")
+                if (contactperson === "") {
+                  setNameError(true)
+                  setNameErrorText("Required")
+                }
+              }}
               onChange={(e) => setContactperson(e.target.value)}
               error={nameError}
               helperText={nameErrorText}
@@ -745,6 +753,17 @@ const CreateRMA: React.FC = () => {
               id="filled-required"
               label="Customer Email"
               variant="filled"
+              onBlur={() => {
+                setEmailError(false)
+                setEmailErrorText("")
+                if (contactemail === "") {
+                  setEmailError(true)
+                  setEmailErrorText("Required")
+                } else if (!contactemail.match(emailRegex)) {
+                  setEmailError(true)
+                  setEmailErrorText("Invalid Email")
+                }
+              }}
               onChange={(e) => setContactemail(e.target.value)}
               error={emailError}
               helperText={emailErrorText}
@@ -755,6 +774,14 @@ const CreateRMA: React.FC = () => {
               id="filled-required"
               label="Company"
               variant="filled"
+              onBlur={() => {
+                setCompError(false)
+                setCompErrorText("")
+                if (company === "") {
+                  setCompError(true)
+                  setCompErrorText("Required")
+                }
+              }}
               onChange={(e) => setCompany(e.target.value)}
               error={compError}
               helperText={compErrorText}
@@ -765,6 +792,16 @@ const CreateRMA: React.FC = () => {
               id="filled-required"
               label="Contact Number"
               variant="filled"
+              onBlur={() => {
+                setNumError(false)
+                setNameErrorText("")
+                if (contactno === "") {
+                  setNumError(true)
+                  setNumErrorText("Required")
+                } else if (!contactno.match(phoneRegex)) {
+                  setNumError(true)
+                  setNumErrorText("Invalid contact number")}
+              }}
               onChange={(e) => setContactno(e.target.value)}
               error={numError}
               helperText={numErrorText}
