@@ -1,11 +1,14 @@
 import FormHelperText from "@material-ui/core/FormHelperText";
 import AddIcon from "@mui/icons-material/Add";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import CancelIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 import RemoveIcon from "@mui/icons-material/Remove";
 import SaveIcon from "@mui/icons-material/Save";
+import SaveAsIcon from "@mui/icons-material/SaveAs";
+import { LoadingButton } from "@mui/lab";
 import { Box } from "@mui/material";
-import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import FormControl from "@mui/material/FormControl";
@@ -25,7 +28,7 @@ import {
   GridRowModesModel,
   GridRowParams,
   GridRowsProp,
-  MuiEvent,
+  MuiEvent
 } from "@mui/x-data-grid";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
@@ -33,12 +36,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import axios from "axios";
 import dateFormat from "dateformat";
 import { motion } from "framer-motion";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "react-use-cart";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import { useAppSelector } from "../../app/hooks";
-import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import "./TLoanTable/table.css";
 
@@ -283,7 +284,8 @@ function newtloan() {
     );
   };
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
   const [type, setType] = useState("");
   const [company, setCompany] = useState("");
   const [name, setName] = useState("");
@@ -348,7 +350,7 @@ function newtloan() {
   const emailRegex = /^\S+@\S+\.\S+$/i;
 
   const submitLoan = (e) => {
-    setIsLoading(true);
+    setSubmitLoading(true);
     e.preventDefault();
     setTypeError(false);
     setCompanyError(false);
@@ -365,113 +367,176 @@ function newtloan() {
         timer: 1500,
         width: 315,
       });
-      setIsLoading(false);
+      setSubmitLoading(false);
     }
     if (type === "") {
       setTypeError(true);
       setTypeErrorText("Selection required");
-      setIsLoading(false);
+      setSubmitLoading(false);
     }
     if (company === "") {
       setCompanyError(true);
       setCompanyErrorText("Selection required");
-      setIsLoading(false);
+      setSubmitLoading(false);
     }
     if (purpose === "") {
       setPurposeError(true);
       setPurposeErrorText("Required");
-      setIsLoading(false);
+      setSubmitLoading(false);
     }
     if (duration === "") {
       setDurationError(true);
       setDurationErrorText("Selection required");
-      setIsLoading(false);
+      setSubmitLoading(false);
     }
     if (requireddate === "") {
       setRDateError(true);
       setRDateErrorText("Select a date");
-      setIsLoading(false);
+      setSubmitLoading(false);
     }
     if (email === "") {
       setEmailError(true);
       setEmailErrorText("Required");
-      setIsLoading(false);
+      setSubmitLoading(false);
     } else if (!email.match(emailRegex)) {
       setEmailError(true);
       setEmailErrorText("Invalid Email");
-      setIsLoading(false);
+      setSubmitLoading(false);
     }
     if (collection === "") {
       setCollectionError(true);
       setCollectionErrorText("Selection required");
-      setIsLoading(false);
+      setSubmitLoading(false);
     }
-    try {
-      const results = axios
-        .post("http://localhost:5000/api/tloan/newloan", {
-          type,
-          company,
-          name,
-          purpose,
-          applicationdate,
-          duration,
-          requireddate,
-          user,
-          email,
-          collection,
-          items,
-        })
-        .then(() => {
-          Toast.fire({
-            icon: "success",
-            title: "TLoan Successfully Submitted",
-            customClass: "swalpopup",
-            timer: 1500,
-            width: 700,
+    setTimeout(() => {
+      try {
+        const results = axios
+          .post("http://localhost:5000/api/tloan/newloan", {
+            type,
+            company,
+            name,
+            purpose,
+            applicationdate,
+            duration,
+            requireddate,
+            user,
+            email,
+            collection,
+            items,
+          })
+          .then(() => {
+            Toast.fire({
+              icon: "success",
+              title: "TLoan Successfully Submitted",
+              customClass: "swalpopup",
+              timer: 1500,
+              width: 700,
+            });
+            navigate("/tloan");
+            emptyCart();
           });
-          navigate("/tloan");
-          emptyCart();
-        });
 
-      console.log(results);
-    } catch (error) {
-      console.log(error.response);
-    }
+        console.log(results);
+      } catch (error) {
+        console.log(error.response);
+        setSubmitLoading(false);
+      }
+    }, 500);
   };
 
   const DraftLoan = (e) => {
-    // e.preventDefault();
-    try {
-      const results = axios
-        .post("http://localhost:5000/api/tloan/loanDrafting", {
-          type,
-          company,
-          name,
-          purpose,
-          applicationdate,
-          duration,
-          requireddate,
-          user,
-          email,
-          collection,
-          items,
-        })
-        .then(() => {
-          Toast.fire({
-            icon: "info",
-            title: "TLoan has been put into Draft",
-            customClass: "swalpopup",
-            timer: 1500,
-            width: 700,
-          });
-          navigate("/tloan");
-          emptyCart();
-        });
-
-      console.log(results);
-    } catch (error) {
-      console.log(error.response);
+    e.preventDefault();
+    setLoading(true);
+    setTypeError(false);
+    setCompanyError(false);
+    setPurposeError(false);
+    setDurationError(false);
+    setEmailError(false);
+    setCollectionError(false);
+    setRDateError(false);
+    if (items.length === 0) {
+      Toast.fire({
+        icon: "error",
+        title: "Please add an item",
+        customClass: "swalpopup",
+        timer: 1500,
+        width: 315,
+      });
+      setLoading(false);
     }
+    if (type === "") {
+      setTypeError(true);
+      setTypeErrorText("Selection required");
+      setLoading(false);
+    }
+    if (company === "") {
+      setCompanyError(true);
+      setCompanyErrorText("Selection required");
+      setLoading(false);
+    }
+    if (purpose === "") {
+      setPurposeError(true);
+      setPurposeErrorText("Required");
+      setLoading(false);
+    }
+    if (duration === "") {
+      setDurationError(true);
+      setDurationErrorText("Selection required");
+      setLoading(false);
+    }
+    if (requireddate === "") {
+      setRDateError(true);
+      setRDateErrorText("Select a date");
+      setLoading(false);
+    }
+    if (email === "") {
+      setEmailError(true);
+      setEmailErrorText("Required");
+      setLoading(false);
+    } else if (!email.match(emailRegex)) {
+      setEmailError(true);
+      setEmailErrorText("Invalid Email");
+      setLoading(false);
+    }
+    if (collection === "") {
+      setCollectionError(true);
+      setCollectionErrorText("Selection required");
+      setLoading(false);
+    }
+    setTimeout(() => {
+      try {
+        const results = axios
+          .post("http://localhost:5000/api/tloan/loanDrafting", {
+            type,
+            company,
+            name,
+            purpose,
+            applicationdate,
+            duration,
+            requireddate,
+            user,
+            email,
+            collection,
+            items,
+          })
+          .then(() => {
+            Toast.fire({
+              icon: "info",
+              title: "TLoan has been put into Draft",
+              customClass: "swalpopup",
+              timer: 1500,
+              width: 700,
+            });
+            navigate("/tloan");
+            emptyCart();
+          });
+
+        console.log(results);
+      } catch (error) {
+        console.log(error.response);
+        setLoading(false);
+      }
+    }, 500);
   };
   useEffect(() => {
     var date = new Date().toISOString().split("T")[0];
@@ -582,7 +647,6 @@ function newtloan() {
                       if (duration === "") {
                         setDurationError(true);
                         setDurationErrorText("Selection required");
-                        setIsLoading(false);
                       }
                     }}
                     error={durationError}
@@ -612,7 +676,6 @@ function newtloan() {
                     if (purpose === "") {
                       setPurposeError(true);
                       setPurposeErrorText("Required");
-                      setIsLoading(false);
                     }
                   }}
                   onChange={(e) => setPurpose(e.target.value)}
@@ -634,7 +697,6 @@ function newtloan() {
                       if (collection === "") {
                         setCollectionError(true);
                         setCollectionErrorText("Selection required");
-                        setIsLoading(false);
                       }
                     }}
                     error={collectionError}
@@ -665,7 +727,6 @@ function newtloan() {
                       if (type === "") {
                         setTypeError(true);
                         setTypeErrorText("Selection required");
-                        setIsLoading(false);
                       }
                     }}
                     error={typeError}
@@ -688,7 +749,6 @@ function newtloan() {
                         if (requireddate === "") {
                           setRDateError(true);
                           setRDateErrorText("Select a date");
-                          setIsLoading(false);
                         }
                       }}
                       onChange={handleChangeRequiredDate}
@@ -716,7 +776,7 @@ function newtloan() {
                   whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <Button
+                  <LoadingButton
                     size="small"
                     variant="contained"
                     sx={{
@@ -725,11 +785,13 @@ function newtloan() {
                       width: 150,
                       height: 50,
                       borderRadius: 10,
+                      paddingRight: 4,
                     }}
-                    onClick={() => navigate(-1)}
+                    startIcon={<ArrowBackIosNewIcon />}
+                    onClick={() => navigate("/tloan")}
                   >
                     Back
-                  </Button>
+                  </LoadingButton>
                 </motion.div>
                 <Box display="flex">
                   <motion.div
@@ -737,28 +799,31 @@ function newtloan() {
                     whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                     whileTap={{ scale: 0.9 }}
                   >
-                    <Button
+                    <LoadingButton
                       size="small"
                       variant="contained"
                       sx={{
                         color: "white",
                         backgroundColor: "#063970",
-                        width: 150,
+                        width: 200,
                         height: 50,
                         borderRadius: 10,
                         marginRight: 10,
                       }}
-                      onClick={(e) => DraftLoan()}
+                      loading={loading}
+                      loadingPosition="end"
+                      endIcon={<SaveAsIcon />}
+                      onClick={DraftLoan}
                     >
-                      Save Draft
-                    </Button>
+                      Save as Draft
+                    </LoadingButton>
                   </motion.div>
                   <motion.div
                     className="animatable"
                     whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                     whileTap={{ scale: 0.9 }}
                   >
-                    <Button
+                    <LoadingButton
                       size="small"
                       variant="contained"
                       sx={{
@@ -768,11 +833,14 @@ function newtloan() {
                         height: 50,
                         borderRadius: 10,
                       }}
+                      loading={submitLoading}
+                      loadingPosition="end"
+                      endIcon={<DoneAllIcon />}
                       type="submit"
                       // onClick={submitLoan}
                     >
                       Submit
-                    </Button>
+                    </LoadingButton>
                   </motion.div>
                 </Box>
               </Box>
