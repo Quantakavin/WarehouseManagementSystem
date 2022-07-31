@@ -436,6 +436,7 @@ function newtloan() {
               items,
             })
             .then(() => {
+             
               Toast.fire({
                 icon: "success",
                 title: "TLoan Successfully Submitted",
@@ -444,18 +445,19 @@ function newtloan() {
                 width: 700,
               });
               navigate("/tloan");
-              emptyCart();
+              
             });
-
+           
           console.log(results);
         } catch (error) {
           console.log(error.response);
           setSubmitLoading(false);
         }
       }, 500);
+      emptyCart()
     }
   };
-
+  
   const DraftLoan = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -510,7 +512,7 @@ function newtloan() {
                 width: 700,
               });
               navigate("/tloan");
-              emptyCart();
+              // emptyCart();
             });
 
           console.log(results);
@@ -519,6 +521,7 @@ function newtloan() {
           setLoading(false);
         }
       }, 500);
+      emptyCart()
     }
   };
   useEffect(() => {
@@ -727,7 +730,7 @@ function newtloan() {
                     <DesktopDatePicker
                       label="Required Date"
                       inputFormat="yyyy-MM-dd"
-                      value={requireddate}
+                      value={dateForm}
                       onClose={() => {
                         if (requireddate === "") {
                           setRDateError(true);

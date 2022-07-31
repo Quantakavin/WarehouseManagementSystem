@@ -143,7 +143,7 @@ const App: React.FC = () => {
                   path="/newtloan"
                   element={
                     <CartProvider>
-                      <NewTLoan />{" "}
+                      <NewTLoan />
                     </CartProvider>
                   }
                 />
