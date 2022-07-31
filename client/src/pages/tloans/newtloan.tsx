@@ -364,7 +364,7 @@ function newtloan() {
   };
 
   const DraftLoan = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     try {
       const results = axios
         .post("http://localhost:5000/api/tloan/loanDrafting", {
@@ -605,7 +605,7 @@ function newtloan() {
                         borderRadius: 10,
                         marginRight: 10,
                       }}
-                      onClick={()=>DraftLoan()}
+                      onClick={(e)=>DraftLoan()}
                     >
                       Save Draft
                     </Button>
