@@ -466,39 +466,9 @@ function newtloan() {
     setEmailError(false);
     setCollectionError(false);
     setRDateError(false);
-    if (items.length === 0) {
-      Toast.fire({
-        icon: "error",
-        title: "Please add an item",
-        customClass: "swalpopup",
-        timer: 1500,
-        width: 315,
-      });
-      setLoading(false);
-    }
-    if (type === "") {
-      setTypeError(true);
-      setTypeErrorText("Selection required");
-      setLoading(false);
-    }
     if (company === "") {
       setCompanyError(true);
       setCompanyErrorText("Selection required");
-      setLoading(false);
-    }
-    if (purpose === "") {
-      setPurposeError(true);
-      setPurposeErrorText("Required");
-      setLoading(false);
-    }
-    if (duration === "") {
-      setDurationError(true);
-      setDurationErrorText("Selection required");
-      setLoading(false);
-    }
-    if (requireddate === "") {
-      setRDateError(true);
-      setRDateErrorText("Select a date");
       setLoading(false);
     }
     if (email === "") {
@@ -510,21 +480,10 @@ function newtloan() {
       setEmailErrorText("Invalid Email");
       setLoading(false);
     }
-    if (collection === "") {
-      setCollectionError(true);
-      setCollectionErrorText("Selection required");
-      setLoading(false);
-    }
     if (
-      items.length !== 0 &&
-      type !== "" &&
       company !== "" &&
-      purpose !== "" &&
-      duration !== "" &&
-      requireddate !== "" &&
       email !== "" &&
-      email.match(emailRegex) &&
-      collection !== ""
+      email.match(emailRegex)
     ) {
       setTimeout(() => {
         try {
