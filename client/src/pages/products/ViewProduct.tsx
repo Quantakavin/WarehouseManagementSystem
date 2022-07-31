@@ -3,7 +3,7 @@ import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import Fab from "@mui/material/Fab";
 import axios from "axios";
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "react-use-cart";
@@ -12,12 +12,16 @@ import { Toast } from "../../components/alerts/SweetAlert";
 import CardContainer from "../../components/cards/CardContainer";
 import CardField from "../../components/cards/CardField";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
+import IsEditableProvider, { EditableContext } from '../../components/context/isEditableContext'
 
 const ViewProduct: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [newProducts, setNewProducts] = useState([]);
   const [productGet, setProductGet] = useState([]);
+  const context = useContext(EditableContext)
+  const {isEditable, setIsEditable, TLoanIDGlobal} = context
+
 
   useEffect(() => {
     // declare the async data fetching function
@@ -76,7 +80,7 @@ const ViewProduct: React.FC = () => {
           <Fab
             variant="extended"
             aria-label="add"
-            onClick={() => navigate("/newtloan")}
+            onClick={() =>{isEditable ? navigate(`/tloanDraftDetails/${TLoanIDGlobal}`) : navigate("/newtloan")}}
             sx={{
               color: "white",
               backgroundColor: "#063970",
@@ -173,21 +177,6 @@ const ViewProduct: React.FC = () => {
 
     return html;
   };
-  const itemStorage = localStorage.getItem("react-use-cart");
-  const cartItems = JSON.parse(itemStorage).items;
-  console.log(cartItems)
-
-  const addItemArray = () =>{
-    const addByIndex = () =>{
-      for (let i = 0; i < cartItems.length; i++) {
-        addItem(cartItems[i])
-      }
-    }
-   
-    return (
-      <button onClick={addByIndex}></button>
-    )
-  }
   return (
     <>
       {newLoanButton()}
@@ -252,7 +241,6 @@ const ViewProduct: React.FC = () => {
           </div>
         </CardContainer>
       )}
-      {addItemArray()}
       {/* {addInside()} */}
     </>
   );

@@ -102,7 +102,7 @@ function newtloan() {
     } else {
       setRows(cartItems);
     }
-  }, []);
+  }, [cartItems]);
 
   const FullFeaturedCrudGrid = () => {
     const handleRowEditStart = (
@@ -296,7 +296,7 @@ function newtloan() {
   const [items, setItems] = useState([]);
   useEffect(() => {
     setItems(newProduct);
-  },[]);
+  },[newProduct]);
 
   // const items = rows.map(({ id, isNew, ...rows }) => rows);
   // console.log(items);
@@ -326,7 +326,7 @@ function newtloan() {
   useEffect(() => {
     const correctFormat = dateFormat(dateForm, "yyyy-mm-dd");
     setRDate(correctFormat);
-  }, []);
+  }, [dateForm]);
 
   const submitLoan = (e) => {
     e.preventDefault();

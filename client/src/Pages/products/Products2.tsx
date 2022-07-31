@@ -34,14 +34,15 @@ const Products2: React.FC = () => {
   const [value, setValue] = useState(0); // first tab
   const { totalItems, addItem } = useCart();
   const context = useContext(EditableContext)
-  const {isEditable, setIsEditable} = context
+  const {isEditable, setIsEditable, TLoanIDGlobal} = context
+  console.log(TLoanIDGlobal)
   console.log(isEditable)
   useEffect(() => {
     fetch(`http://localhost:5000/api/products?limit=100000&page=0`)
       .then((data) => data.json())
       .then((data) => setRow(data));
   }, []);
-
+console.log(isEditable)
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [
       {

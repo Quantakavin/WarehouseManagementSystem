@@ -73,7 +73,7 @@ export default function TLoanDraftDisplay() {
 const [rows, setRows] = React.useState([]);
 
 const context = useContext(EditableContext)
-const {isEditable, setIsEditable} = context
+const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
 
   useEffect(() => {
     // declare the async data fetching function
@@ -278,19 +278,18 @@ const {isEditable, setIsEditable} = context
       price: 0
     })
   );
-
+    console.log(TLoanID)
   const itemStorage = localStorage.getItem("react-use-cart");
   const cartItems = JSON.parse(itemStorage).items;
   const addItemArray = () =>{
     emptyCart()
-    
     const addByIndex = () =>{
-      
+     
       for (let i = 0; i < newBasket.length; i++) {
         addItem(newBasket[i], newBasket[i].quantity)
-      }
-   
+      }  
       setIsEditable(!isEditable)
+      setTLoanIDGlobal(TLoanID)
 
     }
   
@@ -517,7 +516,7 @@ const {isEditable, setIsEditable} = context
     } else {
       setRows(cartItems);
     }
-  }, []); 
+  }, [cartItems]); 
   const FullFeaturedCrudGrid = () => {
     const handleRowEditStart = (
       params: GridRowParams,
@@ -694,7 +693,7 @@ const {isEditable, setIsEditable} = context
  
   useEffect(() => {
     setItems(newProduct);
-  },[]);
+  },[newProduct]);
 
   // const items = rows.map(({ id, isNew, ...rows }) => rows);
   // console.log(items);
@@ -828,6 +827,11 @@ const {isEditable, setIsEditable} = context
       { "11 Months": "330" },
       { "12 Months": "365" },
     ];
+
+    const setInitial =() =>{
+      setIsEditable(false)
+      setTLoanIDGlobal(null)
+    }
     return (
       <div style={{ overflow: "auto" }}>
         <Card
@@ -1040,11 +1044,10 @@ const {isEditable, setIsEditable} = context
             </form>
           </CardContent>
         </Card>
-        <button onClick={()=>setIsEditable(false)}>Press me</button>
+        <button onClick={()=> setInitial() }>Press me</button>
       </div>
     );
   };
-  console.log(isEditable)
     // switch(isEditable){
     //     case false: 
     //     return getData()
