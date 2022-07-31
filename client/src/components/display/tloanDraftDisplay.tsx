@@ -278,7 +278,7 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
       price: 0
     })
   );
-    console.log(TLoanID)
+ 
   const itemStorage = localStorage.getItem("react-use-cart");
   const cartItems = JSON.parse(itemStorage).items;
   const addItemArray = () =>{
