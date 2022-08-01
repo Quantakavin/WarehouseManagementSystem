@@ -25,7 +25,7 @@ router.get('/getRMAStats', dashboardController.RMACurrentStats);
 router.get('/getTloanType', dashboardController.TLoanCompanies);
 
 // T-Loan an RMA Request Grouped by Companies
-// router.get()
+router.get('/getPieChart', dashboardController.TloanType);
 // router.get()
 
 module.exports = router;

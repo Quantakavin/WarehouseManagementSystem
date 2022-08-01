@@ -91,9 +91,9 @@ function Chart3({}) {
               <ResponsiveContainer width="100%" aspect={4 / 1}>
                 <BarChart width={100} height={300} data={tloanrequest}>
                   <CartesianGrid stroke="#e0dfdf" strokeDasharray="5 5" />
-                  <XAxis dataKey="time" stroke="#8884d8" />
+                  <XAxis dataKey="Company" stroke="#8884d8" />
                   <YAxis />
-                  <Bar label={true} dataKey="users" fill="#8884d8" />
+                  <Bar label={true} dataKey="Requests" fill="#8884d8" />
                   <Tooltip />
                 </BarChart>
               </ResponsiveContainer>

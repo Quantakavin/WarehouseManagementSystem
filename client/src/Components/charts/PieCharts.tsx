@@ -1,15 +1,22 @@
 import { Card, Grid } from "@mui/material";
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import "../../styles/chart.scss";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import config from "../../config/config";
+import tloan from "../../pages/tloans/tloan";
+import "../../styles/chart.scss";
 
-const data = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
-];
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const COLORS = ["#0088FE", "#00C49F"];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -39,6 +46,26 @@ const renderCustomizedLabel = ({
 };
 
 function Chart4() {
+  const [requesttypes, setrequesttypes] = useState([]);
+
+  // Get Types of Tloan 
+
+  const getTloanTypes =  async () => {
+    const response = await axios.get(`${config.baseURL}/getPieChart`);
+    
+    setrequesttypes(response.data);
+    console.log(requesttypes);
+  };
+
+  useEffect(() => {
+    getTloanTypes();
+}, []);
+
+
+
+
+
+
   return (
     <Grid container>
       <Grid item xs={6}>
@@ -47,16 +74,16 @@ function Chart4() {
           <ResponsiveContainer width="100%" height="100%" aspect={4 / 1}>
             <PieChart width={600} height={400}>
               <Pie
-                data={data}
+                data={requesttypes}
                 cx="50%"
                 cy="50%"
                 labelLine={false}
                 label={renderCustomizedLabel}
                 outerRadius={80}
                 fill="#8884d8"
-                dataKey="value"
+                dataKey="Requests"
               >
-                {data.map((entry, index) => (
+                {requesttypes.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
                     fill={COLORS[index % COLORS.length]}
@@ -73,16 +100,16 @@ function Chart4() {
           <ResponsiveContainer width="100%" height="100%" aspect={4 / 1}>
             <PieChart width={600} height={400}>
               <Pie
-                data={data}
+                data={requesttypes}
                 cx="50%"
                 cy="50%"
                 labelLine={false}
                 label={renderCustomizedLabel}
                 outerRadius={80}
                 fill="#8884d8"
-                dataKey="value"
+                dataKey="Requests"
               >
-                {data.map((entry, index) => (
+                {requesttypes.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
                     fill={COLORS[index % COLORS.length]}

@@ -118,3 +118,7 @@ module.exports.getTLoanCompanies = async () => {
 };
 
 // Get RMA Request
+module.exports.getTLoanType = async () => {
+    const query = `SELECT TT.TLoanType as Type, COUNT(T.TLoanID) AS Requests FROM TLoan T INNER JOIN  TLoanType TT ON TT.TLoanTypeID=T.TLoanTypeID GROUP BY Type`;
+    return knex.raw(query);
+};
