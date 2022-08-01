@@ -55,13 +55,14 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAppSelector } from "../../app/hooks";
-import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
+import { selectId, selectPermissions, selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../alerts/SweetAlert";
 
 const CreateRMA: React.FC = () => {
   const navigate = useNavigate();
   const sid = useAppSelector(selectId);
   const userrole = useAppSelector(selectRole);
+  const permissions = useAppSelector(selectPermissions)
   const [loading, setLoading] = useState(false);
   const [rows, setRows] = useState([]);
   const [contactperson, setContactperson] = useState("");
@@ -94,7 +95,11 @@ const CreateRMA: React.FC = () => {
   };
 
   useEffect(() => {
-    if (userrole !== "Sales Engineer") {
+    // if (userrole !== "Sales Engineer") {
+    //   navigate("/403");
+    // }
+    if (!permissions.some(e => e.FeatureName === "RMA Application")) {
+      console.log("not allowed")
       navigate("/403");
     }
   }, []);
