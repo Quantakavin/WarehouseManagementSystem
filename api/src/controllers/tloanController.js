@@ -137,6 +137,59 @@ module.exports.SubmitAfterEdit = async(req,res) =>{
     }
 }
 
+module.exports.DraftAfterEdit = async(req,res) =>{
+    const { TLoanID } = req.params;
+    const {
+        type,
+        company,
+        purpose,
+        applicationdate,
+        duration,
+        requireddate,
+        email,
+        collection,
+        items
+    } = req.body
+
+    try{
+    
+        const results = await TLoan.getLoanByNumber(TLoanID);
+        const tloanItems = items.map((item) => {
+            return item;
+        });
+       
+        if (results.length > 0) {
+        await TLoan.DeleteProductsByID(TLoanID)
+        await TLoan.SubmitAfterEdit(
+                TLoanID,
+                type,
+                company,
+                purpose,
+                applicationdate,
+                duration,
+                requireddate,
+                email,
+                collection,
+                tloanItems
+            )
+        // await TLoan.TLoanOutByID(
+        //     TLoanID,
+        //     itemno,
+        //     itemname,
+        //     quantity, 
+        //     batchno, 
+        //     warehousecode,
+        //     basketitemid)
+        return res.status(200).send('Draft has been saved');
+    } else {
+        return res.status(500).send('Draft failed to save');
+    }
+    }catch (error){
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+}
+
 module.exports.newLoan = async (req, res) => {
     const {
         type,
@@ -514,6 +567,21 @@ module.exports.getApprovedLoan = async (req, res) => {
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('No approved Loans available');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
+module.exports.tloanStatusID = async (req, res) => {
+    const { TLoanID } = req.params;
+    try {
+        const results = await TLoan.getStatusID(TLoanID);
+        if (results.length > 0) {
+            return res.status(200).json(results[0])
+        } else {
+            return res.status(500).send('Does not Exist!');
         }
     } catch (error) {
         console.log(error);
