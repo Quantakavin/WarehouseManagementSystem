@@ -9,18 +9,18 @@ import { motion } from "framer-motion";
 import * as React from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import { Toast } from "../../components/alerts/SweetAlert";
 
 const style = {
   position: "absolute" as "absolute",
-  height: "40%",
-  width: "30%",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
+  width: 520,
   bgcolor: "background.paper",
+  border: "background.paper",
   boxShadow: 24,
   p: 4,
-  display: "block",
 };
 
 export default function TLoanRejectModalButton() {
@@ -28,6 +28,8 @@ export default function TLoanRejectModalButton() {
   const navigate = useNavigate();
   const [remarks, setRemarks] = useState("");
   const [open, setOpen] = React.useState(false);
+  const [remarksError, setRemarksError] = useState(false)
+  const [remarksErrorText, setRemarksErrorText] = useState('')
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleChange = (e) => {
@@ -35,21 +37,37 @@ export default function TLoanRejectModalButton() {
     setRemarks(e.target.value);
   };
 
-  const tloanremarks = {
-    remarks,
-  };
 
-  const handleConfirm = async () => {
+  const handleConfirm = async (e) => {
+    e.preventDefault()
+    setRemarksError(false)
+    if(remarks ===''){
+      setRemarksError(true)
+      setRemarksErrorText('Input Is Needed')
+    }
+    try{
     axios
       .put(
-        `http://localhost:5000/api/tloan/rejectExtension/${TLoanID}`,
-        tloanremarks
+        `http://localhost:5000/api/tloan/rejectExtension/${TLoanID}`,{
+          remarks
+        }
       )
-      .then(() => navigate("/tloan"))
-      .catch((error) => {
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: "TLoan Extension For TLoan" +"#" + TLoanID + " Has Been Rejected",
+          customClass: "swalpopup",
+          timer: 2000,
+          width: 700,
+        });
+        navigate("/tloan");
+      });
+
+    }
+      catch(error) {
         this.setState({ errorMessage: error.message });
         console.error("There was an error!", error);
-      });
+      };
   };
 
   return (
@@ -67,7 +85,7 @@ export default function TLoanRejectModalButton() {
         sx={{
           color: "white",
           backgroundColor: "#D11A2A",
-          width: 200,
+          width: 210,
           height: 50,
           borderRadius: 10,
         }}
@@ -88,6 +106,16 @@ export default function TLoanRejectModalButton() {
       >
         <Fade in={open}>
           <Box sx={style}>
+          <h3
+                  style={{
+                    color: "#063970",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  Rejecting Extension For Loan #{TLoanID}
+                </h3>
             <TextField
               value={remarks}
               onChange={handleChange}
@@ -97,7 +125,9 @@ export default function TLoanRejectModalButton() {
               variant="filled"
               multiline
               fullWidth
-              rows={15}
+              rows={8}
+              error={remarksError}
+              helperText={remarksErrorText}
             />
             <Box
               component="span"

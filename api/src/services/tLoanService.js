@@ -525,8 +525,11 @@ module.exports.getApproved = async () => {
     return knex.raw(query);
 };
 
-module.exports.getStatusID = async (TLoanID) =>{
-    const query = `
-    select TLoanStatusID from TLoan where TLoanID = ?`
-    return knex.raw(query [TLoanID])
-}
+module.exports.getStatusID = async (TLoanID) => {
+    const query = ` SELECT
+    TLoanStatusID 
+    FROM TLoan 
+    WHERE TLoanID = ?
+ `;
+    return knex.raw(query, [TLoanID]);
+};

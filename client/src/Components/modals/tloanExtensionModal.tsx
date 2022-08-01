@@ -12,6 +12,10 @@ import TextField from "@mui/material/TextField";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useNavigate, useParams } from "react-router-dom";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Backdrop from "@mui/material/Backdrop";
+import Fade from "@mui/material/Fade";
+import { Toast } from "../../components/alerts/SweetAlert";
 
 const style = {
   position: "absolute" as "absolute",
@@ -20,7 +24,7 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 520,
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  border: "background.paper",
   boxShadow: 24,
   p: 4,
 };
@@ -33,6 +37,11 @@ const ModalButton = () => {
   const [loan, setLoan] = useState("");
   const [tloanid, setLoanID] = useState("");
   const [extensionStatus, setExtensionStatus] = useState("");
+  const [tloanStatus, setTLoanStatus] = useState()
+  const [reasonError, setReasonError] = useState(false)
+  const [durationError, setDurationError] = useState(false)
+  const [reasonErrorText, setReasonErrorText] = useState('')
+  const [durationErrorText, setDurationErrorText] = useState('')
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -47,10 +56,14 @@ const ModalButton = () => {
         `http://localhost:5000/api/tloanid/${TLoanID}`
       );
       const extension = await axios.get(
-        `http://localhost:5000/api//tloanExtensionStatus/${TLoanID}`
+        `http://localhost:5000/api/tloanExtensionStatus/${TLoanID}`
+      );
+      const loanDetail = await axios.get(
+        `http://localhost:5000/api/tloanstatusid/${TLoanID}`
       );
       setLoan(loans.data[0].TLoanID);
       setExtensionStatus(extension.data[0].ExtensionStatus);
+      setTLoanStatus(loanDetail.data[0].TLoanStatusID)
       // setLoan(Object.e)
     };
     // call the function
@@ -69,6 +82,15 @@ const ModalButton = () => {
 
   const submitExtension = (e) => {
     e.preventDefault();
+    setDurationError(false)
+    setReasonError(false)
+    if(reason === ''){
+      setReasonError(true)
+      setReasonErrorText('Input Is Needed')
+    }if (duration === ''){
+      setDurationError(true)
+      setDurationErrorText('Select An Option')
+    }
     try {
       const results = axios
         .post(`http://localhost:5000/api/tloan/extension`, {
@@ -76,7 +98,16 @@ const ModalButton = () => {
           reason,
           duration,
         })
-        .then(() => navigate("/tloan"));
+        .then(() => {
+          Toast.fire({
+            icon: "success",
+            title: "TLoan Extension Successfully Applied",
+            customClass: "swalpopup",
+            timer: 1500,
+            width: 700,
+          });
+          navigate("/tloan");
+        });
 
       console.log(results);
     } catch (error) {
@@ -90,7 +121,9 @@ const ModalButton = () => {
   };
 
   const buttonDecision = () => {
-    if (extensionStatus !== "NIL") {
+    if (tloanStatus === 1 || tloanStatus === 2 || tloanStatus === 4 || tloanStatus === 8 || tloanStatus === 9) {
+      return null
+    }else if ( extensionStatus !== "NIL"){
       return (
         <Button
           size="small"
@@ -108,8 +141,7 @@ const ModalButton = () => {
           Apply For Extension
         </Button>
       );
-    } else extensionStatus === "NIL";
-    {
+    }else if( extensionStatus === "NIL"){
       return (
         <motion.div
           className="animatable"
@@ -139,7 +171,13 @@ const ModalButton = () => {
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
+            }}
           >
+            <Fade in={open}>
             <Box sx={style}>
               <>
                 <h2
@@ -150,7 +188,7 @@ const ModalButton = () => {
                     alignItems: "center",
                   }}
                 >
-                  Extension For Loan
+                  Extension For Loan #{TLoanID}
                 </h2>
 
                 <FormControl sx={{ width: 150, marginLeft: 3, marginTop: 2 }}>
@@ -170,6 +208,9 @@ const ModalButton = () => {
                     <MenuItem value="25">25 Days</MenuItem>
                     <MenuItem value="30">30 Days</MenuItem>
                   </Select>
+                  <FormHelperText sx={{ color: "#d11919" }}>
+                    {durationErrorText}
+                  </FormHelperText>
                 </FormControl>
                 {console.log(duration)}
 
@@ -178,8 +219,12 @@ const ModalButton = () => {
                   multiline
                   rows={5.2}
                   label="Reason For Extension"
-                  required
+                  value={reason}
                   onChange={(e) => setReason(e.target.value)}
+                  error={reasonError}
+                  helperText={reasonErrorText}
+                  required
+                  
                 />
 
                 {console.log(reason)}
@@ -238,16 +283,16 @@ const ModalButton = () => {
                       Submit
                     </Button>
                   </motion.div>
-                </Box>
-              </>
-            </Box>
+                </Box>    
+              </>   
+              </Box>
+            </Fade>
           </Modal>
           {/* </form> */}
         </motion.div>
       );
-    }
   };
-
+  }
   return <>{buttonDecision()}</>;
 };
 

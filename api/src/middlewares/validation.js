@@ -156,9 +156,38 @@ const validation = {
                 message: 'Please enter a valid email'
             });
         } else {
+           next()
+        }
+        
+    },
+    validateExtensionRequest: (req, res, next) => {
+        const {
+            reason,
+            duration
+        } = req.body;
+
+        if (
+            reason=== '' ||
+            duration === ''  ) {
             res.status(400).json({
                 message: 'Please fill up all fields correctly'
             });
+        }else {
+            next()
+        }
+    },
+    validateRejectRemark: (req, res, next) => {
+        const {
+            remarks
+        } = req.body;
+
+        if (
+            remarks === '' ) {
+            res.status(400).json({
+                message: 'Please fill up all fields correctly'
+            });
+        }else {
+            next()
         }
     },
 
@@ -265,5 +294,7 @@ const validation = {
     }
 
 };
+
+
 
 module.exports = validation;
