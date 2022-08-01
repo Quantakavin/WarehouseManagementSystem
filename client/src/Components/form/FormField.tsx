@@ -81,9 +81,19 @@
 
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import WarningIcon from '@mui/icons-material/Warning';
-import { IconButton, InputAdornment, OutlinedInput, TextField } from "@mui/material";
-import { FieldError, Path, RegisterOptions, UseFormRegister } from "react-hook-form";
+import WarningIcon from "@mui/icons-material/Warning";
+import {
+  IconButton,
+  InputAdornment,
+  OutlinedInput,
+  TextField,
+} from "@mui/material";
+import {
+  FieldError,
+  Path,
+  RegisterOptions,
+  UseFormRegister,
+} from "react-hook-form";
 import useTogglePasword from "../../hooks/useTogglePassword";
 
 type AllowedInputs = "email" | "password" | "text" | "number";
@@ -96,6 +106,7 @@ interface FormFieldProps<T> {
   register?: UseFormRegister<T>;
   rules?: RegisterOptions;
   error?: FieldError;
+  readOnly?;
 }
 
 const inputProps = {
@@ -103,8 +114,8 @@ const inputProps = {
     paddingTop: 5,
     paddingBottom: 12,
     paddingLeft: 15,
-    paddingRight: 15
-  }
+    paddingRight: 15,
+  },
 };
 
 const FormField = <T,>({
@@ -114,60 +125,60 @@ const FormField = <T,>({
   type,
   register,
   rules,
-  error
+  error,
+  readOnly
 }: FormFieldProps<T>) => {
-
   const { toggle, passwordType, showPassword } = useTogglePasword();
 
-  const field =
-    (
-
-      <TextField 
-      id="outlined-basic" 
-      label={label} 
-      variant="outlined" 
+  const field = (
+    <TextField
+      id="outlined-basic"
+      label={label}
+      variant="outlined"
       type={type === "password" ? passwordType : type}
       {...(register && register(name, rules))}
       InputProps={{
-        endAdornment: (
-          type === "password" &&
+        endAdornment: type === "password" && (
           <InputAdornment position="end" sx={{}}>
             <IconButton
               aria-label="toggle password visibility"
               onClick={toggle}
             >
-              {showPassword ? <VisibilityOff sx={{ color: "#0A2540" }} /> : <Visibility sx={{ color: "#0A2540" }} />}
+              {showPassword ? (
+                <VisibilityOff sx={{ color: "#0A2540" }} />
+              ) : (
+                <Visibility sx={{ color: "#0A2540" }} />
+              )}
             </IconButton>
           </InputAdornment>
-        )
+        ),
       }}
+    />
+    // <OutlinedInput
+    //   size="small"
+    //   type={type === "password" ? passwordType : type}
+    //   className="textfield"
+    //   defaultValue={defaultvalue}
+    //   // sx={{
+    //   //   borderRadius: 3
+    //   // }}
+    //   inputProps={inputProps}
+    //   {...(register && register(name, rules))}
 
-      />
-      // <OutlinedInput
-      //   size="small"
-      //   type={type === "password" ? passwordType : type}
-      //   className="textfield"
-      //   defaultValue={defaultvalue}
-      //   // sx={{
-      //   //   borderRadius: 3
-      //   // }}
-      //   inputProps={inputProps}
-      //   {...(register && register(name, rules))}
-
-      //   endAdornment={
-      //     type === "password" &&
-      //     <InputAdornment position="end" sx={{}}>
-      //       <IconButton
-      //         aria-label="toggle password visibility"
-      //         onClick={toggle}
-      //       >
-      //         {showPassword ? <VisibilityOff sx={{ color: "#0A2540" }} /> : <Visibility sx={{ color: "#0A2540" }} />}
-      //       </IconButton>
-      //     </InputAdornment>
-      //   }
-      //   label={label}
-      // />
-    );
+    //   endAdornment={
+    //     type === "password" &&
+    //     <InputAdornment position="end" sx={{}}>
+    //       <IconButton
+    //         aria-label="toggle password visibility"
+    //         onClick={toggle}
+    //       >
+    //         {showPassword ? <VisibilityOff sx={{ color: "#0A2540" }} /> : <Visibility sx={{ color: "#0A2540" }} />}
+    //       </IconButton>
+    //     </InputAdornment>
+    //   }
+    //   label={label}
+    // />
+  );
 
   // if (type === "password") {
   //   field = (
@@ -219,26 +230,38 @@ const FormField = <T,>({
           className="textfield"
           defaultValue={defaultvalue}
           sx={{
-            borderRadius: 3
+            borderRadius: 3,
           }}
           inputProps={inputProps}
           {...(register && register(name, rules))}
-
           endAdornment={
-            type === "password" &&
-            <InputAdornment position="end" sx={{marginBottom: "5px"}}>
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={toggle}
-              >
-                {showPassword ? <VisibilityOff sx={{ color: "#0A2540" }} /> : <Visibility sx={{ color: "#0A2540" }} />}
-              </IconButton>
-            </InputAdornment>
+            type === "password" && (
+              <InputAdornment position="end" sx={{ marginBottom: "5px" }}>
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={toggle}
+                >
+                  {showPassword ? (
+                    <VisibilityOff sx={{ color: "#0A2540" }} />
+                  ) : (
+                    <Visibility sx={{ color: "#0A2540" }} />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            )
           }
           label={label}
+          readOnly={readOnly}
         />
       </div>
-      <p className="errormsg">{error && <><WarningIcon sx={{fontSize: "15px", marginBottom: "2px"}}/> {error?.message}</>}</p>
+      <p className="errormsg">
+        {error && (
+          <>
+            <WarningIcon sx={{ fontSize: "15px", marginBottom: "2px" }} />{" "}
+            {error?.message}
+          </>
+        )}
+      </p>
     </div>
   );
 };

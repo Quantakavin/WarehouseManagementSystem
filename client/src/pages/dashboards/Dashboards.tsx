@@ -1,6 +1,6 @@
 import Cards from "../../components/cards/cards";
-import LineCharts from "../../components/charts/LineCharts";
 import BarCharts from "../../components/charts/BarCharts";
+import LineCharts from "../../components/charts/LineCharts";
 import PieCharts from "../../components/charts/PieCharts";
 import "../../styles/Dashboard.scss";
 
@@ -36,8 +36,8 @@ function Dashboards() {
   // end of switch case
 
   return (
-    <Box sx={{ pl: 3, pr: 3, pt: 1 }}>
-      <Grid container spacing={2}>
+    <Box sx={{ pl: 3, pr: 3, pt: 3 }}>
+      <Grid container spacing={4}>
         <Grid item xs={12}>
           <h1>
             {localStorage.getItem("username")}'s Dashboard{""}

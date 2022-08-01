@@ -1,4 +1,4 @@
-import WarningIcon from '@mui/icons-material/Warning';
+import WarningIcon from "@mui/icons-material/Warning";
 import { MenuItem, Select } from "@mui/material";
 import React from "react";
 import { FieldError, RegisterOptions, UseFormRegister } from "react-hook-form";
@@ -21,7 +21,7 @@ const SelectDropdown: React.FC<SelectProps<any>> = ({
   options,
   register,
   rules,
-  defaultoption
+  defaultoption,
 }) => {
   const field = (
     <Select
@@ -67,7 +67,14 @@ const SelectDropdown: React.FC<SelectProps<any>> = ({
           ))}
         </select> */}
       </div>
-      <p className="errormsg">{error && <><WarningIcon sx={{ fontSize: "15px", marginBottom: "2px" }} /> {error?.message}</>}</p>
+      <p className="errormsg">
+        {error && (
+          <>
+            <WarningIcon sx={{ fontSize: "15px", marginBottom: "2px" }} />{" "}
+            {error?.message}
+          </>
+        )}
+      </p>
     </div>
   );
 };

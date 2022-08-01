@@ -167,7 +167,10 @@ export default function TLoanManagerDisplay() {
 
   function renderCellExpand(params: GridRenderCellParams<string>) {
     return (
-      <GridCellExpand value={params.value || ''} width={params.colDef.computedWidth} />
+      <GridCellExpand
+        value={params.value || ""}
+        width={params.colDef.computedWidth}
+      />
     );
   }
 
@@ -205,7 +208,7 @@ export default function TLoanManagerDisplay() {
     },
   ];
 
-  console.log(loans)
+  console.log(loans);
   const getData = () => {
     return (
       <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
@@ -284,7 +287,7 @@ export default function TLoanManagerDisplay() {
                       defaultValue={loans.Reason}
                     />
                   </Grid>
-                 
+
                   <Grid
                     item
                     xs={12}

@@ -18,6 +18,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { setUser } from "../../app/reducers/CurrentUserSlice";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
+import { Box, Link } from "@mui/material";
 
 interface FormValues {
   email: string;
@@ -44,7 +45,7 @@ const Login: React.FC = () => {
           id,
           role: usergroup,
           name,
-          permissions
+          permissions,
         })
       );
       dispatch(ChangeTab({ currenttab: "Dashboard" }));
@@ -53,6 +54,7 @@ const Login: React.FC = () => {
         title: "Logged in successfully",
         customClass: "swalpopup",
         timer: 1500,
+        width: 330
       });
       return navigate("/dashboard", { replace: true });
     },
@@ -105,13 +107,24 @@ const Login: React.FC = () => {
         {mutation.isError && axios.isAxiosError(mutation.error) ? (
           <ErrorAlert error={mutation.error} />
         ) : null}
-        <div className="flexcontainer" style={{ marginTop: 20 }}>
+
+        <Link
+          onClick={() => {
+            navigate("/forgetpassword");
+          }}
+          underline="hover"
+          sx={{ ml: 10 }}
+        >
+          I forgot my password
+        </Link>
+
+        <Box className="flexcontainer" style={{ marginTop: 20 }}>
           <SubmitButton
             text="Continue"
             loading={mutation.isLoading}
             multipart={false}
           />
-        </div>
+        </Box>
       </FormContainer>
     </motion.div>
   );

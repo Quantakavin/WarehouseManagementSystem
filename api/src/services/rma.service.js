@@ -329,9 +329,9 @@ module.exports.updateRMAReceived = async (RmaID) => {
             .transacting(trx)
             .then(async () => {
                 return await knex('RmaProduct')
-                .where('RmaID', RmaID)
-                .update({RmaProductStatus: 1})
-                .transacting(trx)
+                    .where('RmaID', RmaID)
+                    .update({ RmaProductStatus: 1 })
+                    .transacting(trx);
             })
             .then(trx.commit)
             .catch(trx.rollback);

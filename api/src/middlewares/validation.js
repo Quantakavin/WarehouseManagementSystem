@@ -1,8 +1,16 @@
+const {
+    json
+} = require('body-parser');
 const validator = require('validator');
+const resetPasswordService = require('../services/resetPasswordService');
+
 
 const validation = {
     validateLogin(req, res, next) {
-        const { email, password } = req.body;
+        const {
+            email,
+            password
+        } = req.body;
 
         const passswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$/;
         if (password === '' || email === '') {
@@ -27,7 +35,14 @@ const validation = {
     },
 
     validateUser: (req, res, next) => {
-        const { name, email, password, mobileno, company, usergroup } = req.body;
+        const {
+            name,
+            email,
+            password,
+            mobileno,
+            company,
+            usergroup
+        } = req.body;
 
         const passswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$/;
         const phoneRegex = /^[6|8|9]\d{7}|\+65\s?[6|8|9]\d{7}|\(\+?65\)\s?[6|8|9]\d{7}$/;
@@ -69,7 +84,10 @@ const validation = {
     },
 
     validateUserGroup: (req, res, next) => {
-        const { name, description } = req.body;
+        const {
+            name,
+            description
+        } = req.body;
 
         if (name === '' || description === '') {
             res.status(400).json({
@@ -81,7 +99,11 @@ const validation = {
     },
 
     validateNotificationGroup: (req, res, next) => {
-        const { name, description, company } = req.body;
+        const {
+            name,
+            description,
+            company
+        } = req.body;
 
         if (name === '' || description === '') {
             res.status(400).json({
@@ -97,53 +119,116 @@ const validation = {
     },
 
     validateLoan: (req, res, next) => {
-        const {  type, company, name, purpose, applicationdate, duration, requireddate, user, email, collection, items } = req.body;
+        const {
+            type,
+            company,
+            name,
+            purpose,
+            applicationdate,
+            duration,
+            requireddate,
+            user,
+            email,
+            collection,
+            items
+        } = req.body;
 
-        if (type === '' || email === '' || name === '' ||purpose === '' || company === '' || applicationdate === '' || duration === '' || requireddate === '' ||user === '' || collection === '' || items === []) {
+        if (
+            type === '' ||
+            email === '' ||
+            name === '' ||
+            purpose === '' ||
+            company === '' ||
+            applicationdate === '' ||
+            duration === '' ||
+            requireddate === '' ||
+            user === '' ||
+            collection === '' ||
+            items === []
+        ) {
             res.status(400).json({
                 message: 'Please fill up all fields correctly'
             });
-        } else if (
-            validator.isEmail(email)     
-        ) {
+        } else if (validator.isEmail(email)) {
             next();
         } else if (!validator.isEmail(email)) {
             res.status(400).json({
                 message: 'Please enter a valid email'
             });
-        
         } else {
+           next()
+        }
+        
+    },
+    validateExtensionRequest: (req, res, next) => {
+        const {
+            reason,
+            duration
+        } = req.body;
+
+        if (
+            reason=== '' ||
+            duration === ''  ) {
             res.status(400).json({
                 message: 'Please fill up all fields correctly'
             });
+        }else {
+            next()
+        }
+    },
+    validateRejectRemark: (req, res, next) => {
+        const {
+            remarks
+        } = req.body;
+
+        if (
+            remarks === '' ) {
+            res.status(400).json({
+                message: 'Please fill up all fields correctly'
+            });
+        }else {
+            next()
         }
     },
 
-    
     validateRmaSubmission: (req, res, next) => {
-        const { contactperson, contactno, salesmanid, contactemail, company, products } = req.body;
-
-        if (products === null) {
+        const {
+            contactperson,
+            contactno,
+            salesmanid,
+            contactemail,
+            company,
+            products
+        } = req.body;
+        console.log('Body ' + JSON.stringify(req.body));
+        if (products.length === 0) {
+            console.log('no products');
             res.status(400).json({
                 message: 'Please add at least 1 product to the table'
             });
-        } else if (contactperson && contactno & salesmanid && contactemail && company === null) {
+        } else if (
+            contactperson === '' ||
+            contactno === '' ||
+            salesmanid === '' ||
+            contactemail === '' ||
+            company === ''
+        ) {
             res.status(400).json({
                 message: 'Please fill in the form fields'
             });
-        } else if (contactperson === null) {
+        } else if (contactperson === '') {
             res.status(400).json({
                 message: 'Please enter the customer name'
             });
-        } else if (contactno === null) {
-            res.status(400).json({
-                message: 'Please enter the customer contact number'
-            });
-        } else if (contactemail === null) {
+        } else if (contactemail === '') {
             res.status(400).json({
                 message: 'Please enter the customer email'
             });
-        } else if (company === null) {
+        } else if (company === '') {
+            res.status(400).json({
+                message: 'Please enter the customer contact number'
+            });
+        } else if (contactno === '') {
             res.status(400).json({
                 message: 'Please enter the customer company'
             });
@@ -153,17 +238,63 @@ const validation = {
     },
 
     validateRmaInstruction: (req, res, next) => {
-        const {products} = req.body;
+        const {
+            products
+        } = req.body;
         products.map((product) => {
-            if (product.Instructions === null) {
+            if (product.Instructions === '') {
                 res.status(400).json({
                     message: 'Please provide instructions for each product'
                 });
             } else {
                 next();
             }
-        })
+        });
+    },
+
+    validateRmaCOA: (req, res, next) => {
+        const {
+            products
+        } = req.body;
+        products.map((product) => {
+            if (product.CourseOfAction === '') {
+                res.status(400).json({
+                    message: 'Please provide an update to the course of action for each product!'
+                });
+            } else {
+                next();
+            }
+        });
+    },
+
+    // Reset token validation
+    validateResetToken: async (req, res, next) => {
+
+        const email = req.body.email;
+        const resetToken = req.body.token;
+
+        if (!resetToken || !email) {
+            return res.status(400).json({
+                message: 'Token/email not keyed in.'
+            });
+        }
+
+        // Verify if token exists in the resetPasswordToken and not expired.
+        const currentTime = new Date(Date.now());
+
+        const token = await resetPasswordService.findValidToken(resetToken, email, currentTime);
+
+        if (token[0].length > 0) {
+            next();
+        } else {
+            res.status(401).json({
+                message: 'Invalid token, please generate a new one.'
+            });
+        }
     }
+
 };
+
+
 
 module.exports = validation;

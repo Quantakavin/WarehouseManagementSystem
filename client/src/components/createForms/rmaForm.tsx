@@ -3,19 +3,32 @@ import CancelIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
-import { Card, CardContent, TextField } from "@mui/material";
+import SendIcon from '@mui/icons-material/Send';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { LoadingButton } from "@mui/lab";
+import {
+  Card,
+  CardContent,
+  Stack,
+  styled,
+  TextField,
+  Tooltip,
+  tooltipClasses,
+  TooltipProps,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { randomId } from "@mui/x-data-grid-generator";
 import {
-  DataGridPro,
+  DataGrid,
   GridActionsCellItem,
   GridCellParams,
   GridColTypeDef,
   GridColumns,
+  GridEditInputCell,
   GridEventListener,
   GridFilterInputValueProps,
   GridFilterItem,
+  GridPreProcessEditCellProps,
   GridRenderEditCellParams,
   GridRowId,
   GridRowModel,
@@ -26,39 +39,67 @@ import {
   GridToolbarContainer,
   GRID_DATE_COL_DEF,
   MuiEvent,
-  useGridApiContext
-} from "@mui/x-data-grid-pro";
+  useGridApiContext,
+} from "@mui/x-data-grid";
+import { randomId } from "@mui/x-data-grid-generator";
 import {
   DatePicker,
   DateTimePicker,
-  LocalizationProvider
+  LocalizationProvider,
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
 import locale from "date-fns/locale/en-US";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAppSelector } from "../../app/hooks";
-import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
+import { selectId, selectPermissions, selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../alerts/SweetAlert";
 
 const CreateRMA: React.FC = () => {
   const navigate = useNavigate();
   const sid = useAppSelector(selectId);
   const userrole = useAppSelector(selectRole);
+  const permissions = useAppSelector(selectPermissions)
+  const [loading, setLoading] = useState(false);
   const [rows, setRows] = useState([]);
   const [contactperson, setContactperson] = useState("");
   const [contactno, setContactno] = useState("");
   const [contactemail, setContactemail] = useState("");
   const [company, setCompany] = useState("");
+  const [nameError, setNameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [compError, setCompError] = useState(false);
+  const [numError, setNumError] = useState(false);
+  const [nameErrorText, setNameErrorText] = useState("");
+  const [emailErrorText, setEmailErrorText] = useState("");
+  const [compErrorText, setCompErrorText] = useState("");
+  const [numErrorText, setNumErrorText] = useState("");
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
+  const phoneRegex =
+    /^[6|8|9]\d{7}|\+65\s?[6|8|9]\d{7}|\(\+?65\)\s?[6|8|9]\d{7}$/i;
+  const emailRegex = /^\S+@\S+\.\S+$/i;
+  const controls = useAnimation();
+  const variants = {
+    detecterror: () => ({
+      // rotate: [-1, 1.3, 0],
+      x: [10, -10, 0, 10, -10, 0],
+      transition: {
+        duration: 0.4,
+      },
+    }),
+  };
 
   useEffect(() => {
-    if (userrole !== "Sales Engineer") {
+    // if (userrole !== "Sales Engineer") {
+    //   navigate("/403");
+    // }
+    if (!permissions.some(e => e.FeatureName === "RMA Application")) {
+      console.log("not allowed")
       navigate("/403");
     }
   }, []);
@@ -315,51 +356,191 @@ const CreateRMA: React.FC = () => {
     return updatedRow;
   };
 
+  let promiseTimeout: any;
+  function validateItemCode(ItemCode: string): Promise<boolean> {
+    return new Promise<any>((resolve) => {
+      promiseTimeout = setTimeout(() => {
+        const exists = ItemCode === "";
+        resolve(exists ? `Required` : null);
+      }); // simulate network latency
+    });
+  }
+
+  function validateInvNo(InvoiceNo: string): Promise<boolean> {
+    return new Promise<any>((resolve) => {
+      promiseTimeout = setTimeout(() => {
+        const exists = InvoiceNo === "";
+        resolve(exists ? `Required` : null);
+      }); // simulate network latency
+    });
+  }
+
+  function validateDoNo(DoNo: string): Promise<boolean> {
+    return new Promise<any>((resolve) => {
+      promiseTimeout = setTimeout(() => {
+        const exists = DoNo === "";
+        resolve(exists ? `Required` : null);
+      }); // simulate network latency
+    });
+  }
+
+  function validateDOP(DateOfPurchase: string): Promise<boolean> {
+    return new Promise<any>((resolve) => {
+      promiseTimeout = setTimeout(() => {
+        const exists = DateOfPurchase === "";
+        resolve(exists ? `Please enter an Date of Purchase` : null);
+      }); // simulate network latency
+    });
+  }
+
+  function validateROR(ReturnReason: string): Promise<boolean> {
+    return new Promise<any>((resolve) => {
+      promiseTimeout = setTimeout(() => {
+        const exists = ReturnReason === "";
+        resolve(exists ? `Required` : null);
+      }); // simulate network latency
+    });
+  }
+
+  const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.error.main,
+      color: theme.palette.error.contrastText,
+    },
+  }));
+
+  const ItemCodeEditInputCell = (props: GridRenderEditCellParams) => {
+    const { itemcodeerror } = props;
+
+    return (
+      <StyledTooltip open={!!itemcodeerror} title={itemcodeerror}>
+        <GridEditInputCell {...props} />
+      </StyledTooltip>
+    );
+  };
+
+  function renderEditItemCode(params: GridRenderEditCellParams) {
+    return <ItemCodeEditInputCell {...params} />;
+  }
+
+  const InvNoEditInputCell = (props: GridRenderEditCellParams) => {
+    const { invnoerror } = props;
+
+    return (
+      <StyledTooltip open={!!invnoerror} title={invnoerror}>
+        <GridEditInputCell {...props} />
+      </StyledTooltip>
+    );
+  };
+
+  function renderEditInvNo(params: GridRenderEditCellParams) {
+    return <InvNoEditInputCell {...params} />;
+  }
+
+  const DoNoEditInputCell = (props: GridRenderEditCellParams) => {
+    const { donoerror } = props;
+
+    return (
+      <StyledTooltip open={!!donoerror} title={donoerror}>
+        <GridEditInputCell {...props} />
+      </StyledTooltip>
+    );
+  };
+
+  function renderEditDoNo(params: GridRenderEditCellParams) {
+    return <DoNoEditInputCell {...params} />;
+  }
+
+  const ROREditInputCell = (props: GridRenderEditCellParams) => {
+    const { rorerror } = props;
+
+    return (
+      <StyledTooltip open={!!rorerror} title={rorerror}>
+        <GridEditInputCell {...props} />
+      </StyledTooltip>
+    );
+  };
+
+  function renderEditROR(params: GridRenderEditCellParams) {
+    return <ROREditInputCell {...params} />;
+  }
+
+  const preProcessEditCellProps = async (
+    params: GridPreProcessEditCellProps
+  ) => {
+    const errorMessageItemCode = await validateItemCode(
+      params.props.value!.toString()
+    );
+    const errorMessageInvNo = await validateInvNo(
+      params.props.value!.toString()
+    );
+    const errorMessageDoNo = await validateDoNo(params.props.value!.toString());
+    const errorMessageDOP = await validateDOP(params.props.value!.toString());
+    const errorMessageROR = await validateROR(params.props.value!.toString());
+    return {
+      ...params.props,
+      itemcodeerror: errorMessageItemCode,
+      invnoerror: errorMessageInvNo,
+      donoerror: errorMessageDoNo,
+      doperror: errorMessageDOP,
+      rorerror: errorMessageROR,
+    };
+  };
+
+  React.useEffect(() => {
+    return () => {
+      clearTimeout(promiseTimeout);
+    };
+  }, []);
+
   const columns: GridColumns = [
-    { field: "ItemCode", headerName: "Item Code", width: 150, editable: true },
+    {
+      field: "ItemCode",
+      headerName: "Item Code",
+      flex: 2,
+      editable: true,
+      preProcessEditCellProps,
+      renderEditCell: renderEditItemCode,
+    },
     {
       field: "InvoiceNo",
       headerName: "Invoice Number",
-      width: 150,
+      flex: 2,
       editable: true,
+      preProcessEditCellProps,
+      renderEditCell: renderEditInvNo,
     },
     {
       field: "DoNo",
       headerName: "D.O Number",
-      width: 150,
+      flex: 2,
       editable: true,
       type: "number",
+      preProcessEditCellProps,
+      renderEditCell: renderEditDoNo,
     },
     {
       field: "DateOfPurchase",
       headerName: "Date Of Purchase",
       ...dateColumnType,
-      width: 160,
+      flex: 2,
       editable: true,
     },
     {
       field: "ReturnReason",
       headerName: "Reason For Return",
-      width: 400,
+      flex: 20,
       editable: true,
-    },
-    {
-      field: "Instructions",
-      headerName: "Instructions",
-      width: 400,
-      editable: false,
-    },
-    {
-      field: "CourseOfAction",
-      headerName: "Course Of Action",
-      width: 400,
-      editable: false,
+      preProcessEditCellProps,
+      renderEditCell: renderEditROR,
     },
     {
       field: "actions",
       type: "actions",
       headerName: "Actions",
-      width: 100,
+      flex: 1,
       cellClassName: "actions",
       getActions: ({ id }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
@@ -436,9 +617,14 @@ const CreateRMA: React.FC = () => {
   const products = rows.map(({ id, isNew, ...rows }) => rows);
   const trimDate = products.map((product) => {
     const trimdate = new Date(product.DateOfPurchase);
-    product.DateOfPurchase = ((trimdate.getMonth() > 8) ? (trimdate.getMonth() + 1) : ('0' + (trimdate.getMonth() + 1))) + '-' + ((trimdate.getDate() > 9) ? trimdate.getDate() : ('0' + trimdate.getDate())) + '-' + trimdate.getFullYear()
+    product.DateOfPurchase = `${
+      trimdate.getMonth() > 8
+        ? trimdate.getMonth() + 1
+        : `0${trimdate.getMonth() + 1}`
+    }-${
+      trimdate.getDate() > 9 ? trimdate.getDate() : `0${trimdate.getDate()}`
+    }-${trimdate.getFullYear()}`;
   });
-  // console.log(products);
 
   const rmadetails = {
     contactperson,
@@ -449,22 +635,79 @@ const CreateRMA: React.FC = () => {
     products,
   };
 
-  const submitRMA = async () => {
-    axios
-      .post(`http://localhost:5000/api/newRMA`, rmadetails)
-      .then(() => {
-        Toast.fire({
-          icon: "success",
-          title: "RMA Successfully Submitted",
-          customClass: "swalpopup",
-          timer: 1500,
-          width: 700,
-        });
-        navigate("/rma");
-      })
-      .catch((error) => {
-        this.setState({ errorMessage: error.message });
+  const handleSubmit = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+    setNameError(false);
+    setEmailError(false);
+    setCompError(false);
+    setNumError(false);
+    setNameErrorText("");
+    setEmailErrorText("");
+    setCompErrorText("");
+    setNumErrorText("");
+    if (products.length === 0) {
+      Toast.fire({
+        icon: "error",
+        title: "Please add a product",
+        customClass: "swalpopup",
+        timer: 1500,
+        width: 315,
       });
+      setLoading(false);
+    }
+    if (contactperson === "") {
+      setNameError(true);
+      setNameErrorText("Required");
+      setLoading(false);
+    }
+    if (contactemail === "") {
+      setEmailError(true);
+      setEmailErrorText("Required");
+      setLoading(false);
+    } else if (!contactemail.match(emailRegex)) {
+      setEmailError(true);
+      setEmailErrorText("Invalid email");
+      setLoading(false);
+    }
+    if (company === "") {
+      setCompError(true);
+      setCompErrorText("Required");
+      setLoading(false);
+    }
+    if (contactno === "") {
+      setNumError(true);
+      setNumErrorText("Required");
+      setLoading(false);
+    } else if (!contactno.match(phoneRegex)) {
+      setNumError(true);
+      setNumErrorText("Invalid phone number");
+      setLoading(false);
+    }
+    if (
+      contactperson &&
+      contactemail.match(emailRegex) &&
+      company &&
+      contactno.match(phoneRegex)
+    ) {
+      setTimeout(() => {
+        axios
+          .post(`http://localhost:5000/api/newRMA`, rmadetails)
+          .then(() => {
+            Toast.fire({
+              icon: "success",
+              title: "RMA Successfully Submitted",
+              customClass: "swalpopup",
+              timer: 1500,
+              width: 700,
+            });
+            navigate("/rma");
+          })
+          .catch((error) => {
+            console.log(error.response.data.message);
+          });
+      }, 2000);
+    }
   };
 
   return (
@@ -476,137 +719,201 @@ const CreateRMA: React.FC = () => {
       }}
     >
       <CardContent>
-        <Box
-          component="form"
-          sx={{
-            "& .MuiTextField-root": { m: 1, width: "25ch" },
-            marginBottom: 2,
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <h2 style={{ marginLeft: 7, marginBottom: 20 }}>
-            RMA Application Form
-          </h2>
-          <TextField
-            value={contactperson}
-            required
-            id="filled-required"
-            label="Customer Name"
-            variant="filled"
-            onChange={(e) => setContactperson(e.target.value)}
-          />
-          <TextField
-            value={contactemail}
-            required
-            id="filled-required"
-            label="Customer Email"
-            variant="filled"
-            onChange={(e) => setContactemail(e.target.value)}
-          />
-          <TextField
-            value={company}
-            required
-            id="filled-required"
-            label="Company"
-            variant="filled"
-            onChange={(e) => setCompany(e.target.value)}
-          />
-          <TextField
-            value={contactno}
-            required
-            id="filled-required"
-            label="Contact Number"
-            variant="filled"
-            onChange={(e) => setContactno(e.target.value)}
-          />
-        </Box>
-        <Box
-          sx={{
-            height: 500,
-            width: "100%",
-            "& .actions": {
-              color: "text.secondary",
-            },
-            "& .textPrimary": {
-              color: "text.primary",
-            },
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-        >
-          <LocalizationProvider
-            dateAdapter={AdapterDateFns}
-            adapterLocale={locale}
+        <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+          <Box
+            component="form"
+            sx={{
+              "& .MuiTextField-root": { m: 1, width: "25ch" },
+              marginBottom: 2,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+            noValidate
+            autoComplete="off"
           >
-            <DataGridPro
-              rows={rows}
-              columns={columns}
-              editMode="row"
-              rowModesModel={rowModesModel}
-              onRowEditStart={handleRowEditStart}
-              onRowEditStop={handleRowEditStop}
-              processRowUpdate={processRowUpdate}
-              components={{
-                Toolbar: EditToolbar,
+            <h2 style={{ marginLeft: 7, marginBottom: 20 }}>
+              RMA Application Form
+            </h2>
+            <TextField
+              value={contactperson}
+              required
+              id="filled-required"
+              label="Customer Name"
+              variant="filled"
+              onBlur={() => {
+                setNameError(false)
+                setNameErrorText("")
+                if (contactperson === "") {
+                  setNameError(true)
+                  setNameErrorText("Required")
+                }
               }}
-              componentsProps={{
-                toolbar: { setRows, setRowModesModel },
-              }}
-              experimentalFeatures={{ newEditingApi: true }}
+              onChange={(e) => setContactperson(e.target.value)}
+              error={nameError}
+              helperText={nameErrorText}
             />
-          </LocalizationProvider>
-        </Box>
-        <Box
-          component="span"
-          paddingTop={2}
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <motion.div
-            className="animatable"
-            whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <Button
-              size="small"
-              variant="contained"
-              sx={{
-                color: "white",
-                backgroundColor: "#063970",
-                width: 150,
-                height: 50,
-                borderRadius: 10,
+            <TextField
+              value={contactemail}
+              required
+              id="filled-required"
+              label="Customer Email"
+              variant="filled"
+              onBlur={() => {
+                setEmailError(false)
+                setEmailErrorText("")
+                if (contactemail === "") {
+                  setEmailError(true)
+                  setEmailErrorText("Required")
+                } else if (!contactemail.match(emailRegex)) {
+                  setEmailError(true)
+                  setEmailErrorText("Invalid Email")
+                }
               }}
-              onClick={() => navigate("/rma")}
-            >
-              Back
-            </Button>
-          </motion.div>
-          <motion.div
-            className="animatable"
-            whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <Button
-              size="small"
-              variant="contained"
-              sx={{
-                color: "white",
-                backgroundColor: "#31A961",
-                width: 150,
-                height: 50,
-                borderRadius: 10,
+              onChange={(e) => setContactemail(e.target.value)}
+              error={emailError}
+              helperText={emailErrorText}
+            />
+            <TextField
+              value={company}
+              required
+              id="filled-required"
+              label="Company"
+              variant="filled"
+              onBlur={() => {
+                setCompError(false)
+                setCompErrorText("")
+                if (company === "") {
+                  setCompError(true)
+                  setCompErrorText("Required")
+                }
               }}
-              onClick={submitRMA}
+              onChange={(e) => setCompany(e.target.value)}
+              error={compError}
+              helperText={compErrorText}
+            />
+            <TextField
+              value={contactno}
+              required
+              id="filled-required"
+              label="Contact Number"
+              variant="filled"
+              onBlur={() => {
+                setNumError(false)
+                setNameErrorText("")
+                if (contactno === "") {
+                  setNumError(true)
+                  setNumErrorText("Required")
+                } else if (!contactno.match(phoneRegex)) {
+                  setNumError(true)
+                  setNumErrorText("Invalid contact number")}
+              }}
+              onChange={(e) => setContactno(e.target.value)}
+              error={numError}
+              helperText={numErrorText}
+            />
+          </Box>
+          <Box
+            sx={{
+              height: 500,
+              width: "100%",
+              "& .actions": {
+                color: "text.secondary",
+              },
+              "& .textPrimary": {
+                color: "text.primary",
+              },
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              adapterLocale={locale}
             >
-              Submit
-            </Button>
-          </motion.div>
-        </Box>
+              <DataGrid
+                rows={rows}
+                columns={columns}
+                editMode="row"
+                rowModesModel={rowModesModel}
+                onRowEditStart={handleRowEditStart}
+                onRowEditStop={handleRowEditStop}
+                processRowUpdate={processRowUpdate}
+                components={{
+                  Toolbar: EditToolbar,
+                  NoRowsOverlay: () => (
+                    <Stack
+                      height="100%"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      No products added
+                    </Stack>
+                  ),
+                }}
+                componentsProps={{
+                  toolbar: { setRows, setRowModesModel },
+                }}
+                experimentalFeatures={{ newEditingApi: true }}
+              />
+            </LocalizationProvider>
+          </Box>
+          <Box
+            component="span"
+            paddingTop={2}
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <motion.div
+              className="animatable"
+              whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <LoadingButton
+                size="small"
+                variant="contained"
+                sx={{
+                  color: "white",
+                  backgroundColor: "#063970",
+                  width: 150,
+                  height: 50,
+                  borderRadius: 10,
+                  paddingRight: 4
+                }}
+                startIcon={<ArrowBackIosNewIcon/>}
+                onClick={() => navigate("/rma")}
+              >
+                Back
+              </LoadingButton>
+            </motion.div>
+            <motion.div
+              variants={variants}
+              animate={controls}
+              className="animatable"
+              whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <LoadingButton
+                type="submit"
+                size="small"
+                variant="contained"
+                sx={{
+                  color: "white",
+                  backgroundColor: "#31A961",
+                  width: 150,
+                  height: 50,
+                  borderRadius: 10,
+                }}
+                loading={loading}
+                endIcon={<SendIcon />}
+                loadingPosition="end"
+                onClick={handleSubmit}
+              >
+                Submit
+              </LoadingButton>
+            </motion.div>
+          </Box>
+        </form>
       </CardContent>
     </Card>
   );

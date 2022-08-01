@@ -15,7 +15,7 @@ import {
   Close,
   Open,
   selectCurrentTab,
-  selectOpen
+  selectOpen,
 } from "../../app/reducers/SidebarSlice";
 import defaultprofile from "../../assets/defaultprofile.png";
 import SidebarLink from "./SidebarLink";
@@ -36,7 +36,7 @@ const Sidebar: React.FC = () => {
     }
   };
 
-  return ( 
+  return (
     <div className="sidebar">
       <div className="flexcontainer sidebarprofile">
         <div style={{ flex: 1 }}>
@@ -58,7 +58,7 @@ const Sidebar: React.FC = () => {
                 textTransform: "capitalize",
                 textOverflow: "ellipsis",
                 overflow: "hidden",
-                width: "50px"
+                width: "50px",
               }}
             >
               {username}

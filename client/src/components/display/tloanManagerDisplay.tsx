@@ -167,7 +167,10 @@ export default function TLoanManagerDisplay() {
 
   function renderCellExpand(params: GridRenderCellParams<string>) {
     return (
-      <GridCellExpand value={params.value || ''} width={params.colDef.computedWidth} />
+      <GridCellExpand
+        value={params.value || ""}
+        width={params.colDef.computedWidth}
+      />
     );
   }
 

@@ -1,27 +1,27 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import React, { useState, useEffect, Component } from "react";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import Fab from "@mui/material/Fab";
+import axios from "axios";
+import { motion } from "framer-motion";
+import React, { useEffect, useState, useContext } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
+import { useCart } from "react-use-cart";
 import { GetProduct } from "../../api/ProductDB";
+import { Toast } from "../../components/alerts/SweetAlert";
 import CardContainer from "../../components/cards/CardContainer";
 import CardField from "../../components/cards/CardField";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
-import { useCart } from "react-use-cart";
-import _ from "lodash";
-import axios from "axios";
-import Button from "@mui/material/Button";
-import { Toast } from "../../components/alerts/SweetAlert";
-import PostAddIcon from "@mui/icons-material/PostAdd";
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import { motion } from "framer-motion";
-import Fab from "@mui/material/Fab";
-
+import IsEditableProvider, { EditableContext } from '../../components/context/isEditableContext'
 
 const ViewProduct: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [newProducts, setNewProducts] = useState([]);
   const [productGet, setProductGet] = useState([]);
+  const context = useContext(EditableContext)
+  const {isEditable, setIsEditable, TLoanIDGlobal} = context
+
 
   useEffect(() => {
     // declare the async data fetching function
@@ -67,32 +67,12 @@ const ViewProduct: React.FC = () => {
     return <CardSkeleton NoOfFields={4} />;
   }
 
- 
-  const { totalItems,
-    addItem } = useCart();
+  const { totalItems, addItem } = useCart();
 
-    const addInside = () =>{
-      const itemsss = { 'id':1, 'Ware':'fewfq'}
-      const setLOL = localStorage.getItem('react-use-cart')
-      console.log(JSON.parse(setLOL).items)
-     
-      function handleaddi(){
-        const setItemlist = localStorage.setItem(localStorage.getItem('react-use-cart'.items), JSON.stringify(itemsss))
-      }
+  const newLoanButton = () => {
+    if (totalItems > 0) {
       return (
-        <button onClick={handleaddi}>
-          press
-        </button>
-      )
-    }
-   
-
-
-    const newLoanButton = () =>{
-
-      if(totalItems > 0){
-        return(
-          <motion.div
+        <motion.div
           className="animatable"
           whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
           whileTap={{ scale: 0.98 }}
@@ -100,67 +80,59 @@ const ViewProduct: React.FC = () => {
           <Fab
             variant="extended"
             aria-label="add"
-            onClick={() => navigate("/newtloan")}
+            onClick={() =>{isEditable ? navigate(`/tloanDraftDetails/${TLoanIDGlobal}`) : navigate("/newtloan")}}
             sx={{
               color: "white",
               backgroundColor: "#063970",
               ":hover": { backgroundColor: "#031c38" },
               float: "right",
-              marginTop:8,
+              marginTop: 8,
               marginRight: "5%",
-              width: 180
+              width: 180,
             }}
           >
-            New Loan <ShoppingBasketIcon sx={{ml:0.5, mr:0.5}}/> ({totalItems}) 
+            New Loan ({totalItems})
+            <ShoppingBasketIcon sx={{ ml: 0.5, mr: 0.5 }} />
           </Fab>
         </motion.div>
-          // <Button 
-          // size="big"
-          // variant="contained"
-          // sx={{
-          //   color: "white",
-          //   backgroundColor: "#063970",
-          //   width: 180,
-          //   height: 60,
-          //   borderRadius: 10,
-          //   float: "right",
-          //   marginTop:8,
-          //   marginRight: "5%"
-          // }}
-          // onClick={() => navigate('/newtloan')}> <ShoppingBasketIcon style={{marginRight: 1}}/><span/> New Loan ({totalItems}) </Button>
-          )
-      }else{
-        return
-      }
+        // <Button
+        // size="big"
+        // variant="contained"
+        // sx={{
+        //   color: "white",
+        //   backgroundColor: "#063970",
+        //   width: 180,
+        //   height: 60,
+        //   borderRadius: 10,
+        //   float: "right",
+        //   marginTop:8,
+        //   marginRight: "5%"
+        // }}
+        // onClick={() => navigate('/newtloan')}> <ShoppingBasketIcon style={{marginRight: 1}}/><span/> New Loan ({totalItems}) </Button>
+      );
+    } else {
+      return;
+    }
+  };
 
-     
-  }
+  const addProduct = () => {
+    let html = [];
 
-    const addProduct = () =>{
-
-      let html =[]
-    
-      html.push(
-
-        newProducts.map((product)=>{
-
-          const {id, ItemName, BatchNo, WarehouseCode} = product
-          const addItemWithAlert =() =>{
-              addItem(product)
-              Toast.fire({
-                icon: "success",
-                title: "Item Added!",
-                customClass: "swalpopup",
-                timer: 1000,
-                width: 700,
-              });
-           
-           
-    
-          }
-          return (
-
-            <motion.div
+    html.push(
+      newProducts.map((product) => {
+        const { id, ItemName, BatchNo, WarehouseCode } = product;
+        const addItemWithAlert = () => {
+          addItem(product);
+          Toast.fire({
+            icon: "success",
+            title: "Item Added!",
+            customClass: "swalpopup",
+            timer: 1000,
+            width: 700,
+          });
+        };
+        return (
+          <motion.div
             className="animatable"
             whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
             whileTap={{ scale: 0.9 }}
@@ -174,7 +146,7 @@ const ViewProduct: React.FC = () => {
                 backgroundColor: "#063970",
                 ":hover": { backgroundColor: "#031c38" },
                 float: "right",
-               
+
                 marginRight: "5%",
                 height: "100%",
                 width: 200,
@@ -185,27 +157,26 @@ const ViewProduct: React.FC = () => {
               Add Item To Loan
             </Fab>
           </motion.div>
-            // <Button 
-            // size="normal"
-            // variant="contained"
-            // sx={{
-            //   color: "white",
-            //   backgroundColor: "#063970",
-            //   height: "100%",
-            //   width: 200,
-            //   height: 65,
-            //   borderRadius: 10,
-            // }}
-            // onClick={addItemWithAlert}
-            // > Add Item to Loan
-            // </Button>
-          )
-        })
-      )
-    
-      return html
-    }
+          // <Button
+          // size="normal"
+          // variant="contained"
+          // sx={{
+          //   color: "white",
+          //   backgroundColor: "#063970",
+          //   height: "100%",
+          //   width: 200,
+          //   height: 65,
+          //   borderRadius: 10,
+          // }}
+          // onClick={addItemWithAlert}
+          // > Add Item to Loan
+          // </Button>
+        );
+      })
+    );
 
+    return html;
+  };
   return (
     <>
       {newLoanButton()}
@@ -270,9 +241,7 @@ const ViewProduct: React.FC = () => {
           </div>
         </CardContainer>
       )}
-
-{/* {addInside()} */}
-     
+      {/* {addInside()} */}
     </>
   );
 };

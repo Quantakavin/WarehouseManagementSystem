@@ -2,7 +2,6 @@ import { Box, Grid } from "@mui/material";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
@@ -11,7 +10,6 @@ import { useNavigate, useParams } from "react-router-dom";
 // import { GetDetails }from "../../api/TLoanDB"
 import { motion } from "framer-motion";
 import React from "react";
-import TLoanRejectModalButton from "../modals/tloanRejectModal";
 
 export default function TLoanManagerDisplay() {
   const navigate = useNavigate();
@@ -167,7 +165,10 @@ export default function TLoanManagerDisplay() {
 
   function renderCellExpand(params: GridRenderCellParams<string>) {
     return (
-      <GridCellExpand value={params.value || ''} width={params.colDef.computedWidth} />
+      <GridCellExpand
+        value={params.value || ""}
+        width={params.colDef.computedWidth}
+      />
     );
   }
 
@@ -270,7 +271,7 @@ export default function TLoanManagerDisplay() {
                       editMode="row"
                       getRowId={(item) => item.ItemNo}
                       experimentalFeatures={{ newEditingApi: true }}
-                      sx={{height: 300, width: "100%"}}
+                      sx={{ height: 300, width: "100%" }}
                     />
                   </Grid>
                   <Grid item xs={12}>

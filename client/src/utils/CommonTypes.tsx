@@ -1,6 +1,3 @@
-import { AxiosResponse } from "axios";
-import { UseMutationResult } from "react-query";
-
 export type Option = {
   id: number;
   text: string;
@@ -45,14 +42,14 @@ export interface NotiGroup {
 }
 
 export interface RMA {
-  CompanyID: number;
-  ContactPerson: string;
-  ContactNo: number;
-  RmaID: string;
-  SupplierRMA: string;
-  SalesmanID: string;
-  RmaStatusID: number;
-  Instruction: string;
+  RmaID: number,
+  Username: string,
+  DateTime: string,
+  ContactPerson: string,
+  CustomerEmail: string,
+  Company: string,
+  ContactNo: number,
+  RmaStatusID: number,
 }
 
 export type ActionMenuItem = {

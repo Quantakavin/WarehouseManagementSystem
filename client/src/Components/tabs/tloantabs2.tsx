@@ -94,8 +94,6 @@ const TLoanTabs2: React.FC = () => {
       .then((data) => setApprovedTable(data));
   }, []);
 
-  console.log(managerLoan);
-
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [
       {
@@ -129,7 +127,7 @@ const TLoanTabs2: React.FC = () => {
   const [pageSize, setPageSize] = React.useState(25);
   const [inputName, setInputName] = useState<string>(null);
 
-  const [value, setValue] = useState(0); // first tab
+  const [value, setValue] = useState(); // first tab
 
   const handleChange = (_event, newValue) => {
     setValue(newValue);
@@ -336,7 +334,7 @@ const TLoanTabs2: React.FC = () => {
                       setFilterModel(newFilterModel)
                     }
                     onRowClick={(params: GridRowParams) => {
-                      navigate(`/tloandetails/${params.id}`);
+                      navigate(`/tloanDraftDetails/${params.id}`);
                     }}
                   />
                 </div>
@@ -576,7 +574,7 @@ const TLoanTabs2: React.FC = () => {
                       setFilterModel(newFilterModel)
                     }
                     onRowClick={(params: GridRowParams) => {
-                      navigate(`/tloandetails/${params.id}`);
+                      navigate(`/tloanDraftDetails/${params.id}`);
                     }}
                   />
                 </div>
@@ -939,7 +937,7 @@ const TLoanTabs2: React.FC = () => {
                       setFilterModel(newFilterModel)
                     }
                     onRowClick={(params: GridRowParams) => {
-                      navigate(`/tloandetails/${params.id}`);
+                      navigate(`/tloanDraftDetails/${params.id}`);
                     }}
                   />
                 </div>
@@ -1260,7 +1258,7 @@ const TLoanTabs2: React.FC = () => {
                       setFilterModel(newFilterModel)
                     }
                     onRowClick={(params: GridRowParams) => {
-                      navigate(`/tloandetails/${params.id}`);
+                      navigate(`/tloanDraftDetails/${params.id}`);
                     }}
                   />
                 </div>

@@ -1,8 +1,40 @@
 import axios from "axios";
 import config from "../config/config";
 
+export const GetAllRma = async (RmaID: string) => {
+  return axios.get(`${config.baseURL}/AllRMA`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
 export const GetRMAByRmaID = async (RmaID: string) => {
   return axios.get(`${config.baseURL}/RMA/${RmaID}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+export const GetRMAProductByID = async (RmaID: string) => {
+  return axios.get(`${config.baseURL}/RMA/Product/${RmaID}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+export const GetRMADetails = async (RmaID: string) => {
+  return axios.get(`${config.baseURL}/RMADetails/${RmaID}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+export const GetSalesmanPendingRMA = async (userid: string) => {
+  return axios.get(`${config.baseURL}/myPendingRMA/${userid}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
@@ -25,144 +57,72 @@ export const GetSalesmanRejectedRMA = async (userid: string) => {
   });
 };
 
-export const GetAllRMA = async ({ pageParam = 0 }) => {
-  const response = await axios.get(
-    `${config.baseURL}/AllRMA?limit=5&page=${pageParam * 5}`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }
-  );
-  return {
-    response,
-    nextPage: pageParam + 1,
-    totalPages: Math.ceil(response.data[0].full_count / 5),
-  };
-};
-
-export const GetPendingRMA = async ({ pageParam = 0 }) => {
-  const response = await axios.get(
-    `${config.baseURL}/pendingRMA?limit=5&page=${pageParam * 5}`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }
-  );
-  return {
-    response,
-    nextPage: pageParam + 1,
-    totalPages: Math.ceil(response.data[0].full_count / 5),
-  };
-};
-
-export const GetApprovedRMA = async ({ pageParam = 0 }) => {
-  const response = await axios.get(
-    `${config.baseURL}/acceptedRMA?limit=5&page=${pageParam * 5}`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }
-  );
-  return {
-    response,
-    nextPage: pageParam + 1,
-    totalPages: Math.ceil(response.data[0].full_count / 5),
-  };
-};
-
-export const GetRejectedRMA = async ({ pageParam = 0 }) => {
-  const response = await axios.get(
-    `${config.baseURL}/rejectedRMA?limit=5&page=${pageParam * 5}`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }
-  );
-  return {
-    response,
-    nextPage: pageParam + 1,
-    totalPages: Math.ceil(response.data[0].full_count / 5),
-  };
-};
-
-export const GetReceivedRMA = async ({ pageParam = 0 }) => {
-  const response = await axios.get(
-    `${config.baseURL}/receivedRMA?limit=5&page=${pageParam * 5}`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }
-  );
-  return {
-    response,
-    nextPage: pageParam + 1,
-    totalPages: Math.ceil(response.data[0].full_count / 5),
-  };
-};
-
-export const GetVerifiedRMA = async ({ pageParam = 0 }) => {
-  const response = await axios.get(
-    `${config.baseURL}/verifiedRMA?limit=5&page=${pageParam * 5}`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }
-  );
-  return {
-    response,
-    nextPage: pageParam + 1,
-    totalPages: Math.ceil(response.data[0].full_count / 5),
-  };
-};
-
-export const GetIPRMA = async ({ pageParam = 0 }) => {
-  const response = await axios.get(
-    `${config.baseURL}/inprogressRMA?limit=5&page=${pageParam * 5}`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }
-  );
-  return {
-    response,
-    nextPage: pageParam + 1,
-    totalPages: Math.ceil(response.data[0].full_count / 5),
-  };
-};
-
-export const GetClosedRMA = async ({ pageParam = 0 }) => {
-  const response = await axios.get(
-    `${config.baseURL}/closedRMA?limit=5&page=${pageParam * 5}`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }
-  );
-  return {
-    response,
-    nextPage: pageParam + 1,
-    totalPages: Math.ceil(response.data[0].full_count / 5),
-  };
-};
-
-export const GetRMADetails = async (RmaID: number) => {
-  return axios.get(`${config.baseURL}/RMADetails/${RmaID}`, {
+export const GetPendingRMA = async () => {
+  return axios.get(`${config.baseURL}/pendingRMA`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
 };
 
-export const PostRMA = async (formData) => {
-  return axios.post(`${config.baseURL}/newRMA`, formData, {
+export const GetAcceptedRMA = async () => {
+  return axios.get(`${config.baseURL}/acceptedRMA`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+export const GetChecklistRMA = async () => {
+  return axios.get(`${config.baseURL}/checklistRMA`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+export const GetRejectedRMA = async () => {
+  return axios.get(`${config.baseURL}/rejectedRMA`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+export const GetReceivedRMA = async () => {
+  return axios.get(`${config.baseURL}/receivedRMA`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+export const GetVerifiedRMA = async (userid: string) => {
+  return axios.get(`${config.baseURL}/verifiedRMA`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+export const GetIPRMA = async (userid: string) => {
+  return axios.get(`${config.baseURL}/inprogressRMA`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+export const GetClosedRMA = async (userid: string) => {
+  return axios.get(`${config.baseURL}/closedRMA`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+export const PostRMA = async (rmadetails) => {
+  return axios.post(`${config.baseURL}/newRMA`, rmadetails, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -188,6 +148,15 @@ export const RejectRMA = async (RmaID: number) => {
   });
 };
 
+export const UpdateRmaChecklist = async (RmaID: number) => {
+  return axios.put(`${config.baseURL}/updatechecklistRMA/${RmaID}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
 export const ReceiveRMA = async (RmaID: number) => {
   return axios.put(`${config.baseURL}/receiveRMA/${RmaID}`, {
     headers: {
@@ -197,8 +166,8 @@ export const ReceiveRMA = async (RmaID: number) => {
   });
 };
 
-export const VerifyRMA = async (formData, RmaID: number) => {
-  return axios.put(`${config.baseURL}/verifyRMA/${RmaID}`, formData, {
+export const VerifyRMA = async (rmabody, RmaID: number) => {
+  return axios.put(`${config.baseURL}/verifyRMA/${RmaID}`, rmabody, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -206,8 +175,17 @@ export const VerifyRMA = async (formData, RmaID: number) => {
   });
 };
 
-export const UpdateCOA = async (formData, RmaID: number) => {
-  return axios.put(`${config.baseURL}/COARMA/${RmaID}`, formData, {
+export const UpdateCOA = async (rmabody, RmaID: number) => {
+  return axios.put(`${config.baseURL}/COARMA/${RmaID}`, rmabody, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+export const CloseRMA = async (RmaID: number) => {
+  return axios.put(`${config.baseURL}/closeRMA/${RmaID}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,

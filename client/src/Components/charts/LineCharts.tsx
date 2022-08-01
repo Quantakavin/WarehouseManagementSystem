@@ -1,4 +1,4 @@
-import { Box, Card, Grid } from "@mui/material";
+import { Card, Grid } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import {
@@ -49,7 +49,7 @@ function LineCharts({ title, dataKey, grid }) {
   return (
     <Grid container>
       <Grid item xs={6}>
-        <Card sx={{height: "100%", width: "98%", p: 2}}>
+        <Card sx={{ height: "100%", width: "98%", p: 2 }}>
           <Grid container>
             <Grid item xs={12}>
               <h4 style={{ textAlign: "left" }}>Current T-Loan Requests</h4>
@@ -75,7 +75,7 @@ function LineCharts({ title, dataKey, grid }) {
         </Card>
       </Grid>
       <Grid item xs={6}>
-        <Card sx={{height: "100%", width: "100%", p: 2}}>
+        <Card sx={{ height: "100%", width: "100%", p: 2 }}>
           <Grid container>
             <Grid item xs={12}>
               <h4 style={{ textAlign: "left" }}>Current RMA Requests</h4>

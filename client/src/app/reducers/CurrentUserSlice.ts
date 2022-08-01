@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Root } from "react-dom/client";
 import type { RootState } from "../../app/store";
 
 // Define a type for the slice state
@@ -19,7 +18,7 @@ const initialState: CurrentUserState = {
   // token: null,
   role: null,
   isAuthenticated: false,
-  permissions: null
+  permissions: null,
 };
 
 export const currentUserSlice = createSlice({
@@ -54,6 +53,7 @@ export const selectRole = (state: RootState) => state.currentUser.role;
 export const selectId = (state: RootState) => state.currentUser.id;
 export const selectIsAuthenticated = (state: RootState) =>
   state.currentUser.isAuthenticated;
-export const selectPermissions = (state: RootState) => state.currentUser.permissions;
+export const selectPermissions = (state: RootState) =>
+  state.currentUser.permissions;
 
 export default currentUserSlice.reducer;

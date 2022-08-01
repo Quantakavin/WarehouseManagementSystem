@@ -38,14 +38,11 @@ module.exports.getBinByProductName = async (BinTag) => {
 // Get Amount of Items in Bin
 
 module.exports.getBinItemsByBrand = async (Brand) => {
-  const query = `SELECT COUNT(ItemName) as Items FROM isdnwarehouse2.BinProduct WHERE Brand LIKE ?`;
-  return knex.raw(query, [Brand]);
+    const query = `SELECT COUNT(ItemName) as Items FROM isdnwarehouse2.BinProduct WHERE Brand LIKE ?`;
+    return knex.raw(query, [Brand]);
 };
-
 
 module.exports.getgetBinItemsByBinID = async (BinID) => {
-  const query = `SELECT COUNT(ItemName) as Items FROM isdnwarehouse2.BinProduct WHERE BinID LIKE ?`;
-  return knex.raw(query, [BinID]);
+    const query = `SELECT COUNT(ItemName) as Items FROM isdnwarehouse2.BinProduct WHERE BinID LIKE ?`;
+    return knex.raw(query, [BinID]);
 };
-
-

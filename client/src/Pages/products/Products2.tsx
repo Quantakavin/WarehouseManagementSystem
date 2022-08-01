@@ -16,30 +16,33 @@ import {
   GridToolbarFilterButton,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { motion } from "framer-motion";
 import { useCart } from "react-use-cart";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
-
+import IsEditableProvider, { EditableContext } from '../../components/context/isEditableContext'
 const Products2: React.FC = () => {
   const [row, setRow] = useState([]);
-  const userrole = useAppSelector(selectRole)
+  const userrole = useAppSelector(selectRole);
   const navigate = useNavigate();
   const theme = unstable_createMuiStrictModeTheme();
   const [pageSize, setPageSize] = React.useState(25);
   const [inputName, setInputName] = useState<string>(null);
   const [value, setValue] = useState(0); // first tab
   const { totalItems, addItem } = useCart();
-
+  const context = useContext(EditableContext)
+  const {isEditable, setIsEditable, TLoanIDGlobal} = context
+  console.log(TLoanIDGlobal)
+  console.log(isEditable)
   useEffect(() => {
     fetch(`http://localhost:5000/api/products?limit=100000&page=0`)
       .then((data) => data.json())
       .then((data) => setRow(data));
   }, []);
-
+console.log(isEditable)
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [
       {
@@ -84,12 +87,16 @@ const Products2: React.FC = () => {
     );
   }
 
-  if (userrole == "Sales Admin" || userrole == "Sales Engineer" || userrole == "Technical Staff") {
+  if (
+    userrole == "Sales Admin" ||
+    userrole == "Sales Engineer" ||
+    userrole == "Technical Staff"
+  ) {
     return (
       <Box sx={{ pl: 3, pr: 3, pt: 1, height: "100%", width: "100%" }}>
         <Box sx={{ display: "flex", height: "100%" }}>
           <Box sx={{ flexGrow: 1 }}>
-          <Box
+            <Box
               component="span"
               display="flex"
               justifyContent="space-between"
@@ -117,9 +124,8 @@ const Products2: React.FC = () => {
                       ":hover": { backgroundColor: "#031c38" },
                     }}
                   >
-                    Loan Basket
-                    {/* Loan Basket ({totalItems}){" "} */}
-                    <ShoppingBasketIcon sx={{ ml: 1}} />
+                    New Loan ({totalItems})
+                    <ShoppingBasketIcon sx={{ ml: 1 }} />
                   </Fab>
                 </motion.div>
               </Box>
@@ -164,7 +170,7 @@ const Products2: React.FC = () => {
       <Box sx={{ pl: 3, pr: 3, pt: 1, height: "100%", width: "100%" }}>
         <Box sx={{ display: "flex", height: "100%" }}>
           <Box sx={{ flexGrow: 1 }}>
-          <Box
+            <Box
               component="span"
               display="flex"
               justifyContent="space-between"
@@ -172,7 +178,7 @@ const Products2: React.FC = () => {
             >
               <Typography
                 sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
-                style={{marginTop: 4}}
+                style={{ marginTop: 4 }}
               >
                 Products
               </Typography>
@@ -213,7 +219,5 @@ const Products2: React.FC = () => {
       </Box>
     );
   }
-
-
 };
 export default Products2;

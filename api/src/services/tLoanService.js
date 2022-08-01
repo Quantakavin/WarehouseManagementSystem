@@ -5,13 +5,14 @@ module.exports.getAll = async () => {
     return knex.raw(query);
 };
 
-module.exports.tloanOutItem = async (itemno, itemname, quantity, batchno,warehousecode) => {
+module.exports.tloanOutItem = async (itemno, itemname, quantity, batchno, warehousecode,basketitemid) => {
     return knex('TLoanOutItem').insert({
         itemno,
         itemname,
         quantity,
         batchno,
-        warehousecode
+        warehousecode,
+        basketitemid
     });
 };
 
@@ -103,6 +104,103 @@ module.exports.SendTLoanToDraft = async (
     });
 };
 
+module.exports.DeleteProductsByID = async(TLoanID)=>{
+    return knex.transaction((trx)=>{
+        knex('TLoanOutItem')
+        .where('TLoanID', TLoanID)
+        .del()
+        .transacting(trx)
+        .then(trx.commit)
+        .catch(trx.rollback);
+    })   
+}
+
+module.exports.TLoanOutByID = async (TLoanID,itemno, itemname, quantity, batchno, warehousecode,basketitemid) => {
+    return knex('TLoanOutItem').insert({
+        TLoanID,
+        itemno,
+        itemname,
+        quantity,
+        batchno,
+        warehousecode,
+        basketitemid
+    });
+};
+module.exports.SubmitAfterEdit = async (
+    TLoanID,
+    type,
+    company,
+    purpose,
+    applicationdate,
+    duration,
+    requireddate,
+    email,
+    collection,
+    tloanItems
+    ) =>{
+        return knex.transaction((trx) => {
+            knex('TLoan')
+            .where('TLoanID', TLoanID)
+            .update({ 
+                TLoanTypeID: type,
+                CompanyID: company,
+                Purpose: purpose,
+                ApplicationDate: applicationdate,
+                Duration: duration,
+                RequiredDate: requireddate,
+                TLoanStatusID: 4,
+                CustomerEmail: email,
+                Collection: collection
+            },
+            'TLoanID')
+                .transacting(trx)
+                .then(function () {
+                    // tloanItems.forEach((item) => (item.TLoanID = TLoanID));
+                    return knex('TLoanOutItem').insert(tloanItems).transacting(trx);
+                })
+                .then(trx.commit)
+                .catch(trx.rollback);
+        });
+      
+}
+
+module.exports.DraftAfterEdit = async (
+    TLoanID,
+    type,
+    company,
+    purpose,
+    applicationdate,
+    duration,
+    requireddate,
+    email,
+    collection,
+    tloanItems
+    ) =>{
+        return knex.transaction((trx) => {
+            knex('TLoan')
+            .where('TLoanID', TLoanID)
+            .update({ 
+                TLoanTypeID: type,
+                CompanyID: company,
+                Purpose: purpose,
+                ApplicationDate: applicationdate,
+                Duration: duration,
+                RequiredDate: requireddate,
+                CustomerEmail: email,
+                Collection: collection
+            },
+            'TLoanID')
+                .transacting(trx)
+                .then(function () {
+                    // tloanItems.forEach((item) => (item.TLoanID = TLoanID));
+                    return knex('TLoanOutItem').insert(tloanItems).transacting(trx);
+                })
+                .then(trx.commit)
+                .catch(trx.rollback);
+        });
+      
+}
+
 module.exports.getLoanByNumber = async (TLoanID) => {
     // const query = `SELECT t.TLoanNumber,DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
     // DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
@@ -111,6 +209,7 @@ module.exports.getLoanByNumber = async (TLoanID) => {
     const query = `   SELECT 
 	t.TLoanID,
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
+  DATE_FORMAT(t.RequiredDate, "%Y-%m-%d") AS 'RequiredDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS 'EndDate',
   c.CompanyName,
   t.CustomerEmail,
@@ -118,6 +217,10 @@ module.exports.getLoanByNumber = async (TLoanID) => {
   tt.TLoanType,
   t.Collection,
   t.Purpose,
+  t.TLoanStatusID,
+  t.TLoanTypeID,
+  t.CompanyID,
+  t.Duration,
   te.Reason,
   nullif(max(tes.TLoanExtensionStatus), min(tes.TLoanExtensionStatus)),
   IFNULL(tes.TLoanExtensionStatus,'NIL') AS 'TLoanExtensionStatus'
@@ -139,7 +242,8 @@ module.exports.getTLoanOutItem = async (TLoanID) => {
   tl.ItemName,
   tl.BatchNo,
   tl.Quantity,
-  tl.WarehouseCode
+  tl.WarehouseCode,
+  tl.BasketItemID
   FROM TLoanOutItem tl 
   WHERE tl.TLoanID = ?
   `;
@@ -404,7 +508,7 @@ module.exports.getExtensionStatus = async (TLoanID) => {
   WHERE t.TLoanID = ?
  `;
     return knex.raw(query, [TLoanID]);
-}
+};
 
 module.exports.getApproved = async () => {
     const query = `   SELECT
@@ -419,4 +523,13 @@ module.exports.getApproved = async () => {
     WHERE t.TLoanStatusID = 3
  `;
     return knex.raw(query);
-}
+};
+
+module.exports.getStatusID = async (TLoanID) => {
+    const query = ` SELECT
+    TLoanStatusID 
+    FROM TLoan 
+    WHERE TLoanID = ?
+ `;
+    return knex.raw(query, [TLoanID]);
+};

@@ -19,42 +19,39 @@ const MultiSelectDropdown: React.FC<SelectProps> = ({
   placeholder,
   options,
 }) => {
-
-    const field = (
-        <Select
-            size="small"
-            className="selectfield"
-            name={name}
-            sx={{
-                borderRadius: "10px",
-                paddingTop: "0px",
-            }}
-            value={selectedValues}
-            onChange={changeSelectedValues}
-            defaultValue={[""]}
-            multiple
-        >
-            <MenuItem value="" disabled hidden>
-                {placeholder}
-            </MenuItem>
-            {options.map(({ id, text, value }) => (
-                <MenuItem key={id} value={value}>
-                    {/* <Checkbox checked={selectedValues.indexOf(value) > -1} />
+  const field = (
+    <Select
+      size="small"
+      className="selectfield"
+      name={name}
+      sx={{
+        borderRadius: "10px",
+        paddingTop: "0px",
+      }}
+      value={selectedValues}
+      onChange={changeSelectedValues}
+      defaultValue={[""]}
+      multiple
+    >
+      <MenuItem value="" disabled hidden>
+        {placeholder}
+      </MenuItem>
+      {options.map(({ id, text, value }) => (
+        <MenuItem key={id} value={value}>
+          {/* <Checkbox checked={selectedValues.indexOf(value) > -1} />
                     <ListItemText primary={text} /> */}
-                    {text}
-                </MenuItem>
-            ))}
-        </Select>
-    )
+          {text}
+        </MenuItem>
+      ))}
+    </Select>
+  );
 
-    return (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-            <p className="formlabels"> {label} </p>
-            <div className="formfieldcontainer">
-                {field}
-            </div>
-        </div>
-    );
+  return (
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <p className="formlabels"> {label} </p>
+      <div className="formfieldcontainer">{field}</div>
+    </div>
+  );
 };
 
 export default MultiSelectDropdown;

@@ -13,9 +13,9 @@ module.exports.loginUser = async (req, res) => {
         const results = await user.getByEmail(email);
         if (results[0].length > 0) {
             if (results[0][0].Active !== 'Y') {
-                return res.status(401).json({ message: 'Your account has been inactivated' });
+                return res.status(401).json({ message: 'Your account has been deactivated' });
             } else if (bcrypt.compareSync(password, results[0][0].Password) === true) {
-                const results2 = await userGroup.getFeatures(results[0][0].UserGroupID)
+                const results2 = await userGroup.getFeatures(results[0][0].UserGroupID);
                 const data = {
                     id: results[0][0].UserID,
                     name: results[0][0].Username,
@@ -58,10 +58,10 @@ module.exports.getAllUsers = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await user.getAll();
-        redisClient.set('users', JSON.stringify(results[0]),'EX', 60*60*24);
+        redisClient.set('users', JSON.stringify(results[0]), 'EX', 60 * 60 * 24);
         return res.status(200).json(results[0]);
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -113,14 +113,14 @@ module.exports.getUserById = async (req, res) => {
         if (results[0].length > 0) {
             [output] = results;
             const results2 = await notificationGroup.getByUser(userID);
-            const results3 = await userGroup.getFeatures(results[0][0].UserGroupID)
+            const results3 = await userGroup.getFeatures(results[0][0].UserGroupID);
             if (results2.length > 0) {
                 [output[0].NotificationGroups] = results2;
             }
             if (results3.length > 0) {
                 [output[0].Permissions] = results3;
             }
-            redisClient.set(`user#${userID}`, JSON.stringify(output),{EX: 60*60*24});
+            redisClient.set(`user#${userID}`, JSON.stringify(output), { EX: 60 * 60 * 24 });
             return res.status(200).send(output);
         }
         return res.status(404).json({ message: 'Cannot find user with that id' });

@@ -48,9 +48,7 @@ function Error404() {
               Oops!
               <br />
             </Typography>
-            The page you are looking for cannot be found
-            <br />
-            The requested URL "{URL}" was not found on this server.
+            The page you are looking for doesn't exist
             <br />
             Please return to the page you were on
           </Box>
@@ -76,7 +74,7 @@ function Error404() {
                   height: 50,
                   borderRadius: 10,
                 }}
-                onClick={() => navigate(-2)}
+                onClick={() => navigate(-1)}
               >
                 Back
               </Button>

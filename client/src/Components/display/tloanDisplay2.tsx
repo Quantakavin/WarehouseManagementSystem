@@ -8,13 +8,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { GetDetails }from "../../api/TLoanDB"
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
-import {
-  DataGrid,
-  GridColDef,
-  GridRenderCellParams
-} from "@mui/x-data-grid";
+import Paper from "@mui/material/Paper";
+import Popper from "@mui/material/Popper";
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { motion } from "framer-motion";
 import React from "react";
 import ModalButton from "../modals/tloanExtensionModal";
@@ -288,7 +284,7 @@ export default function TLoanDisplay2() {
                   </Grid>
                   <Grid item xs={3}>
                     <TextField
-                      sx={{ display: "flex"}}
+                      sx={{ display: "flex" }}
                       id="outlined-purpose"
                       multiline
                       rows={11.5}
@@ -298,7 +294,6 @@ export default function TLoanDisplay2() {
                       }}
                       variant="filled"
                       defaultValue={loans.Purpose}
-                      
                     />
                   </Grid>
                   <Grid item xs={12}>
