@@ -35,10 +35,10 @@ function Dashboards() {
   // end of switch case
 
   return (
-    <Box sx={{ pl: 3, pr: 3, pt: 3 }}>
+    <Box sx={{ pl: 3, pr: 3, pt: 1 }}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <h1>
+          <h1 style={{marginBottom: 0}}>
             {localStorage.getItem("username")}'s Dashboard{""}
           </h1>
         </Grid>
