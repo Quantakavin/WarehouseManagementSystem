@@ -163,9 +163,9 @@ const BinLocations = () => {
           camera={{ fov: 45, position: [0, 40, 150] }}
           style={{
             border: "solid 1px black",
-            height: 600,
+            height: 1000,
             marginTop: 20,
-            width: "80%",
+            width: "95%",
           }}
         >
           <Scene />

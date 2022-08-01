@@ -61,6 +61,14 @@ const Model: React.FC<ModelProps> = ({
     });
   }, []);
 
+  // get bin products and amount of items
+
+  // useEffect(() => {
+  //   axios.get(`${config.baseURL}/bintag/${bintag}`).then((data) => {
+  //     setBinsData(data.data[0]);
+  //   });
+  // }, []);
+
   // // get bin qty by bin id
 
   //    useEffect(() => {
