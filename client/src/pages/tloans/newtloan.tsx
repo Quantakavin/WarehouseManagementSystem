@@ -460,7 +460,7 @@ function newtloan() {
   
   const DraftLoan = (e) => {
     e.preventDefault();
-    setSubmitLoading(true);
+    setLoading(true);
     setTypeError(false);
     setCompanyError(false);
     setPurposeError(false);
@@ -471,16 +471,16 @@ function newtloan() {
     if (company === "") {
       setCompanyError(true);
       setCompanyErrorText("Selection required");
-      setSubmitLoading(false);
+      setLoading(false);
     }
     if (email === "") {
       setEmailError(true);
       setEmailErrorText("Required");
-      setSubmitLoading(false);
+      setLoading(false);
     } else if (!email.match(emailRegex)) {
       setEmailError(true);
       setEmailErrorText("Invalid Email");
-      setSubmitLoading(false);
+      setLoading(false);
     }
     if (
       company !== "" &&
@@ -518,7 +518,7 @@ function newtloan() {
           console.log(results);
         } catch (error) {
           console.log(error.response);
-          setSubmitLoading(false);
+          setLoading(false);
         }
       }, 500);
       emptyCart()
