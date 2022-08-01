@@ -26,6 +26,8 @@ router.get('/tloan/ManagerLoan', TLoanController.ManagerLoan);
 router.get('/tloan/ManagerExtension', TLoanController.ManagerExtension);
 router.post('/tloan/extension', TLoanController.LoanExtend);
 router.get('/tloanid/:TLoanID', TLoanController.getIDofLoan);
+router.get('/tloanstatusid/:TLoanID', TLoanController.tloanStatusID);
 router.get('/tloan/approvedloans', TLoanController.getApprovedLoan);
 router.put('/tloan/submitEditedDraft/:TLoanID', TLoanController.SubmitAfterEdit)
+router.put('/tloan/draftEditedDraft/:TLoanID', TLoanController.DraftAfterEdit)
 module.exports = router;

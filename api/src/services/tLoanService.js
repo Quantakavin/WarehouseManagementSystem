@@ -164,7 +164,42 @@ module.exports.SubmitAfterEdit = async (
       
 }
 
-
+module.exports.DraftAfterEdit = async (
+    TLoanID,
+    type,
+    company,
+    purpose,
+    applicationdate,
+    duration,
+    requireddate,
+    email,
+    collection,
+    tloanItems
+    ) =>{
+        return knex.transaction((trx) => {
+            knex('TLoan')
+            .where('TLoanID', TLoanID)
+            .update({ 
+                TLoanTypeID: type,
+                CompanyID: company,
+                Purpose: purpose,
+                ApplicationDate: applicationdate,
+                Duration: duration,
+                RequiredDate: requireddate,
+                CustomerEmail: email,
+                Collection: collection
+            },
+            'TLoanID')
+                .transacting(trx)
+                .then(function () {
+                    // tloanItems.forEach((item) => (item.TLoanID = TLoanID));
+                    return knex('TLoanOutItem').insert(tloanItems).transacting(trx);
+                })
+                .then(trx.commit)
+                .catch(trx.rollback);
+        });
+      
+}
 
 module.exports.getLoanByNumber = async (TLoanID) => {
     // const query = `SELECT t.TLoanNumber,DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
@@ -174,6 +209,7 @@ module.exports.getLoanByNumber = async (TLoanID) => {
     const query = `   SELECT 
 	t.TLoanID,
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
+  DATE_FORMAT(t.RequiredDate, "%Y-%m-%d") AS 'RequiredDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS 'EndDate',
   c.CompanyName,
   t.CustomerEmail,
@@ -181,7 +217,10 @@ module.exports.getLoanByNumber = async (TLoanID) => {
   tt.TLoanType,
   t.Collection,
   t.Purpose,
+  t.TLoanStatusID,
+  t.TLoanTypeID,
   t.CompanyID,
+  t.Duration,
   te.Reason,
   nullif(max(tes.TLoanExtensionStatus), min(tes.TLoanExtensionStatus)),
   IFNULL(tes.TLoanExtensionStatus,'NIL') AS 'TLoanExtensionStatus'
@@ -485,3 +524,9 @@ module.exports.getApproved = async () => {
  `;
     return knex.raw(query);
 };
+
+module.exports.getStatusID = async (TLoanID) =>{
+    const query = `
+    select TLoanStatusID from TLoan where TLoanID = ?`
+    return knex.raw(query [TLoanID])
+}

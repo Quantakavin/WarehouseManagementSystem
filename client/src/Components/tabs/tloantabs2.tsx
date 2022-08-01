@@ -94,8 +94,6 @@ const TLoanTabs2: React.FC = () => {
       .then((data) => setApprovedTable(data));
   }, []);
 
-  console.log(managerLoan);
-
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [
       {

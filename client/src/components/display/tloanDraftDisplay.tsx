@@ -46,6 +46,7 @@ import { Toast } from "../../components/alerts/SweetAlert";
 import "../../pages/tloans/TLoanTable/table.css";
 import { EditableContext } from '../../components/context/isEditableContext'
 import { useCart } from "react-use-cart";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 export default function TLoanDraftDisplay() {
   const navigate = useNavigate();
@@ -68,9 +69,23 @@ export default function TLoanDraftDisplay() {
   const [localDate, setLocalDate] = useState("");
   const userRole = useAppSelector(selectRole);
   const [dateForm, setDateForm] = useState("");
-
+  const [typeError, setTypeError] = useState(false);
+  const [companyError, setCompanyError] = useState(false);
+  const [purposeError, setPurposeError] = useState(false);
+  const [durationError, setDurationError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [collectionError, setCollectionError] = useState(false);
+  const [requireddateError, setRDateError] = useState(false);
+  const [typeErrorText, setTypeErrorText] = useState("");
+  const [companyErrorText, setCompanyErrorText] = useState("");
+  const [purposeErrorText, setPurposeErrorText] = useState("");
+  const [durationErrorText, setDurationErrorText] = useState("");
+  const [emailErrorText, setEmailErrorText] = useState("");
+  const [collectionErrorText, setCollectionErrorText] = useState("");
+  const [rdateErrorText, setRDateErrorText] = useState("");
+  const [submitLoading, setSubmitLoading] = useState(false);
   const [items, setItems] = useState([]);
-const [rows, setRows] = React.useState([]);
+  const [rows, setRows] = React.useState([]);
 
 const context = useContext(EditableContext)
 const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
@@ -503,8 +518,7 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
       Quantity: quantity,
       TLoanID: TLoanIDGlobal
     })
-  );
-console.log(newProduct)
+  )
 
   const { updateItemQuantity, removeItem } =
     useCart();
@@ -725,88 +739,224 @@ console.log(newProduct)
     setRDate(correctFormat);
   }, [dateForm]);
 
+
+  const emailRegex = /^\S+@\S+\.\S+$/i;
+
   const submitLoan = (e) => {
-    e.preventDefault();
-    try {
-      const results = axios
-        .put(`http://localhost:5000/api/tloan/submitEditedDraft/${TLoanID}`, {
-          type,
-          company,
-          purpose,
-          applicationdate,
-          duration,
-          requireddate,
-          email,
-          collection,
-          items,
-        })
-        .then(() => {
-          Toast.fire({
-            icon: "success",
-            title: "TLoan Successfully Submitted",
-            customClass: "swalpopup",
-            timer: 1500,
-            width: 700,
-          });
-          navigate("/tloan");
-          emptyCart()
+      setSubmitLoading(true);
+      e.preventDefault();
+      setTypeError(false);
+      setCompanyError(false);
+      setPurposeError(false);
+      setDurationError(false);
+      setEmailError(false);
+      setCollectionError(false);
+      setRDateError(false);
+      if (items.length === 0) {
+        Toast.fire({
+          icon: "error",
+          title: "Please add an item",
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 315,
         });
-
-      console.log(results);
-    } catch (error) {
-      console.log(error.response);
+        setSubmitLoading(false);
+      }
+      if (type === "") {
+        setTypeError(true);
+        setTypeErrorText("Selection required");
+        setSubmitLoading(false);
+      }
+      if (company === "") {
+        setCompanyError(true);
+        setCompanyErrorText("Selection required");
+        setSubmitLoading(false);
+      }
+      if (purpose === "") {
+        setPurposeError(true);
+        setPurposeErrorText("Required");
+        setSubmitLoading(false);
+      }
+      if (duration === "") {
+        setDurationError(true);
+        setDurationErrorText("Selection required");
+        setSubmitLoading(false);
+      }
+      if (requireddate === "") {
+        setRDateError(true);
+        setRDateErrorText("Select a date");
+        setSubmitLoading(false);
+      }
+      if (email === "") {
+        setEmailError(true);
+        setEmailErrorText("Required");
+        setSubmitLoading(false);
+      } else if (!email.match(emailRegex)) {
+        setEmailError(true);
+        setEmailErrorText("Invalid Email");
+        setSubmitLoading(false);
+      }
+      if (collection === "") {
+        setCollectionError(true);
+        setCollectionErrorText("Selection required");
+        setSubmitLoading(false);
+      }
+      if (
+        items.length !== 0 &&
+        type !== "" &&
+        company !== "" &&
+        purpose !== "" &&
+        duration !== "" &&
+        requireddate !== "" &&
+        email !== "" &&
+        email.match(emailRegex) &&
+        collection !== ""
+      ) {
+        setTimeout(() => {
+          try {
+            const results = axios
+            .put(`http://localhost:5000/api/tloan/submitEditedDraft/${TLoanID}`, {
+              type,
+              company,
+              purpose,
+              applicationdate,
+              duration,
+              requireddate,
+              email,
+              collection,
+              items,
+              })
+              .then(() => {
+              
+                Toast.fire({
+                  icon: "success",
+                  title: "TLoan Successfully Submitted",
+                  customClass: "swalpopup",
+                  timer: 1500,
+                  width: 700,
+                });
+                navigate("/tloan");
+                setIsEditable(false)
+                setTLoanIDGlobal(null)
+                
+              });
+            
+            console.log(results);
+          } catch (error) {
+            console.log(error.response);
+            setSubmitLoading(false);
+          }
+        }, 500);
+        emptyCart()
+       
+      }
     }
-  };
 
-  const DraftLoan = (e) => {
-    e.preventDefault();
-    try {
-      const results = axios
-        .post("http://localhost:5000/api/tloan/loanDrafting", {
-          type,
-          company,
-          name,
-          purpose,
-          applicationdate,
-          duration,
-          requireddate,
-          user,
-          email,
-          collection,
-          items,
-        })
-        .then(() => {
-          Toast.fire({
-            icon: "info",
-            title: "TLoan has been put into Draft",
-            customClass: "swalpopup",
-            timer: 1500,
-            width: 700,
-          });
-          navigate("/tloan");
-          emptyCart()
-        });
-
-      console.log(results);
-    } catch (error) {
-      console.log(error.response);
+    const setInitial = ()=>{
+      setIsEditable(false)
+      setTLoanIDGlobal(null)
     }
-  };
+    const DraftLoan = (e) => {
+      e.preventDefault();
+      setSubmitLoading(true);
+      setTypeError(false);
+      setCompanyError(false);
+      setPurposeError(false);
+      setDurationError(false);
+      setEmailError(false);
+      setCollectionError(false);
+      setRDateError(false);
+      if (company === "") {
+        setCompanyError(true);
+        setCompanyErrorText("Selection required");
+        setSubmitLoading(false);
+      }
+      if (email === "") {
+        setEmailError(true);
+        setEmailErrorText("Required");
+        setSubmitLoading(false);
+      } else if (!email.match(emailRegex)) {
+        setEmailError(true);
+        setEmailErrorText("Invalid Email");
+        setSubmitLoading(false);
+      }
+      if (
+        company !== "" &&
+        email !== "" &&
+        email.match(emailRegex)
+      ) {
+        setTimeout(() => {
+          try {
+            const results = axios
+              .post(`http://localhost:5000/api/tloan/draftEditedDraft/${TLoanID}`, {
+                type,
+                company,
+                name,
+                purpose,
+                applicationdate,
+                duration,
+                requireddate,
+                user,
+                email,
+                collection,
+                items,
+              })
+              .then(() => {
+                Toast.fire({
+                  icon: "info",
+                  title: "TLoan has been put into Draft",
+                  customClass: "swalpopup",
+                  timer: 1500,
+                  width: 700,
+                });
+                navigate("/tloan");
+                setIsEditable(false)
+                setTLoanIDGlobal(null)
+              });
+  
+            console.log(results);
+          } catch (error) {
+            console.log(error.response);
+            setSubmitLoading(false);
+          }
+        }, 500);
+        emptyCart()
+      
+      }
+    };
   useEffect(() => {
     var date = new Date().toISOString().split("T")[0];
-
-    setADate(date);
-  });
-
-  useEffect(() => {
     const uid = localStorage.getItem("user_id");
     setUser(uid);
-  });
-
-  useEffect(() => {
+    setADate(date);
     const Employee = localStorage.getItem("username");
     setName(Employee);
   });
+
+  useEffect(()=>{
+    if(loans.CustomerEmail !== ''){
+      (e) => setEmail(e.target.value)
+
+    }if (loans.CompanyID !== ''){
+      setCompany(loans.CompanyID)
+
+    }if (loans.Duration !== null){
+      setCompany(loans.Duration)
+
+    }if (loans.Purpose !== ''){
+      setPurpose(loans.Purpose)
+
+    }if (loans.Collection !== ''){
+      setCollection(loans.Collection)
+
+    }if (loans.TLoanType !== ''){
+      setType(loans.TLoanType)
+
+    }if (loans.StartDate !==''){
+      setRDate(loans.RequiredDate)
+    }
+
+  }, [])
 
   const getCard = () => {
     const loanDuration = [
@@ -827,10 +977,6 @@ console.log(newProduct)
       { "12 Months": "365" },
     ];
 
-    const setInitial =() =>{
-      setIsEditable(false)
-      setTLoanIDGlobal(null)
-    }
     return (
       <div style={{ overflow: "auto" }}>
         <Card
@@ -839,7 +985,7 @@ console.log(newProduct)
           <CardContent>
             <h2>Edit Loan Draft</h2>
             {FullFeaturedCrudGrid()}
-            <form onSubmit={submitLoan} style={{ width: "100%" }}>
+            {/* <form onSubmit={submitLoan} style={{ width: "100%" }}> */}
               <Box sx={{ marginTop: 1, display: "flex", marginLeft: 2 }}>
                 <TextField
                   id="outlined-basic"
@@ -858,8 +1004,10 @@ console.log(newProduct)
                   name="customerEmail"
                   sx={{ marginLeft: 3 }}
                   
-                  value={email || loans.CustomerEmail }
+                  value={email || loans.CustomerEmail}
                   onChange={(e) => setEmail(e.target.value)}
+                  error={emailError}
+                  helperText={emailErrorText}
                 />
 
                 <FormControl sx={{ width: 200, marginLeft: 3 }}>
@@ -870,7 +1018,6 @@ console.log(newProduct)
                     onChange={handleChangeCompany}
                     size="small"
                     label="Customer Company"
-                    required
                   >
                     <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
                     <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
@@ -879,16 +1026,19 @@ console.log(newProduct)
                     <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
                     <MenuItem value={"6"}>ALL</MenuItem>
                   </Select>
+                  <FormHelperText sx={{ color: "#d11919" }}>
+                    {companyErrorText}
+                  </FormHelperText>
                 </FormControl>
                 <FormControl sx={{ width: 200, marginLeft: 3 }}>
                   <InputLabel>Duration</InputLabel>
                   <Select
                     id="outlined-basic"
-                    value={duration}
+                    value={duration || loans.Duration}
                     onChange={handleChangeDuration}
                     label="Duration"
                     size="small"
-                    required
+                 
                   >
                     {loanDuration.map((element) => {
                       const [[key, val]] = Object.entries(element);
@@ -899,6 +1049,9 @@ console.log(newProduct)
                       );
                     })}
                   </Select>
+                  <FormHelperText sx={{ color: "#d11919" }}>
+                    {durationErrorText}
+                  </FormHelperText>
                 </FormControl>
               </Box>
 
@@ -908,8 +1061,10 @@ console.log(newProduct)
                   multiline
                   rows={4}
                   label="Purpose"
+                  value={purpose || loans.Purpose}
                   onChange={(e) => setPurpose(e.target.value)}
-                  required
+                  error={purposeError}
+                  helperText={purposeErrorText}
                 ></TextField>
               </Box>
               <Box sx={{ marginLeft: 2, display: "flex" }}>
@@ -918,20 +1073,20 @@ console.log(newProduct)
                   <InputLabel>Collection Type</InputLabel>
                   <Select
                     id="outlined-basic"
-                    value={collection}
+                    value={collection || loans.Collection}
                     onChange={handleChangeCollection}
                     label="Collection Type"
                     size="small"
-                    required
                   >
-                    {/* <MenuItem value="">
-            <em>None</em>
-          </MenuItem> */}
+                   
                     <MenuItem value={"Self-Collection"}>
                       Self-Collection
                     </MenuItem>
                     <MenuItem value={"Delivery"}>Delivery</MenuItem>
                   </Select>
+                  <FormHelperText sx={{ color: "#d11919" }}>
+                    {collectionErrorText}
+                  </FormHelperText>
                 </FormControl>
 
                 {/* Type */}
@@ -939,15 +1094,17 @@ console.log(newProduct)
                   <InputLabel>Loan Type</InputLabel>
                   <Select
                     id="outlined-basic"
-                    value={type}
+                    value={type || loans.TLoanTypeID}
                     onChange={handleChangeType}
                     label="Loan Type"
                     size="small"
-                    required
                   >
                     <MenuItem value={"1"}>Internal</MenuItem>
                     <MenuItem value={"2"}>External</MenuItem>
                   </Select>
+                  <FormHelperText sx={{ color: "#d11919" }}>
+                    {typeErrorText}
+                  </FormHelperText>
                 </FormControl>
 
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -955,7 +1112,13 @@ console.log(newProduct)
                     <DesktopDatePicker
                       label="Required Date"
                       inputFormat="yyyy-MM-dd"
-                      value={requireddate}
+                      value={dateForm || loans.RequiredDate}
+                      onClose={() => {
+                        if (requireddate === "") {
+                          setRDateError(true);
+                          setRDateErrorText("Select a date");
+                        }
+                      }}
                       onChange={handleChangeRequiredDate}
                       renderInput={(params) => (
                         <TextField
@@ -1033,7 +1196,7 @@ console.log(newProduct)
                         height: 50,
                         borderRadius: 10,
                       }}
-                      type="submit"
+                      onClick={submitLoan}
                       // onClick={submitLoan}
                     >
                       Submit
@@ -1041,10 +1204,10 @@ console.log(newProduct)
                   </motion.div>
                 </Box>
               </Box>
-            </form>
+            {/* </form> */}
           </CardContent>
         </Card>
-        <button onClick={()=> setInitial() }>Press me</button>
+        <button onClick={()=>setInitial()}> Press Me</button>
       </div>
     );
   };
