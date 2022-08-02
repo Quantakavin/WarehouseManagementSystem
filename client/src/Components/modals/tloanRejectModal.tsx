@@ -10,6 +10,10 @@ import * as React from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Toast } from "../../components/alerts/SweetAlert";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
+import {LoadingButton} from "@mui/lab";
+import CancelIcon from "@mui/icons-material/Close"
 
 const style = {
   position: "absolute" as "absolute",
@@ -88,7 +92,7 @@ export default function TLoanRejectModalButton() {
       }}
       whileTap={{ scale: 0.9 }}
     >
-      <Button
+      <LoadingButton
         size="small"
         variant="contained"
         sx={{
@@ -98,10 +102,11 @@ export default function TLoanRejectModalButton() {
           height: 50,
           borderRadius: 10,
         }}
+        endIcon={<CancelIcon/>}
         onClick={handleOpen}
       >
         Reject
-      </Button>
+      </LoadingButton>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -167,7 +172,7 @@ export default function TLoanRejectModalButton() {
                 }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -176,11 +181,13 @@ export default function TLoanRejectModalButton() {
                     width: 150,
                     height: 50,
                     borderRadius: 10,
+                    paddingRight: 4
                   }}
                   onClick={handleClose}
+                  startIcon={<ArrowBackIosNewIcon/>}
                 >
                   Back
-                </Button>
+                </LoadingButton>
               </motion.div>
               <motion.div
                 className="animatable"
@@ -190,7 +197,7 @@ export default function TLoanRejectModalButton() {
                 }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -200,10 +207,12 @@ export default function TLoanRejectModalButton() {
                     height: 50,
                     borderRadius: 10,
                   }}
+                  endIcon={<DoneAllIcon/>}
                   onClick={handleConfirm}
                 >
                   Confirm
-                </Button>
+
+                </LoadingButton>
               </motion.div>
             </Box>
           </Box>

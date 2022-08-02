@@ -815,7 +815,7 @@ function newtloan() {
                       sx={{
                         color: "white",
                         backgroundColor: "#31A961",
-                        width: 150,
+                        width: 200,
                         height: 50,
                         borderRadius: 10,
                       }}

@@ -12,6 +12,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import React from "react";
 import TLoanRejectModalButton from "../modals/tloanRejectExtension";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import {LoadingButton} from "@mui/lab"
+import CancelIcon from "@mui/icons-material/Close";
+import DoneIcon from "@mui/icons-material/Done";
+import { Toast } from "../../components/alerts/SweetAlert";
 
 export default function TLoanManagerDisplay() {
   const navigate = useNavigate();
@@ -19,7 +24,7 @@ export default function TLoanManagerDisplay() {
   // const [loanDetails, setLoanDetails] = useState([]);
   const [loans, setLoans] = useState([]);
   const [items, setItems] = useState([]);
-
+  const [reasonField, setReasonField] =  useState('')
   const { TLoanID } = useParams();
 
   useEffect(() => {
@@ -28,9 +33,12 @@ export default function TLoanManagerDisplay() {
       // get the data from the api
       const loans = await axios.get(
         `http://localhost:5000/api/tloans/${TLoanID}`
-      );
+      ).then ((data)=>{
+        setReasonField(data.data.Reason)
+        setLoans(data.data);
+      })
 
-      setLoans(loans.data);
+    
 
       // setLoan(Object.e)
     };
@@ -177,7 +185,15 @@ export default function TLoanManagerDisplay() {
   const ApproveLoan = async () => {
     axios
       .put(`http://localhost:5000/api/tloan/approveExtension/${TLoanID}`)
-      .then(() => navigate("/tloan"))
+      .then(() =>{
+      Toast.fire({
+        icon: "success",
+        title: "Extension For TLoan " +"#" + TLoanID + " Has Been Approved",
+        customClass: "swalpopup",
+        timer: 2000,
+        width: 700,
+      });
+      navigate("/tloan")})
       .catch((error) => {
         console.error("There was an error!", error);
       });
@@ -233,7 +249,7 @@ export default function TLoanManagerDisplay() {
                         fontWeight: "bold",
                       }}
                     >
-                      <h2>TLoan {loans.TLoanID}</h2>
+                      <h2>TLoan {loans.TLoanID} </h2>
                       <Box sx={{ marginLeft: 5 }}>
                         <div>Loan No.</div>
                         <div style={{ color: "black", fontWeight: "normal" }}>
@@ -264,6 +280,12 @@ export default function TLoanManagerDisplay() {
                           {loans.CustomerEmail}
                         </div>
                       </Box>
+                      <Box sx={{ marginLeft: 10 }}>
+                        <div style={{}}>Extend Loan By:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.ExtensionDuration} Days
+                        </div>
+                      </Box>
                     </Typography>
                   </Grid>
                   <Grid item xs={9}>
@@ -283,8 +305,12 @@ export default function TLoanManagerDisplay() {
                       // label="Shipping Address"
                       multiline
                       rows={11.5}
-                      disabled
-                      defaultValue={loans.Reason}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      value={reasonField}
+                      label ="Reason For Extension"
+                      variant="filled"
                     />
                   </Grid>
 
@@ -307,7 +333,7 @@ export default function TLoanManagerDisplay() {
                       }}
                       whileTap={{ scale: 0.9 }}
                     >
-                      <Button
+                      <LoadingButton
                         size="small"
                         variant="contained"
                         sx={{
@@ -317,11 +343,13 @@ export default function TLoanManagerDisplay() {
                           width: 150,
                           height: 50,
                           borderRadius: 10,
+                          paddingRight: 4
                         }}
+                        startIcon={<ArrowBackIosNewIcon/>}
                         onClick={() => navigate("/tloan")}
                       >
                         Back
-                      </Button>
+                      </LoadingButton>
                     </motion.div>
                     <Box sx={{ float: "right", display: "flex" }}>
                       <motion.div
@@ -332,7 +360,7 @@ export default function TLoanManagerDisplay() {
                         }}
                         whileTap={{ scale: 0.9 }}
                       >
-                        <Button
+                        <LoadingButton
                           size="small"
                           variant="contained"
                           sx={{
@@ -345,10 +373,11 @@ export default function TLoanManagerDisplay() {
                             marginRight: 5,
                             marginLeft: 4,
                           }}
+                          endIcon={<DoneIcon/>}
                           onClick={ApproveLoan}
                         >
                           Approve
-                        </Button>
+                        </LoadingButton>
                       </motion.div>
                       <TLoanRejectModalButton />
                     </Box>

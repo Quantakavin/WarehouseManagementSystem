@@ -5,6 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { GetDetails }from "../../api/TLoanDB"
@@ -14,10 +15,13 @@ import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { motion } from "framer-motion";
 import React from "react";
 import AddIcon from "@mui/icons-material/Add";
-import CancelIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import RemoveIcon from "@mui/icons-material/Remove";
 import SaveIcon from "@mui/icons-material/Save";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
+import CancelIcon from '@mui/icons-material/Cancel';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveAsIcon from "@mui/icons-material/SaveAs";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -47,6 +51,7 @@ import "../../pages/tloans/TLoanTable/table.css";
 import { EditableContext } from '../../components/context/isEditableContext'
 import { useCart } from "react-use-cart";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import { LoadingButton } from "@mui/lab";
 
 export default function TLoanDraftDisplay() {
   const navigate = useNavigate();
@@ -66,8 +71,6 @@ export default function TLoanDraftDisplay() {
   const [email, setEmail] = useState("");
   const [collection, setCollection] = useState("");
   const [requireddate, setRDate] = useState("");
-  const [localDate, setLocalDate] = useState("");
-  const userRole = useAppSelector(selectRole);
   const [dateForm, setDateForm] = useState("");
   const [typeError, setTypeError] = useState(false);
   const [companyError, setCompanyError] = useState(false);
@@ -85,7 +88,8 @@ export default function TLoanDraftDisplay() {
   const [rdateErrorText, setRDateErrorText] = useState("");
   const [submitLoading, setSubmitLoading] = useState(false);
   const [items, setItems] = useState([]);
-  const [rows, setRows] = React.useState([]);
+  const [rows, setRows] = React.useState([]); 
+  const [loading, setLoading] = useState(false);
 
 const context = useContext(EditableContext)
 const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
@@ -340,7 +344,7 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
             borderRadius: 10,
           }}
           onClick={addByIndex}
-
+          
         >
           Edit
         </Button>
@@ -496,8 +500,11 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
                           width: 150,
                           height: 50,
                           borderRadius: 10,
+                          paddingRight: 4,
                         }}
                         onClick={() => navigate(-1)}
+                        startIcon={<ArrowBackIosNewIcon/>}
+                        
                       >
                         Back
                       </Button>
@@ -871,10 +878,17 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
       setIsEditable(false)
       setTLoanIDGlobal(null)
       Toast2.close()
+      Toast.fire({
+        icon: "warning",
+        title: "You have Stopped editing " + "" + "Loan"+ " " + '#' + TLoanID,
+        customClass: "swalpopup",
+        timer: 2000,
+        width: 500,
+      });
     }
     const DraftLoan = (e) => {
       e.preventDefault();
-      setSubmitLoading(true);
+      setLoading(true);
       setTypeError(false);
       setCompanyError(false);
       setPurposeError(false);
@@ -890,11 +904,11 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
       if (email === "") {
         setEmailError(true);
         setEmailErrorText("Required");
-        setSubmitLoading(false);
+        setLoading(false);
       } else if (!email.match(emailRegex)) {
         setEmailError(true);
         setEmailErrorText("Invalid Email");
-        setSubmitLoading(false);
+        setLoading(false);
       }
       if (
         company !== "" &&
@@ -1170,8 +1184,10 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
                       width: 150,
                       height: 50,
                       borderRadius: 10,
+                      paddingRight: 4,
                     }}
                     onClick={() => navigate(-1)}
+                    startIcon={<ArrowBackIosNewIcon />}
                   >
                     Back
                   </Button>
@@ -1182,7 +1198,7 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
                   whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <Button
+                  <LoadingButton
                     size="small"
                     variant="contained"
                     sx={{
@@ -1193,17 +1209,18 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
                       borderRadius: 10,
                       marginRight: 10,
                     }}
+                    endIcon={<CancelIcon/>}
                     onClick={() => setInitial()}
                   >
                     Cancel Edit
-                  </Button>
+                  </LoadingButton>
                 </motion.div>
                   <motion.div
                     className="animatable"
                     whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                     whileTap={{ scale: 0.9 }}
                   >
-                    <Button
+                    <LoadingButton
                       size="small"
                       variant="contained"
                       sx={{
@@ -1214,17 +1231,20 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
                         borderRadius: 10,
                         marginRight: 10,
                       }}
+                      loading={loading}
+                      loadingPosition="end"
                       onClick={DraftLoan}
+                      endIcon={<SaveAsIcon />}
                     >
                       Save Draft
-                    </Button>
+                    </LoadingButton>
                   </motion.div>
                   <motion.div
                     className="animatable"
                     whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                     whileTap={{ scale: 0.9 }}
                   >
-                    <Button
+                    <LoadingButton
                       size="small"
                       variant="contained"
                       sx={{
@@ -1234,11 +1254,14 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
                         height: 50,
                         borderRadius: 10,
                       }}
+                      loading={submitLoading}
+                      loadingPosition="end"
+                      endIcon={<DoneAllIcon />}
                       onClick={submitLoan}
                       // onClick={submitLoan}
                     >
                       Submit
-                    </Button>
+                    </LoadingButton>
                   </motion.div>
                 </Box>
               </Box>

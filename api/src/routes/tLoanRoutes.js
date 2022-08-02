@@ -30,4 +30,6 @@ router.get('/tloanstatusid/:TLoanID', TLoanController.tloanStatusID);
 router.get('/tloan/approvedloans', TLoanController.getApprovedLoan);
 router.put('/tloan/submitEditedDraft/:TLoanID', TLoanController.SubmitAfterEdit)
 router.put('/tloan/draftEditedDraft/:TLoanID', TLoanController.DraftAfterEdit)
+router.get('/tloan/allCurrent', TLoanController.allCurrent)
+router.get('/tloan/allHistory', TLoanController.allHistory)
 module.exports = router;

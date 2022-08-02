@@ -78,6 +78,7 @@ const App: React.FC = () => {
   return (
     <>
       <IsEditableProvider>
+        <CartProvider>
         <header style={{ zIndex: 1500 }}>
           <TopNav />
           {/* {isAuthenticated? isEditable?  <Toast2/> :null  : null} */}
@@ -137,7 +138,7 @@ const App: React.FC = () => {
                   path="/editnotificationgroup/:id"
                   element={<EditNotificationGroup />}
                 />
-                <Route path="/tloan" element={<TLoan />} />
+                <Route path="/tloan" element={<CartProvider><TLoan /></CartProvider>} />
                 <Route path="/rma" element={<RMA />} />
                 <Route path="/createRma" element={<CreateRMA />} />
                 <Route path="/rmaDetails/:RmaID" element={<RmaDisplay />} />
@@ -180,6 +181,7 @@ const App: React.FC = () => {
             </Routes>
           </Box>
         </Box>
+        </CartProvider>
       </IsEditableProvider>
     </>
   );

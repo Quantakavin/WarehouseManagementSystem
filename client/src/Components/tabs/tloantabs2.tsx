@@ -53,6 +53,8 @@ const TLoanTabs2: React.FC = () => {
   const [managerLoan, setManagerLoan] = useState([]);
   const [extensionsTable, setExtensionTable] = useState([]);
   const [approvedTable, setApprovedTable] = useState([]);
+  const [allCurrent, setAllCurrent] = useState([]);
+  const [allHistory, setAllHistory] = useState([])
   // Get and set current tloans data
   useEffect(() => {
     fetch(`http://localhost:5000/api/tloan/current/${userid}`)
@@ -93,7 +95,16 @@ const TLoanTabs2: React.FC = () => {
       .then((data) => data.json())
       .then((data) => setApprovedTable(data));
   }, []);
-
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/tloan/allCurrent`)
+      .then((data) => data.json())
+      .then((data) => setAllCurrent(data));
+  }, []);
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/tloan/allHistory`)
+      .then((data) => data.json())
+      .then((data) => setAllHistory(data));
+  }, []);
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [
       {
@@ -334,7 +345,7 @@ const TLoanTabs2: React.FC = () => {
                       setFilterModel(newFilterModel)
                     }
                     onRowClick={(params: GridRowParams) => {
-                      navigate(`/tloanDraftDetails/${params.id}`);
+                      navigate(`/tloandetails/${params.id}`);
                     }}
                   />
                 </div>
@@ -574,7 +585,7 @@ const TLoanTabs2: React.FC = () => {
                       setFilterModel(newFilterModel)
                     }
                     onRowClick={(params: GridRowParams) => {
-                      navigate(`/tloanDraftDetails/${params.id}`);
+                      navigate(`/tloandetails/${params.id}`);
                     }}
                   />
                 </div>
@@ -695,7 +706,7 @@ const TLoanTabs2: React.FC = () => {
                       setFilterModel(newFilterModel)
                     }
                     onRowClick={(params: GridRowParams) => {
-                      navigate(`/tloanManagerDisplay/${params.id}`);
+                      navigate(`/tloandetails/${params.id}`);
                     }}
                   />
                 </div>
@@ -705,7 +716,7 @@ const TLoanTabs2: React.FC = () => {
                   <DataGrid
                     sx={{ background: "white", fontSize: 18 }}
                     rows={extensionsTable}
-                    columns={columns}
+                    columns={managerColumns}
                     getRowId={(row) => row.TLoanID}
                     pageSize={pageSize}
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
@@ -937,7 +948,7 @@ const TLoanTabs2: React.FC = () => {
                       setFilterModel(newFilterModel)
                     }
                     onRowClick={(params: GridRowParams) => {
-                      navigate(`/tloanDraftDetails/${params.id}`);
+                      navigate(`/tloanDetails/${params.id}`);
                     }}
                   />
                 </div>
@@ -1045,7 +1056,7 @@ const TLoanTabs2: React.FC = () => {
                       setFilterModel(newFilterModel)
                     }
                     onRowClick={(params: GridRowParams) => {
-                      navigate(`/tloanWarehouse/${params.id}`);
+                      navigate(`/tloandetails/${params.id}`);
                     }}
                   />
                 </div>
@@ -1106,32 +1117,8 @@ const TLoanTabs2: React.FC = () => {
                       }}
                     />
                     <Tab
-                      label="Pending"
-                      value="2"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
-                      label="Drafts"
-                      value="3"
-                      sx={{
-                        color: "grey",
-                        backgroundColor: "White",
-                        borderRadius: 2,
-                        marginRight: 2,
-                        height: "100%",
-                        width: "15%",
-                      }}
-                    />
-                    <Tab
                       label="History"
-                      value="4"
+                      value="2"
                       sx={{
                         color: "grey",
                         backgroundColor: "White",
@@ -1143,29 +1130,7 @@ const TLoanTabs2: React.FC = () => {
                     />
                   </Tabs>
                 </Box>
-                <Box>
-                  <motion.div
-                    className="animatable"
-                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <Fab
-                      variant="extended"
-                      aria-label="add"
-                      onClick={() => navigate("/products")}
-                      sx={{
-                        color: "white",
-                        backgroundColor: "#063970",
-                        ":hover": { backgroundColor: "#031c38" },
-                      }}
-                    >
-                      Create
-                      <PostAddIcon sx={{ ml: 2 }} />
-                    </Fab>
-                  </motion.div>
-                </Box>
               </Box>
-              <Box sx={{ paddingLeft: 3 }} />
             </Grid>
 
             <Grid item xs={12}>
@@ -1173,7 +1138,7 @@ const TLoanTabs2: React.FC = () => {
                 <div style={{ display: "flex", height: 600, width: "100%" }}>
                   <DataGrid
                     sx={{ background: "white", fontSize: 18 }}
-                    rows={currentTable}
+                    rows={allCurrent}
                     columns={columns}
                     getRowId={(row) => row.TLoanID}
                     pageSize={pageSize}
@@ -1201,73 +1166,12 @@ const TLoanTabs2: React.FC = () => {
                   />
                 </div>
               </TabPanel>
+          
               <TabPanel value="2">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
                     sx={{ background: "white", fontSize: 18 }}
-                    rows={pendingTable}
-                    columns={columns}
-                    getRowId={(row) => row.TLoanID}
-                    pageSize={pageSize}
-                    onPageSizeChange={(newPage) => setPageSize(newPage)}
-                    pagination
-                    components={{
-                      Toolbar: CustomToolbar,
-                      NoRowsOverlay: () => (
-                        <Stack
-                          height="100%"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          No pending Tloans
-                        </Stack>
-                      ),
-                    }}
-                    filterModel={filterModel}
-                    onFilterModelChange={(newFilterModel) =>
-                      setFilterModel(newFilterModel)
-                    }
-                    onRowClick={(params: GridRowParams) => {
-                      navigate(`/tloandetails/${params.id}`);
-                    }}
-                  />
-                </div>
-              </TabPanel>
-              <TabPanel value="3">
-                <div style={{ height: 600, width: "100%" }}>
-                  <DataGrid
-                    sx={{ background: "white", fontSize: 18 }}
-                    rows={draftTable}
-                    columns={columns}
-                    getRowId={(row) => row.TLoanID}
-                    pageSize={12}
-                    components={{
-                      Toolbar: CustomToolbar,
-                      NoRowsOverlay: () => (
-                        <Stack
-                          height="100%"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          No drafts
-                        </Stack>
-                      ),
-                    }}
-                    filterModel={filterModel}
-                    onFilterModelChange={(newFilterModel) =>
-                      setFilterModel(newFilterModel)
-                    }
-                    onRowClick={(params: GridRowParams) => {
-                      navigate(`/tloanDraftDetails/${params.id}`);
-                    }}
-                  />
-                </div>
-              </TabPanel>
-              <TabPanel value="4">
-                <div style={{ height: 600, width: "100%" }}>
-                  <DataGrid
-                    sx={{ background: "white", fontSize: 18 }}
-                    rows={historyTable}
+                    rows={allHistory}
                     columns={columns}
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}

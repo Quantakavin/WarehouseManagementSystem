@@ -4,26 +4,25 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { GetDetails }from "../../api/TLoanDB"
+import Paper from "@mui/material/Paper";
+import Popper from "@mui/material/Popper";
+import { DataGrid, GridColDef, GridRenderCellParams, selectedIdsLookupSelector } from "@mui/x-data-grid";
 import { motion } from "framer-motion";
 import React from "react";
-import TLoanRejectModalButton from "../modals/tloanRejectModal";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import {LoadingButton} from "@mui/lab"
-import CancelIcon from "@mui/icons-material/Close";
-import DoneIcon from "@mui/icons-material/Done";
+import ModalButton from "../modals/tloanExtensionModal";
 
-export default function TLoanManagerDisplay() {
+export default function TLoanDisplay2() {
   const navigate = useNavigate();
   const [details, setDetails] = useState([]);
   // const [loanDetails, setLoanDetails] = useState([]);
-  const [loans, setLoans] = useState([]);
+  const [loans, setLoans] = useState<TLoans>([]);
   const [items, setItems] = useState([]);
   const [purposeField, setPurposeField] = useState('')
+
   const { TLoanID } = useParams();
 
   useEffect(() => {
@@ -32,18 +31,12 @@ export default function TLoanManagerDisplay() {
       // get the data from the api
       const loans = await axios.get(
         `http://localhost:5000/api/tloans/${TLoanID}`
-      ).then ((data)=>{
+      ).then((data)=>{
         setPurposeField(data.data.Purpose)
-        setLoans(data.data);
+        setLoans(data.data)
       })
-
-      
-
-      // setLoan(Object.e)
     };
-    // call the function
     fetchData()
-      // make sure to catch any error
       .catch(console.error);
   }, []);
 
@@ -54,14 +47,9 @@ export default function TLoanManagerDisplay() {
       const items = await axios.get(
         `http://localhost:5000/api/tloanitems/${TLoanID}`
       );
-
       setItems(items.data);
-
-      // setLoan(Object.e)
     };
-    // call the function
     fetchData()
-      // make sure to catch any error
       .catch(console.error);
   }, []);
 
@@ -181,24 +169,6 @@ export default function TLoanManagerDisplay() {
     );
   }
 
-  const ApproveLoan = async () => {
-    axios
-      .put(`http://localhost:5000/api/tloan/approve/${TLoanID}`)
-      .then(() => {
-        Toast.fire({
-          icon: "success",
-          title: "Request For TLoan " +"#" + TLoanID + " Has Been Approved",
-          customClass: "swalpopup",
-          timer: 2000,
-          width: 700,
-        });
-        navigate("/tloan")
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
-  };
-
   const columns: GridColDef[] = [
     {
       field: "ItemNo",
@@ -208,16 +178,30 @@ export default function TLoanManagerDisplay() {
       renderCell: renderCellExpand,
     },
     {
+      field: "ItemName",
+      headerName: "Item Name",
+      flex: 10,
+      editable: false,
+      renderCell: renderCellExpand,
+    },
+    {
       field: "BatchNo",
       headerName: "Batch Number",
-      flex: 10,
+      flex: 8,
+      editable: false,
+      renderCell: renderCellExpand,
+    },
+    {
+      field: "WarehouseCode",
+      headerName: "WarehouseCode",
+      flex: 8,
       editable: false,
       renderCell: renderCellExpand,
     },
     {
       field: "Quantity",
       headerName: "Quantity",
-      flex: 2,
+      flex: 0,
       editable: false,
       type: "number",
       renderCell: renderCellExpand,
@@ -294,16 +278,15 @@ export default function TLoanManagerDisplay() {
                   <Grid item xs={3}>
                     <TextField
                       sx={{ display: "flex" }}
-                      id="With normal TextField"
-                      // label="Shipping Address"
+                      id="outlined-purpose"
                       multiline
                       rows={11.5}
+                      label="Purpose"
                       InputProps={{
                         readOnly: true,
                       }}
-                      label ="Purpose"
                       variant="filled"
-                      value={purposeField}
+                     value={purposeField}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -335,8 +318,14 @@ export default function TLoanManagerDisplay() {
                       </Box>
                       <Box sx={{ marginLeft: 5 }}>
                         <div style={{}}>Status:</div>
-                        <div style={{ color: "black", fontWeight: "normal" }}>
+                        <div style={{ color: "green", fontWeight: "normal" }}>
                           {loans.TLoanStatus}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{}}>Extension:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.TLoanExtensionStatus}
                         </div>
                       </Box>
                     </Typography>
@@ -354,13 +343,10 @@ export default function TLoanManagerDisplay() {
                   >
                     <motion.div
                       className="animatable"
-                      whileHover={{
-                        scale: 1.1,
-                        transition: { duration: 0.3 },
-                      }}
+                      whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                       whileTap={{ scale: 0.9 }}
                     >
-                      <LoadingButton
+                      <Button
                         size="small"
                         variant="contained"
                         sx={{
@@ -370,44 +356,13 @@ export default function TLoanManagerDisplay() {
                           width: 150,
                           height: 50,
                           borderRadius: 10,
-                          paddingRight: 4
                         }}
-                        startIcon={<ArrowBackIosNewIcon/>}
-                        onClick={() => navigate("/tloan")}
+                        onClick={() => navigate(-1)}
                       >
                         Back
-                      </LoadingButton>
+                      </Button>
                     </motion.div>
-                    <Box sx={{ float: "right", display: "flex" }}>
-                      <motion.div
-                        className="animatable"
-                        whileHover={{
-                          scale: 1.1,
-                          transition: { duration: 0.3 },
-                        }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        <LoadingButton
-                          size="small"
-                          variant="contained"
-                          sx={{
-                            color: "white",
-                            backgroundColor: "green",
-                            height: "100%",
-                            width: 200,
-                            height: 50,
-                            borderRadius: 10,
-                            marginRight: 5,
-                            marginLeft: 4,
-                          }}
-                          endIcon={<DoneIcon/>}
-                          onClick={ApproveLoan}
-                        >
-                          Approve
-                        </LoadingButton>
-                      </motion.div>
-                      <TLoanRejectModalButton />
-                    </Box>
+                    <ModalButton />
                   </Grid>
                 </Grid>
               </CardContent>

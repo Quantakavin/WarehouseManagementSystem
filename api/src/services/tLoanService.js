@@ -222,6 +222,9 @@ module.exports.getLoanByNumber = async (TLoanID) => {
   t.CompanyID,
   t.Duration,
   te.Reason,
+  te.Duration AS "ExtensionDuration",
+  nullif(max(te.TLoanExtensionStatusID), min(te.TLoanExtensionStatusID)),
+  IFNULL(te.TLoanExtensionStatusID,'NIL') AS TLoanExtensionStatusID,
   nullif(max(tes.TLoanExtensionStatus), min(tes.TLoanExtensionStatus)),
   IFNULL(tes.TLoanExtensionStatus,'NIL') AS 'TLoanExtensionStatus'
   FROM TLoan t 
@@ -533,3 +536,36 @@ module.exports.getStatusID = async (TLoanID) => {
  `;
     return knex.raw(query, [TLoanID]);
 };
+
+module.exports.allCurrent = async() =>{
+    const query= `
+    SELECT 
+    t.TLoanID,
+    DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
+    DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
+    c.CompanyName,
+    t.CustomerEmail,
+    u.UserID,
+    count(t.TLoanID) OVER() AS full_count
+    FROM TLoan t JOIN Company c
+    ON t.CompanyID = c.CompanyID 
+    JOIN User u ON  t.UserID= u.UserID 
+  WHERE t.TLoanStatusID IN (3,5,6,7)`;
+    return knex.raw(query)
+}
+module.exports.allHistory = async() =>{
+    const query= `
+    SELECT 
+  t.TLoanID,
+  DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
+  DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
+  c.CompanyName,
+  t.CustomerEmail,
+  u.UserID,
+  count(t.TLoanID) OVER() AS full_count
+  FROM TLoan t JOIN Company c
+  ON t.CompanyID = c.CompanyID 
+  JOIN User u ON  t.UserID= u.UserID 
+  WHERE t.TLoanStatusID = "8"`;
+    return knex.raw(query)
+}

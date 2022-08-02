@@ -16,6 +16,9 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
 import { Toast } from "../../components/alerts/SweetAlert";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
+import {LoadingButton} from '@mui/lab'
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 const style = {
   position: "absolute" as "absolute",
@@ -242,7 +245,7 @@ const ModalButton = () => {
                     }}
                     whileTap={{ scale: 0.9 }}
                   >
-                    <Button
+                    <LoadingButton
                       size="small"
                       variant="contained"
                       sx={{
@@ -252,11 +255,13 @@ const ModalButton = () => {
                         height: 35,
                         borderRadius: 10,
                         marginTop: 5,
+                        paddingRight:4
                       }}
                       onClick={handleClose}
+                      startIcon={<ArrowBackIosNewIcon/>}
                     >
                       Back
-                    </Button>
+                    </LoadingButton>
                   </motion.div>
                   <motion.div
                     className="animatable"
@@ -266,22 +271,23 @@ const ModalButton = () => {
                     }}
                     whileTap={{ scale: 0.9 }}
                   >
-                    <Button
+                    <LoadingButton
                       size="small"
                       variant="contained"
                       sx={{
                         color: "white",
-                        backgroundColor: "#063970",
+                        backgroundColor: "#31A961",
                         width: 100,
                         height: 35,
                         borderRadius: 10,
                         marginTop: 5,
                       }}
                       type="submit"
+                      endIcon={<DoneAllIcon/>}
                       onClick={submitExtension}
                     >
                       Submit
-                    </Button>
+                    </LoadingButton>
                   </motion.div>
                 </Box>    
               </>   
