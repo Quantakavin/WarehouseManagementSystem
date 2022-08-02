@@ -2,10 +2,7 @@ const express = require('express');
 const resetPassword = express.Router();
 const userService = require('../services/userService');
 const resetPasswordService = require('../services/resetPasswordService');
-const {
-    hashSync,
-    genSaltSync
-} = require("bcrypt");
+const { hashSync, genSaltSync } = require('bcrypt');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
@@ -25,7 +22,7 @@ module.exports.forgotPassword = async (req, res, next) => {
                     message: 'User account has been deactivated.'
                 });
             } else if (user[0][0].Active == 'Y') {
-                // Get all tokens that were previously set for this user and set used to 1. Prevents old and expired tokens from being used. 
+                // Get all tokens that were previously set for this user and set used to 1. Prevents old and expired tokens from being used.
                 await resetPasswordService.expireOldTokens(email, 1);
 
                 // Create reset token that expires after 1 hours.
@@ -36,7 +33,13 @@ module.exports.forgotPassword = async (req, res, next) => {
                 const expiredAt = resetTokenExpires;
 
                 // Insert new token into resetPasswordToken table.
-                await resetPasswordService.insertResetToken(email, resetToken, createdAt, expiredAt, 0);
+                await resetPasswordService.insertResetToken(
+                    email,
+                    resetToken,
+                    createdAt,
+                    expiredAt,
+                    0
+                );
 
                 // Send email
                 await sendPasswordResetEmail(email, resetToken, origin);
@@ -54,12 +57,7 @@ module.exports.forgotPassword = async (req, res, next) => {
     }
 };
 
-async function sendEmail({
-    from,
-    to,
-    subject,
-    html
-}) {
+async function sendEmail({ from, to, subject, html }) {
     const transporter = nodemailer.createTransport({
         host: 'smtp.office365.com', // change when not using ethereal host email (e.g. to gmail)
         port: 587,
@@ -67,6 +65,7 @@ async function sendEmail({
             user: process.env.USER, // use user email address OR ethereal email address (when testing)
             pass: process.env.PASS // use user email password OR ethereal email password (when testing)
         },
+        from: process.env.USER,
         tls: {
             rejectUnauthorized: false
         }
@@ -104,17 +103,7 @@ async function sendPasswordResetEmail(email, resetToken, origin) {
                                     <table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
                                         align="center" cellpadding="0" cellspacing="0">
                                         <tr>
-                                            <td style="height:80px;">&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="text-align:center;">
-                                            <a href="https://www.isdnholdings.com" title="logo" target="_blank">
-                                                <img width="40%" src="https://static.wixstatic.com/media/9240f9_6ca7497359ea4593baa65d30704d0e8c~mv2.jpg/v1/crop/x_0,y_137,w_400,h_109/fill/w_329,h_94,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ISDN_logo.jpg" title="logo" alt="logo">
-                                            </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="height:20px;">&nbsp;</td>
+                                            <td style="height:100px;">&nbsp;</td>
                                         </tr>
                                         <tr>
                                             <td>
@@ -122,6 +111,16 @@ async function sendPasswordResetEmail(email, resetToken, origin) {
                                                     style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);">
                                                     <tr>
                                                         <td style="height:40px;">&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:center;">
+                                                            <a href="https://www.isdnholdings.com" title="logo" target="_blank">
+                                                            <img width="40%" src="https://static.wixstatic.com/media/9240f9_6ca7497359ea4593baa65d30704d0e8c~mv2.jpg/v1/crop/x_0,y_137,w_400,h_109/fill/w_329,h_94,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ISDN_logo.jpg" title="logo" alt="logo">
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="height:20px;">&nbsp;</td>
                                                     </tr>
                                                     <tr>
                                                         <td style="padding:0 35px;">
@@ -156,7 +155,7 @@ async function sendPasswordResetEmail(email, resetToken, origin) {
                             </tr>
                         </table>
                     </body>`;
-    };
+    }
 
     await sendEmail({
         from: process.env.USER,
@@ -165,7 +164,7 @@ async function sendPasswordResetEmail(email, resetToken, origin) {
         html: `<h4>Reset Password</h4>
                    ${message}`
     });
-};
+}
 
 module.exports.resetPassword = async (req, res, next) => {
     try {
