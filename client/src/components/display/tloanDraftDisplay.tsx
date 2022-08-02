@@ -315,10 +315,9 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
       setTLoanIDGlobal(TLoanID)
       Toast2.fire({
         icon: "info",
-        title:"You are currently editing " + "" + "Loan #" + TLoanID,
+        title:"You are currently editing " + "" + "Loan #" + TLoanID ,
         customClass: "swalpopup",
         width: 500,
-      
     })
 
     }
@@ -720,7 +719,6 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
       </Box>
     );
   };
-
  
   useEffect(() => {
     setItems(newProduct);
@@ -855,15 +853,16 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
                 setIsEditable(false)
                 setTLoanIDGlobal(null)
                 
+                
               });
-            
+              emptyCart()
             console.log(results);
           } catch (error) {
             console.log(error.response);
             setSubmitLoading(false);
           }
         }, 500);
-        emptyCart()
+        
        
       }
     }
@@ -871,6 +870,7 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
     const setInitial = ()=>{
       setIsEditable(false)
       setTLoanIDGlobal(null)
+      Toast2.close()
     }
     const DraftLoan = (e) => {
       e.preventDefault();
@@ -904,7 +904,7 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
         setTimeout(() => {
           try {
             const results = axios
-              .post(`http://localhost:5000/api/tloan/draftEditedDraft/${TLoanID}`, {
+              .put(`http://localhost:5000/api/tloan/draftEditedDraft/${TLoanID}`, {
                 type,
                 company,
                 name,
@@ -928,15 +928,17 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
                 navigate("/tloan");
                 setIsEditable(false)
                 setTLoanIDGlobal(null)
+                
               });
-  
+              emptyCart()
             console.log(results);
           } catch (error) {
             console.log(error.response);
             setSubmitLoading(false);
+          
           }
         }, 500);
-        emptyCart()
+       
       
       }
     };
@@ -992,7 +994,6 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
       { "11 Months": "330" },
       { "12 Months": "365" },
     ];
-    console.log('the customer email is:' + loans.CustomerEmail)
     return (
       <div style={{ overflow: "auto" }}>
         <Card
@@ -1175,7 +1176,28 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
                     Back
                   </Button>
                 </motion.div>
-                <Box display="flex">
+                <Box display="flex" >
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#b30000",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                      marginRight: 10,
+                    }}
+                    onClick={() => setInitial()}
+                  >
+                    Cancel Edit
+                  </Button>
+                </motion.div>
                   <motion.div
                     className="animatable"
                     whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
@@ -1223,7 +1245,6 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
             {/* </form> */}
           </CardContent>
         </Card>
-        <button onClick={()=>setInitial()}> Press Me</button>
       </div>
     );
   };
