@@ -202,6 +202,7 @@ module.exports.newLoan = async (req, res) => {
         user,
         email,
         collection,
+        customerCompany,
         items
     } = req.body;
     try {
@@ -219,6 +220,7 @@ module.exports.newLoan = async (req, res) => {
             user,
             email,
             collection,
+            customerCompany,
             tloanItems
         );
 
@@ -241,6 +243,7 @@ module.exports.SendDraft = async (req, res) => {
         user,
         email,
         collection,
+        customerCompany,
         items
     } = req.body;
     try {
@@ -258,6 +261,7 @@ module.exports.SendDraft = async (req, res) => {
             user,
             email,
             collection,
+            customerCompany,
             tloanItems
         );
 

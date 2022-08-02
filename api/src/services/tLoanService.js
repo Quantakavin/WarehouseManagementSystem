@@ -34,6 +34,7 @@ module.exports.createTLoan = async (
     user,
     email,
     collection,
+    customerCompany,
     tloanItems
 ) => {
     knex.transaction(function (trx) {
@@ -51,7 +52,8 @@ module.exports.createTLoan = async (
                 Remarks: null,
                 UserID: user,
                 CustomerEmail: email,
-                Collection: collection
+                Collection: collection,
+                CustomerCompany: customerCompany
             },
             'TLoanID'
         )
@@ -78,6 +80,7 @@ module.exports.SendTLoanToDraft = async (
     user,
     email,
     collection,
+    customerCompany,
     tloanItems
 ) => {
     knex.transaction(function (trx) {
@@ -95,7 +98,8 @@ module.exports.SendTLoanToDraft = async (
                 Remarks: null,
                 UserID: user,
                 CustomerEmail: email,
-                Collection: collection
+                Collection: collection,
+                CustomerCompany: customerCompany
             },
             'TLoanID'
         )
@@ -228,7 +232,7 @@ module.exports.getLoanByNumber = async (TLoanID) => {
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(t.RequiredDate, "%Y-%m-%d") AS 'RequiredDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS 'EndDate',
-  c.CompanyName,
+  coalesce(c.CompanyName, t.CustomerCompany) AS "CompanyName",
   t.CustomerEmail,
   ts.TLoanStatus,
   tt.TLoanType,
@@ -286,11 +290,12 @@ module.exports.getCurrent = async (UserID) => {
   t.TLoanID,
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
-  c.CompanyName,
+  COALESCE (c.CompanyName, t.CustomerCompany) AS 'CompanyName',
   t.CustomerEmail,
   u.UserID,
   count(t.TLoanID) OVER() AS full_count
-  FROM TLoan t JOIN Company c
+  FROM TLoan t 
+  LEFT JOIN Company c
   ON t.CompanyID = c.CompanyID 
   JOIN User u ON  t.UserID= u.UserID 
   WHERE t.UserID=? AND t.TLoanStatusID IN (3,5,6,7);`;
@@ -303,11 +308,11 @@ module.exports.getPending = async (UserID) => {
   t.TLoanID,
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
-  c.CompanyName,
+  COALESCE (c.CompanyName, t.CustomerCompany) AS 'CompanyName',
   t.CustomerEmail,
   u.UserID,
   count(t.TLoanID) OVER() AS full_count
-  FROM TLoan t JOIN Company c
+  FROM TLoan t LEFT JOIN Company c
   ON t.CompanyID = c.CompanyID 
   JOIN User u ON  t.UserID= u.UserID 
   WHERE t.UserID=? AND t.TLoanStatusID = "4";`;
@@ -320,11 +325,12 @@ module.exports.getDraft = async (UserID) => {
   t.TLoanID,
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
-  c.CompanyName,
+  COALESCE (c.CompanyName, t.CustomerCompany) AS 'CompanyName',
   t.CustomerEmail,
   u.UserID,
   count(t.TLoanID) OVER() AS full_count
-  FROM TLoan t JOIN Company c
+  FROM TLoan t 
+  LEFT JOIN Company c
   ON t.CompanyID = c.CompanyID 
   JOIN User u ON  t.UserID= u.UserID 
   WHERE t.UserID=? AND t.TLoanStatusID = "1";`;
@@ -337,11 +343,12 @@ module.exports.getHistory = async (UserID) => {
   t.TLoanID,
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
-  c.CompanyName,
+  COALESCE (c.CompanyName, t.CustomerCompany) AS 'CompanyName',
   t.CustomerEmail,
   u.UserID,
   count(t.TLoanID) OVER() AS full_count
-  FROM TLoan t JOIN Company c
+  FROM TLoan t 
+  LEFT JOIN Company c
   ON t.CompanyID = c.CompanyID 
   JOIN User u ON  t.UserID= u.UserID 
   WHERE t.UserID=? AND t.TLoanStatusID = "8";`;
@@ -535,10 +542,10 @@ module.exports.getApproved = async () => {
     t.TLoanID,
     DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
     DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
-    c.CompanyName,
+    COALESCE (c.CompanyName, t.CustomerCompany) AS 'CompanyName',
     t.CustomerEmail,
     count(t.TLoanID) OVER() AS full_count
-    FROM TLoan t JOIN Company c
+    FROM TLoan t LEFT JOIN Company c
     ON t.CompanyID = c.CompanyID 
     WHERE t.TLoanStatusID = 3
  `;
@@ -560,11 +567,11 @@ module.exports.allCurrent = async () => {
     t.TLoanID,
     DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
     DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
-    c.CompanyName,
+    COALESCE (c.CompanyName, t.CustomerCompany) AS 'CompanyName',
     t.CustomerEmail,
     u.UserID,
     count(t.TLoanID) OVER() AS full_count
-    FROM TLoan t JOIN Company c
+    FROM TLoan t LEFT JOIN Company c
     ON t.CompanyID = c.CompanyID 
     JOIN User u ON  t.UserID= u.UserID 
   WHERE t.TLoanStatusID IN (3,5,6,7)`;
@@ -576,11 +583,11 @@ module.exports.allHistory = async () => {
   t.TLoanID,
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
-  c.CompanyName,
+  COALESCE (c.CompanyName, t.CustomerCompany) AS 'CompanyName',
   t.CustomerEmail,
   u.UserID,
   count(t.TLoanID) OVER() AS full_count
-  FROM TLoan t JOIN Company c
+  FROM TLoan t LEFT JOIN Company c
   ON t.CompanyID = c.CompanyID 
   JOIN User u ON  t.UserID= u.UserID 
   WHERE t.TLoanStatusID = "8"`;
