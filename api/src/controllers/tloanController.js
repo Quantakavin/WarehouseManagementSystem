@@ -160,7 +160,7 @@ module.exports.DraftAfterEdit = async(req,res) =>{
        
         if (results.length > 0) {
         await TLoan.DeleteProductsByID(TLoanID)
-        await TLoan.SubmitAfterEdit(
+        await TLoan.DraftAfterEdit(
                 TLoanID,
                 type,
                 company,

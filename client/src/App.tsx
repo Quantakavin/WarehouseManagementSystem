@@ -143,7 +143,7 @@ const App: React.FC = () => {
                 <Route path="/rmaDetails/:RmaID" element={<RmaDisplay />} />
                 <Route
                   path="/tloandetails/:TLoanID"
-                  element={<TLoanDisplay2 />}
+                  element={  <CartProvider><TLoanDisplay2 /></CartProvider>}
                 />
                 <Route
                   path="/newtloan"
