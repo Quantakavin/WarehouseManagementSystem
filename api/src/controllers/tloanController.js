@@ -84,7 +84,7 @@ module.exports.allLoan = async (req, res) => {
     }
 };
 
-module.exports.SubmitAfterEdit = async (req, res) => {
+module.exports.SubmitAfterEdit = async(req,res) =>{
     const { TLoanID } = req.params;
     const {
         type,
@@ -96,17 +96,18 @@ module.exports.SubmitAfterEdit = async (req, res) => {
         email,
         collection,
         items
-    } = req.body;
+    } = req.body
 
-    try {
+    try{
+    
         const results = await TLoan.getLoanByNumber(TLoanID);
         const tloanItems = items.map((item) => {
             return item;
         });
-
+       
         if (results.length > 0) {
-            await TLoan.DeleteProductsByID(TLoanID);
-            await TLoan.SubmitAfterEdit(
+        await TLoan.DeleteProductsByID(TLoanID)
+        await TLoan.SubmitAfterEdit(
                 TLoanID,
                 type,
                 company,
@@ -117,26 +118,26 @@ module.exports.SubmitAfterEdit = async (req, res) => {
                 email,
                 collection,
                 tloanItems
-            );
-            // await TLoan.TLoanOutByID(
-            //     TLoanID,
-            //     itemno,
-            //     itemname,
-            //     quantity,
-            //     batchno,
-            //     warehousecode,
-            //     basketitemid)
-            return res.status(200).send('Draft has been submitted');
-        } else {
-            return res.status(500).send('Submit draft failed');
-        }
-    } catch (error) {
+            )
+        // await TLoan.TLoanOutByID(
+        //     TLoanID,
+        //     itemno,
+        //     itemname,
+        //     quantity, 
+        //     batchno, 
+        //     warehousecode,
+        //     basketitemid)
+        return res.status(200).send('Draft has been submitted');
+    } else {
+        return res.status(500).send('Submit draft failed');
+    }
+    }catch (error){
         console.log(error);
         return res.status(500).send('Internal Server Error');
     }
-};
+}
 
-module.exports.DraftAfterEdit = async (req, res) => {
+module.exports.DraftAfterEdit = async(req,res) =>{
     const { TLoanID } = req.params;
     const {
         type,
@@ -148,17 +149,18 @@ module.exports.DraftAfterEdit = async (req, res) => {
         email,
         collection,
         items
-    } = req.body;
+    } = req.body
 
-    try {
+    try{
+    
         const results = await TLoan.getLoanByNumber(TLoanID);
         const tloanItems = items.map((item) => {
             return item;
         });
-
+       
         if (results.length > 0) {
-            await TLoan.DeleteProductsByID(TLoanID);
-            await TLoan.DraftAfterEdit(
+        await TLoan.DeleteProductsByID(TLoanID)
+        await TLoan.DraftAfterEdit(
                 TLoanID,
                 type,
                 company,
@@ -169,24 +171,24 @@ module.exports.DraftAfterEdit = async (req, res) => {
                 email,
                 collection,
                 tloanItems
-            );
-            // await TLoan.TLoanOutByID(
-            //     TLoanID,
-            //     itemno,
-            //     itemname,
-            //     quantity,
-            //     batchno,
-            //     warehousecode,
-            //     basketitemid)
-            return res.status(200).send('Draft has been saved');
-        } else {
-            return res.status(500).send('Draft failed to save');
-        }
-    } catch (error) {
+            )
+        // await TLoan.TLoanOutByID(
+        //     TLoanID,
+        //     itemno,
+        //     itemname,
+        //     quantity, 
+        //     batchno, 
+        //     warehousecode,
+        //     basketitemid)
+        return res.status(200).send('Draft has been saved');
+    } else {
+        return res.status(500).send('Draft failed to save');
+    }
+    }catch (error){
         console.log(error);
         return res.status(500).send('Internal Server Error');
     }
-};
+}
 
 module.exports.newLoan = async (req, res) => {
     const {
@@ -494,6 +496,7 @@ module.exports.ManagerLoan = async (req, res) => {
         const results = await TLoan.getManagerLoan();
         redisClient.set('ManagerLoan', JSON.stringify(results[0]));
         if (results.length > 0) {
+            
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('No Loans that are in need of approval');
@@ -512,8 +515,9 @@ module.exports.ManagerExtension = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await TLoan.getManagerExtension();
-        redisClient.set('ManagerExtension', JSON.stringify(results[0]));
+       redisClient.set('ManagerExtension', JSON.stringify(results[0]));
         if (results.length > 0) {
+           
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('No Extensions that are in need of approval');
@@ -545,7 +549,7 @@ module.exports.extensionStatus = async (req, res) => {
     try {
         const results = await TLoan.getExtensionStatus(TLoanID);
         if (results.length > 0) {
-            return res.status(200).json(results[0]);
+            return res.status(200).json(results[0])
         } else {
             return res.status(500).send('Does not Exist!');
         }
@@ -556,6 +560,7 @@ module.exports.extensionStatus = async (req, res) => {
 };
 
 module.exports.getApprovedLoan = async (req, res) => {
+   
     try {
         const results = await TLoan.getApproved();
         if (results.length > 0) {
@@ -574,7 +579,7 @@ module.exports.tloanStatusID = async (req, res) => {
     try {
         const results = await TLoan.getStatusID(TLoanID);
         if (results.length > 0) {
-            return res.status(200).json(results[0]);
+            return res.status(200).json(results[0])
         } else {
             return res.status(500).send('Does not Exist!');
         }
@@ -585,10 +590,10 @@ module.exports.tloanStatusID = async (req, res) => {
 };
 
 module.exports.allCurrent = async (req, res) => {
-    try {
+    try{
         const results = await TLoan.allCurrent();
         if (results.length > 0) {
-            return res.status(200).json(results[0]);
+            return res.status(200).json(results[0])
         } else {
             return res.status(500).send('Does not Exist!');
         }
@@ -599,10 +604,10 @@ module.exports.allCurrent = async (req, res) => {
 };
 
 module.exports.allHistory = async (req, res) => {
-    try {
+    try{
         const results = await TLoan.allHistory();
         if (results.length > 0) {
-            return res.status(200).json(results[0]);
+            return res.status(200).json(results[0])
         } else {
             return res.status(500).send('Does not Exist!');
         }
