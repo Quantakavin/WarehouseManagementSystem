@@ -217,7 +217,7 @@ const ViewProduct: React.FC = () => {
                   value={ProductQuery.data.data[0].WarehouseCode}
                 />
                 <CardField
-                  label="Availible Quantity"
+                  label="Available Quantity"
                   value={ProductQuery.data.data[0].Quantity}
                 />
               </Grid>
@@ -308,7 +308,7 @@ const ViewProduct: React.FC = () => {
                   value={ProductQuery.data.data[0].WarehouseCode}
                 />
                 <CardField
-                  label="Availible Quantity"
+                  label="Available Quantity"
                   value={ProductQuery.data.data[0].Quantity}
                 />
               </Grid>
