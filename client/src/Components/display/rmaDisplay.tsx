@@ -145,10 +145,10 @@ const RmaDisplay: React.FC = () => {
         .then(() => {
           Toast.fire({
             icon: "success",
-            title: "RMA Accepted",
+            title: `RMA #${rma.RmaID} Accepted`,
             customClass: "swalpopup",
             timer: 1500,
-            width: 270,
+            width: 320,
           });
           navigate("/rma");
         })
@@ -166,10 +166,10 @@ const RmaDisplay: React.FC = () => {
         .then(() => {
           Toast.fire({
             icon: "success",
-            title: "RMA Checklist Updated",
+            title: `RMA #${rma.RmaID} Checklist Updated`,
             customClass: "swalpopup",
             timer: 1500,
-            width: 340,
+            width: 380,
           });
           navigate("/rma");
         })
@@ -187,10 +187,10 @@ const RmaDisplay: React.FC = () => {
         .then(() => {
           Toast.fire({
             icon: "success",
-            title: "RMA Received",
+            title: `RMA #${rma.RmaID} Received`,
             customClass: "swalpopup",
             timer: 1500,
-            width: 270,
+            width: 310,
           });
           navigate("/rma");
         })
@@ -208,10 +208,10 @@ const RmaDisplay: React.FC = () => {
         .then(() => {
           Toast.fire({
             icon: "success",
-            title: "RMA Products Verified",
+            title: `RMA #${rma.RmaID} Products Verified`,
             customClass: "swalpopup",
             timer: 1500,
-            width: 340,
+            width: 370,
           });
           navigate("/rma");
         })
@@ -236,10 +236,10 @@ const RmaDisplay: React.FC = () => {
         .then(() => {
           Toast.fire({
             icon: "success",
-            title: "RMA Progress Updated",
+            title: `RMA #${rma.RmaID} Progress Updated`,
             customClass: "swalpopup",
             timer: 1500,
-            width: 330,
+            width: 380,
           });
           navigate("/rma");
         })
@@ -264,10 +264,10 @@ const RmaDisplay: React.FC = () => {
         .then(() => {
           Toast.fire({
             icon: "success",
-            title: "RMA Closed",
+            title: `RMA #${rma.RmaID} Closed`,
             customClass: "swalpopup",
             timer: 1500,
-            width: 270,
+            width: 290,
           });
           navigate("/rma");
         })

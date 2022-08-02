@@ -72,10 +72,10 @@ export default function RejectModalButton() {
           .then(() => {
             Toast.fire({
               icon: "success",
-              title: "RMA " + "#" + RmaID + " Has Been Rejected",
+              title: `RMA #${RmaID} Rejected`,
               customClass: "swalpopup",
               timer: 2000,
-              width: 700,
+              width: 310,
             });
             navigate("/rma");
           })
