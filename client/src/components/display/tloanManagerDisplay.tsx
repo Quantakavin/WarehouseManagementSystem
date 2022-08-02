@@ -21,21 +21,19 @@ export default function TLoanManagerDisplay() {
   // const [loanDetails, setLoanDetails] = useState([]);
   const [loans, setLoans] = useState([]);
   const [items, setItems] = useState([]);
-  const [purposeField, setPurposeField] = useState('')
+  const [purposeField, setPurposeField] = useState("");
   const { TLoanID } = useParams();
 
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const loans = await axios.get(
-        `http://localhost:5000/api/tloans/${TLoanID}`
-      ).then ((data)=>{
-        setPurposeField(data.data.Purpose)
-        setLoans(data.data);
-      })
-
-      
+      const loans = await axios
+        .get(`http://localhost:5000/api/tloans/${TLoanID}`)
+        .then((data) => {
+          setPurposeField(data.data.Purpose);
+          setLoans(data.data);
+        });
 
       // setLoan(Object.e)
     };
@@ -185,12 +183,12 @@ export default function TLoanManagerDisplay() {
       .then(() => {
         Toast.fire({
           icon: "success",
-          title: "Request For TLoan " +"#" + TLoanID + " Has Been Approved",
+          title: "Request For TLoan " + "#" + TLoanID + " Has Been Approved",
           customClass: "swalpopup",
           timer: 2000,
           width: 700,
         });
-        navigate("/tloan")
+        navigate("/tloan");
       })
       .catch((error) => {
         console.error("There was an error!", error);
@@ -299,7 +297,7 @@ export default function TLoanManagerDisplay() {
                       InputProps={{
                         readOnly: true,
                       }}
-                      label ="Purpose"
+                      label="Purpose"
                       variant="filled"
                       value={purposeField}
                     />
@@ -368,9 +366,9 @@ export default function TLoanManagerDisplay() {
                           width: 150,
                           height: 50,
                           borderRadius: 10,
-                          paddingRight: 4
+                          paddingRight: 4,
                         }}
-                        startIcon={<ArrowBackIosNewIcon/>}
+                        startIcon={<ArrowBackIosNewIcon />}
                         onClick={() => navigate("/tloan")}
                       >
                         Back
@@ -398,7 +396,7 @@ export default function TLoanManagerDisplay() {
                             marginRight: 5,
                             marginLeft: 4,
                           }}
-                          endIcon={<DoneIcon/>}
+                          endIcon={<DoneIcon />}
                           onClick={ApproveLoan}
                         >
                           Approve

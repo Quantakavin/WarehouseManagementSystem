@@ -39,12 +39,12 @@ import {
   GridToolbarQuickFilter,
   GRID_DATE_COL_DEF,
   MuiEvent,
-  useGridApiContext
+  useGridApiContext,
 } from "@mui/x-data-grid";
 import {
   DatePicker,
   DateTimePicker,
-  LocalizationProvider
+  LocalizationProvider,
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
@@ -57,7 +57,7 @@ import { useNavigate, useParams } from "react-router";
 import { useAppSelector } from "../../app/hooks";
 import {
   selectPermissions,
-  selectRole
+  selectRole,
 } from "../../app/reducers/CurrentUserSlice";
 import { RMA } from "../../utils/CommonTypes";
 import { Toast } from "../alerts/SweetAlert";
@@ -835,18 +835,18 @@ const RmaDisplay: React.FC = () => {
         if (isInEditMode) {
           return [
             <Tooltip title="Mark As Received">
-            <GridActionsCellItem
-              icon={<BorderColorIcon />}
-              label="Mark As Received"
-              onClick={markAsReceived(id)}
-            />
+              <GridActionsCellItem
+                icon={<BorderColorIcon />}
+                label="Mark As Received"
+                onClick={markAsReceived(id)}
+              />
             </Tooltip>,
             <Tooltip title="Save">
-            <GridActionsCellItem
-              icon={<SaveIcon />}
-              label="Save"
-              onClick={handleSaveClick(id)}
-            />
+              <GridActionsCellItem
+                icon={<SaveIcon />}
+                label="Save"
+                onClick={handleSaveClick(id)}
+              />
             </Tooltip>,
           ];
         }
@@ -917,33 +917,33 @@ const RmaDisplay: React.FC = () => {
         if (isInEditMode) {
           return [
             <Tooltip title="Save">
-            <GridActionsCellItem
-              icon={<SaveIcon />}
-              label="Save"
-              onClick={handleSaveClick(id)}
-            />
+              <GridActionsCellItem
+                icon={<SaveIcon />}
+                label="Save"
+                onClick={handleSaveClick(id)}
+              />
             </Tooltip>,
             <Tooltip title="Cancel">
-            <GridActionsCellItem
-              icon={<CancelIcon />}
-              label="Cancel"
-              className="textPrimary"
-              onClick={handleCancelClick(id)}
-              color="inherit"
-            />
+              <GridActionsCellItem
+                icon={<CancelIcon />}
+                label="Cancel"
+                className="textPrimary"
+                onClick={handleCancelClick(id)}
+                color="inherit"
+              />
             </Tooltip>,
           ];
         }
         return [
           <Tooltip title="Edit">
-          <GridActionsCellItem
-            icon={<EditIcon />}
-            label="Edit"
-            className="textPrimary"
-            onClick={handleEditClick(id)}
-            color="inherit"
-          />
-          </Tooltip>
+            <GridActionsCellItem
+              icon={<EditIcon />}
+              label="Edit"
+              className="textPrimary"
+              onClick={handleEditClick(id)}
+              color="inherit"
+            />
+          </Tooltip>,
         ];
       },
     },
@@ -1001,32 +1001,32 @@ const RmaDisplay: React.FC = () => {
         if (isInEditMode) {
           return [
             <Tooltip title="Save">
-            <GridActionsCellItem
-              icon={<SaveIcon />}
-              label="Save"
-              onClick={handleSaveClick(id)}
-            />
+              <GridActionsCellItem
+                icon={<SaveIcon />}
+                label="Save"
+                onClick={handleSaveClick(id)}
+              />
             </Tooltip>,
             <Tooltip title="Cancel">
-            <GridActionsCellItem
-              icon={<CancelIcon />}
-              label="Cancel"
-              className="textPrimary"
-              onClick={handleCancelClick(id)}
-              color="inherit"
-            />
+              <GridActionsCellItem
+                icon={<CancelIcon />}
+                label="Cancel"
+                className="textPrimary"
+                onClick={handleCancelClick(id)}
+                color="inherit"
+              />
             </Tooltip>,
           ];
         }
         return [
           <Tooltip title="Edit">
-          <GridActionsCellItem
-            icon={<EditIcon />}
-            label="Edit"
-            className="textPrimary"
-            onClick={handleEditClick(id)}
-            color="inherit"
-          />
+            <GridActionsCellItem
+              icon={<EditIcon />}
+              label="Edit"
+              className="textPrimary"
+              onClick={handleEditClick(id)}
+              color="inherit"
+            />
           </Tooltip>,
         ];
       },

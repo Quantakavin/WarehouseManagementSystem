@@ -8,19 +8,14 @@ import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import {
-  GridColDef,
-  GridRenderCellParams
-} from "@mui/x-data-grid";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import axios from "axios";
 import { motion } from "framer-motion";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "react-use-cart";
 import { useAppSelector } from "../../app/hooks";
-import {
-  selectPermissions
-} from "../../app/reducers/CurrentUserSlice";
+import { selectPermissions } from "../../app/reducers/CurrentUserSlice";
 import { Toast, Toast2 } from "../../components/alerts/SweetAlert";
 import { EditableContext } from "../../components/context/isEditableContext";
 import "../../pages/tloans/TLoanTable/table.css";
@@ -52,7 +47,7 @@ import {
   GridRowModesModel,
   GridRowParams,
   GridRowsProp,
-  MuiEvent
+  MuiEvent,
 } from "@mui/x-data-grid";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";

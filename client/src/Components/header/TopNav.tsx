@@ -23,7 +23,7 @@ import {
   Close,
   Open,
   Reset,
-  selectOpen
+  selectOpen,
 } from "../../app/reducers/SidebarSlice";
 import defaultprofile from "../../assets/defaultprofile.png";
 import navbarbrand from "../../assets/navbarbrand.png";

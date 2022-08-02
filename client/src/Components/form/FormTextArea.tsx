@@ -7,7 +7,7 @@ import {
   RegisterOptions,
   UseFormRegister,
   UseFormSetValue,
-  UseFormWatch
+  UseFormWatch,
 } from "react-hook-form";
 import ReactQuill from "react-quill";
 import styled from "styled-components";

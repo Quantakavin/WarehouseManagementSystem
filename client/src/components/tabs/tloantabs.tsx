@@ -19,7 +19,7 @@ import {
   GetCurrent,
   GetDraft,
   GetHistory,
-  GetPending
+  GetPending,
 } from "../../api/TLoanDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";

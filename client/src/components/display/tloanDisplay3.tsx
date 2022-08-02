@@ -21,7 +21,7 @@ export default function TLoanDisplay2() {
   // const [loanDetails, setLoanDetails] = useState([]);
   const [loans, setLoans] = useState<TLoans>([]);
   const [items, setItems] = useState([]);
-  const [purposeField, setPurposeField] = useState('')
+  const [purposeField, setPurposeField] = useState("");
 
   const { TLoanID } = useParams();
 
@@ -29,15 +29,14 @@ export default function TLoanDisplay2() {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const loans = await axios.get(
-        `http://localhost:5000/api/tloans/${TLoanID}`
-      ).then((data)=>{
-        setPurposeField(data.data.Purpose)
-        setLoans(data.data)
-      })
+      const loans = await axios
+        .get(`http://localhost:5000/api/tloans/${TLoanID}`)
+        .then((data) => {
+          setPurposeField(data.data.Purpose);
+          setLoans(data.data);
+        });
     };
-    fetchData()
-      .catch(console.error);
+    fetchData().catch(console.error);
   }, []);
 
   useEffect(() => {
@@ -49,8 +48,7 @@ export default function TLoanDisplay2() {
       );
       setItems(items.data);
     };
-    fetchData()
-      .catch(console.error);
+    fetchData().catch(console.error);
   }, []);
 
   interface GridCellExpandProps {
@@ -286,7 +284,7 @@ export default function TLoanDisplay2() {
                         readOnly: true,
                       }}
                       variant="filled"
-                     value={purposeField}
+                      value={purposeField}
                     />
                   </Grid>
                   <Grid item xs={12}>

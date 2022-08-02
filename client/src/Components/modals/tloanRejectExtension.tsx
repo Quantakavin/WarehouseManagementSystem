@@ -31,8 +31,8 @@ export default function TLoanRejectModalButton() {
   const navigate = useNavigate();
   const [remarks, setRemarks] = useState("");
   const [open, setOpen] = React.useState(false);
-  const [remarksError, setRemarksError] = useState(false)
-  const [remarksErrorText, setRemarksErrorText] = useState('')
+  const [remarksError, setRemarksError] = useState(false);
+  const [remarksErrorText, setRemarksErrorText] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleChange = (e) => {
@@ -40,37 +40,36 @@ export default function TLoanRejectModalButton() {
     setRemarks(e.target.value);
   };
 
-
   const handleConfirm = async (e) => {
-    e.preventDefault()
-    setRemarksError(false)
-    if(remarks ===''){
-      setRemarksError(true)
-      setRemarksErrorText('Input Is Needed')
+    e.preventDefault();
+    setRemarksError(false);
+    if (remarks === "") {
+      setRemarksError(true);
+      setRemarksErrorText("Input Is Needed");
     }
-    try{
-    axios
-      .put(
-        `http://localhost:5000/api/tloan/rejectExtension/${TLoanID}`,{
-          remarks
-        }
-      )
-      .then(() => {
-        Toast.fire({
-          icon: "success",
-          title: "TLoan Extension For TLoan" +"#" + TLoanID + " Has Been Rejected",
-          customClass: "swalpopup",
-          timer: 2000,
-          width: 700,
+    try {
+      axios
+        .put(`http://localhost:5000/api/tloan/rejectExtension/${TLoanID}`, {
+          remarks,
+        })
+        .then(() => {
+          Toast.fire({
+            icon: "success",
+            title:
+              "TLoan Extension For TLoan" +
+              "#" +
+              TLoanID +
+              " Has Been Rejected",
+            customClass: "swalpopup",
+            timer: 2000,
+            width: 700,
+          });
+          navigate("/tloan");
         });
-        navigate("/tloan");
-      });
-
+    } catch (error) {
+      this.setState({ errorMessage: error.message });
+      console.error("There was an error!", error);
     }
-      catch(error) {
-        this.setState({ errorMessage: error.message });
-        console.error("There was an error!", error);
-      };
   };
 
   return (
@@ -92,7 +91,7 @@ export default function TLoanRejectModalButton() {
           height: 50,
           borderRadius: 10,
         }}
-        endIcon={<CancelIcon/>}
+        endIcon={<CancelIcon />}
         onClick={handleOpen}
       >
         Reject
@@ -110,16 +109,16 @@ export default function TLoanRejectModalButton() {
       >
         <Fade in={open}>
           <Box sx={style}>
-          <h3
-                  style={{
-                    color: "#063970",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  Rejecting Extension For Loan #{TLoanID}
-                </h3>
+            <h3
+              style={{
+                color: "#063970",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              Rejecting Extension For Loan #{TLoanID}
+            </h3>
             <TextField
               value={remarks}
               onChange={handleChange}
@@ -160,9 +159,9 @@ export default function TLoanRejectModalButton() {
                     width: 150,
                     height: 50,
                     borderRadius: 10,
-                    paddingRight:4
+                    paddingRight: 4,
                   }}
-                  startIcon={<ArrowBackIosNewIcon/>}
+                  startIcon={<ArrowBackIosNewIcon />}
                   onClick={handleClose}
                 >
                   Back
@@ -187,7 +186,7 @@ export default function TLoanRejectModalButton() {
                     borderRadius: 10,
                   }}
                   onClick={handleConfirm}
-                  endIcon={<DoneAllIcon/>}
+                  endIcon={<DoneAllIcon />}
                 >
                   Confirm
                 </LoadingButton>

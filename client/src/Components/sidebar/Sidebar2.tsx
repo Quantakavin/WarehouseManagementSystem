@@ -111,7 +111,6 @@ const Sidebar = () => {
             sx={{ backgroundColor: "#0a2540" }}
             onClick={() => navigate("/profile")}
           >
-            
             <Box
               className="flexcontainer sidebarprofile"
               sx={{

@@ -86,13 +86,13 @@ import {
   IconButton,
   InputAdornment,
   OutlinedInput,
-  TextField
+  TextField,
 } from "@mui/material";
 import {
   FieldError,
   Path,
   RegisterOptions,
-  UseFormRegister
+  UseFormRegister,
 } from "react-hook-form";
 import useTogglePasword from "../../hooks/useTogglePassword";
 
@@ -126,7 +126,7 @@ const FormField = <T,>({
   register,
   rules,
   error,
-  readOnly
+  readOnly,
 }: FormFieldProps<T>) => {
   const { toggle, passwordType, showPassword } = useTogglePasword();
 

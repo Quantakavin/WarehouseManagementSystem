@@ -6,7 +6,7 @@ import {
   Tab,
   Tabs,
   Typography,
-  unstable_createMuiStrictModeTheme
+  unstable_createMuiStrictModeTheme,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "react-tabs/style/react-tabs.css";
@@ -22,7 +22,7 @@ import {
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
-  GridToolbarQuickFilter
+  GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -54,7 +54,7 @@ const TLoanTabs2: React.FC = () => {
   const [extensionsTable, setExtensionTable] = useState([]);
   const [approvedTable, setApprovedTable] = useState([]);
   const [allCurrent, setAllCurrent] = useState([]);
-  const [allHistory, setAllHistory] = useState([])
+  const [allHistory, setAllHistory] = useState([]);
   // Get and set current tloans data
   useEffect(() => {
     fetch(`http://localhost:5000/api/tloan/current/${userid}`)
@@ -1166,7 +1166,7 @@ const TLoanTabs2: React.FC = () => {
                   />
                 </div>
               </TabPanel>
-          
+
               <TabPanel value="2">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
