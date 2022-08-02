@@ -2,10 +2,7 @@ const express = require('express');
 const resetPassword = express.Router();
 const userService = require('../services/userService');
 const resetPasswordService = require('../services/resetPasswordService');
-const {
-    hashSync,
-    genSaltSync
-} = require("bcrypt");
+const { hashSync, genSaltSync } = require('bcrypt');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
@@ -25,7 +22,7 @@ module.exports.forgotPassword = async (req, res, next) => {
                     message: 'User account has been deactivated.'
                 });
             } else if (user[0][0].Active == 'Y') {
-                // Get all tokens that were previously set for this user and set used to 1. Prevents old and expired tokens from being used. 
+                // Get all tokens that were previously set for this user and set used to 1. Prevents old and expired tokens from being used.
                 await resetPasswordService.expireOldTokens(email, 1);
 
                 // Create reset token that expires after 1 hours.
@@ -36,7 +33,13 @@ module.exports.forgotPassword = async (req, res, next) => {
                 const expiredAt = resetTokenExpires;
 
                 // Insert new token into resetPasswordToken table.
-                await resetPasswordService.insertResetToken(email, resetToken, createdAt, expiredAt, 0);
+                await resetPasswordService.insertResetToken(
+                    email,
+                    resetToken,
+                    createdAt,
+                    expiredAt,
+                    0
+                );
 
                 // Send email
                 await sendPasswordResetEmail(email, resetToken, origin);
@@ -54,12 +57,7 @@ module.exports.forgotPassword = async (req, res, next) => {
     }
 };
 
-async function sendEmail({
-    from,
-    to,
-    subject,
-    html
-}) {
+async function sendEmail({ from, to, subject, html }) {
     const transporter = nodemailer.createTransport({
         host: 'smtp.office365.com', // change when not using ethereal host email (e.g. to gmail)
         port: 587,
@@ -67,6 +65,7 @@ async function sendEmail({
             user: process.env.USER, // use user email address OR ethereal email address (when testing)
             pass: process.env.PASS // use user email password OR ethereal email password (when testing)
         },
+        from: process.env.USER,
         tls: {
             rejectUnauthorized: false
         }
@@ -156,7 +155,7 @@ async function sendPasswordResetEmail(email, resetToken, origin) {
                             </tr>
                         </table>
                     </body>`;
-    };
+    }
 
     await sendEmail({
         from: process.env.USER,
@@ -165,7 +164,7 @@ async function sendPasswordResetEmail(email, resetToken, origin) {
         html: `<h4>Reset Password</h4>
                    ${message}`
     });
-};
+}
 
 module.exports.resetPassword = async (req, res, next) => {
     try {
