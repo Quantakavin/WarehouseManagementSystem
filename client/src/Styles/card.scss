@@ -43,7 +43,6 @@ $primary-color: #0a2540;
 .cardsubheading {
   font-weight: 300;
   font-size: 18px;
-  padding-bottom: 10px;
   @media screen and (min-width: 800px) {
     margin-left: 8% !important;
   }
@@ -51,7 +50,7 @@ $primary-color: #0a2540;
 
 .cardfield {
   @media screen and (min-width: 800px) {
-    flex-direction: row;
+    flex-direction: block;
     margin-left: 8% !important;
   }
 
@@ -73,7 +72,9 @@ $primary-color: #0a2540;
 }
 
 .cardfieldlabel {
+  font-size: 18px;
   font-weight: 600;
+  margin-bottom: -1px;
   @media screen and (min-width: 800px) {
     flex: 2;
     text-align: left;

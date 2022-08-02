@@ -13,6 +13,8 @@ import CardContainer from "../../components/cards/CardContainer";
 import CardField from "../../components/cards/CardField";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
 import IsEditableProvider, { EditableContext } from '../../components/context/isEditableContext'
+import Divider from '@mui/material/Divider';
+import { Chip, Grid } from "@mui/material";
 
 const ViewProduct: React.FC = () => {
   const params = useParams();
@@ -20,7 +22,7 @@ const ViewProduct: React.FC = () => {
   const [newProducts, setNewProducts] = useState([]);
   const [productGet, setProductGet] = useState([]);
   const context = useContext(EditableContext)
-  const {isEditable, setIsEditable, TLoanIDGlobal} = context
+  const { isEditable, setIsEditable, TLoanIDGlobal } = context
 
 
   useEffect(() => {
@@ -80,7 +82,7 @@ const ViewProduct: React.FC = () => {
           <Fab
             variant="extended"
             aria-label="add"
-            onClick={() =>{isEditable ? navigate(`/tloanDraftDetails/${TLoanIDGlobal}`) : navigate("/newtloan")}}
+            onClick={() => { isEditable ? navigate(`/tloanDraftDetails/${TLoanIDGlobal}`) : navigate("/newtloan") }}
             sx={{
               color: "white",
               backgroundColor: "#063970",
@@ -185,39 +187,55 @@ const ViewProduct: React.FC = () => {
           header={ProductQuery.data.data[0].ItemName}
           subheading={ProductQuery.data.data[0].ItemNo}
         >
-          <CardField label="Brand:" value={ProductQuery.data.data[0].Brand} />
-          <CardField
-            label="Batch Number:"
-            value={ProductQuery.data.data[0].BatchNo}
-          />
-          <CardField
-            label="Bin Tag:"
-            value={ProductQuery.data.data[0].BinTag2}
-          />
-          <CardField
-            label="Warehouse Code:"
-            value={ProductQuery.data.data[0].WarehouseCode}
-          />
-          <CardField
-            label="Weight:"
-            value={ProductQuery.data.data[0].Weight + " kg"}
-          />
-          <CardField
-            label="Length:"
-            value={ProductQuery.data.data[0].Length + " cm"}
-          />
-          <CardField
-            label="Width:"
-            value={ProductQuery.data.data[0].Width + " cm"}
-          />
-          <CardField
-            label="Height:"
-            value={ProductQuery.data.data[0].Height + " cm"}
-          />
-          <CardField
-            label="Availible Quantity:"
-            value={ProductQuery.data.data[0].Quantity}
-          />
+          <Divider sx={{mb: 3}}>
+                <Chip label="Details" sx={{fontWeight: 500}}/>
+              </Divider>
+          <Grid container sx={{pl: 3, pr: 0}}>
+            <Grid item xs={7}>
+              <CardField label="Brand" value={ProductQuery.data.data[0].Brand} />
+              <CardField
+                label="Batch Number"
+                value={ProductQuery.data.data[0].BatchNo}
+              />
+              <CardField
+                label="Bin Tag"
+                value={ProductQuery.data.data[0].BinTag2}
+              />
+              <CardField
+                label="Warehouse Code"
+                value={ProductQuery.data.data[0].WarehouseCode}
+              />
+              <CardField
+                label="Availible Quantity"
+                value={ProductQuery.data.data[0].Quantity}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <Grid container>
+                <Grid item xs={6}>
+                  <CardField
+                  label="Weight"
+                  value={ProductQuery.data.data[0].Weight + " kg"}
+                /></Grid>
+                <Grid item xs={6}>
+                  <CardField
+                  label="Length"
+                  value={ProductQuery.data.data[0].Length + " cm"}
+                /></Grid>
+                <Grid item xs={6}>
+                  <CardField
+                  label="Width"
+                  value={ProductQuery.data.data[0].Width + " cm"}
+                /></Grid>
+                <Grid item xs={6}>
+                  <CardField
+                  label="Height"
+                  value={ProductQuery.data.data[0].Height + " cm"}
+                /></Grid>
+              </Grid>
+            </Grid>
+            <Grid item></Grid>
+          </Grid>
           <div
             className="flexcontainer"
             style={{

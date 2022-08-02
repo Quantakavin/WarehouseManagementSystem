@@ -7,7 +7,7 @@ interface CardFieldProps {
 
 const CardField: React.FC<CardFieldProps> = ({ label, value }) => {
   return (
-    <div className="flexcontainer cardfield">
+    <div className="cardfield">
       <p className="cardfieldlabel">{label}</p>
       <p className="cardfieldvalue">{value}</p>
     </div>
