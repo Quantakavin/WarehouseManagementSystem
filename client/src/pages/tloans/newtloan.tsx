@@ -17,6 +17,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
+import Modal from '@mui/material/Modal';
 import {
   DataGrid,
   GridActionsCellItem,
@@ -47,6 +48,7 @@ import {
   selectPermissions,
   selectRole,
 } from "../../app/reducers/CurrentUserSlice";
+import Autocomplete from '@mui/material/Autocomplete';
 
 function newtloan() {
   const navigate = useNavigate();
@@ -78,6 +80,13 @@ function newtloan() {
   const [collectionErrorText, setCollectionErrorText] = useState("");
   const [rdateErrorText, setRDateErrorText] = useState("");
   const permissions = useAppSelector(selectPermissions);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   const ExternalApplication = permissions.some(
     (e) => e.FeatureName === "T-Loan Application (Internal+External)"
   );
@@ -608,6 +617,7 @@ function newtloan() {
     )
   }else return null
  }
+ console.log(company)
 
   const getCard = () => {
     const loanDuration = [
@@ -667,7 +677,6 @@ function newtloan() {
                   error={emailError}
                   helperText={emailErrorText}
                 />
-
                 <FormControl sx={{ width: 200, marginLeft: 3 }}>
                   <InputLabel>Customer Company</InputLabel>
                   <Select
@@ -689,7 +698,7 @@ function newtloan() {
                     <MenuItem value={"3"}>DIRAK181025</MenuItem>
                     <MenuItem value={"4"}>PMC_LIVE</MenuItem>
                     <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
-                    <MenuItem value={"6"}>ALL</MenuItem>
+                    <MenuItem value={"6"} >ALL</MenuItem>
                   </Select>
                   <FormHelperText sx={{ color: "#d11919" }}>
                     {companyErrorText}
