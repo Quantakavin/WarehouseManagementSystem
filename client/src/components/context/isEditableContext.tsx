@@ -1,5 +1,4 @@
-import React, {useState, createContext} from 'react'
-import { useParams } from "react-router-dom";
+import { createContext, useState } from 'react';
 export const EditableContext = createContext({})
 const IsEditableProvider = ({ children }) => {
     const [isEditable, setIsEditable] = useState(false)

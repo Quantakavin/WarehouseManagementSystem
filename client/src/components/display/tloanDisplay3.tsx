@@ -10,7 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 // import { GetDetails }from "../../api/TLoanDB"
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
-import { DataGrid, GridColDef, GridRenderCellParams, selectedIdsLookupSelector } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { motion } from "framer-motion";
 import React from "react";
 import ModalButton from "../modals/tloanExtensionModal";

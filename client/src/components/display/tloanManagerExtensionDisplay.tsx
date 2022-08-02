@@ -1,5 +1,4 @@
 import { Box, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
@@ -9,14 +8,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { GetDetails }from "../../api/TLoanDB"
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import DoneIcon from "@mui/icons-material/Done";
+import { LoadingButton } from "@mui/lab";
 import { motion } from "framer-motion";
 import React from "react";
-import TLoanRejectModalButton from "../modals/tloanRejectExtension";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import {LoadingButton} from "@mui/lab"
-import CancelIcon from "@mui/icons-material/Close";
-import DoneIcon from "@mui/icons-material/Done";
 import { Toast } from "../../components/alerts/SweetAlert";
+import TLoanRejectModalButton from "../modals/tloanRejectExtension";
 
 export default function TLoanManagerDisplay() {
   const navigate = useNavigate();

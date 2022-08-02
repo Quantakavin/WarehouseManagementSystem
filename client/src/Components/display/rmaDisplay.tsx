@@ -1,19 +1,19 @@
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import CancelIcon from "@mui/icons-material/Close";
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import DoDisturbIcon from "@mui/icons-material/DoDisturb";
+import DoneIcon from "@mui/icons-material/Done";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 import EditIcon from "@mui/icons-material/Edit";
+import FactCheckIcon from "@mui/icons-material/FactCheck";
 import MoreVert from "@mui/icons-material/MoreVert";
 import SaveIcon from "@mui/icons-material/Save";
+import UpdateIcon from "@mui/icons-material/Update";
+import { LoadingButton } from "@mui/lab";
 import { Stack, TextField, Tooltip, Typography } from "@mui/material";
-import DoneAllIcon from "@mui/icons-material/DoneAll";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
-import UpdateIcon from "@mui/icons-material/Update";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import FactCheckIcon from "@mui/icons-material/FactCheck";
-import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -39,12 +39,12 @@ import {
   GridToolbarQuickFilter,
   GRID_DATE_COL_DEF,
   MuiEvent,
-  useGridApiContext,
+  useGridApiContext
 } from "@mui/x-data-grid";
 import {
   DatePicker,
   DateTimePicker,
-  LocalizationProvider,
+  LocalizationProvider
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
@@ -57,14 +57,11 @@ import { useNavigate, useParams } from "react-router";
 import { useAppSelector } from "../../app/hooks";
 import {
   selectPermissions,
-  selectRole,
+  selectRole
 } from "../../app/reducers/CurrentUserSlice";
-import { Toast } from "../alerts/SweetAlert";
-import ReasonModalButton from "../modals/rmaReasonModal";
-import RejectModalButton from "../modals/rmaRejectModal";
 import { RMA } from "../../utils/CommonTypes";
-import { LoadingButton } from "@mui/lab";
-import DoneIcon from "@mui/icons-material/Done";
+import { Toast } from "../alerts/SweetAlert";
+import RejectModalButton from "../modals/rmaRejectModal";
 
 const RmaDisplay: React.FC = () => {
   const navigate = useNavigate();

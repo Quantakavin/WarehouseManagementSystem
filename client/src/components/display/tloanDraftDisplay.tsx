@@ -1,3 +1,4 @@
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Box, Grid } from "@mui/material";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
@@ -5,53 +6,46 @@ import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { useEffect, useState, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { GetDetails }from "../../api/TLoanDB"
-import Paper from "@mui/material/Paper";
-import Popper from "@mui/material/Popper";
-import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { motion } from "framer-motion";
-import React from "react";
+import FormHelperText from "@material-ui/core/FormHelperText";
 import AddIcon from "@mui/icons-material/Add";
+import CancelIcon from '@mui/icons-material/Cancel';
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 import RemoveIcon from "@mui/icons-material/Remove";
 import SaveIcon from "@mui/icons-material/Save";
-import DoneAllIcon from "@mui/icons-material/DoneAll";
-import CancelIcon from '@mui/icons-material/Cancel';
-import EditIcon from '@mui/icons-material/Edit';
 import SaveAsIcon from "@mui/icons-material/SaveAs";
+import { LoadingButton } from "@mui/lab";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
+import Paper from "@mui/material/Paper";
+import Popper from "@mui/material/Popper";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import {
   DataGrid,
-  GridActionsCellItem,
-  GridColumns,
-  GridEventListener,
-  GridRowId,
+  GridActionsCellItem, GridColDef, GridColumns,
+  GridEventListener, GridRenderCellParams, GridRowId,
   GridRowModel,
   GridRowModes,
   GridRowModesModel,
   GridRowParams,
   GridRowsProp,
-  MuiEvent,
+  MuiEvent
 } from "@mui/x-data-grid";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dateFormat from "dateformat";
-import { useAppSelector } from "../../app/hooks";
-import { selectRole } from "../../app/reducers/CurrentUserSlice";
-import { Toast, Toast2 } from "../../components/alerts/SweetAlert";
-import "../../pages/tloans/TLoanTable/table.css";
-import { EditableContext } from '../../components/context/isEditableContext'
+import { motion } from "framer-motion";
+import React from "react";
 import { useCart } from "react-use-cart";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import { LoadingButton } from "@mui/lab";
+import { Toast, Toast2 } from "../../components/alerts/SweetAlert";
+import { EditableContext } from '../../components/context/isEditableContext';
+import "../../pages/tloans/TLoanTable/table.css";
 
 export default function TLoanDraftDisplay() {
   const navigate = useNavigate();

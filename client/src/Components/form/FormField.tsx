@@ -86,13 +86,13 @@ import {
   IconButton,
   InputAdornment,
   OutlinedInput,
-  TextField,
+  TextField
 } from "@mui/material";
 import {
   FieldError,
   Path,
   RegisterOptions,
-  UseFormRegister,
+  UseFormRegister
 } from "react-hook-form";
 import useTogglePasword from "../../hooks/useTogglePassword";
 

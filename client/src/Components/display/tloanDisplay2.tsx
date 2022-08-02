@@ -1,38 +1,40 @@
+import FormHelperText from "@material-ui/core/FormHelperText";
+import { LoadingButton } from "@mui/lab";
 import { Box, Grid } from "@mui/material";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import axios from "axios";
-import { useEffect, useState, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useAppSelector } from "../../app/hooks";
-import {
-  selectPermissions,
-  selectRole,
-} from "../../app/reducers/CurrentUserSlice";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
-import { GridColDef, GridRenderCellParams, selectedIdsLookupSelector } from "@mui/x-data-grid";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import {
+  GridColDef,
+  GridRenderCellParams
+} from "@mui/x-data-grid";
+import axios from "axios";
 import { motion } from "framer-motion";
-import React from "react";
-import ModalButton from "../modals/tloanExtensionModal";
-import { EditableContext } from '../../components/context/isEditableContext'
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "react-use-cart";
+import { useAppSelector } from "../../app/hooks";
+import {
+  selectPermissions
+} from "../../app/reducers/CurrentUserSlice";
 import { Toast, Toast2 } from "../../components/alerts/SweetAlert";
+import { EditableContext } from "../../components/context/isEditableContext";
 import "../../pages/tloans/TLoanTable/table.css";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import { LoadingButton } from "@mui/lab";
+import ModalButton from "../modals/tloanExtensionModal";
 
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import AddIcon from "@mui/icons-material/Add";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import DoneIcon from "@mui/icons-material/Done";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
+import EditIcon from "@mui/icons-material/Edit";
 import RemoveIcon from "@mui/icons-material/Remove";
 import SaveIcon from "@mui/icons-material/Save";
-import DoneAllIcon from "@mui/icons-material/DoneAll";
-import CancelIcon from '@mui/icons-material/Cancel';
-import EditIcon from '@mui/icons-material/Edit';
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -50,24 +52,23 @@ import {
   GridRowModesModel,
   GridRowParams,
   GridRowsProp,
-  MuiEvent,
+  MuiEvent
 } from "@mui/x-data-grid";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dateFormat from "dateformat";
-import DoneIcon from "@mui/icons-material/Done";
 import TLoanRejectModalButton from "../modals/tloanRejectModal";
-import TLoanRejectExtensionModalButton from "../modals/tloanRejectExtension";
 
 export default function tloanDisplay() {
   const permissions = useAppSelector(selectPermissions);
   const navigate = useNavigate();
   const [loans, setLoans] = useState<TLoans>([]);
   const [itemsTable, setItemsTable] = useState([]);
-  const [purposeField, setPurposeField] = useState('')
-  const context = useContext(EditableContext)
-  const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
+  const [purposeField, setPurposeField] = useState("");
+  const context = useContext(EditableContext);
+  const { isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal } =
+    context;
   const { TLoanID } = useParams();
   const [type, setType] = useState("");
   const [company, setCompany] = useState("");
@@ -96,9 +97,9 @@ export default function tloanDisplay() {
   const [rdateErrorText, setRDateErrorText] = useState("");
   const [submitLoading, setSubmitLoading] = useState(false);
   const [items, setItems] = useState([]);
-  const [rows, setRows] = React.useState([]); 
+  const [rows, setRows] = React.useState([]);
   const [loading, setLoading] = useState(false);
-  const [reasonField, setReasonField] =  useState('')
+  const [reasonField, setReasonField] = useState("");
 
   const ApprovalLoanPerms = permissions.some(
     (e) => e.FeatureName === "T-Loan Approval"
@@ -120,23 +121,22 @@ export default function tloanDisplay() {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const loans = await axios.get(
-        `http://localhost:5000/api/tloans/${TLoanID}`
-      ).then((data)=>{
-        setPurposeField(data.data.Purpose)
-        setReasonField(data.data.Reason)
-        setEmail(data.data.CustomerEmail)
-        setPurpose(data.data.Purpose)
-        setDuration(data.data.Duration)
-        setCollection(data.data.Collection)
-        setDateForm(data.data.RequiredDate)
-        setCompany(data.data.CompanyID)
-        setType(data.data.TLoanTypeID)
-        setLoans(data.data)
-      })
+      const loans = await axios
+        .get(`http://localhost:5000/api/tloans/${TLoanID}`)
+        .then((data) => {
+          setPurposeField(data.data.Purpose);
+          setReasonField(data.data.Reason);
+          setEmail(data.data.CustomerEmail);
+          setPurpose(data.data.Purpose);
+          setDuration(data.data.Duration);
+          setCollection(data.data.Collection);
+          setDateForm(data.data.RequiredDate);
+          setCompany(data.data.CompanyID);
+          setType(data.data.TLoanTypeID);
+          setLoans(data.data);
+        });
     };
-    fetchData()
-      .catch(console.error);
+    fetchData().catch(console.error);
   }, []);
 
   useEffect(() => {
@@ -147,23 +147,20 @@ export default function tloanDisplay() {
         `http://localhost:5000/api/tloanitems/${TLoanID}`
       );
       setItemsTable(items.data);
-     
     };
-    fetchData()
-      .catch(console.error);
+    fetchData().catch(console.error);
   }, []);
 
   const itemStorage = localStorage.getItem("react-use-cart");
   const cartItems = JSON.parse(itemStorage).items;
 
-  useEffect(
-    () => {
+  useEffect(() => {
     if (cartItems === []) {
       return console.log("Nothing in cart");
     } else {
       setRows(cartItems);
     }
-  }, [cartItems]); 
+  }, [cartItems]);
 
   const FullFeaturedCrudGrid = () => {
     const handleRowEditStart = (
@@ -171,7 +168,7 @@ export default function tloanDisplay() {
       event: MuiEvent<React.SyntheticEvent>
     ) => {
       event.defaultMuiPrevented = true;
-    };       
+    };
     const handleRowEditStop: GridEventListener<"rowEditStop"> = (
       params,
       event
@@ -337,8 +334,7 @@ export default function tloanDisplay() {
       </Box>
     );
   };
- 
- 
+
   interface GridCellExpandProps {
     value: string;
     width: number;
@@ -493,7 +489,7 @@ export default function tloanDisplay() {
       renderCell: renderCellExpand,
     },
   ];
-  
+
   const { addItem, emptyCart, updateItemQuantity, removeItem } = useCart();
   const newBasket = itemsTable.map(
     ({ BasketItemID, ItemNo, ItemName, BatchNo, WarehouseCode, Quantity }) => ({
@@ -503,7 +499,7 @@ export default function tloanDisplay() {
       BatchNo: BatchNo,
       WarehouseCode: WarehouseCode,
       quantity: Quantity,
-      price: 0
+      price: 0,
     })
   );
   const newProduct = cartItems.map(
@@ -514,31 +510,31 @@ export default function tloanDisplay() {
       BatchNo: BatchNo,
       WarehouseCode: WarehouseCode,
       Quantity: quantity,
-      TLoanID: TLoanIDGlobal
+      TLoanID: TLoanIDGlobal,
     })
-  )
+  );
 
   useEffect(() => {
     setItems(newProduct);
-  },[newProduct]);
+  }, [newProduct]);
   useEffect(() => {
     const correctFormat = dateFormat(dateForm, "yyyy-mm-dd");
     setRDate(correctFormat);
   }, [dateForm]);
 
-  const setInitial = ()=>{
-    setIsEditable(false)
-    setTLoanIDGlobal(null)
-    Toast2.close()
+  const setInitial = () => {
+    setIsEditable(false);
+    setTLoanIDGlobal(null);
+    Toast2.close();
     Toast.fire({
       icon: "warning",
-      title: "You have Stopped editing " + "" + "Loan"+ " " + '#' + TLoanID,
+      title: "You have Stopped editing " + "" + "Loan" + " " + "#" + TLoanID,
       customClass: "swalpopup",
       timer: 2000,
       width: 500,
     });
-  }
-  
+  };
+
   interface EditToolbarProps {
     setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
     setRowModesModel: (
@@ -571,29 +567,26 @@ export default function tloanDisplay() {
     setDateForm(newValue);
   };
 
-
   const emailRegex = /^\S+@\S+\.\S+$/i;
 
-  const addItemArray = () =>{
-    emptyCart()
-    const addByIndex = () =>{
-     
+  const addItemArray = () => {
+    emptyCart();
+    const addByIndex = () => {
       for (let i = 0; i < newBasket.length; i++) {
-        addItem(newBasket[i], newBasket[i].quantity)
-      }  
-      setIsEditable(!isEditable)
-      setTLoanIDGlobal(TLoanID)
+        addItem(newBasket[i], newBasket[i].quantity);
+      }
+      setIsEditable(!isEditable);
+      setTLoanIDGlobal(TLoanID);
       Toast2.fire({
         icon: "info",
-        title:"You are currently editing " + "" + "Loan #" + TLoanID ,
+        title: "You are currently editing " + "" + "Loan #" + TLoanID,
         customClass: "swalpopup",
         width: 500,
-    })
+      });
+    };
 
-    }
-  
     return (
-        <motion.div
+      <motion.div
         className="animatable"
         whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
         whileTap={{ scale: 0.9 }}
@@ -610,13 +603,13 @@ export default function tloanDisplay() {
             borderRadius: 10,
           }}
           onClick={addByIndex}
-          endIcon={<EditIcon/>}
+          endIcon={<EditIcon />}
         >
           Edit
         </LoadingButton>
       </motion.div>
-    )
-  }
+    );
+  };
 
   const submitLoan = (e) => {
     setSubmitLoading(true);
@@ -691,19 +684,21 @@ export default function tloanDisplay() {
       setTimeout(() => {
         try {
           const results = axios
-          .put(`http://localhost:5000/api/tloan/submitEditedDraft/${TLoanID}`, {
-            type,
-            company,
-            purpose,
-            applicationdate,
-            duration,
-            requireddate,
-            email,
-            collection,
-            items,
-            })
+            .put(
+              `http://localhost:5000/api/tloan/submitEditedDraft/${TLoanID}`,
+              {
+                type,
+                company,
+                purpose,
+                applicationdate,
+                duration,
+                requireddate,
+                email,
+                collection,
+                items,
+              }
+            )
             .then(() => {
-            
               Toast.fire({
                 icon: "success",
                 title: "TLoan Successfully Submitted",
@@ -712,22 +707,18 @@ export default function tloanDisplay() {
                 width: 700,
               });
               navigate("/tloan");
-              setIsEditable(false)
-              setTLoanIDGlobal(null)
-              
-              
+              setIsEditable(false);
+              setTLoanIDGlobal(null);
             });
-            emptyCart()
+          emptyCart();
           console.log(results);
         } catch (error) {
           console.log(error.response);
           setSubmitLoading(false);
         }
       }, 500);
-      
-     
     }
-  }
+  };
   const DraftLoan = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -752,27 +743,26 @@ export default function tloanDisplay() {
       setEmailErrorText("Invalid Email");
       setLoading(false);
     }
-    if (
-      company !== "" &&
-      email !== "" &&
-      email.match(emailRegex)
-    ) {
+    if (company !== "" && email !== "" && email.match(emailRegex)) {
       setTimeout(() => {
         try {
           const results = axios
-            .put(`http://localhost:5000/api/tloan/draftEditedDraft/${TLoanID}`, {
-              type,
-              company,
-              name,
-              purpose,
-              applicationdate,
-              duration,
-              requireddate,
-              user,
-              email,
-              collection,
-              items,
-            })
+            .put(
+              `http://localhost:5000/api/tloan/draftEditedDraft/${TLoanID}`,
+              {
+                type,
+                company,
+                name,
+                purpose,
+                applicationdate,
+                duration,
+                requireddate,
+                user,
+                email,
+                collection,
+                items,
+              }
+            )
             .then(() => {
               Toast.fire({
                 icon: "info",
@@ -782,20 +772,16 @@ export default function tloanDisplay() {
                 width: 700,
               });
               navigate("/tloan");
-              setIsEditable(false)
-              setTLoanIDGlobal(null)
-              
+              setIsEditable(false);
+              setTLoanIDGlobal(null);
             });
-            emptyCart()
+          emptyCart();
           console.log(results);
         } catch (error) {
           console.log(error.response);
           setSubmitLoading(false);
-        
         }
       }, 500);
-     
-    
     }
   };
   const getData = () => {
@@ -949,8 +935,7 @@ export default function tloanDisplay() {
                           paddingRight: 4,
                         }}
                         onClick={() => navigate(-1)}
-                        startIcon={<ArrowBackIosNewIcon/>}
-                        
+                        startIcon={<ArrowBackIosNewIcon />}
                       >
                         Back
                       </Button>
@@ -992,182 +977,178 @@ export default function tloanDisplay() {
             <h2>Edit Loan Draft</h2>
             {FullFeaturedCrudGrid()}
             {/* <form onSubmit={submitLoan} style={{ width: "100%" }}> */}
-              <Box sx={{ marginTop: 1, display: "flex", marginLeft: 2 }}>
-                <TextField
+            <Box sx={{ marginTop: 1, display: "flex", marginLeft: 2 }}>
+              <TextField
+                id="outlined-basic"
+                label="Employee Name"
+                variant="outlined"
+                size="small"
+                value={name}
+                disabled
+              />
+
+              <TextField
+                id="outlined-basic"
+                label="Customer Email"
+                variant="outlined"
+                size="small"
+                name="customerEmail"
+                sx={{ marginLeft: 3 }}
+                // defaultValue={loans.CustomerEmail}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                error={emailError}
+                helperText={emailErrorText}
+              />
+
+              <FormControl sx={{ width: 200, marginLeft: 3 }}>
+                <InputLabel>Customer Company</InputLabel>
+                <Select
                   id="outlined-basic"
-                  label="Employee Name"
-                  variant="outlined"
+                  value={company}
+                  onChange={handleChangeCompany}
                   size="small"
-                  value={name}
-                  disabled
-                />
-
-                <TextField
-                  id="outlined-basic"
-                  label="Customer Email"
-                  variant="outlined"
-                  size="small"
-                  name="customerEmail"
-                  sx={{ marginLeft: 3 }}
-                  // defaultValue={loans.CustomerEmail}
-                  value={ email }
-                  onChange={(e) => setEmail(e.target.value)}
-                  error={emailError}
-                  helperText={emailErrorText}
-                />
-
-                <FormControl sx={{ width: 200, marginLeft: 3 }}>
-                  <InputLabel>Customer Company</InputLabel>
-                  <Select
-                    id="outlined-basic"
-                    value={company}
-                    onChange={handleChangeCompany}
-                    size="small"
-                    label="Customer Company"
-                  >
-                    <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
-                    <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
-                    <MenuItem value={"3"}>DIRAK181025</MenuItem>
-                    <MenuItem value={"4"}>PMC_LIVE</MenuItem>
-                    <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
-                    <MenuItem value={"6"}>ALL</MenuItem>
-                  </Select>
-                  <FormHelperText sx={{ color: "#d11919" }}>
-                    {companyErrorText}
-                  </FormHelperText>
-                </FormControl>
-                <FormControl sx={{ width: 200, marginLeft: 3 }}>
-                  <InputLabel>Duration</InputLabel>
-                  <Select
-                    id="outlined-basic"
-                    value={duration}
-                    onChange={handleChangeDuration}
-                    label="Duration"
-                    size="small"
-                 
-                  >
-                    {loanDuration.map((element) => {
-                      const [[key, val]] = Object.entries(element);
-                      return (
-                        <MenuItem value={val} key={key}>
-                          {key}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                  <FormHelperText sx={{ color: "#d11919" }}>
-                    {durationErrorText}
-                  </FormHelperText>
-                </FormControl>
-              </Box>
-
-              <Box sx={{ display: "flex" }}>
-                <TextField
-                  sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
-                  multiline
-                  rows={4}
-                  label="Purpose"
-                  value={purpose}
-                  onChange={(e) => setPurpose(e.target.value)}
-                  error={purposeError}
-                  helperText={purposeErrorText}
-                ></TextField>
-              </Box>
-              <Box sx={{ marginLeft: 2, display: "flex" }}>
-                {/* Collection */}
-                <FormControl sx={{ width: 200, marginTop: 2 }}>
-                  <InputLabel>Collection Type</InputLabel>
-                  <Select
-                    id="outlined-basic"
-                    value={collection}
-                    onChange={handleChangeCollection}
-                    label="Collection Type"
-                    size="small"
-                  >
-                   
-                    <MenuItem value={"Self-Collection"}>
-                      Self-Collection
-                    </MenuItem>
-                    <MenuItem value={"Delivery"}>Delivery</MenuItem>
-                  </Select>
-                  <FormHelperText sx={{ color: "#d11919" }}>
-                    {collectionErrorText}
-                  </FormHelperText>
-                </FormControl>
-
-                {/* Type */}
-                <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
-                  <InputLabel>Loan Type</InputLabel>
-                  <Select
-                    id="outlined-basic"
-                    value={type}
-                    onChange={handleChangeType}
-                    label="Loan Type"
-                    size="small"
-                  >
-                    <MenuItem value={"1"}>Internal</MenuItem>
-                    {/* <MenuItem value={"2"}>External</MenuItem> */}
-                  </Select>
-                  <FormHelperText sx={{ color: "#d11919" }}>
-                    {typeErrorText}
-                  </FormHelperText>
-                </FormControl>
-
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <Stack>
-                    <DesktopDatePicker
-                      label="Required Date"
-                      inputFormat="yyyy-MM-dd"
-                      value={dateForm}
-                      onClose={() => {
-                        if (requireddate === "") {
-                          setRDateError(true);
-                          setRDateErrorText("Select a date");
-                        }
-                      }}
-                      onChange={handleChangeRequiredDate}
-                      renderInput={(params) => (
-                        <TextField
-                          size="small"
-                          {...params}
-                          sx={{ width: 200, marginLeft: 3, marginTop: 2 }}
-                        />
-                      )}
-                    />
-                  </Stack>
-                </LocalizationProvider>
-              </Box>
-
-              <Box
-                component="span"
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                sx={{ paddingTop: 2 }}
-              >
-                <motion.div
-                  className="animatable"
-                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                  whileTap={{ scale: 0.9 }}
+                  label="Customer Company"
                 >
-                  <Button
-                    size="small"
-                    variant="contained"
-                    sx={{
-                      color: "white",
-                      backgroundColor: "#063970",
-                      width: 150,
-                      height: 50,
-                      borderRadius: 10,
-                      paddingRight: 4,
+                  <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
+                  <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
+                  <MenuItem value={"3"}>DIRAK181025</MenuItem>
+                  <MenuItem value={"4"}>PMC_LIVE</MenuItem>
+                  <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
+                  <MenuItem value={"6"}>ALL</MenuItem>
+                </Select>
+                <FormHelperText sx={{ color: "#d11919" }}>
+                  {companyErrorText}
+                </FormHelperText>
+              </FormControl>
+              <FormControl sx={{ width: 200, marginLeft: 3 }}>
+                <InputLabel>Duration</InputLabel>
+                <Select
+                  id="outlined-basic"
+                  value={duration}
+                  onChange={handleChangeDuration}
+                  label="Duration"
+                  size="small"
+                >
+                  {loanDuration.map((element) => {
+                    const [[key, val]] = Object.entries(element);
+                    return (
+                      <MenuItem value={val} key={key}>
+                        {key}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+                <FormHelperText sx={{ color: "#d11919" }}>
+                  {durationErrorText}
+                </FormHelperText>
+              </FormControl>
+            </Box>
+
+            <Box sx={{ display: "flex" }}>
+              <TextField
+                sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
+                multiline
+                rows={4}
+                label="Purpose"
+                value={purpose}
+                onChange={(e) => setPurpose(e.target.value)}
+                error={purposeError}
+                helperText={purposeErrorText}
+              ></TextField>
+            </Box>
+            <Box sx={{ marginLeft: 2, display: "flex" }}>
+              {/* Collection */}
+              <FormControl sx={{ width: 200, marginTop: 2 }}>
+                <InputLabel>Collection Type</InputLabel>
+                <Select
+                  id="outlined-basic"
+                  value={collection}
+                  onChange={handleChangeCollection}
+                  label="Collection Type"
+                  size="small"
+                >
+                  <MenuItem value={"Self-Collection"}>Self-Collection</MenuItem>
+                  <MenuItem value={"Delivery"}>Delivery</MenuItem>
+                </Select>
+                <FormHelperText sx={{ color: "#d11919" }}>
+                  {collectionErrorText}
+                </FormHelperText>
+              </FormControl>
+
+              {/* Type */}
+              <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+                <InputLabel>Loan Type</InputLabel>
+                <Select
+                  id="outlined-basic"
+                  value={type}
+                  onChange={handleChangeType}
+                  label="Loan Type"
+                  size="small"
+                >
+                  <MenuItem value={"1"}>Internal</MenuItem>
+                  {/* <MenuItem value={"2"}>External</MenuItem> */}
+                </Select>
+                <FormHelperText sx={{ color: "#d11919" }}>
+                  {typeErrorText}
+                </FormHelperText>
+              </FormControl>
+
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Stack>
+                  <DesktopDatePicker
+                    label="Required Date"
+                    inputFormat="yyyy-MM-dd"
+                    value={dateForm}
+                    onClose={() => {
+                      if (requireddate === "") {
+                        setRDateError(true);
+                        setRDateErrorText("Select a date");
+                      }
                     }}
-                    onClick={() => navigate(-1)}
-                    startIcon={<ArrowBackIosNewIcon />}
-                  >
-                    Back
-                  </Button>
-                </motion.div>
-                <Box display="flex" >
+                    onChange={handleChangeRequiredDate}
+                    renderInput={(params) => (
+                      <TextField
+                        size="small"
+                        {...params}
+                        sx={{ width: 200, marginLeft: 3, marginTop: 2 }}
+                      />
+                    )}
+                  />
+                </Stack>
+              </LocalizationProvider>
+            </Box>
+
+            <Box
+              component="span"
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{ paddingTop: 2 }}
+            >
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                    paddingRight: 4,
+                  }}
+                  onClick={() => navigate(-1)}
+                  startIcon={<ArrowBackIosNewIcon />}
+                >
+                  Back
+                </Button>
+              </motion.div>
+              <Box display="flex">
                 <motion.div
                   className="animatable"
                   whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
@@ -1184,62 +1165,62 @@ export default function tloanDisplay() {
                       borderRadius: 10,
                       marginRight: 10,
                     }}
-                    endIcon={<CancelIcon/>}
+                    endIcon={<CancelIcon />}
                     onClick={() => setInitial()}
                   >
                     Cancel Edit
                   </LoadingButton>
                 </motion.div>
-                  <motion.div
-                    className="animatable"
-                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                    whileTap={{ scale: 0.9 }}
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <LoadingButton
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#063970",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                      marginRight: 10,
+                    }}
+                    loading={loading}
+                    loadingPosition="end"
+                    onClick={DraftLoan}
+                    endIcon={<SaveAsIcon />}
                   >
-                    <LoadingButton
-                      size="small"
-                      variant="contained"
-                      sx={{
-                        color: "white",
-                        backgroundColor: "#063970",
-                        width: 150,
-                        height: 50,
-                        borderRadius: 10,
-                        marginRight: 10,
-                      }}
-                      loading={loading}
-                      loadingPosition="end"
-                      onClick={DraftLoan}
-                      endIcon={<SaveAsIcon />}
-                    >
-                      Save Draft
-                    </LoadingButton>
-                  </motion.div>
-                  <motion.div
-                    className="animatable"
-                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                    whileTap={{ scale: 0.9 }}
+                    Save Draft
+                  </LoadingButton>
+                </motion.div>
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <LoadingButton
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#31A961",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                    }}
+                    loading={submitLoading}
+                    loadingPosition="end"
+                    endIcon={<DoneAllIcon />}
+                    onClick={submitLoan}
+                    // onClick={submitLoan}
                   >
-                    <LoadingButton
-                      size="small"
-                      variant="contained"
-                      sx={{
-                        color: "white",
-                        backgroundColor: "#31A961",
-                        width: 150,
-                        height: 50,
-                        borderRadius: 10,
-                      }}
-                      loading={submitLoading}
-                      loadingPosition="end"
-                      endIcon={<DoneAllIcon />}
-                      onClick={submitLoan}
-                      // onClick={submitLoan}
-                    >
-                      Submit
-                    </LoadingButton>
-                  </motion.div>
-                </Box>
+                    Submit
+                  </LoadingButton>
+                </motion.div>
               </Box>
+            </Box>
             {/* </form> */}
           </CardContent>
         </Card>
@@ -1273,182 +1254,178 @@ export default function tloanDisplay() {
             <h2>Edit Loan Draft</h2>
             {FullFeaturedCrudGrid()}
             {/* <form onSubmit={submitLoan} style={{ width: "100%" }}> */}
-              <Box sx={{ marginTop: 1, display: "flex", marginLeft: 2 }}>
-                <TextField
+            <Box sx={{ marginTop: 1, display: "flex", marginLeft: 2 }}>
+              <TextField
+                id="outlined-basic"
+                label="Employee Name"
+                variant="outlined"
+                size="small"
+                value={name}
+                disabled
+              />
+
+              <TextField
+                id="outlined-basic"
+                label="Customer Email"
+                variant="outlined"
+                size="small"
+                name="customerEmail"
+                sx={{ marginLeft: 3 }}
+                // defaultValue={loans.CustomerEmail}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                error={emailError}
+                helperText={emailErrorText}
+              />
+
+              <FormControl sx={{ width: 200, marginLeft: 3 }}>
+                <InputLabel>Customer Company</InputLabel>
+                <Select
                   id="outlined-basic"
-                  label="Employee Name"
-                  variant="outlined"
+                  value={company}
+                  onChange={handleChangeCompany}
                   size="small"
-                  value={name}
-                  disabled
-                />
-
-                <TextField
-                  id="outlined-basic"
-                  label="Customer Email"
-                  variant="outlined"
-                  size="small"
-                  name="customerEmail"
-                  sx={{ marginLeft: 3 }}
-                  // defaultValue={loans.CustomerEmail}
-                  value={ email }
-                  onChange={(e) => setEmail(e.target.value)}
-                  error={emailError}
-                  helperText={emailErrorText}
-                />
-
-                <FormControl sx={{ width: 200, marginLeft: 3 }}>
-                  <InputLabel>Customer Company</InputLabel>
-                  <Select
-                    id="outlined-basic"
-                    value={company}
-                    onChange={handleChangeCompany}
-                    size="small"
-                    label="Customer Company"
-                  >
-                    <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
-                    <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
-                    <MenuItem value={"3"}>DIRAK181025</MenuItem>
-                    <MenuItem value={"4"}>PMC_LIVE</MenuItem>
-                    <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
-                    <MenuItem value={"6"}>ALL</MenuItem>
-                  </Select>
-                  <FormHelperText sx={{ color: "#d11919" }}>
-                    {companyErrorText}
-                  </FormHelperText>
-                </FormControl>
-                <FormControl sx={{ width: 200, marginLeft: 3 }}>
-                  <InputLabel>Duration</InputLabel>
-                  <Select
-                    id="outlined-basic"
-                    value={duration}
-                    onChange={handleChangeDuration}
-                    label="Duration"
-                    size="small"
-                 
-                  >
-                    {loanDuration.map((element) => {
-                      const [[key, val]] = Object.entries(element);
-                      return (
-                        <MenuItem value={val} key={key}>
-                          {key}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                  <FormHelperText sx={{ color: "#d11919" }}>
-                    {durationErrorText}
-                  </FormHelperText>
-                </FormControl>
-              </Box>
-
-              <Box sx={{ display: "flex" }}>
-                <TextField
-                  sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
-                  multiline
-                  rows={4}
-                  label="Purpose"
-                  value={purpose}
-                  onChange={(e) => setPurpose(e.target.value)}
-                  error={purposeError}
-                  helperText={purposeErrorText}
-                ></TextField>
-              </Box>
-              <Box sx={{ marginLeft: 2, display: "flex" }}>
-                {/* Collection */}
-                <FormControl sx={{ width: 200, marginTop: 2 }}>
-                  <InputLabel>Collection Type</InputLabel>
-                  <Select
-                    id="outlined-basic"
-                    value={collection}
-                    onChange={handleChangeCollection}
-                    label="Collection Type"
-                    size="small"
-                  >
-                   
-                    <MenuItem value={"Self-Collection"}>
-                      Self-Collection
-                    </MenuItem>
-                    <MenuItem value={"Delivery"}>Delivery</MenuItem>
-                  </Select>
-                  <FormHelperText sx={{ color: "#d11919" }}>
-                    {collectionErrorText}
-                  </FormHelperText>
-                </FormControl>
-
-                {/* Type */}
-                <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
-                  <InputLabel>Loan Type</InputLabel>
-                  <Select
-                    id="outlined-basic"
-                    value={type}
-                    onChange={handleChangeType}
-                    label="Loan Type"
-                    size="small"
-                  >
-                    <MenuItem value={"1"}>Internal</MenuItem>
-                    <MenuItem value={"2"}>External</MenuItem>
-                  </Select>
-                  <FormHelperText sx={{ color: "#d11919" }}>
-                    {typeErrorText}
-                  </FormHelperText>
-                </FormControl>
-
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <Stack>
-                    <DesktopDatePicker
-                      label="Required Date"
-                      inputFormat="yyyy-MM-dd"
-                      value={dateForm}
-                      onClose={() => {
-                        if (requireddate === "") {
-                          setRDateError(true);
-                          setRDateErrorText("Select a date");
-                        }
-                      }}
-                      onChange={handleChangeRequiredDate}
-                      renderInput={(params) => (
-                        <TextField
-                          size="small"
-                          {...params}
-                          sx={{ width: 200, marginLeft: 3, marginTop: 2 }}
-                        />
-                      )}
-                    />
-                  </Stack>
-                </LocalizationProvider>
-              </Box>
-
-              <Box
-                component="span"
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                sx={{ paddingTop: 2 }}
-              >
-                <motion.div
-                  className="animatable"
-                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                  whileTap={{ scale: 0.9 }}
+                  label="Customer Company"
                 >
-                  <Button
-                    size="small"
-                    variant="contained"
-                    sx={{
-                      color: "white",
-                      backgroundColor: "#063970",
-                      width: 150,
-                      height: 50,
-                      borderRadius: 10,
-                      paddingRight: 4,
+                  <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
+                  <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
+                  <MenuItem value={"3"}>DIRAK181025</MenuItem>
+                  <MenuItem value={"4"}>PMC_LIVE</MenuItem>
+                  <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
+                  <MenuItem value={"6"}>ALL</MenuItem>
+                </Select>
+                <FormHelperText sx={{ color: "#d11919" }}>
+                  {companyErrorText}
+                </FormHelperText>
+              </FormControl>
+              <FormControl sx={{ width: 200, marginLeft: 3 }}>
+                <InputLabel>Duration</InputLabel>
+                <Select
+                  id="outlined-basic"
+                  value={duration}
+                  onChange={handleChangeDuration}
+                  label="Duration"
+                  size="small"
+                >
+                  {loanDuration.map((element) => {
+                    const [[key, val]] = Object.entries(element);
+                    return (
+                      <MenuItem value={val} key={key}>
+                        {key}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+                <FormHelperText sx={{ color: "#d11919" }}>
+                  {durationErrorText}
+                </FormHelperText>
+              </FormControl>
+            </Box>
+
+            <Box sx={{ display: "flex" }}>
+              <TextField
+                sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
+                multiline
+                rows={4}
+                label="Purpose"
+                value={purpose}
+                onChange={(e) => setPurpose(e.target.value)}
+                error={purposeError}
+                helperText={purposeErrorText}
+              ></TextField>
+            </Box>
+            <Box sx={{ marginLeft: 2, display: "flex" }}>
+              {/* Collection */}
+              <FormControl sx={{ width: 200, marginTop: 2 }}>
+                <InputLabel>Collection Type</InputLabel>
+                <Select
+                  id="outlined-basic"
+                  value={collection}
+                  onChange={handleChangeCollection}
+                  label="Collection Type"
+                  size="small"
+                >
+                  <MenuItem value={"Self-Collection"}>Self-Collection</MenuItem>
+                  <MenuItem value={"Delivery"}>Delivery</MenuItem>
+                </Select>
+                <FormHelperText sx={{ color: "#d11919" }}>
+                  {collectionErrorText}
+                </FormHelperText>
+              </FormControl>
+
+              {/* Type */}
+              <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+                <InputLabel>Loan Type</InputLabel>
+                <Select
+                  id="outlined-basic"
+                  value={type}
+                  onChange={handleChangeType}
+                  label="Loan Type"
+                  size="small"
+                >
+                  <MenuItem value={"1"}>Internal</MenuItem>
+                  <MenuItem value={"2"}>External</MenuItem>
+                </Select>
+                <FormHelperText sx={{ color: "#d11919" }}>
+                  {typeErrorText}
+                </FormHelperText>
+              </FormControl>
+
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Stack>
+                  <DesktopDatePicker
+                    label="Required Date"
+                    inputFormat="yyyy-MM-dd"
+                    value={dateForm}
+                    onClose={() => {
+                      if (requireddate === "") {
+                        setRDateError(true);
+                        setRDateErrorText("Select a date");
+                      }
                     }}
-                    onClick={() => navigate(-1)}
-                    startIcon={<ArrowBackIosNewIcon />}
-                  >
-                    Back
-                  </Button>
-                </motion.div>
-                <Box display="flex" >
+                    onChange={handleChangeRequiredDate}
+                    renderInput={(params) => (
+                      <TextField
+                        size="small"
+                        {...params}
+                        sx={{ width: 200, marginLeft: 3, marginTop: 2 }}
+                      />
+                    )}
+                  />
+                </Stack>
+              </LocalizationProvider>
+            </Box>
+
+            <Box
+              component="span"
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{ paddingTop: 2 }}
+            >
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                    paddingRight: 4,
+                  }}
+                  onClick={() => navigate(-1)}
+                  startIcon={<ArrowBackIosNewIcon />}
+                >
+                  Back
+                </Button>
+              </motion.div>
+              <Box display="flex">
                 <motion.div
                   className="animatable"
                   whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
@@ -1465,62 +1442,62 @@ export default function tloanDisplay() {
                       borderRadius: 10,
                       marginRight: 10,
                     }}
-                    endIcon={<CancelIcon/>}
+                    endIcon={<CancelIcon />}
                     onClick={() => setInitial()}
                   >
                     Cancel Edit
                   </LoadingButton>
                 </motion.div>
-                  <motion.div
-                    className="animatable"
-                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                    whileTap={{ scale: 0.9 }}
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <LoadingButton
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#063970",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                      marginRight: 10,
+                    }}
+                    loading={loading}
+                    loadingPosition="end"
+                    onClick={DraftLoan}
+                    endIcon={<SaveAsIcon />}
                   >
-                    <LoadingButton
-                      size="small"
-                      variant="contained"
-                      sx={{
-                        color: "white",
-                        backgroundColor: "#063970",
-                        width: 150,
-                        height: 50,
-                        borderRadius: 10,
-                        marginRight: 10,
-                      }}
-                      loading={loading}
-                      loadingPosition="end"
-                      onClick={DraftLoan}
-                      endIcon={<SaveAsIcon />}
-                    >
-                      Save Draft
-                    </LoadingButton>
-                  </motion.div>
-                  <motion.div
-                    className="animatable"
-                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                    whileTap={{ scale: 0.9 }}
+                    Save Draft
+                  </LoadingButton>
+                </motion.div>
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <LoadingButton
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#31A961",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                    }}
+                    loading={submitLoading}
+                    loadingPosition="end"
+                    endIcon={<DoneAllIcon />}
+                    onClick={submitLoan}
+                    // onClick={submitLoan}
                   >
-                    <LoadingButton
-                      size="small"
-                      variant="contained"
-                      sx={{
-                        color: "white",
-                        backgroundColor: "#31A961",
-                        width: 150,
-                        height: 50,
-                        borderRadius: 10,
-                      }}
-                      loading={submitLoading}
-                      loadingPosition="end"
-                      endIcon={<DoneAllIcon />}
-                      onClick={submitLoan}
-                      // onClick={submitLoan}
-                    >
-                      Submit
-                    </LoadingButton>
-                  </motion.div>
-                </Box>
+                    Submit
+                  </LoadingButton>
+                </motion.div>
               </Box>
+            </Box>
             {/* </form> */}
           </CardContent>
         </Card>
@@ -1533,12 +1510,12 @@ export default function tloanDisplay() {
       .then(() => {
         Toast.fire({
           icon: "success",
-          title: "Request For TLoan " +"#" + TLoanID + " Has Been Approved",
+          title: "Request For TLoan " + "#" + TLoanID + " Has Been Approved",
           customClass: "swalpopup",
           timer: 2000,
           width: 700,
         });
-        navigate("/tloan")
+        navigate("/tloan");
       })
       .catch((error) => {
         console.error("There was an error!", error);
@@ -1547,15 +1524,16 @@ export default function tloanDisplay() {
   const ApproveExtension = async () => {
     axios
       .put(`http://localhost:5000/api/tloan/approveExtension/${TLoanID}`)
-      .then(() =>{
-      Toast.fire({
-        icon: "success",
-        title: "Extension For TLoan " +"#" + TLoanID + " Has Been Approved",
-        customClass: "swalpopup",
-        timer: 2000,
-        width: 700,
-      });
-      navigate("/tloan")})
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: "Extension For TLoan " + "#" + TLoanID + " Has Been Approved",
+          customClass: "swalpopup",
+          timer: 2000,
+          width: 700,
+        });
+        navigate("/tloan");
+      })
       .catch((error) => {
         console.error("There was an error!", error);
       });
@@ -1570,35 +1548,41 @@ export default function tloanDisplay() {
     setName(Employee);
   });
 
-  useEffect(()=>{
-    if(loans.CustomerEmail !== ''){
-      (e) => setEmail(e.target.value)
-
-    }if (loans.CompanyID !== ''){
-      setCompany(loans.CompanyID)
-
-    }if (loans.Duration !== null){
-      setCompany(loans.Duration)
-
-    }if (loans.Purpose !== ''){
-      setPurpose(loans.Purpose)
-
-    }if (loans.Collection !== ''){
-      setCollection(loans.Collection)
-
-    }if (loans.TLoanType !== ''){
-      setType(loans.TLoanType)
-
-    }if (loans.StartDate !==''){
-      setRDate(loans.RequiredDate)
+  useEffect(() => {
+    if (loans.CustomerEmail !== "") {
+      (e) => setEmail(e.target.value);
     }
-
-  }, [])
-  console.log(loans.TLoanExtensionStatusID)
-  if (loans.TLoanStatusID === 3 || loans.TLoanStatusID === 5 || loans.TLoanStatusID === 6 || loans.TLoanStatusID === 7){
-    if(InternalApplicationPerms == true || ExternalApplicationPerms == true){
+    if (loans.CompanyID !== "") {
+      setCompany(loans.CompanyID);
+    }
+    if (loans.Duration !== null) {
+      setCompany(loans.Duration);
+    }
+    if (loans.Purpose !== "") {
+      setPurpose(loans.Purpose);
+    }
+    if (loans.Collection !== "") {
+      setCollection(loans.Collection);
+    }
+    if (loans.TLoanType !== "") {
+      setType(loans.TLoanType);
+    }
+    if (loans.StartDate !== "") {
+      setRDate(loans.RequiredDate);
+    }
+  }, []);
+  console.log(loans.TLoanExtensionStatusID);
+  if (
+    loans.TLoanStatusID === 3 ||
+    loans.TLoanStatusID === 5 ||
+    loans.TLoanStatusID === 6 ||
+    loans.TLoanStatusID === 7
+  ) {
+    if (InternalApplicationPerms == true || ExternalApplicationPerms == true) {
       return (
-        <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
+        <Box
+          sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}
+        >
           <Box sx={{ display: "flex", height: "100%" }}>
             <Box sx={{ flexGrow: 1 }}>
               <Card>
@@ -1669,7 +1653,7 @@ export default function tloanDisplay() {
                           readOnly: true,
                         }}
                         variant="filled"
-                       value={purposeField}
+                        value={purposeField}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -1726,7 +1710,10 @@ export default function tloanDisplay() {
                     >
                       <motion.div
                         className="animatable"
-                        whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                        whileHover={{
+                          scale: 1.1,
+                          transition: { duration: 0.3 },
+                        }}
                         whileTap={{ scale: 0.9 }}
                       >
                         <Button
@@ -1754,9 +1741,11 @@ export default function tloanDisplay() {
           </Box>
         </Box>
       );
-    }else if(AdminViewPerms == true){
+    } else if (AdminViewPerms == true) {
       return (
-        <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
+        <Box
+          sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}
+        >
           <Box sx={{ display: "flex", height: "100%" }}>
             <Box sx={{ flexGrow: 1 }}>
               <Card>
@@ -1827,7 +1816,7 @@ export default function tloanDisplay() {
                           readOnly: true,
                         }}
                         variant="filled"
-                       value={purposeField}
+                        value={purposeField}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -1884,7 +1873,10 @@ export default function tloanDisplay() {
                     >
                       <motion.div
                         className="animatable"
-                        whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                        whileHover={{
+                          scale: 1.1,
+                          transition: { duration: 0.3 },
+                        }}
                         whileTap={{ scale: 0.9 }}
                       >
                         <LoadingButton
@@ -1897,9 +1889,9 @@ export default function tloanDisplay() {
                             width: 150,
                             height: 50,
                             borderRadius: 10,
-                            paddingRight : 4
+                            paddingRight: 4,
                           }}
-                          startIcon={<ArrowBackIosNewIcon/>}
+                          startIcon={<ArrowBackIosNewIcon />}
                           onClick={() => navigate(-1)}
                         >
                           Back
@@ -1913,9 +1905,11 @@ export default function tloanDisplay() {
           </Box>
         </Box>
       );
-    }else if( WarehouseViewPerms == true){
+    } else if (WarehouseViewPerms == true) {
       return (
-        <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
+        <Box
+          sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}
+        >
           <Box sx={{ display: "flex", height: "100%" }}>
             <Box sx={{ flexGrow: 1 }}>
               <Card>
@@ -2045,9 +2039,9 @@ export default function tloanDisplay() {
                             width: 150,
                             height: 50,
                             borderRadius: 10,
-                            paddingRight:4
+                            paddingRight: 4,
                           }}
-                          startIcon={<ArrowBackIosNewIcon/>}
+                          startIcon={<ArrowBackIosNewIcon />}
                           onClick={() => navigate("/tloan")}
                         >
                           Back
@@ -2062,12 +2056,12 @@ export default function tloanDisplay() {
         </Box>
       );
     }
-    
-
-  }else if(loans.TLoanStatusID === 4){
-    if( ApprovalLoanPerms == true ){
+  } else if (loans.TLoanStatusID === 4) {
+    if (ApprovalLoanPerms == true) {
       return (
-        <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
+        <Box
+          sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}
+        >
           <Box sx={{ display: "flex", height: "100%" }}>
             <Box sx={{ flexGrow: 1 }}>
               <Card>
@@ -2137,7 +2131,7 @@ export default function tloanDisplay() {
                         InputProps={{
                           readOnly: true,
                         }}
-                        label ="Purpose"
+                        label="Purpose"
                         variant="filled"
                         value={purposeField}
                       />
@@ -2206,9 +2200,9 @@ export default function tloanDisplay() {
                             width: 150,
                             height: 50,
                             borderRadius: 10,
-                            paddingRight: 4
+                            paddingRight: 4,
                           }}
-                          startIcon={<ArrowBackIosNewIcon/>}
+                          startIcon={<ArrowBackIosNewIcon />}
                           onClick={() => navigate("/tloan")}
                         >
                           Back
@@ -2236,7 +2230,7 @@ export default function tloanDisplay() {
                               marginRight: 5,
                               marginLeft: 4,
                             }}
-                            endIcon={<DoneIcon/>}
+                            endIcon={<DoneIcon />}
                             onClick={ApproveLoan}
                           >
                             Approve
@@ -2252,9 +2246,11 @@ export default function tloanDisplay() {
           </Box>
         </Box>
       );
-    }else
-    return(
-        <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
+    } else
+      return (
+        <Box
+          sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}
+        >
           <Box sx={{ display: "flex", height: "100%" }}>
             <Box sx={{ flexGrow: 1 }}>
               <Card>
@@ -2330,7 +2326,7 @@ export default function tloanDisplay() {
                           readOnly: true,
                         }}
                         variant="filled"
-                       value={purposeField}
+                        value={purposeField}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -2387,7 +2383,10 @@ export default function tloanDisplay() {
                     >
                       <motion.div
                         className="animatable"
-                        whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                        whileHover={{
+                          scale: 1.1,
+                          transition: { duration: 0.3 },
+                        }}
                         whileTap={{ scale: 0.9 }}
                       >
                         <Button
@@ -2414,26 +2413,13 @@ export default function tloanDisplay() {
           </Box>
         </Box>
       );
-
-  }else if(loans.TLoanStatusID === 1 ){
-    if(InternalApplicationPerms == true) {
-      return (
-        <>
-        {isEditable ? getCard(): getData() }
-        </>
-        
-      )
-    }else if (ExternalApplicationPerms == true){
-      return (
-        <>
-        {isEditable ? getCardExternal(): getData() }
-        </>
-        
-      )
+  } else if (loans.TLoanStatusID === 1) {
+    if (InternalApplicationPerms == true) {
+      return <>{isEditable ? getCard() : getData()}</>;
+    } else if (ExternalApplicationPerms == true) {
+      return <>{isEditable ? getCardExternal() : getData()}</>;
     }
-
-  
-  }else if (loans.TLoanStatusID === 8){
+  } else if (loans.TLoanStatusID === 8) {
     return (
       <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
         <Box sx={{ display: "flex", height: "100%" }}>
@@ -2506,7 +2492,7 @@ export default function tloanDisplay() {
                         readOnly: true,
                       }}
                       variant="filled"
-                     value={purposeField}
+                      value={purposeField}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -2576,9 +2562,9 @@ export default function tloanDisplay() {
                           width: 150,
                           height: 50,
                           borderRadius: 10,
-                          paddingRight: 4
+                          paddingRight: 4,
                         }}
-                        startIcon={<ArrowBackIosNewIcon/>}
+                        startIcon={<ArrowBackIosNewIcon />}
                         onClick={() => navigate(-1)}
                       >
                         Back
@@ -2592,7 +2578,7 @@ export default function tloanDisplay() {
         </Box>
       </Box>
     );
-  }else return null
+  } else return null;
   // if(loans.TLoanExtensionStatusID ===  1 ){
   //   if(ApprovalLoanPerms === true) {
   //     return (
@@ -2676,7 +2662,7 @@ export default function tloanDisplay() {
   //                       variant="filled"
   //                     />
   //                   </Grid>
-  
+
   //                   <Grid
   //                     item
   //                     xs={12}
@@ -2752,7 +2738,6 @@ export default function tloanDisplay() {
   //         </Box>
   //       </Box>
   //     );
-  //   } 
+  //   }
   // }
-
 }

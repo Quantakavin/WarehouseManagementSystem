@@ -11,7 +11,7 @@ import {
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
-  GridToolbarQuickFilter,
+  GridToolbarQuickFilter
 } from "@mui/x-data-grid";
 import axios from "axios";
 import { motion } from "framer-motion";
