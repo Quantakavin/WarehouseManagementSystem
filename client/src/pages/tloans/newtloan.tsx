@@ -42,6 +42,11 @@ import { useCart } from "react-use-cart";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { Toast } from "../../components/alerts/SweetAlert";
 import "./TLoanTable/table.css";
+import { useAppSelector } from "../../app/hooks";
+import {
+  selectPermissions,
+  selectRole,
+} from "../../app/reducers/CurrentUserSlice";
 
 function newtloan() {
   interface EditToolbarProps {
@@ -317,7 +322,14 @@ function newtloan() {
   const [emailErrorText, setEmailErrorText] = useState("");
   const [collectionErrorText, setCollectionErrorText] = useState("");
   const [rdateErrorText, setRDateErrorText] = useState("");
+  const permissions = useAppSelector(selectPermissions);
 
+  const ExternalApplication = permissions.some(
+    (e) => e.FeatureName === "T-Loan Application (Internal+External)"
+  );
+  const InternalApplication = permissions.some(
+    (e) => e.FeatureName === "T-Loan Application (Internal)"
+  );
   const [items, setItems] = useState([]);
   useEffect(() => {
     setItems(newProduct);
@@ -533,7 +545,60 @@ function newtloan() {
     setName(Employee);
   });
 
-  console.log(emailErrorText);
+ const TLoanTypeAccess = () =>{
+  if(ExternalApplication === true){
+    return(
+    <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+    <InputLabel>Loan Type</InputLabel>
+    <Select
+      id="outlined-basic"
+      value={type}
+      onChange={handleChangeType}
+      label="Loan Type"
+      size="small"
+      onBlur={() => {
+        if (type === "") {
+          setTypeError(true);
+          setTypeErrorText("Selection required");
+        }
+      }}
+      error={typeError}
+    >
+      <MenuItem value={"1"}>Internal</MenuItem>
+      <MenuItem value={"2"}>External</MenuItem>
+    </Select>
+    <FormHelperText sx={{ color: "#d11919" }}>
+      {typeErrorText}
+    </FormHelperText>
+  </FormControl>
+  )
+  }else if(InternalApplication === true){
+    return(
+      <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+      <InputLabel>Loan Type</InputLabel>
+      <Select
+        id="outlined-basic"
+        value={type}
+        onChange={handleChangeType}
+        label="Loan Type"
+        size="small"
+        onBlur={() => {
+          if (type === "") {
+            setTypeError(true);
+            setTypeErrorText("Selection required");
+          }
+        }}
+        error={typeError}
+      >
+        <MenuItem value={"1"}>Internal</MenuItem>
+      </Select>
+      <FormHelperText sx={{ color: "#d11919" }}>
+        {typeErrorText}
+      </FormHelperText>
+    </FormControl>
+    )
+  }else return null
+ }
 
   const getCard = () => {
     const loanDuration = [
@@ -701,29 +766,7 @@ function newtloan() {
                 </FormControl>
 
                 {/* Type */}
-                <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
-                  <InputLabel>Loan Type</InputLabel>
-                  <Select
-                    id="outlined-basic"
-                    value={type}
-                    onChange={handleChangeType}
-                    label="Loan Type"
-                    size="small"
-                    onBlur={() => {
-                      if (type === "") {
-                        setTypeError(true);
-                        setTypeErrorText("Selection required");
-                      }
-                    }}
-                    error={typeError}
-                  >
-                    <MenuItem value={"1"}>Internal</MenuItem>
-                    <MenuItem value={"2"}>External</MenuItem>
-                  </Select>
-                  <FormHelperText sx={{ color: "#d11919" }}>
-                    {typeErrorText}
-                  </FormHelperText>
-                </FormControl>
+              {TLoanTypeAccess()}
 
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <Stack>
