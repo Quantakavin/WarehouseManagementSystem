@@ -89,7 +89,7 @@ function newtloan() {
     // if (userrole !== "Sales Engineer") {
     //   navigate("/403");
     // }
-    if (ExternalApplication !== true || InternalApplication != true) {
+    if ((ExternalApplication || InternalApplication) !== true ) {
       navigate("/403");
     }
   }, []);
