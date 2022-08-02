@@ -31,9 +31,10 @@ const ForgetPassword: React.FC = () => {
         icon: "info",
         title: "Please check your email for the link to reset your password.",
         customClass: "swalpopup",
-        timer: 1500,
+        timer: 3000,
         width: 590,
       });
+      navigate("/");
     },
     onError: (data) => {
       controls.start("detecterror");
@@ -86,7 +87,7 @@ const ForgetPassword: React.FC = () => {
 
         <Link
           onClick={() => {
-            navigate("/login");
+            navigate("/");
           }}
           underline="hover"
           sx={{

@@ -16,7 +16,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 520,
+  width: "50%",
   bgcolor: "background.paper",
   border: "background.paper",
   boxShadow: 24,
@@ -31,7 +31,11 @@ export default function TLoanRejectModalButton() {
   const [remarksError, setRemarksError] = useState(false)
   const [remarksErrorText, setRemarksErrorText] = useState('')
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setRemarksError(false)
+    setRemarksErrorText("")
+    setOpen(false)
+  };
   const handleChange = (e) => {
     console.log(`Typed => ${e.target.value}`);
     setRemarks(e.target.value);
@@ -41,9 +45,16 @@ export default function TLoanRejectModalButton() {
   const handleConfirm = async (e) => {
     e.preventDefault()
     setRemarksError(false)
-    if(remarks ===''){
+    if(remarks === ''){
       setRemarksError(true)
-      setRemarksErrorText('Input Is Needed')
+      setRemarksErrorText('Please provide remarks')
+      Toast.fire({
+        icon: "error",
+        title: "Please provide remarks",
+        customClass: "swalpopup",
+        timer: 2000,
+        width: 350,
+      });
     }
     try {
     axios
@@ -108,8 +119,8 @@ export default function TLoanRejectModalButton() {
                   style={{
                     color: "#063970",
                     display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    // justifyContent: "center",
+                    // alignItems: "center",
                   }}
                 >
                   Rejecting Loan #{TLoanID}
@@ -123,7 +134,18 @@ export default function TLoanRejectModalButton() {
               variant="filled"
               multiline
               fullWidth
-              rows={8}
+              rows={15}
+              onBlur={() => {
+                if (remarks == "") {
+                  setRemarksError(true);
+                  setRemarksErrorText(
+                    "Please provide remarks"
+                  );
+                } else {
+                  setRemarksError(false);
+                  setRemarksErrorText("");
+                }
+              }}
               error={remarksError}
               helperText={remarksErrorText}
             />

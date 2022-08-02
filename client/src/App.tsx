@@ -45,6 +45,10 @@ import TLoanDraftDisplay from "./components/display/tloanDraftDisplay";
 import IsEditableProvider, {
   EditableContext,
 } from "./components/context/isEditableContext";
+import {Toast2 } from "./components/alerts/SweetAlert"
+
+// const context = useContext(EditableContext)
+// const {isEditable, TLoanIDGlobal} = context
 
 interface ProtectedRouteProps {
   loginpage: boolean;
@@ -70,11 +74,13 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ loginpage }) => {
 const App: React.FC = () => {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
+
   return (
     <>
       <IsEditableProvider>
         <header style={{ zIndex: 1500 }}>
           <TopNav />
+          {/* {isAuthenticated? isEditable?  <Toast2/> :null  : null} */}
         </header>
         <Box className="flexcontainer">
           {isAuthenticated ? <Sidebar2 /> : null}

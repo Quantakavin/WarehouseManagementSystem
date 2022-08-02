@@ -10,20 +10,33 @@ import * as React from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import DoneAllIcon from '@mui/icons-material/DoneAll';
-import CloseIcon from '@mui/icons-material/Close';
+import DoneAllIcon from "@mui/icons-material/DoneAll";
+import CloseIcon from "@mui/icons-material/Close";
+import { Toast } from "../alerts/SweetAlert";
+
+// const style = {
+//   position: "absolute" as "absolute",
+//   height: "40%",
+//   width: "30%",
+//   top: "50%",
+//   left: "50%",
+//   transform: "translate(-50%, -50%)",
+//   bgcolor: "background.paper",
+//   boxShadow: 24,
+//   p: 4,
+//   display: "block",
+// };
 
 const style = {
   position: "absolute" as "absolute",
-  height: "40%",
-  width: "30%",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
+  width: "50%",
   bgcolor: "background.paper",
+  border: "background.paper",
   boxShadow: 24,
   p: 4,
-  display: "block",
 };
 
 export default function RejectModalButton() {
@@ -31,9 +44,15 @@ export default function RejectModalButton() {
   const navigate = useNavigate();
   const [reason, setReason] = useState("");
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false);
+  const [errorText, setErrorText] = useState("");
+  const [loading, setLoading] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setError(false);
+    setErrorText("");
+    setOpen(false);
+  };
   const handleChange = (e) => {
     console.log(`Typed => ${e.target.value}`);
     setReason(e.target.value);
@@ -45,15 +64,38 @@ export default function RejectModalButton() {
 
   const handleConfirm = async () => {
     setLoading(true);
-    setTimeout(() => {
-      axios
-      .put(`http://localhost:5000/api/rejectRMA/${RmaID}`, rejectreason)
-      .then(() => navigate("/rma"))
-      .catch((error) => {
-        this.setState({ errorMessage: error.message });
-        console.error("There was an error!", error);
+    if (reason !== "") {
+      setTimeout(() => {
+        setLoading(false);
+        axios
+          .put(`http://localhost:5000/api/rejectRMA/${RmaID}`, rejectreason)
+          .then(() => {
+            Toast.fire({
+              icon: "success",
+              title: "RMA " + "#" + RmaID + " Has Been Rejected",
+              customClass: "swalpopup",
+              timer: 2000,
+              width: 700,
+            });
+            navigate("/rma");
+          })
+          .catch((error) => {
+            this.setState({ errorMessage: error.message });
+            console.error("There was an error!", error);
+          });
+      }, 500);
+    } else {
+      setError(true);
+      setErrorText("Please provide a reason for rejecting this RMA request");
+      Toast.fire({
+        icon: "error",
+        title: "Please provide a reason for rejection",
+        customClass: "swalpopup",
+        timer: 2000,
+        width: 450,
       });
-    }, 500)
+      setLoading(false);
+    }
   };
 
   return (
@@ -75,7 +117,7 @@ export default function RejectModalButton() {
           height: 50,
           borderRadius: 10,
         }}
-        endIcon={<CloseIcon/>}
+        endIcon={<CloseIcon />}
         onClick={handleOpen}
       >
         Reject
@@ -93,6 +135,16 @@ export default function RejectModalButton() {
       >
         <Fade in={open}>
           <Box sx={style}>
+            <h2
+              style={{
+                color: "#063970",
+                display: "flex",
+                // justifyContent: "center",
+                // alignItems: "center",
+              }}
+            >
+              Rejecting RMA #{RmaID}
+            </h2>
             <TextField
               value={reason}
               onChange={handleChange}
@@ -103,6 +155,19 @@ export default function RejectModalButton() {
               multiline
               fullWidth
               rows={15}
+              onBlur={() => {
+                if (reason == "") {
+                  setError(true);
+                  setErrorText(
+                    "Please provide a reason for rejecting this RMA request"
+                  );
+                } else {
+                  setError(false);
+                  setErrorText("");
+                }
+              }}
+              error={error}
+              helperText={errorText}
             />
             <Box
               component="span"
@@ -114,28 +179,28 @@ export default function RejectModalButton() {
                 paddingTop: 3.7,
               }}
             >
-            <motion.div
-              className="animatable"
-              whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <LoadingButton
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                  paddingRight: 4
-                }}
-                startIcon={<ArrowBackIosNewIcon/>}
-                onClick={handleClose}
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
               >
-                Back
-              </LoadingButton>
-            </motion.div>
+                <LoadingButton
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                    paddingRight: 4,
+                  }}
+                  startIcon={<ArrowBackIosNewIcon />}
+                  onClick={handleClose}
+                >
+                  Back
+                </LoadingButton>
+              </motion.div>
               <motion.div
                 whileHover={{
                   scale: 1.1,
@@ -155,7 +220,7 @@ export default function RejectModalButton() {
                   }}
                   loading={loading}
                   loadingPosition="end"
-                  endIcon={<DoneAllIcon/>}
+                  endIcon={<DoneAllIcon />}
                   onClick={handleConfirm}
                 >
                   Confirm

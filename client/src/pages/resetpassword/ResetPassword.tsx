@@ -61,7 +61,7 @@ const ResetToNewPassword: React.FC = () => {
         customClass: "swalpopup",
         timer: 3000,
       });
-      return navigate("/login", { replace: true });
+      navigate("/");
     },
     onError: (data) => {
       controls.start("detecterror");
@@ -133,7 +133,7 @@ const ResetToNewPassword: React.FC = () => {
 
         <Link
           onClick={() => {
-            navigate("/login");
+            navigate("/");
           }}
           underline="hover"
           sx={{

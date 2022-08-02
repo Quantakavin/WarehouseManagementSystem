@@ -125,6 +125,7 @@ const EditUserGroup: React.FC = () => {
           title: "User group updated successfully",
           customClass: "swalpopup",
           timer: 1500,
+          width: "400"
         });
         queryClient.invalidateQueries("usergroups");
         queryClient.invalidateQueries("filterusergroups");

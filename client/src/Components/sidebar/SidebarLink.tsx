@@ -8,6 +8,7 @@ import {
   tooltipClasses,
   TooltipProps,
 } from "@mui/material";
+import { motion } from "framer-motion";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -52,37 +53,43 @@ const SidebarLink: React.FC<SidebarLink> = ({ url, name, icon }) => {
       className="sidebartabcontainer"
       sx={{ background: currenttab === name ? "#3F4D65" : "transparent" }}
     >
-      <ListItemButton
-        // sx={{
-        //   minHeight: 48,
-        //   justifyContent: open ? "initial" : "center",
-        //   px: 2.5,
-        // }}
-        sx={{
-          flex: 1,
-          textAlign: isopen ? "left" : "center",
-        }}
+      <motion.div
+        className="animatable"
+        whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+        whileTap={{ scale: 0.9 }}
       >
-        <LightTooltip title={name}>
-          <ListItemIcon
-            sx={{ color: "#bfc3cb", marginLeft: "-2px" }}
-            // sx={{
-            //   minWidth: 0,
-            //   mr: open ? 3 : "auto",
-            //   justifyContent: "center",
-            // }}
-          >
-            {icon}
-          </ListItemIcon>
-        </LightTooltip>
-        {isopen ? (
-          <ListItemText
-            primary={name}
-            sx={{ marginLeft: "-20px" }}
-            // sx={{ opacity: isopen ? 1 : 0, marginLeft: "-20px" }}
-          />
-        ) : null}
-      </ListItemButton>
+        <ListItemButton
+          // sx={{
+          //   minHeight: 48,
+          //   justifyContent: open ? "initial" : "center",
+          //   px: 2.5,
+          // }}
+          sx={{
+            flex: 1,
+            textAlign: isopen ? "left" : "center",
+          }}
+        >
+          <LightTooltip title={name}>
+            <ListItemIcon
+              sx={{ color: "#bfc3cb", marginLeft: "-2px" }}
+              // sx={{
+              //   minWidth: 0,
+              //   mr: open ? 3 : "auto",
+              //   justifyContent: "center",
+              // }}
+            >
+              {icon}
+            </ListItemIcon>
+          </LightTooltip>
+          {isopen ? (
+            <ListItemText
+              primary={name}
+              sx={{ marginLeft: "-20px" }}
+              // sx={{ opacity: isopen ? 1 : 0, marginLeft: "-20px" }}
+            />
+          ) : null}
+        </ListItemButton>
+      </motion.div>
     </ListItem>
   );
 };

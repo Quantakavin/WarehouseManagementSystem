@@ -1,7 +1,6 @@
 import Cards from "../../components/cards/cards";
-import BarCharts from "../../components/charts/BarCharts";
+import BarAndPieCharts from "../../components/charts/BarAndPieCharts";
 import LineCharts from "../../components/charts/LineCharts";
-import PieCharts from "../../components/charts/PieCharts";
 import "../../styles/Dashboard.scss";
 
 import { Box, Grid } from "@mui/material";
@@ -36,10 +35,10 @@ function Dashboards() {
   // end of switch case
 
   return (
-    <Box sx={{ pl: 3, pr: 3, pt: 3 }}>
-      <Grid container spacing={4}>
+    <Box sx={{ pl: 3, pr: 3, pt: 1 }}>
+      <Grid container spacing={3}>
         <Grid item xs={12}>
-          <h1>
+          <h1 style={{marginBottom: 0}}>
             {localStorage.getItem("username")}'s Dashboard{""}
           </h1>
         </Grid>
@@ -47,16 +46,10 @@ function Dashboards() {
           <Cards />
         </Grid>
         <Grid item xs={12}>
-          <PieCharts title={undefined} dataKey={undefined} grid={undefined} />
+          <BarAndPieCharts title={undefined} dataKey={undefined} grid={undefined} />
         </Grid>
         <Grid item xs={12}>
           <LineCharts title={undefined} dataKey={undefined} grid={undefined} />
-        </Grid>
-        {/* <Grid item xs={6}>
-        <RMAChart title={undefined} dataKey={undefined} grid={undefined} />
-      </Grid> */}
-        <Grid item xs={12}>
-          <BarCharts title={undefined} dataKey={undefined} grid={undefined} />
         </Grid>
       </Grid>
     </Box>

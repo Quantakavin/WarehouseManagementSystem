@@ -42,7 +42,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dateFormat from "dateformat";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
-import { Toast } from "../../components/alerts/SweetAlert";
+import { Toast, Toast2 } from "../../components/alerts/SweetAlert";
 import "../../pages/tloans/TLoanTable/table.css";
 import { EditableContext } from '../../components/context/isEditableContext'
 import { useCart } from "react-use-cart";
@@ -89,20 +89,29 @@ export default function TLoanDraftDisplay() {
 
 const context = useContext(EditableContext)
 const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
+
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
       const loans = await axios.get(
         `http://localhost:5000/api/tloans/${TLoanID}`
-      );
-
-      setLoans(loans.data);
-
+      ).then((data)=>{
+        setEmail(data.data.CustomerEmail)
+        setPurpose(data.data.Purpose)
+        setDuration(data.data.Duration)
+        setCollection(data.data.Collection)
+        setDateForm(data.data.RequiredDate)
+        setCompany(data.data.CompanyID)
+        setType(data.data.TLoanTypeID)
+        setLoans(data.data)
+      })
+     
       // setLoan(Object.e)
     };
     // call the function
     fetchData()
+
       // make sure to catch any error
       .catch(console.error);
   }, []);
@@ -304,6 +313,13 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
       }  
       setIsEditable(!isEditable)
       setTLoanIDGlobal(TLoanID)
+      Toast2.fire({
+        icon: "info",
+        title:"You are currently editing " + "" + "Loan #" + TLoanID,
+        customClass: "swalpopup",
+        width: 500,
+      
+    })
 
     }
   
@@ -976,7 +992,7 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
       { "11 Months": "330" },
       { "12 Months": "365" },
     ];
-
+    console.log('the customer email is:' + loans.CustomerEmail)
     return (
       <div style={{ overflow: "auto" }}>
         <Card
@@ -1003,8 +1019,8 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
                   size="small"
                   name="customerEmail"
                   sx={{ marginLeft: 3 }}
-                  
-                  value={email || loans.CustomerEmail}
+                  // defaultValue={loans.CustomerEmail}
+                  value={ email }
                   onChange={(e) => setEmail(e.target.value)}
                   error={emailError}
                   helperText={emailErrorText}
@@ -1014,7 +1030,7 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
                   <InputLabel>Customer Company</InputLabel>
                   <Select
                     id="outlined-basic"
-                    value={company || loans.CompanyID}
+                    value={company}
                     onChange={handleChangeCompany}
                     size="small"
                     label="Customer Company"
@@ -1034,7 +1050,7 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
                   <InputLabel>Duration</InputLabel>
                   <Select
                     id="outlined-basic"
-                    value={duration || loans.Duration}
+                    value={duration}
                     onChange={handleChangeDuration}
                     label="Duration"
                     size="small"
@@ -1061,7 +1077,7 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
                   multiline
                   rows={4}
                   label="Purpose"
-                  value={purpose || loans.Purpose}
+                  value={purpose}
                   onChange={(e) => setPurpose(e.target.value)}
                   error={purposeError}
                   helperText={purposeErrorText}
@@ -1073,7 +1089,7 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
                   <InputLabel>Collection Type</InputLabel>
                   <Select
                     id="outlined-basic"
-                    value={collection || loans.Collection}
+                    value={collection}
                     onChange={handleChangeCollection}
                     label="Collection Type"
                     size="small"
@@ -1094,7 +1110,7 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
                   <InputLabel>Loan Type</InputLabel>
                   <Select
                     id="outlined-basic"
-                    value={type || loans.TLoanTypeID}
+                    value={type}
                     onChange={handleChangeType}
                     label="Loan Type"
                     size="small"
@@ -1112,7 +1128,7 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
                     <DesktopDatePicker
                       label="Required Date"
                       inputFormat="yyyy-MM-dd"
-                      value={dateForm || loans.RequiredDate}
+                      value={dateForm}
                       onClose={() => {
                         if (requireddate === "") {
                           setRDateError(true);
@@ -1218,7 +1234,6 @@ const {isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal} = context
     //     case true:
     //         return getCard();
     // }
-
     return (
       <>
       {isEditable ? getCard(): getData() }

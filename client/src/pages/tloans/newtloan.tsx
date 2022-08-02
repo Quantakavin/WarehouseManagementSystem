@@ -8,7 +8,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import SaveIcon from "@mui/icons-material/Save";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import { LoadingButton } from "@mui/lab";
-import { Box } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import FormControl from "@mui/material/FormControl";
@@ -225,26 +225,32 @@ function newtloan() {
           }
 
           return [
-            <GridActionsCellItem
-              icon={<RemoveIcon style={{ color: "red" }} />}
-              label="Edit"
-              className="textPrimary"
-              onClick={handleMinusClick(id)}
-              color="inherit"
-            />,
-            <GridActionsCellItem
-              icon={<AddIcon style={{ color: "green" }} />}
-              label="Edit"
-              className="textPrimary"
-              onClick={handleAddClick(id)}
-              color="inherit"
-            />,
-            <GridActionsCellItem
-              icon={<DeleteIcon />}
-              label="Delete"
-              onClick={handleDeleteClick(id)}
-              color="inherit"
-            />,
+            <Tooltip title="Increase">
+              <GridActionsCellItem
+                icon={<RemoveIcon style={{ color: "red" }} />}
+                label="Edit"
+                className="textPrimary"
+                onClick={handleMinusClick(id)}
+                color="inherit"
+              />
+            </Tooltip>,
+            <Tooltip title="Reduce">
+              <GridActionsCellItem
+                icon={<AddIcon style={{ color: "green" }} />}
+                label="Edit"
+                className="textPrimary"
+                onClick={handleAddClick(id)}
+                color="inherit"
+              />
+            </Tooltip>,
+            <Tooltip title="Remove">
+              <GridActionsCellItem
+                icon={<DeleteIcon />}
+                label="Delete"
+                onClick={handleDeleteClick(id)}
+                color="inherit"
+              />
+            </Tooltip>,
           ];
         },
       },
@@ -284,7 +290,7 @@ function newtloan() {
     );
   };
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [type, setType] = useState("");
   const [company, setCompany] = useState("");
@@ -436,7 +442,6 @@ function newtloan() {
               items,
             })
             .then(() => {
-             
               Toast.fire({
                 icon: "success",
                 title: "TLoan Successfully Submitted",
@@ -445,19 +450,18 @@ function newtloan() {
                 width: 700,
               });
               navigate("/tloan");
-              
             });
-           
+
           console.log(results);
         } catch (error) {
           console.log(error.response);
           setSubmitLoading(false);
         }
       }, 500);
-      emptyCart()
+      emptyCart();
     }
   };
-  
+
   const DraftLoan = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -482,11 +486,7 @@ function newtloan() {
       setEmailErrorText("Invalid Email");
       setLoading(false);
     }
-    if (
-      company !== "" &&
-      email !== "" &&
-      email.match(emailRegex)
-    ) {
+    if (company !== "" && email !== "" && email.match(emailRegex)) {
       setTimeout(() => {
         try {
           const results = axios
@@ -521,7 +521,7 @@ function newtloan() {
           setLoading(false);
         }
       }, 500);
-      emptyCart()
+      emptyCart();
     }
   };
   useEffect(() => {
