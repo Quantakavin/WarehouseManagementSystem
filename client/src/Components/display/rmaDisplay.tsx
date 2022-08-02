@@ -1,11 +1,10 @@
-
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import CancelIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreVert from "@mui/icons-material/MoreVert";
 import SaveIcon from "@mui/icons-material/Save";
-import { Stack, TextField, Typography } from "@mui/material";
+import { Stack, TextField, Tooltip, Typography } from "@mui/material";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -838,26 +837,32 @@ const RmaDisplay: React.FC = () => {
 
         if (isInEditMode) {
           return [
+            <Tooltip title="Mark As Received">
             <GridActionsCellItem
               icon={<BorderColorIcon />}
               label="Mark As Received"
               onClick={markAsReceived(id)}
-            />,
+            />
+            </Tooltip>,
+            <Tooltip title="Save">
             <GridActionsCellItem
               icon={<SaveIcon />}
               label="Save"
               onClick={handleSaveClick(id)}
-            />,
+            />
+            </Tooltip>,
           ];
         }
         return [
-          <GridActionsCellItem
-            icon={<MoreVert />}
-            label="Edit"
-            className="textPrimary"
-            onClick={handleEditClick(id)}
-            color="inherit"
-          />,
+          <Tooltip title="Edit">
+            <GridActionsCellItem
+              icon={<MoreVert />}
+              label="Edit"
+              className="textPrimary"
+              onClick={handleEditClick(id)}
+              color="inherit"
+            />
+          </Tooltip>,
         ];
       },
     },
@@ -914,34 +919,34 @@ const RmaDisplay: React.FC = () => {
 
         if (isInEditMode) {
           return [
+            <Tooltip title="Save">
             <GridActionsCellItem
               icon={<SaveIcon />}
               label="Save"
               onClick={handleSaveClick(id)}
-            />,
+            />
+            </Tooltip>,
+            <Tooltip title="Cancel">
             <GridActionsCellItem
               icon={<CancelIcon />}
               label="Cancel"
               className="textPrimary"
               onClick={handleCancelClick(id)}
               color="inherit"
-            />,
+            />
+            </Tooltip>,
           ];
         }
         return [
+          <Tooltip title="Edit">
           <GridActionsCellItem
             icon={<EditIcon />}
             label="Edit"
             className="textPrimary"
             onClick={handleEditClick(id)}
             color="inherit"
-          />,
-          <GridActionsCellItem
-            icon={<DeleteIcon />}
-            label="Delete"
-            onClick={handleDeleteClick(id)}
-            color="inherit"
-          />,
+          />
+          </Tooltip>
         ];
       },
     },
@@ -998,34 +1003,34 @@ const RmaDisplay: React.FC = () => {
 
         if (isInEditMode) {
           return [
+            <Tooltip title="Save">
             <GridActionsCellItem
               icon={<SaveIcon />}
               label="Save"
               onClick={handleSaveClick(id)}
-            />,
+            />
+            </Tooltip>,
+            <Tooltip title="Cancel">
             <GridActionsCellItem
               icon={<CancelIcon />}
               label="Cancel"
               className="textPrimary"
               onClick={handleCancelClick(id)}
               color="inherit"
-            />,
+            />
+            </Tooltip>,
           ];
         }
         return [
+          <Tooltip title="Edit">
           <GridActionsCellItem
             icon={<EditIcon />}
             label="Edit"
             className="textPrimary"
             onClick={handleEditClick(id)}
             color="inherit"
-          />,
-          <GridActionsCellItem
-            icon={<DeleteIcon />}
-            label="Delete"
-            onClick={handleDeleteClick(id)}
-            color="inherit"
-          />,
+          />
+          </Tooltip>,
         ];
       },
     },
