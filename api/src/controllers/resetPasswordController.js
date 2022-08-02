@@ -103,17 +103,7 @@ async function sendPasswordResetEmail(email, resetToken, origin) {
                                     <table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
                                         align="center" cellpadding="0" cellspacing="0">
                                         <tr>
-                                            <td style="height:80px;">&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="text-align:center;">
-                                            <a href="https://www.isdnholdings.com" title="logo" target="_blank">
-                                                <img width="40%" src="https://static.wixstatic.com/media/9240f9_6ca7497359ea4593baa65d30704d0e8c~mv2.jpg/v1/crop/x_0,y_137,w_400,h_109/fill/w_329,h_94,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ISDN_logo.jpg" title="logo" alt="logo">
-                                            </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="height:20px;">&nbsp;</td>
+                                            <td style="height:100px;">&nbsp;</td>
                                         </tr>
                                         <tr>
                                             <td>
@@ -121,6 +111,16 @@ async function sendPasswordResetEmail(email, resetToken, origin) {
                                                     style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);">
                                                     <tr>
                                                         <td style="height:40px;">&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:center;">
+                                                            <a href="https://www.isdnholdings.com" title="logo" target="_blank">
+                                                            <img width="40%" src="https://static.wixstatic.com/media/9240f9_6ca7497359ea4593baa65d30704d0e8c~mv2.jpg/v1/crop/x_0,y_137,w_400,h_109/fill/w_329,h_94,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ISDN_logo.jpg" title="logo" alt="logo">
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="height:20px;">&nbsp;</td>
                                                     </tr>
                                                     <tr>
                                                         <td style="padding:0 35px;">
