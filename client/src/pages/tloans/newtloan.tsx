@@ -49,6 +49,51 @@ import {
 } from "../../app/reducers/CurrentUserSlice";
 
 function newtloan() {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [type, setType] = useState("");
+  const [company, setCompany] = useState("");
+  const [name, setName] = useState("");
+  const [purpose, setPurpose] = useState("");
+  const [applicationdate, setADate] = useState("");
+  const [duration, setDuration] = useState("");
+  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
+  const [collection, setCollection] = useState("");
+  const [requireddate, setRDate] = useState("");
+  const [dateForm, setDateForm] = useState("");
+  const [typeError, setTypeError] = useState(false);
+  const [companyError, setCompanyError] = useState(false);
+  const [purposeError, setPurposeError] = useState(false);
+  const [durationError, setDurationError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [collectionError, setCollectionError] = useState(false);
+  const [requireddateError, setRDateError] = useState(false);
+  const [typeErrorText, setTypeErrorText] = useState("");
+  const [companyErrorText, setCompanyErrorText] = useState("");
+  const [purposeErrorText, setPurposeErrorText] = useState("");
+  const [durationErrorText, setDurationErrorText] = useState("");
+  const [emailErrorText, setEmailErrorText] = useState("");
+  const [collectionErrorText, setCollectionErrorText] = useState("");
+  const [rdateErrorText, setRDateErrorText] = useState("");
+  const permissions = useAppSelector(selectPermissions);
+  const ExternalApplication = permissions.some(
+    (e) => e.FeatureName === "T-Loan Application (Internal+External)"
+  );
+  const InternalApplication = permissions.some(
+    (e) => e.FeatureName === "T-Loan Application (Internal)"
+  );
+
+  useEffect(() => {
+    // if (userrole !== "Sales Engineer") {
+    //   navigate("/403");
+    // }
+    if (ExternalApplication !== true || InternalApplication != true) {
+      navigate("/403");
+    }
+  }, []);
+
   interface EditToolbarProps {
     setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
     setRowModesModel: (
@@ -295,41 +340,6 @@ function newtloan() {
     );
   };
 
-  const [loading, setLoading] = useState(false);
-  const [submitLoading, setSubmitLoading] = useState(false);
-  const [type, setType] = useState("");
-  const [company, setCompany] = useState("");
-  const [name, setName] = useState("");
-  const [purpose, setPurpose] = useState("");
-  const [applicationdate, setADate] = useState("");
-  const [duration, setDuration] = useState("");
-  const [user, setUser] = useState("");
-  const [email, setEmail] = useState("");
-  const [collection, setCollection] = useState("");
-  const [requireddate, setRDate] = useState("");
-  const [dateForm, setDateForm] = useState("");
-  const [typeError, setTypeError] = useState(false);
-  const [companyError, setCompanyError] = useState(false);
-  const [purposeError, setPurposeError] = useState(false);
-  const [durationError, setDurationError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [collectionError, setCollectionError] = useState(false);
-  const [requireddateError, setRDateError] = useState(false);
-  const [typeErrorText, setTypeErrorText] = useState("");
-  const [companyErrorText, setCompanyErrorText] = useState("");
-  const [purposeErrorText, setPurposeErrorText] = useState("");
-  const [durationErrorText, setDurationErrorText] = useState("");
-  const [emailErrorText, setEmailErrorText] = useState("");
-  const [collectionErrorText, setCollectionErrorText] = useState("");
-  const [rdateErrorText, setRDateErrorText] = useState("");
-  const permissions = useAppSelector(selectPermissions);
-
-  const ExternalApplication = permissions.some(
-    (e) => e.FeatureName === "T-Loan Application (Internal+External)"
-  );
-  const InternalApplication = permissions.some(
-    (e) => e.FeatureName === "T-Loan Application (Internal)"
-  );
   const [items, setItems] = useState([]);
   useEffect(() => {
     setItems(newProduct);
@@ -357,8 +367,6 @@ function newtloan() {
   const handleChangeRequiredDate = (newValue: "" | null) => {
     setDateForm(newValue);
   };
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const correctFormat = dateFormat(dateForm, "yyyy-mm-dd");
@@ -536,6 +544,7 @@ function newtloan() {
       emptyCart();
     }
   };
+
   useEffect(() => {
     var date = new Date().toISOString().split("T")[0];
     const uid = localStorage.getItem("user_id");

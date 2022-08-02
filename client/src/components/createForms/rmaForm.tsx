@@ -103,7 +103,6 @@ const CreateRMA: React.FC = () => {
     //   navigate("/403");
     // }
     if (!permissions.some((e) => e.FeatureName === "RMA Application")) {
-      console.log("not allowed");
       navigate("/403");
     }
   }, []);
