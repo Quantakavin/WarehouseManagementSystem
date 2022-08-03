@@ -84,7 +84,7 @@ const ViewProduct: React.FC = () => {
   }
 
   const { totalItems, addItem } = useCart();
-
+  console.log(isEditable)
   const newLoanButton = () => {
     if (totalItems > 0) {
       return (
@@ -98,7 +98,7 @@ const ViewProduct: React.FC = () => {
             aria-label="add"
             onClick={() => {
               isEditable
-                ? navigate(`/tloanDraftDetails/${TLoanIDGlobal}`)
+                ? navigate(`/tloandetails/${TLoanIDGlobal}`)
                 : navigate("/newtloan");
             }}
             sx={{

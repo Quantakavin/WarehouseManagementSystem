@@ -95,7 +95,6 @@ module.exports.SubmitAfterEdit = async(req,res) =>{
         requireddate,
         email,
         collection,
-        customerCompany,
         items
     } = req.body
 
@@ -118,7 +117,6 @@ module.exports.SubmitAfterEdit = async(req,res) =>{
                 requireddate,
                 email,
                 collection,
-                customerCompany,
                 tloanItems
             )
         // await TLoan.TLoanOutByID(
@@ -150,7 +148,6 @@ module.exports.DraftAfterEdit = async(req,res) =>{
         requireddate,
         email,
         collection,
-        customerCompany,
         items
     } = req.body
 
@@ -173,7 +170,6 @@ module.exports.DraftAfterEdit = async(req,res) =>{
                 requireddate,
                 email,
                 collection,
-                customerCompany,
                 tloanItems
             )
         // await TLoan.TLoanOutByID(
@@ -206,7 +202,6 @@ module.exports.newLoan = async (req, res) => {
         user,
         email,
         collection,
-        customerCompany,
         items
     } = req.body;
     try {
@@ -224,7 +219,6 @@ module.exports.newLoan = async (req, res) => {
             user,
             email,
             collection,
-            customerCompany,
             tloanItems
         );
 
@@ -247,7 +241,6 @@ module.exports.SendDraft = async (req, res) => {
         user,
         email,
         collection,
-        customerCompany,
         items
     } = req.body;
     try {
@@ -265,7 +258,6 @@ module.exports.SendDraft = async (req, res) => {
             user,
             email,
             collection,
-            customerCompany,
             tloanItems
         );
 

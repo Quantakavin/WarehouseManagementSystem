@@ -4,7 +4,7 @@ const TLoanController = require('../controllers/tloanController');
 
 router.get('/tloan', TLoanController.allLoan);
 router.post('/tloan/newloan', validation.validateLoan, TLoanController.newLoan);
-router.post('/tloan/loanDrafting', TLoanController.SendDraft);
+router.post('/tloan/loanDrafting', validation.validateDraft,TLoanController.SendDraft);
 router.get('/tloans/:TLoanID', TLoanController.getLoanByNo);
 router.get('/tloanitems/:TLoanID', TLoanController.getItemsByTloan);
 router.get('/tloanExtensionStatus/:TLoanID', TLoanController.extensionStatus);
@@ -33,7 +33,7 @@ router.get('/tloanid/:TLoanID', TLoanController.getIDofLoan);
 router.get('/tloanstatusid/:TLoanID', TLoanController.tloanStatusID);
 router.get('/tloan/approvedloans', TLoanController.getApprovedLoan);
 router.put('/tloan/submitEditedDraft/:TLoanID', TLoanController.SubmitAfterEdit);
-router.put('/tloan/draftEditedDraft/:TLoanID', TLoanController.DraftAfterEdit);
+router.put('/tloan/draftEditedDraft/:TLoanID', validation.validateDraft,TLoanController.DraftAfterEdit);
 router.get('/tloan/allCurrent', TLoanController.allCurrent);
 router.get('/tloan/allHistory', TLoanController.allHistory);
 module.exports = router;

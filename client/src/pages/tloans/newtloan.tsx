@@ -64,31 +64,21 @@ function newtloan() {
   const [collection, setCollection] = useState("");
   const [requireddate, setRDate] = useState("");
   const [dateForm, setDateForm] = useState("");
-  const [customerCompany, setCustomerCompany] = useState("");
   const [typeError, setTypeError] = useState(false);
   const [companyError, setCompanyError] = useState(false);
   const [purposeError, setPurposeError] = useState(false);
   const [durationError, setDurationError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [collectionError, setCollectionError] = useState(false);
-  const [requireddateError, setRDateError] = useState(false);
-  const [customerCompanyError, setCustomerCompanyError] = useState(false);
+  const [requireddateError, setRDateError] = useState(false); 
   const [typeErrorText, setTypeErrorText] = useState("");
   const [companyErrorText, setCompanyErrorText] = useState("");
   const [purposeErrorText, setPurposeErrorText] = useState("");
   const [durationErrorText, setDurationErrorText] = useState("");
   const [emailErrorText, setEmailErrorText] = useState("");
   const [collectionErrorText, setCollectionErrorText] = useState("");
-  const [rdateErrorText, setRDateErrorText] = useState("");
-  const [customerCompanyErrorText, setCustomerCompanyErrorText] = useState("");
+  const [rdateErrorText, setRDateErrorText] = useState(""); 
   const permissions = useAppSelector(selectPermissions);
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
   const ExternalApplication = permissions.some(
     (e) => e.FeatureName === "T-Loan Application (Internal+External)"
   );
@@ -335,7 +325,7 @@ function newtloan() {
 
   const handleChangeCompany = (event: SelectChangeEvent) => {
     setCompany(event.target.value);
-    setCustomerCompany("NULL");
+  
   };
 
   const handleChangeDuration = (event: SelectChangeEvent) => {
@@ -361,6 +351,8 @@ function newtloan() {
 
   const emailRegex = /^\S+@\S+\.\S+$/i;
 
+
+  
   const submitLoan = (e) => {
     setSubmitLoading(true);
     e.preventDefault();
@@ -371,7 +363,6 @@ function newtloan() {
     setEmailError(false);
     setCollectionError(false);
     setRDateError(false);
-    setCustomerCompanyError(false);
     if (items.length === 0) {
       Toast.fire({
         icon: "error",
@@ -389,12 +380,7 @@ function newtloan() {
     }
     if (company === "") {
       setCompanyError(true);
-      setCompanyErrorText("Selection required");
-      setSubmitLoading(false);
-    }
-    if (type === "1" && company === "100") {
-      setCompanyError(true);
-      setCompanyErrorText("Selection required");
+      setCompanyErrorText("Input required");
       setSubmitLoading(false);
     }
     if (purpose === "") {
@@ -425,15 +411,14 @@ function newtloan() {
       setCollectionError(true);
       setCollectionErrorText("Selection required");
       setSubmitLoading(false);
-    }
-    if (customerCompany === "") {
-      setCustomerCompanyError(true);
-      setCustomerCompanyErrorText("Input a Company");
+    }if (type === "2" && (company === "1" || company === "2" ||company === "3" ||company === "4" ||company === "5" ||company === "6")){
+      setCompanyError(true);
+      setCompanyErrorText("Input Required");
       setSubmitLoading(false);
     }
-    if (type === "2" && customerCompany === "NULL" ) {
-      setCustomerCompanyError(true);
-      setCustomerCompanyErrorText("Input a Company");
+    if (type === "1" && (company !== "1" && company !== "2" && company !== "3" && company !== "4" && company !== "5" && company !== "6")){
+      setCompanyError(true);
+      setCompanyErrorText("Input Required");
       setSubmitLoading(false);
     }
     if (
@@ -445,11 +430,8 @@ function newtloan() {
       requireddate !== "" &&
       email !== "" &&
       email.match(emailRegex) &&
-      collection !== "" &&
-      customerCompany !== "" &&
-      (type !== "2" && customerCompany !== "NULL") &&
-      (type !== "1" && company !== "100")
-    ) {
+      collection !== "")
+      {
       setTimeout(() => {
         try {
           const results = axios
@@ -463,8 +445,7 @@ function newtloan() {
               requireddate,
               user,
               email,
-              collection,
-              customerCompany,
+              collection, 
               items,
             })
             .then(() => {
@@ -500,16 +481,20 @@ function newtloan() {
     setEmailError(false);
     setCollectionError(false);
     setRDateError(false);
-    setCustomerCompanyError(false)
+    if (items.length === 0) {
+      Toast.fire({
+        icon: "error",
+        title: "Please add an item",
+        customClass: "swalpopup",
+        timer: 1500,
+        width: 315,
+      });
+      setSubmitLoading(false);
+    }
     if (company === "") {
       setCompanyError(true);
       setCompanyErrorText("Selection required");
       setLoading(false);
-    }
-    if (type === "1" && company === "100") {
-      setCompanyError(true);
-      setCompanyErrorText("Selection required");
-      setSubmitLoading(false);
     }
     if (email === "") {
       setEmailError(true);
@@ -520,22 +505,21 @@ function newtloan() {
       setEmailErrorText("Invalid Email");
       setLoading(false);
     }
-    if (customerCompany === "") {
-      setCustomerCompanyError(true);
-      setCustomerCompanyErrorText("Input a Company");
+    if (type === "2" && (company === "1" || company === "2" ||company === "3" ||company === "4" ||company === "5" ||company === "6")){
+      setCompanyError(true);
+      setCompanyErrorText("Input Required");
       setSubmitLoading(false);
     }
-    if (type === "2" && customerCompany === "NULL" ) {
-      setCustomerCompanyError(true);
-      setCustomerCompanyErrorText("Input a Company");
+    if (type === "1" && (company !== "1" && company !== "2" && company !== "3" && company !== "4" && company !== "5" && company !== "6")){
+      setCompanyError(true);
+      setCompanyErrorText("Input Required");
       setSubmitLoading(false);
     }
-    if (company !== "" && 
+    if ( items.length !== 0 &&
+        company !== "" && 
         email !== "" &&
-        email.match(emailRegex) &&
-        customerCompany !== "" &&
-        (type !== "2" && customerCompany !== "NULL") &&
-        (type !== "1" && company !== "100")) {
+        email.match(emailRegex))
+         {
       setTimeout(() => {
         try {
           const results = axios
@@ -550,7 +534,6 @@ function newtloan() {
               user,
               email,
               collection,
-              customerCompany,
               items,
             })
             .then(() => {
@@ -587,7 +570,7 @@ function newtloan() {
   const TLoanTypeAccess = () => {
     if (ExternalApplication === true) {
       return (
-        <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+        <FormControl sx={{ width: 200, marginLeft: 3 }}>
           <InputLabel>Loan Type</InputLabel>
           <Select
             id="outlined-basic"
@@ -614,7 +597,7 @@ function newtloan() {
     }
     if (InternalApplication === true) {
       return (
-        <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+        <FormControl sx={{ width: 200, marginLeft: 3 }}>
           <InputLabel>Loan Type</InputLabel>
           <Select
             id="outlined-basic"
@@ -640,21 +623,19 @@ function newtloan() {
     }
     return null;
   };
-  console.log(company);
-  console.log(customerCompany);
-  console.log(companyErrorText);
+
 
   const ExternalOrInternal = () => {
     if (type === "1") {
       return (
         <FormControl sx={{ width: 200, marginLeft: 3 }}>
-          <InputLabel>Customer Company</InputLabel>
+          <InputLabel>Company</InputLabel>
           <Select
             id="outlined-basic"
             value={company}
             onChange={handleChangeCompany}
             size="small"
-            label="Customer Company"
+            label="Company"
             onBlur={() => {
               if (company === "") {
                 setCompanyError(true);
@@ -677,39 +658,40 @@ function newtloan() {
       );
     }
     if (type === "2") {
+    
       return (
         <TextField
           id="outlined-basic"
           label="Customer Company"
           variant="outlined"
           size="small"
-          name="customerCompany"
+          name="customer Company"
           sx={{ marginLeft: 3 }}
           onBlur={() => {
-            if (customerCompany === "") {
-              setCustomerCompanyError(true);
-              setCustomerCompanyErrorText("Required");
+            if (company === "") {
+              setCompanyError(true);
+              setCompanyErrorText("Required");
             }
           }}
           onChange={(e) =>
-            setCustomerCompany(e.target.value) || setCompany("100")
+            setCompany(e.target.value)
           }
-          value={customerCompany}
-          error={customerCompanyError}
-          helperText={customerCompanyErrorText}
+          value={company}
+          error={companyError}
+          helperText={companyErrorText}
         />
       );
     }
     return (
       <FormControl sx={{ width: 200, marginLeft: 3 }}>
-        <InputLabel>Customer Company</InputLabel>
+        <InputLabel>Company</InputLabel>
         <Select
           disabled
           id="outlined-basic"
           value={company}
           onChange={handleChangeCompany}
           size="small"
-          label="Customer Company"
+          label="Company"
           onBlur={() => {
             if (company === "") {
               setCompanyError(true);
@@ -792,35 +774,7 @@ function newtloan() {
                 />
                  {TLoanTypeAccess()}
                 {ExternalOrInternal()}
-                <FormControl sx={{ width: 200, marginLeft: 3 }}>
-                  <InputLabel>Duration</InputLabel>
-                  <Select
-                    id="outlined-basic"
-                    value={duration}
-                    onChange={handleChangeDuration}
-                    label="Duration"
-                    size="small"
-                    onBlur={() => {
-                      if (duration === "") {
-                        setDurationError(true);
-                        setDurationErrorText("Selection required");
-                      }
-                    }}
-                    error={durationError}
-                  >
-                    {loanDuration.map((element) => {
-                      const [[key, val]] = Object.entries(element);
-                      return (
-                        <MenuItem value={val} key={key}>
-                          {key}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                  <FormHelperText sx={{ color: "#d11919" }}>
-                    {durationErrorText}
-                  </FormHelperText>
-                </FormControl>
+       
               </Box>
 
               <Box sx={{ display: "flex" }}>
@@ -898,7 +852,6 @@ function newtloan() {
                   </FormHelperText>
                 </FormControl>
                 {/* Type */}
-                {TLoanTypeAccess()}
 
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <Stack>
