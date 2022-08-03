@@ -256,6 +256,7 @@ module.exports.getLoanByNumber = async (TLoanID) => {
     return knex.raw(query, [TLoanID]);
 };
 
+
 module.exports.getTLoanOutItem = async (TLoanID) => {
     const query = `SELECT 
   tl.TLoanID,

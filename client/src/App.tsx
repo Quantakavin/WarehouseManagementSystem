@@ -131,7 +131,7 @@ const App: React.FC = () => {
                 />
                 <Route
                   path="/tloanManagerExtension/:TLoanID"
-                  element={<TLoanManagerExtensionDisplay />}
+                  element={<TLoanManagerExtensionDisplay/>}
                 />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/user/:id" element={<ViewUser />} />

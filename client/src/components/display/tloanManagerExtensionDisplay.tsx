@@ -16,35 +16,36 @@ import { Toast } from "../alerts/SweetAlert";
 import { TLoans } from "../../utils/CommonTypes";
 import TLoanRejectModalButton from "../modals/tloanRejectExtension";
 
+
 export default function TLoanManagerDisplay() {
   const navigate = useNavigate();
-  const [details, setDetails] = useState([]);
-  // const [loanDetails, setLoanDetails] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [loans, setLoans] = useState<TLoans>();
+  const [loans, setLoans] = useState([]);
   const [items, setItems] = useState([]);
   const [reasonField, setReasonField] = useState("");
   const { TLoanID } = useParams();
-
+  console.log(TLoanID)
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const loans = await axios
+      const results = await axios
         .get(`http://localhost:5000/api/tloans/${TLoanID}`)
         .then((data) => {
           setReasonField(data.data.Reason);
           setLoans(data.data);
+          
         });
 
       // setLoan(Object.e)
+      console.log(results)
     };
     // call the function
     fetchData()
       // make sure to catch any error
       .catch(console.error);
   }, []);
-
+  
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
@@ -62,7 +63,7 @@ export default function TLoanManagerDisplay() {
       // make sure to catch any error
       .catch(console.error);
   }, []);
-
+console.log(items)
   interface GridCellExpandProps {
     value: string;
     width: number;
@@ -226,7 +227,6 @@ export default function TLoanManagerDisplay() {
     },
   ];
 
-  console.log(loans);
   const getData = () => {
     return (
       <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
@@ -393,5 +393,6 @@ export default function TLoanManagerDisplay() {
     );
   };
 
-  return <div>{getData()}</div>;
+ return <div>{getData()}</div>;
+ 
 }
