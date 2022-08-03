@@ -103,11 +103,11 @@ const Model: React.FC<ModelProps> = ({
             <div className="content">
               BinTag:{BinsData.BinTag}
               <br />
-              Column:
+              Column: {sectiontag}
               <br />
-              Rack:
+              Rack: {racktag}
               <br />
-              Level:
+              Level: {leveltag}
               <br />
               Capacity:{BinsData.Volume} cm3
               <br />

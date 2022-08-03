@@ -61,7 +61,7 @@ module.exports.brand = async (req, res) => {
         redisClient.set(`Brand#${Brand}`, JSON.stringify(results[0]));
 
         if (results.length > 0) {
-            console.log('endpoint working');
+            console.log(results)
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('');

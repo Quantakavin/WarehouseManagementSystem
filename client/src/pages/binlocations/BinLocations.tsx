@@ -3,6 +3,7 @@ import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { Suspense, useRef } from "react";
 import * as THREE from "three";
 import Rack from "../../components/3Dmodels/Rack";
+import Rack2 from "../../components/3Dmodels/Rack2";
 import "../../styles/BinLocation.scss";
 // import { useAppSelector } from "../../app/hooks";
 // import { selectCameraPosition } from "../../app/reducers/BinLocationSlice";
@@ -107,21 +108,40 @@ const Scene = () => {
       {/* <OrbitControls maxPolarAngle={Math.PI/2} maxDistance={150}/> */}
       <Suspense fallback={null}>
         {/* <ContextBridge> */}
-        <Rack
+        <Rack2
           position={[0, 0, 0]}
           areatag="A01"
           racktag="R01"
           changeposition={changeCameraPosition}
         />
-        <Rack
-          position={[20, 0, 0]}
+        <Rack2
+          position={[25, 0, 0]}
           areatag="A01"
           racktag="R02"
           changeposition={changeCameraPosition}
         />
         <Rack
-          position={[40, 0, 0]}
+          position={[45, 0, 0]}
           areatag="A01"
+          racktag="R03"
+          changeposition={changeCameraPosition}
+        />
+
+        <Rack2
+          position={[0, 0, 20]}
+          areatag="A02"
+          racktag="R01"
+          changeposition={changeCameraPosition}
+        />
+        <Rack2
+          position={[25, 0, 20]}
+          areatag="A02"
+          racktag="R02"
+          changeposition={changeCameraPosition}
+        />
+        <Rack
+          position={[45, 0, 20]}
+          areatag="A02"
           racktag="R03"
           changeposition={changeCameraPosition}
         />
