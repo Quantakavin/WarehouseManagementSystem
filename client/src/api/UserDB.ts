@@ -41,7 +41,15 @@ export const GetUsernames = async (name: string) => {
   });
 };
 
-export const GetAllUsers = async ({ pageParam = 0, queryKey }) => {
+export const GetAllUsers = async () => {
+  return axios.get(`${config.baseURL}/users`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+export const FilterUsers = async ({ pageParam = 0, queryKey }) => {
   const response = await axios.get(
     `${config.baseURL}/users?pageSize=5&pageNo=${pageParam * 5}&sortColumn=${
       queryKey[1]

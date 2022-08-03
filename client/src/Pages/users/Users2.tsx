@@ -13,18 +13,18 @@ import {
   DataGrid,
   GridActionsCellItem,
   GridFilterModel,
-  GridToolbarColumnsButton,
-  GridToolbarContainer,
-  GridToolbarDensitySelector,
-  GridToolbarExport,
-  GridToolbarFilterButton,
-  GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router";
+import CancelIcon from "@mui/icons-material/Cancel";
+import { DeleteUser, GetAllUsers } from "../../api/UserDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import Popup from "../../components/alerts/Popup";
+import { Toast } from "../../components/alerts/SweetAlert";
+import CustomToolbar from "../../components/table/CustomToolbar";
 
 const Users2: React.FC = () => {
   const navigate = useNavigate();
@@ -34,31 +34,68 @@ const Users2: React.FC = () => {
       navigate("/403");
     }
   }, []);
-  const [row, setRow] = useState([]);
+
   const theme = unstable_createMuiStrictModeTheme();
   const [pageSize, setPageSize] = React.useState(25);
-  const [inputName, setInputName] = useState<string>(null);
-  const [value, setValue] = useState(0); // first tab
-  const [hoveredRow, setHoveredRow] = React.useState(null);
+  //const [hoveredRow, setHoveredRow] = React.useState(null);
+  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+  const [showError, setShowError] = useState<boolean>(false);
+  const [idToDelete, setIdToDelete] = useState<string>(null);
+  const queryClient = useQueryClient();
 
+  const mutation = useMutation(DeleteUser);
+
+  /*
   const onMouseEnterRow = (event) => {
     const id = Number(event.currentTarget.getAttribute("data-id"));
     setHoveredRow(id);
   };
 
-  const onMouseLeaveRow = (event) => {
+  const onMouseLeaveRow = () => {
     setHoveredRow(null);
   };
+  */
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/users?limit=100000&page=0", {
-      headers: new Headers({
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      }),
-    })
-      .then((data) => data.json())
-      .then((data) => setRow(data));
-  }, []);
+  const UsersQuery = useQuery(`users`, GetAllUsers);
+
+  const SelectDelete = (id: string) => {
+    setIdToDelete(id);
+    setShowConfirmation(true);
+  };
+
+  const Delete = (id: string) => {
+    mutation.mutate(id, {
+      onError: () => {
+        setShowConfirmation(false);
+        setShowError(true);
+        setIdToDelete(null);
+      },
+      onSuccess: () => {
+        setShowConfirmation(false);
+        Toast.fire({
+          icon: "success",
+          title: "User deleted successfully",
+          customClass: "swalpopup",
+          timer: 1500,
+        });
+        queryClient.invalidateQueries("users");
+        // queryClient.invalidateQueries('filterusergroups');
+        queryClient.invalidateQueries("usernames");
+        setIdToDelete(null);
+        navigate("/users");
+      },
+    });
+  };
+
+  const closeConfirmationPopup = () => {
+    setShowConfirmation(false);
+    setIdToDelete(null);
+  };
+
+  const closeErrorPopup = () => {
+    setShowError(false);
+    setIdToDelete(null);
+  };
 
   const headers = [
     "ID",
@@ -106,33 +143,66 @@ const Users2: React.FC = () => {
         <GridActionsCellItem
           icon={<DeleteIcon />}
           label="Delete"
-          onClick={() => navigate(`/dashboard`)}
+          onClick={() => SelectDelete(params.id)}
           showInMenu
         />,
       ],
     },
   ];
 
-  const CustomToolbar = () => {
-    return (
-      <GridToolbarContainer
-        sx={{ display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1 }}
-      >
-        <Box>
-          <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
-        </Box>
-        <Box>
-          <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
-          <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
-          <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
-          <GridToolbarExport sx={{ color: "#0A2540" }} />
-        </Box>
-      </GridToolbarContainer>
-    );
-  };
-
   return (
     <Box sx={{ pl: 3, pr: 3, pt: 1, height: "100%", width: "100%" }}>
+      <Popup
+        showpopup={showConfirmation}
+        heading="Are you sure you want to delete this user?"
+        subheading="By doing so, you will delete all information associated with it such as TLoans and RMA"
+        popupimage={<CancelIcon sx={{ color: "#D11A2A", fontSize: "150px" }} />}
+        closepopup={closeConfirmationPopup}
+        buttons={
+          <>
+            <button
+              style={{ alignSelf: "flex-start" }}
+              className="cardbackbutton"
+              onClick={() => setShowConfirmation(false)}
+              type="button"
+            >
+              Cancel
+            </button>
+            <motion.button
+              style={{ alignSelf: "flex-end" }}
+              className="deletebutton"
+              onClick={() => Delete(idToDelete)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Delete Anyway
+            </motion.button>
+          </>
+        }
+      />
+
+      <Popup
+        showpopup={showError}
+        heading="Cannot Delete User!"
+        subheading="This user cannot be deleted as they have outstanding TLoans or RMA"
+        popupimage={<CancelIcon sx={{ color: "#D11A2A", fontSize: "150px" }} />}
+        closepopup={closeErrorPopup}
+        buttons={
+          <button
+            style={{
+              alignSelf: "flex-start",
+              marginLeft: "auto",
+              fontWeight: 700,
+              color: "#0A2540",
+            }}
+            className="buttonremovestyling"
+            onClick={() => setShowError(false)}
+            type="button"
+          >
+            Close
+          </button>
+        }
+      />
       <Box sx={{ display: "flex", height: "100%" }}>
         <Box sx={{ flexGrow: 1 }}>
           <Box
@@ -172,15 +242,13 @@ const Users2: React.FC = () => {
 
           <DataGrid
             sx={{ background: "white", fontSize: 18 }}
-            rows={row}
+            rows={UsersQuery.data?.data ?? []}
             columns={columns}
             getRowId={(row) => row.UserID}
             pageSize={pageSize}
             onPageSizeChange={(newPage) => setPageSize(newPage)}
             pagination
             headerHeight={50}
-            // rowHeight={70}
-            // getRowHeight={() => "auto"}
             components={{
               Toolbar: CustomToolbar,
               NoRowsOverlay: () => (
@@ -194,18 +262,17 @@ const Users2: React.FC = () => {
               ),
             }}
             componentsProps={{
+              /*
               row: {
                 onMouseEnter: onMouseEnterRow,
                 onMouseLeave: onMouseLeaveRow,
               },
+              */
             }}
             filterModel={filterModel}
             onFilterModelChange={(newFilterModel) =>
               setFilterModel(newFilterModel)
             }
-            // onRowClick={(params: GridRowParams) => {
-            //   navigate(`/user/${params.id}`);
-            // }}
           />
         </Box>
       </Box>

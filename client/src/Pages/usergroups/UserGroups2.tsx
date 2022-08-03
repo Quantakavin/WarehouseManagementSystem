@@ -2,6 +2,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import CancelIcon from "@mui/icons-material/Cancel";
 import {
   Box,
   Fab,
@@ -22,25 +23,34 @@ import {
 } from "@mui/x-data-grid";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
+import { useMutation, useQueryClient, useQuery} from "react-query";
 import { useNavigate } from "react-router";
+import { DeleteUserGroup, GetUserGroups } from "../../api/UserGroupDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import Popup from "../../components/alerts/Popup";
+import { Toast } from "../../components/alerts/SweetAlert";
+import CustomToolbar from "../../components/table/CustomToolbar";
 
 const UserGroups2: React.FC = () => {
   const navigate = useNavigate();
   const theme = unstable_createMuiStrictModeTheme();
   const [pageSize, setPageSize] = React.useState(25);
-  const [inputName, setInputName] = useState<string>(null);
-  const [value, setValue] = useState(0); // first tab
   const userrole = useAppSelector(selectRole);
+  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+  const [showError, setShowError] = useState<boolean>(false);
+  const [idToDelete, setIdToDelete] = useState<string>(null);
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(DeleteUserGroup);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
     }
   }, []);
-  const [row, setRow] = useState([]);
-  const [hoveredRow, setHoveredRow] = React.useState(null);
+  //const [hoveredRow, setHoveredRow] = React.useState(null);
 
+  /*
   const onMouseEnterRow = (event) => {
     const id = Number(event.currentTarget.getAttribute("data-id"));
     setHoveredRow(id);
@@ -49,16 +59,12 @@ const UserGroups2: React.FC = () => {
   const onMouseLeaveRow = (event) => {
     setHoveredRow(null);
   };
+  */
 
-  useEffect(() => {
-    fetch(`http://localhost:5000/api/userGroups`, {
-      headers: new Headers({
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      }),
-    })
-      .then((data) => data.json())
-      .then((data) => setRow(data));
-  }, []);
+  const UserGroupsQuery = useQuery(
+    `usergroups`,
+    GetUserGroups
+  );
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [
@@ -69,6 +75,45 @@ const UserGroups2: React.FC = () => {
       },
     ],
   });
+
+  const SelectDelete = (id: string) => {
+    setIdToDelete(id);
+    setShowConfirmation(true);
+  };
+
+  const Delete = (id: string) => {
+    mutation.mutate(id, {
+      onError: () => {
+        setShowConfirmation(false);
+        setShowError(true);
+        setIdToDelete(null);
+      },
+      onSuccess: () => {
+        setShowConfirmation(false);
+        Toast.fire({
+          icon: "success",
+          title: "User group deleted successfully",
+          customClass: "swalpopup",
+          timer: 1500,
+        });
+        queryClient.invalidateQueries("usergroups");
+        queryClient.invalidateQueries("usergroupnames");
+        setIdToDelete(null);
+        navigate("/usergroups");
+      },
+    });
+  };
+
+  const closeConfirmationPopup = () => {
+    setShowConfirmation(false);
+    setIdToDelete(null);
+  };
+
+  const closeErrorPopup = () => {
+    setShowError(false);
+    setIdToDelete(null);
+  };
+
 
   const columns = [
     { field: "UserGroupID", headerName: "ID", flex: 2 },
@@ -93,37 +138,66 @@ const UserGroups2: React.FC = () => {
         <GridActionsCellItem
           icon={<DeleteIcon />}
           label="Delete"
-          onClick={() => navigate(`/dashboard`)}
+          onClick={() => SelectDelete(params.id)}
           showInMenu
         />,
       ],
     },
   ];
 
-  const handleChange = (_event, newValue) => {
-    setValue(newValue);
-  };
-
-  const CustomToolbar = () => {
-    return (
-      <GridToolbarContainer
-        sx={{ display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1 }}
-      >
-        <Box>
-          <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
-        </Box>
-        <Box>
-          <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
-          <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
-          <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
-          <GridToolbarExport sx={{ color: "#0A2540" }} />
-        </Box>
-      </GridToolbarContainer>
-    );
-  };
-
   return (
     <Box sx={{ pl: 3, pr: 3, pt: 1, height: "100%", width: "100%" }}>
+            <Popup
+        showpopup={showConfirmation}
+        heading="Are you sure you want to delete this user group?"
+        subheading="By doing so, you will delete all users associated with it"
+        popupimage={<CancelIcon sx={{ color: "#D11A2A", fontSize: "150px" }} />}
+        closepopup={closeConfirmationPopup}
+        buttons={
+          <>
+            <button
+              style={{ alignSelf: "flex-start" }}
+              className="cardbackbutton"
+              onClick={() => setShowConfirmation(false)}
+              type="button"
+            >
+              Cancel
+            </button>
+            <motion.button
+              style={{ alignSelf: "flex-end" }}
+              className="deletebutton"
+              onClick={() => Delete(idToDelete)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Delete Anyway
+            </motion.button>
+          </>
+        }
+      />
+
+      <Popup
+        showpopup={showError}
+        heading="Cannot Delete User Group!"
+        subheading="This user group cannot be deleted as it contains users"
+        popupimage={<CancelIcon sx={{ color: "#D11A2A", fontSize: "150px" }} />}
+        closepopup={closeErrorPopup}
+        buttons={
+          <button
+            style={{
+              alignSelf: "flex-start",
+              marginLeft: "auto",
+              fontWeight: 700,
+              color: "#0A2540",
+            }}
+            className="buttonremovestyling"
+            onClick={() => setShowError(false)}
+            type="button"
+          >
+            Close
+          </button>
+        }
+      />
       <Box sx={{ display: "flex", height: "100%" }}>
         <Box sx={{ flexGrow: 1 }}>
           <Box
@@ -162,7 +236,7 @@ const UserGroups2: React.FC = () => {
           </Box>
           <DataGrid
             sx={{ background: "white", fontSize: 18 }}
-            rows={row}
+            rows={UserGroupsQuery.data?.data ?? []}
             columns={columns}
             getRowId={(row) => row.UserGroupID}
             pageSize={pageSize}
@@ -185,8 +259,10 @@ const UserGroups2: React.FC = () => {
             }}
             componentsProps={{
               row: {
+                /*
                 onMouseEnter: onMouseEnterRow,
                 onMouseLeave: onMouseLeaveRow,
+                */
               },
             }}
             filterModel={filterModel}

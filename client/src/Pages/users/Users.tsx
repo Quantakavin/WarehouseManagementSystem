@@ -13,7 +13,7 @@ import {
   useQueryClient,
 } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { DeleteUser, GetAllUsers, GetUsernames } from "../../api/UserDB";
+import { DeleteUser, FilterUsers, GetAllUsers, GetUsernames } from "../../api/UserDB";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import {
@@ -89,7 +89,7 @@ const Users: React.FC = () => {
 
   const UsersQuery = useInfiniteQuery(
     [`users`, sortColumn, sortOrder, searchName],
-    GetAllUsers,
+    FilterUsers,
     {
       getNextPageParam: (lastPage, pages) => {
         if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
@@ -262,63 +262,6 @@ const Users: React.FC = () => {
       />
     </>
   );
-
-  // <TableBody>
-  // {UsersQuery.data.pages.map((group, i) => (
-  //   <React.Fragment key={i}>
-  //     {group.response.data.map(row => (
-  //       <TableRow
-  //         key={row.ID}
-  //         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-  //       >
-  //         <TableCell sx={{ color: "#0A2540" }} align="left">
-  //           {row.ID}
-  //         </TableCell>
-  //         <TableCell sx={{ color: "#0A2540" }} align="left">
-  //           {row.Username}
-  //         </TableCell>
-  //         <TableCell sx={{ color: "#0A2540" }} align="left">
-  //           {row["Email Address"]}
-  //         </TableCell>
-  //         <TableCell sx={{ color: "#0A2540" }} align="left">
-  //           {row.Company}
-  //         </TableCell>
-  //         <TableCell sx={{ color: "#0A2540" }} align="left">
-  //           {row["User Group"]}
-  //         </TableCell>
-  //         <TableCell sx={{ color: "#0A2540" }} align="left">
-  //           {row["Phone No"]}
-  //         </TableCell>
-  //         <ActionMenu
-  //           items={[
-  //             {
-  //               name: "View Details",
-  //               url: `/user/${row.ID}`,
-  //               icon: <PageviewIcon fontSize="small" />,
-  //               delete: false
-  //             },
-  //             {
-  //               name: "Edit Details",
-  //               url: `/edituser/${row.ID}`,
-  //               icon: <ModeEditOutlineIcon fontSize="small" />,
-  //               delete: false
-  //             },
-  //             {
-  //               name: "Delete",
-  //               icon: <DeleteOutlineIcon fontSize="small" />,
-  //               delete: true
-  //             },
-  //           ]}
-  //         />
-  //       </TableRow>
-  //     ))}
-
-  //   </React.Fragment>
-  // ))}
-  // </TableBody>
 };
 
 export default Users;
-// function selectRole(selectRole: any) {
-//   throw new Error("Function not implemented.");
-// }

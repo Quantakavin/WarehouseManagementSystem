@@ -115,7 +115,7 @@ const Login: React.FC = () => {
           underline="hover"
           sx={{ ml: 10 }}
         >
-          I forgot my password
+          Forgot your password?
         </Link>
 
         <Box className="flexcontainer" style={{ marginTop: 20 }}>
