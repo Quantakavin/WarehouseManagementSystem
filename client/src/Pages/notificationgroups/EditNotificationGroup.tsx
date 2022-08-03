@@ -182,7 +182,7 @@ const AddNotificationGroup: React.FC = () => {
 
   const variants = {
     detecterror: () => ({
-      //rotate: [-1, 1.3, 0],
+      // rotate: [-1, 1.3, 0],
       x: [10, -10, 0, 10, -10, 0],
       transition: {
         duration: 0.4,

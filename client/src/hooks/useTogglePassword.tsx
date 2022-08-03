@@ -12,7 +12,6 @@ const useTogglePassword = () => {
       return;
     }
     setPasswordType("password");
-    return;
   };
 
   return { toggle, passwordType, showPassword };

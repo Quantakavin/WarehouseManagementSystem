@@ -5,15 +5,14 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { GetDetails }from "../../api/TLoanDB"
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import DoneIcon from "@mui/icons-material/Done";
 import { LoadingButton } from "@mui/lab";
 import { motion } from "framer-motion";
-import React from "react";
-import { Toast } from "../../components/alerts/SweetAlert";
+import { Toast } from "../alerts/SweetAlert";
 import { TLoans } from "../../utils/CommonTypes";
 import TLoanRejectModalButton from "../modals/tloanRejectExtension";
 
@@ -181,25 +180,25 @@ export default function TLoanManagerDisplay() {
   }
 
   const ApproveLoan = async () => {
-    setLoading(true)
+    setLoading(true);
     setTimeout(() => {
-    axios
-      .put(`http://localhost:5000/api/tloan/approveExtension/${TLoanID}`)
-      .then(() => {
-        Toast.fire({
-          icon: "success",
-          title: "Extension For TLoan " + "#" + TLoanID + " Has Been Approved",
-          customClass: "swalpopup",
-          timer: 2000,
-          width: 700,
+      axios
+        .put(`http://localhost:5000/api/tloan/approveExtension/${TLoanID}`)
+        .then(() => {
+          Toast.fire({
+            icon: "success",
+            title: `Extension For TLoan ` + `#${TLoanID} Has Been Approved`,
+            customClass: "swalpopup",
+            timer: 2000,
+            width: 700,
+          });
+          navigate("/tloan");
+        })
+        .catch((error) => {
+          console.error("There was an error!", error);
+          setLoading(false);
         });
-        navigate("/tloan");
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-        setLoading(false)
-      });
-    }, 500)
+    }, 500);
   };
 
   const columns: GridColDef[] = [

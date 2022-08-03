@@ -1,6 +1,6 @@
 import { useCart } from "react-use-cart";
 
-function Cart() {
+const Cart = () => {
   const { isEmpty, totalUniqueItems, items, updateItemQuantity, removeItem } =
     useCart();
 
@@ -30,6 +30,6 @@ function Cart() {
       </ul>
     </>
   );
-}
+};
 
 export default Cart;

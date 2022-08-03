@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
+import { Box, Link } from "@mui/material";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormContainer from "../../components/form/FormContainer";
 import FormField from "../../components/form/FormField";
@@ -18,7 +19,6 @@ import { useAppDispatch } from "../../app/hooks";
 import { setUser } from "../../app/reducers/CurrentUserSlice";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
-import { Box, Link } from "@mui/material";
 
 interface FormValues {
   email: string;

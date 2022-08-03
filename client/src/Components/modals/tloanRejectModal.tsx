@@ -11,7 +11,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Toast } from "../../components/alerts/SweetAlert";
+import { Toast } from "../alerts/SweetAlert";
 
 const style = {
   position: "absolute" as "absolute",
@@ -69,7 +69,7 @@ export default function TLoanRejectModalButton() {
             .then(() => {
               Toast.fire({
                 icon: "success",
-                title: "TLoan " + "#" + TLoanID + " Has Been Rejected",
+                title: `TLoan ` + `#${TLoanID} Has Been Rejected`,
                 customClass: "swalpopup",
                 timer: 2000,
                 width: 700,
@@ -81,7 +81,7 @@ export default function TLoanRejectModalButton() {
           this.setState({ errorMessage: error.message });
           console.error("There was an error!", error);
         }
-      }, 500)
+      }, 500);
     }
   };
 

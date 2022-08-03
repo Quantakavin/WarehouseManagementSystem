@@ -11,12 +11,12 @@ const Fuzzy = () => {
   const [query, setQuery] = useState("");
   const [searchedData, setsearchedData] = useState([]);
   const [newProducts, setNewProducts] = useState("");
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const { addItem, totalItems } = useCart();
 
   useEffect(async () => {
-    let products = await axios.get(
+    const products = await axios.get(
       `https://peaceful-garden-23768.herokuapp.com/api/product-management/product/browse`
     );
 
@@ -24,8 +24,8 @@ const Fuzzy = () => {
       ({ product_id, product_name, price, img, category_name }) => ({
         id: product_id,
         name: product_name,
-        price: price,
-        img: img,
+        price,
+        img,
         category: category_name,
       })
     );
@@ -47,7 +47,7 @@ const Fuzzy = () => {
 
     // console.log(productsResults)
     setsearchedData(productsResults);
-    //query.length > 0 ? productsResults : newProducts
+    // query.length > 0 ? productsResults : newProducts
   }, [query]);
 
   function handleOnSearch({ currentTarget = {} }) {

@@ -6,7 +6,7 @@ import {
   styled,
   Tooltip,
   tooltipClasses,
-  TooltipProps
+  TooltipProps,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import React from "react";
@@ -15,7 +15,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   ChangeTab,
   selectCurrentTab,
-  selectOpen
+  selectOpen,
 } from "../../app/reducers/SidebarSlice";
 
 interface SidebarLink {

@@ -151,7 +151,7 @@ const AddNotificationGroup: React.FC = () => {
 
   const variants = {
     detecterror: () => ({
-      //rotate: [-1, 1.3, 0],
+      // rotate: [-1, 1.3, 0],
       x: [10, -10, 0, 10, -10, 0],
       transition: {
         duration: 0.4,
@@ -167,7 +167,7 @@ const AddNotificationGroup: React.FC = () => {
         controls.start("detecterror");
       }
     });
-    //setStep(step + 1);
+    // setStep(step + 1);
   };
 
   const prevStep = () => {

@@ -23,7 +23,7 @@ const style = {
 };
 
 interface rma {
-  RejectReason: string
+  RejectReason: string;
 }
 
 export default function ReasonModalButton() {

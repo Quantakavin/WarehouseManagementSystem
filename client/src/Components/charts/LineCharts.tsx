@@ -8,12 +8,12 @@ import {
   ResponsiveContainer,
   Tooltip,
   XAxis,
-  YAxis
+  YAxis,
 } from "recharts";
 import config from "../../config/config";
 import "../../styles/chart.scss";
 
-function LineCharts({ title, dataKey, grid }) {
+const LineCharts = ({ title, dataKey, grid }) => {
   const [error, setError] = useState(null);
   const [tloan, setTloan] = useState([]);
   const [rma, setRMA] = useState([]);
@@ -39,7 +39,7 @@ function LineCharts({ title, dataKey, grid }) {
   }, []);
 
   useEffect(() => {
-    var timer = setInterval(() => setDate(new Date()), 1);
+    const timer = setInterval(() => setDate(new Date()), 1);
 
     return function cleanup() {
       clearInterval(timer);
@@ -58,7 +58,7 @@ function LineCharts({ title, dataKey, grid }) {
               <ResponsiveContainer width="100%" aspect={4 / 1}>
                 <LineChart data={tloan}>
                   <XAxis dataKey="Month" stroke="#5550bd" />
-                  <YAxis></YAxis>
+                  <YAxis />
                   <Line type="monotone" dataKey="Requests" stroke="#5550bd" />
                   <Tooltip />
                   {dataKey}
@@ -84,7 +84,7 @@ function LineCharts({ title, dataKey, grid }) {
               <ResponsiveContainer width="100%" aspect={4 / 1}>
                 <LineChart data={rma}>
                   <XAxis dataKey="Month" stroke="#5550bd" />
-                  <YAxis></YAxis>
+                  <YAxis />
                   <Line type="monotone" dataKey="Requests" stroke="#5550bd" />
                   <Tooltip />
                   {dataKey}
@@ -102,6 +102,6 @@ function LineCharts({ title, dataKey, grid }) {
       </Grid>
     </Grid>
   );
-}
+};
 
 export default LineCharts;

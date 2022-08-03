@@ -7,7 +7,7 @@ import { Box, Grid } from "@mui/material";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 
-function Dashboards() {
+const Dashboards = () => {
   // implement switch case
 
   const userrole = useAppSelector(selectRole);
@@ -39,7 +39,7 @@ function Dashboards() {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <h1 style={{ marginBottom: 0 }}>
-            {localStorage.getItem("username")}'s Dashboard{""}
+            {localStorage.getItem("username")}'s Dashboard
           </h1>
         </Grid>
         <Grid item xs={12}>
@@ -58,6 +58,6 @@ function Dashboards() {
       </Grid>
     </Box>
   );
-}
+};
 
 export default Dashboards;

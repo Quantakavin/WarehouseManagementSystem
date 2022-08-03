@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
+import { Link } from "@mui/material";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormContainer from "../../components/form/FormContainer";
 import FormField from "../../components/form/FormField";
@@ -11,18 +12,17 @@ import SubmitButton from "../../components/form/SubmitButton";
 import { PasswordValidation } from "../../utils/FormValidation";
 import { ResetPassword } from "../../api/ResetPasswordDB";
 import { Toast } from "../../components/alerts/SweetAlert";
-import { Link } from "@mui/material";
 
 function parseURLParams(url) {
-  var queryStart = url.indexOf("?") + 1,
-    queryEnd = url.indexOf("#") + 1 || url.length + 1,
-    query = url.slice(queryStart, queryEnd - 1),
-    pairs = query.replace(/\+/g, " ").split("&"),
-    parms = {},
-    i,
-    n,
-    v,
-    nv;
+  const queryStart = url.indexOf("?") + 1;
+  const queryEnd = url.indexOf("#") + 1 || url.length + 1;
+  const query = url.slice(queryStart, queryEnd - 1);
+  const pairs = query.replace(/\+/g, " ").split("&");
+  const parms = {};
+  let i;
+  let n;
+  let v;
+  let nv;
 
   if (query === url || query === "") return;
 

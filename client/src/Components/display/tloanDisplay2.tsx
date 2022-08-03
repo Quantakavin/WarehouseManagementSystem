@@ -25,14 +25,18 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import {
   DataGrid,
-  GridActionsCellItem, GridColDef, GridColumns,
-  GridEventListener, GridRenderCellParams, GridRowId,
+  GridActionsCellItem,
+  GridColDef,
+  GridColumns,
+  GridEventListener,
+  GridRenderCellParams,
+  GridRowId,
   GridRowModel,
   GridRowModes,
   GridRowModesModel,
   GridRowParams,
   GridRowsProp,
-  MuiEvent
+  MuiEvent,
 } from "@mui/x-data-grid";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
@@ -45,10 +49,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "react-use-cart";
 import { useAppSelector } from "../../app/hooks";
 import { selectPermissions } from "../../app/reducers/CurrentUserSlice";
-import { Toast, Toast2 } from "../../components/alerts/SweetAlert";
-import { EditableContext } from "../../components/context/isEditableContext";
+import { Toast, Toast2 } from "../alerts/SweetAlert";
+import { EditableContext } from "../context/isEditableContext";
 import ModalButton from "../modals/tloanExtensionModal";
 import TLoanRejectModalButton from "../modals/tloanRejectModal";
+
 export default function tloanDisplay() {
   const permissions = useAppSelector(selectPermissions);
   const navigate = useNavigate();
@@ -56,7 +61,8 @@ export default function tloanDisplay() {
   const [itemsTable, setItemsTable] = useState([]);
   const [purposeField, setPurposeField] = useState("");
   const context = useContext(EditableContext);
-  const { isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal } = context;
+  const { isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal } =
+    context;
   const { TLoanID } = useParams();
   const [type, setType] = useState("");
   const [company, setCompany] = useState("");
@@ -145,9 +151,8 @@ export default function tloanDisplay() {
   useEffect(() => {
     if (cartItems === []) {
       return console.log("Nothing in cart");
-    } else {
-      setRows(cartItems);
     }
+    setRows(cartItems);
   }, [cartItems]);
 
   const FullFeaturedCrudGrid = () => {
@@ -482,10 +487,10 @@ export default function tloanDisplay() {
   const newBasket = itemsTable.map(
     ({ BasketItemID, ItemNo, ItemName, BatchNo, WarehouseCode, Quantity }) => ({
       id: BasketItemID,
-      ItemNo: ItemNo,
-      ItemName: ItemName,
-      BatchNo: BatchNo,
-      WarehouseCode: WarehouseCode,
+      ItemNo,
+      ItemName,
+      BatchNo,
+      WarehouseCode,
       quantity: Quantity,
       price: 0,
     })
@@ -493,10 +498,10 @@ export default function tloanDisplay() {
   const newProduct = cartItems.map(
     ({ id, ItemNo, ItemName, BatchNo, WarehouseCode, quantity }) => ({
       BasketItemID: id,
-      ItemNo: ItemNo,
-      ItemName: ItemName,
-      BatchNo: BatchNo,
-      WarehouseCode: WarehouseCode,
+      ItemNo,
+      ItemName,
+      BatchNo,
+      WarehouseCode,
       Quantity: quantity,
       TLoanID: TLoanIDGlobal,
     })
@@ -516,7 +521,7 @@ export default function tloanDisplay() {
     Toast2.close();
     Toast.fire({
       icon: "warning",
-      title: "You have Stopped editing " + "" + "Loan" + " " + "#" + TLoanID,
+      title: `You have Stopped editing ` + `` + `Loan` + ` ` + `#${TLoanID}`,
       customClass: "swalpopup",
       timer: 2000,
       width: 500,
@@ -567,7 +572,7 @@ export default function tloanDisplay() {
       setTLoanIDGlobal(TLoanID);
       Toast2.fire({
         icon: "info",
-        title: "You are currently editing " + "" + "Loan #" + TLoanID,
+        title: `You are currently editing ` + `` + `Loan #${TLoanID}`,
         customClass: "swalpopup",
         width: 500,
       });
@@ -996,12 +1001,12 @@ export default function tloanDisplay() {
                   size="small"
                   label="Customer Company"
                 >
-                  <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
-                  <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
-                  <MenuItem value={"3"}>DIRAK181025</MenuItem>
-                  <MenuItem value={"4"}>PMC_LIVE</MenuItem>
-                  <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
-                  <MenuItem value={"6"}>ALL</MenuItem>
+                  <MenuItem value="1">SERVO_LIVE</MenuItem>
+                  <MenuItem value="2">LEAPTRON_LIVE</MenuItem>
+                  <MenuItem value="3">DIRAK181025</MenuItem>
+                  <MenuItem value="4">PMC_LIVE</MenuItem>
+                  <MenuItem value="5">PORTWELL_LIVE</MenuItem>
+                  <MenuItem value="6">ALL</MenuItem>
                 </Select>
                 <FormHelperText sx={{ color: "#d11919" }}>
                   {companyErrorText}
@@ -1041,7 +1046,7 @@ export default function tloanDisplay() {
                 onChange={(e) => setPurpose(e.target.value)}
                 error={purposeError}
                 helperText={purposeErrorText}
-              ></TextField>
+              />
             </Box>
             <Box sx={{ marginLeft: 2, display: "flex" }}>
               {/* Collection */}
@@ -1054,8 +1059,8 @@ export default function tloanDisplay() {
                   label="Collection Type"
                   size="small"
                 >
-                  <MenuItem value={"Self-Collection"}>Self-Collection</MenuItem>
-                  <MenuItem value={"Delivery"}>Delivery</MenuItem>
+                  <MenuItem value="Self-Collection">Self-Collection</MenuItem>
+                  <MenuItem value="Delivery">Delivery</MenuItem>
                 </Select>
                 <FormHelperText sx={{ color: "#d11919" }}>
                   {collectionErrorText}
@@ -1072,7 +1077,7 @@ export default function tloanDisplay() {
                   label="Loan Type"
                   size="small"
                 >
-                  <MenuItem value={"1"}>Internal</MenuItem>
+                  <MenuItem value="1">Internal</MenuItem>
                   {/* <MenuItem value={"2"}>External</MenuItem> */}
                 </Select>
                 <FormHelperText sx={{ color: "#d11919" }}>
@@ -1273,12 +1278,12 @@ export default function tloanDisplay() {
                   size="small"
                   label="Customer Company"
                 >
-                  <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
-                  <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
-                  <MenuItem value={"3"}>DIRAK181025</MenuItem>
-                  <MenuItem value={"4"}>PMC_LIVE</MenuItem>
-                  <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
-                  <MenuItem value={"6"}>ALL</MenuItem>
+                  <MenuItem value="1">SERVO_LIVE</MenuItem>
+                  <MenuItem value="2">LEAPTRON_LIVE</MenuItem>
+                  <MenuItem value="3">DIRAK181025</MenuItem>
+                  <MenuItem value="4">PMC_LIVE</MenuItem>
+                  <MenuItem value="5">PORTWELL_LIVE</MenuItem>
+                  <MenuItem value="6">ALL</MenuItem>
                 </Select>
                 <FormHelperText sx={{ color: "#d11919" }}>
                   {companyErrorText}
@@ -1318,7 +1323,7 @@ export default function tloanDisplay() {
                 onChange={(e) => setPurpose(e.target.value)}
                 error={purposeError}
                 helperText={purposeErrorText}
-              ></TextField>
+              />
             </Box>
             <Box sx={{ marginLeft: 2, display: "flex" }}>
               {/* Collection */}
@@ -1331,8 +1336,8 @@ export default function tloanDisplay() {
                   label="Collection Type"
                   size="small"
                 >
-                  <MenuItem value={"Self-Collection"}>Self-Collection</MenuItem>
-                  <MenuItem value={"Delivery"}>Delivery</MenuItem>
+                  <MenuItem value="Self-Collection">Self-Collection</MenuItem>
+                  <MenuItem value="Delivery">Delivery</MenuItem>
                 </Select>
                 <FormHelperText sx={{ color: "#d11919" }}>
                   {collectionErrorText}
@@ -1349,8 +1354,8 @@ export default function tloanDisplay() {
                   label="Loan Type"
                   size="small"
                 >
-                  <MenuItem value={"1"}>Internal</MenuItem>
-                  <MenuItem value={"2"}>External</MenuItem>
+                  <MenuItem value="1">Internal</MenuItem>
+                  <MenuItem value="2">External</MenuItem>
                 </Select>
                 <FormHelperText sx={{ color: "#d11919" }}>
                   {typeErrorText}
@@ -1496,7 +1501,7 @@ export default function tloanDisplay() {
       .then(() => {
         Toast.fire({
           icon: "success",
-          title: "Request For TLoan " + "#" + TLoanID + " Has Been Approved",
+          title: `Request For TLoan ` + `#${TLoanID} Has Been Approved`,
           customClass: "swalpopup",
           timer: 2000,
           width: 700,
@@ -1513,7 +1518,7 @@ export default function tloanDisplay() {
       .then(() => {
         Toast.fire({
           icon: "success",
-          title: "Extension For TLoan " + "#" + TLoanID + " Has Been Approved",
+          title: `Extension For TLoan ` + `#${TLoanID} Has Been Approved`,
           customClass: "swalpopup",
           timer: 2000,
           width: 700,
@@ -1526,7 +1531,7 @@ export default function tloanDisplay() {
   };
 
   useEffect(() => {
-    var date = new Date().toISOString().split("T")[0];
+    const date = new Date().toISOString().split("T")[0];
     const uid = localStorage.getItem("user_id");
     setUser(uid);
     setADate(date);
@@ -1726,7 +1731,8 @@ export default function tloanDisplay() {
           </Box>
         </Box>
       );
-    } else if (AdminViewPerms == true) {
+    }
+    if (AdminViewPerms == true) {
       return (
         <Box
           sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}
@@ -1889,7 +1895,8 @@ export default function tloanDisplay() {
           </Box>
         </Box>
       );
-    } else if (WarehouseViewPerms == true) {
+    }
+    if (WarehouseViewPerms == true) {
       return (
         <Box
           sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}
@@ -1950,7 +1957,12 @@ export default function tloanDisplay() {
                     </Grid>
                     <Grid item xs={12}>
                       <DataGrid
-                        sx={{ background: "white", fontSize: 16, h: 300, w: "100%" }}
+                        sx={{
+                          background: "white",
+                          fontSize: 16,
+                          h: 300,
+                          w: "100%",
+                        }}
                         rows={items}
                         columns={columns}
                         editMode="row"
@@ -2226,149 +2238,147 @@ export default function tloanDisplay() {
           </Box>
         </Box>
       );
-    } else
-      return (
-        <Box
-          sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}
-        >
-          <Box sx={{ display: "flex", height: "100%" }}>
-            <Box sx={{ flexGrow: 1 }}>
-              <Card>
-                <CardContent>
-                  <Grid container spacing={8}>
-                    <Grid item xs={12}>
-                      <Typography
-                        gutterBottom
-                        variant="subtitle2"
-                        component="div"
-                        sx={{
-                          display: "flex",
-                          // justifyContent: "center",
-                          // alignItems: "center",
-                          // marginTop: 2,
-                          // marginBottom: -5,
-                          // marginLeft: -10,
-                          color: "#063970",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        <h2>TLoan {loans.TLoanID}</h2>
-                        <Box sx={{ marginLeft: 5 }}>
-                          <div>Loan No.</div>
-                          <div style={{ color: "black", fontWeight: "normal" }}>
-                            {loans.TLoanID}
-                          </div>
-                        </Box>
-                        <Box sx={{ marginLeft: 5 }}>
-                          <div>Start Date:</div>
-                          <div style={{ color: "black", fontWeight: "normal" }}>
-                            {loans.StartDate}
-                          </div>
-                        </Box>
-                        <Box sx={{ marginLeft: 5 }}>
-                          <div style={{}}>End Date:</div>
-                          <div style={{ color: "black", fontWeight: "normal" }}>
-                            {loans.EndDate}
-                          </div>
-                        </Box>
-                        <Box sx={{ marginLeft: 5 }}>
-                          <div style={{}}>Company Name:</div>
-                          <div style={{ color: "black", fontWeight: "normal" }}>
-                            {loans.CompanyName}
-                          </div>
-                        </Box>
-                        <Box sx={{ marginLeft: 5 }}>
-                          <div style={{}}>Customer Email:</div>
-                          <div style={{ color: "black", fontWeight: "normal" }}>
-                            {loans.CustomerEmail}
-                          </div>
-                        </Box>
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={9}>
-                      <DataGrid
-                        sx={{ background: "white", fontSize: 16 }}
-                        rows={itemsTable}
-                        columns={columns}
-                        editMode="row"
-                        getRowId={(item) => item.ItemNo}
-                        experimentalFeatures={{ newEditingApi: true }}
-                      />
-                    </Grid>
-                    <Grid item xs={3}>
-                      <TextField
-                        sx={{ display: "flex" }}
-                        id="outlined-purpose"
-                        multiline
-                        rows={11.5}
-                        label="Purpose"
-                        InputProps={{
-                          readOnly: true,
-                        }}
-                        variant="filled"
-                        value={purposeField}
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography
-                        gutterBottom
-                        variant="subtitle2"
-                        component="div"
-                        sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          marginTop: -5,
-                          marginLeft: -10,
-                          color: "#063970",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        <Box>
-                          <div>Collection Type:</div>
-                          <div style={{ color: "black", fontWeight: "normal" }}>
-                            {loans.Collection}
-                          </div>
-                        </Box>
-                        <Box sx={{ marginLeft: 5 }}>
-                          <div>Type:</div>
-                          <div style={{ color: "black", fontWeight: "normal" }}>
-                            {loans.TLoanType}
-                          </div>
-                        </Box>
-                        <Box sx={{ marginLeft: 5 }}>
-                          <div style={{}}>Status:</div>
-                          <div style={{ color: "green", fontWeight: "normal" }}>
-                            {loans.TLoanStatus}
-                          </div>
-                        </Box>
-                        <Box sx={{ marginLeft: 5 }}>
-                          <div style={{}}>Extension:</div>
-                          <div style={{ color: "black", fontWeight: "normal" }}>
-                            {loans.TLoanExtensionStatus}
-                          </div>
-                        </Box>
-                      </Typography>
-                    </Grid>
-                    <Grid
-                      item
-                      xs={12}
-                      component="span"
+    }
+    return (
+      <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
+        <Box sx={{ display: "flex", height: "100%" }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Card>
+              <CardContent>
+                <Grid container spacing={8}>
+                  <Grid item xs={12}>
+                    <Typography
+                      gutterBottom
+                      variant="subtitle2"
+                      component="div"
                       sx={{
-                        component: "span",
                         display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
+                        // justifyContent: "center",
+                        // alignItems: "center",
+                        // marginTop: 2,
+                        // marginBottom: -5,
+                        // marginLeft: -10,
+                        color: "#063970",
+                        fontWeight: "bold",
                       }}
                     >
-                      <motion.div
-                        className="animatable"
-                        whileHover={{
-                          scale: 1.1,
-                          transition: { duration: 0.3 },
-                        }}
-                        whileTap={{ scale: 0.9 }}
-                      >
+                      <h2>TLoan {loans.TLoanID}</h2>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div>Loan No.</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.TLoanID}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div>Start Date:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.StartDate}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{}}>End Date:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.EndDate}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{}}>Company Name:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.CompanyName}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{}}>Customer Email:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.CustomerEmail}
+                        </div>
+                      </Box>
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 16 }}
+                      rows={itemsTable}
+                      columns={columns}
+                      editMode="row"
+                      getRowId={(item) => item.ItemNo}
+                      experimentalFeatures={{ newEditingApi: true }}
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <TextField
+                      sx={{ display: "flex" }}
+                      id="outlined-purpose"
+                      multiline
+                      rows={11.5}
+                      label="Purpose"
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="filled"
+                      value={purposeField}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography
+                      gutterBottom
+                      variant="subtitle2"
+                      component="div"
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginTop: -5,
+                        marginLeft: -10,
+                        color: "#063970",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      <Box>
+                        <div>Collection Type:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.Collection}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div>Type:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.TLoanType}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{}}>Status:</div>
+                        <div style={{ color: "green", fontWeight: "normal" }}>
+                          {loans.TLoanStatus}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{}}>Extension:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.TLoanExtensionStatus}
+                        </div>
+                      </Box>
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    component="span"
+                    sx={{
+                      component: "span",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <motion.div
+                      className="animatable"
+                      whileHover={{
+                        scale: 1.1,
+                        transition: { duration: 0.3 },
+                      }}
+                      whileTap={{ scale: 0.9 }}
+                    >
                       <LoadingButton
                         size="small"
                         variant="contained"
@@ -2385,19 +2395,20 @@ export default function tloanDisplay() {
                       >
                         Back
                       </LoadingButton>
-                      </motion.div>
-                    </Grid>
+                    </motion.div>
                   </Grid>
-                </CardContent>
-              </Card>
-            </Box>
+                </Grid>
+              </CardContent>
+            </Card>
           </Box>
         </Box>
-      );
+      </Box>
+    );
   } else if (loans.TLoanStatusID === 1) {
     if (InternalApplicationPerms == true) {
       return <>{isEditable ? getCard() : getData()}</>;
-    } else if (ExternalApplicationPerms == true) {
+    }
+    if (ExternalApplicationPerms == true) {
       return <>{isEditable ? getCardExternal() : getData()}</>;
     }
   } else if (loans.TLoanStatusID === 8) {

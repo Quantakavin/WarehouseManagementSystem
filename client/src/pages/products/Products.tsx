@@ -26,6 +26,7 @@ import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import IsEditableProvider, {
   EditableContext,
 } from "../../components/context/isEditableContext";
+
 const Products: React.FC = () => {
   const [row, setRow] = useState([]);
   const userrole = useAppSelector(selectRole);
@@ -71,7 +72,7 @@ const Products: React.FC = () => {
     },
   ];
 
-  function CustomToolbar() {
+  const CustomToolbar = () => {
     return (
       <GridToolbarContainer
         sx={{ display: "flex", flexWrap: "wrap", maxWidth: 613, p: 1 }}
@@ -87,7 +88,7 @@ const Products: React.FC = () => {
         </Box>
       </GridToolbarContainer>
     );
-  }
+  };
 
   if (
     userrole == "Sales Admin" ||
@@ -167,59 +168,58 @@ const Products: React.FC = () => {
         </Box>
       </Box>
     );
-  } else {
-    return (
-      <Box sx={{ pl: 3, pr: 3, pt: 1, height: "100%", width: "100%" }}>
-        <Box sx={{ display: "flex", height: "100%" }}>
-          <Box sx={{ flexGrow: 1 }}>
-            <Box
-              component="span"
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
+  }
+  return (
+    <Box sx={{ pl: 3, pr: 3, pt: 1, height: "100%", width: "100%" }}>
+      <Box sx={{ display: "flex", height: "100%" }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Box
+            component="span"
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography
+              sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+              style={{ marginTop: 4 }}
             >
-              <Typography
-                sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
-                style={{ marginTop: 4 }}
-              >
-                Products
-              </Typography>
-            </Box>
-            <DataGrid
-              sx={{ background: "white", fontSize: 18 }}
-              rows={row}
-              columns={columns}
-              getRowId={(row) => row.BinProductPK}
-              pageSize={pageSize}
-              onPageSizeChange={(newPage) => setPageSize(newPage)}
-              pagination
-              headerHeight={50}
-              // rowHeight={70}
-              // getRowHeight={() => "auto"}
-              components={{
-                Toolbar: CustomToolbar,
-                NoRowsOverlay: () => (
-                  <Stack
-                    height="100%"
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    No Products
-                  </Stack>
-                ),
-              }}
-              filterModel={filterModel}
-              onFilterModelChange={(newFilterModel) =>
-                setFilterModel(newFilterModel)
-              }
-              onRowClick={(params: GridRowParams) => {
-                navigate(`/product/${params.id}`);
-              }}
-            />
+              Products
+            </Typography>
           </Box>
+          <DataGrid
+            sx={{ background: "white", fontSize: 18 }}
+            rows={row}
+            columns={columns}
+            getRowId={(row) => row.BinProductPK}
+            pageSize={pageSize}
+            onPageSizeChange={(newPage) => setPageSize(newPage)}
+            pagination
+            headerHeight={50}
+            // rowHeight={70}
+            // getRowHeight={() => "auto"}
+            components={{
+              Toolbar: CustomToolbar,
+              NoRowsOverlay: () => (
+                <Stack
+                  height="100%"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  No Products
+                </Stack>
+              ),
+            }}
+            filterModel={filterModel}
+            onFilterModelChange={(newFilterModel) =>
+              setFilterModel(newFilterModel)
+            }
+            onRowClick={(params: GridRowParams) => {
+              navigate(`/product/${params.id}`);
+            }}
+          />
         </Box>
       </Box>
-    );
-  }
+    </Box>
+  );
 };
 export default Products;

@@ -7,7 +7,7 @@ import {
   RegisterOptions,
   UseFormRegister,
   UseFormSetValue,
-  UseFormWatch
+  UseFormWatch,
 } from "react-hook-form";
 import ReactQuill from "react-quill";
 import styled from "styled-components";
@@ -43,7 +43,7 @@ const FormTextArea = <T,>({
   setValue,
   watch,
 }: FormFieldProps<T>) => {
-  //const [value, setValue] = useState('');
+  // const [value, setValue] = useState('');
 
   useEffect(() => {
     register(name, rules);
@@ -55,7 +55,7 @@ const FormTextArea = <T,>({
   const onEditorStateChange = (editorState) => {
     setValue(name, editorState);
   };
-  console.log("default is " + defaultvalue);
+  console.log(`default is ${defaultvalue}`);
 
   const editorContent = watch(name) as string;
 

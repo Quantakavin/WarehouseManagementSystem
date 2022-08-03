@@ -8,7 +8,7 @@ interface SkeletonProps {
 
 const CardContainer: React.FC<SkeletonProps> = ({ NoOfFields }) => {
   const SkeletonFields = () => {
-    let SkeletonArray = [];
+    const SkeletonArray = [];
     for (let i = 0; i < NoOfFields; i += 1) {
       SkeletonArray.push(
         <Skeleton variant="text" sx={{ marginBottom: "5px" }} key={i} />
@@ -21,13 +21,13 @@ const CardContainer: React.FC<SkeletonProps> = ({ NoOfFields }) => {
     <Container className="cardcontainer shadow">
       <Skeleton
         variant="rectangular"
-        width={"30%"}
+        width="30%"
         height={22}
         sx={{ marginBottom: "15px", marginTop: "10px" }}
       />
       <Skeleton
         variant="rectangular"
-        width={"20%"}
+        width="20%"
         height={18}
         sx={{ marginBottom: "30px" }}
       />

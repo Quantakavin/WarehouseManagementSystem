@@ -39,12 +39,12 @@ import {
   GridToolbarQuickFilter,
   GRID_DATE_COL_DEF,
   MuiEvent,
-  useGridApiContext
+  useGridApiContext,
 } from "@mui/x-data-grid";
 import {
   DatePicker,
   DateTimePicker,
-  LocalizationProvider
+  LocalizationProvider,
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
@@ -57,7 +57,7 @@ import { useNavigate, useParams } from "react-router";
 import { useAppSelector } from "../../app/hooks";
 import {
   selectPermissions,
-  selectRole
+  selectRole,
 } from "../../app/reducers/CurrentUserSlice";
 import { RMA } from "../../utils/CommonTypes";
 import { Toast } from "../alerts/SweetAlert";
@@ -67,7 +67,7 @@ const RmaDisplay: React.FC = () => {
   const navigate = useNavigate();
   const userrole = useAppSelector(selectRole);
   const permissions = useAppSelector(selectPermissions);
-  const [rma, setRma] = useState<RMA>();
+  const [rma, setRma] = useState<RMA>([]);
   const [rows, setRows] = useState([]);
   const [pageSize, setPageSize] = useState(25);
   const [loading, setLoading] = useState(false);
@@ -111,10 +111,10 @@ const RmaDisplay: React.FC = () => {
       setRma(rmadata.data);
     };
     // call the function
-    console.log("Approval permissions: " + ApprovalPerms);
-    console.log("Update permissions: " + UpdatePerms);
-    console.log("Checklist permissions: " + ChecklistPerms);
-    console.log("Verification permissions: " + VerificationPerms);
+    console.log(`Approval permissions: ${ApprovalPerms}`);
+    console.log(`Update permissions: ${UpdatePerms}`);
+    console.log(`Checklist permissions: ${ChecklistPerms}`);
+    console.log(`Verification permissions: ${VerificationPerms}`);
     fetchData();
     // make sure to catch any error
   }, []);
@@ -1144,7 +1144,8 @@ const RmaDisplay: React.FC = () => {
         </Box>
       </Box>
     );
-  } else if (rma.RmaStatusID === 1) {
+  }
+  if (rma.RmaStatusID === 1) {
     if (ApprovalPerms == true) {
       return (
         <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
@@ -1301,122 +1302,122 @@ const RmaDisplay: React.FC = () => {
           </Box>
         </Box>
       );
-    } else {
-      return (
-        <Box sx={{ padding: 3, height: "97%", width: "100%" }}>
-          <Typography
-            gutterBottom
-            variant="subtitle2"
-            component="span"
-            sx={{
-              display: "flex",
-              justifyContent: "left",
-              alignItems: "center",
-              marginLeft: 0,
-              color: "#063970",
-              fontWeight: "bold",
-            }}
-          >
-            <Box>
-              <h2>RMA Request #{rma.RmaID}</h2>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box>EMPLOYEE</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.Username}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>DATE APPLIED</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.DateTime}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>CUSTOMER NAME</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.ContactPerson}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>CUSTOMER EMAIL</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.CustomerEmail}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>COMPANY</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.Company}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>CONTACT NUMBER</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.ContactNo}
-              </Box>
-            </Box>
-          </Typography>
-
-          <Box sx={{ display: "flex", height: "99%", width: "100%" }}>
-            <Box sx={{ flexGrow: 1 }}>
-              <LocalizationProvider
-                dateAdapter={AdapterDateFns}
-                adapterLocale={locale}
-              >
-                <DataGrid
-                  sx={{ background: "white", fontSize: 16 }}
-                  rows={rows}
-                  columns={staticcolumns}
-                  editMode="row"
-                  getRowId={(row) => row.id}
-                  rowModesModel={rowModesModel}
-                  onRowEditStart={handleRowEditStart}
-                  onRowEditStop={handleRowEditStop}
-                  processRowUpdate={processRowUpdate}
-                  componentsProps={{
-                    toolbar: { setRows, setRowModesModel },
-                  }}
-                  experimentalFeatures={{ newEditingApi: true }}
-                />
-              </LocalizationProvider>
+    }
+    return (
+      <Box sx={{ padding: 3, height: "97%", width: "100%" }}>
+        <Typography
+          gutterBottom
+          variant="subtitle2"
+          component="span"
+          sx={{
+            display: "flex",
+            justifyContent: "left",
+            alignItems: "center",
+            marginLeft: 0,
+            color: "#063970",
+            fontWeight: "bold",
+          }}
+        >
+          <Box>
+            <h2>RMA Request #{rma.RmaID}</h2>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box>EMPLOYEE</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.Username}
             </Box>
           </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>DATE APPLIED</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.DateTime}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>CUSTOMER NAME</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.ContactPerson}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>CUSTOMER EMAIL</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.CustomerEmail}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>COMPANY</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.Company}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>CONTACT NUMBER</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.ContactNo}
+            </Box>
+          </Box>
+        </Typography>
 
-          <Box
-            component="span"
-            paddingTop={2}
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <motion.div
-              className="animatable"
-              whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-              whileTap={{ scale: 0.9 }}
+        <Box sx={{ display: "flex", height: "99%", width: "100%" }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              adapterLocale={locale}
             >
-              <LoadingButton
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                  paddingRight: 4,
+              <DataGrid
+                sx={{ background: "white", fontSize: 16 }}
+                rows={rows}
+                columns={staticcolumns}
+                editMode="row"
+                getRowId={(row) => row.id}
+                rowModesModel={rowModesModel}
+                onRowEditStart={handleRowEditStart}
+                onRowEditStop={handleRowEditStop}
+                processRowUpdate={processRowUpdate}
+                componentsProps={{
+                  toolbar: { setRows, setRowModesModel },
                 }}
-                startIcon={<ArrowBackIosNewIcon />}
-                onClick={() => navigate("/rma")}
-              >
-                Back
-              </LoadingButton>
-            </motion.div>
+                experimentalFeatures={{ newEditingApi: true }}
+              />
+            </LocalizationProvider>
           </Box>
         </Box>
-      );
-    }
-  } else if (rma.RmaStatusID === 7) {
+
+        <Box
+          component="span"
+          paddingTop={2}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <motion.div
+            className="animatable"
+            whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <LoadingButton
+              size="small"
+              variant="contained"
+              sx={{
+                color: "white",
+                backgroundColor: "#063970",
+                width: 150,
+                height: 50,
+                borderRadius: 10,
+                paddingRight: 4,
+              }}
+              startIcon={<ArrowBackIosNewIcon />}
+              onClick={() => navigate("/rma")}
+            >
+              Back
+            </LoadingButton>
+          </motion.div>
+        </Box>
+      </Box>
+    );
+  }
+  if (rma.RmaStatusID === 7) {
     if (UpdatePerms == true) {
       return (
         <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
@@ -1607,592 +1608,263 @@ const RmaDisplay: React.FC = () => {
           </Box>
         </Box>
       );
-    } else {
-      return (
-        <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
-          <Typography
-            gutterBottom
-            variant="subtitle2"
-            component="span"
-            sx={{
-              display: "flex",
-              justifyContent: "left",
-              alignItems: "center",
-              marginLeft: 0,
-              color: "#063970",
-              fontWeight: "bold",
-            }}
-          >
-            <Box>
-              <h2>RMA Request #{rma.RmaID}</h2>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box>EMPLOYEE</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.Username}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>DATE APPLIED</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.DateTime}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>CUSTOMER NAME</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.ContactPerson}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>CUSTOMER EMAIL</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.CustomerEmail}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>COMPANY</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.Company}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>CONTACT NUMBER</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.ContactNo}
-              </Box>
-            </Box>
-          </Typography>
-
-          <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
-            <Box sx={{ flexGrow: 1 }}>
-              <LocalizationProvider
-                dateAdapter={AdapterDateFns}
-                adapterLocale={locale}
-              >
-                <DataGrid
-                  sx={{ background: "white", fontSize: 16 }}
-                  rows={rows}
-                  columns={staticcolumns}
-                  editMode="row"
-                  getRowId={(row) => row.id}
-                  rowModesModel={rowModesModel}
-                  filterModel={filterModel}
-                  onFilterModelChange={(newFilterModel) =>
-                    setFilterModel(newFilterModel)
-                  }
-                  // onRowEditStart={handleRowEditStart}
-                  // processRowUpdate={processRowUpdate}
-                  // componentsProps={{
-                  //   toolbar: { setRows, setRowModesModel },
-                  // }}
-                  // experimentalFeatures={{ newEditingApi: true }}
-                />
-              </LocalizationProvider>
-            </Box>
-          </Box>
-
-          <Box
-            component="span"
-            paddingTop={2}
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <motion.div
-              className="animatable"
-              whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <LoadingButton
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                  paddingRight: 4,
-                }}
-                startIcon={<ArrowBackIosNewIcon />}
-                onClick={() => navigate("/rma")}
-              >
-                Back
-              </LoadingButton>
-            </motion.div>
-          </Box>
-        </Box>
-      );
     }
-  } else {
-    if (ChecklistPerms == true) {
-      return (
-        <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
-          <Typography
-            gutterBottom
-            variant="subtitle2"
-            component="span"
-            sx={{
-              display: "flex",
-              justifyContent: "left",
-              alignItems: "center",
-              marginLeft: 0,
-              color: "#063970",
-              fontWeight: "bold",
-            }}
-          >
-            <Box>
-              <h2>RMA Request #{rma.RmaID}</h2>
+    return (
+      <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
+        <Typography
+          gutterBottom
+          variant="subtitle2"
+          component="span"
+          sx={{
+            display: "flex",
+            justifyContent: "left",
+            alignItems: "center",
+            marginLeft: 0,
+            color: "#063970",
+            fontWeight: "bold",
+          }}
+        >
+          <Box>
+            <h2>RMA Request #{rma.RmaID}</h2>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box>EMPLOYEE</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.Username}
             </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box>EMPLOYEE</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.Username}
-              </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>DATE APPLIED</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.DateTime}
             </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>DATE APPLIED</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.DateTime}
-              </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>CUSTOMER NAME</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.ContactPerson}
             </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>CUSTOMER NAME</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.ContactPerson}
-              </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>CUSTOMER EMAIL</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.CustomerEmail}
             </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>CUSTOMER EMAIL</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.CustomerEmail}
-              </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>COMPANY</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.Company}
             </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>COMPANY</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.Company}
-              </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>CONTACT NUMBER</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.ContactNo}
             </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>CONTACT NUMBER</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.ContactNo}
-              </Box>
-            </Box>
-          </Typography>
+          </Box>
+        </Typography>
 
-          <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
-            <Box
-              sx={{
-                flexGrow: 1,
-                "& .status-cell.true": {
-                  backgroundColor: "rgba(49, 169, 97, 0.5)",
-                  fontWeight: "600",
-                },
-                "& .status-cell.false": {
-                  backgroundColor: "rgba(209, 26, 42, 0.5)",
-                  fontWeight: "600",
-                },
-              }}
+        <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              adapterLocale={locale}
             >
               <DataGrid
                 sx={{ background: "white", fontSize: 16 }}
                 rows={rows}
-                columns={whcolumns}
+                columns={staticcolumns}
                 editMode="row"
                 getRowId={(row) => row.id}
                 rowModesModel={rowModesModel}
-                onRowEditStart={handleRowEditStart}
-                onRowEditStop={handleRowEditStop}
-                processRowUpdate={processRowUpdate}
-                componentsProps={{
-                  toolbar: { setRows, setRowModesModel },
-                }}
-                experimentalFeatures={{ newEditingApi: true }}
-                pageSize={pageSize}
-                onPageSizeChange={(newPage) => setPageSize(newPage)}
-                pagination
-                components={{
-                  Toolbar: CustomToolbar,
-                  NoRowsOverlay: () => (
-                    <Stack
-                      height="100%"
-                      alignItems="center"
-                      justifyContent="center"
-                    >
-                      No products
-                    </Stack>
-                  ),
-                }}
                 filterModel={filterModel}
                 onFilterModelChange={(newFilterModel) =>
                   setFilterModel(newFilterModel)
                 }
+                // onRowEditStart={handleRowEditStart}
+                // processRowUpdate={processRowUpdate}
+                // componentsProps={{
+                //   toolbar: { setRows, setRowModesModel },
+                // }}
+                // experimentalFeatures={{ newEditingApi: true }}
               />
-            </Box>
-          </Box>
-
-          <Box
-            component="span"
-            paddingTop={2}
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <motion.div
-              className="animatable"
-              whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <LoadingButton
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                  paddingRight: 4,
-                }}
-                startIcon={<ArrowBackIosNewIcon />}
-                onClick={() => navigate("/rma")}
-              >
-                Back
-              </LoadingButton>
-            </motion.div>
-            <Box
-              component="span"
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <motion.div
-                className="animatable"
-                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <LoadingButton
-                  size="small"
-                  variant="contained"
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#063970",
-                    width: 150,
-                    height: 50,
-                    borderRadius: 10,
-                    marginRight: 5,
-                  }}
-                  loading={loading}
-                  loadingPosition="end"
-                  endIcon={<UpdateIcon />}
-                  onClick={updateChecklist}
-                >
-                  Update
-                </LoadingButton>
-              </motion.div>
-              <motion.div
-                className="animatable"
-                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <LoadingButton
-                  size="small"
-                  variant="contained"
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#31A961",
-                    width: 150,
-                    height: 50,
-                    borderRadius: 10,
-                  }}
-                  loading={completeLoading}
-                  loadingPosition="end"
-                  endIcon={<FactCheckIcon />}
-                  onClick={receiveRMA}
-                >
-                  Complete
-                </LoadingButton>
-              </motion.div>
-            </Box>
+            </LocalizationProvider>
           </Box>
         </Box>
-      );
-    } else if (VerificationPerms == true) {
-      return (
-        <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
-          <Typography
-            gutterBottom
-            variant="subtitle2"
-            component="span"
-            sx={{
-              display: "flex",
-              justifyContent: "left",
-              alignItems: "center",
-              marginLeft: 0,
-              color: "#063970",
-              fontWeight: "bold",
-            }}
-          >
-            <Box>
-              <h2>RMA Request #{rma.RmaID}</h2>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box>EMPLOYEE</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.Username}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>DATE APPLIED</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.DateTime}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>CUSTOMER NAME</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.ContactPerson}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>CUSTOMER EMAIL</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.CustomerEmail}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>COMPANY</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.Company}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>CONTACT NUMBER</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.ContactNo}
-              </Box>
-            </Box>
-          </Typography>
 
-          <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
-            <Box
+        <Box
+          component="span"
+          paddingTop={2}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <motion.div
+            className="animatable"
+            whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <LoadingButton
+              size="small"
+              variant="contained"
               sx={{
-                flexGrow: 1,
-                "& .ins--cell": {
-                  backgroundColor: "#E6E6E6",
-                  fontWeight: "600",
-                },
+                color: "white",
+                backgroundColor: "#063970",
+                width: 150,
+                height: 50,
+                borderRadius: 10,
+                paddingRight: 4,
               }}
+              startIcon={<ArrowBackIosNewIcon />}
+              onClick={() => navigate("/rma")}
             >
-              <DataGrid
-                sx={{ background: "white", fontSize: 16 }}
-                rows={rows}
-                columns={icolumns}
-                editMode="row"
-                getRowId={(row) => row.id}
-                pageSize={pageSize}
-                onPageSizeChange={(newPage) => setPageSize(newPage)}
-                pagination
-                components={{
-                  Toolbar: CustomToolbar,
-                  NoRowsOverlay: () => (
-                    <Stack
-                      height="100%"
-                      alignItems="center"
-                      justifyContent="center"
-                    >
-                      No products
-                    </Stack>
-                  ),
-                }}
-                filterModel={filterModel}
-                onFilterModelChange={(newFilterModel) =>
-                  setFilterModel(newFilterModel)
-                }
-                rowModesModel={rowModesModel}
-                onRowEditStart={handleRowEditStart}
-                onRowEditStop={handleRowEditStop}
-                processRowUpdate={processRowUpdate}
-                componentsProps={{
-                  toolbar: { setRows, setRowModesModel },
-                }}
-                experimentalFeatures={{ newEditingApi: true }}
-              />
+              Back
+            </LoadingButton>
+          </motion.div>
+        </Box>
+      </Box>
+    );
+  }
+  if (ChecklistPerms == true) {
+    return (
+      <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
+        <Typography
+          gutterBottom
+          variant="subtitle2"
+          component="span"
+          sx={{
+            display: "flex",
+            justifyContent: "left",
+            alignItems: "center",
+            marginLeft: 0,
+            color: "#063970",
+            fontWeight: "bold",
+          }}
+        >
+          <Box>
+            <h2>RMA Request #{rma.RmaID}</h2>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box>EMPLOYEE</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.Username}
             </Box>
           </Box>
-
-          <Box
-            component="span"
-            paddingTop={2}
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <motion.div
-              className="animatable"
-              whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <LoadingButton
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                  paddingRight: 4,
-                }}
-                startIcon={<ArrowBackIosNewIcon />}
-                onClick={() => navigate("/rma")}
-              >
-                Back
-              </LoadingButton>
-            </motion.div>
-            <Box
-              component="span"
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <motion.div
-                className="animatable"
-                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <LoadingButton
-                  size="small"
-                  variant="contained"
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#31A961",
-                    width: 150,
-                    height: 50,
-                    borderRadius: 10,
-                  }}
-                  loading={loading}
-                  loadingPosition="end"
-                  endIcon={<DoneAllIcon />}
-                  onClick={verifyRMA}
-                >
-                  Verify
-                </LoadingButton>
-              </motion.div>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>DATE APPLIED</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.DateTime}
             </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>CUSTOMER NAME</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.ContactPerson}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>CUSTOMER EMAIL</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.CustomerEmail}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>COMPANY</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.Company}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>CONTACT NUMBER</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.ContactNo}
+            </Box>
+          </Box>
+        </Typography>
+
+        <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              "& .status-cell.true": {
+                backgroundColor: "rgba(49, 169, 97, 0.5)",
+                fontWeight: "600",
+              },
+              "& .status-cell.false": {
+                backgroundColor: "rgba(209, 26, 42, 0.5)",
+                fontWeight: "600",
+              },
+            }}
+          >
+            <DataGrid
+              sx={{ background: "white", fontSize: 16 }}
+              rows={rows}
+              columns={whcolumns}
+              editMode="row"
+              getRowId={(row) => row.id}
+              rowModesModel={rowModesModel}
+              onRowEditStart={handleRowEditStart}
+              onRowEditStop={handleRowEditStop}
+              processRowUpdate={processRowUpdate}
+              componentsProps={{
+                toolbar: { setRows, setRowModesModel },
+              }}
+              experimentalFeatures={{ newEditingApi: true }}
+              pageSize={pageSize}
+              onPageSizeChange={(newPage) => setPageSize(newPage)}
+              pagination
+              components={{
+                Toolbar: CustomToolbar,
+                NoRowsOverlay: () => (
+                  <Stack
+                    height="100%"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    No products
+                  </Stack>
+                ),
+              }}
+              filterModel={filterModel}
+              onFilterModelChange={(newFilterModel) =>
+                setFilterModel(newFilterModel)
+              }
+            />
           </Box>
         </Box>
-      );
-    } else if (UpdatePerms == true) {
-      return (
-        <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
-          <Typography
-            gutterBottom
-            variant="subtitle2"
-            component="span"
-            sx={{
-              display: "flex",
-              justifyContent: "left",
-              alignItems: "center",
-              marginLeft: 0,
-              color: "#063970",
-              fontWeight: "bold",
-            }}
+
+        <Box
+          component="span"
+          paddingTop={2}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <motion.div
+            className="animatable"
+            whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+            whileTap={{ scale: 0.9 }}
           >
-            <Box>
-              <h2>RMA Request #{rma.RmaID}</h2>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box>EMPLOYEE</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.Username}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>DATE APPLIED</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.DateTime}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>CUSTOMER NAME</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.ContactPerson}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>CUSTOMER EMAIL</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.CustomerEmail}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>COMPANY</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.Company}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>CONTACT NUMBER</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.ContactNo}
-              </Box>
-            </Box>
-          </Typography>
-
-          <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
-            <Box
+            <LoadingButton
+              size="small"
+              variant="contained"
               sx={{
-                flexGrow: 1,
-                "& .coa--cell": {
-                  backgroundColor: "#E6E6E6",
-                  fontWeight: "600",
-                },
+                color: "white",
+                backgroundColor: "#063970",
+                width: 150,
+                height: 50,
+                borderRadius: 10,
+                paddingRight: 4,
               }}
+              startIcon={<ArrowBackIosNewIcon />}
+              onClick={() => navigate("/rma")}
             >
-              <DataGrid
-                sx={{ background: "white", fontSize: 16 }}
-                rows={rows}
-                columns={coacolumns}
-                editMode="row"
-                getRowId={(row) => row.id}
-                pageSize={pageSize}
-                onPageSizeChange={(newPage) => setPageSize(newPage)}
-                pagination
-                components={{
-                  Toolbar: CustomToolbar,
-                  NoRowsOverlay: () => (
-                    <Stack
-                      height="100%"
-                      alignItems="center"
-                      justifyContent="center"
-                    >
-                      No products
-                    </Stack>
-                  ),
-                }}
-                filterModel={filterModel}
-                onFilterModelChange={(newFilterModel) =>
-                  setFilterModel(newFilterModel)
-                }
-                rowModesModel={rowModesModel}
-                onRowEditStart={handleRowEditStart}
-                onRowEditStop={handleRowEditStop}
-                processRowUpdate={processRowUpdate}
-                componentsProps={{
-                  toolbar: { setRows, setRowModesModel },
-                }}
-                experimentalFeatures={{ newEditingApi: true }}
-              />
-            </Box>
-          </Box>
-
+              Back
+            </LoadingButton>
+          </motion.div>
           <Box
             component="span"
-            paddingTop={2}
             display="flex"
             justifyContent="space-between"
             alignItems="center"
@@ -2211,12 +1883,14 @@ const RmaDisplay: React.FC = () => {
                   width: 150,
                   height: 50,
                   borderRadius: 10,
-                  paddingRight: 4,
+                  marginRight: 5,
                 }}
-                startIcon={<ArrowBackIosNewIcon />}
-                onClick={() => navigate("/rma")}
+                loading={loading}
+                loadingPosition="end"
+                endIcon={<UpdateIcon />}
+                onClick={updateChecklist}
               >
-                Back
+                Update
               </LoadingButton>
             </motion.div>
             <motion.div
@@ -2234,93 +1908,154 @@ const RmaDisplay: React.FC = () => {
                   height: 50,
                   borderRadius: 10,
                 }}
-                loading={loading}
+                loading={completeLoading}
                 loadingPosition="end"
-                endIcon={<UpdateIcon />}
-                onClick={COARMA}
+                endIcon={<FactCheckIcon />}
+                onClick={receiveRMA}
               >
-                Update
+                Complete
               </LoadingButton>
             </motion.div>
           </Box>
         </Box>
-      );
-    } else {
-      return (
-        <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
-          <Typography
-            gutterBottom
-            variant="subtitle2"
-            component="span"
-            sx={{
-              display: "flex",
-              justifyContent: "left",
-              alignItems: "center",
-              marginLeft: 0,
-              color: "#063970",
-              fontWeight: "bold",
-            }}
-          >
-            <Box>
-              <h2>RMA Request #{rma.RmaID}</h2>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box>EMPLOYEE</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.Username}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>DATE APPLIED</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.DateTime}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>CUSTOMER NAME</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.ContactPerson}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>CUSTOMER EMAIL</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.CustomerEmail}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>COMPANY</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.Company}
-              </Box>
-            </Box>
-            <Box sx={{ marginLeft: 5 }}>
-              <Box sx={{}}>CONTACT NUMBER</Box>
-              <Box sx={{ color: "black", fontWeight: "normal" }}>
-                {rma.ContactNo}
-              </Box>
-            </Box>
-          </Typography>
-
-          <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
-            <Box sx={{ flexGrow: 1 }}>
-              <DataGrid
-                sx={{ background: "white", fontSize: 16 }}
-                rows={rows}
-                columns={staticcolumns}
-                editMode="row"
-                getRowId={(row) => row.id}
-                filterModel={filterModel}
-                onFilterModelChange={(newFilterModel) =>
-                  setFilterModel(newFilterModel)
-                }
-              />
+      </Box>
+    );
+  }
+  if (VerificationPerms == true) {
+    return (
+      <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
+        <Typography
+          gutterBottom
+          variant="subtitle2"
+          component="span"
+          sx={{
+            display: "flex",
+            justifyContent: "left",
+            alignItems: "center",
+            marginLeft: 0,
+            color: "#063970",
+            fontWeight: "bold",
+          }}
+        >
+          <Box>
+            <h2>RMA Request #{rma.RmaID}</h2>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box>EMPLOYEE</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.Username}
             </Box>
           </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>DATE APPLIED</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.DateTime}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>CUSTOMER NAME</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.ContactPerson}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>CUSTOMER EMAIL</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.CustomerEmail}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>COMPANY</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.Company}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>CONTACT NUMBER</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.ContactNo}
+            </Box>
+          </Box>
+        </Typography>
 
+        <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              "& .ins--cell": {
+                backgroundColor: "#E6E6E6",
+                fontWeight: "600",
+              },
+            }}
+          >
+            <DataGrid
+              sx={{ background: "white", fontSize: 16 }}
+              rows={rows}
+              columns={icolumns}
+              editMode="row"
+              getRowId={(row) => row.id}
+              pageSize={pageSize}
+              onPageSizeChange={(newPage) => setPageSize(newPage)}
+              pagination
+              components={{
+                Toolbar: CustomToolbar,
+                NoRowsOverlay: () => (
+                  <Stack
+                    height="100%"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    No products
+                  </Stack>
+                ),
+              }}
+              filterModel={filterModel}
+              onFilterModelChange={(newFilterModel) =>
+                setFilterModel(newFilterModel)
+              }
+              rowModesModel={rowModesModel}
+              onRowEditStart={handleRowEditStart}
+              onRowEditStop={handleRowEditStop}
+              processRowUpdate={processRowUpdate}
+              componentsProps={{
+                toolbar: { setRows, setRowModesModel },
+              }}
+              experimentalFeatures={{ newEditingApi: true }}
+            />
+          </Box>
+        </Box>
+
+        <Box
+          component="span"
+          paddingTop={2}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <motion.div
+            className="animatable"
+            whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <LoadingButton
+              size="small"
+              variant="contained"
+              sx={{
+                color: "white",
+                backgroundColor: "#063970",
+                width: 150,
+                height: 50,
+                borderRadius: 10,
+                paddingRight: 4,
+              }}
+              startIcon={<ArrowBackIosNewIcon />}
+              onClick={() => navigate("/rma")}
+            >
+              Back
+            </LoadingButton>
+          </motion.div>
           <Box
             component="span"
-            paddingTop={2}
             display="flex"
             justifyContent="space-between"
             alignItems="center"
@@ -2335,23 +2070,286 @@ const RmaDisplay: React.FC = () => {
                 variant="contained"
                 sx={{
                   color: "white",
-                  backgroundColor: "#063970",
+                  backgroundColor: "#31A961",
                   width: 150,
                   height: 50,
                   borderRadius: 10,
-                  paddingRight: 4,
                 }}
-                startIcon={<ArrowBackIosNewIcon />}
-                onClick={() => navigate("/rma")}
+                loading={loading}
+                loadingPosition="end"
+                endIcon={<DoneAllIcon />}
+                onClick={verifyRMA}
               >
-                Back
+                Verify
               </LoadingButton>
             </motion.div>
           </Box>
         </Box>
-      );
-    }
+      </Box>
+    );
   }
+  if (UpdatePerms == true) {
+    return (
+      <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
+        <Typography
+          gutterBottom
+          variant="subtitle2"
+          component="span"
+          sx={{
+            display: "flex",
+            justifyContent: "left",
+            alignItems: "center",
+            marginLeft: 0,
+            color: "#063970",
+            fontWeight: "bold",
+          }}
+        >
+          <Box>
+            <h2>RMA Request #{rma.RmaID}</h2>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box>EMPLOYEE</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.Username}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>DATE APPLIED</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.DateTime}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>CUSTOMER NAME</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.ContactPerson}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>CUSTOMER EMAIL</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.CustomerEmail}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>COMPANY</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.Company}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>CONTACT NUMBER</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.ContactNo}
+            </Box>
+          </Box>
+        </Typography>
+
+        <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              "& .coa--cell": {
+                backgroundColor: "#E6E6E6",
+                fontWeight: "600",
+              },
+            }}
+          >
+            <DataGrid
+              sx={{ background: "white", fontSize: 16 }}
+              rows={rows}
+              columns={coacolumns}
+              editMode="row"
+              getRowId={(row) => row.id}
+              pageSize={pageSize}
+              onPageSizeChange={(newPage) => setPageSize(newPage)}
+              pagination
+              components={{
+                Toolbar: CustomToolbar,
+                NoRowsOverlay: () => (
+                  <Stack
+                    height="100%"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    No products
+                  </Stack>
+                ),
+              }}
+              filterModel={filterModel}
+              onFilterModelChange={(newFilterModel) =>
+                setFilterModel(newFilterModel)
+              }
+              rowModesModel={rowModesModel}
+              onRowEditStart={handleRowEditStart}
+              onRowEditStop={handleRowEditStop}
+              processRowUpdate={processRowUpdate}
+              componentsProps={{
+                toolbar: { setRows, setRowModesModel },
+              }}
+              experimentalFeatures={{ newEditingApi: true }}
+            />
+          </Box>
+        </Box>
+
+        <Box
+          component="span"
+          paddingTop={2}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <motion.div
+            className="animatable"
+            whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <LoadingButton
+              size="small"
+              variant="contained"
+              sx={{
+                color: "white",
+                backgroundColor: "#063970",
+                width: 150,
+                height: 50,
+                borderRadius: 10,
+                paddingRight: 4,
+              }}
+              startIcon={<ArrowBackIosNewIcon />}
+              onClick={() => navigate("/rma")}
+            >
+              Back
+            </LoadingButton>
+          </motion.div>
+          <motion.div
+            className="animatable"
+            whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <LoadingButton
+              size="small"
+              variant="contained"
+              sx={{
+                color: "white",
+                backgroundColor: "#31A961",
+                width: 150,
+                height: 50,
+                borderRadius: 10,
+              }}
+              loading={loading}
+              loadingPosition="end"
+              endIcon={<UpdateIcon />}
+              onClick={COARMA}
+            >
+              Update
+            </LoadingButton>
+          </motion.div>
+        </Box>
+      </Box>
+    );
+  }
+  return (
+    <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
+      <Typography
+        gutterBottom
+        variant="subtitle2"
+        component="span"
+        sx={{
+          display: "flex",
+          justifyContent: "left",
+          alignItems: "center",
+          marginLeft: 0,
+          color: "#063970",
+          fontWeight: "bold",
+        }}
+      >
+        <Box>
+          <h2>RMA Request #{rma.RmaID}</h2>
+        </Box>
+        <Box sx={{ marginLeft: 5 }}>
+          <Box>EMPLOYEE</Box>
+          <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {rma.Username}
+          </Box>
+        </Box>
+        <Box sx={{ marginLeft: 5 }}>
+          <Box sx={{}}>DATE APPLIED</Box>
+          <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {rma.DateTime}
+          </Box>
+        </Box>
+        <Box sx={{ marginLeft: 5 }}>
+          <Box sx={{}}>CUSTOMER NAME</Box>
+          <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {rma.ContactPerson}
+          </Box>
+        </Box>
+        <Box sx={{ marginLeft: 5 }}>
+          <Box sx={{}}>CUSTOMER EMAIL</Box>
+          <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {rma.CustomerEmail}
+          </Box>
+        </Box>
+        <Box sx={{ marginLeft: 5 }}>
+          <Box sx={{}}>COMPANY</Box>
+          <Box sx={{ color: "black", fontWeight: "normal" }}>{rma.Company}</Box>
+        </Box>
+        <Box sx={{ marginLeft: 5 }}>
+          <Box sx={{}}>CONTACT NUMBER</Box>
+          <Box sx={{ color: "black", fontWeight: "normal" }}>
+            {rma.ContactNo}
+          </Box>
+        </Box>
+      </Typography>
+
+      <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <DataGrid
+            sx={{ background: "white", fontSize: 16 }}
+            rows={rows}
+            columns={staticcolumns}
+            editMode="row"
+            getRowId={(row) => row.id}
+            filterModel={filterModel}
+            onFilterModelChange={(newFilterModel) =>
+              setFilterModel(newFilterModel)
+            }
+          />
+        </Box>
+      </Box>
+
+      <Box
+        component="span"
+        paddingTop={2}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <motion.div
+          className="animatable"
+          whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <LoadingButton
+            size="small"
+            variant="contained"
+            sx={{
+              color: "white",
+              backgroundColor: "#063970",
+              width: 150,
+              height: 50,
+              borderRadius: 10,
+              paddingRight: 4,
+            }}
+            startIcon={<ArrowBackIosNewIcon />}
+            onClick={() => navigate("/rma")}
+          >
+            Back
+          </LoadingButton>
+        </motion.div>
+      </Box>
+    </Box>
+  );
 };
 
 export default RmaDisplay;

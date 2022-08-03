@@ -4,7 +4,7 @@ import {
   Table,
   TableContainer,
   TableHead,
-  TableRow
+  TableRow,
 } from "@mui/material";
 import { AxiosResponse } from "axios";
 import { UseInfiniteQueryResult } from "react-query";
@@ -58,9 +58,7 @@ const InfiniteTable = ({
           {query.isLoading || query.isError ? (
             <TableSkeleton NoOfCols={headers.length} />
           ) : (
-            <>
-              <TableContents pages={query.data.pages} menu={menu} />
-            </>
+            <TableContents pages={query.data.pages} menu={menu} />
           )}
         </Table>
         {!query.isLoading && !query.isError && <LoadMoreButton query={query} />}

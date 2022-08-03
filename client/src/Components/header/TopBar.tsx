@@ -39,66 +39,64 @@ const TopBar: React.FC = () => {
   };
 
   const ProfileDropdown = (
-    <>
-      <Menu
-        id="profilemenu"
-        anchorEl={anchorEl}
-        open={profileopen}
-        onClose={() => setAnchorEl(null)}
-        MenuListProps={{
-          "aria-labelledby": "headerprofile",
-          onMouseLeave: handleMouseLeave,
+    <Menu
+      id="profilemenu"
+      anchorEl={anchorEl}
+      open={profileopen}
+      onClose={() => setAnchorEl(null)}
+      MenuListProps={{
+        "aria-labelledby": "headerprofile",
+        onMouseLeave: handleMouseLeave,
+      }}
+    >
+      <MenuItem
+        sx={{ color: "#0A2540" }}
+        onClick={() => {
+          navigate("/profile");
         }}
       >
-        <MenuItem
-          sx={{ color: "#0A2540" }}
-          onClick={() => {
-            navigate("/profile");
-          }}
+        <ListItemIcon sx={{ color: "#0A2540" }}>
+          <AccountCircleIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText
+          primaryTypographyProps={{ fontSize: "14px", marginLeft: "-7px" }}
         >
-          <ListItemIcon sx={{ color: "#0A2540" }}>
-            <AccountCircleIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText
-            primaryTypographyProps={{ fontSize: "14px", marginLeft: "-7px" }}
-          >
-            Profile
-          </ListItemText>
-        </MenuItem>
+          Profile
+        </ListItemText>
+      </MenuItem>
 
-        <MenuItem
-          sx={{ color: "#0A2540" }}
-          onClick={() => {
-            navigate("/settings");
-          }}
+      <MenuItem
+        sx={{ color: "#0A2540" }}
+        onClick={() => {
+          navigate("/settings");
+        }}
+      >
+        <ListItemIcon sx={{ color: "#0A2540" }}>
+          <SettingsIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText
+          primaryTypographyProps={{ fontSize: "14px", marginLeft: "-7px" }}
         >
-          <ListItemIcon sx={{ color: "#0A2540" }}>
-            <SettingsIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText
-            primaryTypographyProps={{ fontSize: "14px", marginLeft: "-7px" }}
-          >
-            Settings
-          </ListItemText>
-        </MenuItem>
+          Settings
+        </ListItemText>
+      </MenuItem>
 
-        <MenuItem
-          sx={{ color: "#0A2540" }}
-          onClick={() => {
-            logout();
-          }}
+      <MenuItem
+        sx={{ color: "#0A2540" }}
+        onClick={() => {
+          logout();
+        }}
+      >
+        <ListItemIcon sx={{ color: "#0A2540" }}>
+          <LogoutIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText
+          primaryTypographyProps={{ fontSize: "14px", marginLeft: "-7px" }}
         >
-          <ListItemIcon sx={{ color: "#0A2540" }}>
-            <LogoutIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText
-            primaryTypographyProps={{ fontSize: "14px", marginLeft: "-7px" }}
-          >
-            Logout
-          </ListItemText>
-        </MenuItem>
-      </Menu>
-    </>
+          Logout
+        </ListItemText>
+      </MenuItem>
+    </Menu>
   );
 
   const ProfileContainer = (

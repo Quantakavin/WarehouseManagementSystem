@@ -15,7 +15,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Toast } from "../../components/alerts/SweetAlert";
+import { Toast } from "../alerts/SweetAlert";
 
 const style = {
   position: "absolute" as "absolute",
@@ -137,7 +137,8 @@ const ModalButton = () => {
       tloanStatus === 9
     ) {
       return null;
-    } else if (extensionStatus !== "NIL") {
+    }
+    if (extensionStatus !== "NIL") {
       return (
         <LoadingButton
           size="small"
@@ -155,7 +156,8 @@ const ModalButton = () => {
           Apply For Extension
         </LoadingButton>
       );
-    } else if (extensionStatus === "NIL") {
+    }
+    if (extensionStatus === "NIL") {
       return (
         <motion.div
           className="animatable"

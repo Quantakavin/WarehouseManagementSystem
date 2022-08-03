@@ -13,7 +13,12 @@ import {
   useQueryClient,
 } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { DeleteUser, FilterUsers, GetAllUsers, GetUsernames } from "../../api/UserDB";
+import {
+  DeleteUser,
+  FilterUsers,
+  GetAllUsers,
+  GetUsernames,
+} from "../../api/UserDB";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import {
