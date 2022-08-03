@@ -12,17 +12,34 @@ import { Toast } from "../../components/alerts/SweetAlert";
 import CardContainer from "../../components/cards/CardContainer";
 import CardField from "../../components/cards/CardField";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
-import IsEditableProvider, { EditableContext } from '../../components/context/isEditableContext'
+import IsEditableProvider, {
+  EditableContext,
+} from "../../components/context/isEditableContext";
+import Divider from "@mui/material/Divider";
+import { Chip, Grid } from "@mui/material";
+import { useAppSelector } from "../../app/hooks";
+import {
+  selectPermissions,
+  selectRole,
+} from "../../app/reducers/CurrentUserSlice";
+import { executeReducerBuilderCallback } from "@reduxjs/toolkit/dist/mapBuilders";
+
 
 const ViewProduct: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [newProducts, setNewProducts] = useState([]);
   const [productGet, setProductGet] = useState([]);
-  const context = useContext(EditableContext)
-  const {isEditable, setIsEditable, TLoanIDGlobal} = context
+  const context = useContext(EditableContext);
+  const { isEditable, setIsEditable, TLoanIDGlobal } = context;
+  const permissions = useAppSelector(selectPermissions);
 
-
+  const ExternalApplication = permissions.some(
+    (e) => e.FeatureName === "T-Loan Application (Internal+External)"
+  );
+  const InternalApplication = permissions.some(
+    (e) => e.FeatureName === "T-Loan Application (Internal)"
+  );
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
@@ -69,6 +86,7 @@ const ViewProduct: React.FC = () => {
 
   const { totalItems, addItem } = useCart();
 
+ 
   const newLoanButton = () => {
     if (totalItems > 0) {
       return (
@@ -80,7 +98,11 @@ const ViewProduct: React.FC = () => {
           <Fab
             variant="extended"
             aria-label="add"
-            onClick={() =>{isEditable ? navigate(`/tloanDraftDetails/${TLoanIDGlobal}`) : navigate("/newtloan")}}
+            onClick={() => {
+              isEditable
+                ? navigate(`/tloanDraftDetails/${TLoanIDGlobal}`)
+                : navigate("/newtloan");
+            }}
             sx={{
               color: "white",
               backgroundColor: "#063970",
@@ -95,20 +117,7 @@ const ViewProduct: React.FC = () => {
             <ShoppingBasketIcon sx={{ ml: 0.5, mr: 0.5 }} />
           </Fab>
         </motion.div>
-        // <Button
-        // size="big"
-        // variant="contained"
-        // sx={{
-        //   color: "white",
-        //   backgroundColor: "#063970",
-        //   width: 180,
-        //   height: 60,
-        //   borderRadius: 10,
-        //   float: "right",
-        //   marginTop:8,
-        //   marginRight: "5%"
-        // }}
-        // onClick={() => navigate('/newtloan')}> <ShoppingBasketIcon style={{marginRight: 1}}/><span/> New Loan ({totalItems}) </Button>
+        
       );
     } else {
       return;
@@ -177,72 +186,179 @@ const ViewProduct: React.FC = () => {
 
     return html;
   };
-  return (
-    <>
-      {newLoanButton()}
-      {ProductQuery.status === "success" && (
-        <CardContainer
-          header={ProductQuery.data.data[0].ItemName}
-          subheading={ProductQuery.data.data[0].ItemNo}
-        >
-          <CardField label="Brand:" value={ProductQuery.data.data[0].Brand} />
-          <CardField
-            label="Batch Number:"
-            value={ProductQuery.data.data[0].BatchNo}
-          />
-          <CardField
-            label="Bin Tag:"
-            value={ProductQuery.data.data[0].BinTag2}
-          />
-          <CardField
-            label="Warehouse Code:"
-            value={ProductQuery.data.data[0].WarehouseCode}
-          />
-          <CardField
-            label="Weight:"
-            value={ProductQuery.data.data[0].Weight + " kg"}
-          />
-          <CardField
-            label="Length:"
-            value={ProductQuery.data.data[0].Length + " cm"}
-          />
-          <CardField
-            label="Width:"
-            value={ProductQuery.data.data[0].Width + " cm"}
-          />
-          <CardField
-            label="Height:"
-            value={ProductQuery.data.data[0].Height + " cm"}
-          />
-          <CardField
-            label="Availible Quantity:"
-            value={ProductQuery.data.data[0].Quantity}
-          />
-          <div
-            className="flexcontainer"
-            style={{
-              flexDirection: "row",
-              marginLeft: "7%",
-              marginRight: "7%",
-              marginTop: 30,
-              marginBottom: 20,
-            }}
+  if( InternalApplication === true || ExternalApplication === true) {
+    return (
+      <>
+        {newLoanButton()}
+        {ProductQuery.status === "success" && (
+          <CardContainer
+            header={ProductQuery.data.data[0].ItemName}
+            subheading={ProductQuery.data.data[0].ItemNo}
           >
-            <button
-              style={{ alignSelf: "flex-start" }}
-              className="cardbackbutton"
-              onClick={() => navigate(-1)}
-              type="button"
+            <Divider sx={{ mb: 3 }}>
+              <Chip label="Details" sx={{ fontWeight: 500 }} />
+            </Divider>
+            <Grid container sx={{ pl: 3, pr: 0 }}>
+              <Grid item xs={7}>
+                <CardField
+                  label="Brand"
+                  value={ProductQuery.data.data[0].Brand}
+                />
+                <CardField
+                  label="Batch Number"
+                  value={ProductQuery.data.data[0].BatchNo}
+                />
+                <CardField
+                  label="Bin Tag"
+                  value={ProductQuery.data.data[0].BinTag2}
+                />
+                <CardField
+                  label="Warehouse Code"
+                  value={ProductQuery.data.data[0].WarehouseCode}
+                />
+                <CardField
+                  label="Available Quantity"
+                  value={ProductQuery.data.data[0].Quantity}
+                />
+              </Grid>
+              <Grid item xs={5}>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <CardField
+                      label="Weight"
+                      value={ProductQuery.data.data[0].Weight + " kg"}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <CardField
+                      label="Length"
+                      value={ProductQuery.data.data[0].Length + " cm"}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <CardField
+                      label="Width"
+                      value={ProductQuery.data.data[0].Width + " cm"}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <CardField
+                      label="Height"
+                      value={ProductQuery.data.data[0].Height + " cm"}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item></Grid>
+            </Grid>
+            <div
+              className="flexcontainer"
+              style={{
+                flexDirection: "row",
+                marginLeft: "7%",
+                marginRight: "7%",
+                marginTop: 30,
+                marginBottom: 20,
+              }}
             >
-              <ArrowBackIosIcon fontSize="small" /> Back
-            </button>
-
-            {addProduct()}
-          </div>
-        </CardContainer>
-      )}
-      {/* {addInside()} */}
-    </>
-  );
+              <button
+                style={{ alignSelf: "flex-start" }}
+                className="cardbackbutton"
+                onClick={() => navigate(-1)}
+                type="button"
+              >
+                <ArrowBackIosIcon fontSize="small" /> Back
+              </button>
+  
+              {addProduct()}
+            </div>
+          </CardContainer>
+        )}
+        {/* {addInside()} */}
+      </>
+    );
+  }else{
+    return (
+      <>
+    
+        {ProductQuery.status === "success" && (
+          <CardContainer
+            header={ProductQuery.data.data[0].ItemName}
+            subheading={ProductQuery.data.data[0].ItemNo}
+          >
+            <Divider sx={{ mb: 3 }}>
+              <Chip label="Details" sx={{ fontWeight: 500 }} />
+            </Divider>
+            <Grid container sx={{ pl: 3, pr: 0 }}>
+              <Grid item xs={7}>
+                <CardField
+                  label="Brand"
+                  value={ProductQuery.data.data[0].Brand}
+                />
+                <CardField
+                  label="Batch Number"
+                  value={ProductQuery.data.data[0].BatchNo}
+                />
+                <CardField
+                  label="Bin Tag"
+                  value={ProductQuery.data.data[0].BinTag2}
+                />
+                <CardField
+                  label="Warehouse Code"
+                  value={ProductQuery.data.data[0].WarehouseCode}
+                />
+                <CardField
+                  label="Available Quantity"
+                  value={ProductQuery.data.data[0].Quantity}
+                />
+              </Grid>
+              <Grid item xs={5}>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <CardField
+                      label="Weight"
+                      value={ProductQuery.data.data[0].Weight + " kg"}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <CardField
+                      label="Length"
+                      value={ProductQuery.data.data[0].Length + " cm"}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <CardField
+                      label="Width"
+                      value={ProductQuery.data.data[0].Width + " cm"}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <CardField
+                      label="Height"
+                      value={ProductQuery.data.data[0].Height + " cm"}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item></Grid>
+            </Grid>
+            <div
+              className="flexcontainer"
+              style={{
+                flexDirection: "row",
+                marginLeft: "7%",
+                marginRight: "7%",
+                marginTop: 30,
+                marginBottom: 20,
+              }}
+            > 
+            </div>
+          </CardContainer>
+        )}
+        {/* {addInside()} */}
+      </>
+    );
+  }
+  
 };
 export default ViewProduct;

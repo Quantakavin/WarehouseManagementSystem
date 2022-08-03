@@ -1,16 +1,10 @@
-const {
-    json
-} = require('body-parser');
+const { json } = require('body-parser');
 const validator = require('validator');
 const resetPasswordService = require('../services/resetPasswordService');
 
-
 const validation = {
     validateLogin(req, res, next) {
-        const {
-            email,
-            password
-        } = req.body;
+        const { email, password } = req.body;
 
         const passswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$/;
         if (password === '' || email === '') {
@@ -35,14 +29,7 @@ const validation = {
     },
 
     validateUser: (req, res, next) => {
-        const {
-            name,
-            email,
-            password,
-            mobileno,
-            company,
-            usergroup
-        } = req.body;
+        const { name, email, password, mobileno, company, usergroup } = req.body;
 
         const passswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$/;
         const phoneRegex = /^[6|8|9]\d{7}|\+65\s?[6|8|9]\d{7}|\(\+?65\)\s?[6|8|9]\d{7}$/;
@@ -84,10 +71,7 @@ const validation = {
     },
 
     validateUserGroup: (req, res, next) => {
-        const {
-            name,
-            description
-        } = req.body;
+        const { name, description } = req.body;
 
         if (name === '' || description === '') {
             res.status(400).json({
@@ -99,11 +83,7 @@ const validation = {
     },
 
     validateNotificationGroup: (req, res, next) => {
-        const {
-            name,
-            description,
-            company
-        } = req.body;
+        const { name, description, company } = req.body;
 
         if (name === '' || description === '') {
             res.status(400).json({
@@ -156,50 +136,34 @@ const validation = {
                 message: 'Please enter a valid email'
             });
         } else {
-           next()
+            next();
         }
-        
     },
     validateExtensionRequest: (req, res, next) => {
-        const {
-            reason,
-            duration
-        } = req.body;
+        const { reason, duration } = req.body;
 
-        if (
-            reason=== '' ||
-            duration === ''  ) {
+        if (reason === '' || duration === '') {
             res.status(400).json({
                 message: 'Please fill up all fields correctly'
             });
-        }else {
-            next()
+        } else {
+            next();
         }
     },
     validateRejectRemark: (req, res, next) => {
-        const {
-            remarks
-        } = req.body;
+        const { remarks } = req.body;
 
-        if (
-            remarks === '' ) {
+        if (remarks === '') {
             res.status(400).json({
                 message: 'Please fill up all fields correctly'
             });
-        }else {
-            next()
+        } else {
+            next();
         }
     },
 
     validateRmaSubmission: (req, res, next) => {
-        const {
-            contactperson,
-            contactno,
-            salesmanid,
-            contactemail,
-            company,
-            products
-        } = req.body;
+        const { contactperson, contactno, salesmanid, contactemail, company, products } = req.body;
         console.log('Body ' + JSON.stringify(req.body));
         if (products.length === 0) {
             console.log('no products');
@@ -238,9 +202,7 @@ const validation = {
     },
 
     validateRmaInstruction: (req, res, next) => {
-        const {
-            products
-        } = req.body;
+        const { products } = req.body;
         products.map((product) => {
             if (product.Instructions === '') {
                 res.status(400).json({
@@ -253,9 +215,7 @@ const validation = {
     },
 
     validateRmaCOA: (req, res, next) => {
-        const {
-            products
-        } = req.body;
+        const { products } = req.body;
         products.map((product) => {
             if (product.CourseOfAction === '') {
                 res.status(400).json({
@@ -269,7 +229,6 @@ const validation = {
 
     // Reset token validation
     validateResetToken: async (req, res, next) => {
-
         const email = req.body.email;
         const resetToken = req.body.token;
 
@@ -292,9 +251,6 @@ const validation = {
             });
         }
     }
-
 };
-
-
 
 module.exports = validation;

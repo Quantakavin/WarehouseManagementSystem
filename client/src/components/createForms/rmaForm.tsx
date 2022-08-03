@@ -3,8 +3,8 @@ import CancelIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
-import SendIcon from '@mui/icons-material/Send';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import SendIcon from "@mui/icons-material/Send";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { LoadingButton } from "@mui/lab";
 import {
   Card,
@@ -55,14 +55,18 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAppSelector } from "../../app/hooks";
-import { selectId, selectPermissions, selectRole } from "../../app/reducers/CurrentUserSlice";
+import {
+  selectId,
+  selectPermissions,
+  selectRole,
+} from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../alerts/SweetAlert";
 
 const CreateRMA: React.FC = () => {
   const navigate = useNavigate();
   const sid = useAppSelector(selectId);
   const userrole = useAppSelector(selectRole);
-  const permissions = useAppSelector(selectPermissions)
+  const permissions = useAppSelector(selectPermissions);
   const [loading, setLoading] = useState(false);
   const [rows, setRows] = useState([]);
   const [contactperson, setContactperson] = useState("");
@@ -98,8 +102,7 @@ const CreateRMA: React.FC = () => {
     // if (userrole !== "Sales Engineer") {
     //   navigate("/403");
     // }
-    if (!permissions.some(e => e.FeatureName === "RMA Application")) {
-      console.log("not allowed")
+    if (!permissions.some((e) => e.FeatureName === "RMA Application")) {
       navigate("/403");
     }
   }, []);
@@ -741,11 +744,11 @@ const CreateRMA: React.FC = () => {
               label="Customer Name"
               variant="filled"
               onBlur={() => {
-                setNameError(false)
-                setNameErrorText("")
+                setNameError(false);
+                setNameErrorText("");
                 if (contactperson === "") {
-                  setNameError(true)
-                  setNameErrorText("Required")
+                  setNameError(true);
+                  setNameErrorText("Required");
                 }
               }}
               onChange={(e) => setContactperson(e.target.value)}
@@ -759,14 +762,14 @@ const CreateRMA: React.FC = () => {
               label="Customer Email"
               variant="filled"
               onBlur={() => {
-                setEmailError(false)
-                setEmailErrorText("")
+                setEmailError(false);
+                setEmailErrorText("");
                 if (contactemail === "") {
-                  setEmailError(true)
-                  setEmailErrorText("Required")
+                  setEmailError(true);
+                  setEmailErrorText("Required");
                 } else if (!contactemail.match(emailRegex)) {
-                  setEmailError(true)
-                  setEmailErrorText("Invalid Email")
+                  setEmailError(true);
+                  setEmailErrorText("Invalid Email");
                 }
               }}
               onChange={(e) => setContactemail(e.target.value)}
@@ -780,11 +783,11 @@ const CreateRMA: React.FC = () => {
               label="Company"
               variant="filled"
               onBlur={() => {
-                setCompError(false)
-                setCompErrorText("")
+                setCompError(false);
+                setCompErrorText("");
                 if (company === "") {
-                  setCompError(true)
-                  setCompErrorText("Required")
+                  setCompError(true);
+                  setCompErrorText("Required");
                 }
               }}
               onChange={(e) => setCompany(e.target.value)}
@@ -798,14 +801,15 @@ const CreateRMA: React.FC = () => {
               label="Contact Number"
               variant="filled"
               onBlur={() => {
-                setNumError(false)
-                setNameErrorText("")
+                setNumError(false);
+                setNameErrorText("");
                 if (contactno === "") {
-                  setNumError(true)
-                  setNumErrorText("Required")
+                  setNumError(true);
+                  setNumErrorText("Required");
                 } else if (!contactno.match(phoneRegex)) {
-                  setNumError(true)
-                  setNumErrorText("Invalid contact number")}
+                  setNumError(true);
+                  setNumErrorText("Invalid contact number");
+                }
               }}
               onChange={(e) => setContactno(e.target.value)}
               error={numError}
@@ -878,9 +882,9 @@ const CreateRMA: React.FC = () => {
                   width: 150,
                   height: 50,
                   borderRadius: 10,
-                  paddingRight: 4
+                  paddingRight: 4,
                 }}
-                startIcon={<ArrowBackIosNewIcon/>}
+                startIcon={<ArrowBackIosNewIcon />}
                 onClick={() => navigate("/rma")}
               >
                 Back

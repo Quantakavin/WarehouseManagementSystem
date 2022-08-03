@@ -42,14 +42,14 @@ export interface NotiGroup {
 }
 
 export interface RMA {
-  RmaID: number,
-  Username: string,
-  DateTime: string,
-  ContactPerson: string,
-  CustomerEmail: string,
-  Company: string,
-  ContactNo: number,
-  RmaStatusID: number,
+  RmaID: number;
+  Username: string;
+  DateTime: string;
+  ContactPerson: string;
+  CustomerEmail: string;
+  Company: string;
+  ContactNo: number;
+  RmaStatusID: number;
 }
 
 export type ActionMenuItem = {

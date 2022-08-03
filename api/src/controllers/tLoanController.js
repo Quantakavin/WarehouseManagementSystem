@@ -160,7 +160,7 @@ module.exports.DraftAfterEdit = async(req,res) =>{
        
         if (results.length > 0) {
         await TLoan.DeleteProductsByID(TLoanID)
-        await TLoan.SubmitAfterEdit(
+        await TLoan.DraftAfterEdit(
                 TLoanID,
                 type,
                 company,
@@ -202,6 +202,7 @@ module.exports.newLoan = async (req, res) => {
         user,
         email,
         collection,
+        customerCompany,
         items
     } = req.body;
     try {
@@ -219,6 +220,7 @@ module.exports.newLoan = async (req, res) => {
             user,
             email,
             collection,
+            customerCompany,
             tloanItems
         );
 
@@ -241,6 +243,7 @@ module.exports.SendDraft = async (req, res) => {
         user,
         email,
         collection,
+        customerCompany,
         items
     } = req.body;
     try {
@@ -258,6 +261,7 @@ module.exports.SendDraft = async (req, res) => {
             user,
             email,
             collection,
+            customerCompany,
             tloanItems
         );
 
@@ -578,6 +582,34 @@ module.exports.tloanStatusID = async (req, res) => {
     const { TLoanID } = req.params;
     try {
         const results = await TLoan.getStatusID(TLoanID);
+        if (results.length > 0) {
+            return res.status(200).json(results[0])
+        } else {
+            return res.status(500).send('Does not Exist!');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
+module.exports.allCurrent = async (req, res) => {
+    try{
+        const results = await TLoan.allCurrent();
+        if (results.length > 0) {
+            return res.status(200).json(results[0])
+        } else {
+            return res.status(500).send('Does not Exist!');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
+module.exports.allHistory = async (req, res) => {
+    try{
+        const results = await TLoan.allHistory();
         if (results.length > 0) {
             return res.status(200).json(results[0])
         } else {

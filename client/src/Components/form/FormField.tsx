@@ -126,7 +126,7 @@ const FormField = <T,>({
   register,
   rules,
   error,
-  readOnly
+  readOnly,
 }: FormFieldProps<T>) => {
   const { toggle, passwordType, showPassword } = useTogglePasword();
 

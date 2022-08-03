@@ -1,19 +1,19 @@
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import CancelIcon from "@mui/icons-material/Close";
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import DoDisturbIcon from "@mui/icons-material/DoDisturb";
+import DoneIcon from "@mui/icons-material/Done";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 import EditIcon from "@mui/icons-material/Edit";
+import FactCheckIcon from "@mui/icons-material/FactCheck";
 import MoreVert from "@mui/icons-material/MoreVert";
 import SaveIcon from "@mui/icons-material/Save";
+import UpdateIcon from "@mui/icons-material/Update";
+import { LoadingButton } from "@mui/lab";
 import { Stack, TextField, Tooltip, Typography } from "@mui/material";
-import DoneAllIcon from "@mui/icons-material/DoneAll";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
-import UpdateIcon from "@mui/icons-material/Update";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import FactCheckIcon from "@mui/icons-material/FactCheck";
-import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -59,12 +59,9 @@ import {
   selectPermissions,
   selectRole,
 } from "../../app/reducers/CurrentUserSlice";
-import { Toast } from "../alerts/SweetAlert";
-import ReasonModalButton from "../modals/rmaReasonModal";
-import RejectModalButton from "../modals/rmaRejectModal";
 import { RMA } from "../../utils/CommonTypes";
-import { LoadingButton } from "@mui/lab";
-import DoneIcon from "@mui/icons-material/Done";
+import { Toast } from "../alerts/SweetAlert";
+import RejectModalButton from "../modals/rmaRejectModal";
 
 const RmaDisplay: React.FC = () => {
   const navigate = useNavigate();
@@ -145,10 +142,10 @@ const RmaDisplay: React.FC = () => {
         .then(() => {
           Toast.fire({
             icon: "success",
-            title: "RMA Accepted",
+            title: `RMA #${rma.RmaID} Accepted`,
             customClass: "swalpopup",
             timer: 1500,
-            width: 270,
+            width: 320,
           });
           navigate("/rma");
         })
@@ -166,10 +163,10 @@ const RmaDisplay: React.FC = () => {
         .then(() => {
           Toast.fire({
             icon: "success",
-            title: "RMA Checklist Updated",
+            title: `RMA #${rma.RmaID} Checklist Updated`,
             customClass: "swalpopup",
             timer: 1500,
-            width: 340,
+            width: 380,
           });
           navigate("/rma");
         })
@@ -187,10 +184,10 @@ const RmaDisplay: React.FC = () => {
         .then(() => {
           Toast.fire({
             icon: "success",
-            title: "RMA Received",
+            title: `RMA #${rma.RmaID} Received`,
             customClass: "swalpopup",
             timer: 1500,
-            width: 270,
+            width: 310,
           });
           navigate("/rma");
         })
@@ -208,10 +205,10 @@ const RmaDisplay: React.FC = () => {
         .then(() => {
           Toast.fire({
             icon: "success",
-            title: "RMA Products Verified",
+            title: `RMA #${rma.RmaID} Products Verified`,
             customClass: "swalpopup",
             timer: 1500,
-            width: 340,
+            width: 370,
           });
           navigate("/rma");
         })
@@ -236,10 +233,10 @@ const RmaDisplay: React.FC = () => {
         .then(() => {
           Toast.fire({
             icon: "success",
-            title: "RMA Progress Updated",
+            title: `RMA #${rma.RmaID} Progress Updated`,
             customClass: "swalpopup",
             timer: 1500,
-            width: 330,
+            width: 380,
           });
           navigate("/rma");
         })
@@ -264,10 +261,10 @@ const RmaDisplay: React.FC = () => {
         .then(() => {
           Toast.fire({
             icon: "success",
-            title: "RMA Closed",
+            title: `RMA #${rma.RmaID} Closed`,
             customClass: "swalpopup",
             timer: 1500,
-            width: 270,
+            width: 290,
           });
           navigate("/rma");
         })
@@ -838,18 +835,18 @@ const RmaDisplay: React.FC = () => {
         if (isInEditMode) {
           return [
             <Tooltip title="Mark As Received">
-            <GridActionsCellItem
-              icon={<BorderColorIcon />}
-              label="Mark As Received"
-              onClick={markAsReceived(id)}
-            />
+              <GridActionsCellItem
+                icon={<BorderColorIcon />}
+                label="Mark As Received"
+                onClick={markAsReceived(id)}
+              />
             </Tooltip>,
             <Tooltip title="Save">
-            <GridActionsCellItem
-              icon={<SaveIcon />}
-              label="Save"
-              onClick={handleSaveClick(id)}
-            />
+              <GridActionsCellItem
+                icon={<SaveIcon />}
+                label="Save"
+                onClick={handleSaveClick(id)}
+              />
             </Tooltip>,
           ];
         }
@@ -920,33 +917,33 @@ const RmaDisplay: React.FC = () => {
         if (isInEditMode) {
           return [
             <Tooltip title="Save">
-            <GridActionsCellItem
-              icon={<SaveIcon />}
-              label="Save"
-              onClick={handleSaveClick(id)}
-            />
+              <GridActionsCellItem
+                icon={<SaveIcon />}
+                label="Save"
+                onClick={handleSaveClick(id)}
+              />
             </Tooltip>,
             <Tooltip title="Cancel">
-            <GridActionsCellItem
-              icon={<CancelIcon />}
-              label="Cancel"
-              className="textPrimary"
-              onClick={handleCancelClick(id)}
-              color="inherit"
-            />
+              <GridActionsCellItem
+                icon={<CancelIcon />}
+                label="Cancel"
+                className="textPrimary"
+                onClick={handleCancelClick(id)}
+                color="inherit"
+              />
             </Tooltip>,
           ];
         }
         return [
           <Tooltip title="Edit">
-          <GridActionsCellItem
-            icon={<EditIcon />}
-            label="Edit"
-            className="textPrimary"
-            onClick={handleEditClick(id)}
-            color="inherit"
-          />
-          </Tooltip>
+            <GridActionsCellItem
+              icon={<EditIcon />}
+              label="Edit"
+              className="textPrimary"
+              onClick={handleEditClick(id)}
+              color="inherit"
+            />
+          </Tooltip>,
         ];
       },
     },
@@ -1004,32 +1001,32 @@ const RmaDisplay: React.FC = () => {
         if (isInEditMode) {
           return [
             <Tooltip title="Save">
-            <GridActionsCellItem
-              icon={<SaveIcon />}
-              label="Save"
-              onClick={handleSaveClick(id)}
-            />
+              <GridActionsCellItem
+                icon={<SaveIcon />}
+                label="Save"
+                onClick={handleSaveClick(id)}
+              />
             </Tooltip>,
             <Tooltip title="Cancel">
-            <GridActionsCellItem
-              icon={<CancelIcon />}
-              label="Cancel"
-              className="textPrimary"
-              onClick={handleCancelClick(id)}
-              color="inherit"
-            />
+              <GridActionsCellItem
+                icon={<CancelIcon />}
+                label="Cancel"
+                className="textPrimary"
+                onClick={handleCancelClick(id)}
+                color="inherit"
+              />
             </Tooltip>,
           ];
         }
         return [
           <Tooltip title="Edit">
-          <GridActionsCellItem
-            icon={<EditIcon />}
-            label="Edit"
-            className="textPrimary"
-            onClick={handleEditClick(id)}
-            color="inherit"
-          />
+            <GridActionsCellItem
+              icon={<EditIcon />}
+              label="Edit"
+              className="textPrimary"
+              onClick={handleEditClick(id)}
+              color="inherit"
+            />
           </Tooltip>,
         ];
       },

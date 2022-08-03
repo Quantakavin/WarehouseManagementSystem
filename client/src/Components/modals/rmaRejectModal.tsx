@@ -1,4 +1,7 @@
 import { TextField } from "@material-ui/core";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import CloseIcon from "@mui/icons-material/Close";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 import { LoadingButton } from "@mui/lab";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
@@ -6,12 +9,8 @@ import Fade from "@mui/material/Fade";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
 import { motion } from "framer-motion";
-import * as React from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import DoneAllIcon from "@mui/icons-material/DoneAll";
-import CloseIcon from "@mui/icons-material/Close";
 import { Toast } from "../alerts/SweetAlert";
 
 // const style = {
@@ -72,10 +71,10 @@ export default function RejectModalButton() {
           .then(() => {
             Toast.fire({
               icon: "success",
-              title: "RMA " + "#" + RmaID + " Has Been Rejected",
+              title: `RMA #${RmaID} Rejected`,
               customClass: "swalpopup",
               timer: 2000,
-              width: 700,
+              width: 310,
             });
             navigate("/rma");
           })

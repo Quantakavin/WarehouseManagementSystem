@@ -1,7 +1,10 @@
 import { TextField } from "@material-ui/core";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import CancelIcon from "@mui/icons-material/Close";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
+import { LoadingButton } from "@mui/lab";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Fade from "@mui/material/Fade";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
@@ -16,7 +19,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 520,
+  width: "50%",
   bgcolor: "background.paper",
   border: "background.paper",
   boxShadow: 24,
@@ -28,8 +31,8 @@ export default function TLoanRejectModalButton() {
   const navigate = useNavigate();
   const [remarks, setRemarks] = useState("");
   const [open, setOpen] = React.useState(false);
-  const [remarksError, setRemarksError] = useState(false)
-  const [remarksErrorText, setRemarksErrorText] = useState('')
+  const [remarksError, setRemarksError] = useState(false);
+  const [remarksErrorText, setRemarksErrorText] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleChange = (e) => {
@@ -37,37 +40,36 @@ export default function TLoanRejectModalButton() {
     setRemarks(e.target.value);
   };
 
-
   const handleConfirm = async (e) => {
-    e.preventDefault()
-    setRemarksError(false)
-    if(remarks ===''){
-      setRemarksError(true)
-      setRemarksErrorText('Input Is Needed')
+    e.preventDefault();
+    setRemarksError(false);
+    if (remarks === "") {
+      setRemarksError(true);
+      setRemarksErrorText("Input Is Needed");
     }
-    try{
-    axios
-      .put(
-        `http://localhost:5000/api/tloan/rejectExtension/${TLoanID}`,{
-          remarks
-        }
-      )
-      .then(() => {
-        Toast.fire({
-          icon: "success",
-          title: "TLoan Extension For TLoan" +"#" + TLoanID + " Has Been Rejected",
-          customClass: "swalpopup",
-          timer: 2000,
-          width: 700,
+    try {
+      axios
+        .put(`http://localhost:5000/api/tloan/rejectExtension/${TLoanID}`, {
+          remarks,
+        })
+        .then(() => {
+          Toast.fire({
+            icon: "success",
+            title:
+              "TLoan Extension For TLoan" +
+              "#" +
+              TLoanID +
+              " Has Been Rejected",
+            customClass: "swalpopup",
+            timer: 2000,
+            width: 700,
+          });
+          navigate("/tloan");
         });
-        navigate("/tloan");
-      });
-
+    } catch (error) {
+      this.setState({ errorMessage: error.message });
+      console.error("There was an error!", error);
     }
-      catch(error) {
-        this.setState({ errorMessage: error.message });
-        console.error("There was an error!", error);
-      };
   };
 
   return (
@@ -79,7 +81,7 @@ export default function TLoanRejectModalButton() {
       }}
       whileTap={{ scale: 0.9 }}
     >
-      <Button
+      <LoadingButton
         size="small"
         variant="contained"
         sx={{
@@ -89,10 +91,11 @@ export default function TLoanRejectModalButton() {
           height: 50,
           borderRadius: 10,
         }}
+        endIcon={<CancelIcon />}
         onClick={handleOpen}
       >
         Reject
-      </Button>
+      </LoadingButton>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -106,16 +109,16 @@ export default function TLoanRejectModalButton() {
       >
         <Fade in={open}>
           <Box sx={style}>
-          <h3
-                  style={{
-                    color: "#063970",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  Rejecting Extension For Loan #{TLoanID}
-                </h3>
+            <h3
+              style={{
+                color: "#063970",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              Rejecting Extension For Loan #{TLoanID}
+            </h3>
             <TextField
               value={remarks}
               onChange={handleChange}
@@ -125,7 +128,7 @@ export default function TLoanRejectModalButton() {
               variant="filled"
               multiline
               fullWidth
-              rows={8}
+              rows={15}
               error={remarksError}
               helperText={remarksErrorText}
             />
@@ -147,7 +150,7 @@ export default function TLoanRejectModalButton() {
                 }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -156,11 +159,13 @@ export default function TLoanRejectModalButton() {
                     width: 150,
                     height: 50,
                     borderRadius: 10,
+                    paddingRight: 4,
                   }}
+                  startIcon={<ArrowBackIosNewIcon />}
                   onClick={handleClose}
                 >
                   Back
-                </Button>
+                </LoadingButton>
               </motion.div>
               <motion.div
                 className="animatable"
@@ -170,7 +175,7 @@ export default function TLoanRejectModalButton() {
                 }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -181,9 +186,10 @@ export default function TLoanRejectModalButton() {
                     borderRadius: 10,
                   }}
                   onClick={handleConfirm}
+                  endIcon={<DoneAllIcon />}
                 >
                   Confirm
-                </Button>
+                </LoadingButton>
               </motion.div>
             </Box>
           </Box>
