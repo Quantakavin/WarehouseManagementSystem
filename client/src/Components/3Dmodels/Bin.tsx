@@ -37,6 +37,7 @@ const Model: React.FC<ModelProps> = ({
   const group = useRef<THREE.Group>();
   const [BinsData, setBinsData] = useState<any>(null);
   const [isSelected, setIsSelected] = useState<boolean>(false);
+  const [exists, setExists] = useState<boolean>(true);
   const { nodes, materials } = useGLTF("/box.glb") as GLTFResult;
   const [CurrentBinID, setCurrentBinID] = useState([]);
   const bintag = `${areatag}${racktag}${leveltag}${sectiontag}`;
@@ -57,7 +58,12 @@ const Model: React.FC<ModelProps> = ({
 
   useEffect(() => {
     axios.get(`${config.baseURL}/bintag/${bintag}`).then((data) => {
-      setBinsData(data.data[0]);
+      console.log(data.data[0])
+      if (data.data[0] == null) {
+        setExists(false)
+      } else {
+        setBinsData(data.data[0]);
+      }
     });
   }, []);
 
@@ -81,6 +87,8 @@ const Model: React.FC<ModelProps> = ({
   //   console.log(BinsData);
 
   return (
+    <>
+    {exists?
     <group
       onClick={() => {
         alert(JSON.stringify(BinsData));
@@ -119,7 +127,8 @@ const Model: React.FC<ModelProps> = ({
 
         <meshStandardMaterial color={isSelected ? "#8b0000" : "gray"} />
       </mesh>
-    </group>
+    </group> : null}
+    </>
   );
 };
 

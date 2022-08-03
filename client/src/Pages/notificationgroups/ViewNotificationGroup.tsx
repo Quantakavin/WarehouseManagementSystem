@@ -73,7 +73,7 @@ const ViewNotificationGroup: React.FC = () => {
             </p>
           </div>
           <Divider sx={{ mb: 3 }}>
-              <Chip label="Features" sx={{ fontWeight: 500 }} />
+              <Chip label="Notifications" sx={{ fontWeight: 500 }} />
           </Divider>
           <div className="flexcontainer cardfield" style={{marginTop: 20, marginBottom: 10}}>
             <p className="cardfieldlabel">Notification List:</p>
