@@ -110,6 +110,7 @@ const validation = {
             user,
             email,
             collection,
+            customerCompany,
             items
         } = req.body;
 
@@ -124,6 +125,9 @@ const validation = {
             requireddate === '' ||
             user === '' ||
             collection === '' ||
+            customerCompany === '' ||
+            (type === "2" && customerCompany === 'NULL' ) ||
+            (type === "1" && company === '100' ) ||
             items === []
         ) {
             res.status(400).json({

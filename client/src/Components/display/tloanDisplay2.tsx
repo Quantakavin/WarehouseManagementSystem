@@ -75,6 +75,7 @@ export default function tloanDisplay() {
   const [collection, setCollection] = useState("");
   const [requireddate, setRDate] = useState("");
   const [dateForm, setDateForm] = useState("");
+  const [customerCompany, setCustomerCompany] = useState("")
   const [typeError, setTypeError] = useState(false);
   const [companyError, setCompanyError] = useState(false);
   const [purposeError, setPurposeError] = useState(false);
@@ -82,6 +83,7 @@ export default function tloanDisplay() {
   const [emailError, setEmailError] = useState(false);
   const [collectionError, setCollectionError] = useState(false);
   const [requireddateError, setRDateError] = useState(false);
+  const [customerCompanyError, setCustomerCompanyError] = useState(false);
   const [typeErrorText, setTypeErrorText] = useState("");
   const [companyErrorText, setCompanyErrorText] = useState("");
   const [purposeErrorText, setPurposeErrorText] = useState("");
@@ -89,6 +91,7 @@ export default function tloanDisplay() {
   const [emailErrorText, setEmailErrorText] = useState("");
   const [collectionErrorText, setCollectionErrorText] = useState("");
   const [rdateErrorText, setRDateErrorText] = useState("");
+  const [customerCompanyErrorText, setCustomerCompanyErrorText] = useState("")
   const [submitLoading, setSubmitLoading] = useState(false);
   const [items, setItems] = useState([]);
   const [rows, setRows] = React.useState([]);
@@ -125,14 +128,15 @@ export default function tloanDisplay() {
           setDuration(data.data.Duration);
           setCollection(data.data.Collection);
           setDateForm(data.data.RequiredDate);
-          setCompany(data.data.CompanyID);
           setType(data.data.TLoanTypeID);
           setLoans(data.data);
+          setCompany(data.data.CompanyID)
+          setCustomerCompany(data.data.CustomerCompany)
         });
     };
     fetchData().catch(console.error);
   }, []);
-
+  console.log(customerCompany)
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
@@ -144,7 +148,148 @@ export default function tloanDisplay() {
     };
     fetchData().catch(console.error);
   }, []);
+  console.log(company)
 
+  const TLoanTypeAccess = () =>{
+    if(ExternalApplicationPerms === true){
+      return(
+      <FormControl sx={{ width: 200, marginLeft: 3 }}>
+      <InputLabel>Loan Type</InputLabel>
+      <Select
+        id="outlined-basic"
+        value={type}
+        onChange={handleChangeType}
+        label="Loan Type"
+        size="small"
+        onBlur={() => {
+          if (type === "") {
+            setTypeError(true);
+            setTypeErrorText("Selection required");
+          }
+        }}
+        error={typeError}
+      >
+        <MenuItem value={"1"}>Internal</MenuItem>
+        <MenuItem value={"2"}>External</MenuItem>
+      </Select>
+      <FormHelperText sx={{ color: "#d11919" }}>
+        {typeErrorText}
+      </FormHelperText>
+    </FormControl>
+    )
+    }else if(InternalApplicationPerms === true){
+      return(
+        <FormControl sx={{ width: 200, marginLeft: 3, }}>
+        <InputLabel>Loan Type</InputLabel>
+        <Select
+          id="outlined-basic"
+          value={type}
+          onChange={handleChangeType}
+          label="Loan Type"
+          size="small"
+          onBlur={() => {
+            if (type === "") {
+              setTypeError(true);
+              setTypeErrorText("Selection required");
+            }
+          }}
+          error={typeError}
+        >
+          <MenuItem value={"1"}>Internal</MenuItem>
+        </Select>
+        <FormHelperText sx={{ color: "#d11919" }}>
+          {typeErrorText}
+        </FormHelperText>
+      </FormControl>
+      )
+    }else return null
+   }
+  
+   const ExternalOrInternal =()=>{
+    if(type === "1" || type === 1){
+      return (
+        <FormControl sx={{ width: 200, marginLeft: 3 }}>
+        <InputLabel>Company</InputLabel>
+        <Select
+          id="outlined-basic"
+          value={company}
+          onChange={handleChangeCompany}
+          size="small"
+          label="Company"
+          onBlur={() => {
+            if (company === "") {
+              setCompanyError(true);
+              setCompanyErrorText("Selection required");
+            }
+          }}
+          error={companyError}
+        >
+          <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
+          <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
+          <MenuItem value={"3"}>DIRAK181025</MenuItem>
+          <MenuItem value={"4"}>PMC_LIVE</MenuItem>
+          <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
+          <MenuItem value={"6"} >ALL</MenuItem>
+        </Select>
+        <FormHelperText sx={{ color: "#d11919" }}>
+          {companyErrorText}
+        </FormHelperText>
+      </FormControl>
+      )
+    }else if(type === "2" || type === 2){
+      return(
+        <TextField
+        id="outlined-basic"
+        label="Customer Company"
+        variant="outlined"
+        size="small"
+        name="customerCompany"
+        sx={{ marginLeft: 3 }}
+        onBlur={() => {
+          if (customerCompany === "" || customerCompany === "NULL") {
+            setCustomerCompanyError(true);
+            setCustomerCompanyErrorText("Required");
+          }
+        }}
+        onChange={(e) => setCustomerCompany(e.target.value) || setCompany("100")}
+        value={customerCompany}
+        error={customerCompanyError}
+        helperText={customerCompanyErrorText}
+      />
+  
+      )
+    }else {
+      return(
+      <FormControl sx={{ width: 200, marginLeft: 3 }}>
+        <InputLabel>Company</InputLabel>
+        <Select
+          disabled
+          id="outlined-basic"
+          value={company}
+          onChange={handleChangeCompany}
+          size="small"
+          label="Company"
+          onBlur={() => {
+            if (company === "") {
+              setCompanyError(true);
+              setCompanyErrorText("Selection required");
+            }
+          }}
+          error={companyError}
+        >
+          <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
+          <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
+          <MenuItem value={"3"}>DIRAK181025</MenuItem>
+          <MenuItem value={"4"}>PMC_LIVE</MenuItem>
+          <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
+          <MenuItem value={"6"} >ALL</MenuItem>
+        </Select>
+        <FormHelperText sx={{ color: "#d11919" }}>
+          {companyErrorText}
+        </FormHelperText>
+      </FormControl>)
+    }
+   }
   const itemStorage = localStorage.getItem("react-use-cart");
   const cartItems = JSON.parse(itemStorage).items;
 
@@ -542,6 +687,7 @@ export default function tloanDisplay() {
   );
   const handleChangeCompany = (event: SelectChangeEvent) => {
     setCompany(event.target.value);
+    setCustomerCompany("NULL")
   };
 
   const handleChangeDuration = (event: SelectChangeEvent) => {
@@ -613,6 +759,7 @@ export default function tloanDisplay() {
     setEmailError(false);
     setCollectionError(false);
     setRDateError(false);
+    setCustomerCompanyError(false)
     if (items.length === 0) {
       Toast.fire({
         icon: "error",
@@ -662,6 +809,16 @@ export default function tloanDisplay() {
       setCollectionErrorText("Selection required");
       setSubmitLoading(false);
     }
+    if (customerCompany === "" || customerCompany === "NULL") {
+      setCustomerCompanyError(true);
+      setCustomerCompanyErrorText("Input a Company");
+      setSubmitLoading(false);
+    }
+    if (type === "2" && customerCompany === "NULL" ) {
+      setCustomerCompanyError(true);
+      setCustomerCompanyErrorText("Input a Company");
+      setSubmitLoading(false);
+    }
     if (
       items.length !== 0 &&
       type !== "" &&
@@ -671,7 +828,9 @@ export default function tloanDisplay() {
       requireddate !== "" &&
       email !== "" &&
       email.match(emailRegex) &&
-      collection !== ""
+      collection !== "" &&
+      customerCompany !== "" &&
+      (type !== "2" && customerCompany !== "NULL")
     ) {
       setTimeout(() => {
         try {
@@ -687,6 +846,7 @@ export default function tloanDisplay() {
                 requireddate,
                 email,
                 collection,
+                customerCompany,
                 items,
               }
             )
@@ -699,10 +859,11 @@ export default function tloanDisplay() {
                 width: 700,
               });
               navigate("/tloan");
+              emptyCart();
               setIsEditable(false);
               setTLoanIDGlobal(null);
             });
-          emptyCart();
+         
           console.log(results);
         } catch (error) {
           console.log(error.response);
@@ -721,6 +882,7 @@ export default function tloanDisplay() {
     setEmailError(false);
     setCollectionError(false);
     setRDateError(false);
+    setCustomerCompanyError(false)
     if (company === "") {
       setCompanyError(true);
       setCompanyErrorText("Selection required");
@@ -735,7 +897,17 @@ export default function tloanDisplay() {
       setEmailErrorText("Invalid Email");
       setLoading(false);
     }
-    if (company !== "" && email !== "" && email.match(emailRegex)) {
+    if (customerCompany === "") {
+      setCustomerCompanyError(true);
+      setCustomerCompanyErrorText("Input a Company");
+      setSubmitLoading(false);
+    }
+    if (type === "2" && customerCompany === "NULL" ) {
+      setCustomerCompanyError(true);
+      setCustomerCompanyErrorText("Input a Company");
+      setSubmitLoading(false);
+    }
+    if (company !== "" && customerCompany !== "" && email !== "" && email.match(emailRegex)) {
       setTimeout(() => {
         try {
           const results = axios
@@ -752,6 +924,7 @@ export default function tloanDisplay() {
                 user,
                 email,
                 collection,
+                customerCompany,
                 items,
               }
             )
@@ -766,8 +939,9 @@ export default function tloanDisplay() {
               navigate("/tloan");
               setIsEditable(false);
               setTLoanIDGlobal(null);
+              emptyCart();
             });
-          emptyCart();
+         
           console.log(results);
         } catch (error) {
           console.log(error.response);
@@ -991,6 +1165,8 @@ export default function tloanDisplay() {
                 error={emailError}
                 helperText={emailErrorText}
               />
+                {TLoanTypeAccess()}
+                {ExternalOrInternal()}
 
               <FormControl sx={{ width: 200, marginLeft: 3 }}>
                 <InputLabel>Customer Company</InputLabel>
@@ -2405,7 +2581,7 @@ export default function tloanDisplay() {
       </Box>
     );
   } else if (loans.TLoanStatusID === 1) {
-    if (InternalApplicationPerms == true) {
+    if (InternalApplicationPerms == true || ExternalApplicationPerms == true) {
       return <>{isEditable ? getCard() : getData()}</>;
     }
     if (ExternalApplicationPerms == true) {

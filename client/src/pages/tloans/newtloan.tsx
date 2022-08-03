@@ -392,6 +392,11 @@ function newtloan() {
       setCompanyErrorText("Selection required");
       setSubmitLoading(false);
     }
+    if (type === "1" && company === "100") {
+      setCompanyError(true);
+      setCompanyErrorText("Selection required");
+      setSubmitLoading(false);
+    }
     if (purpose === "") {
       setPurposeError(true);
       setPurposeErrorText("Required");
@@ -426,6 +431,11 @@ function newtloan() {
       setCustomerCompanyErrorText("Input a Company");
       setSubmitLoading(false);
     }
+    if (type === "2" && customerCompany === "NULL" ) {
+      setCustomerCompanyError(true);
+      setCustomerCompanyErrorText("Input a Company");
+      setSubmitLoading(false);
+    }
     if (
       items.length !== 0 &&
       type !== "" &&
@@ -436,7 +446,9 @@ function newtloan() {
       email !== "" &&
       email.match(emailRegex) &&
       collection !== "" &&
-      customerCompany !== ""
+      customerCompany !== "" &&
+      (type !== "2" && customerCompany !== "NULL") &&
+      (type !== "1" && company !== "100")
     ) {
       setTimeout(() => {
         try {
@@ -464,15 +476,17 @@ function newtloan() {
                 width: 700,
               });
               navigate("/tloan");
+              emptyCart();
             });
-
+            
           console.log(results);
         } catch (error) {
           console.log(error.response);
           setSubmitLoading(false);
+          
         }
       }, 500);
-      emptyCart();
+      
     }
   };
 
@@ -486,10 +500,16 @@ function newtloan() {
     setEmailError(false);
     setCollectionError(false);
     setRDateError(false);
+    setCustomerCompanyError(false)
     if (company === "") {
       setCompanyError(true);
       setCompanyErrorText("Selection required");
       setLoading(false);
+    }
+    if (type === "1" && company === "100") {
+      setCompanyError(true);
+      setCompanyErrorText("Selection required");
+      setSubmitLoading(false);
     }
     if (email === "") {
       setEmailError(true);
@@ -500,7 +520,22 @@ function newtloan() {
       setEmailErrorText("Invalid Email");
       setLoading(false);
     }
-    if (company !== "" && email !== "" && email.match(emailRegex)) {
+    if (customerCompany === "") {
+      setCustomerCompanyError(true);
+      setCustomerCompanyErrorText("Input a Company");
+      setSubmitLoading(false);
+    }
+    if (type === "2" && customerCompany === "NULL" ) {
+      setCustomerCompanyError(true);
+      setCustomerCompanyErrorText("Input a Company");
+      setSubmitLoading(false);
+    }
+    if (company !== "" && 
+        email !== "" &&
+        email.match(emailRegex) &&
+        customerCompany !== "" &&
+        (type !== "2" && customerCompany !== "NULL") &&
+        (type !== "1" && company !== "100")) {
       setTimeout(() => {
         try {
           const results = axios
@@ -527,7 +562,7 @@ function newtloan() {
                 width: 700,
               });
               navigate("/tloan");
-              // emptyCart();
+              emptyCart();
             });
 
           console.log(results);
@@ -536,7 +571,7 @@ function newtloan() {
           setLoading(false);
         }
       }, 500);
-      emptyCart();
+      
     }
   };
 
@@ -755,6 +790,7 @@ function newtloan() {
                   error={emailError}
                   helperText={emailErrorText}
                 />
+                 {TLoanTypeAccess()}
                 {ExternalOrInternal()}
                 <FormControl sx={{ width: 200, marginLeft: 3 }}>
                   <InputLabel>Duration</InputLabel>
@@ -832,7 +868,35 @@ function newtloan() {
                     {collectionErrorText}
                   </FormHelperText>
                 </FormControl>
-
+                <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+                  <InputLabel>Duration</InputLabel>
+                  <Select
+                    id="outlined-basic"
+                    value={duration}
+                    onChange={handleChangeDuration}
+                    label="Duration"
+                    size="small"
+                    onBlur={() => {
+                      if (duration === "") {
+                        setDurationError(true);
+                        setDurationErrorText("Selection required");
+                      }
+                    }}
+                    error={durationError}
+                  >
+                    {loanDuration.map((element) => {
+                      const [[key, val]] = Object.entries(element);
+                      return (
+                        <MenuItem value={val} key={key}>
+                          {key}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                  <FormHelperText sx={{ color: "#d11919" }}>
+                    {durationErrorText}
+                  </FormHelperText>
+                </FormControl>
                 {/* Type */}
                 {TLoanTypeAccess()}
 

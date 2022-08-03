@@ -155,6 +155,7 @@ module.exports.SubmitAfterEdit = async (
     requireddate,
     email,
     collection,
+    customerCompany,
     tloanItems
 ) => {
     return knex.transaction((trx) => {
@@ -170,7 +171,8 @@ module.exports.SubmitAfterEdit = async (
                     RequiredDate: requireddate,
                     TLoanStatusID: 4,
                     CustomerEmail: email,
-                    Collection: collection
+                    Collection: collection,
+                    CustomerCompany: customerCompany
                 },
                 'TLoanID'
             )
@@ -194,6 +196,7 @@ module.exports.DraftAfterEdit = async (
     requireddate,
     email,
     collection,
+    customerCompany,
     tloanItems
 ) => {
     return knex.transaction((trx) => {
@@ -208,7 +211,8 @@ module.exports.DraftAfterEdit = async (
                     Duration: duration,
                     RequiredDate: requireddate,
                     CustomerEmail: email,
-                    Collection: collection
+                    Collection: collection,
+                    CustomerCompany: customerCompany
                 },
                 'TLoanID'
             )
@@ -234,6 +238,8 @@ module.exports.getLoanByNumber = async (TLoanID) => {
   DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS 'EndDate',
   coalesce(c.CompanyName, t.CustomerCompany) AS "CompanyName",
   t.CustomerEmail,
+  c.CompanyID,
+  t.CustomerCompany,
   ts.TLoanStatus,
   tt.TLoanType,
   t.Collection,
