@@ -195,6 +195,23 @@ const validation = {
         }
     },
 
+    validateStatusUpdate: (req, res, next) => {
+        const {
+            statusChange
+        } = req.body;
+
+        if (
+            statusChange === ""
+        ) {
+            res.status(400).json({
+                message: 'Please fill up all fields correctly'
+            });
+        }
+         else {
+            next();
+        }
+    },
+
     validateRmaSubmission: (req, res, next) => {
         const { contactperson, contactno, salesmanid, contactemail, company, products } = req.body;
         console.log('Body ' + JSON.stringify(req.body));

@@ -544,7 +544,7 @@ module.exports.getApproved = async () => {
     count(t.TLoanID) OVER() AS full_count
     FROM TLoan t LEFT JOIN Company c
     ON t.CompanyName = c.CompanyID 
-    WHERE t.TLoanStatusID = 3
+    WHERE t.TLoanStatusID IN (3,5,6)
  `;
     return knex.raw(query);
 };
@@ -589,4 +589,17 @@ module.exports.allHistory = async () => {
   JOIN User u ON  t.UserID= u.UserID 
   WHERE t.TLoanStatusID = "8"`;
     return knex.raw(query);
+};
+
+module.exports.updateStatus = async (TLoanID, statusChange) => {
+    return knex.transaction((trx) => {
+        knex('TLoan')
+            .where('TLoanID', TLoanID)
+            .update({
+                TLoanStatusID: statusChange      
+            })
+            .transacting(trx)
+            .then(trx.commit)
+            .catch(trx.rollback);
+    });
 };

@@ -561,6 +561,7 @@ module.exports.extensionStatus = async (req, res) => {
 
 module.exports.getApprovedLoan = async (req, res) => {
    
+   
     try {
         const results = await TLoan.getApproved();
         if (results.length > 0) {
@@ -610,6 +611,23 @@ module.exports.allHistory = async (req, res) => {
             return res.status(200).json(results[0])
         } else {
             return res.status(500).send('Does not Exist!');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
+module.exports.updateStatus = async (req, res) => {
+    const { TLoanID } = req.params;
+    const { statusChange } = req.body
+    try {
+        const results = await TLoan.updateStatus(TLoanID, statusChange);
+        if (results) {
+            redisClient.del('ManagerLoan');
+            return res.status(200).send('Status has been Updated');
+        } else {
+            return res.status(500).send('Status failed to Update');
         }
     } catch (error) {
         console.log(error);

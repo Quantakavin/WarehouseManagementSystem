@@ -94,6 +94,9 @@ export default function tloanDisplay() {
   const [rows, setRows] = React.useState([]);
   const [loading, setLoading] = useState(false);
   const [reasonField, setReasonField] = useState("");
+  const [statusChange, setStatusChange] = useState("")
+  const [statusChangeError, setStatusChangeError] = useState(false)
+  const [statusChangeErrorText, setStatusChangeErrorText] = useState("")
 
   const ApprovalLoanPerms = permissions.some(
     (e) => e.FeatureName === "T-Loan Approval"
@@ -143,7 +146,45 @@ export default function tloanDisplay() {
     };
     fetchData().catch(console.error);
   }, []);
-  console.log(company)
+ 
+  const updateStatus = (e) =>{
+    setLoading(false)
+    setStatusChangeError(false)
+    if(statusChange === ""){
+      setStatusChangeError(true)
+      setStatusChangeErrorText("Please Select A Status")
+    }
+    if(statusChange !== ""){
+      setTimeout(()=>{
+        try{
+          const results= axios
+          .put(
+            `http://localhost:5000/api/tloan/updatestatus/${TLoanID}`,{
+              statusChange,
+            })
+            .then(() => {
+              Toast.fire({
+                icon: "success",
+                title: "Status Successfully Updated",
+                customClass: "swalpopup",
+                timer: 1500,
+                width: 700,
+              });
+              window.location.reload()
+              
+             console.log(results)
+            });
+          }catch (error) {
+            console.log(error.response);
+            setLoading(false);
+          }
+      },500)
+    }
+  
+  }
+      // get the data from the api
+      
+     
 
   const TLoanTypeAccess = () =>{
     if(ExternalApplicationPerms === true){
@@ -668,6 +709,9 @@ export default function tloanDisplay() {
     setCollection(event.target.value);
   };
 
+  const handleChangeStatus = (event: SelectChangeEvent) => {
+    setStatusChange(event.target.value);
+  };
   const handleChangeRequiredDate = (newValue: "" | null) => {
     setDateForm(newValue);
   };
@@ -1780,20 +1824,14 @@ export default function tloanDisplay() {
                         </Box>
                       </Typography>
                     </Grid>
-                    <Grid item xs={12}>
-                      <DataGrid
-                        sx={{
-                          background: "white",
-                          fontSize: 16,
-                          h: 300,
-                          w: "100%",
-                        }}
-                        rows={items}
+                    <Grid item xs={12} >
+                    <DataGrid
+                        sx={{ background: "white", fontSize: 16, height:300 }}
+                        rows={itemsTable}
                         columns={columns}
                         editMode="row"
                         getRowId={(item) => item.ItemNo}
-                        experimentalFeatures={{ newEditingApi: true }}
-                      />
+                        experimentalFeatures={{ newEditingApi: true }}/>
                     </Grid>
                     <Grid item xs={12}>
                       <Typography
@@ -1866,6 +1904,51 @@ export default function tloanDisplay() {
                           Back
                         </LoadingButton>
                       </motion.div>
+                      <Box display="flex">
+                      <FormControl sx={{ width: 200}}>
+                        <InputLabel>TLoan Status</InputLabel>
+                        <Select
+                          id="outlined-basic"
+                          value={statusChange}
+                          onChange={handleChangeStatus}
+                          label="update Status"
+                          size="big"
+                        >
+                          <MenuItem value={"5"}>Picking</MenuItem>
+                          <MenuItem value={"6"}>Ready</MenuItem>
+                          <MenuItem value={"7"}>Issued</MenuItem>
+                        </Select>
+                        <FormHelperText sx={{ color: "#d11919" }}>
+                          {statusChangeErrorText}
+                        </FormHelperText>
+                      </FormControl>
+                      <motion.div
+                        className="animatable"
+                        whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <LoadingButton
+                          size="small"
+                          variant="contained"
+                          sx={{
+                            color: "white",
+                            backgroundColor: "#31A961",
+                            width: 200,
+                            height: 50,
+                            borderRadius: 10,
+                            marginLeft: 5,
+                            marginRight: 2
+                          }}
+                          loading={submitLoading}
+                          loadingPosition="end"
+                          endIcon={<DoneAllIcon />}
+                          onClick={updateStatus}
+                          // onClick={submitLoan}
+                        >
+                          Update Status
+                        </LoadingButton>
+                      </motion.div>
+                      </Box>
                     </Grid>
                   </Grid>
                 </CardContent>
