@@ -9,6 +9,7 @@ import FactCheckIcon from "@mui/icons-material/FactCheck";
 import MoreVert from "@mui/icons-material/MoreVert";
 import SaveIcon from "@mui/icons-material/Save";
 import UpdateIcon from "@mui/icons-material/Update";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { LoadingButton } from "@mui/lab";
 import { Stack, TextField, Tooltip, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -62,6 +63,7 @@ import {
 import { RMA } from "../../utils/CommonTypes";
 import { Toast } from "../alerts/SweetAlert";
 import RejectModalButton from "../modals/rmaRejectModal";
+import ReasonModalButton from "../modals/rmaReasonModal";
 
 const RmaDisplay: React.FC = () => {
   const navigate = useNavigate();
@@ -1033,7 +1035,7 @@ const RmaDisplay: React.FC = () => {
     },
   ];
 
-  if (rma.RmaStatusID === 4 || rma.RmaStatusID === 8) {
+  if (rma.RmaStatusID === 8) {
     return (
       <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
         <Typography
@@ -1722,6 +1724,119 @@ const RmaDisplay: React.FC = () => {
               Back
             </LoadingButton>
           </motion.div>
+        </Box>
+      </Box>
+    );
+  }
+  if (rma.RmaStatusID === 4) {
+    return (
+      <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
+        <Typography
+          gutterBottom
+          variant="subtitle2"
+          component="span"
+          sx={{
+            display: "flex",
+            justifyContent: "left",
+            alignItems: "center",
+            marginLeft: 0,
+            color: "#063970",
+            fontWeight: "bold",
+          }}
+        >
+          <Box>
+            <h2>RMA Request #{rma.RmaID}</h2>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box>EMPLOYEE</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.Username}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>DATE APPLIED</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.DateTime}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>CUSTOMER NAME</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.ContactPerson}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>CUSTOMER EMAIL</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.CustomerEmail}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>COMPANY</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.Company}
+            </Box>
+          </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>CONTACT NUMBER</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.ContactNo}
+            </Box>
+          </Box>
+        </Typography>
+
+        <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              adapterLocale={locale}
+            >
+              <DataGrid
+                sx={{ background: "white", fontSize: 16 }}
+                rows={rows}
+                columns={staticcolumns}
+                editMode="row"
+                getRowId={(row) => row.id}
+                rowModesModel={rowModesModel}
+                filterModel={filterModel}
+                onFilterModelChange={(newFilterModel) =>
+                  setFilterModel(newFilterModel)
+                }
+              />
+            </LocalizationProvider>
+          </Box>
+        </Box>
+
+        <Box
+          component="span"
+          paddingTop={2}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <motion.div
+            className="animatable"
+            whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <LoadingButton
+              size="small"
+              variant="contained"
+              sx={{
+                color: "white",
+                backgroundColor: "#063970",
+                width: 150,
+                height: 50,
+                borderRadius: 10,
+                paddingRight: 4,
+              }}
+              startIcon={<ArrowBackIosNewIcon />}
+              onClick={() => navigate("/rma")}
+            >
+              Back
+            </LoadingButton>
+          </motion.div>
+          <ReasonModalButton />
         </Box>
       </Box>
     );

@@ -608,7 +608,7 @@ const CreateRMA: React.FC = () => {
     return (
       <GridToolbarContainer>
         <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-          Add record
+          Add Product
         </Button>
       </GridToolbarContainer>
     );

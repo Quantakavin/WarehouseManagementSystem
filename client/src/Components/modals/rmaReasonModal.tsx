@@ -8,6 +8,9 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import CloseIcon from '@mui/icons-material/Close';
+import { LoadingButton } from "@mui/lab";
 
 const style = {
   position: "absolute" as "absolute",
@@ -29,7 +32,7 @@ interface rma {
 export default function ReasonModalButton() {
   const { RmaID } = useParams();
   const navigate = useNavigate();
-  const [rma, setRma] = useState<rma>();
+  const [rma, setRma] = useState<rma>([]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -54,20 +57,21 @@ export default function ReasonModalButton() {
       whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
       whileTap={{ scale: 0.9 }}
     >
-      <Button
+      <LoadingButton
         size="small"
         variant="contained"
         sx={{
           color: "white",
           backgroundColor: "#D11A2A",
-          width: 150,
+          width: 200,
           height: 50,
           borderRadius: 10,
         }}
+        endIcon={<VisibilityIcon/>}
         onClick={handleOpen}
       >
         View Reason
-      </Button>
+      </LoadingButton>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -108,7 +112,7 @@ export default function ReasonModalButton() {
                 whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Button
+                <LoadingButton
                   size="small"
                   variant="contained"
                   sx={{
@@ -117,11 +121,13 @@ export default function ReasonModalButton() {
                     width: 150,
                     height: 50,
                     borderRadius: 10,
+                    paddingRight: 4,
                   }}
+                  startIcon={<CloseIcon/>}
                   onClick={handleClose}
                 >
                   Close
-                </Button>
+                </LoadingButton>
               </motion.div>
             </Box>
           </Box>
