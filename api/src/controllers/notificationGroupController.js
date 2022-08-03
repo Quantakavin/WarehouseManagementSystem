@@ -61,8 +61,14 @@ module.exports.getAllNotificationGroups = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await notificationGroup.getAll();
-        redisClient.set('notificationGroups', JSON.stringify(results[0]), { EX: 60 * 60 * 24 });
-        return res.status(200).json(results[0]);
+        const finalresults = results[0].map((result) => {
+            const newresult = result;
+            newresult.NotiGroupDesc = result.NotiGroupDesc.replace(/<[^>]+>/g, '');
+            return newresult;
+        });
+        console.log(finalresults);
+        redisClient.set('notificationGroups', JSON.stringify(finalresults), { EX: 60 * 60 * 24 });
+        return res.status(200).json(finalresults);
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error!' });
     }

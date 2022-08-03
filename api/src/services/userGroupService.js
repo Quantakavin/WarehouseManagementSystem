@@ -1,7 +1,7 @@
 const knex = require('../config/database');
 
 module.exports.getAll = async () => {
-    const query = `SELECT UserGroupID, UserGroupName FROM UserGroup`;
+    const query = `SELECT UserGroupID, UserGroupName, UserGroupDesc FROM UserGroup`;
     return knex.raw(query);
 };
 

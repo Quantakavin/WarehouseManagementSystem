@@ -20,9 +20,17 @@ module.exports.getAllUserGroups = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await userGroup.getAll();
-        redisClient.set('userGroups', JSON.stringify(results[0]), { EX: 60 * 60 * 24 });
-        return res.status(200).json(results[0]);
+        const finalresults = results[0].map((result) => {
+            const newresult = result;
+            newresult.UserGroupDesc = result.UserGroupDesc.replace(/<[^>]+>/g, '');
+            // r.UserGroupDesc = r.UserGroupDesc.replace(/<[^>]+>/g, '');
+            return newresult;
+        });
+        console.log(finalresults);
+        redisClient.set('userGroups', JSON.stringify(finalresults), { EX: 60 * 60 * 24 });
+        return res.status(200).json(finalresults);
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };

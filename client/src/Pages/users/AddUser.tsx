@@ -32,6 +32,7 @@ import { Toast } from "../../components/alerts/SweetAlert";
 import FormSteps from "../../components/form/FormSteps";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import GeneralButton from "../../components/buttons/GeneralButton";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 interface FormValues {
   name: string;
@@ -133,7 +134,7 @@ const AddUser: React.FC = () => {
     const postdata = data;
     postdata.notificationgroups = returnNotiGroups;
     mutation.mutate(data, {
-      onSuccess: () => {
+      onSuccess: (returndata) => {
         Toast.fire({
           icon: "success",
           title: "User created successfully",
@@ -142,7 +143,7 @@ const AddUser: React.FC = () => {
         });
         queryClient.invalidateQueries("users");
         queryClient.invalidateQueries("usernames");
-        navigate("/users");
+        navigate(`/users`);
       },
       onError: () => {
         controls.start("detecterror");
@@ -274,6 +275,7 @@ const AddUser: React.FC = () => {
               </button>
 
               <GeneralButton
+              
                 text={
                   <>
                     Next{" "}

@@ -1,5 +1,5 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { Container } from "@mui/material";
+import { Chip, Container, Divider } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import DOMPurify from "dompurify";
 import { motion } from "framer-motion";
@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { GetNotificationGroup } from "../../api/NotificationGroupDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import GeneralButton from "../../components/buttons/GeneralButton";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
 import DataTable from "../../components/table/DataTable";
 
@@ -65,13 +66,16 @@ const ViewNotificationGroup: React.FC = () => {
               ),
             }}
           />
-          <div className="flexcontainer cardfield">
+          <div className="cardfield" style={{marginTop: 20}}>
             <p className="cardfieldlabel">Company</p>
             <p className="cardfieldvalue">
               {NotificationGroupQuery.data.data[0].CompanyName}
             </p>
           </div>
-          <div className="flexcontainer cardfield">
+          <Divider sx={{ mb: 3 }}>
+              <Chip label="Features" sx={{ fontWeight: 500 }} />
+          </Divider>
+          <div className="flexcontainer cardfield" style={{marginTop: 20, marginBottom: 10}}>
             <p className="cardfieldlabel">Notification List:</p>
           </div>
           <div className="flexcontainer cardtable">
@@ -100,15 +104,10 @@ const ViewNotificationGroup: React.FC = () => {
             >
               <ArrowBackIosIcon fontSize="small" /> Back
             </button>
-            <motion.button
-              style={{ alignSelf: "flex-end" }}
-              className="mainbutton"
-              onClick={() => navigate(`/editnotificationgroup/${params.id}`)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Edit Details
-            </motion.button>
+            <GeneralButton 
+            text="Edit Details" 
+            clickfunction={() => navigate(`/editnotificationgroup/${params.id}`)}
+            />
           </div>
         </Container>
       )}

@@ -14,6 +14,7 @@ import {
   DataGrid,
   GridActionsCellItem,
   GridFilterModel,
+  GridRowParams,
   GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarDensitySelector,
@@ -117,7 +118,8 @@ const UserGroups2: React.FC = () => {
 
   const columns = [
     { field: "UserGroupID", headerName: "ID", flex: 2 },
-    { field: "UserGroupName", headerName: "Name", flex: 50 },
+    { field: "UserGroupName", headerName: "Name", flex: 15 },
+    { field: "UserGroupDesc", headerName: "Description", flex: 35 },
     {
       field: "actions",
       type: "actions",
@@ -269,6 +271,9 @@ const UserGroups2: React.FC = () => {
             onFilterModelChange={(newFilterModel) =>
               setFilterModel(newFilterModel)
             }
+            onRowClick={(params: GridRowParams) => {
+              navigate(`/usergroup/${params.id}`);
+            }}
           />
         </Box>
       </Box>

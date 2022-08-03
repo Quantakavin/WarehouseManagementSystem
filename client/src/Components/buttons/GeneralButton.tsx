@@ -5,9 +5,11 @@ import React from "react";
 interface ButtonProps {
   text: string | React.ReactNode;
   clickfunction: () => void;
+  starticon?: React.ReactNode;
+  endicon?: React.ReactNode;
 }
 
-const GeneralButton: React.FC<ButtonProps> = ({ text, clickfunction }) => {
+const GeneralButton: React.FC<ButtonProps> = ({ text, clickfunction, starticon, endicon }) => {
   return (
     <motion.div
       className="animatable"
@@ -28,6 +30,8 @@ const GeneralButton: React.FC<ButtonProps> = ({ text, clickfunction }) => {
           fontSize: 15,
           marginTop: "10px",
         }}
+        startIcon={starticon}
+        endIcon={endicon}
         onClick={clickfunction}
       >
         {text}

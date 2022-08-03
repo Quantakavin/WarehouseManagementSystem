@@ -110,7 +110,8 @@ const NotificationGroups2: React.FC = () => {
 
   const columns = [
     { field: "NotiGroupID", headerName: "ID", flex: 2 },
-    { field: "NotiGroupName", headerName: "Name", flex: 50 },
+    { field: "NotiGroupName", headerName: "Name", flex: 15 },
+    { field: "NotiGroupDesc", headerName: "Description", flex: 35 },
     {
       field: "actions",
       type: "actions",

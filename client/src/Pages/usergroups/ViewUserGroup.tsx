@@ -1,5 +1,5 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { Container } from "@mui/material";
+import { Chip, Container, Divider } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import DOMPurify from "dompurify";
 import { motion } from "framer-motion";
@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { GetUserGroup } from "../../api/UserGroupDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import GeneralButton from "../../components/buttons/GeneralButton";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
 import DataTable from "../../components/table/DataTable";
 
@@ -68,7 +69,10 @@ const ViewUserGroup: React.FC = () => {
               ),
             }}
           />
-          <div className="flexcontainer cardfield">
+          <Divider sx={{ mb: 3 }}>
+              <Chip label="Features" sx={{ fontWeight: 500 }} />
+          </Divider>
+          <div className="flexcontainer cardfield" style={{marginTop: 20, marginBottom: 10}}>
             <p className="cardfieldlabel">Feature List:</p>
           </div>
           <div className="flexcontainer cardtable">
@@ -97,7 +101,11 @@ const ViewUserGroup: React.FC = () => {
             >
               <ArrowBackIosIcon fontSize="small" /> Back
             </button>
-            <motion.button
+            <GeneralButton 
+            text="Edit Details" 
+            clickfunction={() => navigate(`/editusergroup/${params.id}`)}
+            />
+            {/* <motion.button
               style={{ alignSelf: "flex-end" }}
               className="mainbutton"
               onClick={() => navigate(`/editusergroup/${params.id}`)}
@@ -105,7 +113,7 @@ const ViewUserGroup: React.FC = () => {
               whileTap={{ scale: 0.95 }}
             >
               Edit Details
-            </motion.button>
+            </motion.button> */}
           </div>
         </Container>
       )}

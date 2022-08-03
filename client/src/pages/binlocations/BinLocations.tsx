@@ -145,6 +145,132 @@ const Scene = () => {
           racktag="R03"
           changeposition={changeCameraPosition}
         />
+
+
+        <Rack2
+          position={[0, 0, 40]}
+          areatag="A03"
+          racktag="R01"
+          changeposition={changeCameraPosition}
+        />
+        <Rack2
+          position={[25, 0, 40]}
+          areatag="A03"
+          racktag="R02"
+          changeposition={changeCameraPosition}
+        />
+        <Rack2
+          position={[50, 0, 40]}
+          areatag="A03"
+          racktag="R03"
+          changeposition={changeCameraPosition}
+        />
+        <Rack2
+          position={[75, 0, 40]}
+          areatag="A03"
+          racktag="R04"
+          changeposition={changeCameraPosition}
+        />
+        <Rack
+          position={[95, 0, 40]}
+          areatag="A03"
+          racktag="R05"
+          changeposition={changeCameraPosition}
+        />
+
+
+        <Rack2
+          position={[0, 0, 60]}
+          areatag="A04"
+          racktag="R01"
+          changeposition={changeCameraPosition}
+        />
+        <Rack2
+          position={[25, 0, 60]}
+          areatag="A04"
+          racktag="R02"
+          changeposition={changeCameraPosition}
+        />
+        <Rack2
+          position={[50, 0, 60]}
+          areatag="A04"
+          racktag="R03"
+          changeposition={changeCameraPosition}
+        />
+        <Rack2
+          position={[75, 0, 60]}
+          areatag="A04"
+          racktag="R04"
+          changeposition={changeCameraPosition}
+        />
+        <Rack
+          position={[95, 0, 60]}
+          areatag="A04"
+          racktag="R05"
+          changeposition={changeCameraPosition}
+        />
+
+        <Rack2
+          position={[0, 0, 80]}
+          areatag="A05"
+          racktag="R01"
+          changeposition={changeCameraPosition}
+        />
+        <Rack2
+          position={[25, 0, 80]}
+          areatag="A05"
+          racktag="R02"
+          changeposition={changeCameraPosition}
+        />
+        <Rack2
+          position={[50, 0, 80]}
+          areatag="A05"
+          racktag="R03"
+          changeposition={changeCameraPosition}
+        />
+        <Rack2
+          position={[75, 0, 80]}
+          areatag="A05"
+          racktag="R04"
+          changeposition={changeCameraPosition}
+        />
+        <Rack
+          position={[95, 0, 80]}
+          areatag="A05"
+          racktag="R05"
+          changeposition={changeCameraPosition}
+        />
+
+        <Rack2
+          position={[0, 0, 100]}
+          areatag="A06"
+          racktag="R01"
+          changeposition={changeCameraPosition}
+        />
+        <Rack2
+          position={[25, 0, 100]}
+          areatag="A06"
+          racktag="R02"
+          changeposition={changeCameraPosition}
+        />
+        <Rack2
+          position={[50, 0, 100]}
+          areatag="A06"
+          racktag="R03"
+          changeposition={changeCameraPosition}
+        />
+        <Rack2
+          position={[75, 0, 100]}
+          areatag="A06"
+          racktag="R04"
+          changeposition={changeCameraPosition}
+        />
+        <Rack
+          position={[95, 0, 100]}
+          areatag="A06"
+          racktag="R05"
+          changeposition={changeCameraPosition}
+        />
         {/* <Rack position={[60, 0, 0]} areatag="A01" racktag="R04" changeposition={changeCameraPosition}/>
        <Rack position={[60, 0, 18]} areatag="A01" racktag="R05" changeposition={changeCameraPosition}/>
        <Rack position={[40, 0, 18]} areatag="A01" racktag="R06" changeposition={changeCameraPosition}/>

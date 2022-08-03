@@ -162,7 +162,7 @@ const EditUser: React.FC = () => {
         queryClient.invalidateQueries(`user${params.id}`);
         queryClient.invalidateQueries(`users`);
         queryClient.invalidateQueries("usernames");
-        navigate("/users");
+        navigate(`/user/${params.id}`);
       },
     });
   };

@@ -2,7 +2,7 @@ import PageviewIcon from "@mui/icons-material/Pageview";
 import React from "react";
 import { useInfiniteQuery } from "react-query";
 import { GetAllProducts } from "../../api/ProductDB";
-import SearchBarUpdated from "../../components/search/SearchBarUpdated";
+import SearchBarUpdated from "../../components/search/SearchBar";
 import TableNew from "../../components/table/InfiniteTable";
 
 const Products: React.FC = () => {

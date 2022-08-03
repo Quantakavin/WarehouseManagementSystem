@@ -8,6 +8,7 @@ import * as THREE from "three";
 import { GLTF } from "three-stdlib";
 import ReplaceAlphanumericString from "../../utils/ReplaceAlphanumericString";
 import Bin from "./Bin";
+import NewBox from "./Newbox";
 // import { useAppDispatch } from "../../app/hooks";
 // import { ChangeLocation } from "../../app/reducers/BinLocationSlice";
 

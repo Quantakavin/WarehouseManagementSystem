@@ -29,7 +29,7 @@ import {
 } from "../../app/reducers/UserGroupTableFilterSlice";
 import Popup from "../../components/alerts/Popup";
 import { Toast } from "../../components/alerts/SweetAlert";
-import SearchBarUpdated from "../../components/search/SearchBarUpdated";
+import SearchBarUpdated from "../../components/search/SearchBar";
 import InfiniteTable from "../../components/table/InfiniteTable";
 import useDebounce from "../../hooks/useDebounce";
 

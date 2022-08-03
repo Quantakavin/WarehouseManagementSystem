@@ -13,6 +13,7 @@ import {
   DataGrid,
   GridActionsCellItem,
   GridFilterModel,
+  GridRowParams,
 } from "@mui/x-data-grid";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
@@ -96,16 +97,7 @@ const Users2: React.FC = () => {
     setShowError(false);
     setIdToDelete(null);
   };
-
-  const headers = [
-    "ID",
-    "Item Name",
-    "Batch Number",
-    "Brand",
-    "Avalible Quantity",
-    "Action",
-  ];
-
+  
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [
       {
@@ -273,6 +265,9 @@ const Users2: React.FC = () => {
             onFilterModelChange={(newFilterModel) =>
               setFilterModel(newFilterModel)
             }
+            onRowClick={(params: GridRowParams) => {
+              navigate(`/user/${params.id}`);
+            }}
           />
         </Box>
       </Box>

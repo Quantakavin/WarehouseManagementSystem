@@ -14,10 +14,4 @@ module.exports = {
     rules: {
         'prettier/prettier': 'error'
     },
-    prettier: disabler,
-    root: true,
-    extends: '@react-native-community',
-    rules: {
-        'prettier/prettier': 0
-    }
 };
