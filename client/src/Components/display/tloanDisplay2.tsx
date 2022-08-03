@@ -776,7 +776,7 @@ export default function tloanDisplay() {
     }
     if (type === "2" && (company === "1" || company === "2" ||company === "3" ||company === "4" ||company === "5" ||company === "6")){
       setCompanyError(true);
-      setCompanyErrorText("Input Required");
+      setCompanyErrorText("Valid Input Required");
       setSubmitLoading(false);
     }
     if (type === "1" && (company !== "1" && company !== "2" && company !== "3" && company !== "4" && company !== "5" && company !== "6")){
@@ -870,7 +870,7 @@ export default function tloanDisplay() {
     }
     if (type === "2" && (company === "1" || company === "2" ||company === "3" ||company === "4" ||company === "5" ||company === "6")){
       setCompanyError(true);
-      setCompanyErrorText("Input Required");
+      setCompanyErrorText("Valid Input Required");
       setSubmitLoading(false);
     }
     if (type === "1" && (company !== "1" && company !== "2" && company !== "3" && company !== "4" && company !== "5" && company !== "6")){

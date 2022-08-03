@@ -38,8 +38,7 @@ const Products: React.FC = () => {
   const { totalItems, addItem } = useCart();
   const context = useContext(EditableContext);
   const { isEditable, setIsEditable, TLoanIDGlobal } = context;
-  console.log(TLoanIDGlobal);
-  console.log(isEditable);
+
   useEffect(() => {
     fetch(`http://localhost:5000/api/products?limit=100000&page=0`)
       .then((data) => data.json())
@@ -72,6 +71,38 @@ const Products: React.FC = () => {
     },
   ];
 
+  const checkBasketButton=()=>{
+    if (totalItems > 0) {
+      return (
+        <motion.div
+          className="animatable"
+          whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <Fab
+            variant="extended"
+            aria-label="add"
+            onClick={() => {
+              isEditable
+                ? navigate(`/tloandetails/${TLoanIDGlobal}`)
+                : navigate("/newtloan");
+            }}
+            style={{ marginBottom: 10 }}
+            sx={{
+              color: "white",
+              backgroundColor: "#063970",
+              ":hover": { backgroundColor: "#031c38" },
+              float: "right",
+
+            }}
+          >
+            New Loan ({totalItems})
+            <ShoppingBasketIcon sx={{ ml: 0.5, mr: 0.5 }} />
+          </Fab>
+        </motion.div>
+      );
+    }
+  }
   const CustomToolbar = () => {
     return (
       <GridToolbarContainer
@@ -111,26 +142,9 @@ const Products: React.FC = () => {
                 Products
               </Typography>
               <Box>
-                <motion.div
-                  className="animatable"
-                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <Fab
-                    variant="extended"
-                    aria-label="add"
-                    onClick={() => navigate("/newtloan")}
-                    style={{ marginBottom: 10 }}
-                    sx={{
-                      color: "white",
-                      backgroundColor: "#063970",
-                      ":hover": { backgroundColor: "#031c38" },
-                    }}
-                  >
-                    New Loan ({totalItems})
-                    <ShoppingBasketIcon sx={{ ml: 1 }} />
-                  </Fab>
-                </motion.div>
+             
+                  {checkBasketButton()}
+               
               </Box>
             </Box>
             <DataGrid
