@@ -38,7 +38,7 @@ const Users2: React.FC = () => {
 
   const theme = unstable_createMuiStrictModeTheme();
   const [pageSize, setPageSize] = React.useState(25);
-  //const [hoveredRow, setHoveredRow] = React.useState(null);
+  // const [hoveredRow, setHoveredRow] = React.useState(null);
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const [showError, setShowError] = useState<boolean>(false);
   const [idToDelete, setIdToDelete] = useState<string>(null);
@@ -253,14 +253,16 @@ const Users2: React.FC = () => {
                 </Stack>
               ),
             }}
-            componentsProps={{
-              /*
+            componentsProps={
+              {
+                /*
               row: {
                 onMouseEnter: onMouseEnterRow,
                 onMouseLeave: onMouseLeaveRow,
               },
               */
-            }}
+              }
+            }
             filterModel={filterModel}
             onFilterModelChange={(newFilterModel) =>
               setFilterModel(newFilterModel)

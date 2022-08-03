@@ -58,9 +58,7 @@ const InfiniteTable = ({
           {query.isLoading || query.isError ? (
             <TableSkeleton NoOfCols={headers.length} />
           ) : (
-            <>
-              <TableContents pages={query.data.pages} menu={menu} />
-            </>
+            <TableContents pages={query.data.pages} menu={menu} />
           )}
         </Table>
         {!query.isLoading && !query.isError && <LoadMoreButton query={query} />}

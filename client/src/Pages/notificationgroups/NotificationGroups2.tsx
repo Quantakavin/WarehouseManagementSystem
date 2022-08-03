@@ -26,7 +26,10 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router";
-import { DeleteNotificationGroup, GetNotificationGroups } from "../../api/NotificationGroupDB";
+import {
+  DeleteNotificationGroup,
+  GetNotificationGroups,
+} from "../../api/NotificationGroupDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import Popup from "../../components/alerts/Popup";
@@ -51,14 +54,12 @@ const NotificationGroups2: React.FC = () => {
 
   const mutation = useMutation(DeleteNotificationGroup);
 
-  //const [hoveredRow, setHoveredRow] = React.useState(null);
-
+  // const [hoveredRow, setHoveredRow] = React.useState(null);
 
   const NotificationGroupsQuery = useQuery(
     `notificatiobgroups`,
     GetNotificationGroups
   );
-
 
   const SelectDelete = (id: string) => {
     setIdToDelete(id);
@@ -152,7 +153,7 @@ const NotificationGroups2: React.FC = () => {
 
   return (
     <Box sx={{ pl: 3, pr: 3, pt: 1, height: "100%", width: "100%" }}>
-            <Popup
+      <Popup
         showpopup={showConfirmation}
         heading="Are you sure you want to delete this notification group?"
         subheading="By doing so, you will delete all notifications associated with it"
@@ -188,21 +189,19 @@ const NotificationGroups2: React.FC = () => {
         popupimage={<CancelIcon sx={{ color: "#D11A2A", fontSize: "150px" }} />}
         closepopup={closeErrorPopup}
         buttons={
-          <>
-            <button
-              style={{
-                alignSelf: "flex-start",
-                marginLeft: "auto",
-                fontWeight: 700,
-                color: "#0A2540",
-              }}
-              className="buttonremovestyling"
-              onClick={() => setShowError(false)}
-              type="button"
-            >
-              Close
-            </button>
-          </>
+          <button
+            style={{
+              alignSelf: "flex-start",
+              marginLeft: "auto",
+              fontWeight: 700,
+              color: "#0A2540",
+            }}
+            className="buttonremovestyling"
+            onClick={() => setShowError(false)}
+            type="button"
+          >
+            Close
+          </button>
         }
       />
       <Box sx={{ display: "flex", height: "100%" }}>
@@ -264,14 +263,16 @@ const NotificationGroups2: React.FC = () => {
                 </Stack>
               ),
             }}
-            componentsProps={{
-              /*
+            componentsProps={
+              {
+                /*
               row: {
                 onMouseEnter: onMouseEnterRow,
                 onMouseLeave: onMouseLeaveRow,
               },
               */
-            }}
+              }
+            }
             filterModel={filterModel}
             onFilterModelChange={(newFilterModel) =>
               setFilterModel(newFilterModel)

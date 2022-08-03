@@ -39,86 +39,64 @@ const TopBar: React.FC = () => {
   };
 
   const ProfileDropdown = (
-    <>
-      <Menu
-        id="profilemenu"
-        anchorEl={anchorEl}
-        open={profileopen}
-        onClose={() => setAnchorEl(null)}
-        MenuListProps={{
-          "aria-labelledby": "headerprofile",
-          onMouseLeave: handleMouseLeave,
-        }}
-      >
-        <MenuItem
-          sx={{ color: "#0A2540" }}
-          onClick={() => {
-            navigate("/profile");
-          }}
-        >
-          <ListItemIcon sx={{ color: "#0A2540" }}>
-            <AccountCircleIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText
-            primaryTypographyProps={{ fontSize: "14px", marginLeft: "-7px" }}
-          >
-            Profile
-          </ListItemText>
-        </MenuItem>
-
-        <MenuItem
-          sx={{ color: "#0A2540" }}
-          onClick={() => {
-            navigate("/settings");
-          }}
-        >
-          <ListItemIcon sx={{ color: "#0A2540" }}>
-            <SettingsIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText
-            primaryTypographyProps={{ fontSize: "14px", marginLeft: "-7px" }}
-          >
-            Settings
-          </ListItemText>
-        </MenuItem>
-
-        <MenuItem
-          sx={{ color: "#0A2540" }}
-          onClick={() => {
-            logout();
-          }}
-        >
-          <ListItemIcon sx={{ color: "#0A2540" }}>
-            <LogoutIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText
-            primaryTypographyProps={{ fontSize: "14px", marginLeft: "-7px" }}
-          >
-            Logout
-          </ListItemText>
-        </MenuItem>
-      </Menu>
-      {/*
-    <div className="navprofiledropdown">
-      <a
+    <Menu
+      id="profilemenu"
+      anchorEl={anchorEl}
+      open={profileopen}
+      onClose={() => setAnchorEl(null)}
+      MenuListProps={{
+        "aria-labelledby": "headerprofile",
+        onMouseLeave: handleMouseLeave,
+      }}
+    >
+      <MenuItem
+        sx={{ color: "#0A2540" }}
         onClick={() => {
-          if (localStorage.getItem("user_id") !== null) {
-            navigate(`/profile`);
-          }
+          navigate("/profile");
         }}
       >
-        <AccountCircleIcon style={{ marginRight: 5 }} /> Profile
-      </a>
-      <hr className="navprofiledivider" />
-      <a onClick={() => navigate("/settings")}>
-        <SettingsIcon style={{ marginRight: 5 }} /> Settings
-      </a>
-      <hr className="navprofiledivider" />
-      <a onClick={() => logout()}>
-        <LogoutIcon style={{ marginRight: 5 }} /> Logout
-      </a>
-      </div>*/}
-    </>
+        <ListItemIcon sx={{ color: "#0A2540" }}>
+          <AccountCircleIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText
+          primaryTypographyProps={{ fontSize: "14px", marginLeft: "-7px" }}
+        >
+          Profile
+        </ListItemText>
+      </MenuItem>
+
+      <MenuItem
+        sx={{ color: "#0A2540" }}
+        onClick={() => {
+          navigate("/settings");
+        }}
+      >
+        <ListItemIcon sx={{ color: "#0A2540" }}>
+          <SettingsIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText
+          primaryTypographyProps={{ fontSize: "14px", marginLeft: "-7px" }}
+        >
+          Settings
+        </ListItemText>
+      </MenuItem>
+
+      <MenuItem
+        sx={{ color: "#0A2540" }}
+        onClick={() => {
+          logout();
+        }}
+      >
+        <ListItemIcon sx={{ color: "#0A2540" }}>
+          <LogoutIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText
+          primaryTypographyProps={{ fontSize: "14px", marginLeft: "-7px" }}
+        >
+          Logout
+        </ListItemText>
+      </MenuItem>
+    </Menu>
   );
 
   const ProfileContainer = (

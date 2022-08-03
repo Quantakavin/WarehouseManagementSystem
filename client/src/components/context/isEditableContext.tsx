@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+
 export const EditableContext = createContext({});
 const IsEditableProvider = ({ children }) => {
   const [isEditable, setIsEditable] = useState(false);

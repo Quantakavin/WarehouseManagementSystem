@@ -1,49 +1,51 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Paper, Popper } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { GetDetails }from "../../api/TLoanDB"
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import DoneIcon from "@mui/icons-material/Done";
 import { LoadingButton } from "@mui/lab";
 import { motion } from "framer-motion";
-import React from "react";
-import { Toast } from "../../components/alerts/SweetAlert";
+import { Toast } from "../alerts/SweetAlert";
+import { TLoans } from "../../utils/CommonTypes";
 import TLoanRejectModalButton from "../modals/tloanRejectExtension";
+
 
 export default function TLoanManagerDisplay() {
   const navigate = useNavigate();
-  const [details, setDetails] = useState([]);
-  // const [loanDetails, setLoanDetails] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [loans, setLoans] = useState([]);
   const [items, setItems] = useState([]);
   const [reasonField, setReasonField] = useState("");
   const { TLoanID } = useParams();
-
+  console.log(TLoanID)
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const loans = await axios
+      const results = await axios
         .get(`http://localhost:5000/api/tloans/${TLoanID}`)
         .then((data) => {
           setReasonField(data.data.Reason);
           setLoans(data.data);
+          
         });
 
       // setLoan(Object.e)
+      console.log(results)
     };
     // call the function
     fetchData()
       // make sure to catch any error
       .catch(console.error);
   }, []);
-
+  
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
@@ -61,7 +63,7 @@ export default function TLoanManagerDisplay() {
       // make sure to catch any error
       .catch(console.error);
   }, []);
-
+console.log(items)
   interface GridCellExpandProps {
     value: string;
     width: number;
@@ -179,21 +181,25 @@ export default function TLoanManagerDisplay() {
   }
 
   const ApproveLoan = async () => {
-    axios
-      .put(`http://localhost:5000/api/tloan/approveExtension/${TLoanID}`)
-      .then(() => {
-        Toast.fire({
-          icon: "success",
-          title: "Extension For TLoan " + "#" + TLoanID + " Has Been Approved",
-          customClass: "swalpopup",
-          timer: 2000,
-          width: 700,
+    setLoading(true);
+    setTimeout(() => {
+      axios
+        .put(`http://localhost:5000/api/tloan/approveExtension/${TLoanID}`)
+        .then(() => {
+          Toast.fire({
+            icon: "success",
+            title: `Extension For TLoan ` + `#${TLoanID} Has Been Approved`,
+            customClass: "swalpopup",
+            timer: 2000,
+            width: 700,
+          });
+          navigate("/tloan");
+        })
+        .catch((error) => {
+          console.error("There was an error!", error);
+          setLoading(false);
         });
-        navigate("/tloan");
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
+    }, 500);
   };
 
   const columns: GridColDef[] = [
@@ -221,12 +227,13 @@ export default function TLoanManagerDisplay() {
     },
   ];
 
-  console.log(loans);
   const getData = () => {
     return (
+      
       <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
         <Box sx={{ display: "flex", height: "100%" }}>
           <Box sx={{ flexGrow: 1 }}>
+          <h2 style= {{margin:15}}>TLoan Extension Request </h2>
             <Card>
               <CardContent>
                 <Grid container spacing={8}>
@@ -336,7 +343,6 @@ export default function TLoanManagerDisplay() {
                         sx={{
                           color: "white",
                           backgroundColor: "#063970",
-                          height: "100%",
                           width: 150,
                           height: 50,
                           borderRadius: 10,
@@ -363,13 +369,14 @@ export default function TLoanManagerDisplay() {
                           sx={{
                             color: "white",
                             backgroundColor: "green",
-                            height: "100%",
                             width: 200,
                             height: 50,
                             borderRadius: 10,
                             marginRight: 5,
                             marginLeft: 4,
                           }}
+                          loading={loading}
+                          loadingPosition="end"
                           endIcon={<DoneIcon />}
                           onClick={ApproveLoan}
                         >
@@ -388,5 +395,6 @@ export default function TLoanManagerDisplay() {
     );
   };
 
-  return <div>{getData()}</div>;
+ return <div>{getData()}</div>;
+ 
 }

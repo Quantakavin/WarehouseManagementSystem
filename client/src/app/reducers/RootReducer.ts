@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import CurrentUserReducer from "../reducers/CurrentUserSlice";
-import SidebarReducer from "../reducers/SidebarSlice";
+import CurrentUserReducer from "./CurrentUserSlice";
+import SidebarReducer from "./SidebarSlice";
 import BinLocationSlice from "./BinLocationSlice";
 import NotiGroupTableFilterSlice from "./NotiGroupTableFilterSlice";
 import RmaReducer from "./RmaReducer";

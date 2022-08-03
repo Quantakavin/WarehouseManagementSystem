@@ -267,82 +267,79 @@ function cards() {
         </Grid>
       </Grid>
     );
-  } else {
-    return (
-      <Grid container sx={{ marginTop: -2 }}>
-        <Grid item xs={6}>
-          <Card
-            sx={{ height: "100%", width: "98%", pt: 2, pb: 2, pl: 6, pr: 6 }}
-          >
-            <Typography
-              variant="subtitle2"
-              sx={{
-                color: "#063970",
-                fontWeight: "bold",
-                fontSize: 28,
-                fontFamily: "Roboto",
-              }}
-            >
-              <Grid container>
-                <Grid item xs={6}>
-                  <Box>Approved</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {ApprovedRMAs.length}
-                  </Box>
-                </Grid>
-                <Grid item xs={6} sx={{ paddingLeft: 5 }}>
-                  <Box sx={{}}>Rejected</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {RejectedRMAs.length}
-                  </Box>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider>
-                    <Chip label="RMA" />
-                  </Divider>
-                </Grid>
-              </Grid>
-            </Typography>
-          </Card>
-        </Grid>
-        <Grid item xs={6}>
-          <Card
-            sx={{ height: "100%", width: "100%", pt: 2, pb: 2, pl: 6, pr: 6 }}
-          >
-            <Typography
-              variant="subtitle2"
-              sx={{
-                color: "#063970",
-                fontWeight: "bold",
-                fontSize: 28,
-                fontFamily: "Roboto",
-              }}
-            >
-              <Grid container>
-                <Grid item xs={6}>
-                  <Box>Draft</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {DraftTloans.length}
-                  </Box>
-                </Grid>
-                <Grid item xs={6} sx={{ paddingLeft: 6 }}>
-                  <Box>Current</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
-                    {CurrentTloans.length}
-                  </Box>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider>
-                    <Chip label="TLoans" />
-                  </Divider>
-                </Grid>
-              </Grid>
-            </Typography>
-          </Card>
-        </Grid>
-      </Grid>
-    );
   }
+  return (
+    <Grid container sx={{ marginTop: -2 }}>
+      <Grid item xs={6}>
+        <Card sx={{ height: "100%", width: "98%", pt: 2, pb: 2, pl: 6, pr: 6 }}>
+          <Typography
+            variant="subtitle2"
+            sx={{
+              color: "#063970",
+              fontWeight: "bold",
+              fontSize: 28,
+              fontFamily: "Roboto",
+            }}
+          >
+            <Grid container>
+              <Grid item xs={6}>
+                <Box>Approved</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {ApprovedRMAs.length}
+                </Box>
+              </Grid>
+              <Grid item xs={6} sx={{ paddingLeft: 5 }}>
+                <Box sx={{}}>Rejected</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {RejectedRMAs.length}
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider>
+                  <Chip label="RMA" />
+                </Divider>
+              </Grid>
+            </Grid>
+          </Typography>
+        </Card>
+      </Grid>
+      <Grid item xs={6}>
+        <Card
+          sx={{ height: "100%", width: "100%", pt: 2, pb: 2, pl: 6, pr: 6 }}
+        >
+          <Typography
+            variant="subtitle2"
+            sx={{
+              color: "#063970",
+              fontWeight: "bold",
+              fontSize: 28,
+              fontFamily: "Roboto",
+            }}
+          >
+            <Grid container>
+              <Grid item xs={6}>
+                <Box>Draft</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {DraftTloans.length}
+                </Box>
+              </Grid>
+              <Grid item xs={6} sx={{ paddingLeft: 6 }}>
+                <Box>Current</Box>
+                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  {CurrentTloans.length}
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider>
+                  <Chip label="TLoans" />
+                </Divider>
+              </Grid>
+            </Grid>
+          </Typography>
+        </Card>
+      </Grid>
+    </Grid>
+  );
 }
 
 export default cards;

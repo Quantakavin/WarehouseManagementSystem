@@ -36,7 +36,7 @@ const Floor = () => {
         In this case, it is just a uniform green
       */}
       <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
-      {/*color="#7cb1d0*/}
+      {/* color="#7cb1d0 */}
     </mesh>
   );
 };
@@ -78,21 +78,21 @@ const Scene = () => {
       newPosition[1] + 20,
       newPosition[2] + 30
     );
-    //camera.rotation.y = 180;
-    //camera.lookAt(new THREE.Vector3(newPosition[0],newPosition[1],newPosition[2]));
+    // camera.rotation.y = 180;
+    // camera.lookAt(new THREE.Vector3(newPosition[0],newPosition[1],newPosition[2]));
     controls.current.target = new THREE.Vector3(
       newPosition[0],
       newPosition[1],
       newPosition[2]
     );
     controls.current.update();
-    //camera.rotation.y = 90;
-    //camera.up.set( 0, 0, 1 );
-    //camera.zoom = 1.5
+    // camera.rotation.y = 90;
+    // camera.up.set( 0, 0, 1 );
+    // camera.zoom = 1.5
     //
-    //alert(newPosition)
-    //camera.lookAt( new THREE.Vector3(newPosition[0], newPosition[1], newPosition[2]))
-    //alert(newPosition);
+    // alert(newPosition)
+    // camera.lookAt( new THREE.Vector3(newPosition[0], newPosition[1], newPosition[2]))
+    // alert(newPosition);
   };
 
   return (

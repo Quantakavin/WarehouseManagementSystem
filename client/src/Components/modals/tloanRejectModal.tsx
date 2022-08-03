@@ -9,10 +9,9 @@ import Fade from "@mui/material/Fade";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
 import { motion } from "framer-motion";
-import * as React from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Toast } from "../../components/alerts/SweetAlert";
+import { Toast } from "../alerts/SweetAlert";
 
 const style = {
   position: "absolute" as "absolute",
@@ -30,7 +29,8 @@ export default function TLoanRejectModalButton() {
   const { TLoanID } = useParams();
   const navigate = useNavigate();
   const [remarks, setRemarks] = useState("");
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [remarksError, setRemarksError] = useState(false);
   const [remarksErrorText, setRemarksErrorText] = useState("");
   const handleOpen = () => setOpen(true);
@@ -46,8 +46,10 @@ export default function TLoanRejectModalButton() {
 
   const handleConfirm = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setRemarksError(false);
     if (remarks === "") {
+      setLoading(false);
       setRemarksError(true);
       setRemarksErrorText("Please provide remarks");
       Toast.fire({
@@ -57,25 +59,29 @@ export default function TLoanRejectModalButton() {
         timer: 2000,
         width: 350,
       });
-    }
-    try {
-      axios
-        .put(`http://localhost:5000/api/tloan/reject/${TLoanID}`, {
-          remarks,
-        })
-        .then(() => {
-          Toast.fire({
-            icon: "success",
-            title: "TLoan " + "#" + TLoanID + " Has Been Rejected",
-            customClass: "swalpopup",
-            timer: 2000,
-            width: 700,
-          });
-          navigate("/tloan");
-        });
-    } catch (error) {
-      this.setState({ errorMessage: error.message });
-      console.error("There was an error!", error);
+    } else {
+      setTimeout(() => {
+        try {
+          axios
+            .put(`http://localhost:5000/api/tloan/reject/${TLoanID}`, {
+              remarks,
+            })
+            .then(() => {
+              Toast.fire({
+                icon: "success",
+                title: `TLoan ` + `#${TLoanID} Has Been Rejected`,
+                customClass: "swalpopup",
+                timer: 2000,
+                width: 700,
+              });
+              navigate("/tloan");
+            });
+        } catch (error) {
+          setLoading(false);
+          this.setState({ errorMessage: error.message });
+          console.error("There was an error!", error);
+        }
+      }, 500);
     }
   };
 
@@ -201,6 +207,8 @@ export default function TLoanRejectModalButton() {
                     height: 50,
                     borderRadius: 10,
                   }}
+                  loading={loading}
+                  loadingPosition="end"
                   endIcon={<DoneAllIcon />}
                   onClick={handleConfirm}
                 >

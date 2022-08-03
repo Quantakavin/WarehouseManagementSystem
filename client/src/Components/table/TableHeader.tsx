@@ -16,13 +16,14 @@ const TableHeader = ({
 }: TableHeaderProps) => {
   // const sortColumn = useAppSelector(state => state.userTableFilter.sortColumn)
   // const sortOrder = useAppSelector(state => state.userTableFilter.sortOrder)
-  //const sortColumn = useAppSelector(selectSortColumn)
-  //const sortOrder = useAppSelector(selectSortOrder)
+  // const sortColumn = useAppSelector(selectSortColumn)
+  // const sortOrder = useAppSelector(selectSortOrder)
 
   const Icon = () => {
     if (sortColumn === header && sortOrder === "DESC") {
       return <ArrowDropUpIcon fontSize="small" />;
-    } else if (header !== "Action") {
+    }
+    if (header !== "Action") {
       return <ArrowDropDownIcon fontSize="small" />;
     }
     return null;

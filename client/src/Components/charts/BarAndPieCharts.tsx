@@ -14,7 +14,6 @@ import {
   YAxis,
 } from "recharts";
 import config from "../../config/config";
-import tloan from "../../pages/tloans/tloan";
 import "../../styles/chart.scss";
 
 const COLORS = ["#0088FE", "#00C49F"];
@@ -46,7 +45,7 @@ const renderCustomizedLabel = ({
   );
 };
 
-function Chart3({}) {
+const Chart3 = ({}) => {
   const [tloanrequest, settloanRequest] = useState([]);
 
   // Get Tloan Request Grouped By Companies
@@ -143,7 +142,7 @@ function Chart3({}) {
                   <CartesianGrid stroke="#e0dfdf" strokeDasharray="5 5" />
                   <XAxis dataKey="Company" stroke="#8884d8" />
                   <YAxis />
-                  <Bar label={true} dataKey="Requests" fill="#8884d8" />
+                  <Bar label dataKey="Requests" fill="#8884d8" />
                   <Tooltip />
                 </BarChart>
               </ResponsiveContainer>
@@ -153,6 +152,6 @@ function Chart3({}) {
       </Grid>
     </Grid>
   );
-}
+};
 
 export default Chart3;

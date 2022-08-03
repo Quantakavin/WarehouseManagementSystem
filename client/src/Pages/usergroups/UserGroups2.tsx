@@ -24,7 +24,7 @@ import {
 } from "@mui/x-data-grid";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { useMutation, useQueryClient, useQuery} from "react-query";
+import { useMutation, useQueryClient, useQuery } from "react-query";
 import { useNavigate } from "react-router";
 import { DeleteUserGroup, GetUserGroups } from "../../api/UserGroupDB";
 import { useAppSelector } from "../../app/hooks";
@@ -49,7 +49,7 @@ const UserGroups2: React.FC = () => {
       navigate("/403");
     }
   }, []);
-  //const [hoveredRow, setHoveredRow] = React.useState(null);
+  // const [hoveredRow, setHoveredRow] = React.useState(null);
 
   /*
   const onMouseEnterRow = (event) => {
@@ -62,10 +62,7 @@ const UserGroups2: React.FC = () => {
   };
   */
 
-  const UserGroupsQuery = useQuery(
-    `usergroups`,
-    GetUserGroups
-  );
+  const UserGroupsQuery = useQuery(`usergroups`, GetUserGroups);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [
@@ -115,7 +112,6 @@ const UserGroups2: React.FC = () => {
     setIdToDelete(null);
   };
 
-
   const columns = [
     { field: "UserGroupID", headerName: "ID", flex: 2 },
     { field: "UserGroupName", headerName: "Name", flex: 15 },
@@ -149,7 +145,7 @@ const UserGroups2: React.FC = () => {
 
   return (
     <Box sx={{ pl: 3, pr: 3, pt: 1, height: "100%", width: "100%" }}>
-            <Popup
+      <Popup
         showpopup={showConfirmation}
         heading="Are you sure you want to delete this user group?"
         subheading="By doing so, you will delete all users associated with it"

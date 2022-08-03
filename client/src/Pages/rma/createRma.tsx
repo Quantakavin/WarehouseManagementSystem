@@ -1,4 +1,5 @@
-import CreateRMA from "../../components/createForms/rmaForm";
+import CreateRMA from "./newRma";
+
 function rma() {
   return (
     <div>

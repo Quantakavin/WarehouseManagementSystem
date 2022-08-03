@@ -1,8 +1,8 @@
 import { OrbitControls } from "@react-three/drei";
-import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Suspense, useRef } from "react";
 import * as THREE from "three";
-import Rack from "../../components/3Dmodels/Rack";
+import Rack from "./Rack";
 import "../../styles/BinLocation.scss";
 
 const Scene = () => {
@@ -21,15 +21,14 @@ const Scene = () => {
       newPosition[1] + 20,
       newPosition[2] + 30
     );
-    //camera.rotation.y = 180;
-    //camera.lookAt(new THREE.Vector3(newPosition[0],newPosition[1],newPosition[2]));
+    // camera.rotation.y = 180;
+    // camera.lookAt(new THREE.Vector3(newPosition[0],newPosition[1],newPosition[2]));
     controls.current.target = new THREE.Vector3(
       newPosition[0],
       newPosition[1],
       newPosition[2]
     );
     controls.current.update();
-
   };
 
   return (

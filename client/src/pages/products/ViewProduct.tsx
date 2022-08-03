@@ -7,6 +7,9 @@ import React, { useEffect, useState, useContext } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "react-use-cart";
+import Divider from "@mui/material/Divider";
+import { Chip, Grid } from "@mui/material";
+import { executeReducerBuilderCallback } from "@reduxjs/toolkit/dist/mapBuilders";
 import { GetProduct } from "../../api/ProductDB";
 import { Toast } from "../../components/alerts/SweetAlert";
 import CardContainer from "../../components/cards/CardContainer";
@@ -15,15 +18,11 @@ import CardSkeleton from "../../components/skeletons/CardSkeleton";
 import IsEditableProvider, {
   EditableContext,
 } from "../../components/context/isEditableContext";
-import Divider from "@mui/material/Divider";
-import { Chip, Grid } from "@mui/material";
 import { useAppSelector } from "../../app/hooks";
 import {
   selectPermissions,
   selectRole,
 } from "../../app/reducers/CurrentUserSlice";
-import { executeReducerBuilderCallback } from "@reduxjs/toolkit/dist/mapBuilders";
-
 
 const ViewProduct: React.FC = () => {
   const params = useParams();
@@ -64,10 +63,10 @@ const ViewProduct: React.FC = () => {
     const newProduct = productGet.map(
       ({ BinProductPK, ItemNo, ItemName, BatchNo, WarehouseCode }) => ({
         id: BinProductPK,
-        ItemNo: ItemNo,
-        ItemName: ItemName,
-        BatchNo: BatchNo,
-        WarehouseCode: WarehouseCode,
+        ItemNo,
+        ItemName,
+        BatchNo,
+        WarehouseCode,
         price: 0,
       })
     );
@@ -85,8 +84,7 @@ const ViewProduct: React.FC = () => {
   }
 
   const { totalItems, addItem } = useCart();
-
- 
+  console.log(isEditable)
   const newLoanButton = () => {
     if (totalItems > 0) {
       return (
@@ -100,7 +98,7 @@ const ViewProduct: React.FC = () => {
             aria-label="add"
             onClick={() => {
               isEditable
-                ? navigate(`/tloanDraftDetails/${TLoanIDGlobal}`)
+                ? navigate(`/tloandetails/${TLoanIDGlobal}`)
                 : navigate("/newtloan");
             }}
             sx={{
@@ -117,15 +115,12 @@ const ViewProduct: React.FC = () => {
             <ShoppingBasketIcon sx={{ ml: 0.5, mr: 0.5 }} />
           </Fab>
         </motion.div>
-        
       );
-    } else {
-      return;
     }
   };
 
   const addProduct = () => {
-    let html = [];
+    const html = [];
 
     html.push(
       newProducts.map((product) => {
@@ -186,7 +181,7 @@ const ViewProduct: React.FC = () => {
 
     return html;
   };
-  if( InternalApplication === true || ExternalApplication === true) {
+  if (InternalApplication === true || ExternalApplication === true) {
     return (
       <>
         {newLoanButton()}
@@ -226,30 +221,30 @@ const ViewProduct: React.FC = () => {
                   <Grid item xs={6}>
                     <CardField
                       label="Weight"
-                      value={ProductQuery.data.data[0].Weight + " kg"}
+                      value={`${ProductQuery.data.data[0].Weight} kg`}
                     />
                   </Grid>
                   <Grid item xs={6}>
                     <CardField
                       label="Length"
-                      value={ProductQuery.data.data[0].Length + " cm"}
+                      value={`${ProductQuery.data.data[0].Length} cm`}
                     />
                   </Grid>
                   <Grid item xs={6}>
                     <CardField
                       label="Width"
-                      value={ProductQuery.data.data[0].Width + " cm"}
+                      value={`${ProductQuery.data.data[0].Width} cm`}
                     />
                   </Grid>
                   <Grid item xs={6}>
                     <CardField
                       label="Height"
-                      value={ProductQuery.data.data[0].Height + " cm"}
+                      value={`${ProductQuery.data.data[0].Height} cm`}
                     />
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item></Grid>
+              <Grid item />
             </Grid>
             <div
               className="flexcontainer"
@@ -269,7 +264,7 @@ const ViewProduct: React.FC = () => {
               >
                 <ArrowBackIosIcon fontSize="small" /> Back
               </button>
-  
+
               {addProduct()}
             </div>
           </CardContainer>
@@ -277,88 +272,84 @@ const ViewProduct: React.FC = () => {
         {/* {addInside()} */}
       </>
     );
-  }else{
-    return (
-      <>
-    
-        {ProductQuery.status === "success" && (
-          <CardContainer
-            header={ProductQuery.data.data[0].ItemName}
-            subheading={ProductQuery.data.data[0].ItemNo}
-          >
-            <Divider sx={{ mb: 3 }}>
-              <Chip label="Details" sx={{ fontWeight: 500 }} />
-            </Divider>
-            <Grid container sx={{ pl: 3, pr: 0 }}>
-              <Grid item xs={7}>
-                <CardField
-                  label="Brand"
-                  value={ProductQuery.data.data[0].Brand}
-                />
-                <CardField
-                  label="Batch Number"
-                  value={ProductQuery.data.data[0].BatchNo}
-                />
-                <CardField
-                  label="Bin Tag"
-                  value={ProductQuery.data.data[0].BinTag2}
-                />
-                <CardField
-                  label="Warehouse Code"
-                  value={ProductQuery.data.data[0].WarehouseCode}
-                />
-                <CardField
-                  label="Available Quantity"
-                  value={ProductQuery.data.data[0].Quantity}
-                />
-              </Grid>
-              <Grid item xs={5}>
-                <Grid container>
-                  <Grid item xs={6}>
-                    <CardField
-                      label="Weight"
-                      value={ProductQuery.data.data[0].Weight + " kg"}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <CardField
-                      label="Length"
-                      value={ProductQuery.data.data[0].Length + " cm"}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <CardField
-                      label="Width"
-                      value={ProductQuery.data.data[0].Width + " cm"}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <CardField
-                      label="Height"
-                      value={ProductQuery.data.data[0].Height + " cm"}
-                    />
-                  </Grid>
+  }
+  return (
+    <>
+      {ProductQuery.status === "success" && (
+        <CardContainer
+          header={ProductQuery.data.data[0].ItemName}
+          subheading={ProductQuery.data.data[0].ItemNo}
+        >
+          <Divider sx={{ mb: 3 }}>
+            <Chip label="Details" sx={{ fontWeight: 500 }} />
+          </Divider>
+          <Grid container sx={{ pl: 3, pr: 0 }}>
+            <Grid item xs={7}>
+              <CardField
+                label="Brand"
+                value={ProductQuery.data.data[0].Brand}
+              />
+              <CardField
+                label="Batch Number"
+                value={ProductQuery.data.data[0].BatchNo}
+              />
+              <CardField
+                label="Bin Tag"
+                value={ProductQuery.data.data[0].BinTag2}
+              />
+              <CardField
+                label="Warehouse Code"
+                value={ProductQuery.data.data[0].WarehouseCode}
+              />
+              <CardField
+                label="Available Quantity"
+                value={ProductQuery.data.data[0].Quantity}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <Grid container>
+                <Grid item xs={6}>
+                  <CardField
+                    label="Weight"
+                    value={`${ProductQuery.data.data[0].Weight} kg`}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <CardField
+                    label="Length"
+                    value={`${ProductQuery.data.data[0].Length} cm`}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <CardField
+                    label="Width"
+                    value={`${ProductQuery.data.data[0].Width} cm`}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <CardField
+                    label="Height"
+                    value={`${ProductQuery.data.data[0].Height} cm`}
+                  />
                 </Grid>
               </Grid>
-              <Grid item></Grid>
             </Grid>
-            <div
-              className="flexcontainer"
-              style={{
-                flexDirection: "row",
-                marginLeft: "7%",
-                marginRight: "7%",
-                marginTop: 30,
-                marginBottom: 20,
-              }}
-            > 
-            </div>
-          </CardContainer>
-        )}
-        {/* {addInside()} */}
-      </>
-    );
-  }
-  
+            <Grid item />
+          </Grid>
+          <div
+            className="flexcontainer"
+            style={{
+              flexDirection: "row",
+              marginLeft: "7%",
+              marginRight: "7%",
+              marginTop: 30,
+              marginBottom: 20,
+            }}
+          />
+        </CardContainer>
+      )}
+      {/* {addInside()} */}
+    </>
+  );
 };
 export default ViewProduct;

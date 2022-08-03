@@ -27,7 +27,7 @@ export default function BasicTable() {
   }
 
   function createList() {
-    var rows = [];
+    const rows = [];
 
     GetAllProducts().then((data) => {
       for (let i = 0; i < data.length; i++) {

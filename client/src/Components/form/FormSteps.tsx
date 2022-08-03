@@ -59,12 +59,12 @@ const ColorlibStepIconRoot = styled("div")<{
   ...(ownerState.completed && {
     // backgroundImage:
     //   'linear-gradient( 136deg, #0A2540 0%, #3a5066 50%, #6c7c8c 100%)',
-    //backgroundColor: 'green'
+    // backgroundColor: 'green'
     backgroundColor: "#0A2540",
   }),
 }));
 
-//const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+// const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
 
 interface FormStepsProps {
   steps: string[];

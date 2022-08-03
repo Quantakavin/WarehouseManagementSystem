@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import config from "../../config/config";
 import "./cards.scss";
 
-function ProductCard() {
+const ProductCard = () => {
   // Item Details
   const [ItemDetails, setItemDetails] = useState([]);
 
@@ -31,20 +31,20 @@ function ProductCard() {
           </div>
           <div>
             <span className="ItemName">Item Name</span>
-            <h1 className="Current"></h1>
+            <h1 className="Current" />
           </div>
           <div>
             <span className="Brand">Brand</span>
-            <h1 className="Brand"></h1>
+            <h1 className="Brand" />
           </div>
           <div>
             <span className="BatchNumber">Batch Number</span>
-            <h1 className="BatchNumber"></h1>
+            <h1 className="BatchNumber" />
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default ProductCard;

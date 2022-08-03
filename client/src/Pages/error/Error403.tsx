@@ -2,7 +2,7 @@ import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
 
-function Error403() {
+const Error403 = () => {
   const navigate = useNavigate();
   const URL = window.location.href;
 
@@ -84,6 +84,6 @@ function Error403() {
       </Card>
     </Box>
   );
-}
+};
 
 export default Error403;

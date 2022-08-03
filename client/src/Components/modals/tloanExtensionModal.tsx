@@ -1,7 +1,3 @@
-import React, { useEffect, useState } from "react";
-
-import Button from "@mui/material/Button";
-
 import FormHelperText from "@material-ui/core/FormHelperText";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
@@ -17,8 +13,9 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Toast } from "../../components/alerts/SweetAlert";
+import { Toast } from "../alerts/SweetAlert";
 
 const style = {
   position: "absolute" as "absolute",
@@ -39,13 +36,14 @@ const ModalButton = () => {
   const [duration, setDuration] = useState("");
   const [loan, setLoan] = useState("");
   const [tloanid, setLoanID] = useState("");
+  const [loading, setLoading] = useState(false);
   const [extensionStatus, setExtensionStatus] = useState("");
   const [tloanStatus, setTLoanStatus] = useState();
   const [reasonError, setReasonError] = useState(false);
   const [durationError, setDurationError] = useState(false);
   const [reasonErrorText, setReasonErrorText] = useState("");
   const [durationErrorText, setDurationErrorText] = useState("");
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -85,37 +83,43 @@ const ModalButton = () => {
 
   const submitExtension = (e) => {
     e.preventDefault();
+    setLoading(true);
     setDurationError(false);
     setReasonError(false);
     if (reason === "") {
       setReasonError(true);
       setReasonErrorText("Input Is Needed");
+      setLoading(false);
     }
     if (duration === "") {
       setDurationError(true);
       setDurationErrorText("Select An Option");
+      setLoading(false);
     }
-    try {
-      const results = axios
-        .post(`http://localhost:5000/api/tloan/extension`, {
-          tloanid,
-          reason,
-          duration,
-        })
-        .then(() => {
-          Toast.fire({
-            icon: "success",
-            title: "TLoan Extension Successfully Applied",
-            customClass: "swalpopup",
-            timer: 1500,
-            width: 700,
-          });
-          navigate("/tloan");
-        });
-
-      console.log(results);
-    } catch (error) {
-      console.log(error.response);
+    if (reason !== "" && duration !== "") {
+      setTimeout(() => {
+        try {
+          const results = axios
+            .post(`http://localhost:5000/api/tloan/extension`, {
+              tloanid,
+              reason,
+              duration,
+            })
+            .then(() => {
+              Toast.fire({
+                icon: "success",
+                title: "TLoan Extension Successfully Applied",
+                customClass: "swalpopup",
+                timer: 1500,
+                width: 700,
+              });
+              navigate("/tloan");
+            });
+        } catch (error) {
+          setLoading(false);
+          console.log(error.response);
+        }
+      }, 500);
     }
   };
 
@@ -133,9 +137,10 @@ const ModalButton = () => {
       tloanStatus === 9
     ) {
       return null;
-    } else if (extensionStatus !== "NIL") {
+    }
+    if (extensionStatus !== "NIL") {
       return (
-        <Button
+        <LoadingButton
           size="small"
           variant="contained"
           sx={{
@@ -149,9 +154,10 @@ const ModalButton = () => {
           disabled
         >
           Apply For Extension
-        </Button>
+        </LoadingButton>
       );
-    } else if (extensionStatus === "NIL") {
+    }
+    if (extensionStatus === "NIL") {
       return (
         <motion.div
           className="animatable"
@@ -161,7 +167,7 @@ const ModalButton = () => {
           }}
           whileTap={{ scale: 0.9 }}
         >
-          <Button
+          <LoadingButton
             size="small"
             variant="contained"
             sx={{
@@ -174,7 +180,7 @@ const ModalButton = () => {
             onClick={handleOpen}
           >
             Apply For Extension
-          </Button>
+          </LoadingButton>
           {/* <form onSubmit={submitExtension}> */}
           <Modal
             open={open}
@@ -289,6 +295,8 @@ const ModalButton = () => {
                           marginTop: 5,
                         }}
                         type="submit"
+                        loading={loading}
+                        loadingPosition="end"
                         endIcon={<DoneAllIcon />}
                         onClick={submitExtension}
                       >

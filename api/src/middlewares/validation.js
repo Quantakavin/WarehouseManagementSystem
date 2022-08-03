@@ -124,6 +124,8 @@ const validation = {
             requireddate === '' ||
             user === '' ||
             collection === '' ||
+            (type === "2" && (company === "1" || company === "2" ||company === "3" ||company === "4" ||company === "5" ||company === "6") )||
+            (type === "1" && (company !== "1" && company !== "2" && company !== "3" && company !== "4" && company !== "5" && company !== "6"))|| 
             items === []
         ) {
             res.status(400).json({
@@ -139,6 +141,37 @@ const validation = {
             next();
         }
     },
+    
+    validateDraft: (req, res, next) => {
+        const {
+            type,
+            company,
+            email,
+            items
+        } = req.body;
+
+        if (
+            email === '' ||
+            company === '' ||
+            (type === "2" && (company === "1" || company === "2" ||company === "3" ||company === "4" ||company === "5" ||company === "6") )||
+            (type === "1" && (company !== "1" && company !== "2" && company !== "3" && company !== "4" && company !== "5" && company !== "6"))|| 
+            items === []
+        ) {
+            res.status(400).json({
+                message: 'Please fill up all fields correctly'
+            });
+        } else if (validator.isEmail(email)) {
+            next();
+        } else if (!validator.isEmail(email)) {
+            res.status(400).json({
+                message: 'Please enter a valid email'
+            });
+        } else {
+            next();
+        }
+    },
+
+
     validateExtensionRequest: (req, res, next) => {
         const { reason, duration } = req.body;
 
@@ -158,6 +191,23 @@ const validation = {
                 message: 'Please fill up all fields correctly'
             });
         } else {
+            next();
+        }
+    },
+
+    validateStatusUpdate: (req, res, next) => {
+        const {
+            statusChange
+        } = req.body;
+
+        if (
+            statusChange === ""
+        ) {
+            res.status(400).json({
+                message: 'Please fill up all fields correctly'
+            });
+        }
+         else {
             next();
         }
     },

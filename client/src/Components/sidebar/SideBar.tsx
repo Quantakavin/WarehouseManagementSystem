@@ -2,33 +2,98 @@ import ArticleIcon from "@mui/icons-material/Article";
 import AssignmentReturnIcon from "@mui/icons-material/AssignmentReturn";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import InventoryIcon from "@mui/icons-material/Inventory";
-import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import PersonIcon from "@mui/icons-material/Person";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
-import * as React from "react";
+import { Toolbar } from "@mui/material";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import MuiDrawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import { CSSObject, styled, Theme, useTheme } from "@mui/material/styles";
+import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { selectName, selectRole } from "../../app/reducers/CurrentUserSlice";
 import {
-  Close,
-  Open,
-  selectCurrentTab,
-  selectOpen,
-} from "../../app/reducers/SidebarSlice";
+  selectName,
+  selectPermissions,
+  selectRole,
+} from "../../app/reducers/CurrentUserSlice";
+import { Close, Open, selectOpen } from "../../app/reducers/SidebarSlice";
 import defaultprofile from "../../assets/defaultprofile.png";
 import SidebarLink from "./SidebarLink";
 
-const Sidebar: React.FC = () => {
+const drawerWidth = 240;
+
+const openedMixin = (theme: Theme): CSSObject => ({
+  width: drawerWidth,
+  transition: theme.transitions.create("width", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: "hidden",
+  backgroundColor: "#0a2540",
+});
+
+const closedMixin = (theme: Theme): CSSObject => ({
+  transition: theme.transitions.create("width", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: "hidden",
+  backgroundColor: "#0a2540",
+  width: `calc(${theme.spacing(9)} + 1px)`,
+  [theme.breakpoints.up("sm")]: {
+    width: `calc(${theme.spacing(9)} + 1px)`,
+  },
+});
+
+const DrawerHeader = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-end",
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+}));
+
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  ...(open && {
+    ...openedMixin(theme),
+    "& .MuiDrawer-paper": openedMixin(theme),
+  }),
+  ...(!open && {
+    ...closedMixin(theme),
+    "& .MuiDrawer-paper": closedMixin(theme),
+  }),
+}));
+
+const Sidebar = () => {
+  const theme = useTheme();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isopen = useAppSelector(selectOpen);
   const username = useAppSelector(selectName);
   const userrole = useAppSelector(selectRole);
-  const currenttab = useAppSelector(selectCurrentTab);
-  const usertabs = ["Users", "User Groups", "Notification Groups"];
+  const userpermissions = useAppSelector(selectPermissions);
 
-  const toggleopen = () => {
+  console.log("the permissions are: ", userpermissions);
+  console.log(
+    "has user group access:",
+    userpermissions.some(
+      (p) =>
+        p.FeatureName === "User Group Management" &&
+        p.FeatureRight === "Full Access"
+    )
+  );
+  const toggleDrawer = () => {
     if (isopen) {
       dispatch(Close());
     } else {
@@ -36,236 +101,272 @@ const Sidebar: React.FC = () => {
     }
   };
 
-  return (
-    <div className="sidebar">
-      <div className="flexcontainer sidebarprofile">
-        <div style={{ flex: 1 }}>
-          <img
-            alt="ISDN Logo"
-            src={defaultprofile}
-            width="40"
-            height="40"
-            className="d-inline-block align-top"
-            style={{ marginRight: 15 }}
-          />
-        </div>
-        {isopen && (
-          <div style={{ flex: 3, marginTop: 8, marginBottom: -8 }}>
-            <p
-              style={{
-                fontSize: 18,
-                fontWeight: 500,
-                textTransform: "capitalize",
-                textOverflow: "ellipsis",
-                overflow: "hidden",
-                width: "50px",
+  if (userrole !== "Admin") {
+    return (
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <Drawer variant="permanent" open={isopen}>
+          <Toolbar />
+          <DrawerHeader
+            sx={{ backgroundColor: "#0a2540" }}
+            onClick={() => navigate("/profile")}
+          >
+            <Box
+              className="flexcontainer sidebarprofile"
+              sx={{
+                marginRight: "auto",
+                marginTop: "15px",
+                marginBottom: "5px",
               }}
             >
-              {username}
-            </p>
-            <p style={{ fontSize: 12, fontWeight: 400, marginTop: -15 }}>
-              {userrole}
-            </p>
-          </div>
-        )}
-        <div style={{ flex: 1 }}>
-          <button
-            className="buttonremovestyling"
-            type="button"
-            onClick={() => toggleopen()}
+              <Box
+                sx={{ flex: 1, margin: isopen ? "0px" : "10px -6px 10px 6px" }}
+              >
+                <img
+                  alt="ISDN Logo"
+                  src={defaultprofile}
+                  width="40"
+                  height="40"
+                  className="d-inline-block align-top"
+                  style={{ marginRight: 15 }}
+                />
+              </Box>
+              {isopen ? (
+                <Box style={{ flex: 3, marginTop: 8, marginBottom: -8 }}>
+                  <p
+                    style={{
+                      fontSize: 18,
+                      fontWeight: 500,
+                      textTransform: "capitalize",
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                      width: "100px",
+                    }}
+                  >
+                    {username}
+                  </p>
+                  <p style={{ fontSize: 12, fontWeight: 400, marginTop: -15 }}>
+                    {userrole}
+                  </p>
+                </Box>
+              ) : null}
+            </Box>
+            {/* <IconButton onClick={toggleDrawer}>
+              {!isopen ? (
+                <ChevronRightIcon sx={{ color: "#bfc3cb", marginLeft: "-15px", marginTop: "15px", marginbottom: "-5px" }} />
+              ) : (
+                <ChevronLeftIcon sx={{ color: "#bfc3cb"}} />
+              )}
+            </IconButton> */}
+          </DrawerHeader>
+          <hr className="solid" style={{ height: 2, color: "#A4AAB6" }} />
+          <p
+            style={{
+              color: "#BFC3CB",
+              fontSize: 12,
+              fontWeight: 500,
+              marginTop: 10,
+              marginBottom: 10,
+              marginLeft: "10%",
+            }}
           >
-            {isopen ? <NavigateBeforeIcon /> : <NavigateNextIcon />}
-          </button>
-        </div>
-      </div>
-      <hr className="solid" style={{ height: 2, color: "#A4AAB6" }} />
-
-      <p
-        style={{
-          color: "#BFC3CB",
-          fontSize: 12,
-          fontWeight: 400,
-          marginTop: 30,
-          marginBottom: 30,
-          marginLeft: "8%",
-        }}
-      >
-        MENU
-      </p>
-      <SidebarLink url="/dashboard" name="Dashboard" icon={<DashboardIcon />} />
-      <SidebarLink url="/products" name="Products" icon={<InventoryIcon />} />
-      <SidebarLink url="/Tloan" name="T-Loan" icon={<ArticleIcon />} />
-      <SidebarLink url="/RMA" name="RMA" icon={<AssignmentReturnIcon />} />
-      {/* <div className="sidebartabcontainer" style={{background: usertabs.includes(currenttab)? "#3F4D65": "transparent"}}>
-      <button onClick={() => {}} className="buttonremovestyling" style={{flex: 1, marginLeft: "10%", marginTop: 8, marginBottom: 8, textAlign: "left"}}><PeopleAltIcon /> User Management</button>
-      </div> */}
-      <SidebarLink url="/users" name="Users" icon={<PersonIcon />} />
-      <SidebarLink
-        url="/usergroups"
-        name="User Groups"
-        icon={<PeopleAltIcon />}
-      />
-      <SidebarLink
-        url="/notificationgroups"
-        name="Notification Groups"
-        icon={<NotificationAddIcon />}
-      />
-      <SidebarLink
-        url="/binlocations"
-        name="Bin Locations"
-        icon={<WarehouseIcon />}
-      />
-    </div>
+            {isopen ? "MENU" : null}
+          </p>
+          <List
+            sx={{
+              flexDirection: "column",
+              paddingRight: "10px",
+              paddingLeft: "10px",
+            }}
+            className="flexcontainer"
+          >
+            <SidebarLink
+              url="/dashboard"
+              name="Dashboard"
+              icon={<DashboardIcon />}
+            />
+          </List>
+          <Divider />
+          <List
+            sx={{
+              flexDirection: "column",
+              paddingRight: "10px",
+              paddingLeft: "10px",
+            }}
+            className="flexcontainer"
+          >
+            <SidebarLink
+              url="/products"
+              name="Products"
+              icon={<InventoryIcon />}
+            />
+            <SidebarLink
+              url="/binlocations"
+              name="Bin Locations"
+              icon={<WarehouseIcon />}
+            />
+          </List>
+          <Divider />
+          <List
+            sx={{
+              flexDirection: "column",
+              paddingRight: "10px",
+              paddingLeft: "10px",
+            }}
+            className="flexcontainer"
+          >
+            <SidebarLink url="/Tloan" name="T-Loan" icon={<ArticleIcon />} />
+            <SidebarLink
+              url="/RMA"
+              name="RMA"
+              icon={<AssignmentReturnIcon />}
+            />
+          </List>
+          {/* <hr className="solid" style={{ height: 2, color: "#A4AAB6" }} /> */}
+        </Drawer>
+      </Box>
+    );
+  }
+  return (
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <Drawer variant="permanent" open={isopen}>
+        <Toolbar />
+        <DrawerHeader
+          sx={{ backgroundColor: "#0a2540" }}
+          onClick={() => navigate("/profile")}
+        >
+          <Box
+            className="flexcontainer sidebarprofile"
+            sx={{
+              marginRight: "auto",
+              marginTop: "15px",
+              marginBottom: "5px",
+            }}
+          >
+            <Box
+              sx={{ flex: 1, margin: isopen ? "0px" : "10px -6px 10px 6px" }}
+            >
+              <img
+                alt="ISDN Logo"
+                src={defaultprofile}
+                width="40"
+                height="40"
+                className="d-inline-block align-top"
+                style={{ marginRight: 15 }}
+              />
+            </Box>
+            {isopen ? (
+              <Box style={{ flex: 3, marginTop: 8, marginBottom: -8 }}>
+                <p
+                  style={{
+                    fontSize: 18,
+                    fontWeight: 500,
+                    textTransform: "capitalize",
+                    textOverflow: "ellipsis",
+                    overflow: "hidden",
+                    width: "100px",
+                  }}
+                >
+                  {username}
+                </p>
+                <p style={{ fontSize: 12, fontWeight: 400, marginTop: -15 }}>
+                  {userrole}
+                </p>
+              </Box>
+            ) : null}
+          </Box>
+          {/* <IconButton onClick={toggleDrawer}>
+              {!isopen ? (
+                <ChevronRightIcon sx={{ color: "#bfc3cb", marginLeft: "-15px", marginTop: "15px", marginbottom: "-5px" }} />
+              ) : (
+                <ChevronLeftIcon sx={{ color: "#bfc3cb"}} />
+              )}
+            </IconButton> */}
+        </DrawerHeader>
+        <hr className="solid" style={{ height: 2, color: "#A4AAB6" }} />
+        <p
+          style={{
+            color: "#BFC3CB",
+            fontSize: 12,
+            fontWeight: 500,
+            marginTop: 10,
+            marginBottom: 10,
+            marginLeft: "10%",
+          }}
+        >
+          {isopen ? "MENU" : null}
+        </p>
+        <List
+          sx={{
+            flexDirection: "column",
+            paddingRight: "10px",
+            paddingLeft: "10px",
+          }}
+          className="flexcontainer"
+        >
+          <SidebarLink
+            url="/dashboard"
+            name="Dashboard"
+            icon={<DashboardIcon />}
+          />
+        </List>
+        <Divider />
+        <List
+          sx={{
+            flexDirection: "column",
+            paddingRight: "10px",
+            paddingLeft: "10px",
+          }}
+          className="flexcontainer"
+        >
+          <SidebarLink
+            url="/products"
+            name="Products"
+            icon={<InventoryIcon />}
+          />
+          <SidebarLink
+            url="/binlocations"
+            name="Bin Locations"
+            icon={<WarehouseIcon />}
+          />
+        </List>
+        <Divider />
+        <List
+          sx={{
+            flexDirection: "column",
+            paddingRight: "10px",
+            paddingLeft: "10px",
+          }}
+          className="flexcontainer"
+        >
+          <SidebarLink url="/Tloan" name="T-Loan" icon={<ArticleIcon />} />
+          <SidebarLink url="/RMA" name="RMA" icon={<AssignmentReturnIcon />} />
+        </List>
+        <Divider />
+        <List
+          sx={{
+            flexDirection: "column",
+            paddingRight: "10px",
+            paddingLeft: "10px",
+          }}
+          className="flexcontainer"
+        >
+          <SidebarLink url="/users" name="Users" icon={<PersonIcon />} />
+          <SidebarLink
+            url="/usergroups"
+            name="User Groups"
+            icon={<PeopleAltIcon />}
+          />
+          <SidebarLink
+            url="/notificationgroups"
+            name="Notification Groups"
+            icon={<NotificationAddIcon />}
+          />
+        </List>
+      </Drawer>
+    </Box>
   );
 };
 
 export default Sidebar;
-
-// import Box from '@mui/material/Box';
-// import Drawer from '@mui/material/Drawer';
-// import CssBaseline from '@mui/material/CssBaseline';
-// import AppBar from '@mui/material/AppBar';
-// import Toolbar from '@mui/material/Toolbar';
-// import List from '@mui/material/List';
-// import Typography from '@mui/material/Typography';
-// import Divider from '@mui/material/Divider';
-// import ListItem from '@mui/material/ListItem';
-// import ListItemButton from '@mui/material/ListItemButton';
-// import ListItemIcon from '@mui/material/ListItemIcon';
-// import ListItemText from '@mui/material/ListItemText';
-// import InboxIcon from '@mui/icons-material/MoveToInbox';
-// import MailIcon from '@mui/icons-material/Mail';
-// import {
-//   LineStyle,
-//   Timeline,
-//   TrendingUp,
-//   PermIdentity,
-//   Storefront,
-//   AttachMoney,
-//   BarChart,
-//   MailOutline,
-//   DynamicFeed,
-//   ChatBubbleOutline,
-//   WorkOutline,
-//   Report,
-// } from "@mui/icons-material";
-// import { Link } from "react-router-dom";
-
-// interface SidebarLink {
-//   url: string,
-//   name: string
-// }
-
-// const SidebarLinks: SidebarLink[] = [
-//   {
-//     url: "/dashboard",
-//     name: "Dashboard"
-//   },
-//   {
-//     url: "/products",
-//     name: "Products"
-//   },
-//   {
-//     url: "/Tloans",
-//     name: "T-Loans"
-//   },
-//   {
-//     url: "/Rmas",
-//     name: "RMA"
-//   },
-//   {
-//     url: "/users",
-//     name: "User Management"
-//   },
-//   {
-//     url: "/binlocations",
-//     name: "Bin Locations"
-//   }
-// ]
-
-// const Sidebar = ()  => {
-//   return (
-//     <Drawer
-//     sx={{
-//       flexShrink: 1,
-//       '& .MuiDrawer-paper': {
-//         color: "white",
-//         backgroundColor: "#0A2540",
-//         width: "20%",
-//         boxSizing: 'border-box',
-//       },
-//     }}
-//     variant="permanent"
-//     anchor="left"
-//   >
-//     <Toolbar />
-//     <Divider />
-//     <List>
-//       {['Dashboard', 'Products', 'T-Loans', 'RMA'].map((text, index) => (
-//         <ListItem key={text} disablePadding>
-//           <ListItemButton>
-//             <ListItemIcon>
-//               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-//             </ListItemIcon>
-//             <ListItemText primary={text} />
-//           </ListItemButton>
-//         </ListItem>
-//       ))}
-//     </List>
-//   </Drawer>
-
-//     // <div className="sidebar">
-//     //   <div className="sidebarWrapper">
-//     //     <div className="sidebarMenu">
-//     //       <h3 className="sidebarTitle">Menu</h3>
-//     //       <ul className="sidebarList">
-//     //         <Link to ="/dashboard" className="link">
-//     //         <li className="sidebarListItem">
-//     //           {/* <Timeline className="sidebarIcon" /> */}
-//     //           Dashboard
-//     //         </li>
-//     //         </Link>
-
-//     //         {/* </Link> */}
-//     //         <Link to ="/products" className="link">
-//     //         <li className="sidebarListItem">
-//     //           {/* <Timeline className="sidebarIcon" /> */}
-//     //           Products
-//     //         </li>
-//     //         </Link>
-
-//     //         {/* <Link to ="/tloans" className="link"> */}
-//     //         <li className="sidebarListItem">
-//     //           {/* <TrendingUp className="sidebarIcon" /> */}
-//     //           T-Loans
-//     //         </li>
-//     //         {/* </Link> */}
-
-//     //         {/* <Link to ="/RMA" className="link"> */}
-//     //         <li className="sidebarListItem">
-//     //           {/* <TrendingUp className="sidebarIcon" /> */}
-//     //           RMA
-//     //         </li>
-//     //         {/* </Link> */}
-
-//     //         {/* <Link to ="/usermanagement" className="link"> */}
-//     //         <li className="sidebarListItem">
-//     //           {/* <TrendingUp className="sidebarIcon" /> */}
-//     //           User Management
-//     //         </li>
-//     //         {/* </Link> */}
-
-//     //         {/* <Link to ="/binlocations" className="link"> */}
-//     //         <li className="sidebarListItem">
-//     //           {/* <TrendingUp className="sidebarIcon" /> */}
-//     //           Bin Locations
-//     //         </li>
-//     //         {/* </Link> */}
-//     //       </ul>
-//     //     </div>
-//     //   </div>
-//     // </div>
-//   );
-// }
-
-// export default Sidebar;

@@ -1,26 +1,4 @@
 import FormHelperText from "@material-ui/core/FormHelperText";
-import { LoadingButton } from "@mui/lab";
-import { Box, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Paper from "@mui/material/Paper";
-import Popper from "@mui/material/Popper";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import axios from "axios";
-import { motion } from "framer-motion";
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useCart } from "react-use-cart";
-import { useAppSelector } from "../../app/hooks";
-import { selectPermissions } from "../../app/reducers/CurrentUserSlice";
-import { Toast, Toast2 } from "../../components/alerts/SweetAlert";
-import { EditableContext } from "../../components/context/isEditableContext";
-import "../../pages/tloans/TLoanTable/table.css";
-import ModalButton from "../modals/tloanExtensionModal";
-
 import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -31,16 +9,27 @@ import EditIcon from "@mui/icons-material/Edit";
 import RemoveIcon from "@mui/icons-material/Remove";
 import SaveIcon from "@mui/icons-material/Save";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
+import { LoadingButton } from "@mui/lab";
+import { Box, Grid } from "@mui/material";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
+import Paper from "@mui/material/Paper";
+import Popper from "@mui/material/Popper";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import {
   DataGrid,
   GridActionsCellItem,
+  GridColDef,
   GridColumns,
   GridEventListener,
+  GridRenderCellParams,
   GridRowId,
   GridRowModel,
   GridRowModes,
@@ -52,13 +41,23 @@ import {
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import axios from "axios";
 import dateFormat from "dateformat";
+import { motion } from "framer-motion";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useCart } from "react-use-cart";
+import { useAppSelector } from "../../app/hooks";
+import { selectPermissions } from "../../app/reducers/CurrentUserSlice";
+import { Toast, Toast2 } from "../alerts/SweetAlert";
+import { EditableContext } from "../context/isEditableContext";
+import ModalButton from "../modals/tloanExtensionModal";
 import TLoanRejectModalButton from "../modals/tloanRejectModal";
 
 export default function tloanDisplay() {
   const permissions = useAppSelector(selectPermissions);
   const navigate = useNavigate();
-  const [loans, setLoans] = useState<TLoans>([]);
+  const [loans, setLoans] = useState<TLoan>([]);
   const [itemsTable, setItemsTable] = useState([]);
   const [purposeField, setPurposeField] = useState("");
   const context = useContext(EditableContext);
@@ -95,6 +94,9 @@ export default function tloanDisplay() {
   const [rows, setRows] = React.useState([]);
   const [loading, setLoading] = useState(false);
   const [reasonField, setReasonField] = useState("");
+  const [statusChange, setStatusChange] = useState("")
+  const [statusChangeError, setStatusChangeError] = useState(false)
+  const [statusChangeErrorText, setStatusChangeErrorText] = useState("")
 
   const ApprovalLoanPerms = permissions.some(
     (e) => e.FeatureName === "T-Loan Approval"
@@ -126,14 +128,13 @@ export default function tloanDisplay() {
           setDuration(data.data.Duration);
           setCollection(data.data.Collection);
           setDateForm(data.data.RequiredDate);
-          setCompany(data.data.CompanyID);
           setType(data.data.TLoanTypeID);
           setLoans(data.data);
+          setCompany( data.data.CompanyID ||data.data.CompanyName )
         });
     };
     fetchData().catch(console.error);
   }, []);
-
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
@@ -145,16 +146,166 @@ export default function tloanDisplay() {
     };
     fetchData().catch(console.error);
   }, []);
+ 
+  const updateStatus = (e) =>{
+    setLoading(false)
+    setStatusChangeError(false)
+    if(statusChange === ""){
+      setStatusChangeError(true)
+      setStatusChangeErrorText("Please Select A Status")
+    }
+    if(statusChange !== ""){
+      setTimeout(()=>{
+        try{
+          const results= axios
+          .put(
+            `http://localhost:5000/api/tloan/updatestatus/${TLoanID}`,{
+              statusChange,
+            })
+            .then(() => {
+              Toast.fire({
+                icon: "success",
+                title: "Status Successfully Updated",
+                customClass: "swalpopup",
+                timer: 1500,
+                width: 700,
+              });
+              window.location.reload()
+              
+             console.log(results)
+            });
+          }catch (error) {
+            console.log(error.response);
+            setLoading(false);
+          }
+      },500)
+    }
+  
+  }
+      // get the data from the api
+      
+     
 
+  const TLoanTypeAccess = () =>{
+    if(ExternalApplicationPerms === true){
+      return(
+      <FormControl sx={{ width: 200, marginLeft: 3 }}>
+      <InputLabel>Loan Type</InputLabel>
+      <Select
+        id="outlined-basic"
+        value={type}
+        onChange={handleChangeType}
+        label="Loan Type"
+        size="small"
+        onBlur={() => {
+          if (type === "") {
+            setTypeError(true);
+            setTypeErrorText("Selection required");
+          }
+        }}
+        error={typeError}
+      >
+        <MenuItem value={"1"}>Internal</MenuItem>
+        <MenuItem value={"2"}>External</MenuItem>
+      </Select>
+      <FormHelperText sx={{ color: "#d11919" }}>
+        {typeErrorText}
+      </FormHelperText>
+    </FormControl>
+    )
+    }else if(InternalApplicationPerms === true){
+      return(
+        <FormControl sx={{ width: 200, marginLeft: 3, }}>
+        <InputLabel>Loan Type</InputLabel>
+        <Select
+          id="outlined-basic"
+          value={type}
+          onChange={handleChangeType}
+          label="Loan Type"
+          size="small"
+          onBlur={() => {
+            if (type === "") {
+              setTypeError(true);
+              setTypeErrorText("Selection required");
+            }
+          }}
+          error={typeError}
+        >
+          <MenuItem value={"1"}>Internal</MenuItem>
+        </Select>
+        <FormHelperText sx={{ color: "#d11919" }}>
+          {typeErrorText}
+        </FormHelperText>
+      </FormControl>
+      )
+    }else return null
+   }
+  
+   const ExternalOrInternal =()=>{
+    if(type ===  "1"  || type === 1){
+      return (
+        <FormControl sx={{ width: 200, marginLeft: 3 }}>
+        <InputLabel>Company</InputLabel>
+        <Select
+          id="outlined-basic"
+          value={company}
+          onChange={handleChangeCompany}
+          size="small"
+          label="Company"
+          onBlur={() => {
+            if (company === "") {
+              setCompanyError(true);
+              setCompanyErrorText("Selection required");
+            }
+          }}
+          error={companyError}
+        >
+          <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
+          <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
+          <MenuItem value={"3"}>DIRAK181025</MenuItem>
+          <MenuItem value={"4"}>PMC_LIVE</MenuItem>
+          <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
+          <MenuItem value={"6"} >ALL</MenuItem>
+        </Select>
+        <FormHelperText sx={{ color: "#d11919" }}>
+          {companyErrorText}
+        </FormHelperText>
+      </FormControl>
+      )
+    }else if(type === "2" || type === 2 ){
+      return(
+        <TextField
+        id="outlined-basic"
+        label="Customer Company"
+        variant="outlined"
+        size="small"
+        name="customer Company"
+        sx={{ marginLeft: 3 }}
+        onBlur={() => {
+          if (company === "" ) {
+            setCompanyError(true);
+            setCompanyErrorText("Required");
+          }
+        }}
+        onChange={(e) => 
+          setCompany(e.target.value)
+        }
+        value={company}
+        error={companyError}
+        helperText={companyErrorText}
+      />
+  
+      )
+    }
+   }
   const itemStorage = localStorage.getItem("react-use-cart");
   const cartItems = JSON.parse(itemStorage).items;
 
   useEffect(() => {
     if (cartItems === []) {
       return console.log("Nothing in cart");
-    } else {
-      setRows(cartItems);
     }
+    setRows(cartItems);
   }, [cartItems]);
 
   const FullFeaturedCrudGrid = () => {
@@ -489,10 +640,10 @@ export default function tloanDisplay() {
   const newBasket = itemsTable.map(
     ({ BasketItemID, ItemNo, ItemName, BatchNo, WarehouseCode, Quantity }) => ({
       id: BasketItemID,
-      ItemNo: ItemNo,
-      ItemName: ItemName,
-      BatchNo: BatchNo,
-      WarehouseCode: WarehouseCode,
+      ItemNo,
+      ItemName,
+      BatchNo,
+      WarehouseCode,
       quantity: Quantity,
       price: 0,
     })
@@ -500,10 +651,10 @@ export default function tloanDisplay() {
   const newProduct = cartItems.map(
     ({ id, ItemNo, ItemName, BatchNo, WarehouseCode, quantity }) => ({
       BasketItemID: id,
-      ItemNo: ItemNo,
-      ItemName: ItemName,
-      BatchNo: BatchNo,
-      WarehouseCode: WarehouseCode,
+      ItemNo,
+      ItemName,
+      BatchNo,
+      WarehouseCode,
       Quantity: quantity,
       TLoanID: TLoanIDGlobal,
     })
@@ -523,7 +674,7 @@ export default function tloanDisplay() {
     Toast2.close();
     Toast.fire({
       icon: "warning",
-      title: "You have Stopped editing " + "" + "Loan" + " " + "#" + TLoanID,
+      title: `You have Stopped editing ` + `` + `Loan` + ` ` + `#${TLoanID}`,
       customClass: "swalpopup",
       timer: 2000,
       width: 500,
@@ -558,6 +709,9 @@ export default function tloanDisplay() {
     setCollection(event.target.value);
   };
 
+  const handleChangeStatus = (event: SelectChangeEvent) => {
+    setStatusChange(event.target.value);
+  };
   const handleChangeRequiredDate = (newValue: "" | null) => {
     setDateForm(newValue);
   };
@@ -574,7 +728,7 @@ export default function tloanDisplay() {
       setTLoanIDGlobal(TLoanID);
       Toast2.fire({
         icon: "info",
-        title: "You are currently editing " + "" + "Loan #" + TLoanID,
+        title: `You are currently editing ` + `` + `Loan #${TLoanID}`,
         customClass: "swalpopup",
         width: 500,
       });
@@ -592,7 +746,6 @@ export default function tloanDisplay() {
           sx={{
             color: "white",
             backgroundColor: "#063970",
-            height: "100%",
             width: 150,
             height: 50,
             borderRadius: 10,
@@ -665,6 +818,16 @@ export default function tloanDisplay() {
       setCollectionErrorText("Selection required");
       setSubmitLoading(false);
     }
+    if (type === "2" && (company === "1" || company === "2" ||company === "3" ||company === "4" ||company === "5" ||company === "6")){
+      setCompanyError(true);
+      setCompanyErrorText("Valid Input Required");
+      setSubmitLoading(false);
+    }
+    if (type === "1" && (company !== "1" && company !== "2" && company !== "3" && company !== "4" && company !== "5" && company !== "6")){
+      setCompanyError(true);
+      setCompanyErrorText("Input Required");
+      setSubmitLoading(false);
+    }
     if (
       items.length !== 0 &&
       type !== "" &&
@@ -702,10 +865,11 @@ export default function tloanDisplay() {
                 width: 700,
               });
               navigate("/tloan");
+              emptyCart();
               setIsEditable(false);
               setTLoanIDGlobal(null);
             });
-          emptyCart();
+         
           console.log(results);
         } catch (error) {
           console.log(error.response);
@@ -724,6 +888,16 @@ export default function tloanDisplay() {
     setEmailError(false);
     setCollectionError(false);
     setRDateError(false);
+    if (items.length === 0) {
+      Toast.fire({
+        icon: "error",
+        title: "Please add an item",
+        customClass: "swalpopup",
+        timer: 1500,
+        width: 315,
+      });
+      setSubmitLoading(false);
+    }
     if (company === "") {
       setCompanyError(true);
       setCompanyErrorText("Selection required");
@@ -738,7 +912,17 @@ export default function tloanDisplay() {
       setEmailErrorText("Invalid Email");
       setLoading(false);
     }
-    if (company !== "" && email !== "" && email.match(emailRegex)) {
+    if (type === "2" && (company === "1" || company === "2" ||company === "3" ||company === "4" ||company === "5" ||company === "6")){
+      setCompanyError(true);
+      setCompanyErrorText("Valid Input Required");
+      setSubmitLoading(false);
+    }
+    if (type === "1" && (company !== "1" && company !== "2" && company !== "3" && company !== "4" && company !== "5" && company !== "6")){
+      setCompanyError(true);
+      setCompanyErrorText("Input Required");
+      setSubmitLoading(false);
+    }
+    if ( items.length !== 0 && company !== "" && email !== "" && email.match(emailRegex)) {
       setTimeout(() => {
         try {
           const results = axios
@@ -769,8 +953,9 @@ export default function tloanDisplay() {
               navigate("/tloan");
               setIsEditable(false);
               setTLoanIDGlobal(null);
+              emptyCart();
             });
-          emptyCart();
+         
           console.log(results);
         } catch (error) {
           console.log(error.response);
@@ -923,7 +1108,6 @@ export default function tloanDisplay() {
                         sx={{
                           color: "white",
                           backgroundColor: "#063970",
-                          height: "100%",
                           width: 150,
                           height: 50,
                           borderRadius: 10,
@@ -995,49 +1179,11 @@ export default function tloanDisplay() {
                 error={emailError}
                 helperText={emailErrorText}
               />
+                {TLoanTypeAccess()}
+                {ExternalOrInternal()}
 
-              <FormControl sx={{ width: 200, marginLeft: 3 }}>
-                <InputLabel>Customer Company</InputLabel>
-                <Select
-                  id="outlined-basic"
-                  value={company}
-                  onChange={handleChangeCompany}
-                  size="small"
-                  label="Customer Company"
-                >
-                  <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
-                  <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
-                  <MenuItem value={"3"}>DIRAK181025</MenuItem>
-                  <MenuItem value={"4"}>PMC_LIVE</MenuItem>
-                  <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
-                  <MenuItem value={"6"}>ALL</MenuItem>
-                </Select>
-                <FormHelperText sx={{ color: "#d11919" }}>
-                  {companyErrorText}
-                </FormHelperText>
-              </FormControl>
-              <FormControl sx={{ width: 200, marginLeft: 3 }}>
-                <InputLabel>Duration</InputLabel>
-                <Select
-                  id="outlined-basic"
-                  value={duration}
-                  onChange={handleChangeDuration}
-                  label="Duration"
-                  size="small"
-                >
-                  {loanDuration.map((element) => {
-                    const [[key, val]] = Object.entries(element);
-                    return (
-                      <MenuItem value={val} key={key}>
-                        {key}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-                <FormHelperText sx={{ color: "#d11919" }}>
-                  {durationErrorText}
-                </FormHelperText>
-              </FormControl>
+             
+             
             </Box>
 
             <Box sx={{ display: "flex" }}>
@@ -1050,7 +1196,7 @@ export default function tloanDisplay() {
                 onChange={(e) => setPurpose(e.target.value)}
                 error={purposeError}
                 helperText={purposeErrorText}
-              ></TextField>
+              />
             </Box>
             <Box sx={{ marginLeft: 2, display: "flex" }}>
               {/* Collection */}
@@ -1063,8 +1209,8 @@ export default function tloanDisplay() {
                   label="Collection Type"
                   size="small"
                 >
-                  <MenuItem value={"Self-Collection"}>Self-Collection</MenuItem>
-                  <MenuItem value={"Delivery"}>Delivery</MenuItem>
+                  <MenuItem value="Self-Collection">Self-Collection</MenuItem>
+                  <MenuItem value="Delivery">Delivery</MenuItem>
                 </Select>
                 <FormHelperText sx={{ color: "#d11919" }}>
                   {collectionErrorText}
@@ -1073,299 +1219,34 @@ export default function tloanDisplay() {
 
               {/* Type */}
               <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
-                <InputLabel>Loan Type</InputLabel>
-                <Select
-                  id="outlined-basic"
-                  value={type}
-                  onChange={handleChangeType}
-                  label="Loan Type"
-                  size="small"
-                >
-                  <MenuItem value={"1"}>Internal</MenuItem>
-                  {/* <MenuItem value={"2"}>External</MenuItem> */}
-                </Select>
-                <FormHelperText sx={{ color: "#d11919" }}>
-                  {typeErrorText}
-                </FormHelperText>
-              </FormControl>
-
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <Stack>
-                  <DesktopDatePicker
-                    label="Required Date"
-                    inputFormat="yyyy-MM-dd"
-                    value={dateForm}
-                    onClose={() => {
-                      if (requireddate === "") {
-                        setRDateError(true);
-                        setRDateErrorText("Select a date");
+                  <InputLabel>Duration</InputLabel>
+                  <Select
+                    id="outlined-basic"
+                    value={duration}
+                    onChange={handleChangeDuration}
+                    label="Duration"
+                    size="small"
+                    onBlur={() => {
+                      if (duration === "") {
+                        setDurationError(true);
+                        setDurationErrorText("Selection required");
                       }
                     }}
-                    onChange={handleChangeRequiredDate}
-                    renderInput={(params) => (
-                      <TextField
-                        size="small"
-                        {...params}
-                        sx={{ width: 200, marginLeft: 3, marginTop: 2 }}
-                      />
-                    )}
-                  />
-                </Stack>
-              </LocalizationProvider>
-            </Box>
-
-            <Box
-              component="span"
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              sx={{ paddingTop: 2 }}
-            >
-              <motion.div
-                className="animatable"
-                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <Button
-                  size="small"
-                  variant="contained"
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#063970",
-                    width: 150,
-                    height: 50,
-                    borderRadius: 10,
-                    paddingRight: 4,
-                  }}
-                  onClick={() => navigate(-1)}
-                  startIcon={<ArrowBackIosNewIcon />}
-                >
-                  Back
-                </Button>
-              </motion.div>
-              <Box display="flex">
-                <motion.div
-                  className="animatable"
-                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <LoadingButton
-                    size="small"
-                    variant="contained"
-                    sx={{
-                      color: "white",
-                      backgroundColor: "#b30000",
-                      width: 150,
-                      height: 50,
-                      borderRadius: 10,
-                      marginRight: 10,
-                    }}
-                    endIcon={<CancelIcon />}
-                    onClick={() => setInitial()}
+                    error={durationError}
                   >
-                    Cancel Edit
-                  </LoadingButton>
-                </motion.div>
-                <motion.div
-                  className="animatable"
-                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <LoadingButton
-                    size="small"
-                    variant="contained"
-                    sx={{
-                      color: "white",
-                      backgroundColor: "#063970",
-                      width: 150,
-                      height: 50,
-                      borderRadius: 10,
-                      marginRight: 10,
-                    }}
-                    loading={loading}
-                    loadingPosition="end"
-                    onClick={DraftLoan}
-                    endIcon={<SaveAsIcon />}
-                  >
-                    Save Draft
-                  </LoadingButton>
-                </motion.div>
-                <motion.div
-                  className="animatable"
-                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <LoadingButton
-                    size="small"
-                    variant="contained"
-                    sx={{
-                      color: "white",
-                      backgroundColor: "#31A961",
-                      width: 150,
-                      height: 50,
-                      borderRadius: 10,
-                    }}
-                    loading={submitLoading}
-                    loadingPosition="end"
-                    endIcon={<DoneAllIcon />}
-                    onClick={submitLoan}
-                    // onClick={submitLoan}
-                  >
-                    Submit
-                  </LoadingButton>
-                </motion.div>
-              </Box>
-            </Box>
-            {/* </form> */}
-          </CardContent>
-        </Card>
-      </div>
-    );
-  };
-  const getCardExternal = () => {
-    const loanDuration = [
-      { "1 Week": "7" },
-      { "2 Weeks": "14" },
-      { "3 Weeks": "21" },
-      { "1 Month": "30" },
-      { "2 Months": "60" },
-      { "3 Months": "90" },
-      { "4 Months": "120" },
-      { "5 Months": "150" },
-      { "6 Months": "180" },
-      { "7 Months": "210" },
-      { "8 Months": "240" },
-      { "9 Months": "270" },
-      { "10 Months": "300" },
-      { "11 Months": "330" },
-      { "12 Months": "365" },
-    ];
-    return (
-      <div style={{ overflow: "auto" }}>
-        <Card
-          sx={{ width: "95%", height: "100%", margin: 3, overflow: "auto" }}
-        >
-          <CardContent>
-            <h2>Edit Loan Draft</h2>
-            {FullFeaturedCrudGrid()}
-            {/* <form onSubmit={submitLoan} style={{ width: "100%" }}> */}
-            <Box sx={{ marginTop: 1, display: "flex", marginLeft: 2 }}>
-              <TextField
-                id="outlined-basic"
-                label="Employee Name"
-                variant="outlined"
-                size="small"
-                value={name}
-                disabled
-              />
-
-              <TextField
-                id="outlined-basic"
-                label="Customer Email"
-                variant="outlined"
-                size="small"
-                name="customerEmail"
-                sx={{ marginLeft: 3 }}
-                // defaultValue={loans.CustomerEmail}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                error={emailError}
-                helperText={emailErrorText}
-              />
-
-              <FormControl sx={{ width: 200, marginLeft: 3 }}>
-                <InputLabel>Customer Company</InputLabel>
-                <Select
-                  id="outlined-basic"
-                  value={company}
-                  onChange={handleChangeCompany}
-                  size="small"
-                  label="Customer Company"
-                >
-                  <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
-                  <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
-                  <MenuItem value={"3"}>DIRAK181025</MenuItem>
-                  <MenuItem value={"4"}>PMC_LIVE</MenuItem>
-                  <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
-                  <MenuItem value={"6"}>ALL</MenuItem>
-                </Select>
-                <FormHelperText sx={{ color: "#d11919" }}>
-                  {companyErrorText}
-                </FormHelperText>
-              </FormControl>
-              <FormControl sx={{ width: 200, marginLeft: 3 }}>
-                <InputLabel>Duration</InputLabel>
-                <Select
-                  id="outlined-basic"
-                  value={duration}
-                  onChange={handleChangeDuration}
-                  label="Duration"
-                  size="small"
-                >
-                  {loanDuration.map((element) => {
-                    const [[key, val]] = Object.entries(element);
-                    return (
-                      <MenuItem value={val} key={key}>
-                        {key}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-                <FormHelperText sx={{ color: "#d11919" }}>
-                  {durationErrorText}
-                </FormHelperText>
-              </FormControl>
-            </Box>
-
-            <Box sx={{ display: "flex" }}>
-              <TextField
-                sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
-                multiline
-                rows={4}
-                label="Purpose"
-                value={purpose}
-                onChange={(e) => setPurpose(e.target.value)}
-                error={purposeError}
-                helperText={purposeErrorText}
-              ></TextField>
-            </Box>
-            <Box sx={{ marginLeft: 2, display: "flex" }}>
-              {/* Collection */}
-              <FormControl sx={{ width: 200, marginTop: 2 }}>
-                <InputLabel>Collection Type</InputLabel>
-                <Select
-                  id="outlined-basic"
-                  value={collection}
-                  onChange={handleChangeCollection}
-                  label="Collection Type"
-                  size="small"
-                >
-                  <MenuItem value={"Self-Collection"}>Self-Collection</MenuItem>
-                  <MenuItem value={"Delivery"}>Delivery</MenuItem>
-                </Select>
-                <FormHelperText sx={{ color: "#d11919" }}>
-                  {collectionErrorText}
-                </FormHelperText>
-              </FormControl>
-
-              {/* Type */}
-              <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
-                <InputLabel>Loan Type</InputLabel>
-                <Select
-                  id="outlined-basic"
-                  value={type}
-                  onChange={handleChangeType}
-                  label="Loan Type"
-                  size="small"
-                >
-                  <MenuItem value={"1"}>Internal</MenuItem>
-                  <MenuItem value={"2"}>External</MenuItem>
-                </Select>
-                <FormHelperText sx={{ color: "#d11919" }}>
-                  {typeErrorText}
-                </FormHelperText>
-              </FormControl>
-
+                    {loanDuration.map((element) => {
+                      const [[key, val]] = Object.entries(element);
+                      return (
+                        <MenuItem value={val} key={key}>
+                          {key}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                  <FormHelperText sx={{ color: "#d11919" }}>
+                    {durationErrorText}
+                  </FormHelperText>
+                </FormControl>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <Stack>
                   <DesktopDatePicker
@@ -1505,7 +1386,7 @@ export default function tloanDisplay() {
       .then(() => {
         Toast.fire({
           icon: "success",
-          title: "Request For TLoan " + "#" + TLoanID + " Has Been Approved",
+          title: `Request For TLoan ` + `#${TLoanID} Has Been Approved`,
           customClass: "swalpopup",
           timer: 2000,
           width: 700,
@@ -1516,26 +1397,10 @@ export default function tloanDisplay() {
         console.error("There was an error!", error);
       });
   };
-  const ApproveExtension = async () => {
-    axios
-      .put(`http://localhost:5000/api/tloan/approveExtension/${TLoanID}`)
-      .then(() => {
-        Toast.fire({
-          icon: "success",
-          title: "Extension For TLoan " + "#" + TLoanID + " Has Been Approved",
-          customClass: "swalpopup",
-          timer: 2000,
-          width: 700,
-        });
-        navigate("/tloan");
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
-  };
+ 
 
   useEffect(() => {
-    var date = new Date().toISOString().split("T")[0];
+    const date = new Date().toISOString().split("T")[0];
     const uid = localStorage.getItem("user_id");
     setUser(uid);
     setADate(date);
@@ -1547,8 +1412,8 @@ export default function tloanDisplay() {
     if (loans.CustomerEmail !== "") {
       (e) => setEmail(e.target.value);
     }
-    if (loans.CompanyID !== "") {
-      setCompany(loans.CompanyID);
+    if (loans.CompanyName !== "") {
+      setCompany(loans.CompanyName);
     }
     if (loans.Duration !== null) {
       setCompany(loans.Duration);
@@ -1717,7 +1582,6 @@ export default function tloanDisplay() {
                           sx={{
                             color: "white",
                             backgroundColor: "#063970",
-                            height: "100%",
                             width: 150,
                             height: 50,
                             borderRadius: 10,
@@ -1736,7 +1600,8 @@ export default function tloanDisplay() {
           </Box>
         </Box>
       );
-    } else if (AdminViewPerms == true) {
+    }
+    if (AdminViewPerms == true) {
       return (
         <Box
           sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}
@@ -1880,7 +1745,6 @@ export default function tloanDisplay() {
                           sx={{
                             color: "white",
                             backgroundColor: "#063970",
-                            height: "100%",
                             width: 150,
                             height: 50,
                             borderRadius: 10,
@@ -1900,7 +1764,8 @@ export default function tloanDisplay() {
           </Box>
         </Box>
       );
-    } else if (WarehouseViewPerms == true) {
+    }
+    if (WarehouseViewPerms == true) {
       return (
         <Box
           sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}
@@ -1959,16 +1824,14 @@ export default function tloanDisplay() {
                         </Box>
                       </Typography>
                     </Grid>
-                    <Grid item xs={12}>
-                      <DataGrid
-                        sx={{ background: "white", fontSize: 16 }}
-                        rows={items}
+                    <Grid item xs={12} >
+                    <DataGrid
+                        sx={{ background: "white", fontSize: 16, height:300 }}
+                        rows={itemsTable}
                         columns={columns}
                         editMode="row"
                         getRowId={(item) => item.ItemNo}
-                        experimentalFeatures={{ newEditingApi: true }}
-                        sx={{ height: 300, width: "100%" }}
-                      />
+                        experimentalFeatures={{ newEditingApi: true }}/>
                     </Grid>
                     <Grid item xs={12}>
                       <Typography
@@ -2030,7 +1893,6 @@ export default function tloanDisplay() {
                           sx={{
                             color: "white",
                             backgroundColor: "#063970",
-                            height: "100%",
                             width: 150,
                             height: 50,
                             borderRadius: 10,
@@ -2042,6 +1904,51 @@ export default function tloanDisplay() {
                           Back
                         </LoadingButton>
                       </motion.div>
+                      <Box display="flex">
+                      <FormControl sx={{ width: 200}}>
+                        <InputLabel>TLoan Status</InputLabel>
+                        <Select
+                          id="outlined-basic"
+                          value={statusChange}
+                          onChange={handleChangeStatus}
+                          label="update Status"
+                          size="big"
+                        >
+                          <MenuItem value={"5"}>Picking</MenuItem>
+                          <MenuItem value={"6"}>Ready</MenuItem>
+                          <MenuItem value={"7"}>Issued</MenuItem>
+                        </Select>
+                        <FormHelperText sx={{ color: "#d11919" }}>
+                          {statusChangeErrorText}
+                        </FormHelperText>
+                      </FormControl>
+                      <motion.div
+                        className="animatable"
+                        whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <LoadingButton
+                          size="small"
+                          variant="contained"
+                          sx={{
+                            color: "white",
+                            backgroundColor: "#31A961",
+                            width: 200,
+                            height: 50,
+                            borderRadius: 10,
+                            marginLeft: 5,
+                            marginRight: 2
+                          }}
+                          loading={submitLoading}
+                          loadingPosition="end"
+                          endIcon={<DoneAllIcon />}
+                          onClick={updateStatus}
+                          // onClick={submitLoan}
+                        >
+                          Update Status
+                        </LoadingButton>
+                      </motion.div>
+                      </Box>
                     </Grid>
                   </Grid>
                 </CardContent>
@@ -2059,6 +1966,7 @@ export default function tloanDisplay() {
         >
           <Box sx={{ display: "flex", height: "100%" }}>
             <Box sx={{ flexGrow: 1 }}>
+            <h2 style= {{margin:15}}>TLoan Request </h2>
               <Card>
                 <CardContent>
                   <Grid container spacing={8}>
@@ -2191,7 +2099,6 @@ export default function tloanDisplay() {
                           sx={{
                             color: "white",
                             backgroundColor: "#063970",
-                            height: "100%",
                             width: 150,
                             height: 50,
                             borderRadius: 10,
@@ -2218,7 +2125,6 @@ export default function tloanDisplay() {
                             sx={{
                               color: "white",
                               backgroundColor: "green",
-                              height: "100%",
                               width: 200,
                               height: 50,
                               borderRadius: 10,
@@ -2241,178 +2147,175 @@ export default function tloanDisplay() {
           </Box>
         </Box>
       );
-    } else
-      return (
-        <Box
-          sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}
-        >
-          <Box sx={{ display: "flex", height: "100%" }}>
-            <Box sx={{ flexGrow: 1 }}>
-              <Card>
-                <CardContent>
-                  <Grid container spacing={8}>
-                    <Grid item xs={12}>
-                      <Typography
-                        gutterBottom
-                        variant="subtitle2"
-                        component="div"
-                        sx={{
-                          display: "flex",
-                          // justifyContent: "center",
-                          // alignItems: "center",
-                          // marginTop: 2,
-                          // marginBottom: -5,
-                          // marginLeft: -10,
-                          color: "#063970",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        <h2>TLoan {loans.TLoanID}</h2>
-                        <Box sx={{ marginLeft: 5 }}>
-                          <div>Loan No.</div>
-                          <div style={{ color: "black", fontWeight: "normal" }}>
-                            {loans.TLoanID}
-                          </div>
-                        </Box>
-                        <Box sx={{ marginLeft: 5 }}>
-                          <div>Start Date:</div>
-                          <div style={{ color: "black", fontWeight: "normal" }}>
-                            {loans.StartDate}
-                          </div>
-                        </Box>
-                        <Box sx={{ marginLeft: 5 }}>
-                          <div style={{}}>End Date:</div>
-                          <div style={{ color: "black", fontWeight: "normal" }}>
-                            {loans.EndDate}
-                          </div>
-                        </Box>
-                        <Box sx={{ marginLeft: 5 }}>
-                          <div style={{}}>Company Name:</div>
-                          <div style={{ color: "black", fontWeight: "normal" }}>
-                            {loans.CompanyName}
-                          </div>
-                        </Box>
-                        <Box sx={{ marginLeft: 5 }}>
-                          <div style={{}}>Customer Email:</div>
-                          <div style={{ color: "black", fontWeight: "normal" }}>
-                            {loans.CustomerEmail}
-                          </div>
-                        </Box>
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={9}>
-                      <DataGrid
-                        sx={{ background: "white", fontSize: 16 }}
-                        rows={itemsTable}
-                        columns={columns}
-                        editMode="row"
-                        getRowId={(item) => item.ItemNo}
-                        experimentalFeatures={{ newEditingApi: true }}
-                      />
-                    </Grid>
-                    <Grid item xs={3}>
-                      <TextField
-                        sx={{ display: "flex" }}
-                        id="outlined-purpose"
-                        multiline
-                        rows={11.5}
-                        label="Purpose"
-                        InputProps={{
-                          readOnly: true,
-                        }}
-                        variant="filled"
-                        value={purposeField}
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography
-                        gutterBottom
-                        variant="subtitle2"
-                        component="div"
-                        sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          marginTop: -5,
-                          marginLeft: -10,
-                          color: "#063970",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        <Box>
-                          <div>Collection Type:</div>
-                          <div style={{ color: "black", fontWeight: "normal" }}>
-                            {loans.Collection}
-                          </div>
-                        </Box>
-                        <Box sx={{ marginLeft: 5 }}>
-                          <div>Type:</div>
-                          <div style={{ color: "black", fontWeight: "normal" }}>
-                            {loans.TLoanType}
-                          </div>
-                        </Box>
-                        <Box sx={{ marginLeft: 5 }}>
-                          <div style={{}}>Status:</div>
-                          <div style={{ color: "green", fontWeight: "normal" }}>
-                            {loans.TLoanStatus}
-                          </div>
-                        </Box>
-                        <Box sx={{ marginLeft: 5 }}>
-                          <div style={{}}>Extension:</div>
-                          <div style={{ color: "black", fontWeight: "normal" }}>
-                            {loans.TLoanExtensionStatus}
-                          </div>
-                        </Box>
-                      </Typography>
-                    </Grid>
-                    <Grid
-                      item
-                      xs={12}
-                      component="span"
+    }
+    return (
+      <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
+        <Box sx={{ display: "flex", height: "100%" }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Card>
+              <CardContent>
+                <Grid container spacing={8}>
+                  <Grid item xs={12}>
+                    <Typography
+                      gutterBottom
+                      variant="subtitle2"
+                      component="div"
                       sx={{
-                        component: "span",
                         display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
+                        // justifyContent: "center",
+                        // alignItems: "center",
+                        // marginTop: 2,
+                        // marginBottom: -5,
+                        // marginLeft: -10,
+                        color: "#063970",
+                        fontWeight: "bold",
                       }}
                     >
-                      <motion.div
-                        className="animatable"
-                        whileHover={{
-                          scale: 1.1,
-                          transition: { duration: 0.3 },
-                        }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        <Button
-                          size="small"
-                          variant="contained"
-                          sx={{
-                            color: "white",
-                            backgroundColor: "#063970",
-                            height: "100%",
-                            width: 150,
-                            height: 50,
-                            borderRadius: 10,
-                          }}
-                          onClick={() => navigate(-1)}
-                        >
-                          Back
-                        </Button>
-                      </motion.div>
-                    </Grid>
+                      <h2>TLoan {loans.TLoanID}</h2>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div>Loan No.</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.TLoanID}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div>Start Date:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.StartDate}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{}}>End Date:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.EndDate}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{}}>Company Name:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.CompanyName}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{}}>Customer Email:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.CustomerEmail}
+                        </div>
+                      </Box>
+                    </Typography>
                   </Grid>
-                </CardContent>
-              </Card>
-            </Box>
+                  <Grid item xs={9}>
+                    <DataGrid
+                      sx={{ background: "white", fontSize: 16 }}
+                      rows={itemsTable}
+                      columns={columns}
+                      editMode="row"
+                      getRowId={(item) => item.ItemNo}
+                      experimentalFeatures={{ newEditingApi: true }}
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <TextField
+                      sx={{ display: "flex" }}
+                      id="outlined-purpose"
+                      multiline
+                      rows={11.5}
+                      label="Purpose"
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="filled"
+                      value={purposeField}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography
+                      gutterBottom
+                      variant="subtitle2"
+                      component="div"
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginTop: -5,
+                        marginLeft: -10,
+                        color: "#063970",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      <Box>
+                        <div>Collection Type:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.Collection}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div>Type:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.TLoanType}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{}}>Status:</div>
+                        <div style={{ color: "green", fontWeight: "normal" }}>
+                          {loans.TLoanStatus}
+                        </div>
+                      </Box>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{}}>Extension:</div>
+                        <div style={{ color: "black", fontWeight: "normal" }}>
+                          {loans.TLoanExtensionStatus}
+                        </div>
+                      </Box>
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    component="span"
+                    sx={{
+                      component: "span",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <motion.div
+                      className="animatable"
+                      whileHover={{
+                        scale: 1.1,
+                        transition: { duration: 0.3 },
+                      }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <LoadingButton
+                        size="small"
+                        variant="contained"
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          width: 150,
+                          height: 50,
+                          borderRadius: 10,
+                          paddingRight: 4,
+                        }}
+                        startIcon={<ArrowBackIosNewIcon />}
+                        onClick={() => navigate(-1)}
+                      >
+                        Back
+                      </LoadingButton>
+                    </motion.div>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
           </Box>
         </Box>
-      );
+      </Box>
+    );
   } else if (loans.TLoanStatusID === 1) {
-    if (InternalApplicationPerms == true) {
+    if (InternalApplicationPerms == true || ExternalApplicationPerms == true) {
       return <>{isEditable ? getCard() : getData()}</>;
-    } else if (ExternalApplicationPerms == true) {
-      return <>{isEditable ? getCardExternal() : getData()}</>;
     }
   } else if (loans.TLoanStatusID === 8) {
     return (
@@ -2553,7 +2456,6 @@ export default function tloanDisplay() {
                         sx={{
                           color: "white",
                           backgroundColor: "#063970",
-                          height: "100%",
                           width: 150,
                           height: 50,
                           borderRadius: 10,
@@ -2574,165 +2476,4 @@ export default function tloanDisplay() {
       </Box>
     );
   } else return null;
-  // if(loans.TLoanExtensionStatusID ===  1 ){
-  //   if(ApprovalLoanPerms === true) {
-  //     return (
-  //       <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
-  //         <Box sx={{ display: "flex", height: "100%" }}>
-  //           <Box sx={{ flexGrow: 1 }}>
-  //             <Card>
-  //               <CardContent>
-  //                 <Grid container spacing={8}>
-  //                   <Grid item xs={12}>
-  //                     <Typography
-  //                       gutterBottom
-  //                       variant="subtitle2"
-  //                       component="div"
-  //                       sx={{
-  //                         display: "flex",
-  //                         // justifyContent: "center",
-  //                         // alignItems: "center",
-  //                         // marginTop: 2,
-  //                         // marginBottom: -5,
-  //                         // marginLeft: -10,
-  //                         color: "#063970",
-  //                         fontWeight: "bold",
-  //                       }}
-  //                     >
-  //                       <h2>TLoan {loans.TLoanID}</h2>
-  //                       <Box sx={{ marginLeft: 5 }}>
-  //                         <div>Loan No.</div>
-  //                         <div style={{ color: "black", fontWeight: "normal" }}>
-  //                           {loans.TLoanID}
-  //                         </div>
-  //                       </Box>
-  //                       <Box sx={{ marginLeft: 5 }}>
-  //                         <div>Start Date:</div>
-  //                         <div style={{ color: "black", fontWeight: "normal" }}>
-  //                           {loans.StartDate}
-  //                         </div>
-  //                       </Box>
-  //                       <Box sx={{ marginLeft: 5 }}>
-  //                         <div style={{}}>End Date:</div>
-  //                         <div style={{ color: "black", fontWeight: "normal" }}>
-  //                           {loans.EndDate}
-  //                         </div>
-  //                       </Box>
-  //                       <Box sx={{ marginLeft: 5 }}>
-  //                         <div style={{}}>Company Name:</div>
-  //                         <div style={{ color: "black", fontWeight: "normal" }}>
-  //                           {loans.CompanyName}
-  //                         </div>
-  //                       </Box>
-  //                       <Box sx={{ marginLeft: 5 }}>
-  //                         <div style={{}}>Customer Email:</div>
-  //                         <div style={{ color: "black", fontWeight: "normal" }}>
-  //                           {loans.CustomerEmail}
-  //                         </div>
-  //                       </Box>
-  //                     </Typography>
-  //                   </Grid>
-  //                   <Grid item xs={9}>
-  //                     <DataGrid
-  //                       sx={{ background: "white", fontSize: 16 }}
-  //                       rows={items}
-  //                       columns={columns}
-  //                       editMode="row"
-  //                       getRowId={(item) => item.ItemNo}
-  //                       experimentalFeatures={{ newEditingApi: true }}
-  //                     />
-  //                   </Grid>
-  //                   <Grid item xs={3}>
-  //                     <TextField
-  //                       sx={{ display: "flex" }}
-  //                       id="With normal TextField"
-  //                       // label="Shipping Address"
-  //                       multiline
-  //                       rows={11.5}
-  //                       InputProps={{
-  //                         readOnly: true,
-  //                       }}
-  //                       value={reasonField}
-  //                       label ="Reason"
-  //                       variant="filled"
-  //                     />
-  //                   </Grid>
-
-  //                   <Grid
-  //                     item
-  //                     xs={12}
-  //                     component="span"
-  //                     sx={{
-  //                       component: "span",
-  //                       display: "flex",
-  //                       justifyContent: "space-between",
-  //                       alignItems: "center",
-  //                     }}
-  //                   >
-  //                     <motion.div
-  //                       className="animatable"
-  //                       whileHover={{
-  //                         scale: 1.1,
-  //                         transition: { duration: 0.3 },
-  //                       }}
-  //                       whileTap={{ scale: 0.9 }}
-  //                     >
-  //                       <LoadingButton
-  //                         size="small"
-  //                         variant="contained"
-  //                         sx={{
-  //                           color: "white",
-  //                           backgroundColor: "#063970",
-  //                           height: "100%",
-  //                           width: 150,
-  //                           height: 50,
-  //                           borderRadius: 10,
-  //                           paddingRight: 4
-  //                         }}
-  //                         startIcon={<ArrowBackIosNewIcon/>}
-  //                         onClick={() => navigate("/tloan")}
-  //                       >
-  //                         Back
-  //                       </LoadingButton>
-  //                     </motion.div>
-  //                     <Box sx={{ float: "right", display: "flex" }}>
-  //                       <motion.div
-  //                         className="animatable"
-  //                         whileHover={{
-  //                           scale: 1.1,
-  //                           transition: { duration: 0.3 },
-  //                         }}
-  //                         whileTap={{ scale: 0.9 }}
-  //                       >
-  //                         <LoadingButton
-  //                           size="small"
-  //                           variant="contained"
-  //                           sx={{
-  //                             color: "white",
-  //                             backgroundColor: "green",
-  //                             height: "100%",
-  //                             width: 200,
-  //                             height: 50,
-  //                             borderRadius: 10,
-  //                             marginRight: 5,
-  //                             marginLeft: 4,
-  //                           }}
-  //                           endIcon={<DoneIcon/>}
-  //                           onClick={()=>ApproveExtension()}
-  //                         >
-  //                           Approve
-  //                         </LoadingButton>
-  //                       </motion.div>
-  //                       <TLoanRejectExtensionModalButton />
-  //                     </Box>
-  //                   </Grid>
-  //                 </Grid>
-  //               </CardContent>
-  //             </Card>
-  //           </Box>
-  //         </Box>
-  //       </Box>
-  //     );
-  //   }
-  // }
 }

@@ -1,4 +1,5 @@
 import Rmatabs from "../../components/tabs/rmatabs";
+
 function rma() {
   return (
     <div>

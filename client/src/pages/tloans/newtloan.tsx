@@ -17,7 +17,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import Modal from '@mui/material/Modal';
+import Modal from "@mui/material/Modal";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -40,15 +40,14 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "react-use-cart";
-import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Autocomplete from "@mui/material/Autocomplete";
 import { Toast } from "../../components/alerts/SweetAlert";
-import "./TLoanTable/table.css";
 import { useAppSelector } from "../../app/hooks";
 import {
   selectPermissions,
   selectRole,
 } from "../../app/reducers/CurrentUserSlice";
-import Autocomplete from '@mui/material/Autocomplete';
 
 function newtloan() {
   const navigate = useNavigate();
@@ -65,47 +64,34 @@ function newtloan() {
   const [collection, setCollection] = useState("");
   const [requireddate, setRDate] = useState("");
   const [dateForm, setDateForm] = useState("");
-  const [customerCompany, setCustomerCompany] = useState("")
   const [typeError, setTypeError] = useState(false);
   const [companyError, setCompanyError] = useState(false);
   const [purposeError, setPurposeError] = useState(false);
   const [durationError, setDurationError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [collectionError, setCollectionError] = useState(false);
-  const [requireddateError, setRDateError] = useState(false);
-  const [customerCompanyError, setCustomerCompanyError] = useState(false)
+  const [requireddateError, setRDateError] = useState(false); 
   const [typeErrorText, setTypeErrorText] = useState("");
   const [companyErrorText, setCompanyErrorText] = useState("");
   const [purposeErrorText, setPurposeErrorText] = useState("");
   const [durationErrorText, setDurationErrorText] = useState("");
   const [emailErrorText, setEmailErrorText] = useState("");
   const [collectionErrorText, setCollectionErrorText] = useState("");
-  const [rdateErrorText, setRDateErrorText] = useState("");
-  const [customerCompanyErrorText, setCustomerCompanyErrorText] = useState("")
+  const [rdateErrorText, setRDateErrorText] = useState(""); 
   const permissions = useAppSelector(selectPermissions);
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
   const ExternalApplication = permissions.some(
     (e) => e.FeatureName === "T-Loan Application (Internal+External)"
   );
   const InternalApplication = permissions.some(
     (e) => e.FeatureName === "T-Loan Application (Internal)"
   );
-  
+
   useEffect(() => {
-    // if (userrole !== "Sales Engineer") {
-    //   navigate("/403");
-    // }
-    if ((ExternalApplication || InternalApplication) !== true ) {
+    if ((ExternalApplication || InternalApplication) !== true) {
       navigate("/403");
     }
   }, []);
-  
+
   interface EditToolbarProps {
     setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
     setRowModesModel: (
@@ -115,28 +101,6 @@ function newtloan() {
 
   function EditToolbar(props: EditToolbarProps) {
     const { setRows, setRowModesModel } = props;
-
-    // const handleClick = () => {
-    //   const id = randomId();
-    //   setRows((oldRows) => [
-    //     ...oldRows,
-    //     { id, ItemNo: "", ItemName: "", isNew: true },
-    //   ]);
-    //   setRowModesModel((oldModel) => ({
-    //     ...oldModel,
-    //     [id]: { mode: GridRowModes.Edit, fieldToFocus: "ItemNo" },
-    //   }));
-
-    // };
-
-    // return (
-    //   <GridToolbarContainer>
-    //     <Button color="primary" startIcon={<AddIcon />} onClick={handleClick()}>
-    //       Add Record
-    //     </Button>
-    //   </GridToolbarContainer>
-
-    // );
   }
   const itemStorage = localStorage.getItem("react-use-cart");
   const cartItems = JSON.parse(itemStorage).items;
@@ -144,10 +108,10 @@ function newtloan() {
   const newProduct = cartItems.map(
     ({ id, ItemNo, ItemName, BatchNo, WarehouseCode, quantity }) => ({
       BasketItemID: id,
-      ItemNo: ItemNo,
-      ItemName: ItemName,
-      BatchNo: BatchNo,
-      WarehouseCode: WarehouseCode,
+      ItemNo,
+      ItemName,
+      BatchNo,
+      WarehouseCode,
       Quantity: quantity,
     })
   );
@@ -167,9 +131,8 @@ function newtloan() {
   useEffect(() => {
     if (cartItems === []) {
       return console.log("Nothing in cart");
-    } else {
-      setRows(cartItems);
     }
+    setRows(cartItems);
   }, [cartItems]);
 
   const FullFeaturedCrudGrid = () => {
@@ -362,7 +325,7 @@ function newtloan() {
 
   const handleChangeCompany = (event: SelectChangeEvent) => {
     setCompany(event.target.value);
-    setCustomerCompany("NULL")
+  
   };
 
   const handleChangeDuration = (event: SelectChangeEvent) => {
@@ -388,6 +351,7 @@ function newtloan() {
 
   const emailRegex = /^\S+@\S+\.\S+$/i;
 
+
   
   const submitLoan = (e) => {
     setSubmitLoading(true);
@@ -399,7 +363,6 @@ function newtloan() {
     setEmailError(false);
     setCollectionError(false);
     setRDateError(false);
-    setCustomerCompanyError(false)
     if (items.length === 0) {
       Toast.fire({
         icon: "error",
@@ -417,7 +380,7 @@ function newtloan() {
     }
     if (company === "") {
       setCompanyError(true);
-      setCompanyErrorText("Selection required");
+      setCompanyErrorText("Input required");
       setSubmitLoading(false);
     }
     if (purpose === "") {
@@ -448,10 +411,14 @@ function newtloan() {
       setCollectionError(true);
       setCollectionErrorText("Selection required");
       setSubmitLoading(false);
+    }if (type === "2" && (company === "1" || company === "2" ||company === "3" ||company === "4" ||company === "5" ||company === "6")){
+      setCompanyError(true);
+      setCompanyErrorText("Valid Input Required");
+      setSubmitLoading(false);
     }
-    if (customerCompany === "") {
-      setCustomerCompanyError(true);
-      setCustomerCompanyErrorText("Input a Company");
+    if (type === "1" && (company !== "1" && company !== "2" && company !== "3" && company !== "4" && company !== "5" && company !== "6")){
+      setCompanyError(true);
+      setCompanyErrorText("Input Required");
       setSubmitLoading(false);
     }
     if (
@@ -463,9 +430,8 @@ function newtloan() {
       requireddate !== "" &&
       email !== "" &&
       email.match(emailRegex) &&
-      collection !== "" &&
-      customerCompany !== ""
-    ) {
+      collection !== "")
+      {
       setTimeout(() => {
         try {
           const results = axios
@@ -479,8 +445,7 @@ function newtloan() {
               requireddate,
               user,
               email,
-              collection,
-              customerCompany,
+              collection, 
               items,
             })
             .then(() => {
@@ -492,15 +457,17 @@ function newtloan() {
                 width: 700,
               });
               navigate("/tloan");
+              emptyCart();
             });
-
+            
           console.log(results);
         } catch (error) {
           console.log(error.response);
           setSubmitLoading(false);
+          
         }
       }, 500);
-      emptyCart();
+      
     }
   };
 
@@ -514,6 +481,16 @@ function newtloan() {
     setEmailError(false);
     setCollectionError(false);
     setRDateError(false);
+    if (items.length === 0) {
+      Toast.fire({
+        icon: "error",
+        title: "Please add an item",
+        customClass: "swalpopup",
+        timer: 1500,
+        width: 315,
+      });
+      setSubmitLoading(false);
+    }
     if (company === "") {
       setCompanyError(true);
       setCompanyErrorText("Selection required");
@@ -528,7 +505,21 @@ function newtloan() {
       setEmailErrorText("Invalid Email");
       setLoading(false);
     }
-    if (company !== "" && email !== "" && email.match(emailRegex)) {
+    if (type === "2" && (company === "1" || company === "2" ||company === "3" ||company === "4" ||company === "5" ||company === "6")){
+      setCompanyError(true);
+      setCompanyErrorText("Valid Input Required");
+      setSubmitLoading(false);
+    }
+    if (type === "1" && (company !== "1" && company !== "2" && company !== "3" && company !== "4" && company !== "5" && company !== "6")){
+      setCompanyError(true);
+      setCompanyErrorText("Input Required");
+      setSubmitLoading(false);
+    }
+    if ( items.length !== 0 &&
+        company !== "" && 
+        email !== "" &&
+        email.match(emailRegex))
+         {
       setTimeout(() => {
         try {
           const results = axios
@@ -543,7 +534,6 @@ function newtloan() {
               user,
               email,
               collection,
-              customerCompany,
               items,
             })
             .then(() => {
@@ -555,7 +545,7 @@ function newtloan() {
                 width: 700,
               });
               navigate("/tloan");
-              // emptyCart();
+              emptyCart();
             });
 
           console.log(results);
@@ -564,12 +554,12 @@ function newtloan() {
           setLoading(false);
         }
       }, 500);
-      emptyCart();
+      
     }
   };
 
   useEffect(() => {
-    var date = new Date().toISOString().split("T")[0];
+    const date = new Date().toISOString().split("T")[0];
     const uid = localStorage.getItem("user_id");
     setUser(uid);
     setADate(date);
@@ -577,150 +567,152 @@ function newtloan() {
     setName(Employee);
   });
 
- const TLoanTypeAccess = () =>{
-  if(ExternalApplication === true){
-    return(
-    <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
-    <InputLabel>Loan Type</InputLabel>
-    <Select
-      id="outlined-basic"
-      value={type}
-      onChange={handleChangeType}
-      label="Loan Type"
-      size="small"
-      onBlur={() => {
-        if (type === "") {
-          setTypeError(true);
-          setTypeErrorText("Selection required");
-        }
-      }}
-      error={typeError}
-    >
-      <MenuItem value={"1"}>Internal</MenuItem>
-      <MenuItem value={"2"}>External</MenuItem>
-    </Select>
-    <FormHelperText sx={{ color: "#d11919" }}>
-      {typeErrorText}
-    </FormHelperText>
-  </FormControl>
-  )
-  }else if(InternalApplication === true){
-    return(
-      <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
-      <InputLabel>Loan Type</InputLabel>
-      <Select
-        id="outlined-basic"
-        value={type}
-        onChange={handleChangeType}
-        label="Loan Type"
-        size="small"
-        onBlur={() => {
-          if (type === "") {
-            setTypeError(true);
-            setTypeErrorText("Selection required");
-          }
-        }}
-        error={typeError}
-      >
-        <MenuItem value={"1"}>Internal</MenuItem>
-      </Select>
-      <FormHelperText sx={{ color: "#d11919" }}>
-        {typeErrorText}
-      </FormHelperText>
-    </FormControl>
-    )
-  }else return null
- }
-console.log(company)
-console.log(customerCompany)
-console.log(companyErrorText)
+  const TLoanTypeAccess = () => {
+    if (ExternalApplication === true) {
+      return (
+        <FormControl sx={{ width: 200, marginLeft: 3 }}>
+          <InputLabel>Loan Type</InputLabel>
+          <Select
+            id="outlined-basic"
+            value={type}
+            onChange={handleChangeType}
+            label="Loan Type"
+            size="small"
+            onBlur={() => {
+              if (type === "") {
+                setTypeError(true);
+                setTypeErrorText("Selection required");
+              }
+            }}
+            error={typeError}
+          >
+            <MenuItem value="1">Internal</MenuItem>
+            <MenuItem value="2">External</MenuItem>
+          </Select>
+          <FormHelperText sx={{ color: "#d11919" }}>
+            {typeErrorText}
+          </FormHelperText>
+        </FormControl>
+      );
+    }
+    if (InternalApplication === true) {
+      return (
+        <FormControl sx={{ width: 200, marginLeft: 3 }}>
+          <InputLabel>Loan Type</InputLabel>
+          <Select
+            id="outlined-basic"
+            value={type}
+            onChange={handleChangeType}
+            label="Loan Type"
+            size="small"
+            onBlur={() => {
+              if (type === "") {
+                setTypeError(true);
+                setTypeErrorText("Selection required");
+              }
+            }}
+            error={typeError}
+          >
+            <MenuItem value="1">Internal</MenuItem>
+          </Select>
+          <FormHelperText sx={{ color: "#d11919" }}>
+            {typeErrorText}
+          </FormHelperText>
+        </FormControl>
+      );
+    }
+    return null;
+  };
 
- const ExternalOrInternal =()=>{
-  if(type === "1"){
+
+  const ExternalOrInternal = () => {
+    if (type === "1") {
+      return (
+        <FormControl sx={{ width: 200, marginLeft: 3 }}>
+          <InputLabel>Company</InputLabel>
+          <Select
+            id="outlined-basic"
+            value={company}
+            onChange={handleChangeCompany}
+            size="small"
+            label="Company"
+            onBlur={() => {
+              if (company === "") {
+                setCompanyError(true);
+                setCompanyErrorText("Selection required");
+              }
+            }}
+            error={companyError}
+          >
+            <MenuItem value="1">SERVO_LIVE</MenuItem>
+            <MenuItem value="2">LEAPTRON_LIVE</MenuItem>
+            <MenuItem value="3">DIRAK181025</MenuItem>
+            <MenuItem value="4">PMC_LIVE</MenuItem>
+            <MenuItem value="5">PORTWELL_LIVE</MenuItem>
+            <MenuItem value="6">ALL</MenuItem>
+          </Select>
+          <FormHelperText sx={{ color: "#d11919" }}>
+            {companyErrorText}
+          </FormHelperText>
+        </FormControl>
+      );
+    }
+    if (type === "2") {
+    
+      return (
+        <TextField
+          id="outlined-basic"
+          label="Customer Company"
+          variant="outlined"
+          size="small"
+          name="customer Company"
+          sx={{ marginLeft: 3 }}
+          onBlur={() => {
+            if (company === "") {
+              setCompanyError(true);
+              setCompanyErrorText("Required");
+            }
+          }}
+          onChange={(e) =>
+            setCompany(e.target.value)
+          }
+          value={company}
+          error={companyError}
+          helperText={companyErrorText}
+        />
+      );
+    }
     return (
       <FormControl sx={{ width: 200, marginLeft: 3 }}>
-      <InputLabel>Customer Company</InputLabel>
-      <Select
-        id="outlined-basic"
-        value={company}
-        onChange={handleChangeCompany}
-        size="small"
-        label="Customer Company"
-        onBlur={() => {
-          if (company === "") {
-            setCompanyError(true);
-            setCompanyErrorText("Selection required");
-          }
-        }}
-        error={companyError}
-      >
-        <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
-        <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
-        <MenuItem value={"3"}>DIRAK181025</MenuItem>
-        <MenuItem value={"4"}>PMC_LIVE</MenuItem>
-        <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
-        <MenuItem value={"6"} >ALL</MenuItem>
-      </Select>
-      <FormHelperText sx={{ color: "#d11919" }}>
-        {companyErrorText}
-      </FormHelperText>
-    </FormControl>
-    )
-  }else if(type === "2" ){
-    return(
-      <TextField
-      id="outlined-basic"
-      label="Customer Company"
-      variant="outlined"
-      size="small"
-      name="customerCompany"
-      sx={{ marginLeft: 3 }}
-      onBlur={() => {
-        if (customerCompany === "") {
-          setCustomerCompanyError(true);
-          setCustomerCompanyErrorText("Required");
-        }
-      }}
-      onChange={(e) => setCustomerCompany(e.target.value) || setCompany("100")}
-      value={customerCompany}
-      error={customerCompanyError}
-      helperText={customerCompanyErrorText}
-    />
-
-    )
-  }else {
-    return(
-    <FormControl sx={{ width: 200, marginLeft: 3 }}>
-      <InputLabel>Customer Company</InputLabel>
-      <Select
-        disabled
-        id="outlined-basic"
-        value={company}
-        onChange={handleChangeCompany}
-        size="small"
-        label="Customer Company"
-        onBlur={() => {
-          if (company === "") {
-            setCompanyError(true);
-            setCompanyErrorText("Selection required");
-          }
-        }}
-        error={companyError}
-      >
-        <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
-        <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
-        <MenuItem value={"3"}>DIRAK181025</MenuItem>
-        <MenuItem value={"4"}>PMC_LIVE</MenuItem>
-        <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
-        <MenuItem value={"6"} >ALL</MenuItem>
-      </Select>
-      <FormHelperText sx={{ color: "#d11919" }}>
-        {companyErrorText}
-      </FormHelperText>
-    </FormControl>)
-  }
- }
-  
+        <InputLabel>Company</InputLabel>
+        <Select
+          disabled
+          id="outlined-basic"
+          value={company}
+          onChange={handleChangeCompany}
+          size="small"
+          label="Company"
+          onBlur={() => {
+            if (company === "") {
+              setCompanyError(true);
+              setCompanyErrorText("Selection required");
+            }
+          }}
+          error={companyError}
+        >
+          <MenuItem value="1">SERVO_LIVE</MenuItem>
+          <MenuItem value="2">LEAPTRON_LIVE</MenuItem>
+          <MenuItem value="3">DIRAK181025</MenuItem>
+          <MenuItem value="4">PMC_LIVE</MenuItem>
+          <MenuItem value="5">PORTWELL_LIVE</MenuItem>
+          <MenuItem value="6">ALL</MenuItem>
+        </Select>
+        <FormHelperText sx={{ color: "#d11919" }}>
+          {companyErrorText}
+        </FormHelperText>
+      </FormControl>
+    );
+  };
 
   const getCard = () => {
     const loanDuration = [
@@ -780,35 +772,57 @@ console.log(companyErrorText)
                   error={emailError}
                   helperText={emailErrorText}
                 />
+                 {TLoanTypeAccess()}
                 {ExternalOrInternal()}
-                {/* <FormControl sx={{ width: 200, marginLeft: 3 }}>
-                  <InputLabel>Customer Company</InputLabel>
+       
+              </Box>
+
+              <Box sx={{ display: "flex" }}>
+                <TextField
+                  sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
+                  multiline
+                  rows={4}
+                  label="Purpose"
+                  onBlur={() => {
+                    if (purpose === "") {
+                      setPurposeError(true);
+                      setPurposeErrorText("Required");
+                    }
+                  }}
+                  onChange={(e) => setPurpose(e.target.value)}
+                  error={purposeError}
+                  helperText={purposeErrorText}
+                />
+              </Box>
+              <Box sx={{ marginLeft: 2, display: "flex" }}>
+                {/* Collection */}
+                <FormControl sx={{ width: 200, marginTop: 2 }}>
+                  <InputLabel>Collection Type</InputLabel>
                   <Select
                     id="outlined-basic"
-                    value={company}
-                    onChange={handleChangeCompany}
+                    value={collection}
+                    onChange={handleChangeCollection}
+                    label="Collection Type"
                     size="small"
-                    label="Customer Company"
                     onBlur={() => {
-                      if (company === "") {
-                        setCompanyError(true);
-                        setCompanyErrorText("Selection required");
+                      if (collection === "") {
+                        setCollectionError(true);
+                        setCollectionErrorText("Selection required");
                       }
                     }}
-                    error={companyError}
+                    error={collectionError}
                   >
-                    <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
-                    <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
-                    <MenuItem value={"3"}>DIRAK181025</MenuItem>
-                    <MenuItem value={"4"}>PMC_LIVE</MenuItem>
-                    <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
-                    <MenuItem value={"6"} >ALL</MenuItem>
+                    {/* <MenuItem value="">
+            <em>None</em>
+          </MenuItem> */}
+                    <MenuItem value="Self-Collection">Self-Collection</MenuItem>
+                    <MenuItem value="Delivery">Delivery</MenuItem>
                   </Select>
                   <FormHelperText sx={{ color: "#d11919" }}>
-                    {companyErrorText}
+                    {collectionErrorText}
                   </FormHelperText>
-                </FormControl> */}
-                <FormControl sx={{ width: 200, marginLeft: 3 }}>
+                </FormControl>
+                <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
                   <InputLabel>Duration</InputLabel>
                   <Select
                     id="outlined-basic"
@@ -837,58 +851,7 @@ console.log(companyErrorText)
                     {durationErrorText}
                   </FormHelperText>
                 </FormControl>
-              </Box>
-
-              <Box sx={{ display: "flex" }}>
-                <TextField
-                  sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
-                  multiline
-                  rows={4}
-                  label="Purpose"
-                  onBlur={() => {
-                    if (purpose === "") {
-                      setPurposeError(true);
-                      setPurposeErrorText("Required");
-                    }
-                  }}
-                  onChange={(e) => setPurpose(e.target.value)}
-                  error={purposeError}
-                  helperText={purposeErrorText}
-                ></TextField>
-              </Box>
-              <Box sx={{ marginLeft: 2, display: "flex" }}>
-                {/* Collection */}
-                <FormControl sx={{ width: 200, marginTop: 2 }}>
-                  <InputLabel>Collection Type</InputLabel>
-                  <Select
-                    id="outlined-basic"
-                    value={collection}
-                    onChange={handleChangeCollection}
-                    label="Collection Type"
-                    size="small"
-                    onBlur={() => {
-                      if (collection === "") {
-                        setCollectionError(true);
-                        setCollectionErrorText("Selection required");
-                      }
-                    }}
-                    error={collectionError}
-                  >
-                    {/* <MenuItem value="">
-            <em>None</em>
-          </MenuItem> */}
-                    <MenuItem value={"Self-Collection"}>
-                      Self-Collection
-                    </MenuItem>
-                    <MenuItem value={"Delivery"}>Delivery</MenuItem>
-                  </Select>
-                  <FormHelperText sx={{ color: "#d11919" }}>
-                    {collectionErrorText}
-                  </FormHelperText>
-                </FormControl>
-
                 {/* Type */}
-              {TLoanTypeAccess()}
 
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <Stack>
@@ -939,7 +902,7 @@ console.log(companyErrorText)
                       paddingRight: 4,
                     }}
                     startIcon={<ArrowBackIosNewIcon />}
-                    onClick={() => navigate("/tloan")}
+                    onClick={() => navigate(-2)}
                   >
                     Back
                   </LoadingButton>
