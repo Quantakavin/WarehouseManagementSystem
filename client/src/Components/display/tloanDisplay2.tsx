@@ -1966,6 +1966,7 @@ export default function tloanDisplay() {
         >
           <Box sx={{ display: "flex", height: "100%" }}>
             <Box sx={{ flexGrow: 1 }}>
+            <h2 style= {{margin:15}}>TLoan Request </h2>
               <Card>
                 <CardContent>
                   <Grid container spacing={8}>
