@@ -4,7 +4,7 @@ import {
   Table,
   TableContainer,
   TableHead,
-  TableRow,
+  TableRow
 } from "@mui/material";
 import { AxiosResponse } from "axios";
 import { UseInfiniteQueryResult } from "react-query";

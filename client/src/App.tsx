@@ -2,18 +2,14 @@ import { Box } from "@mui/material";
 import React from "react";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { CartProvider } from "react-use-cart";
-import { StateContext } from "../src/components/context/newBasketContext";
 import { useAppSelector } from "./app/hooks";
 import { selectIsAuthenticated } from "./app/reducers/CurrentUserSlice";
+import IsEditableProvider from "./components/context/isEditableContext";
 import RmaDisplay from "./components/display/rmaDisplay";
 import TLoanDisplay2 from "./components/display/tloanDisplay2";
-import TLoanManagerDisplay from "./components/display/tloanManagerDisplay";
 import TLoanManagerExtensionDisplay from "./components/display/tloanManagerExtensionDisplay";
-import TLoanWarehouseDisplay from "./components/display/tloanWarehouseWorkerDisplay";
 import TopNav from "./components/header/TopNav";
-import Modals12 from "./components/modals/tloanExtensionModal";
-import Sidebar from "./components/sidebar/SideBar";
-import Sidebar2 from "./components/sidebar/Sidebar2";
+import Sidebar from "./components/sidebar/Sidebar";
 import BinLocations from "./pages/binlocations/BinLocations";
 import Dashboard from "./pages/dashboards/Dashboards";
 import Error401 from "./pages/error/Error401";
@@ -23,11 +19,13 @@ import AddNotificationGroup from "./pages/notificationgroups/AddNotificationGrou
 import EditNotificationGroup from "./pages/notificationgroups/EditNotificationGroup";
 import NotificationGroups2 from "./pages/notificationgroups/NotificationGroups2";
 import ViewNotificationGroup from "./pages/notificationgroups/ViewNotificationGroup";
-import Products2 from "./pages/products/Products2";
+import Products from "./pages/products/Products";
 import ViewProduct from "./pages/products/ViewProduct";
+import ForgetPassword from "./pages/resetpassword/ForgetPassword";
+import ResetPassword from "./pages/resetpassword/ResetPassword";
 import CreateRMA from "./pages/rma/createRma";
 import RMA from "./pages/rma/rma";
-import NewTLoan from "./pages/tloans/newtloan";
+import NewTLoan from "./pages/tloans/newTLoan";
 import TLoan from "./pages/tloans/tloan";
 import AddUserGroup from "./pages/usergroups/AddUserGroup";
 import EditUserGroup from "./pages/usergroups/EditUserGroup";
@@ -39,13 +37,6 @@ import Login from "./pages/users/Login";
 import Profile from "./pages/users/Profile";
 import Users2 from "./pages/users/Users2";
 import ViewUser from "./pages/users/ViewUser";
-import ForgetPassword from "./pages/resetpassword/ForgetPassword";
-import ResetPassword from "./pages/resetpassword/ResetPassword";
-import TLoanDraftDisplay from "./components/display/tloanDraftDisplay";
-import IsEditableProvider, {
-  EditableContext,
-} from "./components/context/isEditableContext";
-import { Toast2 } from "./components/alerts/SweetAlert";
 
 // const context = useContext(EditableContext)
 // const {isEditable, TLoanIDGlobal} = context
@@ -83,11 +74,13 @@ const App: React.FC = () => {
             {/* {isAuthenticated? isEditable?  <Toast2/> :null  : null} */}
           </header>
           <Box className="flexcontainer">
-            {isAuthenticated ? <Sidebar2 /> : null}
+            {isAuthenticated ? <Sidebar /> : null}
             <Box className="bluebackground" style={{ flex: 5 }}>
               <Routes>
                 <Route element={<ProtectedRoute loginpage={true} />}>
                   <Route path="/401" element={<Error401 />} />
+                  <Route path="/403" element={<Error403 />} />
+                  <Route path="*" element={<Error404 />} />
                   <Route path="/login" element={<Navigate replace to="/" />} />
                   <Route path="/" element={<Login />} />
                   <Route path="/forgetpassword" element={<ForgetPassword />} />
@@ -99,7 +92,7 @@ const App: React.FC = () => {
                     path="/products"
                     element={
                       <CartProvider>
-                        <Products2 />
+                        <Products />
                       </CartProvider>
                     }
                   />
@@ -112,6 +105,38 @@ const App: React.FC = () => {
                     }
                   />
                   <Route path="/binlocations" element={<BinLocations />} />
+                  <Route path="/rma" element={<RMA />} />
+                  <Route path="/createRma" element={<CreateRMA />} />
+                  <Route path="/rmaDetails/:RmaID" element={<RmaDisplay />} />
+                  <Route
+                    path="/tloan"
+                    element={
+                      <CartProvider>
+                        <TLoan />
+                      </CartProvider>
+                    }
+                  />
+
+                  <Route
+                    path="/newtloan"
+                    element={
+                      <CartProvider>
+                        <NewTLoan />
+                      </CartProvider>
+                    }
+                  />
+                  <Route
+                    path="/tloandetails/:TLoanID"
+                    element={
+                      <CartProvider>
+                        <TLoanDisplay2 />
+                      </CartProvider>
+                    }
+                  />
+                  <Route
+                    path="/tloanManagerExtension/:TLoanID"
+                    element={<TLoanManagerExtensionDisplay />}
+                  />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/user/:id" element={<ViewUser />} />
                   <Route path="/users" element={<Users2 />} />
@@ -139,56 +164,6 @@ const App: React.FC = () => {
                   <Route
                     path="/editnotificationgroup/:id"
                     element={<EditNotificationGroup />}
-                  />
-                  <Route
-                    path="/tloan"
-                    element={
-                      <CartProvider>
-                        <TLoan />
-                      </CartProvider>
-                    }
-                  />
-                  <Route path="/rma" element={<RMA />} />
-                  <Route path="/createRma" element={<CreateRMA />} />
-                  <Route path="/rmaDetails/:RmaID" element={<RmaDisplay />} />
-                  <Route
-                    path="/tloandetails/:TLoanID"
-                    element={
-                      <CartProvider>
-                        <TLoanDisplay2 />
-                      </CartProvider>
-                    }
-                  />
-                  <Route
-                    path="/newtloan"
-                    element={
-                      <CartProvider>
-                        <NewTLoan />
-                      </CartProvider>
-                    }
-                  />
-                  <Route path="/modal" element={<Modals12 />} />
-                  <Route
-                    path="/tloanManagerDisplay/:TLoanID"
-                    element={<TLoanManagerDisplay />}
-                  />
-                  <Route
-                    path="/tloanManagerExtension/:TLoanID"
-                    element={<TLoanManagerExtensionDisplay />}
-                  />
-                  <Route
-                    path="/tloanWarehouse/:TLoanID"
-                    element={<TLoanWarehouseDisplay />}
-                  />
-                  <Route path="*" element={<Error404 />} />
-                  <Route path="/403" element={<Error403 />} />
-                  <Route
-                    path="/tloanDraftDetails/:TLoanID"
-                    element={
-                      <CartProvider>
-                        <TLoanDraftDisplay />
-                      </CartProvider>
-                    }
                   />
                 </Route>
               </Routes>

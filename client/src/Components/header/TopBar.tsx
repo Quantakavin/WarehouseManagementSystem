@@ -98,26 +98,6 @@ const TopBar: React.FC = () => {
           </ListItemText>
         </MenuItem>
       </Menu>
-      {/*
-    <div className="navprofiledropdown">
-      <a
-        onClick={() => {
-          if (localStorage.getItem("user_id") !== null) {
-            navigate(`/profile`);
-          }
-        }}
-      >
-        <AccountCircleIcon style={{ marginRight: 5 }} /> Profile
-      </a>
-      <hr className="navprofiledivider" />
-      <a onClick={() => navigate("/settings")}>
-        <SettingsIcon style={{ marginRight: 5 }} /> Settings
-      </a>
-      <hr className="navprofiledivider" />
-      <a onClick={() => logout()}>
-        <LogoutIcon style={{ marginRight: 5 }} /> Logout
-      </a>
-      </div>*/}
     </>
   );
 

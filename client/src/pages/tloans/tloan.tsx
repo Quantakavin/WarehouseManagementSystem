@@ -1,10 +1,9 @@
-import TLoanTabs2 from "../../components/tabs/tloantabs2";
+import TLoanTabs from "../../components/tabs/tloantabs";
 
 function tloan() {
   return (
     <div>
-      {/* <SideBar/> */}
-      <TLoanTabs2 />
+      <TLoanTabs />
     </div>
   );
 }

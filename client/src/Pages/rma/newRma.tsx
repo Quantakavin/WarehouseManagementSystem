@@ -60,7 +60,7 @@ import {
   selectPermissions,
   selectRole,
 } from "../../app/reducers/CurrentUserSlice";
-import { Toast } from "../alerts/SweetAlert";
+import { Toast } from "../../components/alerts/SweetAlert";
 
 const CreateRMA: React.FC = () => {
   const navigate = useNavigate();
@@ -99,9 +99,6 @@ const CreateRMA: React.FC = () => {
   };
 
   useEffect(() => {
-    // if (userrole !== "Sales Engineer") {
-    //   navigate("/403");
-    // }
     if (!permissions.some((e) => e.FeatureName === "RMA Application")) {
       navigate("/403");
     }

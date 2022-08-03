@@ -11,10 +11,9 @@ import {
   ResponsiveContainer,
   Tooltip,
   XAxis,
-  YAxis,
+  YAxis
 } from "recharts";
 import config from "../../config/config";
-import tloan from "../../pages/tloans/tloan";
 import "../../styles/chart.scss";
 
 const COLORS = ["#0088FE", "#00C49F"];

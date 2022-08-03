@@ -1,26 +1,4 @@
 import FormHelperText from "@material-ui/core/FormHelperText";
-import { LoadingButton } from "@mui/lab";
-import { Box, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Paper from "@mui/material/Paper";
-import Popper from "@mui/material/Popper";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import axios from "axios";
-import { motion } from "framer-motion";
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useCart } from "react-use-cart";
-import { useAppSelector } from "../../app/hooks";
-import { selectPermissions } from "../../app/reducers/CurrentUserSlice";
-import { Toast, Toast2 } from "../../components/alerts/SweetAlert";
-import { EditableContext } from "../../components/context/isEditableContext";
-import "../../pages/tloans/TLoanTable/table.css";
-import ModalButton from "../modals/tloanExtensionModal";
-
 import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -31,39 +9,54 @@ import EditIcon from "@mui/icons-material/Edit";
 import RemoveIcon from "@mui/icons-material/Remove";
 import SaveIcon from "@mui/icons-material/Save";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
+import { LoadingButton } from "@mui/lab";
+import { Box, Grid } from "@mui/material";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
+import Paper from "@mui/material/Paper";
+import Popper from "@mui/material/Popper";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import {
   DataGrid,
-  GridActionsCellItem,
-  GridColumns,
-  GridEventListener,
-  GridRowId,
+  GridActionsCellItem, GridColDef, GridColumns,
+  GridEventListener, GridRenderCellParams, GridRowId,
   GridRowModel,
   GridRowModes,
   GridRowModesModel,
   GridRowParams,
   GridRowsProp,
-  MuiEvent,
+  MuiEvent
 } from "@mui/x-data-grid";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import axios from "axios";
 import dateFormat from "dateformat";
+import { motion } from "framer-motion";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useCart } from "react-use-cart";
+import { useAppSelector } from "../../app/hooks";
+import { selectPermissions } from "../../app/reducers/CurrentUserSlice";
+import { Toast, Toast2 } from "../../components/alerts/SweetAlert";
+import { EditableContext } from "../../components/context/isEditableContext";
+import ModalButton from "../modals/tloanExtensionModal";
 import TLoanRejectModalButton from "../modals/tloanRejectModal";
-
 export default function tloanDisplay() {
   const permissions = useAppSelector(selectPermissions);
   const navigate = useNavigate();
-  const [loans, setLoans] = useState<TLoans>([]);
+  const [loans, setLoans] = useState<TLoan>([]);
   const [itemsTable, setItemsTable] = useState([]);
   const [purposeField, setPurposeField] = useState("");
   const context = useContext(EditableContext);
-  const { isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal } =
-    context;
+  const { isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal } = context;
   const { TLoanID } = useParams();
   const [type, setType] = useState("");
   const [company, setCompany] = useState("");
@@ -592,7 +585,6 @@ export default function tloanDisplay() {
           sx={{
             color: "white",
             backgroundColor: "#063970",
-            height: "100%",
             width: 150,
             height: 50,
             borderRadius: 10,
@@ -923,7 +915,6 @@ export default function tloanDisplay() {
                         sx={{
                           color: "white",
                           backgroundColor: "#063970",
-                          height: "100%",
                           width: 150,
                           height: 50,
                           borderRadius: 10,
@@ -1717,7 +1708,6 @@ export default function tloanDisplay() {
                           sx={{
                             color: "white",
                             backgroundColor: "#063970",
-                            height: "100%",
                             width: 150,
                             height: 50,
                             borderRadius: 10,
@@ -1880,7 +1870,6 @@ export default function tloanDisplay() {
                           sx={{
                             color: "white",
                             backgroundColor: "#063970",
-                            height: "100%",
                             width: 150,
                             height: 50,
                             borderRadius: 10,
@@ -1961,13 +1950,12 @@ export default function tloanDisplay() {
                     </Grid>
                     <Grid item xs={12}>
                       <DataGrid
-                        sx={{ background: "white", fontSize: 16 }}
+                        sx={{ background: "white", fontSize: 16, h: 300, w: "100%" }}
                         rows={items}
                         columns={columns}
                         editMode="row"
                         getRowId={(item) => item.ItemNo}
                         experimentalFeatures={{ newEditingApi: true }}
-                        sx={{ height: 300, width: "100%" }}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -2030,7 +2018,6 @@ export default function tloanDisplay() {
                           sx={{
                             color: "white",
                             backgroundColor: "#063970",
-                            height: "100%",
                             width: 150,
                             height: 50,
                             borderRadius: 10,
@@ -2191,7 +2178,6 @@ export default function tloanDisplay() {
                           sx={{
                             color: "white",
                             backgroundColor: "#063970",
-                            height: "100%",
                             width: 150,
                             height: 50,
                             borderRadius: 10,
@@ -2218,7 +2204,6 @@ export default function tloanDisplay() {
                             sx={{
                               color: "white",
                               backgroundColor: "green",
-                              height: "100%",
                               width: 200,
                               height: 50,
                               borderRadius: 10,
@@ -2384,21 +2369,22 @@ export default function tloanDisplay() {
                         }}
                         whileTap={{ scale: 0.9 }}
                       >
-                        <Button
-                          size="small"
-                          variant="contained"
-                          sx={{
-                            color: "white",
-                            backgroundColor: "#063970",
-                            height: "100%",
-                            width: 150,
-                            height: 50,
-                            borderRadius: 10,
-                          }}
-                          onClick={() => navigate(-1)}
-                        >
-                          Back
-                        </Button>
+                      <LoadingButton
+                        size="small"
+                        variant="contained"
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          width: 150,
+                          height: 50,
+                          borderRadius: 10,
+                          paddingRight: 4,
+                        }}
+                        startIcon={<ArrowBackIosNewIcon />}
+                        onClick={() => navigate(-1)}
+                      >
+                        Back
+                      </LoadingButton>
                       </motion.div>
                     </Grid>
                   </Grid>
@@ -2553,7 +2539,6 @@ export default function tloanDisplay() {
                         sx={{
                           color: "white",
                           backgroundColor: "#063970",
-                          height: "100%",
                           width: 150,
                           height: 50,
                           borderRadius: 10,
@@ -2574,165 +2559,4 @@ export default function tloanDisplay() {
       </Box>
     );
   } else return null;
-  // if(loans.TLoanExtensionStatusID ===  1 ){
-  //   if(ApprovalLoanPerms === true) {
-  //     return (
-  //       <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
-  //         <Box sx={{ display: "flex", height: "100%" }}>
-  //           <Box sx={{ flexGrow: 1 }}>
-  //             <Card>
-  //               <CardContent>
-  //                 <Grid container spacing={8}>
-  //                   <Grid item xs={12}>
-  //                     <Typography
-  //                       gutterBottom
-  //                       variant="subtitle2"
-  //                       component="div"
-  //                       sx={{
-  //                         display: "flex",
-  //                         // justifyContent: "center",
-  //                         // alignItems: "center",
-  //                         // marginTop: 2,
-  //                         // marginBottom: -5,
-  //                         // marginLeft: -10,
-  //                         color: "#063970",
-  //                         fontWeight: "bold",
-  //                       }}
-  //                     >
-  //                       <h2>TLoan {loans.TLoanID}</h2>
-  //                       <Box sx={{ marginLeft: 5 }}>
-  //                         <div>Loan No.</div>
-  //                         <div style={{ color: "black", fontWeight: "normal" }}>
-  //                           {loans.TLoanID}
-  //                         </div>
-  //                       </Box>
-  //                       <Box sx={{ marginLeft: 5 }}>
-  //                         <div>Start Date:</div>
-  //                         <div style={{ color: "black", fontWeight: "normal" }}>
-  //                           {loans.StartDate}
-  //                         </div>
-  //                       </Box>
-  //                       <Box sx={{ marginLeft: 5 }}>
-  //                         <div style={{}}>End Date:</div>
-  //                         <div style={{ color: "black", fontWeight: "normal" }}>
-  //                           {loans.EndDate}
-  //                         </div>
-  //                       </Box>
-  //                       <Box sx={{ marginLeft: 5 }}>
-  //                         <div style={{}}>Company Name:</div>
-  //                         <div style={{ color: "black", fontWeight: "normal" }}>
-  //                           {loans.CompanyName}
-  //                         </div>
-  //                       </Box>
-  //                       <Box sx={{ marginLeft: 5 }}>
-  //                         <div style={{}}>Customer Email:</div>
-  //                         <div style={{ color: "black", fontWeight: "normal" }}>
-  //                           {loans.CustomerEmail}
-  //                         </div>
-  //                       </Box>
-  //                     </Typography>
-  //                   </Grid>
-  //                   <Grid item xs={9}>
-  //                     <DataGrid
-  //                       sx={{ background: "white", fontSize: 16 }}
-  //                       rows={items}
-  //                       columns={columns}
-  //                       editMode="row"
-  //                       getRowId={(item) => item.ItemNo}
-  //                       experimentalFeatures={{ newEditingApi: true }}
-  //                     />
-  //                   </Grid>
-  //                   <Grid item xs={3}>
-  //                     <TextField
-  //                       sx={{ display: "flex" }}
-  //                       id="With normal TextField"
-  //                       // label="Shipping Address"
-  //                       multiline
-  //                       rows={11.5}
-  //                       InputProps={{
-  //                         readOnly: true,
-  //                       }}
-  //                       value={reasonField}
-  //                       label ="Reason"
-  //                       variant="filled"
-  //                     />
-  //                   </Grid>
-
-  //                   <Grid
-  //                     item
-  //                     xs={12}
-  //                     component="span"
-  //                     sx={{
-  //                       component: "span",
-  //                       display: "flex",
-  //                       justifyContent: "space-between",
-  //                       alignItems: "center",
-  //                     }}
-  //                   >
-  //                     <motion.div
-  //                       className="animatable"
-  //                       whileHover={{
-  //                         scale: 1.1,
-  //                         transition: { duration: 0.3 },
-  //                       }}
-  //                       whileTap={{ scale: 0.9 }}
-  //                     >
-  //                       <LoadingButton
-  //                         size="small"
-  //                         variant="contained"
-  //                         sx={{
-  //                           color: "white",
-  //                           backgroundColor: "#063970",
-  //                           height: "100%",
-  //                           width: 150,
-  //                           height: 50,
-  //                           borderRadius: 10,
-  //                           paddingRight: 4
-  //                         }}
-  //                         startIcon={<ArrowBackIosNewIcon/>}
-  //                         onClick={() => navigate("/tloan")}
-  //                       >
-  //                         Back
-  //                       </LoadingButton>
-  //                     </motion.div>
-  //                     <Box sx={{ float: "right", display: "flex" }}>
-  //                       <motion.div
-  //                         className="animatable"
-  //                         whileHover={{
-  //                           scale: 1.1,
-  //                           transition: { duration: 0.3 },
-  //                         }}
-  //                         whileTap={{ scale: 0.9 }}
-  //                       >
-  //                         <LoadingButton
-  //                           size="small"
-  //                           variant="contained"
-  //                           sx={{
-  //                             color: "white",
-  //                             backgroundColor: "green",
-  //                             height: "100%",
-  //                             width: 200,
-  //                             height: 50,
-  //                             borderRadius: 10,
-  //                             marginRight: 5,
-  //                             marginLeft: 4,
-  //                           }}
-  //                           endIcon={<DoneIcon/>}
-  //                           onClick={()=>ApproveExtension()}
-  //                         >
-  //                           Approve
-  //                         </LoadingButton>
-  //                       </motion.div>
-  //                       <TLoanRejectExtensionModalButton />
-  //                     </Box>
-  //                   </Grid>
-  //                 </Grid>
-  //               </CardContent>
-  //             </Card>
-  //           </Box>
-  //         </Box>
-  //       </Box>
-  //     );
-  //   }
-  // }
 }

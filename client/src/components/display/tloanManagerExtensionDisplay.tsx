@@ -1,9 +1,9 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Paper, Popper } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,13 +14,15 @@ import { LoadingButton } from "@mui/lab";
 import { motion } from "framer-motion";
 import React from "react";
 import { Toast } from "../../components/alerts/SweetAlert";
+import { TLoans } from "../../utils/CommonTypes";
 import TLoanRejectModalButton from "../modals/tloanRejectExtension";
 
 export default function TLoanManagerDisplay() {
   const navigate = useNavigate();
   const [details, setDetails] = useState([]);
   // const [loanDetails, setLoanDetails] = useState([]);
-  const [loans, setLoans] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [loans, setLoans] = useState<TLoans>();
   const [items, setItems] = useState([]);
   const [reasonField, setReasonField] = useState("");
   const { TLoanID } = useParams();
@@ -179,6 +181,8 @@ export default function TLoanManagerDisplay() {
   }
 
   const ApproveLoan = async () => {
+    setLoading(true)
+    setTimeout(() => {
     axios
       .put(`http://localhost:5000/api/tloan/approveExtension/${TLoanID}`)
       .then(() => {
@@ -193,7 +197,9 @@ export default function TLoanManagerDisplay() {
       })
       .catch((error) => {
         console.error("There was an error!", error);
+        setLoading(false)
       });
+    }, 500)
   };
 
   const columns: GridColDef[] = [
@@ -336,7 +342,6 @@ export default function TLoanManagerDisplay() {
                         sx={{
                           color: "white",
                           backgroundColor: "#063970",
-                          height: "100%",
                           width: 150,
                           height: 50,
                           borderRadius: 10,
@@ -363,13 +368,14 @@ export default function TLoanManagerDisplay() {
                           sx={{
                             color: "white",
                             backgroundColor: "green",
-                            height: "100%",
                             width: 200,
                             height: 50,
                             borderRadius: 10,
                             marginRight: 5,
                             marginLeft: 4,
                           }}
+                          loading={loading}
+                          loadingPosition="end"
                           endIcon={<DoneIcon />}
                           onClick={ApproveLoan}
                         >

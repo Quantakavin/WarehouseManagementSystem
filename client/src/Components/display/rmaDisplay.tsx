@@ -39,12 +39,12 @@ import {
   GridToolbarQuickFilter,
   GRID_DATE_COL_DEF,
   MuiEvent,
-  useGridApiContext,
+  useGridApiContext
 } from "@mui/x-data-grid";
 import {
   DatePicker,
   DateTimePicker,
-  LocalizationProvider,
+  LocalizationProvider
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
@@ -57,7 +57,7 @@ import { useNavigate, useParams } from "react-router";
 import { useAppSelector } from "../../app/hooks";
 import {
   selectPermissions,
-  selectRole,
+  selectRole
 } from "../../app/reducers/CurrentUserSlice";
 import { RMA } from "../../utils/CommonTypes";
 import { Toast } from "../alerts/SweetAlert";
@@ -67,7 +67,7 @@ const RmaDisplay: React.FC = () => {
   const navigate = useNavigate();
   const userrole = useAppSelector(selectRole);
   const permissions = useAppSelector(selectPermissions);
-  const [rma, setRma] = useState<RMA>([]);
+  const [rma, setRma] = useState<RMA>();
   const [rows, setRows] = useState([]);
   const [pageSize, setPageSize] = useState(25);
   const [loading, setLoading] = useState(false);

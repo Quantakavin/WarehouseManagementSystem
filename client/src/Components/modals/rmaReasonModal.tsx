@@ -6,7 +6,6 @@ import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { motion } from "framer-motion";
-import * as React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
@@ -23,11 +22,15 @@ const style = {
   display: "block",
 };
 
+interface rma {
+  RejectReason: string
+}
+
 export default function ReasonModalButton() {
   const { RmaID } = useParams();
   const navigate = useNavigate();
-  const [rma, setRma] = useState([]);
-  const [open, setOpen] = React.useState(false);
+  const [rma, setRma] = useState<rma>();
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 

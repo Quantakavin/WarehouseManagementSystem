@@ -52,6 +52,15 @@ export interface RMA {
   RmaStatusID: number;
 }
 
+export interface TLoans {
+  TLoanID: number;
+  StartDate: string;
+  EndDate: string;
+  CompanyName: string;
+  CustomerEmail: string;
+  ExtensionDuration: string;
+}
+
 export type ActionMenuItem = {
   name: string;
   url?: string;

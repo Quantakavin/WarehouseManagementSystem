@@ -42,7 +42,6 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "react-use-cart";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { Toast } from "../../components/alerts/SweetAlert";
-import "./TLoanTable/table.css";
 import { useAppSelector } from "../../app/hooks";
 import {
   selectPermissions,
@@ -83,7 +82,7 @@ function newtloan() {
   const [rdateErrorText, setRDateErrorText] = useState("");
   const [customerCompanyErrorText, setCustomerCompanyErrorText] = useState("")
   const permissions = useAppSelector(selectPermissions);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
   };
@@ -98,9 +97,6 @@ function newtloan() {
   );
   
   useEffect(() => {
-    // if (userrole !== "Sales Engineer") {
-    //   navigate("/403");
-    // }
     if ((ExternalApplication || InternalApplication) !== true ) {
       navigate("/403");
     }
@@ -115,28 +111,6 @@ function newtloan() {
 
   function EditToolbar(props: EditToolbarProps) {
     const { setRows, setRowModesModel } = props;
-
-    // const handleClick = () => {
-    //   const id = randomId();
-    //   setRows((oldRows) => [
-    //     ...oldRows,
-    //     { id, ItemNo: "", ItemName: "", isNew: true },
-    //   ]);
-    //   setRowModesModel((oldModel) => ({
-    //     ...oldModel,
-    //     [id]: { mode: GridRowModes.Edit, fieldToFocus: "ItemNo" },
-    //   }));
-
-    // };
-
-    // return (
-    //   <GridToolbarContainer>
-    //     <Button color="primary" startIcon={<AddIcon />} onClick={handleClick()}>
-    //       Add Record
-    //     </Button>
-    //   </GridToolbarContainer>
-
-    // );
   }
   const itemStorage = localStorage.getItem("react-use-cart");
   const cartItems = JSON.parse(itemStorage).items;
@@ -781,33 +755,6 @@ console.log(companyErrorText)
                   helperText={emailErrorText}
                 />
                 {ExternalOrInternal()}
-                {/* <FormControl sx={{ width: 200, marginLeft: 3 }}>
-                  <InputLabel>Customer Company</InputLabel>
-                  <Select
-                    id="outlined-basic"
-                    value={company}
-                    onChange={handleChangeCompany}
-                    size="small"
-                    label="Customer Company"
-                    onBlur={() => {
-                      if (company === "") {
-                        setCompanyError(true);
-                        setCompanyErrorText("Selection required");
-                      }
-                    }}
-                    error={companyError}
-                  >
-                    <MenuItem value={"1"}>SERVO_LIVE</MenuItem>
-                    <MenuItem value={"2"}>LEAPTRON_LIVE</MenuItem>
-                    <MenuItem value={"3"}>DIRAK181025</MenuItem>
-                    <MenuItem value={"4"}>PMC_LIVE</MenuItem>
-                    <MenuItem value={"5"}>PORTWELL_LIVE</MenuItem>
-                    <MenuItem value={"6"} >ALL</MenuItem>
-                  </Select>
-                  <FormHelperText sx={{ color: "#d11919" }}>
-                    {companyErrorText}
-                  </FormHelperText>
-                </FormControl> */}
                 <FormControl sx={{ width: 200, marginLeft: 3 }}>
                   <InputLabel>Duration</InputLabel>
                   <Select

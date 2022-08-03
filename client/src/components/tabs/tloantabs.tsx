@@ -1,753 +1,1445 @@
 import { TabContext, TabPanel } from "@mui/lab";
-import { Box, Tab, Tabs } from "@mui/material";
-import React, { useState } from "react";
-import "react-tabs/style/react-tabs.css";
-// import axios from 'axios';
-// import Table from '@mui/material/Table';
-// import TableBody from '@mui/material/TableBody';
-// import TableCell from '@mui/material/TableCell';
-// import TableContainer from '@mui/material/TableContainer';
-// import TableHead from '@mui/material/TableHead';
-// import TableRow from '@mui/material/TableRow';
-// import Paper from '@mui/material/Paper';
-import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
-import PageviewIcon from "@mui/icons-material/Pageview";
-import Button from "@mui/material/Button";
-import { useInfiniteQuery } from "react-query";
-import { useNavigate } from "react-router-dom";
 import {
-  GetCurrent,
-  GetDraft,
-  GetHistory,
-  GetPending,
-} from "../../api/TLoanDB";
+  Box,
+  Grid,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+  unstable_createMuiStrictModeTheme
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import "react-tabs/style/react-tabs.css";
+
+import PostAddIcon from "@mui/icons-material/PostAdd";
+import Fab from "@mui/material/Fab";
+import {
+  DataGrid,
+  GridFilterModel,
+  GridRowParams,
+  GridToolbarColumnsButton,
+  GridToolbarContainer,
+  GridToolbarDensitySelector,
+  GridToolbarExport,
+  GridToolbarFilterButton,
+  GridToolbarQuickFilter
+} from "@mui/x-data-grid";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
-import { selectRole } from "../../app/reducers/CurrentUserSlice";
-import EmptyTable from "../table/EmptyTable";
-import TableNew from "../table/InfiniteTable";
+import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
 
+const columns = [
+  { field: "TLoanID", headerName: "Loan No.", flex: 4 },
+  { field: "StartDate", headerName: "Start Date", flex: 1 },
+  { field: "EndDate", headerName: "End Date", flex: 4 },
+  { field: "CompanyName", headerName: "Company Name", flex: 3 },
+  { field: "CustomerEmail", headerName: "Customer Email", flex: 3 },
+];
+
+const managerColumns = [
+  { field: "TLoanID", headerName: "Loan No.", flex: 2.5 },
+  { field: "StartDate", headerName: "Start Date", flex: 1 },
+  { field: "Requestor", headerName: "Employee Name", flex: 3 },
+  { field: "TLoanType", headerName: "Loan Type", flex: 3 },
+];
 const TLoanTabs: React.FC = () => {
-  const headers = [
-    "Loan No.",
-    "Start Date",
-    "End Date",
-    "Company Name",
-    "Customer Email",
-    "Actions",
-  ];
-  const LoansQuery = useInfiniteQuery(`loans`, GetCurrent, {
-    getNextPageParam: (lastPage, pages) => {
-      if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
-      return undefined;
-    },
-  });
+  const userid = useAppSelector(selectId);
+  const userrole = useAppSelector(selectRole);
+  const [currentTable, setCurrentTable] = useState([]);
+  const [pendingTable, setPendingTable] = useState([]);
+  const [draftTable, setDraftTable] = useState([]);
+  const [historyTable, setHistoryTable] = useState([]);
+  const [managerLoan, setManagerLoan] = useState([]);
+  const [extensionsTable, setExtensionTable] = useState([]);
+  const [approvedTable, setApprovedTable] = useState([]);
+  const [allCurrent, setAllCurrent] = useState([]);
+  const [allHistory, setAllHistory] = useState([]);
+  // Get and set current tloans data
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/tloan/current/${userid}`)
+      .then((data) => data.json())
+      .then((data) => setCurrentTable(data));
+  }, []);
+  // Get and set pending tloans data
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/tloan/pending/${userid}`)
+      .then((data) => data.json())
+      .then((data) => setPendingTable(data));
+  }, []);
+  // Get and set draft data
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/tloan/drafts/${userid}`)
+      .then((data) => data.json())
+      .then((data) => setDraftTable(data));
+  }, []);
+  // Get and set history data
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/tloan/history/${userid}`)
+      .then((data) => data.json())
+      .then((data) => setHistoryTable(data));
+  }, []);
 
-  const PendingQuery = useInfiniteQuery(`pending`, GetPending, {
-    getNextPageParam: (lastPage, pages) => {
-      if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
-      return undefined;
-    },
-  });
-
-  const DraftQuery = useInfiniteQuery(`draft`, GetDraft, {
-    getNextPageParam: (lastPage, pages) => {
-      if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
-      return undefined;
-    },
-  });
-
-  const HistoryQuery = useInfiniteQuery(`history`, GetHistory, {
-    getNextPageParam: (lastPage, pages) => {
-      if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
-      return undefined;
-    },
-  });
-
-  const ActionMenu = (id: string) => {
-    return [
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/tloan/ManagerLoan`)
+      .then((data) => data.json())
+      .then((data) => setManagerLoan(data));
+  }, []);
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/tloan/ManagerExtension`)
+      .then((data) => data.json())
+      .then((data) => setExtensionTable(data));
+  }, []);
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/tloan/approvedLoans`)
+      .then((data) => data.json())
+      .then((data) => setApprovedTable(data));
+  }, []);
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/tloan/allCurrent`)
+      .then((data) => data.json())
+      .then((data) => setAllCurrent(data));
+  }, []);
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/tloan/allHistory`)
+      .then((data) => data.json())
+      .then((data) => setAllHistory(data));
+  }, []);
+  const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
+    items: [
       {
-        name: "View Details",
-        url: `/tloandetails2/${id}`,
-        icon: <PageviewIcon fontSize="small" />,
-        delete: false,
+        columnField: "Company Name",
+        operatorValue: "=",
+        value: "SERVO_LIVE",
       },
-      {
-        name: "Edit Details",
-        url: `/tloan/edit/${id}`,
-        icon: <ModeEditOutlineIcon fontSize="small" />,
-        delete: false,
-      },
-      // {
-      //   name: "Delete",
-      //   icon: <DeleteOutlineIcon fontSize="small" />,
-      //   delete: true
-      // },
-    ];
+    ],
+  });
+
+  const CustomToolbar = () => {
+    return (
+      <GridToolbarContainer
+        sx={{ display: "flex", flexWrap: "wrap", maxWidth: 613, p: 1 }}
+      >
+        <Box>
+          <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
+        </Box>
+        <Box>
+          <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
+          <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
+          <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
+          <GridToolbarExport sx={{ color: "#0A2540" }} />
+        </Box>
+      </GridToolbarContainer>
+    );
   };
 
-  const [value, setValue] = useState(0); // first tab
+  const navigate = useNavigate();
+  const theme = unstable_createMuiStrictModeTheme();
+  const [pageSize, setPageSize] = React.useState(25);
+  const [inputName, setInputName] = useState<string>(null);
+
+  const [value, setValue] = useState(); // first tab
 
   const handleChange = (_event, newValue) => {
     setValue(newValue);
   };
 
-  const userRole = useAppSelector(selectRole);
-
-  const navigate = useNavigate();
-
-  switch (userRole) {
-    case "Admin": {
-      return (
-        <>
-          <Box sx={{ margin: 2, display: "flex" }}>
-            <h2 className="pagetitle">TLoans </h2>
-
-            <Button
-              variant="contained"
-              onClick={() => navigate("/newtloan")}
-              sx={{
-                marginTop: 5,
-                marginLeft: "auto",
-                marginRight: 10,
-                color: "white",
-                backgroundColor: "#063970",
-                width: 150,
-                height: 40,
-                "& button:hover": { backgroundColor: "#063970" },
-              }}
-            >
-              Apply TLoan
-            </Button>
-          </Box>
-
-          <TabContext value={value || "1"}>
-            <Box sx={{ marginLeft: -3 }}>
-              <Tabs
-                selectionFollowsFocus
-                onChange={handleChange}
-                TabIndicatorProps={{
-                  style: {
-                    backgroundColor: "#D97D54",
-                  },
-                }}
-                sx={{
-                  "& button:focus": {
-                    backgroundColor: "#063970",
-                    color: "white",
-                    width: 190,
-                    height: 110,
-                  },
-                  "& button:active": {
-                    backgroundColor: "#063970",
-                    color: "white",
-                    width: 190,
-                    height: 110,
-                  },
-                  "& button.Mui-selected": {
-                    backgroundColor: "#063970",
-                    color: "white",
-                    width: 190,
-                    height: 110,
-                  },
-                }}
-                aria-label="basic tabs example"
-                centered
-              >
-                <Tab
-                  label="Current"
-                  value="1"
-                  sx={{
-                    color: "grey",
-                    backgroundColor: "White",
-                    borderRadius: 2,
-                    marginRight: 2,
-                    height: 100,
-                    width: 180,
-                  }}
-                />
-                <Tab
-                  label="Pending"
-                  value="2"
-                  sx={{
-                    color: "grey",
-                    backgroundColor: "White",
-                    borderRadius: 2,
-                    marginRight: 2,
-                    height: 100,
-                    width: 180,
-                  }}
-                />
-                <Tab
-                  label="Drafts"
-                  value="3"
-                  sx={{
-                    color: "grey",
-                    backgroundColor: "White",
-                    borderRadius: 2,
-                    marginRight: 2,
-                    height: 100,
-                    width: 180,
-                  }}
-                />
-                <Tab
-                  label="History"
-                  value="4"
-                  sx={{
-                    color: "grey",
-                    backgroundColor: "White",
-                    borderRadius: 2,
-                    marginRight: 2,
-                    height: 100,
-                    width: 180,
-                  }}
-                />
-              </Tabs>
-            </Box>
-
-            <Box sx={{ marginTop: -5 }}>
-              <TabPanel value="1">
-                {LoansQuery.isLoading || LoansQuery.isError ? null : (
-                  <TableNew
-                    headers={headers}
-                    pages={LoansQuery.data.pages}
-                    query={LoansQuery}
-                    menu={ActionMenu}
-                  />
-                )}
-              </TabPanel>
-              <TabPanel value="2">
-                {PendingQuery.isLoading || PendingQuery.isError ? null : (
-                  <TableNew
-                    headers={headers}
-                    pages={PendingQuery.data.pages}
-                    query={PendingQuery}
-                    menu={ActionMenu}
-                  />
-                )}
-              </TabPanel>
-              <TabPanel value="3">
-                {DraftQuery.isLoading || DraftQuery.isError ? null : (
-                  <TableNew
-                    headers={headers}
-                    pages={DraftQuery.data.pages}
-                    query={DraftQuery}
-                    menu={ActionMenu}
-                  />
-                )}
-              </TabPanel>
-              <TabPanel value="4">
-                {HistoryQuery.isLoading || HistoryQuery.isError ? (
-                  <EmptyTable headers={headers} />
-                ) : (
-                  <TableNew
-                    headers={headers}
-                    pages={HistoryQuery.data.pages}
-                    query={HistoryQuery}
-                    menu={ActionMenu}
-                  />
-                )}
-              </TabPanel>
-            </Box>
-          </TabContext>
-        </>
-      );
-    }
+  switch (userrole) {
     case "Sales Engineer": {
       return (
-        <>
-          <h2 className="pagetitle">TLoans </h2>
-          <TabContext value={value || "1"}>
-            <Box sx={{ marginLeft: -3 }}>
-              <Tabs
-                selectionFollowsFocus
-                onChange={handleChange}
-                TabIndicatorProps={{
-                  style: {
-                    backgroundColor: "#D97D54",
-                  },
-                }}
-                sx={{
-                  "& button:focus": {
-                    backgroundColor: "#063970",
-                    color: "white",
-                    width: 190,
-                    height: 110,
-                  },
-                  "& button:active": {
-                    backgroundColor: "#063970",
-                    color: "white",
-                    width: 190,
-                    height: 110,
-                  },
-                  "& button.Mui-selected": {
-                    backgroundColor: "#063970",
-                    color: "white",
-                    width: 190,
-                    height: 110,
-                  },
-                }}
-                aria-label="basic tabs example"
-                centered
+        <TabContext value={value || "1"}>
+          <Grid container>
+            <Grid item xs={12} sx={{ pl: 3, pt: 1 }}>
+              <Typography
+                sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
               >
-                <Tab
-                  label="Current"
-                  value="1"
-                  sx={{
-                    color: "grey",
-                    backgroundColor: "White",
-                    borderRadius: 2,
-                    marginRight: 2,
-                    height: 100,
-                    width: 180,
-                  }}
-                />
-                <Tab
-                  label="Pending"
-                  value="2"
-                  sx={{
-                    color: "grey",
-                    backgroundColor: "White",
-                    borderRadius: 2,
-                    marginRight: 2,
-                    height: 100,
-                    width: 180,
-                  }}
-                />
-                <Tab
-                  label="Drafts"
-                  value="3"
-                  sx={{
-                    color: "grey",
-                    backgroundColor: "White",
-                    borderRadius: 2,
-                    marginRight: 2,
-                    height: 100,
-                    width: 180,
-                  }}
-                />
-                <Tab
-                  label="History"
-                  value="4"
-                  sx={{
-                    color: "grey",
-                    backgroundColor: "White",
-                    borderRadius: 2,
-                    marginRight: 2,
-                    height: 100,
-                    width: 180,
-                  }}
-                />
-              </Tabs>
-            </Box>
-
-            <Box sx={{ marginTop: -5 }}>
+                TLoans
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  ml: 3,
+                  mr: 3,
+                }}
+              >
+                <Box sx={{ width: 1 }}>
+                  <Tabs
+                    onChange={handleChange}
+                    TabIndicatorProps={{
+                      style: { backgroundColor: "#D97D54" },
+                    }}
+                    sx={{
+                      width: "100%",
+                      "& button:focus": {
+                        backgroundColor: "#063970",
+                        color: "white",
+                        width: "30%",
+                        height: "100%",
+                      },
+                    }}
+                  >
+                    <Tab
+                      label="Current"
+                      value="1"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Pending"
+                      value="2"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Drafts"
+                      value="3"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="History"
+                      value="4"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                  </Tabs>
+                </Box>
+                <Box>
+                  <motion.div
+                    className="animatable"
+                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <Fab
+                      variant="extended"
+                      aria-label="add"
+                      onClick={() => navigate("/products")}
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#063970",
+                        ":hover": { backgroundColor: "#031c38" },
+                      }}
+                    >
+                      Create
+                      <PostAddIcon sx={{ ml: 2 }} />
+                    </Fab>
+                  </motion.div>
+                </Box>
+              </Box>
+              <Box sx={{ paddingLeft: 3 }} />
+            </Grid>
+            <Grid item xs={12}>
               <TabPanel value="1">
-                {LoansQuery.isLoading || LoansQuery.isError ? null : (
-                  <TableNew
-                    headers={headers}
-                    pages={LoansQuery.data.pages}
-                    query={LoansQuery}
-                    menu={ActionMenu}
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={currentTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No current TLoans
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
                   />
-                )}
+                </div>
               </TabPanel>
               <TabPanel value="2">
-                {PendingQuery.isLoading || PendingQuery.isError ? null : (
-                  <TableNew
-                    headers={headers}
-                    pages={PendingQuery.data.pages}
-                    query={PendingQuery}
-                    menu={ActionMenu}
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={pendingTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No pending Tloans
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
                   />
-                )}
+                </div>
               </TabPanel>
               <TabPanel value="3">
-                {DraftQuery.isLoading || DraftQuery.isError ? null : (
-                  <TableNew
-                    headers={headers}
-                    pages={DraftQuery.data.pages}
-                    query={DraftQuery}
-                    menu={ActionMenu}
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={draftTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No drafted TLoans
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
                   />
-                )}
+                </div>
               </TabPanel>
               <TabPanel value="4">
-                {HistoryQuery.isLoading || HistoryQuery.isError ? (
-                  <EmptyTable headers={headers} />
-                ) : (
-                  <TableNew
-                    headers={headers}
-                    pages={HistoryQuery.data.pages}
-                    query={HistoryQuery}
-                    menu={ActionMenu}
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={historyTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No History
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
                   />
-                )}
+                </div>
               </TabPanel>
-            </Box>
-          </TabContext>
-        </>
+            </Grid>
+          </Grid>
+        </TabContext>
       );
     }
     case "Technical Staff": {
       return (
-        <>
-          <h2 className="pagetitle">TLoans </h2>
-          <TabContext value={value || "1"}>
-            <Box sx={{ marginLeft: -3 }}>
-              <Tabs
-                selectionFollowsFocus
-                onChange={handleChange}
-                TabIndicatorProps={{
-                  style: {
-                    backgroundColor: "#D97D54",
-                  },
-                }}
-                sx={{
-                  "& button:focus": {
-                    backgroundColor: "#063970",
-                    color: "white",
-                    width: 190,
-                    height: 110,
-                  },
-                  "& button:active": {
-                    backgroundColor: "#063970",
-                    color: "white",
-                    width: 190,
-                    height: 110,
-                  },
-                  "& button.Mui-selected": {
-                    backgroundColor: "#063970",
-                    color: "white",
-                    width: 190,
-                    height: 110,
-                  },
-                }}
-                aria-label="basic tabs example"
-                centered
+        <TabContext value={value || "1"}>
+          <Grid container>
+            <Grid item xs={12} sx={{ pl: 3, pt: 1 }}>
+              <Typography
+                sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
               >
-                <Tab
-                  label="Current"
-                  value="1"
-                  sx={{
-                    color: "grey",
-                    backgroundColor: "White",
-                    borderRadius: 2,
-                    marginRight: 2,
-                    height: 100,
-                    width: 180,
-                  }}
-                />
-                <Tab
-                  label="Pending"
-                  value="2"
-                  sx={{
-                    color: "grey",
-                    backgroundColor: "White",
-                    borderRadius: 2,
-                    marginRight: 2,
-                    height: 100,
-                    width: 180,
-                  }}
-                />
-                <Tab
-                  label="Drafts"
-                  value="3"
-                  sx={{
-                    color: "grey",
-                    backgroundColor: "White",
-                    borderRadius: 2,
-                    marginRight: 2,
-                    height: 100,
-                    width: 180,
-                  }}
-                />
-                <Tab
-                  label="History"
-                  value="4"
-                  sx={{
-                    color: "grey",
-                    backgroundColor: "White",
-                    borderRadius: 2,
-                    marginRight: 2,
-                    height: 100,
-                    width: 180,
-                  }}
-                />
-              </Tabs>
-            </Box>
-
-            <Box sx={{ marginTop: -5 }}>
+                TLoans
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  ml: 3,
+                  mr: 3,
+                }}
+              >
+                <Box sx={{ width: 1 }}>
+                  <Tabs
+                    onChange={handleChange}
+                    TabIndicatorProps={{
+                      style: { backgroundColor: "#D97D54" },
+                    }}
+                    sx={{
+                      width: "100%",
+                      "& button:focus": {
+                        backgroundColor: "#063970",
+                        color: "white",
+                        width: "30%",
+                        height: "100%",
+                      },
+                    }}
+                  >
+                    <Tab
+                      label="Current"
+                      value="1"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Pending"
+                      value="2"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Drafts"
+                      value="3"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="History"
+                      value="4"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                  </Tabs>
+                </Box>
+                <Box>
+                  <motion.div
+                    className="animatable"
+                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <Fab
+                      variant="extended"
+                      aria-label="add"
+                      onClick={() => navigate("/products")}
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#063970",
+                        ":hover": { backgroundColor: "#031c38" },
+                      }}
+                    >
+                      Create
+                      <PostAddIcon sx={{ ml: 2 }} />
+                    </Fab>
+                  </motion.div>
+                </Box>
+              </Box>
+              <Box sx={{ paddingLeft: 3 }} />
+            </Grid>
+            <Grid item xs={12}>
               <TabPanel value="1">
-                {LoansQuery.isLoading || LoansQuery.isError ? null : (
-                  <TableNew
-                    headers={headers}
-                    pages={LoansQuery.data.pages}
-                    query={LoansQuery}
-                    menu={ActionMenu}
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={currentTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No current TLoans
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
                   />
-                )}
+                </div>
               </TabPanel>
               <TabPanel value="2">
-                {PendingQuery.isLoading || PendingQuery.isError ? null : (
-                  <TableNew
-                    headers={headers}
-                    pages={PendingQuery.data.pages}
-                    query={PendingQuery}
-                    menu={ActionMenu}
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={pendingTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No pending Tloans
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
                   />
-                )}
+                </div>
               </TabPanel>
               <TabPanel value="3">
-                {DraftQuery.isLoading || DraftQuery.isError ? null : (
-                  <TableNew
-                    headers={headers}
-                    pages={DraftQuery.data.pages}
-                    query={DraftQuery}
-                    menu={ActionMenu}
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={draftTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No drafted TLoans
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
                   />
-                )}
+                </div>
               </TabPanel>
               <TabPanel value="4">
-                {HistoryQuery.isLoading || HistoryQuery.isError ? (
-                  <EmptyTable headers={headers} />
-                ) : (
-                  <TableNew
-                    headers={headers}
-                    pages={HistoryQuery.data.pages}
-                    query={HistoryQuery}
-                    menu={ActionMenu}
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={historyTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No History
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
                   />
-                )}
+                </div>
               </TabPanel>
-            </Box>
-          </TabContext>
-        </>
+            </Grid>
+          </Grid>
+        </TabContext>
       );
     }
     case "Sales Manager": {
       return (
-        <>
-          <h2 className="pagetitle">TLoans </h2>
-          <TabContext value={value || "1"}>
-            <Box sx={{ marginLeft: -3 }}>
-              <Tabs
-                onChange={handleChange}
-                TabIndicatorProps={{
-                  style: {
-                    backgroundColor: "#D97D54",
-                  },
-                }}
-                sx={{
-                  "& button:focus": {
-                    backgroundColor: "#063970",
-                    color: "white",
-                    width: 190,
-                    height: 65,
-                  },
-                  "& button:active": {
-                    backgroundColor: "#063970",
-                    color: "white",
-                    width: 190,
-                    height: 65,
-                  },
-                  "& button.Mui-selected": {
-                    backgroundColor: "#063970",
-                    color: "white",
-                    width: 190,
-                    height: 65,
-                  },
-                  paddingRight: 50,
-                }}
-                aria-label="basic tabs example"
-                centered
-              >
-                <Tab
-                  label="Loan"
-                  value="1"
-                  sx={{
-                    color: "grey",
-                    backgroundColor: "White",
-                    borderRadius: 2,
-                    marginRight: 2,
-                    height: 60,
-                    width: 180,
+        <TabContext value={value || "1"}>
+          <Grid container>
+            <Grid item xs={12}>
+              <Box sx={{ pl: 3, pt: 1 }}>
+                <Typography
+                  sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+                >
+                  TLoans
+                </Typography>
+                <Tabs
+                  onChange={handleChange}
+                  TabIndicatorProps={{
+                    style: { backgroundColor: "#D97D54" },
                   }}
-                />
-                <Tab
-                  label="Extension"
-                  value="2"
                   sx={{
-                    color: "grey",
-                    backgroundColor: "White",
-                    borderRadius: 2,
-                    marginRight: 2,
-                    height: 60,
-                    width: 180,
+                    "& button:focus": {
+                      backgroundColor: "#063970",
+                      color: "white",
+                      height: "100%",
+                      width: "30%",
+                    },
                   }}
-                />
-              </Tabs>
-            </Box>
-
-            <Box sx={{ marginTop: -5 }}>
-              <TabPanel value="1">
-                {LoansQuery.isLoading || LoansQuery.isError ? null : (
-                  <TableNew
-                    headers={headers}
-                    pages={LoansQuery.data.pages}
-                    query={LoansQuery}
-                    menu={ActionMenu}
+                >
+                  <Tab
+                    label="Loans"
+                    value="1"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
                   />
-                )}
+                  <Tab
+                    label="Extensions"
+                    value="2"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                </Tabs>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12}>
+              <TabPanel value="1">
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={managerLoan}
+                    columns={managerColumns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No current TLoans
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
+                  />
+                </div>
               </TabPanel>
               <TabPanel value="2">
-                {PendingQuery.isLoading || PendingQuery.isError ? null : (
-                  <TableNew
-                    headers={headers}
-                    pages={PendingQuery.data.pages}
-                    query={PendingQuery}
-                    menu={ActionMenu}
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={extensionsTable}
+                    columns={managerColumns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No pending Tloans
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloanManagerExtension/${params.id}`);
+                    }}
                   />
-                )}
+                </div>
               </TabPanel>
-            </Box>
-          </TabContext>
-        </>
+            </Grid>
+          </Grid>
+        </TabContext>
+      );
+    }
+    case "Sales Admin": {
+      return (
+        <TabContext value={value || "1"}>
+          <Grid container>
+            <Grid item xs={12} sx={{ pl: 3, pt: 1 }}>
+              <Typography
+                sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+              >
+                TLoans
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  ml: 3,
+                  mr: 3,
+                }}
+              >
+                <Box sx={{ width: 1 }}>
+                  <Tabs
+                    onChange={handleChange}
+                    TabIndicatorProps={{
+                      style: { backgroundColor: "#D97D54" },
+                    }}
+                    sx={{
+                      width: "100%",
+                      "& button:focus": {
+                        backgroundColor: "#063970",
+                        color: "white",
+                        width: "30%",
+                        height: "100%",
+                      },
+                    }}
+                  >
+                    <Tab
+                      label="Current"
+                      value="1"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Pending"
+                      value="2"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Drafts"
+                      value="3"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="History"
+                      value="4"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                  </Tabs>
+                </Box>
+                <Box>
+                  <motion.div
+                    className="animatable"
+                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <Fab
+                      variant="extended"
+                      aria-label="add"
+                      onClick={() => navigate("/products")}
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#063970",
+                        ":hover": { backgroundColor: "#031c38" },
+                      }}
+                    >
+                      Create
+                      <PostAddIcon sx={{ ml: 2 }} />
+                    </Fab>
+                  </motion.div>
+                </Box>
+              </Box>
+              <Box sx={{ paddingLeft: 3 }} />
+            </Grid>
+            <Grid item xs={12}>
+              <TabPanel value="1">
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={currentTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No current TLoans
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
+                  />
+                </div>
+              </TabPanel>
+              <TabPanel value="2">
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={pendingTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No pending Tloans
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
+                  />
+                </div>
+              </TabPanel>
+              <TabPanel value="3">
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={draftTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No drafts
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloanDetails/${params.id}`);
+                    }}
+                  />
+                </div>
+              </TabPanel>
+              <TabPanel value="4">
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={historyTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No History
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
+                  />
+                </div>
+              </TabPanel>
+            </Grid>
+          </Grid>
+        </TabContext>
       );
     }
     case "Warehouse Worker": {
       return (
-        <>
-          <h2 className="pagetitle">TLoans </h2>
-          <TabContext value={value || "1"}>
-            <Box sx={{ marginLeft: -3 }}>
-              <Tabs
-                selectionFollowsFocus
-                onChange={handleChange}
-                TabIndicatorProps={{
-                  style: {
-                    backgroundColor: "#D97D54",
-                  },
-                }}
-                sx={{
-                  "& button:focus": {
-                    backgroundColor: "#063970",
-                    color: "white",
-                    width: 190,
-                    height: 110,
-                  },
-                  "& button:active": {
-                    backgroundColor: "#063970",
-                    color: "white",
-                    width: 190,
-                    height: 110,
-                  },
-                  "& button.Mui-selected": {
-                    backgroundColor: "#063970",
-                    color: "white",
-                    width: 190,
-                    height: 110,
-                  },
-                }}
-                aria-label="basic tabs example"
-                centered
-              >
-                <Tab
-                  label="Current"
-                  value="1"
-                  sx={{
-                    color: "grey",
-                    backgroundColor: "White",
-                    borderRadius: 2,
-                    marginRight: 2,
-                    height: 100,
-                    width: 180,
+        <TabContext value={value || "1"}>
+          <Grid container>
+            <Grid item xs={12}>
+              <Box sx={{ pl: 3, pt: 1 }}>
+                <Typography
+                  sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+                >
+                  TLoans
+                </Typography>
+                <Tabs
+                  onChange={handleChange}
+                  TabIndicatorProps={{
+                    style: { backgroundColor: "#D97D54" },
                   }}
-                />
-                <Tab
-                  label="Pending"
-                  value="2"
                   sx={{
-                    color: "grey",
-                    backgroundColor: "White",
-                    borderRadius: 2,
-                    marginRight: 2,
-                    height: 100,
-                    width: 180,
+                    "& button:focus": {
+                      backgroundColor: "#063970",
+                      color: "white",
+                      height: "15%",
+                      width: "15%",
+                    },
                   }}
-                />
-                <Tab
-                  label="Drafts"
-                  value="3"
-                  sx={{
-                    color: "grey",
-                    backgroundColor: "White",
-                    borderRadius: 2,
-                    marginRight: 2,
-                    height: 100,
-                    width: 180,
-                  }}
-                />
-                <Tab
-                  label="History"
-                  value="4"
-                  sx={{
-                    color: "grey",
-                    backgroundColor: "White",
-                    borderRadius: 2,
-                    marginRight: 2,
-                    height: 100,
-                    width: 180,
-                  }}
-                />
-              </Tabs>
-            </Box>
-
-            <Box sx={{ marginTop: -5 }}>
-              <TabPanel value="1">
-                {LoansQuery.isLoading || LoansQuery.isError ? null : (
-                  <TableNew
-                    headers={headers}
-                    pages={LoansQuery.data.pages}
-                    query={LoansQuery}
-                    menu={ActionMenu}
+                >
+                  <Tab
+                    label="Approved"
+                    value="1"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
                   />
-                )}
+                </Tabs>
+              </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <TabPanel value="1">
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={approvedTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No current TLoans
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
+                  />
+                </div>
+              </TabPanel>
+            </Grid>
+          </Grid>
+        </TabContext>
+      );
+    }
+    case "Admin": {
+      return (
+        <TabContext value={value || "1"}>
+          <Grid container>
+            <Grid item xs={12}>
+              <Box sx={{ pl: 3, pt: 1 }}>
+                <Typography
+                  sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+                >
+                  TLoans
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  ml: 3,
+                  mr: 3,
+                }}
+              >
+                <Box sx={{ width: 1 }}>
+                  <Tabs
+                    onChange={handleChange}
+                    TabIndicatorProps={{
+                      style: { backgroundColor: "#D97D54" },
+                    }}
+                    sx={{
+                      width: "100%",
+                      "& button:focus": {
+                        backgroundColor: "#063970",
+                        color: "white",
+                        width: "30%",
+                        height: "100%",
+                      },
+                    }}
+                  >
+                    <Tab
+                      label="Current"
+                      value="1"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="History"
+                      value="2"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                  </Tabs>
+                </Box>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12}>
+              <TabPanel value="1">
+                <div style={{ display: "flex", height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={allCurrent}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No current TLoans
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
+                  />
+                </div>
+              </TabPanel>
+
+              <TabPanel value="2">
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={allHistory}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No History
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
+                  />
+                </div>
+              </TabPanel>
+            </Grid>
+          </Grid>
+        </TabContext>
+      );
+    }
+    default: {
+      return (
+        <TabContext value={value || "1"}>
+          <Grid container>
+            <Grid item xs={12} sx={{ pl: 3, pt: 1 }}>
+              <Typography
+                sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+              >
+                TLoans
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  ml: 3,
+                  mr: 3,
+                }}
+              >
+                <Box sx={{ width: 1 }}>
+                  <Tabs
+                    onChange={handleChange}
+                    TabIndicatorProps={{
+                      style: { backgroundColor: "#D97D54" },
+                    }}
+                    sx={{
+                      width: "100%",
+                      "& button:focus": {
+                        backgroundColor: "#063970",
+                        color: "white",
+                        width: "30%",
+                        height: "100%",
+                      },
+                    }}
+                  >
+                    <Tab
+                      label="Current"
+                      value="1"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Pending"
+                      value="2"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="Drafts"
+                      value="3"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                    <Tab
+                      label="History"
+                      value="4"
+                      sx={{
+                        color: "grey",
+                        backgroundColor: "White",
+                        borderRadius: 2,
+                        marginRight: 2,
+                        height: "100%",
+                        width: "15%",
+                      }}
+                    />
+                  </Tabs>
+                </Box>
+                <Box>
+                  <motion.div
+                    className="animatable"
+                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <Fab
+                      variant="extended"
+                      aria-label="add"
+                      onClick={() => navigate("/products")}
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#063970",
+                        ":hover": { backgroundColor: "#031c38" },
+                      }}
+                    >
+                      Create
+                      <PostAddIcon sx={{ ml: 2 }} />
+                    </Fab>
+                  </motion.div>
+                </Box>
+              </Box>
+              <Box sx={{ paddingLeft: 3 }} />
+            </Grid>
+            <Grid item xs={12}>
+              <TabPanel value="1">
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={currentTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No current TLoans
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
+                  />
+                </div>
               </TabPanel>
               <TabPanel value="2">
-                {PendingQuery.isLoading || PendingQuery.isError ? null : (
-                  <TableNew
-                    headers={headers}
-                    pages={PendingQuery.data.pages}
-                    query={PendingQuery}
-                    menu={ActionMenu}
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={pendingTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No pending Tloans
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
                   />
-                )}
+                </div>
               </TabPanel>
               <TabPanel value="3">
-                {DraftQuery.isLoading || DraftQuery.isError ? null : (
-                  <TableNew
-                    headers={headers}
-                    pages={DraftQuery.data.pages}
-                    query={DraftQuery}
-                    menu={ActionMenu}
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={draftTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No drafts
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
                   />
-                )}
+                </div>
               </TabPanel>
               <TabPanel value="4">
-                {HistoryQuery.isLoading || HistoryQuery.isError ? (
-                  <EmptyTable headers={headers} />
-                ) : (
-                  <TableNew
-                    headers={headers}
-                    pages={HistoryQuery.data.pages}
-                    query={HistoryQuery}
-                    menu={ActionMenu}
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={historyTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={12}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: () => (
+                        <Stack
+                          height="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          No History
+                        </Stack>
+                      ),
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
                   />
-                )}
+                </div>
               </TabPanel>
-            </Box>
-          </TabContext>
-        </>
+            </Grid>
+          </Grid>
+        </TabContext>
       );
     }
   }
