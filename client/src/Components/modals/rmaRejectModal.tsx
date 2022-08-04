@@ -11,6 +11,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import config from "../../config/config";
 import { Toast } from "../alerts/SweetAlert";
 
 // const style = {
@@ -67,7 +68,7 @@ export default function RejectModalButton() {
       setTimeout(() => {
         setLoading(false);
         axios
-          .put(`http://localhost:5000/api/rejectRMA/${RmaID}`, rejectreason)
+          .put(`${config.baseURL}/rejectRMA/${RmaID}`, rejectreason)
           .then(() => {
             Toast.fire({
               icon: "success",

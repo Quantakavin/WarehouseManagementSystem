@@ -61,6 +61,7 @@ import {
   selectRole,
 } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
+import config from "../../config/config";
 
 const CreateRMA: React.FC = () => {
   const navigate = useNavigate();
@@ -692,7 +693,7 @@ const CreateRMA: React.FC = () => {
     ) {
       setTimeout(() => {
         axios
-          .post(`http://localhost:5000/api/newRMA`, rmadetails)
+          .post(`${config.baseURL}/newRMA`, rmadetails)
           .then(() => {
             Toast.fire({
               icon: "success",
@@ -711,6 +712,7 @@ const CreateRMA: React.FC = () => {
   };
 
   return (
+    <Box>
     <Card
       sx={{
         width: "98%",
@@ -917,6 +919,7 @@ const CreateRMA: React.FC = () => {
         </form>
       </CardContent>
     </Card>
+    </Box>
   );
 };
 

@@ -64,6 +64,7 @@ import { RMA } from "../../utils/CommonTypes";
 import { Toast } from "../alerts/SweetAlert";
 import RejectModalButton from "../modals/rmaRejectModal";
 import ReasonModalButton from "../modals/rmaReasonModal";
+import config from "../../config/config";
 
 const RmaDisplay: React.FC = () => {
   const navigate = useNavigate();
@@ -108,7 +109,7 @@ const RmaDisplay: React.FC = () => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const rmadata = await axios.get(`http://localhost:5000/api/RMA/${RmaID}`);
+      const rmadata = await axios.get(`${config.baseURL}/RMA/${RmaID}`);
 
       setRma(rmadata.data);
     };
@@ -126,7 +127,7 @@ const RmaDisplay: React.FC = () => {
     const fetchData = async () => {
       // get the data from the api
       const rowdata = await axios.get(
-        `http://localhost:5000/api/RMA/Product/${RmaID}`
+        `${config.baseURL}/RMA/Product/${RmaID}`
       );
 
       setRows(rowdata.data);
@@ -140,7 +141,7 @@ const RmaDisplay: React.FC = () => {
     setLoading(true);
     setTimeout(() => {
       axios
-        .put(`http://localhost:5000/api/acceptRMA/${RmaID}`)
+        .put(`${config.baseURL}/acceptRMA/${RmaID}`)
         .then(() => {
           Toast.fire({
             icon: "success",
@@ -161,7 +162,7 @@ const RmaDisplay: React.FC = () => {
     setLoading(true);
     setTimeout(() => {
       axios
-        .put(`http://localhost:5000/api/updatechecklistRMA/${RmaID}`, rmabody)
+        .put(`${config.baseURL}/updatechecklistRMA/${RmaID}`, rmabody)
         .then(() => {
           Toast.fire({
             icon: "success",
@@ -182,7 +183,7 @@ const RmaDisplay: React.FC = () => {
     setCompleteLoading(true);
     setTimeout(() => {
       axios
-        .put(`http://localhost:5000/api/receiveRMA/${RmaID}`)
+        .put(`${config.baseURL}/receiveRMA/${RmaID}`)
         .then(() => {
           Toast.fire({
             icon: "success",
@@ -203,7 +204,7 @@ const RmaDisplay: React.FC = () => {
     setLoading(true);
     setTimeout(() => {
       axios
-        .put(`http://localhost:5000/api/verifyRMA/${RmaID}`, rmabody)
+        .put(`${config.baseURL}/verifyRMA/${RmaID}`, rmabody)
         .then(() => {
           Toast.fire({
             icon: "success",
@@ -231,7 +232,7 @@ const RmaDisplay: React.FC = () => {
     setLoading(true);
     setTimeout(() => {
       axios
-        .put(`http://localhost:5000/api/COARMA/${RmaID}`, rmabody)
+        .put(`${config.baseURL}/COARMA/${RmaID}`, rmabody)
         .then(() => {
           Toast.fire({
             icon: "success",
@@ -259,7 +260,7 @@ const RmaDisplay: React.FC = () => {
     setCloseLoading(true);
     setTimeout(() => {
       axios
-        .put(`http://localhost:5000/api/closeRMA/${RmaID}`)
+        .put(`${config.baseURL}/closeRMA/${RmaID}`)
         .then(() => {
           Toast.fire({
             icon: "success",
