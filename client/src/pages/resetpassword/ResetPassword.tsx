@@ -47,6 +47,7 @@ interface FormValues {
 
 const ResetToNewPassword: React.FC = () => {
   const navigate = useNavigate();
+  
   const {
     register,
     handleSubmit,
@@ -81,8 +82,10 @@ const ResetToNewPassword: React.FC = () => {
   };
 
   const onSubmit = (data: FormValues) => {
-    console.log(data);
-    mutation.mutate(data);
+    const postData = data;
+    postData.token = params.token[0];
+    console.log(postData);
+    mutation.mutate(postData);
   };
 
   return (
@@ -93,14 +96,6 @@ const ResetToNewPassword: React.FC = () => {
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
       >
-        <FormField
-          label="Token"
-          name="token"
-          type="text"
-          defaultvalue={params.token[0]}
-          register={register}
-          readOnly
-        />
 
         <FormField
           label="Email"
