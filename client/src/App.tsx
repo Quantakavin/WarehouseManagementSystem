@@ -9,7 +9,7 @@ import RmaDisplay from "./components/display/rmaDisplay";
 import TLoanDisplay2 from "./components/display/tloanDisplay2";
 import TLoanManagerExtensionDisplay from "./components/display/tloanManagerExtensionDisplay";
 import TopNav from "./components/header/TopNav";
-import Sidebar from "./components/sidebar/Sidebar";
+import Sidebar from "./components/sidebar/SideBar";
 import BinLocations from "./pages/binlocations/BinLocations";
 import Dashboard from "./pages/dashboards/Dashboards";
 import Error401 from "./pages/error/Error401";
