@@ -22,7 +22,7 @@ const Error403 = () => {
             sx={{
               color: "black",
               fontWeight: "bold",
-              fontSize: 300,
+              fontSize: 250,
               textAlign: "center",
             }}
           >
@@ -35,20 +35,20 @@ const Error403 = () => {
               color: "black",
               fontWeight: "normal",
               textAlign: "center",
-              fontSize: 30,
+              fontSize: 40,
             }}
           >
             <Typography
               sx={{
                 color: "#063970",
                 fontWeight: "bold",
-                fontSize: 60,
+                fontSize: 70,
               }}
             >
               Oops!
               <br />
             </Typography>
-            You aren't allowed to access {URL}
+            You are forbidden from accessing this page!
             <br />
             Please return to the page you were on
           </Box>

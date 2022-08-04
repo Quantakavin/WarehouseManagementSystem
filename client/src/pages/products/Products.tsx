@@ -71,7 +71,7 @@ const Products: React.FC = () => {
     },
   ];
 
-  const checkBasketButton=()=>{
+  const checkBasketButton = () => {
     if (totalItems > 0) {
       return (
         <motion.div
@@ -93,7 +93,6 @@ const Products: React.FC = () => {
               backgroundColor: "#063970",
               ":hover": { backgroundColor: "#031c38" },
               float: "right",
-
             }}
           >
             New Loan ({totalItems})
@@ -102,7 +101,7 @@ const Products: React.FC = () => {
         </motion.div>
       );
     }
-  }
+  };
   const CustomToolbar = () => {
     return (
       <GridToolbarContainer
@@ -141,14 +140,10 @@ const Products: React.FC = () => {
               >
                 Products
               </Typography>
-              <Box>
-             
-                  {checkBasketButton()}
-               
-              </Box>
+              <Box>{checkBasketButton()}</Box>
             </Box>
             <DataGrid
-              sx={{ background: "white", fontSize: 18 }}
+              sx={{ background: "white", fontSize: 16 }}
               rows={row}
               columns={columns}
               getRowId={(row) => row.BinProductPK}
@@ -201,7 +196,7 @@ const Products: React.FC = () => {
             </Typography>
           </Box>
           <DataGrid
-            sx={{ background: "white", fontSize: 18 }}
+            sx={{ background: "white", fontSize: 16 }}
             rows={row}
             columns={columns}
             getRowId={(row) => row.BinProductPK}

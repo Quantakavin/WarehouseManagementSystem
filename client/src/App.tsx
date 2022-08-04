@@ -9,7 +9,7 @@ import RmaDisplay from "./components/display/rmaDisplay";
 import TLoanDisplay2 from "./components/display/tloanDisplay2";
 import TLoanManagerExtensionDisplay from "./components/display/tloanManagerExtensionDisplay";
 import TopNav from "./components/header/TopNav";
-import Sidebar from "./components/sidebar/SideBar";
+import Sidebar from "./components/sidebar/Sidebar";
 import BinLocations from "./pages/binlocations/BinLocations";
 import Dashboard from "./pages/dashboards/Dashboards";
 import Error401 from "./pages/error/Error401";
@@ -74,6 +74,7 @@ const App: React.FC = () => {
           <Box className="bluebackground" style={{ flex: 5 }}>
             <Routes>
               <Route element={<ProtectedRoute loginpage />}>
+                <Route path="/401" element={<Error401 />} />
                 <Route path="/login" element={<Navigate replace to="/" />} />
                 <Route path="/" element={<Login />} />
                 <Route path="/forgetpassword" element={<ForgetPassword />} />
@@ -155,7 +156,6 @@ const App: React.FC = () => {
                   path="/editnotificationgroup/:id"
                   element={<EditNotificationGroup />}
                 />
-                <Route path="/401" element={<Error401 />} />
                 <Route path="/403" element={<Error403 />} />
                 <Route path="*" element={<Error404 />} />
               </Route>
