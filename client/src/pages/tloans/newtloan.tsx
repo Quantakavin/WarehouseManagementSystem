@@ -48,6 +48,7 @@ import {
   selectPermissions,
   selectRole,
 } from "../../app/reducers/CurrentUserSlice";
+import config from "../../config/config";
 
 function newtloan() {
   const navigate = useNavigate();
@@ -70,14 +71,14 @@ function newtloan() {
   const [durationError, setDurationError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [collectionError, setCollectionError] = useState(false);
-  const [requireddateError, setRDateError] = useState(false); 
+  const [requireddateError, setRDateError] = useState(false);
   const [typeErrorText, setTypeErrorText] = useState("");
   const [companyErrorText, setCompanyErrorText] = useState("");
   const [purposeErrorText, setPurposeErrorText] = useState("");
   const [durationErrorText, setDurationErrorText] = useState("");
   const [emailErrorText, setEmailErrorText] = useState("");
   const [collectionErrorText, setCollectionErrorText] = useState("");
-  const [rdateErrorText, setRDateErrorText] = useState(""); 
+  const [rdateErrorText, setRDateErrorText] = useState("");
   const permissions = useAppSelector(selectPermissions);
   const ExternalApplication = permissions.some(
     (e) => e.FeatureName === "T-Loan Application (Internal+External)"
@@ -325,7 +326,6 @@ function newtloan() {
 
   const handleChangeCompany = (event: SelectChangeEvent) => {
     setCompany(event.target.value);
-  
   };
 
   const handleChangeDuration = (event: SelectChangeEvent) => {
@@ -351,8 +351,6 @@ function newtloan() {
 
   const emailRegex = /^\S+@\S+\.\S+$/i;
 
-
-  
   const submitLoan = (e) => {
     setSubmitLoading(true);
     e.preventDefault();
@@ -411,12 +409,29 @@ function newtloan() {
       setCollectionError(true);
       setCollectionErrorText("Selection required");
       setSubmitLoading(false);
-    }if (type === "2" && (company === "1" || company === "2" ||company === "3" ||company === "4" ||company === "5" ||company === "6")){
+    }
+    if (
+      type === "2" &&
+      (company === "1" ||
+        company === "2" ||
+        company === "3" ||
+        company === "4" ||
+        company === "5" ||
+        company === "6")
+    ) {
       setCompanyError(true);
       setCompanyErrorText("Valid Input Required");
       setSubmitLoading(false);
     }
-    if (type === "1" && (company !== "1" && company !== "2" && company !== "3" && company !== "4" && company !== "5" && company !== "6")){
+    if (
+      type === "1" &&
+      company !== "1" &&
+      company !== "2" &&
+      company !== "3" &&
+      company !== "4" &&
+      company !== "5" &&
+      company !== "6"
+    ) {
       setCompanyError(true);
       setCompanyErrorText("Input Required");
       setSubmitLoading(false);
@@ -430,12 +445,12 @@ function newtloan() {
       requireddate !== "" &&
       email !== "" &&
       email.match(emailRegex) &&
-      collection !== "")
-      {
+      collection !== ""
+    ) {
       setTimeout(() => {
         try {
           const results = axios
-            .post("http://localhost:5000/api/tloan/newloan", {
+            .post(`${config.baseURL}/tloan/newloan`, {
               type,
               company,
               name,
@@ -445,7 +460,7 @@ function newtloan() {
               requireddate,
               user,
               email,
-              collection, 
+              collection,
               items,
             })
             .then(() => {
@@ -459,15 +474,13 @@ function newtloan() {
               navigate("/tloan");
               emptyCart();
             });
-            
+
           console.log(results);
         } catch (error) {
           console.log(error.response);
           setSubmitLoading(false);
-          
         }
       }, 500);
-      
     }
   };
 
@@ -505,25 +518,42 @@ function newtloan() {
       setEmailErrorText("Invalid Email");
       setLoading(false);
     }
-    if (type === "2" && (company === "1" || company === "2" ||company === "3" ||company === "4" ||company === "5" ||company === "6")){
+    if (
+      type === "2" &&
+      (company === "1" ||
+        company === "2" ||
+        company === "3" ||
+        company === "4" ||
+        company === "5" ||
+        company === "6")
+    ) {
       setCompanyError(true);
       setCompanyErrorText("Valid Input Required");
       setSubmitLoading(false);
     }
-    if (type === "1" && (company !== "1" && company !== "2" && company !== "3" && company !== "4" && company !== "5" && company !== "6")){
+    if (
+      type === "1" &&
+      company !== "1" &&
+      company !== "2" &&
+      company !== "3" &&
+      company !== "4" &&
+      company !== "5" &&
+      company !== "6"
+    ) {
       setCompanyError(true);
       setCompanyErrorText("Input Required");
       setSubmitLoading(false);
     }
-    if ( items.length !== 0 &&
-        company !== "" && 
-        email !== "" &&
-        email.match(emailRegex))
-         {
+    if (
+      items.length !== 0 &&
+      company !== "" &&
+      email !== "" &&
+      email.match(emailRegex)
+    ) {
       setTimeout(() => {
         try {
           const results = axios
-            .post("http://localhost:5000/api/tloan/loanDrafting", {
+            .post(`${config.baseURL}/tloan/loanDrafting`, {
               type,
               company,
               name,
@@ -554,7 +584,6 @@ function newtloan() {
           setLoading(false);
         }
       }, 500);
-      
     }
   };
 
@@ -624,7 +653,6 @@ function newtloan() {
     return null;
   };
 
-
   const ExternalOrInternal = () => {
     if (type === "1") {
       return (
@@ -658,7 +686,6 @@ function newtloan() {
       );
     }
     if (type === "2") {
-    
       return (
         <TextField
           id="outlined-basic"
@@ -673,9 +700,7 @@ function newtloan() {
               setCompanyErrorText("Required");
             }
           }}
-          onChange={(e) =>
-            setCompany(e.target.value)
-          }
+          onChange={(e) => setCompany(e.target.value)}
           value={company}
           error={companyError}
           helperText={companyErrorText}
@@ -733,9 +758,13 @@ function newtloan() {
       { "12 Months": "365" },
     ];
     return (
-      <div style={{ overflow: "auto" }}>
+      <Box>
         <Card
-          sx={{ width: "95%", height: "100%", margin: 3, overflow: "auto" }}
+          sx={{
+            width: "98%",
+            height: "100%",
+            m: 3,
+          }}
         >
           <CardContent>
             <h2>Apply TLoan</h2>
@@ -772,9 +801,8 @@ function newtloan() {
                   error={emailError}
                   helperText={emailErrorText}
                 />
-                 {TLoanTypeAccess()}
+                {TLoanTypeAccess()}
                 {ExternalOrInternal()}
-       
               </Box>
 
               <Box sx={{ display: "flex" }}>
@@ -961,7 +989,7 @@ function newtloan() {
             </form>
           </CardContent>
         </Card>
-      </div>
+      </Box>
     );
   };
   return getCard();

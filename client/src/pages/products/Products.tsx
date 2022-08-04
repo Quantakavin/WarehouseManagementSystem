@@ -26,6 +26,7 @@ import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import IsEditableProvider, {
   EditableContext,
 } from "../../components/context/isEditableContext";
+import config from "../../config/config";
 
 const Products: React.FC = () => {
   const [row, setRow] = useState([]);
@@ -40,7 +41,7 @@ const Products: React.FC = () => {
   const { isEditable, setIsEditable, TLoanIDGlobal } = context;
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/products?limit=100000&page=0`)
+    fetch(`${config.baseURL}/products?limit=100000&page=0`)
       .then((data) => data.json())
       .then((data) => setRow(data));
   }, []);

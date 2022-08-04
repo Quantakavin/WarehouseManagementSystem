@@ -11,6 +11,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import config from "../../config/config";
 import { Toast } from "../alerts/SweetAlert";
 
 const style = {
@@ -63,7 +64,7 @@ export default function TLoanRejectModalButton() {
       setTimeout(() => {
         try {
           axios
-            .put(`http://localhost:5000/api/tloan/reject/${TLoanID}`, {
+            .put(`${config.baseURL}/tloan/reject/${TLoanID}`, {
               remarks,
             })
             .then(() => {
