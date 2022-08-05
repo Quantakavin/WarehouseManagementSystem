@@ -120,7 +120,7 @@ export default function tloanDisplay() {
     
       Toast.fire({
         icon: "warning",
-        title: "You are CURRENTLY editing Loan #" + TLoanIDGlobal,
+        title: "You are CURRENTLY editing Loan #" + TLoanIDGlobal + ". Finish editing it first.",
         customClass: "swalpopup",
         timer: 3000,
         width: 700,
