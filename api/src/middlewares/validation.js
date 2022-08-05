@@ -294,9 +294,15 @@ const validation = {
         const { email } = req.body;
         const resetToken = req.body.token;
 
-        if (!resetToken || !email) {
+        if (!email) {
             return res.status(400).json({
-                message: 'Token/email not keyed in.'
+                message: 'Email not keyed in.'
+            });
+        }
+
+        if (!resetToken) {
+            return res.status(400).json({
+                message: 'Token does not exist. Please generate a new one.'
             });
         }
 
