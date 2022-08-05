@@ -22,7 +22,7 @@ const Error401 = () => {
             sx={{
               color: "black",
               fontWeight: "bold",
-              fontSize: 300,
+              fontSize: 250,
               textAlign: "center",
             }}
           >
@@ -35,14 +35,14 @@ const Error401 = () => {
               color: "black",
               fontWeight: "normal",
               textAlign: "center",
-              fontSize: 30,
+              fontSize: 40,
             }}
           >
             <Typography
               sx={{
                 color: "#063970",
                 fontWeight: "bold",
-                fontSize: 60,
+                fontSize: 70,
               }}
             >
               Oops!

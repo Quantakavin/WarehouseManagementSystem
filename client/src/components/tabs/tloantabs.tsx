@@ -28,6 +28,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
+import config from "../../config/config";
 
 const columns = [
   { field: "TLoanID", headerName: "Loan No.", flex: 4 },
@@ -57,51 +58,51 @@ const TLoanTabs: React.FC = () => {
   const [allHistory, setAllHistory] = useState([]);
   // Get and set current tloans data
   useEffect(() => {
-    fetch(`http://localhost:5000/api/tloan/current/${userid}`)
+    fetch(`${config.baseURL}/tloan/current/${userid}`)
       .then((data) => data.json())
       .then((data) => setCurrentTable(data));
   }, []);
   // Get and set pending tloans data
   useEffect(() => {
-    fetch(`http://localhost:5000/api/tloan/pending/${userid}`)
+    fetch(`${config.baseURL}/tloan/pending/${userid}`)
       .then((data) => data.json())
       .then((data) => setPendingTable(data));
   }, []);
   // Get and set draft data
   useEffect(() => {
-    fetch(`http://localhost:5000/api/tloan/drafts/${userid}`)
+    fetch(`${config.baseURL}/tloan/drafts/${userid}`)
       .then((data) => data.json())
       .then((data) => setDraftTable(data));
   }, []);
   // Get and set history data
   useEffect(() => {
-    fetch(`http://localhost:5000/api/tloan/history/${userid}`)
+    fetch(`${config.baseURL}/tloan/history/${userid}`)
       .then((data) => data.json())
       .then((data) => setHistoryTable(data));
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/tloan/ManagerLoan`)
+    fetch(`${config.baseURL}/tloan/ManagerLoan`)
       .then((data) => data.json())
       .then((data) => setManagerLoan(data));
   }, []);
   useEffect(() => {
-    fetch(`http://localhost:5000/api/tloan/ManagerExtension`)
+    fetch(`${config.baseURL}/tloan/ManagerExtension`)
       .then((data) => data.json())
       .then((data) => setExtensionTable(data));
   }, []);
   useEffect(() => {
-    fetch(`http://localhost:5000/api/tloan/approvedLoans`)
+    fetch(`${config.baseURL}/tloan/approvedLoans`)
       .then((data) => data.json())
       .then((data) => setApprovedTable(data));
   }, []);
   useEffect(() => {
-    fetch(`http://localhost:5000/api/tloan/allCurrent`)
+    fetch(`${config.baseURL}/tloan/allCurrent`)
       .then((data) => data.json())
       .then((data) => setAllCurrent(data));
   }, []);
   useEffect(() => {
-    fetch(`http://localhost:5000/api/tloan/allHistory`)
+    fetch(`${config.baseURL}/tloan/allHistory`)
       .then((data) => data.json())
       .then((data) => setAllHistory(data));
   }, []);

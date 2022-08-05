@@ -15,6 +15,7 @@ import { motion } from "framer-motion";
 import { Toast } from "../alerts/SweetAlert";
 import { TLoans } from "../../utils/CommonTypes";
 import TLoanRejectModalButton from "../modals/tloanRejectExtension";
+import config from "../../config/config";
 
 
 export default function TLoanManagerDisplay() {
@@ -30,7 +31,7 @@ export default function TLoanManagerDisplay() {
     const fetchData = async () => {
       // get the data from the api
       const results = await axios
-        .get(`http://localhost:5000/api/tloans/${TLoanID}`)
+        .get(`${config.baseURL}/tloans/${TLoanID}`)
         .then((data) => {
           setReasonField(data.data.Reason);
           setLoans(data.data);
@@ -51,7 +52,7 @@ export default function TLoanManagerDisplay() {
     const fetchData = async () => {
       // get the data from the api
       const items = await axios.get(
-        `http://localhost:5000/api/tloanitems/${TLoanID}`
+        `${config.baseURL}/tloanitems/${TLoanID}`
       );
 
       setItems(items.data);
@@ -184,7 +185,7 @@ console.log(items)
     setLoading(true);
     setTimeout(() => {
       axios
-        .put(`http://localhost:5000/api/tloan/approveExtension/${TLoanID}`)
+        .put(`${config.baseURL}/tloan/approveExtension/${TLoanID}`)
         .then(() => {
           Toast.fire({
             icon: "success",

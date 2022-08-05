@@ -132,9 +132,7 @@ async function sendPasswordResetEmail(email, resetToken, origin) {
                                                     </tr>
                                                     <tr>
                                                         <td style="text-align:center;">
-                                                            <a href="https://www.isdnholdings.com" title="logo" target="_blank">
                                                             <img width="40%" src="https://static.wixstatic.com/media/9240f9_6ca7497359ea4593baa65d30704d0e8c~mv2.jpg/v1/crop/x_0,y_137,w_400,h_109/fill/w_329,h_94,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ISDN_logo.jpg" title="logo" alt="logo">
-                                                            </a>
                                                         </td>
                                                     </tr>
                                                     <tr>

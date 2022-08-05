@@ -23,6 +23,7 @@ import {
   selectPermissions,
   selectRole,
 } from "../../app/reducers/CurrentUserSlice";
+import config from "../../config/config";
 
 const ViewProduct: React.FC = () => {
   const params = useParams();
@@ -44,7 +45,7 @@ const ViewProduct: React.FC = () => {
     const fetchData = async () => {
       // get the data from the api
       const product = await axios.get(
-        `http://localhost:5000/api/product/${params.id}`
+        `${config.baseURL}/product/${params.id}`
       );
 
       setProductGet(product.data);

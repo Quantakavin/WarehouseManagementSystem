@@ -303,7 +303,6 @@ const AddUserGroup: React.FC = () => {
           </div>
         </FormContainer>
       </motion.div>
-      <pre>{JSON.stringify(watch(), null, 2)}</pre>
     </>
   );
 };

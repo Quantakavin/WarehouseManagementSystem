@@ -21,7 +21,7 @@ module.exports.getLoanByNo = async (req, res) => {
                 [output[0].Items] = results2;
                 output = output[0];
             }
-            redisClient.set(`TLoanItems#${TLoanID}`, JSON.stringify(output));
+            redisClient.set(`TLoan#${TLoanID}`, JSON.stringify(output));
             return res.status(200).send(output);
         }
         return res.status(404).json({ message: 'Cannot find' });
@@ -35,12 +35,17 @@ module.exports.getLoanByNo = async (req, res) => {
 module.exports.getItemsByTloan = async (req, res) => {
     const { TLoanID } = req.params;
     try {
-        const results1 = await TLoan.getLoanByNumber(TLoanID);
-        const IDOfTLoan = results1[0][0].TLoanID;
-        const results2 = await TLoan.getTLoanOutItem(IDOfTLoan);
-        if (results2.length > 0) {
-            redisClient.set(`TLoanItems#${TLoanID}`, JSON.stringify(results2));
-            return res.status(200).json(results2[0]);
+        const TLoanItems = await redisClient.get(`TLoanItems#${TLoanID}`);
+        if (TLoanItems !== null) {
+            const redisresults = JSON.parse(TLoanItems);
+            return res.status(200).json(redisresults);
+        }
+        // const results1 = await TLoan.getLoanByNumber(TLoanID);
+        // const IDOfTLoan = results1[0][0].TLoanID;
+        const results = await TLoan.getTLoanOutItem(TLoanID);
+        if (results.length > 0) {
+            redisClient.set(`TLoanItems#${TLoanID}`, JSON.stringify(results[0]));
+            return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('This TLoan has no items');
         }
@@ -53,8 +58,15 @@ module.exports.getItemsByTloan = async (req, res) => {
 module.exports.getIDofLoan = async (req, res) => {
     const { TLoanID } = req.params;
     try {
+        const TLoanIDs = await redisClient.get(`TLoanIDs#${TLoanID}`);
+        if (TLoanIDs !== null) {
+            const redisresults = JSON.parse(TLoanIDs);
+            return res.status(200).json(redisresults);
+        }
+        
         const results = await TLoan.getID(TLoanID);
         if (results.length > 0) {
+            redisClient.set(`TLoanIDs#${TLoanID}`, JSON.stringify(results[0]));
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('There is no ID');
@@ -73,8 +85,9 @@ module.exports.allLoan = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await TLoan.getAll();
-        redisClient.set('TLoans', JSON.stringify(results[0]));
+       
         if (results.length > 0) {
+            redisClient.set('TLoans', JSON.stringify(results[0]));
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('You have not made any TLoans');
@@ -269,20 +282,7 @@ module.exports.SendDraft = async (req, res) => {
     }
 };
 
-module.exports.loanExtension = async (req, res) => {
-    const { id, duration, reason } = req.body;
-    try {
-        const results = await TLoan.extension(id, duration, reason);
-        if (results.length > 0) {
-            return res.status(200).send('Extension Request Submitted!').json(results[0]);
-        } else {
-            return res.status(500).send('Extension Request Unsuccessful!');
-        }
-    } catch (error) {
-        console.log(error);
-        return res.status(500).send('Internal Server Error');
-    }
-};
+
 
 module.exports.currentLoan = async (req, res) => {
     const { UserID } = req.params;
@@ -495,9 +495,8 @@ module.exports.ManagerLoan = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await TLoan.getManagerLoan();
-        redisClient.set('ManagerLoan', JSON.stringify(results[0]));
         if (results.length > 0) {
-            
+            redisClient.set('ManagerLoan', JSON.stringify(results[0]));
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('No Loans that are in need of approval');
@@ -535,6 +534,9 @@ module.exports.LoanExtend = async (req, res) => {
         const results = await TLoan.loanExtension(tloanid, duration, reason);
 
         if (results.length > 0) {
+            redisClient.del(`TLoan#${tloanid}`);
+            redisClient.del(`TLoanItems#${tloanid}`);
+            redisClient.del(`TLoanIDs#${tloanid}`);
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('Could not submit extension request');

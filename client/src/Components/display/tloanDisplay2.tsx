@@ -49,6 +49,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "react-use-cart";
 import { useAppSelector } from "../../app/hooks";
 import { selectPermissions } from "../../app/reducers/CurrentUserSlice";
+import config from "../../config/config";
 import { Toast, Toast2 } from "../alerts/SweetAlert";
 import { EditableContext } from "../context/isEditableContext";
 import ModalButton from "../modals/tloanExtensionModal";
@@ -114,12 +115,25 @@ export default function tloanDisplay() {
     (e) => e.FeatureName === "T-Loan Warehouse (View)"
   );
 
+  useEffect(()=>{
+    if(isEditable === true  && TLoanID !== TLoanIDGlobal){
+    
+      Toast.fire({
+        icon: "warning",
+        title: "You are CURRENTLY editing Loan #" + TLoanIDGlobal,
+        customClass: "swalpopup",
+        timer: 3000,
+        width: 700,
+      });
+      navigate("/tloan")
+    }
+  })
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
       const loans = await axios
-        .get(`http://localhost:5000/api/tloans/${TLoanID}`)
+        .get(`${config.baseURL}/tloans/${TLoanID}`)
         .then((data) => {
           setPurposeField(data.data.Purpose);
           setReasonField(data.data.Reason);
@@ -140,13 +154,13 @@ export default function tloanDisplay() {
     const fetchData = async () => {
       // get the data from the api
       const items = await axios.get(
-        `http://localhost:5000/api/tloanitems/${TLoanID}`
+        `${config.baseURL}/tloanitems/${TLoanID}`
       );
       setItemsTable(items.data);
     };
     fetchData().catch(console.error);
   }, []);
- 
+  console.log(itemsTable)
   const updateStatus = (e) =>{
     setLoading(false)
     setStatusChangeError(false)
@@ -159,7 +173,7 @@ export default function tloanDisplay() {
         try{
           const results= axios
           .put(
-            `http://localhost:5000/api/tloan/updatestatus/${TLoanID}`,{
+            `${config.baseURL}/tloan/updatestatus/${TLoanID}`,{
               statusChange,
             })
             .then(() => {
@@ -843,7 +857,7 @@ export default function tloanDisplay() {
         try {
           const results = axios
             .put(
-              `http://localhost:5000/api/tloan/submitEditedDraft/${TLoanID}`,
+              `${config.baseURL}/tloan/submitEditedDraft/${TLoanID}`,
               {
                 type,
                 company,
@@ -927,7 +941,7 @@ export default function tloanDisplay() {
         try {
           const results = axios
             .put(
-              `http://localhost:5000/api/tloan/draftEditedDraft/${TLoanID}`,
+              `${config.baseURL}/tloan/draftEditedDraft/${TLoanID}`,
               {
                 type,
                 company,
@@ -1382,7 +1396,7 @@ export default function tloanDisplay() {
   };
   const ApproveLoan = async () => {
     axios
-      .put(`http://localhost:5000/api/tloan/approve/${TLoanID}`)
+      .put(`${config.baseURL}/tloan/approve/${TLoanID}`)
       .then(() => {
         Toast.fire({
           icon: "success",

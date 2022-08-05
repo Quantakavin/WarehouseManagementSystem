@@ -15,6 +15,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import config from "../../config/config";
 import { Toast } from "../alerts/SweetAlert";
 
 const style = {
@@ -54,13 +55,13 @@ const ModalButton = () => {
     const fetchData = async () => {
       // get the data from the api
       const loans = await axios.get(
-        `http://localhost:5000/api/tloanid/${TLoanID}`
+        `${config.baseURL}/tloanid/${TLoanID}`
       );
       const extension = await axios.get(
-        `http://localhost:5000/api/tloanExtensionStatus/${TLoanID}`
+        `${config.baseURL}/tloanExtensionStatus/${TLoanID}`
       );
       const loanDetail = await axios.get(
-        `http://localhost:5000/api/tloanstatusid/${TLoanID}`
+        `${config.baseURL}/tloanstatusid/${TLoanID}`
       );
       setLoan(loans.data[0].TLoanID);
       setExtensionStatus(extension.data[0].ExtensionStatus);
@@ -72,6 +73,7 @@ const ModalButton = () => {
       // make sure to catch any error
       .catch(console.error);
   }, []);
+  console.log(extensionStatus)
 
   console.log(extensionStatus);
   useEffect(() => {
@@ -100,7 +102,7 @@ const ModalButton = () => {
       setTimeout(() => {
         try {
           const results = axios
-            .post(`http://localhost:5000/api/tloan/extension`, {
+            .post(`${config.baseURL}/tloan/extension`, {
               tloanid,
               reason,
               duration,

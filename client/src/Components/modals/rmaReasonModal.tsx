@@ -11,6 +11,7 @@ import { useNavigate, useParams } from "react-router";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CloseIcon from '@mui/icons-material/Close';
 import { LoadingButton } from "@mui/lab";
+import config from "../../config/config";
 
 const style = {
   position: "absolute" as "absolute",
@@ -41,7 +42,7 @@ export default function ReasonModalButton() {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const rma = await axios.get(`http://localhost:5000/api/RMA/${RmaID}`);
+      const rma = await axios.get(`${config.baseURL}/RMA/${RmaID}`);
 
       setRma(rma.data);
     };

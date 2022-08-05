@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import "react-tabs/style/react-tabs.css";
 import { useAppSelector } from "../../app/hooks";
 import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
+import config from "../../config/config";
 
 const Rmatabs: React.FC = () => {
   const navigate = useNavigate();
@@ -40,43 +41,43 @@ const Rmatabs: React.FC = () => {
   const [value, setValue] = useState(); // first tab
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/pendingRMA")
+    fetch(`${config.baseURL}/pendingRMA`)
       .then((data) => data.json())
       .then((data) => setPendingTable(data));
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/acceptedRMA")
+    fetch(`${config.baseURL}/acceptedRMA`)
       .then((data) => data.json())
       .then((data) => setApprovedTable(data));
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/checklistRMA")
+    fetch(`${config.baseURL}/checklistRMA`)
       .then((data) => data.json())
       .then((data) => setChecklistTable(data));
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/receivedRMA")
+    fetch(`${config.baseURL}/receivedRMA`)
       .then((data) => data.json())
       .then((data) => setReceivedTable(data));
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/verifiedRMA")
+    fetch(`${config.baseURL}/verifiedRMA`)
       .then((data) => data.json())
       .then((data) => setVerifiedTable(data));
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/inprogressRMA")
+    fetch(`${config.baseURL}/inprogressRMA`)
       .then((data) => data.json())
       .then((data) => setInProgressTable(data));
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/closedRMA")
+    fetch(`${config.baseURL}/closedRMA`)
       .then((data) => data.json())
       .then((data) => setClosedTable(data));
   }, []);
@@ -86,7 +87,7 @@ const Rmatabs: React.FC = () => {
     const fetchPendingData = async () => {
       // get the data from the api
       const pendingrmadata = await axios
-        .get(`http://localhost:5000/api/myPendingRMA/${userid}`)
+        .get(`${config.baseURL}/myPendingRMA/${userid}`)
         .then((pendingrmadata) => setMPTable(pendingrmadata.data));
       // setRma(Object.e)
     };
@@ -94,21 +95,21 @@ const Rmatabs: React.FC = () => {
     const fetchAcceptedData = async () => {
       // get the data from the api
       const acceptedrmadata = await axios
-        .get(`http://localhost:5000/api/myAcceptedRMA/${userid}`)
+        .get(`${config.baseURL}/myAcceptedRMA/${userid}`)
         .then((acceptedrmadata) => setMATable(acceptedrmadata.data));
       // setRma(Object.e)
     };
     const fetchRejectedData = async () => {
       // get the data from the api
       const rejectedrmadata = await axios
-        .get(`http://localhost:5000/api/myRejectedRMA/${userid}`)
+        .get(`${config.baseURL}/myRejectedRMA/${userid}`)
         .then((rejectedrmadata) => setMRTable(rejectedrmadata.data));
       // setRma(Object.e)
     };
     const fetchInProgressData = async () => {
       // get the data from the api
       const inprogressrmadata = await axios
-        .get(`http://localhost:5000/api/myIPRMA/${userid}`)
+        .get(`${config.baseURL}/myIPRMA/${userid}`)
         .then((inprogressrmadata) => setMIPTable(inprogressrmadata.data));
       // setRma(Object.e)
     };

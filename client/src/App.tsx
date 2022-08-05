@@ -23,7 +23,7 @@ import Products from "./pages/products/Products";
 import ViewProduct from "./pages/products/ViewProduct";
 import ForgetPassword from "./pages/resetpassword/ForgetPassword";
 import ResetPassword from "./pages/resetpassword/ResetPassword";
-import CreateRMA from "./pages/rma/createRma";
+import CreateRMA from "./pages/rma/newRma";
 import RMA from "./pages/rma/rma";
 import NewTLoan from "./pages/tloans/newtloan";
 import TLoan from "./pages/tloans/tloan";
@@ -75,8 +75,6 @@ const App: React.FC = () => {
             <Routes>
               <Route element={<ProtectedRoute loginpage />}>
                 <Route path="/401" element={<Error401 />} />
-                <Route path="/403" element={<Error403 />} />
-                <Route path="*" element={<Error404 />} />
                 <Route path="/login" element={<Navigate replace to="/" />} />
                 <Route path="/" element={<Login />} />
                 <Route path="/forgetpassword" element={<ForgetPassword />} />
@@ -158,6 +156,8 @@ const App: React.FC = () => {
                   path="/editnotificationgroup/:id"
                   element={<EditNotificationGroup />}
                 />
+                <Route path="/403" element={<Error403 />} />
+                <Route path="*" element={<Error404 />} />
               </Route>
             </Routes>
           </Box>
