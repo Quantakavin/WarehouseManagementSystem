@@ -39,7 +39,7 @@ import {
   MuiEvent,
 } from "@mui/x-data-grid";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { DatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import axios from "axios";
 import dateFormat from "dateformat";
@@ -206,12 +206,15 @@ export default function tloanDisplay() {
       <FormControl sx={{ width: 200, marginLeft: 3 }}>
       <InputLabel>Loan Type</InputLabel>
       <Select
-        id="outlined-basic"
+        id="filled-required"
+        variant="filled"
         value={type}
         onChange={handleChangeType}
         label="Loan Type"
         size="small"
         onBlur={() => {
+          setTypeError(false)
+          setTypeErrorText("")
           if (type === "") {
             setTypeError(true);
             setTypeErrorText("Selection required");
@@ -232,12 +235,15 @@ export default function tloanDisplay() {
         <FormControl sx={{ width: 200, marginLeft: 3, }}>
         <InputLabel>Loan Type</InputLabel>
         <Select
-          id="outlined-basic"
+          id="filled-required"
+          variant="filled"
           value={type}
           onChange={handleChangeType}
           label="Loan Type"
           size="small"
           onBlur={() => {
+            setTypeError(false)
+            setTypeErrorText("")
             if (type === "") {
               setTypeError(true);
               setTypeErrorText("Selection required");
@@ -261,12 +267,15 @@ export default function tloanDisplay() {
         <FormControl sx={{ width: 200, marginLeft: 3 }}>
         <InputLabel>Company</InputLabel>
         <Select
-          id="outlined-basic"
+          id="filled-required"
+          variant="filled"
           value={company}
           onChange={handleChangeCompany}
           size="small"
           label="Company"
           onBlur={() => {
+            setCompanyError(false)
+            setCompanyErrorText("")
             if (company === "") {
               setCompanyError(true);
               setCompanyErrorText("Selection required");
@@ -287,15 +296,18 @@ export default function tloanDisplay() {
       </FormControl>
       )
     }else if(type === "2" || type === 2 ){
+  
       return(
         <TextField
-        id="outlined-basic"
+        id="filled-required"
         label="Customer Company"
-        variant="outlined"
+        variant="filled"
         size="small"
         name="customer Company"
         sx={{ marginLeft: 3 }}
         onBlur={() => {
+          setCompanyError(false)
+          setCompanyErrorText("")
           if (company === "" ) {
             setCompanyError(true);
             setCompanyErrorText("Required");
@@ -1172,20 +1184,31 @@ export default function tloanDisplay() {
             {/* <form onSubmit={submitLoan} style={{ width: "100%" }}> */}
             <Box sx={{ marginTop: 1, display: "flex", marginLeft: 2 }}>
               <TextField
-                id="outlined-basic"
+                id="filled-required"
                 label="Employee Name"
-                variant="outlined"
+                variant="filled"
                 size="small"
                 value={name}
                 disabled
               />
 
               <TextField
-                id="outlined-basic"
+                id="filled-required"
                 label="Customer Email"
-                variant="outlined"
+                variant="filled"
                 size="small"
                 name="customerEmail"
+                onBlur={() => {
+                  setEmailError(false)
+                  setEmailErrorText("")
+                  if (email === "") {
+                    setEmailError(true);
+                    setEmailErrorText("Required");
+                  } else if (!email.match(emailRegex)) {
+                    setEmailError(true);
+                    setEmailErrorText("Invalid Email");
+                  }
+                }}
                 sx={{ marginLeft: 3 }}
                 // defaultValue={loans.CustomerEmail}
                 value={email}
@@ -1204,9 +1227,19 @@ export default function tloanDisplay() {
               <TextField
                 sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
                 multiline
+                id="filled-required"
+                variant="filled"
                 rows={4}
                 label="Purpose"
                 value={purpose}
+                onBlur={() => {
+                  setPurposeError(false)
+                  setPurposeErrorText("")
+                  if (purpose === "") {
+                    setPurposeError(true);
+                    setPurposeErrorText("Required");
+                  }
+                }}
                 onChange={(e) => setPurpose(e.target.value)}
                 error={purposeError}
                 helperText={purposeErrorText}
@@ -1217,11 +1250,21 @@ export default function tloanDisplay() {
               <FormControl sx={{ width: 200, marginTop: 2 }}>
                 <InputLabel>Collection Type</InputLabel>
                 <Select
-                  id="outlined-basic"
+                  id="filled-required"
                   value={collection}
                   onChange={handleChangeCollection}
                   label="Collection Type"
                   size="small"
+                  variant="filled"
+                  onBlur={() => {
+                    setCollectionError(false)
+                    setCollectionErrorText("")
+                    if (collection === "") {
+                      setCollectionError(true);
+                      setCollectionErrorText("Selection required");
+                    }
+                  }}
+                  error={collectionError}
                 >
                   <MenuItem value="Self-Collection">Self-Collection</MenuItem>
                   <MenuItem value="Delivery">Delivery</MenuItem>
@@ -1235,12 +1278,15 @@ export default function tloanDisplay() {
               <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
                   <InputLabel>Duration</InputLabel>
                   <Select
-                    id="outlined-basic"
+                    id="filled-required"
+                    variant="filled"
                     value={duration}
                     onChange={handleChangeDuration}
                     label="Duration"
                     size="small"
                     onBlur={() => {
+                      setDurationError(false)
+                      setDurationErrorText("")
                       if (duration === "") {
                         setDurationError(true);
                         setDurationErrorText("Selection required");
@@ -1263,10 +1309,11 @@ export default function tloanDisplay() {
                 </FormControl>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <Stack>
-                  <DesktopDatePicker
+                  <DatePicker
                     label="Required Date"
                     inputFormat="yyyy-MM-dd"
                     value={dateForm}
+                    inputProps={{ readOnly: true }}
                     onClose={() => {
                       if (requireddate === "") {
                         setRDateError(true);
@@ -1276,6 +1323,8 @@ export default function tloanDisplay() {
                     onChange={handleChangeRequiredDate}
                     renderInput={(params) => (
                       <TextField
+                      id="filled-required"
+                      variant="filled"
                         size="small"
                         {...params}
                         sx={{ width: 200, marginLeft: 3, marginTop: 2 }}

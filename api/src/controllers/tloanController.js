@@ -418,6 +418,7 @@ module.exports.approveLoan = async (req, res) => {
         if (results) {
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
+            redisClient.del('ApprovedLoan');
             return res.status(200).send('Status has been Updated');
         } else {
             return res.status(500).send('Status failed to Update');
