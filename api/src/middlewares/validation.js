@@ -1,4 +1,3 @@
-const { json } = require('body-parser');
 const validator = require('validator');
 const resetPasswordService = require('../services/resetPasswordService');
 
@@ -124,8 +123,20 @@ const validation = {
             requireddate === '' ||
             user === '' ||
             collection === '' ||
-            (type === "2" && (company === "1" || company === "2" ||company === "3" ||company === "4" ||company === "5" ||company === "6") )||
-            (type === "1" && (company !== "1" && company !== "2" && company !== "3" && company !== "4" && company !== "5" && company !== "6"))|| 
+            (type === '2' &&
+                (company === '1' ||
+                    company === '2' ||
+                    company === '3' ||
+                    company === '4' ||
+                    company === '5' ||
+                    company === '6')) ||
+            (type === '1' &&
+                company !== '1' &&
+                company !== '2' &&
+                company !== '3' &&
+                company !== '4' &&
+                company !== '5' &&
+                company !== '6') ||
             items === []
         ) {
             res.status(400).json({
@@ -141,20 +152,27 @@ const validation = {
             next();
         }
     },
-    
+
     validateDraft: (req, res, next) => {
-        const {
-            type,
-            company,
-            email,
-            items
-        } = req.body;
+        const { type, company, email, items } = req.body;
 
         if (
             email === '' ||
             company === '' ||
-            (type === "2" && (company === "1" || company === "2" ||company === "3" ||company === "4" ||company === "5" ||company === "6") )||
-            (type === "1" && (company !== "1" && company !== "2" && company !== "3" && company !== "4" && company !== "5" && company !== "6"))|| 
+            (type === '2' &&
+                (company === '1' ||
+                    company === '2' ||
+                    company === '3' ||
+                    company === '4' ||
+                    company === '5' ||
+                    company === '6')) ||
+            (type === '1' &&
+                company !== '1' &&
+                company !== '2' &&
+                company !== '3' &&
+                company !== '4' &&
+                company !== '5' &&
+                company !== '6') ||
             items === []
         ) {
             res.status(400).json({
@@ -170,7 +188,6 @@ const validation = {
             next();
         }
     },
-
 
     validateExtensionRequest: (req, res, next) => {
         const { reason, duration } = req.body;
@@ -196,25 +213,20 @@ const validation = {
     },
 
     validateStatusUpdate: (req, res, next) => {
-        const {
-            statusChange
-        } = req.body;
+        const { statusChange } = req.body;
 
-        if (
-            statusChange === ""
-        ) {
+        if (statusChange === '') {
             res.status(400).json({
                 message: 'Please fill up all fields correctly'
             });
-        }
-         else {
+        } else {
             next();
         }
     },
 
     validateRmaSubmission: (req, res, next) => {
         const { contactperson, contactno, salesmanid, contactemail, company, products } = req.body;
-        console.log('Body ' + JSON.stringify(req.body));
+        console.log(`Body ${JSON.stringify(req.body)}`);
         if (products.length === 0) {
             console.log('no products');
             res.status(400).json({
@@ -279,12 +291,18 @@ const validation = {
 
     // Reset token validation
     validateResetToken: async (req, res, next) => {
-        const email = req.body.email;
+        const { email } = req.body;
         const resetToken = req.body.token;
 
-        if (!resetToken || !email) {
+        if (!email) {
             return res.status(400).json({
-                message: 'Token/email not keyed in.'
+                message: 'Email not keyed in.'
+            });
+        }
+
+        if (!resetToken) {
+            return res.status(400).json({
+                message: 'Token does not exist. Please generate a new one.'
             });
         }
 

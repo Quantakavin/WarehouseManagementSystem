@@ -23,7 +23,7 @@ interface ModelProps {
   racktag: string;
   leveltag: string;
   sectiontag: string;
-
+  currentbintags?: string[];
   position: [x: number, y: number, z: number];
 }
 
@@ -33,6 +33,7 @@ const Model: React.FC<ModelProps> = ({
   leveltag,
   sectiontag,
   position,
+  currentbintags
 }) => {
   const group = useRef<THREE.Group>();
   const [BinsData, setBinsData] = useState<any>(null);
@@ -86,13 +87,14 @@ const Model: React.FC<ModelProps> = ({
 
   //   console.log(BinsData);
 
+  if (currentbintags?.includes(bintag)) {
+    console.log("this bin tag is included: ", bintag)
+  }
+
   return (
     <>
     {exists?
     <group
-      onClick={() => {
-        alert(JSON.stringify(BinsData));
-      }}
       onPointerOver={() => setIsSelected(true)}
       onPointerOut={() => setIsSelected(false)}
       ref={group}
@@ -125,7 +127,7 @@ const Model: React.FC<ModelProps> = ({
           </Html>
         ) : null}
 
-        <meshStandardMaterial color={isSelected ? "#8b0000" : "gray"} />
+        <meshStandardMaterial color={currentbintags?.includes(bintag) || isSelected ? "#8b0000" : "gray"} />
       </mesh>
     </group> : null}
     </>

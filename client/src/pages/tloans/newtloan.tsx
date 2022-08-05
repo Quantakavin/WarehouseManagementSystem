@@ -32,7 +32,7 @@ import {
   MuiEvent,
 } from "@mui/x-data-grid";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { DatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import axios from "axios";
 import dateFormat from "dateformat";
@@ -340,7 +340,7 @@ function newtloan() {
     setCollection(event.target.value);
   };
 
-  const handleChangeRequiredDate = (newValue: "" | null) => {
+  const handleChangeRequiredDate = (newValue: unknown) => {
     setDateForm(newValue);
   };
 
@@ -602,12 +602,15 @@ function newtloan() {
         <FormControl sx={{ width: 200, marginLeft: 3 }}>
           <InputLabel>Loan Type</InputLabel>
           <Select
-            id="outlined-basic"
+            id="filled-required"
+            variant="filled"
             value={type}
             onChange={handleChangeType}
             label="Loan Type"
             size="small"
             onBlur={() => {
+              setTypeError(false)
+              setTypeErrorText("")
               if (type === "") {
                 setTypeError(true);
                 setTypeErrorText("Selection required");
@@ -629,12 +632,15 @@ function newtloan() {
         <FormControl sx={{ width: 200, marginLeft: 3 }}>
           <InputLabel>Loan Type</InputLabel>
           <Select
-            id="outlined-basic"
+            id="filled-required"
+            variant="filled"
             value={type}
             onChange={handleChangeType}
             label="Loan Type"
             size="small"
             onBlur={() => {
+              setTypeError(false)
+              setTypeErrorText("")
               if (type === "") {
                 setTypeError(true);
                 setTypeErrorText("Selection required");
@@ -652,19 +658,22 @@ function newtloan() {
     }
     return null;
   };
-
+ 
   const ExternalOrInternal = () => {
     if (type === "1") {
       return (
         <FormControl sx={{ width: 200, marginLeft: 3 }}>
           <InputLabel>Company</InputLabel>
           <Select
-            id="outlined-basic"
+            id="filled-required"
+            variant="filled"
             value={company}
             onChange={handleChangeCompany}
             size="small"
             label="Company"
             onBlur={() => {
+              setCompanyError(false)
+              setCompanyErrorText("")
               if (company === "") {
                 setCompanyError(true);
                 setCompanyErrorText("Selection required");
@@ -688,13 +697,15 @@ function newtloan() {
     if (type === "2") {
       return (
         <TextField
-          id="outlined-basic"
+          id="filled-required"
+          variant="filled"
           label="Customer Company"
-          variant="outlined"
           size="small"
           name="customer Company"
           sx={{ marginLeft: 3 }}
           onBlur={() => {
+            setCompanyError(false)
+            setCompanyErrorText("")
             if (company === "") {
               setCompanyError(true);
               setCompanyErrorText("Required");
@@ -712,12 +723,15 @@ function newtloan() {
         <InputLabel>Company</InputLabel>
         <Select
           disabled
-          id="outlined-basic"
+          id="filled-required"
+          variant="filled"
           value={company}
           onChange={handleChangeCompany}
           size="small"
           label="Company"
           onBlur={() => {
+            setCompanyError(false)
+            setCompanyErrorText("")
             if (company === "") {
               setCompanyError(true);
               setCompanyErrorText("Selection required");
@@ -772,22 +786,24 @@ function newtloan() {
             <form onSubmit={submitLoan} style={{ width: "100%" }}>
               <Box sx={{ marginTop: 1, display: "flex", marginLeft: 2 }}>
                 <TextField
-                  id="outlined-basic"
+                  id="filled-required"
                   label="Employee Name"
-                  variant="outlined"
+                  variant="filled"
                   size="small"
                   value={name}
                   disabled
                 />
 
                 <TextField
-                  id="outlined-basic"
+                  id="filled-required"
                   label="Customer Email"
-                  variant="outlined"
+                  variant="filled"
                   size="small"
                   name="customerEmail"
                   sx={{ marginLeft: 3 }}
                   onBlur={() => {
+                    setEmailError(false)
+                    setEmailErrorText("")
                     if (email === "") {
                       setEmailError(true);
                       setEmailErrorText("Required");
@@ -809,9 +825,13 @@ function newtloan() {
                 <TextField
                   sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
                   multiline
+                  id="filled-required"
+                  variant="filled"
                   rows={4}
                   label="Purpose"
                   onBlur={() => {
+                    setPurposeError(false)
+                    setPurposeErrorText("")
                     if (purpose === "") {
                       setPurposeError(true);
                       setPurposeErrorText("Required");
@@ -827,12 +847,15 @@ function newtloan() {
                 <FormControl sx={{ width: 200, marginTop: 2 }}>
                   <InputLabel>Collection Type</InputLabel>
                   <Select
-                    id="outlined-basic"
+                    id="filled-required"
                     value={collection}
                     onChange={handleChangeCollection}
                     label="Collection Type"
                     size="small"
+                    variant="filled"
                     onBlur={() => {
+                      setCollectionError(false)
+                      setCollectionErrorText("")
                       if (collection === "") {
                         setCollectionError(true);
                         setCollectionErrorText("Selection required");
@@ -853,12 +876,15 @@ function newtloan() {
                 <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
                   <InputLabel>Duration</InputLabel>
                   <Select
-                    id="outlined-basic"
+                    id="filled-required"
                     value={duration}
                     onChange={handleChangeDuration}
+                    variant="filled"
                     label="Duration"
                     size="small"
                     onBlur={() => {
+                      setDurationError(false)
+                      setDurationErrorText("")
                       if (duration === "") {
                         setDurationError(true);
                         setDurationErrorText("Selection required");
@@ -883,20 +909,19 @@ function newtloan() {
 
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <Stack>
-                    <DesktopDatePicker
+                    <DatePicker
                       label="Required Date"
                       inputFormat="yyyy-MM-dd"
                       value={dateForm}
-                      onClose={() => {
-                        if (requireddate === "") {
-                          setRDateError(true);
-                          setRDateErrorText("Select a date");
-                        }
-                      }}
                       onChange={handleChangeRequiredDate}
+                      inputProps={{ readOnly: true }}
+                  
                       renderInput={(params) => (
                         <TextField
+                          id="filled-required"
+                          variant="filled"
                           size="small"
+                    
                           {...params}
                           sx={{ width: 200, marginLeft: 3, marginTop: 2 }}
                         />

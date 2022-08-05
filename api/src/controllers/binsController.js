@@ -48,17 +48,36 @@ module.exports.binInfo = async (req, res) => {
     }
 };
 
+module.exports.getAllBrandNames = async (req, res) => {
+    const { name = null } = req.query;
+
+    try {
+        const brands = await redisClient.get(`brands#${name}`);
+        if (brands != null) {
+            const redisresults = JSON.parse(brands);
+            return res.status(200).json(redisresults);
+        }
+        const results = await bin.getBrandNames(name);
+        redisClient.set('brands#${name}', JSON.stringify(results[0]), 'EX', 60 * 60 * 24);
+        return res.status(200).json(results[0]);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
+
 //Get Bin By Product Brand
 module.exports.brand = async (req, res) => {
     let Brand = req.params.Brand;
     try {
-        const searchBrand = await redisClient.get(`Brand#${Brand}`);
+        const searchBrand = await redisClient.get(`Brand#${Brand}-Bins`);
         if (searchBrand !== null) {
             const redisresults = JSON.parse(searchBrand);
             return res.status(200).json(redisresults);
         }
         const results = await bin.getBinByProductBrand(Brand);
-        redisClient.set(`Brand#${Brand}`, JSON.stringify(results[0]));
+        redisClient.set(`Brand#${Brand}-Bins`, JSON.stringify(results[0]));
 
         if (results.length > 0) {
             console.log(results)

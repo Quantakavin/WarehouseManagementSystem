@@ -73,6 +73,7 @@ const ModalButton = () => {
       // make sure to catch any error
       .catch(console.error);
   }, []);
+  console.log(extensionStatus)
 
   console.log(extensionStatus);
   useEffect(() => {

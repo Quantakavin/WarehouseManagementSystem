@@ -8,7 +8,6 @@ router.post('/tloan/loanDrafting', validation.validateDraft,TLoanController.Send
 router.get('/tloans/:TLoanID', TLoanController.getLoanByNo);
 router.get('/tloanitems/:TLoanID', TLoanController.getItemsByTloan);
 router.get('/tloanExtensionStatus/:TLoanID', TLoanController.extensionStatus);
-router.post('/tloan/tloanextension', TLoanController.loanExtension);
 router.get('/tloan/current/:UserID', TLoanController.currentLoan);
 router.get('/tloan/drafts/:UserID', TLoanController.draftsLoan);
 router.get('/tloan/history/:UserID', TLoanController.historyLoan);
@@ -22,10 +21,6 @@ router.put(
     validation.validateRejectRemark,
     TLoanController.rejectExtension
 );
-// router.put('/tloan/due', TLoanController.dueLoan);
-// router.put('/tloan/draft', TLoanController.draftLoan);
-// router.put('/tloan/issued', TLoanController.issuedLoan);
-// router.put('/tloan/picking', TLoanController.pickingLoan);
 router.get('/tloan/ManagerLoan', TLoanController.ManagerLoan);
 router.get('/tloan/ManagerExtension', TLoanController.ManagerExtension);
 router.post('/tloan/extension', validation.validateExtensionRequest, TLoanController.LoanExtend);

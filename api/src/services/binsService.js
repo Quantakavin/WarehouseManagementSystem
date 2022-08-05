@@ -1,5 +1,12 @@
 const knex = require('../config/database');
 
+
+// Get Brand Names
+module.exports.getBrandNames = async (Brand) => {
+    const query = `SELECT DISTINCT Brand FROM BinProduct WHERE Brand LIKE ?`;
+    return knex.raw(query, [`%${Brand}%`]);
+};
+
 // Get Bin By Bin Tag
 module.exports.getBinByBinTag = async (BinTag) => {
     const query = `SELECT BinID, BinTag, HaiTag, Volume, Weight, BinType FROM Bin WHERE BinTag = ?`;
