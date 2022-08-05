@@ -115,6 +115,19 @@ export default function tloanDisplay() {
     (e) => e.FeatureName === "T-Loan Warehouse (View)"
   );
 
+  useEffect(()=>{
+    if(isEditable === true  && TLoanID !== TLoanIDGlobal){
+    
+      Toast.fire({
+        icon: "warning",
+        title: "You are CURRENTLY editing Loan #" + TLoanIDGlobal,
+        customClass: "swalpopup",
+        timer: 3000,
+        width: 700,
+      });
+      navigate("/tloan")
+    }
+  })
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
