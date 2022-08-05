@@ -167,7 +167,7 @@ module.exports.SubmitAfterEdit = async(req,res) =>{
 }
 
 module.exports.DraftAfterEdit = async(req,res) =>{
-    const { TLoanID } = req.params;
+    const { TLoanID, UserID } = req.params;
     const {
         type,
         company,
