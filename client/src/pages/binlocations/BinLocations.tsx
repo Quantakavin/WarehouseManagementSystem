@@ -1,70 +1,39 @@
 import { OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
-import { Suspense, useRef } from "react";
+import { Suspense, useRef, useState } from "react";
 import * as THREE from "three";
-import Rack from "../../components/3Dmodels/Rack";
-import Rack2 from "../../components/3Dmodels/Rack2";
+import TwoColRack from "../../components/3Dmodels/2ColRack";
+import ThreeColRack from "../../components/3Dmodels/3ColRack";
+import FourColRack from "../../components/3Dmodels/4ColRack";
 import "../../styles/BinLocation.scss";
-// import { useAppSelector } from "../../app/hooks";
-// import { selectCameraPosition } from "../../app/reducers/BinLocationSlice";
-// import { useContextBridge } from "@react-three/drei"
-// import { useStore } from "react-redux";
-// import { store } from "../../app/store";
+import SearchBar from "../../components/search/SearchBar";
+import useDebounce from "../../hooks/useDebounce";
+import { useQuery } from "react-query";
+import { GetBinsByBrand, GetBrandNames } from "../../api/BinLocationDB";
 
 const Floor = () => {
   const colorMap = useLoader(THREE.TextureLoader, "Concrete030_4K_Color.png");
 
   return (
-    // The mesh is at the origin
-    // Since it is inside a group, it is at the origin
-    // of that group
-    // It's rotated by 90 degrees along the X-axis
-    // This is because, by default, planes are rendered
-    // in the X-Y plane, where Y is the up direction
+
     <mesh
       position={[0, -11.5, 0]}
       rotation={[Math.PI / 2, 0, 0]}
       scale={[300, 300, 300]}
     >
-      {/*
-        The thing that gives the mesh its shape
-        In this case the shape is a flat plane
-      */}
+
       <planeBufferGeometry />
-      {/*
-        The material gives a mesh its texture or look.
-        In this case, it is just a uniform green
-      */}
       <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
-      {/* color="#7cb1d0 */}
     </mesh>
   );
 };
 
-// const Box = (props: JSX.IntrinsicElements["mesh"]) => {
-//   const mesh = useRef<THREE.Mesh>(null!);
-//   const [hovered, setHover] = useState(false);
-//   const [active, setActive] = useState(false);
+interface SceneProps {
+  selectedbintags: string[];
 
-//   useFrame((state, delta) => (mesh.current.rotation.x += 0.01));
-//   return (
-//     <mesh
-//       {...props}
-//       ref={mesh}
-//       scale={active ? 1.5 : 1}
-//       onClick={(event) => setActive(!active)}
-//       onPointerOver={(event) => setHover(true)}
-//       onPointerOut={(event) => setHover(false)}
-//     >
-//       <boxGeometry args={[1, 1, 1]} />
-//       <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
-//     </mesh>
-//   );
-// };
+}
 
-const Scene = () => {
-  // const [cameraPosition, setCameraPosition] = useState<[x: number, y: number, z: number]>([0, 40, 150])
-
+const Scene = ({selectedbintags}: SceneProps) => {
   const { gl, camera } = useThree();
 
   const controls = useRef<any>();
@@ -78,21 +47,13 @@ const Scene = () => {
       newPosition[1] + 20,
       newPosition[2] + 30
     );
-    // camera.rotation.y = 180;
-    // camera.lookAt(new THREE.Vector3(newPosition[0],newPosition[1],newPosition[2]));
+
     controls.current.target = new THREE.Vector3(
       newPosition[0],
       newPosition[1],
       newPosition[2]
     );
     controls.current.update();
-    // camera.rotation.y = 90;
-    // camera.up.set( 0, 0, 1 );
-    // camera.zoom = 1.5
-    //
-    // alert(newPosition)
-    // camera.lookAt( new THREE.Vector3(newPosition[0], newPosition[1], newPosition[2]))
-    // alert(newPosition);
   };
 
   return (
@@ -105,205 +66,270 @@ const Scene = () => {
         maxDistance={150}
         ref={controls}
       />
-      {/* <OrbitControls maxPolarAngle={Math.PI/2} maxDistance={150}/> */}
       <Suspense fallback={null}>
-        {/* <ContextBridge> */}
-        <Rack2
+
+        {/* Section A01 */}
+        <FourColRack
           position={[0, 0, 0]}
           areatag="A01"
           racktag="R01"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack2
+        <FourColRack
           position={[25, 0, 0]}
           areatag="A01"
           racktag="R02"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack
+        <ThreeColRack
           position={[45, 0, 0]}
           areatag="A01"
           racktag="R03"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
 
-        <Rack2
+        {/* Section A02 */}
+        <FourColRack
           position={[0, 0, 20]}
           areatag="A02"
           racktag="R01"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack2
+        <FourColRack
           position={[25, 0, 20]}
           areatag="A02"
           racktag="R02"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack
+        <ThreeColRack
           position={[45, 0, 20]}
           areatag="A02"
           racktag="R03"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
 
-
-        <Rack2
+        {/* Section A03 */}
+        <FourColRack
           position={[0, 0, 40]}
           areatag="A03"
           racktag="R01"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack2
+        <FourColRack
           position={[25, 0, 40]}
           areatag="A03"
           racktag="R02"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack2
+        <FourColRack
           position={[50, 0, 40]}
           areatag="A03"
           racktag="R03"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack2
+        <FourColRack
           position={[75, 0, 40]}
           areatag="A03"
           racktag="R04"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack
+        <ThreeColRack
           position={[95, 0, 40]}
           areatag="A03"
           racktag="R05"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
 
-
-        <Rack2
+        {/* Section A04 */}
+        <FourColRack
           position={[0, 0, 60]}
           areatag="A04"
           racktag="R01"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack2
+        <FourColRack
           position={[25, 0, 60]}
           areatag="A04"
           racktag="R02"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack2
+        <TwoColRack
           position={[50, 0, 60]}
           areatag="A04"
           racktag="R03"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack2
+        <FourColRack
           position={[75, 0, 60]}
           areatag="A04"
           racktag="R04"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack
+        <ThreeColRack
           position={[95, 0, 60]}
           areatag="A04"
           racktag="R05"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
 
-        <Rack2
+        {/* Section A05 */}
+        <FourColRack
           position={[0, 0, 80]}
           areatag="A05"
           racktag="R01"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack2
+        <FourColRack
           position={[25, 0, 80]}
           areatag="A05"
           racktag="R02"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack2
+        <FourColRack
           position={[50, 0, 80]}
           areatag="A05"
           racktag="R03"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack2
+        <FourColRack
           position={[75, 0, 80]}
           areatag="A05"
           racktag="R04"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack
-          position={[95, 0, 80]}
+        <FourColRack
+          position={[100, 0, 80]}
           areatag="A05"
           racktag="R05"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
 
-        <Rack2
+        {/* Section A06 */}
+        <FourColRack
           position={[0, 0, 100]}
           areatag="A06"
           racktag="R01"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack2
+        <FourColRack
           position={[25, 0, 100]}
           areatag="A06"
           racktag="R02"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack2
+        <FourColRack
           position={[50, 0, 100]}
           areatag="A06"
           racktag="R03"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack2
+        <FourColRack
           position={[75, 0, 100]}
           areatag="A06"
           racktag="R04"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        <Rack
-          position={[95, 0, 100]}
+        <FourColRack
+          position={[100, 0, 100]}
           areatag="A06"
           racktag="R05"
           changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
         />
-        {/* <Rack position={[60, 0, 0]} areatag="A01" racktag="R04" changeposition={changeCameraPosition}/>
-       <Rack position={[60, 0, 18]} areatag="A01" racktag="R05" changeposition={changeCameraPosition}/>
-       <Rack position={[40, 0, 18]} areatag="A01" racktag="R06" changeposition={changeCameraPosition}/>
-       <Rack position={[20, 0, 18]} areatag="A01" racktag="R07" changeposition={changeCameraPosition}/>
-       <Rack position={[0, 0, -18]} areatag="A01" racktag="R08" changeposition={changeCameraPosition}/>
-       <Rack position={[20, 0, -18]} areatag="A01" racktag="R09" changeposition={changeCameraPosition}/>
-       <Rack position={[40, 0, -18]} areatag="A01" racktag="R10" changeposition={changeCameraPosition}/>
-       <Rack position={[60, 0, -18]} areatag="A01" racktag="R11" changeposition={changeCameraPosition}/>
-       <Rack position={[-20, 0, -18]} areatag="A01" racktag="R12" changeposition={changeCameraPosition}/> */}
+        <TwoColRack
+          position={[120, 0, 100]}
+          areatag="A06"
+          racktag="R06"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
         <Floor />
-        {/* </ContextBridge> */}
       </Suspense>
-
-      {/* <Suspense fallback={<p>Hi</p>}>
- <primitive object={gltf.scene} />
-</Suspense> */}
     </>
   );
 };
 
 const BinLocations = () => {
-  // const gltf = useLoader(GLTFLoader, '/binsgrouped.glb')
+  const [searchOptions, setSearchOptions] = useState<string[]>([]);
+  const [inputName, setInputName] = useState<string>(null);
+  const [searchName, setSearchName] = useState<string>(null);
+  const [selectedBinTags, setSelectedBinTags] = useState<string[]>(null);
+  const debouncedValue = useDebounce<string>(inputName, 500);
 
-  // const ContextBridge = useContextBridge()
+  const BrandNamesQuery = useQuery(
+    [`brandnames`, debouncedValue],
+    () => GetBrandNames(debouncedValue),
+    {
+      onSuccess: (data) => {
+        const brandarray = data.data.map((record) => {
+          return record.Brand;
+        });
+        setSearchOptions(brandarray);
+      },
+    }
+  );
 
-  // useFrame(({ controls, camera }) => {
-  //   controls.target = cameraPosition;
-  //   controls.update()
-  // })
+  const BinsByBrandQuery = useQuery(
+    [`binsbybrand`, searchName],
+    () => GetBinsByBrand(searchName),
+    {
+      onSuccess: (data) => {
+        const returnbins = data.data.map((bin)=> {
+          return bin.BinTag
+        }) 
+        setSelectedBinTags(returnbins)
+      },
+    }
+  );
+
+
+  const handleInputChange = (inputstring: string) => {
+    setSelectedBinTags(null)
+    setInputName(inputstring);
+  };
+
+  const handleSearch = (stringtosearch: string) => {
+    if (inputName !== "") {
+      setSearchName(stringtosearch);
+    }
+  };
 
   return (
     <div className="binlocation">
       <h1 className="binlocationTitle">Warehouse Visualisation</h1>
+      <div className="flexcontainer">
+      <SearchBar
+          handleInputChange={handleInputChange}
+          handleSearch={handleSearch}
+          searchoptions={searchOptions}
+        />
+        {selectedBinTags != null ? selectedBinTags.join(", ") : null}
+      </div>
       <div className="flexcontainer">
         <Canvas
           camera={{ fov: 45, position: [0, 40, 150] }}
@@ -314,7 +340,7 @@ const BinLocations = () => {
             width: "95%",
           }}
         >
-          <Scene />
+          <Scene selectedbintags={selectedBinTags}/>
         </Canvas>
       </div>
     </div>

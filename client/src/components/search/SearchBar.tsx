@@ -12,7 +12,7 @@ interface SearchParams {
   handleInputChange: (stringtosearch: string) => void;
 }
 
-const SearchBarUpdated = ({
+const SearchBar = ({
   handleSearch,
   handleInputChange,
   searchoptions,
@@ -72,7 +72,7 @@ const SearchBarUpdated = ({
   );
 };
 
-export default SearchBarUpdated;
+export default SearchBar;
 
 // const top100Films = [
 //   { title: 'The Shawshank Redemption', year: 1994 },
