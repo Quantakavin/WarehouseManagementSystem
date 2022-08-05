@@ -363,19 +363,8 @@ module.exports.newRMA = async (req, res) => {
         );
         if (resultsrma.length > 0) {
             redisClient.del('allRMA');
-            redisClient.del('PendingRMA', function (err, reply) {
-                console.log('Redis Del', reply);
-            });
-            redisClient.del('AcceptedRMA');
+            redisClient.del('PendingRMA');
             redisClient.del(`myPendingRMA#${salesmanid}`);
-            redisClient.del(`myAcceptedRMA#${salesmanid}`);
-            redisClient.del(`myRejectedRMA#${salesmanid}`);
-            redisClient.del('RejectedRMA');
-            redisClient.del('ReceivedRMA');
-            redisClient.del('ProcessingRMA');
-            redisClient.del('VerifiedRMA');
-            redisClient.del('InProgressRMA');
-            redisClient.del('ClosedRMA');
             return res.status(200).json(resultsrma);
         }
         return res.status(500).send('Could Not Create The RMA');
@@ -398,12 +387,6 @@ module.exports.updateRmaAccepted = async (req, res) => {
             redisClient.del(`rmaByRmaID#${RmaID}`);
             redisClient.del('PendingRMA');
             redisClient.del('AcceptedRMA');
-            redisClient.del('RejectedRMA');
-            redisClient.del('ReceivedRMA');
-            redisClient.del('ProcessingRMA');
-            redisClient.del('VerifiedRMA');
-            redisClient.del('InProgressRMA');
-            redisClient.del('ClosedRMA');
             return res.status(204).json({ message: 'RMA accepted!' });
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
@@ -424,13 +407,7 @@ module.exports.updateRmaRejected = async (req, res) => {
             redisClient.del(`rmaProducts#${RmaID}`);
             redisClient.del(`rmaByRmaID#${RmaID}`);
             redisClient.del('PendingRMA');
-            redisClient.del('AcceptedRMA');
             redisClient.del('RejectedRMA');
-            redisClient.del('ReceivedRMA');
-            redisClient.del('ProcessingRMA');
-            redisClient.del('VerifiedRMA');
-            redisClient.del('InProgressRMA');
-            redisClient.del('ClosedRMA');
             return res.status(204).json({ message: 'RMA rejected successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
@@ -450,14 +427,8 @@ module.exports.updateRmaChecklist = async (req, res) => {
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);
             redisClient.del(`rmaByRmaID#${RmaID}`);
-            redisClient.del('PendingRMA');
             redisClient.del('AcceptedRMA');
-            redisClient.del('RejectedRMA');
-            redisClient.del('ReceivedRMA');
             redisClient.del('ProcessingRMA');
-            redisClient.del('VerifiedRMA');
-            redisClient.del('InProgressRMA');
-            redisClient.del('ClosedRMA');
             return res.status(204).json({ message: 'RMA receival status updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
@@ -478,14 +449,8 @@ module.exports.updateRmaReceived = async (req, res) => {
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);
             redisClient.del(`rmaByRmaID#${RmaID}`);
-            redisClient.del('PendingRMA');
-            redisClient.del('AcceptedRMA');
-            redisClient.del('RejectedRMA');
-            redisClient.del('ReceivedRMA');
             redisClient.del('ProcessingRMA');
-            redisClient.del('VerifiedRMA');
-            redisClient.del('InProgressRMA');
-            redisClient.del('ClosedRMA');
+            redisClient.del('ReceivedRMA');
             return res.status(204).json({ message: 'RMA receival status updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
@@ -506,14 +471,8 @@ module.exports.updateRmaInstructions = async (req, res) => {
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);
             redisClient.del(`rmaByRmaID#${RmaID}`);
-            redisClient.del('PendingRMA');
-            redisClient.del('AcceptedRMA');
-            redisClient.del('RejectedRMA');
             redisClient.del('ReceivedRMA');
-            redisClient.del('ProcessingRMA');
             redisClient.del('VerifiedRMA');
-            redisClient.del('InProgressRMA');
-            redisClient.del('ClosedRMA');
             return res.status(200).json({ message: 'RMA instructions updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
@@ -534,14 +493,8 @@ module.exports.updateRmaCoa = async (req, res) => {
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);
             redisClient.del(`rmaByRmaID#${RmaID}`);
-            redisClient.del('PendingRMA');
-            redisClient.del('AcceptedRMA');
-            redisClient.del('RejectedRMA');
-            redisClient.del('ReceivedRMA');
-            redisClient.del('ProcessingRMA');
             redisClient.del('VerifiedRMA');
             redisClient.del('InProgressRMA');
-            redisClient.del('ClosedRMA');
             return res.status(200).json({ message: 'RMA COA updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
@@ -561,12 +514,6 @@ module.exports.closeRma = async (req, res) => {
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);
             redisClient.del(`rmaByRmaID#${RmaID}`);
-            redisClient.del('PendingRMA');
-            redisClient.del('AcceptedRMA');
-            redisClient.del('RejectedRMA');
-            redisClient.del('ReceivedRMA');
-            redisClient.del('ProcessingRMA');
-            redisClient.del('VerifiedRMA');
             redisClient.del('InProgressRMA');
             redisClient.del('ClosedRMA');
             return res.status(204).json({ message: 'RMA status updated successfully!' });
