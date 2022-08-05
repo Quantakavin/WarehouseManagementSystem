@@ -273,15 +273,6 @@ module.exports.getTLoanOutItem = async (TLoanID) => {
     return knex.raw(query, [TLoanID]);
 };
 
-module.exports.extension = async (id, duration, reason) => {
-    return knex('TLoanExtension').insert({
-        TLoanID: id,
-        TLoanExtensionStatusID: '1',
-        Duration: duration,
-        Reason: reason
-    });
-};
-
 module.exports.getCurrent = async (UserID) => {
     const query = `
   SELECT 
@@ -411,32 +402,6 @@ module.exports.rejectLoan = async (TLoanID, remarks) => {
     });
 };
 
-// module.exports.pickLoan = async (number) => {
-//     return knex.transaction((trx) => {
-//         knex('TLoan')
-//             .where('TLoanNumber', number)
-//             .update({
-//                 TLoanStatusID: 5
-//             })
-//             .transacting(trx)
-//             .then(trx.commit)
-//             .catch(trx.rollback);
-//     });
-// };
-
-// module.exports.issuedLoan = async (number) => {
-//     return knex.transaction((trx) => {
-//         knex('TLoan')
-//             .where('TLoanNumber', number)
-//             .update({
-//                 TLoanStatusID: 7
-//             })
-//             .transacting(trx)
-//             .then(trx.commit)
-//             .catch(trx.rollback);
-//     });
-// };
-
 module.exports.dueLoan = async (number) => {
     return knex.transaction((trx) => {
         knex('TLoan')
@@ -449,32 +414,6 @@ module.exports.dueLoan = async (number) => {
             .catch(trx.rollback);
     });
 };
-
-// module.exports.readyLoan = async (number) => {
-//     return knex.transaction((trx) => {
-//         knex('TLoan')
-//             .where('TLoanID', number)
-//             .update({
-//                 TLoanStatusID: 6
-//             })
-//             .transacting(trx)
-//             .then(trx.commit)
-//             .catch(trx.rollback);
-//     });
-// };
-
-// module.exports.draftLoan = async (number) => {
-//     return knex.transaction((trx) => {
-//         knex('TLoan')
-//             .where('TLoanNumber', number)
-//             .update({
-//                 TLoanStatusID: 1
-//             })
-//             .transacting(trx)
-//             .then(trx.commit)
-//             .catch(trx.rollback);
-//     });
-// };
 
 module.exports.loanExtension = async (tloanid, duration, reason) => {
     return knex('TLoanExtension').insert({
