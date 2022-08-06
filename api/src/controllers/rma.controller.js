@@ -6,7 +6,8 @@ const {
     rmaRejectedMail,
     rmaReceivedMail,
     rmaVerifiedMail,
-    rmaInprogressMail
+    rmaInprogressMail,
+    rmaClosedMail
 } = require('./emailNotificationController');
 
 module.exports.getAllRMA = async (req, res) => {
@@ -371,9 +372,9 @@ module.exports.newRMA = async (req, res) => {
 module.exports.updateRmaAccepted = async (req, res) => {
     const { RmaID } = req.params;
     try {
-        const gettingInfo = await rmaService.getEmployeeInfo(RmaID)
-        const email = (gettingInfo[0][0].Email).toString()
-        const username = (gettingInfo[0][0].Username).toString()
+        const gettingInfo = await rmaService.getEmployeeInfo(RmaID);
+        const email = gettingInfo[0][0].Email.toString();
+        const username = gettingInfo[0][0].Username.toString();
         const results = await rmaService.getByRmaID(RmaID);
         console.log('called');
         if (results.length > 0) {
@@ -389,9 +390,8 @@ module.exports.updateRmaAccepted = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
-        
     }
 };
 
@@ -399,9 +399,9 @@ module.exports.updateRmaRejected = async (req, res) => {
     const { RmaID } = req.params;
     const { rejectreason } = req.body;
     try {
-        const gettingInfo = await rmaService.getEmployeeInfo(RmaID)
-        const email = (gettingInfo[0][0].Email).toString()
-        const username = (gettingInfo[0][0].Username).toString()
+        const gettingInfo = await rmaService.getEmployeeInfo(RmaID);
+        const email = gettingInfo[0][0].Email.toString();
+        const username = gettingInfo[0][0].Username.toString();
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaRejected(RmaID, rejectreason);
@@ -446,9 +446,9 @@ module.exports.updateRmaReceived = async (req, res) => {
     const { RmaID } = req.params;
     const { products } = req.body;
     try {
-        const gettingInfo = await rmaService.getEmployeeInfo(RmaID)
-        const email = (gettingInfo[0][0].Email).toString()
-        const username = (gettingInfo[0][0].Username).toString()
+        const gettingInfo = await rmaService.getEmployeeInfo(RmaID);
+        const email = gettingInfo[0][0].Email.toString();
+        const username = gettingInfo[0][0].Username.toString();
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRMAReceived(RmaID, products);
@@ -472,9 +472,9 @@ module.exports.updateRmaInstructions = async (req, res) => {
     const { RmaID } = req.params;
     const { products } = req.body;
     try {
-        const gettingInfo = await rmaService.getEmployeeInfo(RmaID)
-        const email = (gettingInfo[0][0].Email).toString()
-        const username = (gettingInfo[0][0].Username).toString()
+        const gettingInfo = await rmaService.getEmployeeInfo(RmaID);
+        const email = gettingInfo[0][0].Email.toString();
+        const username = gettingInfo[0][0].Username.toString();
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaInstructions(RmaID, products);
@@ -498,9 +498,9 @@ module.exports.updateRmaCoa = async (req, res) => {
     const { RmaID } = req.params;
     const { products } = req.body;
     try {
-        const gettingInfo = await rmaService.getEmployeeInfo(RmaID)
-        const email = (gettingInfo[0][0].Email).toString()
-        const username = (gettingInfo[0][0].Username).toString()
+        const gettingInfo = await rmaService.getEmployeeInfo(RmaID);
+        const email = gettingInfo[0][0].Email.toString();
+        const username = gettingInfo[0][0].Username.toString();
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaCOA(RmaID, products);
@@ -523,9 +523,13 @@ module.exports.updateRmaCoa = async (req, res) => {
 module.exports.closeRma = async (req, res) => {
     const { RmaID } = req.params;
     try {
+        const gettingInfo = await rmaService.getEmployeeInfo(RmaID);
+        const email = gettingInfo[0][0].Email.toString();
+        const username = gettingInfo[0][0].Username.toString();
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.closeRma(RmaID);
+            rmaClosedMail(email, username, RmaID);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);
