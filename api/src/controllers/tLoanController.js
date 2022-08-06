@@ -400,9 +400,11 @@ module.exports.pendingLoan = async (req, res) => {
 module.exports.approveLoan = async (req, res) => {
     const { TLoanID } = req.params;
     try {
+        const gettingEmail = await TLoan.getEmployeeEmail(TLoanID)
+        const email = (gettingEmail[0][0].Email).toString()
         const results = await TLoan.approveLoan(TLoanID);
         if (results) {
-            tloanAcceptedMail();
+        tloanAcceptedMail(email);
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
             redisClient.del('ApprovedLoan');
@@ -731,3 +733,16 @@ module.exports.updateStatus = async (req, res) => {
         return res.status(500).send('Internal Server Error');
     }
 };
+
+module.exports.getEmail = async (req, res) =>{
+    const {TLoanID} = req.body
+    try{
+        const results = await TLoan.getEmployeeEmail(TLoanID)
+        if(results) {
+          return res.status(200).send(results[0][0].Email)
+        }
+    }catch (error){
+        console.log(error)
+    }
+    
+}

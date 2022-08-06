@@ -543,3 +543,13 @@ module.exports.updateStatus = async (TLoanID, statusChange) => {
             .catch(trx.rollback);
     });
 };
+
+module.exports.getEmployeeEmail = async(TLoanID) =>{
+    const query = `
+    SELECT u.Email 
+    FROM User u 
+    JOIN TLoan t ON t.UserID = u.UserID 
+    WHERE t.TLoanID = ?
+    `
+    return knex.raw(query, [TLoanID])
+}

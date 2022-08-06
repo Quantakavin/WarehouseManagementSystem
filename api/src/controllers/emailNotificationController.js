@@ -3,6 +3,7 @@ const path = require('path');
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 const sgMail = require('@sendgrid/mail');
+const { TLoanOutByID } = require('../services/tLoanService');
 // const apiKey = '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'
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -96,9 +97,9 @@ module.exports.rmaInprogressMail = () => {
         });
 };
 
-module.exports.tloanAcceptedMail = () => {
+module.exports.tloanAcceptedMail = (email) => {
     const msg = {
-        to: 'shine.thw@gmail.com', // Change to your recipient
+        to: email, // Change to your recipient
         from: 'shine.thw@gmail.com', // Change to your verified sender
         subject: 'TLoan Approved',
         text: 'noobs',
@@ -167,3 +168,4 @@ module.exports.tloanExtensionRejectedMail = () => {
             console.error(error);
         });
 };
+
