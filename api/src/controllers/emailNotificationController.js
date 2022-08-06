@@ -7,9 +7,9 @@ const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 module.exports.rmaAcceptedMail = (
-    email = 'shine.thw@gmail.com',
-    username = 'hyangwoo',
-    rmaid = '182'
+    email,
+    username,
+    RmaID
 ) => {
     sgMail
         .send({
@@ -21,8 +21,8 @@ module.exports.rmaAcceptedMail = (
                     to: email,
                     dynamicTemplateData: {
                         Username: username,
-                        RmaID: rmaid,
-                        URL: `http://localhost:3000/rmaDetails/${rmaid}`
+                        RmaID: RmaID,
+                        URL: `http://localhost:3000/rmaDetails/${RmaID}`
                     }
                 }
             ]
@@ -36,9 +36,9 @@ module.exports.rmaAcceptedMail = (
 };
 
 module.exports.rmaRejectedMail = (
-    email = 'shine.thw@gmail.com',
-    username = 'hyangwoo',
-    rmaid = '182'
+    email,
+    username,
+    RmaID
 ) => {
     sgMail
         .send({
@@ -50,8 +50,8 @@ module.exports.rmaRejectedMail = (
                     to: email,
                     dynamicTemplateData: {
                         Username: username,
-                        RmaID: rmaid,
-                        URL: `http://localhost:3000/rmaDetails/${rmaid}`
+                        RmaID: RmaID,
+                        URL: `http://localhost:3000/rmaDetails/${RmaID}`
                     }
                 }
             ]
@@ -64,7 +64,11 @@ module.exports.rmaRejectedMail = (
         });
 };
 
-module.exports.rmaReceivedMail = (email, username, rmaid) => {
+module.exports.rmaReceivedMail = (
+    email,
+    username,
+    RmaID
+    ) => {
     sgMail
         .send({
             from: 'shine.thw@gmail.com', // Change to your verified sender
@@ -75,7 +79,7 @@ module.exports.rmaReceivedMail = (email, username, rmaid) => {
                     to: email,
                     dynamicTemplateData: {
                         Username: username,
-                        RmaID: rmaid
+                        RmaID: RmaID
                     }
                 }
             ]
@@ -88,7 +92,7 @@ module.exports.rmaReceivedMail = (email, username, rmaid) => {
         });
 };
 
-module.exports.rmaVerifiedMail = (email, username, rmaid) => {
+module.exports.rmaVerifiedMail = (email, username, RmaID) => {
     sgMail
         .send({
             from: 'shine.thw@gmail.com', // Change to your verified sender
@@ -99,7 +103,7 @@ module.exports.rmaVerifiedMail = (email, username, rmaid) => {
                     to: email,
                     dynamicTemplateData: {
                         Username: username,
-                        RmaID: rmaid
+                        RmaID: RmaID
                     }
                 }
             ]
@@ -112,7 +116,7 @@ module.exports.rmaVerifiedMail = (email, username, rmaid) => {
         });
 };
 
-module.exports.rmaInprogressMail = (email, username, rmaid) => {
+module.exports.rmaInprogressMail = (email, username, RmaID) => {
     sgMail
         .send({
             from: 'shine.thw@gmail.com', // Change to your verified sender
@@ -123,8 +127,8 @@ module.exports.rmaInprogressMail = (email, username, rmaid) => {
                     to: email,
                     dynamicTemplateData: {
                         Username: username,
-                        RmaID: rmaid,
-                        URL: `http://localhost:3000/rmaDetails/${rmaid}`
+                        RmaID: RmaID,
+                        URL: `http://localhost:3000/rmaDetails/${RmaID}`
                     }
                 }
             ]
@@ -137,7 +141,8 @@ module.exports.rmaInprogressMail = (email, username, rmaid) => {
         });
 };
 
-module.exports.tloanAcceptedMail = (email, username, tloanid) => {
+module.exports.tloanAcceptedMail = (email, username, TLoanID) => {
+    console.log(TLoanID)
     sgMail
         .send({
             from: 'shine.thw@gmail.com', // Change to your verified sender
@@ -148,8 +153,8 @@ module.exports.tloanAcceptedMail = (email, username, tloanid) => {
                     to: email,
                     dynamicTemplateData: {
                         Username: username,
-                        TLoanID: tloanid,
-                        URL: `http://localhost:3000/tloandetails/${tloanid}`
+                        TLoanID: TLoanID,
+                        URL: `http://localhost:3000/tloandetails/${TLoanID}`
                     }
                 }
             ]
@@ -162,7 +167,7 @@ module.exports.tloanAcceptedMail = (email, username, tloanid) => {
         });
 };
 
-module.exports.tloanRejectedMail = (email, username, tloanid) => {
+module.exports.tloanRejectedMail = (email, username, TLoanID) => {
     sgMail
         .send({
             // to: 'shine.thw@gmail.com', // Change to your recipient
@@ -174,7 +179,7 @@ module.exports.tloanRejectedMail = (email, username, tloanid) => {
                     to: email,
                     dynamicTemplateData: {
                         Username: username,
-                        TLoanID: tloanid
+                        TLoanID: TLoanID
                     }
                 }
             ]
@@ -187,7 +192,7 @@ module.exports.tloanRejectedMail = (email, username, tloanid) => {
         });
 };
 
-module.exports.tloanExtensionAcceptedMail = (email, username, tloanid) => {
+module.exports.tloanExtensionAcceptedMail = (email, username, TLoanID) => {
     sgMail
         .send({
             // to: 'shine.thw@gmail.com', // Change to your recipient
@@ -199,8 +204,8 @@ module.exports.tloanExtensionAcceptedMail = (email, username, tloanid) => {
                     to: email,
                     dynamicTemplateData: {
                         Username: username,
-                        TLoanID: tloanid,
-                        URL: `http://localhost:3000/tloandetails/${tloanid}`
+                        TLoanID: TLoanID,
+                        URL: `http://localhost:3000/tloandetails/${TLoanID}`
                     }
                 }
             ]
@@ -213,7 +218,7 @@ module.exports.tloanExtensionAcceptedMail = (email, username, tloanid) => {
         });
 };
 
-module.exports.tloanExtensionRejectedMail = (email, username, tloanid) => {
+module.exports.tloanExtensionRejectedMail = (email, username, TLoanID) => {
     sgMail
         .send({
             // to: 'shine.thw@gmail.com', // Change to your recipient
@@ -225,7 +230,7 @@ module.exports.tloanExtensionRejectedMail = (email, username, tloanid) => {
                     to: email,
                     dynamicTemplateData: {
                         Username: username,
-                        TLoanID: tloanid
+                        TLoanID: TLoanID
                     }
                 }
             ]

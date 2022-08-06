@@ -371,11 +371,14 @@ module.exports.newRMA = async (req, res) => {
 module.exports.updateRmaAccepted = async (req, res) => {
     const { RmaID } = req.params;
     try {
+        const gettingInfo = await rmaService.getEmployeeInfo(RmaID)
+        const email = (gettingInfo[0][0].Email).toString()
+        const username = (gettingInfo[0][0].Username).toString()
         const results = await rmaService.getByRmaID(RmaID);
         console.log('called');
         if (results.length > 0) {
             await rmaService.updateRmaAccepted(RmaID);
-            rmaAcceptedMail();
+            rmaAcceptedMail(email, username, RmaID);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);
@@ -386,7 +389,9 @@ module.exports.updateRmaAccepted = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ message: 'Internal Server Error!' });
+        
     }
 };
 
@@ -394,10 +399,13 @@ module.exports.updateRmaRejected = async (req, res) => {
     const { RmaID } = req.params;
     const { rejectreason } = req.body;
     try {
+        const gettingInfo = await rmaService.getEmployeeInfo(RmaID)
+        const email = (gettingInfo[0][0].Email).toString()
+        const username = (gettingInfo[0][0].Username).toString()
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaRejected(RmaID, rejectreason);
-            rmaRejectedMail();
+            rmaRejectedMail(email, username, RmaID);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);
@@ -438,10 +446,13 @@ module.exports.updateRmaReceived = async (req, res) => {
     const { RmaID } = req.params;
     const { products } = req.body;
     try {
+        const gettingInfo = await rmaService.getEmployeeInfo(RmaID)
+        const email = (gettingInfo[0][0].Email).toString()
+        const username = (gettingInfo[0][0].Username).toString()
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRMAReceived(RmaID, products);
-            rmaReceivedMail();
+            rmaReceivedMail(email, username, RmaID);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);
@@ -461,10 +472,13 @@ module.exports.updateRmaInstructions = async (req, res) => {
     const { RmaID } = req.params;
     const { products } = req.body;
     try {
+        const gettingInfo = await rmaService.getEmployeeInfo(RmaID)
+        const email = (gettingInfo[0][0].Email).toString()
+        const username = (gettingInfo[0][0].Username).toString()
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaInstructions(RmaID, products);
-            rmaVerifiedMail();
+            rmaVerifiedMail(email, username, RmaID);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);
@@ -484,10 +498,13 @@ module.exports.updateRmaCoa = async (req, res) => {
     const { RmaID } = req.params;
     const { products } = req.body;
     try {
+        const gettingInfo = await rmaService.getEmployeeInfo(RmaID)
+        const email = (gettingInfo[0][0].Email).toString()
+        const username = (gettingInfo[0][0].Username).toString()
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaCOA(RmaID, products);
-            rmaInprogressMail();
+            rmaInprogressMail(email, username, RmaID);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);
