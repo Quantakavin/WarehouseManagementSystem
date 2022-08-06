@@ -16,7 +16,7 @@ import {
 // import LoginUser from "../../api/user/LoginUser";
 import { LoginUser } from "../../api/UserDB";
 import { useAppDispatch } from "../../app/hooks";
-import { setUser } from "../../app/reducers/CurrentUserSlice";
+import { removeUser, setUser } from "../../app/reducers/CurrentUserSlice";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 
@@ -39,6 +39,7 @@ const Login: React.FC = () => {
       const { token, id, name, usergroup, permissions, enabled2FA, mobileNo } = data.data;
 
       if (enabled2FA === 1) {
+        dispatch(removeUser())
         dispatch(
           setUser({
             id,

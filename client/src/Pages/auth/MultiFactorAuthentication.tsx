@@ -15,7 +15,7 @@ import {
 // import LoginUser from "../../api/user/LoginUser";
 import { LoginUser, Resend2FAToken, Verify2FAToken } from "../../api/UserDB";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { setUser, selectMobileNo, selectToken, authenticateUser } from "../../app/reducers/CurrentUserSlice";
+import { setUser, selectMobileNo, selectToken, authenticateUser, selectId, selectName } from "../../app/reducers/CurrentUserSlice";
 import { ChangeTab, Reset } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import { stubString } from "lodash";
@@ -29,6 +29,9 @@ const MultiFactorAuthentication: React.FC = () => {
   const dispatch = useAppDispatch();
   const usermobileno = useAppSelector(selectMobileNo);
   const usertoken = useAppSelector(selectToken);
+  const userid = useAppSelector(selectId);
+  const username = useAppSelector(selectName);
+
   const {
     register,
     handleSubmit,
@@ -56,6 +59,8 @@ const MultiFactorAuthentication: React.FC = () => {
     verifymutation.mutate(data, {
       onSuccess: (data) => {
         localStorage.setItem("token", usertoken);
+        localStorage.setItem("user_id", userid.toString());
+        localStorage.setItem("username", username);
         dispatch(authenticateUser());
         dispatch(ChangeTab({ currenttab: "Dashboard" }));
         Toast.fire({
