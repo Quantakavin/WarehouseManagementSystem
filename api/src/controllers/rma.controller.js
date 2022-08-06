@@ -405,7 +405,7 @@ module.exports.updateRmaRejected = async (req, res) => {
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaRejected(RmaID, rejectreason);
-            rmaRejectedMail(email, username, RmaID);
+            rmaRejectedMail(email, username, RmaID, rejectreason);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);

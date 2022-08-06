@@ -30,7 +30,7 @@ module.exports.rmaAcceptedMail = (email, username, RmaID) => {
         });
 };
 
-module.exports.rmaRejectedMail = (email, username, RmaID) => {
+module.exports.rmaRejectedMail = (email, username, RmaID, rejectreason) => {
     sgMail
         .send({
             from: 'shine.thw@gmail.com', // Change to your verified sender
@@ -42,6 +42,7 @@ module.exports.rmaRejectedMail = (email, username, RmaID) => {
                     dynamicTemplateData: {
                         Username: username,
                         RmaID,
+                        RejectReason: rejectreason,
                         URL: `http://localhost:3000/rmaDetails/${RmaID}`
                     }
                 }
@@ -178,7 +179,7 @@ module.exports.tloanAcceptedMail = (email, username, TLoanID) => {
         });
 };
 
-module.exports.tloanRejectedMail = (email, username, TLoanID) => {
+module.exports.tloanRejectedMail = (email, username, TLoanID, remarks) => {
     sgMail
         .send({
             // to: 'shine.thw@gmail.com', // Change to your recipient
@@ -190,7 +191,8 @@ module.exports.tloanRejectedMail = (email, username, TLoanID) => {
                     to: email,
                     dynamicTemplateData: {
                         Username: username,
-                        TLoanID
+                        TLoanID,
+                        Remarks: remarks,
                     }
                 }
             ]
@@ -229,7 +231,7 @@ module.exports.tloanExtensionAcceptedMail = (email, username, TLoanID) => {
         });
 };
 
-module.exports.tloanExtensionRejectedMail = (email, username, TLoanID) => {
+module.exports.tloanExtensionRejectedMail = (email, username, TLoanID, remarks) => {
     sgMail
         .send({
             // to: 'shine.thw@gmail.com', // Change to your recipient
@@ -241,7 +243,8 @@ module.exports.tloanExtensionRejectedMail = (email, username, TLoanID) => {
                     to: email,
                     dynamicTemplateData: {
                         Username: username,
-                        TLoanID
+                        TLoanID,
+                        Remarks: remarks
                     }
                 }
             ]

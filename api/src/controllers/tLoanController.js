@@ -427,7 +427,7 @@ module.exports.rejectLoan = async (req, res) => {
         const username = (gettingInfo[0][0].Username).toString()
         const results = await TLoan.getLoanByNumber(TLoanID);
         if (results.length > 0) {
-            tloanRejectedMail(email, username, TLoanID);
+            tloanRejectedMail(email, username, TLoanID, remarks);
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
             await TLoan.rejectLoan(TLoanID, remarks);
@@ -469,7 +469,7 @@ module.exports.rejectExtension = async (req, res) => {
         const username = (gettingInfo[0][0].Username).toString()
         const results = await TLoan.getLoanByNumber(TLoanID);
         if (results.length > 0) {
-            tloanExtensionRejectedMail(email, username, TLoanID);
+            tloanExtensionRejectedMail(email, username, TLoanID, remarks);
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
             await TLoan.rejectExtension(TLoanID, remarks);
