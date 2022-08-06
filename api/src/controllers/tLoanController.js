@@ -21,7 +21,9 @@ module.exports.getLoanByNo = async (req, res) => {
                 [output[0].Items] = results2;
                 output = output[0];
             }
-            redisClient.set(`TLoan#${TLoanID}`, JSON.stringify(output));
+            redisClient.set(`TLoan#${TLoanID}`, JSON.stringify(output), {
+                EX: 60 * 10
+            });
             return res.status(200).send(output);
         }
         return res.status(404).json({ message: 'Cannot find' });
@@ -44,7 +46,9 @@ module.exports.getItemsByTloan = async (req, res) => {
         // const IDOfTLoan = results1[0][0].TLoanID;
         const results = await TLoan.getTLoanOutItem(TLoanID);
         if (results.length > 0) {
-            redisClient.set(`TLoanItems#${TLoanID}`, JSON.stringify(results[0]));
+            redisClient.set(`TLoanItems#${TLoanID}`, JSON.stringify(results[0]), {
+                EX: 60 * 10
+            });
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('This TLoan has no items');
@@ -66,7 +70,9 @@ module.exports.getIDofLoan = async (req, res) => {
         
         const results = await TLoan.getID(TLoanID);
         if (results.length > 0) {
-            redisClient.set(`TLoanIDs#${TLoanID}`, JSON.stringify(results[0]));
+            redisClient.set(`TLoanIDs#${TLoanID}`, JSON.stringify(results[0]), {
+                EX: 60 * 10
+            });
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('There is no ID');
@@ -79,7 +85,7 @@ module.exports.getIDofLoan = async (req, res) => {
 
 module.exports.allLoan = async (req, res) => {
     try {
-        const TLoans = await redisClient.get('TLoans');
+        const TLoans = await redisClient.get('AllTLoans');
         if (TLoans !== null) {
             const redisresults = JSON.parse(TLoans);
             return res.status(200).json(redisresults);
@@ -87,7 +93,9 @@ module.exports.allLoan = async (req, res) => {
         const results = await TLoan.getAll();
        
         if (results.length > 0) {
-            redisClient.set('TLoans', JSON.stringify(results[0]));
+            redisClient.set('AllTLoans', JSON.stringify(results[0]), {
+                EX: 60 * 60 * 2
+            });
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('You have not made any TLoans');
@@ -141,6 +149,13 @@ module.exports.SubmitAfterEdit = async(req,res) =>{
         //     batchno, 
         //     warehousecode,
         //     basketitemid)
+        redisClient.del(`TLoanItems#${TLoanID}`);
+        redisClient.del(`TLoan#${TLoanID}`);
+        redisClient.del(`TLoanIDs#${TLoanID}`);
+        redisClient.del('CurrentTLoan');
+        redisClient.del('PendingTLoan');
+        redisClient.del('HistoryTLoan');
+        redisClient.del('DraftTLoan');
         return res.status(200).send('Draft has been submitted');
     } else {
         return res.status(500).send('Submit draft failed');
@@ -152,7 +167,7 @@ module.exports.SubmitAfterEdit = async(req,res) =>{
 }
 
 module.exports.DraftAfterEdit = async(req,res) =>{
-    const { TLoanID } = req.params;
+    const { TLoanID, UserID } = req.params;
     const {
         type,
         company,
@@ -194,6 +209,13 @@ module.exports.DraftAfterEdit = async(req,res) =>{
         //     batchno, 
         //     warehousecode,
         //     basketitemid)
+        redisClient.del(`TLoanItems#${TLoanID}`);
+        redisClient.del(`TLoan#${TLoanID}`);
+        redisClient.del(`TLoanIDs#${TLoanID}`);
+        redisClient.del('CurrentTLoan');
+        redisClient.del('PendingTLoan');
+        redisClient.del('HistoryTLoan');
+        redisClient.del('DraftTLoan');
         return res.status(200).send('Draft has been saved');
     } else {
         return res.status(500).send('Draft failed to save');
@@ -205,6 +227,7 @@ module.exports.DraftAfterEdit = async(req,res) =>{
 }
 
 module.exports.newLoan = async (req, res) => {
+    const {TLoanID} = req.params
     const {
         type,
         company,
@@ -235,7 +258,13 @@ module.exports.newLoan = async (req, res) => {
             collection,
             tloanItems
         );
-
+        redisClient.del(`TLoanItems#${TLoanID}`);
+        redisClient.del(`TLoan#${TLoanID}`);
+        redisClient.del(`TLoanIDs#${TLoanID}`);
+        redisClient.del('CurrentTLoan');
+        redisClient.del('PendingTLoan');
+        redisClient.del('HistoryTLoan');
+        redisClient.del('DraftTLoan');
         return res.status(201).json(tloanItems);
     } catch (error) {
         console.log(error);
@@ -244,6 +273,7 @@ module.exports.newLoan = async (req, res) => {
 };
 
 module.exports.SendDraft = async (req, res) => {
+    const {TLoanID} = req.params
     const {
         type,
         company,
@@ -274,7 +304,13 @@ module.exports.SendDraft = async (req, res) => {
             collection,
             tloanItems
         );
-
+        redisClient.del(`TLoanItems#${TLoanID}`);
+        redisClient.del(`TLoan#${TLoanID}`);
+        redisClient.del(`TLoanIDs#${TLoanID}`);
+        redisClient.del('CurrentTLoan');
+        redisClient.del('PendingTLoan');
+        redisClient.del('HistoryTLoan');
+        redisClient.del('DraftTLoan');
         return res.status(201).json(tloanItems);
     } catch (error) {
         console.log(error);
@@ -286,9 +322,18 @@ module.exports.SendDraft = async (req, res) => {
 
 module.exports.currentLoan = async (req, res) => {
     const { UserID } = req.params;
+
     try {
+          const TLoans = await redisClient.get(`CurrentTLoan`);
+        if (TLoans !== null) {
+            const redisresults = JSON.parse(TLoans);
+            return res.status(200).json(redisresults);
+        }
         const results = await TLoan.getCurrent(UserID);
         if (results.length > 0) {
+            redisClient.set(`CurrentTLoan`, JSON.stringify(results[0]), {
+                EX: 60 * 5
+            });
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('You have not made any TLoans');
@@ -302,8 +347,16 @@ module.exports.currentLoan = async (req, res) => {
 module.exports.draftsLoan = async (req, res) => {
     const { UserID } = req.params;
     try {
+        const TLoans = await redisClient.get(`DraftTLoan`);
+        if (TLoans !== null) {
+            const redisresults = JSON.parse(TLoans);
+            return res.status(200).json(redisresults);
+        }
         const results = await TLoan.getDraft(UserID);
         if (results.length > 0) {
+            redisClient.set(`DraftTLoan`, JSON.stringify(results[0]), {
+                EX: 60 * 5
+            });
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('You have not made any TLoans');
@@ -317,8 +370,14 @@ module.exports.draftsLoan = async (req, res) => {
 module.exports.historyLoan = async (req, res) => {
     const { UserID } = req.params;
     try {
+        const TLoans = await redisClient.get(`HistoryTLoan`);
+        if (TLoans !== null) {
+            const redisresults = JSON.parse(TLoans);
+            return res.status(200).json(redisresults);
+        }
         const results = await TLoan.getHistory(UserID);
         if (results.length > 0) {
+            redisClient.set(`HistoryTLoan`, JSON.stringify(results[0]));
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('You have not made any TLoans');
@@ -332,8 +391,16 @@ module.exports.historyLoan = async (req, res) => {
 module.exports.pendingLoan = async (req, res) => {
     const { UserID } = req.params;
     try {
+        const TLoans = await redisClient.get(`PendingTLoan`);
+        if (TLoans !== null) {
+            const redisresults = JSON.parse(TLoans);
+            return res.status(200).json(redisresults);
+        }
         const results = await TLoan.getPending(UserID);
         if (results.length > 0) {
+            redisClient.set(`PendingTLoan`, JSON.stringify(results[0]), {
+                EX: 60 * 5
+            });
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('You have not made any TLoans');
@@ -350,6 +417,8 @@ module.exports.approveLoan = async (req, res) => {
         const results = await TLoan.approveLoan(TLoanID);
         if (results) {
             redisClient.del('ManagerLoan');
+            redisClient.del('ManagerExtension');
+            redisClient.del('ApprovedLoan');
             return res.status(200).send('Status has been Updated');
         } else {
             return res.status(500).send('Status failed to Update');
@@ -367,6 +436,7 @@ module.exports.rejectLoan = async (req, res) => {
         const results = await TLoan.getLoanByNumber(TLoanID);
         if (results.length > 0) {
             redisClient.del('ManagerLoan');
+            redisClient.del('ManagerExtension');
             await TLoan.rejectLoan(TLoanID, remarks);
             return res.status(200).send('Status has been Updated');
         } else {
@@ -383,6 +453,7 @@ module.exports.approveExtension = async (req, res) => {
     try {
         const results = await TLoan.approveExtension(TLoanID);
         if (results) {
+            redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
             return res.status(200).send('Status has been Updated');
         } else {
@@ -400,6 +471,7 @@ module.exports.rejectExtension = async (req, res) => {
     try {
         const results = await TLoan.getLoanByNumber(TLoanID);
         if (results.length > 0) {
+            redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
             await TLoan.rejectExtension(TLoanID, remarks);
             return res.status(200).send('Status has been Updated');
@@ -496,7 +568,9 @@ module.exports.ManagerLoan = async (req, res) => {
         }
         const results = await TLoan.getManagerLoan();
         if (results.length > 0) {
-            redisClient.set('ManagerLoan', JSON.stringify(results[0]));
+            redisClient.set('ManagerLoan', JSON.stringify(results[0]), {
+                EX: 60 * 5
+            });
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('No Loans that are in need of approval');
@@ -517,7 +591,9 @@ module.exports.ManagerExtension = async (req, res) => {
         const results = await TLoan.getManagerExtension();
        redisClient.set('ManagerExtension', JSON.stringify(results[0]));
         if (results.length > 0) {
-           
+            redisClient.set('ManagerExtension', JSON.stringify(results[0]), {
+                EX: 60 * 5
+            });
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('No Extensions that are in need of approval');
@@ -550,8 +626,16 @@ module.exports.LoanExtend = async (req, res) => {
 module.exports.extensionStatus = async (req, res) => {
     const { TLoanID } = req.params;
     try {
+        const TLoans = await redisClient.get(`ExtensionStatus#${TLoanID}`);
+        if (TLoans !== null) {
+            const redisresults = JSON.parse(TLoans);
+            return res.status(200).json(redisresults);
+        }
         const results = await TLoan.getExtensionStatus(TLoanID);
         if (results.length > 0) {
+            redisClient.set(`ExtensionStatus#${TLoanID}`, JSON.stringify(results[0]), {
+                EX: 60 * 5
+            });
             return res.status(200).json(results[0])
         } else {
             return res.status(500).send('Does not Exist!');
@@ -566,8 +650,16 @@ module.exports.getApprovedLoan = async (req, res) => {
    
    
     try {
+        const TLoans = await redisClient.get('ApprovedLoan');
+        if (TLoans !== null) {
+            const redisresults = JSON.parse(TLoans);
+            return res.status(200).json(redisresults);
+        }
         const results = await TLoan.getApproved();
         if (results.length > 0) {
+            redisClient.set('ApprovedLoan', JSON.stringify(results[0]), {
+                EX: 60 * 5
+            });
             return res.status(200).json(results[0]);
         } else {
             return res.status(404).send('No approved Loans available');
@@ -581,8 +673,16 @@ module.exports.getApprovedLoan = async (req, res) => {
 module.exports.tloanStatusID = async (req, res) => {
     const { TLoanID } = req.params;
     try {
+        const TLoans = await redisClient.get(`TLoanStatusID#${TLoanID}`);
+        if (TLoans !== null) {
+            const redisresults = JSON.parse(TLoans);
+            return res.status(200).json(redisresults);
+        }
         const results = await TLoan.getStatusID(TLoanID);
         if (results.length > 0) {
+            redisClient.set(`TLoanStatusID#${TLoanID}`, JSON.stringify(results[0]), {
+                EX: 60 * 5
+            });
             return res.status(200).json(results[0])
         } else {
             return res.status(500).send('Does not Exist!');
@@ -595,8 +695,16 @@ module.exports.tloanStatusID = async (req, res) => {
 
 module.exports.allCurrent = async (req, res) => {
     try{
+        const TLoans = await redisClient.get('AllCurrent');
+        if (TLoans !== null) {
+            const redisresults = JSON.parse(TLoans);
+            return res.status(200).json(redisresults);
+        }
         const results = await TLoan.allCurrent();
         if (results.length > 0) {
+            redisClient.set('AllCurrent', JSON.stringify(results[0]), {
+                EX: 60 * 5
+            });
             return res.status(200).json(results[0])
         } else {
             return res.status(500).send('Does not Exist!');
@@ -609,8 +717,16 @@ module.exports.allCurrent = async (req, res) => {
 
 module.exports.allHistory = async (req, res) => {
     try{
+        const TLoans = await redisClient.get('AllHistory');
+        if (TLoans !== null) {
+            const redisresults = JSON.parse(TLoans);
+            return res.status(200).json(redisresults);
+        }
         const results = await TLoan.allHistory();
         if (results.length > 0) {
+            redisClient.set('AllHistory', JSON.stringify(results[0]), {
+                EX: 60 * 5
+            });
             return res.status(200).json(results[0])
         } else {
             return res.status(500).send('Does not Exist!');
@@ -627,7 +743,10 @@ module.exports.updateStatus = async (req, res) => {
     try {
         const results = await TLoan.updateStatus(TLoanID, statusChange);
         if (results) {
-            redisClient.del('ManagerLoan');
+            redisClient.del('ApprovedLoan');
+            redisClient.del(`TLoanItems#${TLoanID}`);
+            redisClient.del(`TLoan#${TLoanID}`);
+            redisClient.del(`TLoanIDs#${TLoanID}`);
             return res.status(200).send('Status has been Updated');
         } else {
             return res.status(500).send('Status failed to Update');
