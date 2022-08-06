@@ -52,7 +52,10 @@ module.exports.loginUser = async (req, res) => {
         }
         return res.status(401).json({ message: "User with email doesn't exist" });
     } catch (error) {
-        console.log(error);
+        if (error.status === 429) {
+            return res.status(500).json({ message: 'Too many requests. Please try again later' });
+        }
+        console.log(error.status);
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 };
@@ -206,8 +209,11 @@ module.exports.createUser = async (req, res) => {
         redisClient.del('users');
         return res.status(201).json({ message: 'User created successfully!' });
     } catch (error) {
-        console.log(error);
+        console.log("the error object is ", error);
         if (error.code === 'ER_DUP_ENTRY') {
+            if (error.sqlMessage.endsWith(`key 'user_username_unique'`)) {
+                return res.status(422).json({ message: 'User with that username already exists' });
+            }
             return res.status(422).json({ message: 'User with that email already exists' });
         }
         return res.status(500).json({ message: 'Internal Server Error!' });
@@ -271,6 +277,9 @@ module.exports.updateUser = async (req, res) => {
     } catch (error) {
         console.log(error);
         if (error.code === 'ER_DUP_ENTRY') {
+            if (error.sqlMessage.endsWith(`key 'user_username_unique'`)) {
+                return res.status(422).json({ message: 'User with that username already exists' });
+            }
             return res.status(422).json({ message: 'User with that email already exists' });
         }
         return res.status(500).json({ message: 'Internal Server Error!' });
