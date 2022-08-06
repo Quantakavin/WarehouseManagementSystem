@@ -452,7 +452,7 @@ const RmaDisplay: React.FC = () => {
 
     return (
       <DatePicker
-        value={value}
+        value={value == null ? new Date() : value}
         renderInput={(params) => <TextField {...params} />}
         onChange={handleChange}
         inputFormat="dd/MM/yy"
