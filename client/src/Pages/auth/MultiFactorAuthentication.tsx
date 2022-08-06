@@ -25,7 +25,7 @@ interface FormValues {
   password: string;
 }
 
-const Login: React.FC = () => {
+const MultiFactorAuthentication: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const {
@@ -36,7 +36,7 @@ const Login: React.FC = () => {
 
   const mutation = useMutation(LoginUser, {
     onSuccess: (data) => {
-      const { token, id, name, usergroup, permissions } = data.data;
+      const { token, id, name, usergroup, permissions, enabled2FA } = data.data;
       localStorage.setItem("token", token);
       localStorage.setItem("user_id", id);
       localStorage.setItem("username", name);
@@ -46,6 +46,7 @@ const Login: React.FC = () => {
           role: usergroup,
           name,
           permissions,
+          enabled2FA: enabled2FA === 1
         })
       );
       dispatch(ChangeTab({ currenttab: "Dashboard" }));
@@ -130,4 +131,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default MultiFactorAuthentication;

@@ -21,6 +21,7 @@ module.exports.loginUser = async (req, res) => {
                     name: results[0][0].Username,
                     usergroup: results[0][0].UserGroupName,
                     permissions: results2[0],
+                    enabled2FA: results[0][0].Enabled2FA,
                     token: jwt.sign(
                         { id: results[0][0].UserID, role: results[0][0].UserGroupName },
                         config.JWTKey,
@@ -158,6 +159,39 @@ module.exports.createUser = async (req, res) => {
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
+
+module.exports.update2FA = async (req,res) => {
+    const userID = req.params.id;
+    const { enabled2FA } =
+        req.body;
+    console.log("the boolean is ", req.body)
+    console.log("the boolean is ", enabled2FA)
+    let return2FA;
+    let successmsg = "";
+    if (enabled2FA) {
+        return2FA = 1;
+        successmsg = "2FA enabled successfully";
+    } else {
+        return2FA = 0;
+        successmsg = "2FA disabled successfully";
+    }
+    try {
+        const results = await user.getByID(userID);
+        if (results.length > 0) {
+            await user.update2FA(
+                userID,
+                return2FA
+            );
+            redisClient.del(`user#${userID}`);
+            return res.status(204).json({ message: successmsg });
+        }
+        return res.status(404).json({ message: 'Cannot find user with that id' });
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+
+}
 
 module.exports.updateUser = async (req, res) => {
     const userID = req.params.id;

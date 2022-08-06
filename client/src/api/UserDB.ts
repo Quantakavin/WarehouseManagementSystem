@@ -85,6 +85,15 @@ export const UpdateUser = async (formData, id: string) => {
   });
 };
 
+export const Update2FA = async (formData, id: string) => {
+  return axios.put(`${config.baseURL}/user2fa/${id}`, formData, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
 export const DeleteUser = async (id: string) => {
   return axios.delete(`${config.baseURL}/user/${id}`, {
     headers: {

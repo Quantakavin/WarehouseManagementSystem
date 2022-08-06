@@ -2,7 +2,7 @@ const knex = require('../config/database');
 
 module.exports.getByEmail = async (email) => {
     // return knex.where('Email', email).select('UserID','Username','Password').from('User')
-    const query = `SELECT u.Active, u.UserID, u.Username, u.Password, g.UserGroupName, g.UserGroupID FROM User u LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID WHERE u.Email = ?`;
+    const query = `SELECT u.Active, u.UserID, u.Username, u.Password, g.UserGroupName, g.UserGroupID, u.2FA 'Enabled2FA' FROM User u LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID WHERE u.Email = ?`;
     return knex.raw(query, [email]);
 };
 
@@ -122,6 +122,28 @@ module.exports.update = async (
             .then(trx.commit)
             .catch(trx.rollback);
     });
+};
+
+module.exports.update2FA = async (
+    userID,
+    return2FA
+) => {
+    /*
+    return knex('User').where('UserID', userID).update({
+        Username: name,
+        Email: email,
+        Password: password,
+        MobileNo: mobileno,
+        CompanyID: company,
+        UserGroupID: usergroup,
+        Active: active
+    });
+    */
+    return knex('User')
+            .where('UserID', userID)
+            .update({
+                "2FA": return2FA
+            });
 };
 
 module.exports.getByUserGroup = async (userGroupID) => {

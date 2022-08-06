@@ -17,6 +17,12 @@ router.put(
     userController.updateUser
 );
 
+router.put(
+    '/user2fa/:id',
+    authorization.verifyUser,
+    userController.update2FA
+);
+
 router.delete('/user/:id', authorization.verifyAdmin, userController.deleteUser);
 
 module.exports = router;

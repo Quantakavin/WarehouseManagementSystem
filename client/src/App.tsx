@@ -33,10 +33,12 @@ import UserGroups2 from "./pages/usergroups/UserGroups2";
 import ViewUserGroup from "./pages/usergroups/ViewUserGroup";
 import AddUser from "./pages/users/AddUser";
 import EditUser from "./pages/users/EditUser";
-import Login from "./pages/users/Login";
+import Login from "./pages/auth/Login";
 import Profile from "./pages/users/Profile";
 import Users2 from "./pages/users/Users2";
 import ViewUser from "./pages/users/ViewUser";
+import Settings from "./pages/settings/Settings";
+import MultiFactorAuthentication from "./pages/auth/MultiFactorAuthentication";
 
 // const context = useContext(EditableContext)
 // const {isEditable, TLoanIDGlobal} = context
@@ -76,6 +78,7 @@ const App: React.FC = () => {
               <Route element={<ProtectedRoute loginpage />}>
                 <Route path="/401" element={<Error401 />} />
                 <Route path="/login" element={<Navigate replace to="/" />} />
+                <Route path="/2FA" element={<MultiFactorAuthentication />} />
                 <Route path="/" element={<Login />} />
                 <Route path="/forgetpassword" element={<ForgetPassword />} />
                 <Route path="/resetpassword" element={<ResetPassword />} />
@@ -156,6 +159,7 @@ const App: React.FC = () => {
                   path="/editnotificationgroup/:id"
                   element={<EditNotificationGroup />}
                 />
+                <Route path="/settings" element={<Settings />} />
                 <Route path="/403" element={<Error403 />} />
                 <Route path="*" element={<Error404 />} />
               </Route>

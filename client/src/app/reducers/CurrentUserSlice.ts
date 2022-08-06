@@ -8,6 +8,7 @@ interface CurrentUserState {
   name: string | null;
   role: string | null;
   isAuthenticated?: boolean;
+  enabled2FA?: boolean;
   permissions: any[];
 }
 
@@ -18,6 +19,7 @@ const initialState: CurrentUserState = {
   // token: null,
   role: null,
   isAuthenticated: false,
+  enabled2FA: false,
   permissions: null,
 };
 
@@ -33,6 +35,7 @@ export const currentUserSlice = createSlice({
       state.role = action.payload.role;
       state.isAuthenticated = true;
       state.permissions = action.payload.permissions;
+      state.enabled2FA = action.payload.enabled2FA;
     },
     removeUser: (state) => {
       state.id = null;
@@ -40,12 +43,19 @@ export const currentUserSlice = createSlice({
       state.name = null;
       state.role = null;
       state.isAuthenticated = false;
+      state.enabled2FA = false;
       state.permissions = null;
     },
+    enable2FA: (state) => {
+      state.enabled2FA = true;
+    },
+    disable2FA: (state) => {
+      state.enabled2FA = false;
+    }
   },
 });
 
-export const { setUser, removeUser } = currentUserSlice.actions;
+export const { setUser, removeUser, enable2FA, disable2FA} = currentUserSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectName = (state: RootState) => state.currentUser.name;
@@ -53,6 +63,8 @@ export const selectRole = (state: RootState) => state.currentUser.role;
 export const selectId = (state: RootState) => state.currentUser.id;
 export const selectIsAuthenticated = (state: RootState) =>
   state.currentUser.isAuthenticated;
+  export const selectEnabled2FA = (state: RootState) =>
+  state.currentUser.enabled2FA;
 export const selectPermissions = (state: RootState) =>
   state.currentUser.permissions;
 
