@@ -6,7 +6,11 @@ const sgMail = require('@sendgrid/mail');
 // const apiKey = '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'
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-module.exports.rmaAcceptedMail = (email, username, rmaid) => {
+module.exports.rmaAcceptedMail = (
+    email = 'shine.thw@gmail.com',
+    username = 'hyangwoo',
+    rmaid = '182'
+) => {
     sgMail
         .send({
             from: 'shine.thw@gmail.com', // Change to your verified sender
@@ -31,12 +35,16 @@ module.exports.rmaAcceptedMail = (email, username, rmaid) => {
         });
 };
 
-module.exports.rmaRejectedMail = (email, username, rmaid) => {
+module.exports.rmaRejectedMail = (
+    email = 'shine.thw@gmail.com',
+    username = 'hyangwoo',
+    rmaid = '182'
+) => {
     sgMail
         .send({
             from: 'shine.thw@gmail.com', // Change to your verified sender
             subject: 'RMA Rejected',
-            templateId: 'd-03dd5c5e80c8479f96d2cffb4fd8232a ',
+            templateId: 'd-03dd5c5e80c8479f96d2cffb4fd8232a',
             personalizations: [
                 {
                     to: email,
