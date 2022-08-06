@@ -13,7 +13,6 @@ import {
   EmailValidation,
   PasswordValidation,
 } from "../../utils/FormValidation";
-// import LoginUser from "../../api/user/LoginUser";
 import { LoginUser } from "../../api/UserDB";
 import { useAppDispatch } from "../../app/hooks";
 import { removeUser, setUser } from "../../app/reducers/CurrentUserSlice";
