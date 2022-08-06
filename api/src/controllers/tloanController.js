@@ -1,6 +1,7 @@
 const TLoan = require('../services/tLoanService');
 const redisClient = require('../config/caching');
 //const { tLoanService } = require('../services');
+const {sendMail} = require('./emailNotificationController')
 
 module.exports.getLoanByNo = async (req, res) => {
     const { TLoanID } = req.params;
@@ -415,6 +416,7 @@ module.exports.approveLoan = async (req, res) => {
     const { TLoanID } = req.params;
     try {
         const results = await TLoan.approveLoan(TLoanID);
+        sendMail()
         if (results) {
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
