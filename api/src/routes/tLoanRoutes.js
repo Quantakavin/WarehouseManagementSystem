@@ -32,4 +32,5 @@ router.put('/tloan/draftEditedDraft/:TLoanID', validation.validateDraft,TLoanCon
 router.get('/tloan/allCurrent', TLoanController.allCurrent);
 router.get('/tloan/allHistory', TLoanController.allHistory);
 router.put('/tloan/updatestatus/:TLoanID', validation.validateStatusUpdate,TLoanController.updateStatus)
+router.get('/tloan/email', TLoanController.getEmail)
 module.exports = router;

@@ -396,3 +396,14 @@ module.exports.closeRma = async (RmaID) => {
             .catch(trx.rollback);
     });
 };
+
+module.exports.getEmployeeInfo = async(RmaID) =>{
+    const query = `
+    SELECT u.Email,
+    u.Username
+    FROM User u 
+    JOIN Rma r ON r.SalesmanID = u.UserID 
+    WHERE r.RmaID = ?
+    `
+    return knex.raw(query, [RmaID])
+}

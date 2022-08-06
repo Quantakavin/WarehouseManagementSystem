@@ -400,9 +400,12 @@ module.exports.pendingLoan = async (req, res) => {
 module.exports.approveLoan = async (req, res) => {
     const { TLoanID } = req.params;
     try {
+        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID)
+        const email = (gettingInfo[0][0].Email).toString()
+        const username = (gettingInfo[0][0].Username).toString()
         const results = await TLoan.approveLoan(TLoanID);
         if (results) {
-            tloanAcceptedMail();
+        tloanAcceptedMail(email, username, TLoanID);
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
             redisClient.del('ApprovedLoan');
@@ -419,9 +422,12 @@ module.exports.rejectLoan = async (req, res) => {
     const { TLoanID } = req.params;
     const { remarks } = req.body;
     try {
+        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID)
+        const email = (gettingInfo[0][0].Email).toString()
+        const username = (gettingInfo[0][0].Username).toString()
         const results = await TLoan.getLoanByNumber(TLoanID);
         if (results.length > 0) {
-            tloanRejectedMail();
+            tloanRejectedMail(email, username, TLoanID, remarks);
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
             await TLoan.rejectLoan(TLoanID, remarks);
@@ -437,9 +443,12 @@ module.exports.rejectLoan = async (req, res) => {
 module.exports.approveExtension = async (req, res) => {
     const { TLoanID } = req.params;
     try {
+        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID)
+        const email = (gettingInfo[0][0].Email).toString()
+        const username = (gettingInfo[0][0].Username).toString()
         const results = await TLoan.approveExtension(TLoanID);
         if (results) {
-            tloanExtensionAcceptedMail();
+            tloanExtensionAcceptedMail(email, username, TLoanID);
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
             return res.status(200).send('Status has been Updated');
@@ -455,9 +464,12 @@ module.exports.rejectExtension = async (req, res) => {
     const { TLoanID } = req.params;
     const { remarks } = req.body;
     try {
+        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID)
+        const email = (gettingInfo[0][0].Email).toString()
+        const username = (gettingInfo[0][0].Username).toString()
         const results = await TLoan.getLoanByNumber(TLoanID);
         if (results.length > 0) {
-            tloanExtensionRejectedMail();
+            tloanExtensionRejectedMail(email, username, TLoanID, remarks);
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
             await TLoan.rejectExtension(TLoanID, remarks);
@@ -731,3 +743,16 @@ module.exports.updateStatus = async (req, res) => {
         return res.status(500).send('Internal Server Error');
     }
 };
+
+module.exports.getEmail = async (req, res) =>{
+    const {TLoanID} = req.body
+    try{
+        const results = await TLoan.getEmployeeEmail(TLoanID)
+        if(results) {
+          return res.status(200).send(results[0][0].Email)
+        }
+    }catch (error){
+        console.log(error)
+    }
+    
+}
