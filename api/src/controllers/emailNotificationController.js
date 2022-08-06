@@ -222,4 +222,10 @@ module.exports.tloanExtensionRejectedMail = (email, username, tloanid) => {
                 }
             ]
         })
-d(msg)
+        .then(() => {
+            console.log('Email sent');
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
