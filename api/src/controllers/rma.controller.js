@@ -1,6 +1,13 @@
 /* eslint-disable prefer-destructuring */
 const { rmaService } = require('../services');
 const redisClient = require('../config/caching');
+const {
+    rmaAcceptedMail,
+    rmaRejectedMail,
+    rmaReceivedMail,
+    rmaVerifiedMail,
+    rmaInprogressMail
+} = require('./emailNotificationController');
 
 module.exports.getAllRMA = async (req, res) => {
     try {
@@ -368,6 +375,7 @@ module.exports.updateRmaAccepted = async (req, res) => {
         console.log('called');
         if (results.length > 0) {
             await rmaService.updateRmaAccepted(RmaID);
+            rmaAcceptedMail();
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);
@@ -389,6 +397,7 @@ module.exports.updateRmaRejected = async (req, res) => {
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaRejected(RmaID, rejectreason);
+            rmaRejectedMail();
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);
@@ -432,6 +441,7 @@ module.exports.updateRmaReceived = async (req, res) => {
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRMAReceived(RmaID, products);
+            rmaReceivedMail();
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);
@@ -454,6 +464,7 @@ module.exports.updateRmaInstructions = async (req, res) => {
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaInstructions(RmaID, products);
+            rmaVerifiedMail();
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);
@@ -476,6 +487,7 @@ module.exports.updateRmaCoa = async (req, res) => {
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaCOA(RmaID, products);
+            rmaInprogressMail();
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);
