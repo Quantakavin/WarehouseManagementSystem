@@ -6,6 +6,8 @@ const notificationGroup = require('../services/notificationGroupService');
 const userGroup = require('../services/userGroupService');
 const config = require('../config/config');
 const redisClient = require('../config/caching');
+const twilioClient = require('../config/twilio');
+const ConvertMobileNo = require('../utils/ConvertPhoneNoToE164Format');
 
 module.exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
@@ -14,7 +16,8 @@ module.exports.loginUser = async (req, res) => {
         if (results[0].length > 0) {
             if (results[0][0].Active !== 'Y') {
                 return res.status(401).json({ message: 'Your account has been deactivated' });
-            } else if (bcrypt.compareSync(password, results[0][0].Password) === true) {
+            }
+            if (bcrypt.compareSync(password, results[0][0].Password) === true) {
                 const results2 = await userGroup.getFeatures(results[0][0].UserGroupID);
                 const data = {
                     id: results[0][0].UserID,
@@ -22,6 +25,7 @@ module.exports.loginUser = async (req, res) => {
                     usergroup: results[0][0].UserGroupName,
                     permissions: results2[0],
                     enabled2FA: results[0][0].Enabled2FA,
+                    mobileNo: results[0][0].MobileNo,
                     token: jwt.sign(
                         { id: results[0][0].UserID, role: results[0][0].UserGroupName },
                         config.JWTKey,
@@ -30,13 +34,63 @@ module.exports.loginUser = async (req, res) => {
                         }
                     )
                 };
+                if (results[0][0].Enabled2FA === 1) {
+                    await twilioClient.verify.v2
+                        .services(config.TwilioService)
+                        .verifications.create({
+                            to: ConvertMobileNo(results[0][0].MobileNo),
+                            channel: 'sms'
+                        })
+                        .then((verification) =>
+                            console.log('twilio status is ', verification.status)
+                        );
+                }
+
                 return res.status(200).json(data);
             }
             return res.status(401).json({ message: 'Invalid Email/Password Combination' });
         }
         return res.status(401).json({ message: "User with email doesn't exist" });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+module.exports.resend2FAToken = async (req, res) => {
+    const { mobileno } = req.body;
+    try {
+        await twilioClient.verify.v2
+            .services(config.TwilioService)
+            .verifications.create({ to: ConvertMobileNo(mobileno), channel: 'sms' })
+            .then((verification) => console.log('twilio status is ', verification.status));
+        return res.status(204).send();
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
+module.exports.verify2FAToken = async (req, res) => {
+    const { mobileno = null } = req.query;
+    const { code } = req.body;
+    let verificationstatus = "";
+    console.log("the no is ", code)
+    try {
+        await twilioClient.verify.v2
+            .services(config.TwilioService)
+            .verificationChecks.create({ to: ConvertMobileNo(mobileno), code })
+            .then((verificationCheck) =>
+                verificationstatus = verificationCheck
+            );
+        if (verificationstatus.status !== 'approved') {
+            console.log(verificationstatus)
+            return res.status(400).json({ message: 'Incorrect code entered! Please try again.' });
+        }
+        return res.status(204).send();
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -160,38 +214,33 @@ module.exports.createUser = async (req, res) => {
     }
 };
 
-module.exports.update2FA = async (req,res) => {
+module.exports.update2FA = async (req, res) => {
     const userID = req.params.id;
-    const { enabled2FA } =
-        req.body;
-    console.log("the boolean is ", req.body)
-    console.log("the boolean is ", enabled2FA)
+    const { enabled2FA } = req.body;
+    console.log('the boolean is ', req.body);
+    console.log('the boolean is ', enabled2FA);
     let return2FA;
-    let successmsg = "";
+    let successmsg = '';
     if (enabled2FA) {
         return2FA = 1;
-        successmsg = "2FA enabled successfully";
+        successmsg = '2FA enabled successfully';
     } else {
         return2FA = 0;
-        successmsg = "2FA disabled successfully";
+        successmsg = '2FA disabled successfully';
     }
     try {
         const results = await user.getByID(userID);
         if (results.length > 0) {
-            await user.update2FA(
-                userID,
-                return2FA
-            );
+            await user.update2FA(userID, return2FA);
             redisClient.del(`user#${userID}`);
             return res.status(204).json({ message: successmsg });
         }
         return res.status(404).json({ message: 'Cannot find user with that id' });
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
-
-}
+};
 
 module.exports.updateUser = async (req, res) => {
     const userID = req.params.id;
@@ -245,7 +294,6 @@ module.exports.deleteUser = async (req, res) => {
             });
         }
         return res.status(404).json({ message: 'Cannot find User with that id' });
-        2;
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });

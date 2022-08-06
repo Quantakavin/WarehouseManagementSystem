@@ -13,5 +13,8 @@ module.exports = {
     cookiesecret: process.env.COOKIE_SECRET,
     elasticusername: process.env.ELASTIC_USERNAME,
     elasticpassword: process.env.ELASTIC_PASSWORD,
-    elasticcloudid: process.env.ELASTIC_CLOUD_ID
+    elasticcloudid: process.env.ELASTIC_CLOUD_ID,
+    TwilioAccountSID: process.env.TWILIO_ACCOUNT_SID,
+    TwilioAuthToken: process.env.TWILIO_AUTH_TOKEN,
+    TwilioService: process.env.TWILIO_SERVICE
 };

@@ -2,7 +2,7 @@ const knex = require('../config/database');
 
 module.exports.getByEmail = async (email) => {
     // return knex.where('Email', email).select('UserID','Username','Password').from('User')
-    const query = `SELECT u.Active, u.UserID, u.Username, u.Password, g.UserGroupName, g.UserGroupID, u.2FA 'Enabled2FA' FROM User u LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID WHERE u.Email = ?`;
+    const query = `SELECT u.Active, u.UserID, u.Username, u.Password, g.UserGroupName, g.UserGroupID, u.2FA 'Enabled2FA', u.MobileNo FROM User u LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID WHERE u.Email = ?`;
     return knex.raw(query, [email]);
 };
 

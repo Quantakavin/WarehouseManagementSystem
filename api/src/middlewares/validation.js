@@ -69,6 +69,38 @@ const validation = {
         }
     },
 
+    validateMobileNo: (req, res, next) => {
+        const { mobileno } = req.body;
+        const phoneRegex = /^[6|8|9]\d{7}|\+65\s?[6|8|9]\d{7}|\(\+?65\)\s?[6|8|9]\d{7}$/;
+
+        if (!phoneRegex.test(mobileno)) {
+            res.status(400).json({
+                message: 'Please enter a valid phone number'
+            });
+        } else {
+            next();
+        }
+    },
+
+    validate2FAToken: (req, res, next) => {
+        const { mobileno } = req.query
+        const { code } = req.body;
+        const phoneRegex = /^[6|8|9]\d{7}|\+65\s?[6|8|9]\d{7}|\(\+?65\)\s?[6|8|9]\d{7}$/;
+        const tokenRegex = /^[0-9]{6}$/
+
+        if (!phoneRegex.test(mobileno)) {
+            res.status(400).json({
+                message: 'Please enter a valid phone number'
+            });
+        } else if (!tokenRegex.test(code)) {
+            res.status(400).json({
+                message: 'Please enter a valid code'
+            });
+        } else {
+            next();
+        }
+    },
+
     validateUserGroup: (req, res, next) => {
         const { name, description } = req.body;
 

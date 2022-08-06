@@ -26,3 +26,10 @@ export const SelectValidation = {
   required: "Please select at least one option",
 };
 export const CompanyValidation = { required: "Company name cannot be empty" };
+export const MultiFactorCodeValidation = {
+  required: "Please enter the 6-digit code",
+  pattern: {
+    value: /^[0-9]{6}$/,
+    message: "Please enter a valid 6-digit code",
+  },
+}

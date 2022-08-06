@@ -48,15 +48,17 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ loginpage }) => {
-  const token = localStorage.getItem("token");
+  //const token = localStorage.getItem("token");
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   if (loginpage) {
-    if (token) {
+    if (isAuthenticated) {
       return <Navigate replace to="/dashboard" />;
     }
     return <Outlet />;
   }
-  if (!token) {
-    return <Navigate replace to="/401" />;
+  if (!isAuthenticated) {
+    return <Navigate replace to="/login" />;
+    //return <Navigate replace to="/401" />;
   }
   return <Outlet />;
 };

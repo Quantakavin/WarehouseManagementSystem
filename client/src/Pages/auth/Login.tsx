@@ -36,7 +36,23 @@ const Login: React.FC = () => {
 
   const mutation = useMutation(LoginUser, {
     onSuccess: (data) => {
-      const { token, id, name, usergroup, permissions, enabled2FA } = data.data;
+      const { token, id, name, usergroup, permissions, enabled2FA, mobileNo } = data.data;
+
+      if (enabled2FA === 1) {
+        dispatch(
+          setUser({
+            id,
+            role: usergroup,
+            name,
+            permissions,
+            enabled2FA: enabled2FA === 1,
+            isAuthenticated: false,
+            mobileNo: mobileNo,
+            token: token
+          })
+        );
+        return navigate("/2fa", { replace: true });
+      }
       localStorage.setItem("token", token);
       localStorage.setItem("user_id", id);
       localStorage.setItem("username", name);
@@ -46,7 +62,10 @@ const Login: React.FC = () => {
           role: usergroup,
           name,
           permissions,
-          enabled2FA: enabled2FA === 1
+          enabled2FA: enabled2FA === 1,
+          isAuthenticated: true,
+          mobileNo: mobileNo,
+          token: token
         })
       );
       dispatch(ChangeTab({ currenttab: "Dashboard" }));

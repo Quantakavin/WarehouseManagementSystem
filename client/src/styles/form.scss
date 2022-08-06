@@ -13,6 +13,17 @@ $primary-color: #0a2540;
   font-weight: 700;
 }
 
+.formsubheading {
+  @media screen and (min-width: 800px) {
+    margin-left: 8% !important;
+    padding-bottom: 20px;
+  }
+
+  @media screen and (max-width: 800px) {
+    padding-bottom: 35px;
+  }
+}
+
 .formcontainer {
   color: $primary-color;
   background-color: white !important;

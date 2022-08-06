@@ -1,68 +1,44 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
-import { Box, Link } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormContainer from "../../components/form/FormContainer";
 import FormField from "../../components/form/FormField";
 import SubmitButton from "../../components/form/SubmitButton";
 import {
-  EmailValidation,
-  PasswordValidation,
+  MultiFactorCodeValidation
 } from "../../utils/FormValidation";
 // import LoginUser from "../../api/user/LoginUser";
-import { LoginUser } from "../../api/UserDB";
-import { useAppDispatch } from "../../app/hooks";
-import { setUser } from "../../app/reducers/CurrentUserSlice";
-import { ChangeTab } from "../../app/reducers/SidebarSlice";
+import { LoginUser, Resend2FAToken, Verify2FAToken } from "../../api/UserDB";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { setUser, selectMobileNo, selectToken, authenticateUser } from "../../app/reducers/CurrentUserSlice";
+import { ChangeTab, Reset } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
+import { stubString } from "lodash";
 
 interface FormValues {
-  email: string;
-  password: string;
+  code: number | string;
 }
 
 const MultiFactorAuthentication: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const usermobileno = useAppSelector(selectMobileNo);
+  const usertoken = useAppSelector(selectToken);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({ mode: "onSubmit" });
 
-  const mutation = useMutation(LoginUser, {
-    onSuccess: (data) => {
-      const { token, id, name, usergroup, permissions, enabled2FA } = data.data;
-      localStorage.setItem("token", token);
-      localStorage.setItem("user_id", id);
-      localStorage.setItem("username", name);
-      dispatch(
-        setUser({
-          id,
-          role: usergroup,
-          name,
-          permissions,
-          enabled2FA: enabled2FA === 1
-        })
-      );
-      dispatch(ChangeTab({ currenttab: "Dashboard" }));
-      Toast.fire({
-        icon: "success",
-        title: "Logged in successfully",
-        customClass: "swalpopup",
-        timer: 1500,
-        width: 330,
-      });
-      return navigate("/dashboard", { replace: true });
-    },
-    onError: (data) => {
-      controls.start("detecterror");
-    },
-  });
+  const resendmutation = useMutation(Resend2FAToken);
+
+  const verifymutation = useMutation((data: FormValues) =>
+  Verify2FAToken(data, usermobileno));
 
   const controls = useAnimation();
 
@@ -77,18 +53,70 @@ const MultiFactorAuthentication: React.FC = () => {
   };
 
   const onSubmit = (data: FormValues) => {
-    mutation.mutate(data);
+    verifymutation.mutate(data, {
+      onSuccess: (data) => {
+        localStorage.setItem("token", usertoken);
+        dispatch(authenticateUser());
+        dispatch(ChangeTab({ currenttab: "Dashboard" }));
+        Toast.fire({
+          icon: "success",
+          title: "Logged in successfully",
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 330,
+        });
+        console.log("the data is ", data)
+        return navigate("/dashboard", { replace: true });
+      },
+      onError: (data) => {
+        controls.start("detecterror");
+      },
+    });
   };
+
+  const resend = () => {
+    resendmutation.mutate({mobileno: usermobileno},)
+  }
 
   return (
     <motion.div variants={variants} animate={controls}>
       <FormContainer
-        header="Login to your account"
+        header="Two-Step Authentication"
         multistep={false}
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
       >
+        <Typography className="formsubheading">To continue, please enter the 6-digit verification code send to
+          your phone ending in {usermobileno.substring(usermobileno.length-4)}</Typography>
+
+          <Box className="formsubheading">Didnt recieve a code?         <Link
+          onClick={() => {
+            resend()
+          }}
+          underline="hover"
+          sx={{ ml: "10px" }}
+        >
+          Resend
+        </Link></Box>
         <FormField
+          label="Enter 6-digit Code"
+          name="code"
+          type="number"
+          register={register}
+          error={errors.code}
+          rules={MultiFactorCodeValidation}
+        />
+        {verifymutation.isError && axios.isAxiosError(verifymutation.error) ? (
+          <ErrorAlert error={verifymutation.error} />
+        ) : null}
+         <Box className="flexcontainer" style={{ marginTop: 20 }}>
+          <SubmitButton
+            text="Continue"
+            loading={verifymutation.isLoading}
+            multipart={false}
+          />
+        </Box> 
+        {/* <FormField
           label="Email Address"
           name="email"
           type="email"
@@ -125,7 +153,7 @@ const MultiFactorAuthentication: React.FC = () => {
             loading={mutation.isLoading}
             multipart={false}
           />
-        </Box>
+        </Box> */}
       </FormContainer>
     </motion.div>
   );
