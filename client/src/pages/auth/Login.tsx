@@ -38,7 +38,7 @@ const Login: React.FC = () => {
 
   const mutation = useMutation(LoginUser, {
     onSuccess: (data) => {
-      const { token, id, name, usergroup, permissions, enabled2FA, mobileNo } = data.data;
+      const { token, id, name, usergroup, permissions, enabled2FA, mobileNo, telegramid } = data.data;
 
       if (enabled2FA === 1) {
         dispatch(removeUser())
@@ -51,7 +51,8 @@ const Login: React.FC = () => {
             enabled2FA: enabled2FA === 1,
             isAuthenticated: false,
             mobileNo: mobileNo,
-            token: token
+            token: token,
+            telegramid: telegramid
           })
         );
         return navigate("/2fa", { replace: true });
@@ -68,7 +69,8 @@ const Login: React.FC = () => {
           enabled2FA: enabled2FA === 1,
           isAuthenticated: true,
           mobileNo: mobileNo,
-          token: token
+          token: token,
+          telegramid: telegramid
         })
       );
       dispatch(ChangeTab({ currenttab: "Dashboard" }));

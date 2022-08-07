@@ -26,6 +26,7 @@ module.exports.loginUser = async (req, res) => {
                     permissions: results2[0],
                     enabled2FA: results[0][0].Enabled2FA,
                     mobileNo: results[0][0].MobileNo,
+                    telegramid: results[0][0].TelegramID,
                     token: jwt.sign(
                         { id: results[0][0].UserID, role: results[0][0].UserGroupName },
                         config.JWTKey,
@@ -304,6 +305,34 @@ module.exports.deleteUser = async (req, res) => {
         return res.status(404).json({ message: 'Cannot find User with that id' });
     } catch (error) {
         console.log(error);
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
+module.exports.updateUserTeleID = async (req, res) => {
+    const userID = req.params.id;
+    const { telegramid = null } = req.body;
+    try {
+        // const notigroups = notificationgroups.map((group) => {
+        //     return JSON.parse(group)
+        // })
+        const results = await user.getByID(userID);
+        if (results.length > 0) {
+            await user.updateTeleID(userID, telegramid);
+            redisClient.del(`user#${userID}`);
+            return res.status(204).json({ message: 'User telegram id updated successfully!' });
+        }
+        return res.status(404).json({ message: 'Cannot find user with that id' });
+    } catch (error) {
+        console.log(error);
+        if (error.code === 'ER_DUP_ENTRY') {
+            if (error.sqlMessage.endsWith(`key 'user_telegramid_unique'`)) {
+                return res
+                    .status(422)
+                    .json({ message: 'User with that Telegram ID already exists' });
+            }
+            return res.status(422).json({ message: 'User with that email already exists' });
+        }
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };

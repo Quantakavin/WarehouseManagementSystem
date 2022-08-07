@@ -7,42 +7,117 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 const { TOKEN } = process.env;
 
 const bot = new TelegramBot(TOKEN, { polling: true });
-
-bot.on('message', () => {
-    const UserID = '615889365';
-    bot.sendMessage(UserID, `Hello poopbutt`);
+bot.on('message', (message) => {
+    UserID = message.bot.sendMessage(UserID, `This is a bot of ISDN Holdings.`);
 });
-// const TELEGRAM_API=`https://api.telegram/org/bot${TOKEN}`
-// const URI = `/webhook/${TOKEN}`
-// const WEBHOOK_URL
 
-// https://api.telegram.org/bot5584416213:AAFMk5KzT-_Gi3tZ0_7zkCyR3AjqZYXd2aU/sendMessage?chat_id=5584416213&text=Hello+World
+module.exports.rmaAcceptedTele = (UserID, Username, RmaID) => {
+    try {
+        bot.sendMessage(
+            UserID,
+            `Hello ${Username}, your RMA request #${RmaID} has just been approved, view the details at http://localhost:3000/rmaDetails/${RmaID}`
+        );
+    } catch (error) {
+        console.log(error);
+    }
+};
 
-// dotenv.config({ path: path.resolve(__dirname, '../../.env') });
-// const apiKey = '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'
-// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+module.exports.rmaRejectedTele = (UserID, Username, RmaID, RejectReason) => {
+    try {
+        bot.sendMessage(
+            UserID,
+            `Hello ${Username}, your RMA request #${RmaID} has just been rejected, view the details at http://localhost:3000/rmaDetails/${RmaID}`
+        );
+        bot.sendMessage(UserID, `Reason: ${RejectReason}`);
+    } catch (error) {
+        console.log(error);
+    }
+};
 
-// module.exports.rmaAcceptedMail = (email, username, RmaID) => {
-//     sgMail
-//         .send({
-//             from: 'shine.thw@gmail.com', // Change to your verified sender
-//             subject: 'RMA Approved',
-//             templateId: 'd-1c4b7d2230ea47f2997c87dbc696a875',
-//             personalizations: [
-//                 {
-//                     to: email,
-//                     dynamicTemplateData: {
-//                         Username: username,
-//                         RmaID,
-//                         URL: `http://localhost:3000/rmaDetails/${RmaID}`
-//                     }
-//                 }
-//             ]
-//         })
-//         .then(() => {
-//             console.log('Email sent');
-//         })
-//         .catch((error) => {
-//             console.error(error);
-//         });
-// };
+module.exports.rmaReceivedTele = (UserID, Username, RmaID) => {
+    try {
+        bot.sendMessage(
+            UserID,
+            `Hello ${Username}, the products for your RMA request #${RmaID} have just been received,`
+        );
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+module.exports.rmaVerifiedTele = (UserID, Username, RmaID) => {
+    try {
+        bot.sendMessage(
+            UserID,
+            `Hello ${Username}, the products for your RMA request #${RmaID} have just been verified,`
+        );
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+module.exports.rmaProgressTele = (UserID, Username, RmaID) => {
+    try {
+        bot.sendMessage(
+            UserID,
+            `Hello ${Username}, progress for your RMA request #${RmaID} has just been updated, view the details at http://localhost:3000/rmaDetails/${RmaID}`
+        );
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+module.exports.rmaClosedTele = (UserID, Username, RmaID) => {
+    try {
+        bot.sendMessage(
+            UserID,
+            `Hello ${Username}, your RMA request #${RmaID} has just been closed,`
+        );
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+module.exports.tloanAcceptedTele = (UserID, Username, TLoanID) => {
+    try {
+        bot.sendMessage(
+            UserID,
+            `Hello ${Username}, your T-Loan request #${TLoanID} has just been approved, view the details at http://localhost:3000/tloandetails/${TLoanID}`
+        );
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+module.exports.tloanRejectedTele = (UserID, Username, TLoanID, Remarks) => {
+    try {
+        bot.sendMessage(
+            UserID,
+            `Hello ${Username}, your T-Loan request #${TLoanID} has just been rejected, Remarks: ${Remarks}`
+        );
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+module.exports.tloanExtensionAcceptedTele = (UserID, Username, TLoanID) => {
+    try {
+        bot.sendMessage(
+            UserID,
+            `Hello ${Username}, your Extension request for T-Loan #${TLoanID} has just been approved, view the details at http://localhost:3000/tloandetails/${TLoanID}`
+        );
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+module.exports.tloanExtensionRejectedTele = (UserID, Username, TLoanID, Remarks) => {
+    try {
+        bot.sendMessage(
+            UserID,
+            `Hello ${Username}, your Extension request for T-Loan #${TLoanID} has just been rejected, Remarks: ${Remarks}`
+        );
+    } catch (error) {
+        console.log(error);
+    }
+};

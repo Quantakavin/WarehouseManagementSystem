@@ -14,15 +14,14 @@ import config from "../../config/config";
 
 const style = {
   position: "absolute" as "absolute",
-  height: "70%",
-  width: "70%",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
+  width: 900,
   bgcolor: "background.paper",
+  border: "background.paper",
   boxShadow: 24,
   p: 4,
-  display: "block",
 };
 
 interface rma {
@@ -122,6 +121,7 @@ export default function ReasonModalButton() {
                     height: 50,
                     borderRadius: 10,
                     paddingRight: 4,
+                    marginTop: 3.7
                   }}
                   startIcon={<CloseIcon/>}
                   onClick={handleClose}

@@ -2,7 +2,7 @@ const knex = require('../config/database');
 
 module.exports.getByEmail = async (email) => {
     // return knex.where('Email', email).select('UserID','Username','Password').from('User')
-    const query = `SELECT u.Active, u.UserID, u.Username, u.Password, g.UserGroupName, g.UserGroupID, u.2FA 'Enabled2FA', u.MobileNo FROM User u LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID WHERE u.Email = ?`;
+    const query = `SELECT u.Active, u.UserID, u.Username, u.Password, g.UserGroupName, g.UserGroupID, u.2FA 'Enabled2FA', u.MobileNo, u.TelegramID FROM User u LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID WHERE u.Email = ?`;
     return knex.raw(query, [email]);
 };
 
@@ -124,10 +124,7 @@ module.exports.update = async (
     });
 };
 
-module.exports.update2FA = async (
-    userID,
-    return2FA
-) => {
+module.exports.update2FA = async (userID, return2FA) => {
     /*
     return knex('User').where('UserID', userID).update({
         Username: name,
@@ -139,11 +136,9 @@ module.exports.update2FA = async (
         Active: active
     });
     */
-    return knex('User')
-            .where('UserID', userID)
-            .update({
-                "2FA": return2FA
-            });
+    return knex('User').where('UserID', userID).update({
+        '2FA': return2FA
+    });
 };
 
 module.exports.getByUserGroup = async (userGroupID) => {
@@ -168,4 +163,10 @@ module.exports.delete = async (userID) => {
 module.exports.updateUserPassword = async (password, id) => {
     const query = `UPDATE User SET Password = ? WHERE UserID = ?`;
     return knex.raw(query, [password, id]);
+};
+
+module.exports.updateTeleID = async (userID, telegramid) => {
+    return knex('User').where('UserID', userID).update({
+        TelegramID: telegramid
+    });
 };

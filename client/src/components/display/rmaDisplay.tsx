@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import CancelIcon from "@mui/icons-material/Close";
@@ -15,36 +16,36 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import {
-    DataGrid,
-    GridActionsCellItem,
-    GridCellParams,
-    GridColDef,
-    GridColTypeDef,
-    GridEventListener,
-    GridFilterInputValueProps,
-    GridFilterItem,
-    GridFilterModel,
-    GridRenderCellParams,
-    GridRenderEditCellParams,
-    GridRowId,
-    GridRowModel,
-    GridRowModes,
-    GridRowModesModel,
-    GridRowParams,
-    GridToolbarColumnsButton,
-    GridToolbarContainer,
-    GridToolbarDensitySelector,
-    GridToolbarExport,
-    GridToolbarFilterButton,
-    GridToolbarQuickFilter,
-    GRID_DATE_COL_DEF,
-    MuiEvent,
-    useGridApiContext
+  DataGrid,
+  GridActionsCellItem,
+  GridCellParams,
+  GridColDef,
+  GridColTypeDef,
+  GridEventListener,
+  GridFilterInputValueProps,
+  GridFilterItem,
+  GridFilterModel,
+  GridRenderCellParams,
+  GridRenderEditCellParams,
+  GridRowId,
+  GridRowModel,
+  GridRowModes,
+  GridRowModesModel,
+  GridRowParams,
+  GridToolbarColumnsButton,
+  GridToolbarContainer,
+  GridToolbarDensitySelector,
+  GridToolbarExport,
+  GridToolbarFilterButton,
+  GridToolbarQuickFilter,
+  GRID_DATE_COL_DEF,
+  MuiEvent,
+  useGridApiContext,
 } from "@mui/x-data-grid";
 import {
-    DatePicker,
-    DateTimePicker,
-    LocalizationProvider
+  DatePicker,
+  DateTimePicker,
+  LocalizationProvider,
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
@@ -56,8 +57,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useAppSelector } from "../../app/hooks";
 import {
-    selectPermissions,
-    selectRole
+  selectPermissions,
+  selectRole,
 } from "../../app/reducers/CurrentUserSlice";
 import config from "../../config/config";
 import { RMA } from "../../utils/CommonTypes";
@@ -125,9 +126,7 @@ const RmaDisplay: React.FC = () => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const rowdata = await axios.get(
-        `${config.baseURL}/RMA/Product/${RmaID}`
-      );
+      const rowdata = await axios.get(`${config.baseURL}/RMA/Product/${RmaID}`);
 
       setRows(rowdata.data);
     };

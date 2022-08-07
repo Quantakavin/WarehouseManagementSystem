@@ -1,6 +1,17 @@
 const TLoan = require('../services/tLoanService');
 const redisClient = require('../config/caching');
-const { tloanAcceptedMail, tloanRejectedMail, tloanExtensionAcceptedMail, tloanExtensionRejectedMail } = require('./emailNotificationController');
+const {
+    tloanAcceptedMail,
+    tloanRejectedMail,
+    tloanExtensionAcceptedMail,
+    tloanExtensionRejectedMail
+} = require('./emailNotificationController');
+const {
+    tloanAcceptedTele,
+    tloanRejectedTele,
+    tloanExtensionAcceptedTele,
+    tloanExtensionRejectedTele
+} = require('./telegramNotificationController');
 
 module.exports.getLoanByNo = async (req, res) => {
     const { TLoanID } = req.params;
@@ -117,8 +128,8 @@ module.exports.SubmitAfterEdit = async (req, res) => {
     } = req.body;
 
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID)
-        const UserID = (gettingInfo[0][0].UserID).toString()
+        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const UserID = gettingInfo[0][0].UserID.toString();
         const results = await TLoan.getLoanByNumber(TLoanID);
         const tloanItems = items.map((item) => {
             return item;
@@ -157,7 +168,7 @@ module.exports.SubmitAfterEdit = async (req, res) => {
             redisClient.del(`PendingTLoan#${UserID}`);
             redisClient.del(`DraftTLoan#${UserID}`);
             redisClient.del(`HistoryTLoan#${UserID}`);
-            
+
             return res.status(200).send('Draft has been submitted');
         }
         return res.status(500).send('Submit draft failed');
@@ -182,8 +193,8 @@ module.exports.DraftAfterEdit = async (req, res) => {
     } = req.body;
 
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID)
-        const UserID = (gettingInfo[0][0].UserID).toString()
+        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const UserID = gettingInfo[0][0].UserID.toString();
         const results = await TLoan.getLoanByNumber(TLoanID);
         const tloanItems = items.map((item) => {
             return item;
@@ -247,8 +258,8 @@ module.exports.newLoan = async (req, res) => {
         items
     } = req.body;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID)
-        const UserID = (gettingInfo[0][0].UserID).toString()
+        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const UserID = gettingInfo[0][0].UserID.toString();
         const tloanItems = items.map((item) => {
             return item;
         });
@@ -299,8 +310,8 @@ module.exports.SendDraft = async (req, res) => {
         items
     } = req.body;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID)
-        const UserID = (gettingInfo[0][0].UserID).toString()
+        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const UserID = gettingInfo[0][0].UserID.toString();
         const tloanItems = items.map((item) => {
             return item;
         });
@@ -425,13 +436,17 @@ module.exports.pendingLoan = async (req, res) => {
 module.exports.approveLoan = async (req, res) => {
     const { TLoanID } = req.params;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID)
-        const email = (gettingInfo[0][0].Email).toString()
-        const username = (gettingInfo[0][0].Username).toString()
-        const UserID = (gettingInfo[0][0].UserID).toString()
+        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const email = gettingInfo[0][0].Email.toString();
+        const username = gettingInfo[0][0].Username.toString();
+        const UserID = gettingInfo[0][0].UserID.toString();
+        const telegramid = gettingInfo[0][0].TelegramID.toString();
         const results = await TLoan.approveLoan(TLoanID);
         if (results) {
-        tloanAcceptedMail(email, username, TLoanID);
+            if (telegramid !== null) {
+                tloanAcceptedTele(telegramid, username, TLoanID);
+            }
+            tloanAcceptedMail(email, username, TLoanID);
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
             redisClient.del('ApprovedLoan');
@@ -457,12 +472,16 @@ module.exports.rejectLoan = async (req, res) => {
     const { TLoanID } = req.params;
     const { remarks } = req.body;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID)
-        const email = (gettingInfo[0][0].Email).toString()
-        const username = (gettingInfo[0][0].Username).toString()
-        const UserID = (gettingInfo[0][0].UserID).toString()
+        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const email = gettingInfo[0][0].Email.toString();
+        const username = gettingInfo[0][0].Username.toString();
+        const UserID = gettingInfo[0][0].UserID.toString();
+        const telegramid = gettingInfo[0][0].TelegramID.toString();
         const results = await TLoan.getLoanByNumber(TLoanID);
         if (results.length > 0) {
+            if (telegramid !== null) {
+                tloanRejectedTele(telegramid, username, TLoanID, remarks);
+            }
             tloanRejectedMail(email, username, TLoanID, remarks);
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
@@ -488,12 +507,16 @@ module.exports.rejectLoan = async (req, res) => {
 module.exports.approveExtension = async (req, res) => {
     const { TLoanID } = req.params;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID)
-        const email = (gettingInfo[0][0].Email).toString()
-        const username = (gettingInfo[0][0].Username).toString()
-        const UserID = (gettingInfo[0][0].UserID).toString()
+        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const email = gettingInfo[0][0].Email.toString();
+        const username = gettingInfo[0][0].Username.toString();
+        const UserID = gettingInfo[0][0].UserID.toString();
+        const telegramid = gettingInfo[0][0].TelegramID.toString();
         const results = await TLoan.approveExtension(TLoanID);
         if (results) {
+            if (telegramid !== null) {
+                tloanExtensionAcceptedTele(telegramid, username, TLoanID);
+            }
             tloanExtensionAcceptedMail(email, username, TLoanID);
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
@@ -519,12 +542,16 @@ module.exports.rejectExtension = async (req, res) => {
     const { TLoanID } = req.params;
     const { remarks } = req.body;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID)
-        const email = (gettingInfo[0][0].Email).toString()
-        const username = (gettingInfo[0][0].Username).toString()
-        const UserID = (gettingInfo[0][0].UserID).toString()
+        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const email = gettingInfo[0][0].Email.toString();
+        const username = gettingInfo[0][0].Username.toString();
+        const UserID = gettingInfo[0][0].UserID.toString();
+        const telegramid = gettingInfo[0][0].TelegramID.toString();
         const results = await TLoan.getLoanByNumber(TLoanID);
         if (results.length > 0) {
+            if (telegramid !== null) {
+                tloanExtensionRejectedTele(telegramid, username, TLoanID, remarks);
+            }
             tloanExtensionRejectedMail(email, username, TLoanID, remarks);
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
@@ -804,8 +831,8 @@ module.exports.updateStatus = async (req, res) => {
     const { TLoanID } = req.params;
     const { statusChange } = req.body;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID)
-        const UserID = (gettingInfo[0][0].UserID).toString()
+        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const UserID = gettingInfo[0][0].UserID.toString();
         const results = await TLoan.updateStatus(TLoanID, statusChange);
         if (results) {
             redisClient.del('ApprovedLoan');
@@ -827,15 +854,14 @@ module.exports.updateStatus = async (req, res) => {
     }
 };
 
-module.exports.getEmail = async (req, res) =>{
-    const {TLoanID} = req.body
-    try{
-        const results = await TLoan.getEmployeeEmail(TLoanID)
-        if(results) {
-          return res.status(200).send(results[0][0].Email)
+module.exports.getEmail = async (req, res) => {
+    const { TLoanID } = req.body;
+    try {
+        const results = await TLoan.getEmployeeEmail(TLoanID);
+        if (results) {
+            return res.status(200).send(results[0][0].Email);
         }
-    }catch (error){
-        console.log(error)
+    } catch (error) {
+        console.log(error);
     }
-    
-}
+};

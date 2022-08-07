@@ -17,14 +17,12 @@ router.put(
     userController.updateUser
 );
 
-router.put(
-    '/user2fa/:id',
-    authorization.verifyUser,
-    userController.update2FA
-);
+router.put('/user2fa/:id', authorization.verifyUser, userController.update2FA);
 
-router.post('/resend2fatoken', validation.validateMobileNo, userController.resend2FAToken)
-router.post('/verify2fatoken', validation.validate2FAToken,userController.verify2FAToken)
+router.put('/userTele/:id', authorization.verifyUser, userController.updateUserTeleID);
+
+router.post('/resend2fatoken', validation.validateMobileNo, userController.resend2FAToken);
+router.post('/verify2fatoken', validation.validate2FAToken, userController.verify2FAToken);
 
 router.delete('/user/:id', authorization.verifyAdmin, userController.deleteUser);
 

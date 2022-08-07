@@ -51,7 +51,7 @@ module.exports.createTLoan = async (
                 Remarks: null,
                 UserID: user,
                 CustomerEmail: email,
-                Collection: collection,
+                Collection: collection
             },
             'TLoanID'
         )
@@ -95,7 +95,7 @@ module.exports.SendTLoanToDraft = async (
                 Remarks: null,
                 UserID: user,
                 CustomerEmail: email,
-                Collection: collection,
+                Collection: collection
             },
             'TLoanID'
         )
@@ -166,7 +166,7 @@ module.exports.SubmitAfterEdit = async (
                     RequiredDate: requireddate,
                     TLoanStatusID: 4,
                     CustomerEmail: email,
-                    Collection: collection,
+                    Collection: collection
                 },
                 'TLoanID'
             )
@@ -204,7 +204,7 @@ module.exports.DraftAfterEdit = async (
                     Duration: duration,
                     RequiredDate: requireddate,
                     CustomerEmail: email,
-                    Collection: collection,
+                    Collection: collection
                 },
                 'TLoanID'
             )
@@ -255,7 +255,6 @@ module.exports.getLoanByNumber = async (TLoanID) => {
  `;
     return knex.raw(query, [TLoanID]);
 };
-
 
 module.exports.getTLoanOutItem = async (TLoanID) => {
     const query = `SELECT 
@@ -536,7 +535,7 @@ module.exports.updateStatus = async (TLoanID, statusChange) => {
         knex('TLoan')
             .where('TLoanID', TLoanID)
             .update({
-                TLoanStatusID: statusChange      
+                TLoanStatusID: statusChange
             })
             .transacting(trx)
             .then(trx.commit)
@@ -544,14 +543,15 @@ module.exports.updateStatus = async (TLoanID, statusChange) => {
     });
 };
 
-module.exports.getEmployeeEmail = async(TLoanID) =>{
+module.exports.getEmployeeEmail = async (TLoanID) => {
     const query = `
     SELECT u.Email,
     u.Username,
-    u.UserID
+    u.UserID,
+    u.TelegramID
     FROM User u 
     JOIN TLoan t ON t.UserID = u.UserID 
     WHERE t.TLoanID = ?
-    `
-    return knex.raw(query, [TLoanID])
-}
+    `;
+    return knex.raw(query, [TLoanID]);
+};
