@@ -1,4 +1,4 @@
-import TLoanTabs from "../../components/tabs/Tloantabs";
+import TLoanTabs from "../../Components/tabs/Tloantabs";
 
 function tloan() {
   return (

@@ -547,7 +547,8 @@ module.exports.updateStatus = async (TLoanID, statusChange) => {
 module.exports.getEmployeeEmail = async(TLoanID) =>{
     const query = `
     SELECT u.Email,
-    u.Username
+    u.Username,
+    u.UserID
     FROM User u 
     JOIN TLoan t ON t.UserID = u.UserID 
     WHERE t.TLoanID = ?
