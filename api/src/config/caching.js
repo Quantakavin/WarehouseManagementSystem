@@ -4,7 +4,7 @@ let redisClient;
 
 if(process.env.REDIS_URL){
     let redisURL = process.env.REDIS_URL;
-    redisClient = redis.createClient(new URL(redisURL))
+    redisClient = redis.createClient({url: process.env.REDIS_URL})
 } else {
     redisClient = redis.createClient()
 }
