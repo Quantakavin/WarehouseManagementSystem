@@ -52,6 +52,7 @@ module.exports.loginUser = async (req, res) => {
         }
         return res.status(401).json({ message: "User with email doesn't exist" });
     } catch (error) {
+        console.log(error)
         if (error.status === 429) {
             return res.status(500).json({ message: 'Too many requests. Please try again later' });
         }
