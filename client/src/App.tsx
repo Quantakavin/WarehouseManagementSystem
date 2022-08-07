@@ -10,7 +10,7 @@ import TLoanDisplay2 from "./Components/display/tloanDisplay2";
 import TLoanManagerExtensionDisplay from "./Components/display/tloanManagerExtensionDisplay";
 import TopNav from "./Components/header/TopNav";
 import Sidebar from "./Components/sidebar/SideBar";
-import BinLocations from "./Pages/binlocations/BinLocations";
+import BinLocations from "./Pages/Binlocations/BinLocations";
 import Dashboard from "./Pages/dashboards/Dashboards";
 import Error401 from "./Pages/error/Error401";
 import Error403 from "./Pages/error/Error403";
