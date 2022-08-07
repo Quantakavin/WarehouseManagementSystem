@@ -51,7 +51,7 @@ import { useAppSelector } from "../../app/hooks";
 import { selectPermissions } from "../../app/reducers/CurrentUserSlice";
 import config from "../../config/config";
 import { Toast, Toast2 } from "../alerts/SweetAlert";
-import { EditableContext } from "../context/isEditableContext";
+import { EditableContext } from "../context/IsEditableContext";
 import ModalButton from "../modals/tloanExtensionModal";
 import TLoanRejectModalButton from "../modals/tloanRejectModal";
 

@@ -1,4 +1,4 @@
-import Rmatabs from "../../Components/tabs/rmatabs";
+import Rmatabs from "../../Components/tabs/Rmatabs";
 
 function rma() {
   return (
