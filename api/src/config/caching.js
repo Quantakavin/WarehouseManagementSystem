@@ -1,6 +1,6 @@
 const redis = require('redis');
 //import { createClient } from 'redis';
-let redisClient = null;
+let redisClient;
 
 if(process.env.REDIS_URL){
     let redisURL = process.env.REDIS_URL;
