@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { store, persistor } from "./app/store";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import "./styles/main.scss";
+//import "./styles/main.scss";
 import { PersistGate } from "redux-persist/integration/react";
 
 const container = document.getElementById("root")!;
