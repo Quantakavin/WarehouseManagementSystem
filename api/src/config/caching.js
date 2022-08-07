@@ -4,11 +4,11 @@ let redisClient;
 
 if(process.env.REDIS_URL){
     let redisURL = process.env.REDIS_URL;
-    redisClient = redis.createClient(redisURL)
+    redisClient = redis.createClient(new URL(redisURL))
 } else {
     redisClient = redis.createClient()
 }
-redisClient.on('error', (err) => console.log('Redis Client Error ' +  err + " and redis url is " + process.env.REDIS_URL));
+redisClient.on('error', (err) => console.log('Redis Client Error ' +  err + " and redis url is " + process.env.REDIS_URL + " and client is " + redisClient));
 
 redisClient.connect();
 
