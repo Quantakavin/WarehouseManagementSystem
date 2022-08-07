@@ -324,7 +324,11 @@ const BinLocations = () => {
           searchoptions={searchOptions}
         />
         {selectedBinTags != null ? selectedBinTags.join(", ") : null}
+        <br></br>
+        <h4>Empty Bin List</h4>
       </div>
+
+
       <div className="flexcontainer">
         <Canvas
           camera={{ fov: 45, position: [0, 40, 150] }}
