@@ -415,9 +415,9 @@ module.exports.dueLoan = async (number) => {
     });
 };
 
-module.exports.loanExtension = async (tloanid, duration, reason) => {
+module.exports.loanExtension = async (TLoanID, duration, reason) => {
     return knex('TLoanExtension').insert({
-        TLoanID: tloanid,
+        TLoanID: TLoanID,
         TLoanExtensionStatusID: 1,
         Duration: duration,
         Reason: reason

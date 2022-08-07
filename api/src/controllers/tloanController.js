@@ -666,18 +666,20 @@ module.exports.ManagerExtension = async (req, res) => {
 };
 
 module.exports.LoanExtend = async (req, res) => {
-    const { tloanid, duration, reason } = req.body;
+    const {TLoanID, duration, reason } = req.body;
     try {
         const gettingInfo = await TLoan.getEmployeeEmail(TLoanID)
         const UserID = (gettingInfo[0][0].UserID).toString()
-        const results = await TLoan.loanExtension(tloanid, duration, reason);
+        const results = await TLoan.loanExtension(TLoanID, duration, reason);
 
         if (results.length > 0) {
-            redisClient.del(`TLoan#${tloanid}`);
-            redisClient.del(`TLoanItems#${tloanid}`);
-            redisClient.del(`TLoanIDs#${tloanid}`);
+            redisClient.del(`TLoanItems#${TLoanID}`);
+            redisClient.del(`TLoan#${TLoanID}`);
+            redisClient.del(`TLoanIDs#${TLoanID}`);
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
+            redisClient.del(`TLoanStatusID#${TLoanID}`);
+            redisClient.del(`ExtensionStatus#${TLoanID}`);
             redisClient.del(`CurrentTLoan#${UserID}`);
             redisClient.del(`PendingTLoan#${UserID}`);
             redisClient.del(`DraftTLoan#${UserID}`);

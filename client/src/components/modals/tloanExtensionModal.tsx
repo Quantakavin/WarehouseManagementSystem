@@ -47,7 +47,7 @@ const ModalButton = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  console.log(TLoanID)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const ModalButton = () => {
       const loanDetail = await axios.get(
         `${config.baseURL}/tloanstatusid/${TLoanID}`
       );
-      setLoan(loans.data[0].TLoanID);
+      setLoanID(loans.data[0].TLoanID);
       setExtensionStatus(extension.data[0].ExtensionStatus);
       setTLoanStatus(loanDetail.data[0].TLoanStatusID);
       // setLoan(Object.e)
@@ -73,13 +73,11 @@ const ModalButton = () => {
       // make sure to catch any error
       .catch(console.error);
   }, []);
-  console.log(extensionStatus)
-
-  console.log(extensionStatus);
-  useEffect(() => {
-    const loanNo = JSON.stringify(loan);
-    setLoanID(loanNo);
-  });
+ 
+  // useEffect(() => {
+  //   const loanNo = JSON.stringify(loan);
+  //   setLoanID(loanNo);
+  // });
 
   console.log(tloanid);
 
@@ -103,7 +101,7 @@ const ModalButton = () => {
         try {
           const results = axios
             .post(`${config.baseURL}/tloan/extension`, {
-              tloanid,
+              TLoanID,
               reason,
               duration,
             })
