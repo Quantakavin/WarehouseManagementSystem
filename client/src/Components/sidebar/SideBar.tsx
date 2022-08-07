@@ -16,9 +16,9 @@ import { CSSObject, styled, Theme, useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
-  selectName,
-  selectPermissions,
-  selectRole,
+    selectName,
+    selectPermissions,
+    selectRole
 } from "../../app/reducers/CurrentUserSlice";
 import { Close, Open, selectOpen } from "../../app/reducers/SidebarSlice";
 import defaultprofile from "../../assets/defaultprofile.png";
