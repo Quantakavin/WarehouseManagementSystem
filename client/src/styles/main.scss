@@ -1,0 +1,163 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "react-quill/dist/quill.snow.css";
+@import "nav.scss";
+@import "form.scss";
+@import "card.scss";
+@import "newtable.scss";
+
+$primary-color: #0a2540;
+
+.flexcontainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100%;
+}
+
+.bluebackground {
+  background-color: #e3e8ee;
+  height: calc(100vh - 67px);
+  width: 100%;
+  overflow: auto;
+  @media screen and (min-width: 800px) {
+    padding-bottom: 80px;
+  }
+}
+
+.hideinmobile {
+  @media screen and (max-width: 800px) {
+    visibility: hidden;
+    display: none;
+  }
+}
+
+.hideindesktop {
+  @media screen and (min-width: 800px) {
+    visibility: hidden;
+    display: none;
+  }
+}
+
+.buttonremovestyling {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+.pagetitle {
+  margin-left: 8%;
+  margin-top: 40px;
+  font-weight: 600;
+  color: $primary-color;
+}
+
+.mainbutton {
+  width: auto;
+  padding: 4px 22px 4px 22px;
+  font-weight: 500;
+  border-radius: 25px;
+  border: solid 1px #0a2540;
+  background-color: #0a2540;
+  font-size: 23;
+  color: white;
+}
+
+.deletebutton {
+  width: auto;
+  padding: 4px 22px 4px 22px;
+  font-weight: 500;
+  border-radius: 5px;
+  border: solid 1px #d11a2a;
+  background-color: #d11a2a;
+  font-size: 23;
+  color: white;
+}
+
+.normalbutton {
+  width: auto;
+  padding: 4px 22px 4px 22px;
+  font-weight: 500;
+  border-radius: 5px;
+  border: solid 1px $primary-color;
+  background-color: $primary-color;
+  font-size: 23;
+  color: white;
+}
+
+.addbutton {
+  width: auto;
+  padding: 6px 6px 6px 6px;
+  font-weight: 500;
+  border-radius: 10px;
+  border: solid 1px #0a2540;
+  background-color: #0a2540;
+  font-size: 14px;
+  color: white;
+  margin-top: 18px;
+  margin-right: 8%;
+  margin-bottom: 4px;
+}
+
+.searchfield {
+  color: #0a2540;
+  border: solid 1px #d3d3d3 !important;
+  border-radius: 10px !important;
+  .MuiOutlinedInput-root {
+    font-size: 15px;
+  }
+  .MuiOutlinedInput-notchedOutline {
+    display: none;
+  }
+  .MuiAutocomplete-clearIndicator {
+    color: $primary-color;
+    visibility: visible;
+  }
+}
+
+.searchbar {
+  @media screen and (max-width: 800px) {
+    width: 250px;
+  }
+
+  @media screen and (min-width: 1200px) {
+    width: 350px;
+  }
+
+  @media screen and (min-width: 800px) {
+    width: 300px;
+  }
+
+  margin-top: 20px;
+  align-self: flex-start;
+}
+
+.searchbutton {
+  width: auto;
+  padding: 6px 6px 6px 6px;
+  font-weight: 500;
+  border-radius: 10px;
+  border: solid 1px #0a2540;
+  background-color: #0a2540;
+  font-size: 14px;
+  color: white;
+  margin-top: 18px;
+  margin-left: 10px;
+  margin-right: auto;
+}
+
+.swalpopup {
+  margin-top: 50px;
+  //font-size: 25px;
+  //box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.21);
+}
