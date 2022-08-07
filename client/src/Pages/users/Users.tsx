@@ -28,10 +28,10 @@ import {
   SortAsc,
   SortDesc,
 } from "../../app/reducers/UserTableFilterSlice";
-import Popup from "../../components/alerts/Popup";
-import { Toast } from "../../components/alerts/SweetAlert";
-import SearchBarUpdated from "../../components/search/SearchBar";
-import InfiniteTable from "../../components/table/InfiniteTable";
+import Popup from "../../Components/alerts/Popup";
+import { Toast } from "../../Components/alerts/SweetAlert";
+import SearchBarUpdated from "../../Components/search/SearchBar";
+import InfiniteTable from "../../Components/table/InfiniteTable";
 import useDebounce from "../../hooks/useDebounce";
 
 const Users: React.FC = () => {

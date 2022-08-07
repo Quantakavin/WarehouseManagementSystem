@@ -60,7 +60,7 @@ import {
   selectPermissions,
   selectRole,
 } from "../../app/reducers/CurrentUserSlice";
-import { Toast } from "../../components/alerts/SweetAlert";
+import { Toast } from "../../Components/alerts/SweetAlert";
 import config from "../../config/config";
 
 const CreateRMA: React.FC = () => {

@@ -1,0 +1,98 @@
+$primary-color: #0a2540;
+
+.cardcontainer {
+  color: $primary-color;
+  background-color: white !important;
+
+  @media screen and (min-width: 800px) {
+    width: 80%;
+    padding-top: 40px;
+    margin-top: 60px;
+    padding-bottom: 40px;
+    border: 1px solid #d3d3d3;
+    border-radius: 10px;
+    padding: 2%;
+  }
+
+  @media screen and (max-width: 800px) {
+    width: auto;
+    min-width: 100%;
+    display: block;
+    text-align: center;
+    padding-top: 12%;
+    padding-bottom: 20px;
+    height: auto;
+    min-height: 100%;
+  }
+
+  @media screen and (min-width: 1200px) {
+    width: 60% !important;
+  }
+}
+
+.cardheader {
+  margin-top: 10px;
+  font-weight: 700;
+  padding-bottom: 10px;
+  text-transform: capitalize;
+  @media screen and (min-width: 800px) {
+    margin-left: 8% !important;
+  }
+}
+
+.cardsubheading {
+  font-weight: 300;
+  font-size: 18px;
+  @media screen and (min-width: 800px) {
+    margin-left: 8% !important;
+  }
+}
+
+.cardfield {
+  @media screen and (min-width: 800px) {
+    flex-direction: block;
+    margin-left: 8% !important;
+  }
+
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+  }
+}
+
+.cardtable {
+  @media screen and (min-width: 800px) {
+    flex-direction: row;
+    margin-left: 8% !important;
+    margin-right: 8% !important;
+  }
+
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+  }
+}
+
+.cardfieldlabel {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: -1px;
+  @media screen and (min-width: 800px) {
+    flex: 2;
+    text-align: left;
+  }
+}
+
+.cardfieldvalue {
+  font-weight: 300;
+  @media screen and (min-width: 800px) {
+    flex: 5;
+    text-align: left;
+  }
+}
+
+.cardbackbutton {
+  color: $primary-color;
+  margin-right: auto;
+  font-weight: 700;
+  background: none;
+  border: none;
+}

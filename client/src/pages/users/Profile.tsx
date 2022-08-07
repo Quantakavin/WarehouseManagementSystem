@@ -4,7 +4,7 @@ import React from "react";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { GetProfile } from "../../api/UserDB";
-import CardSkeleton from "../../components/skeletons/CardSkeleton";
+import CardSkeleton from "../../Components/skeletons/CardSkeleton";
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();

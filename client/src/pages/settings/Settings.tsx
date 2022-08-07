@@ -4,14 +4,14 @@ import React, { useState } from "react";
 import { useQuery, useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { GetProfile, Update2FA } from "../../api/UserDB";
-import CardSkeleton from "../../components/skeletons/CardSkeleton";
+import CardSkeleton from "../../Components/skeletons/CardSkeleton";
 import ShieldIcon from '@mui/icons-material/Shield';
 // import Shield from "@mui/icons-material/Shield";
 import Shield from "../../assets/shield.png";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { enable2FA, disable2FA, selectEnabled2FA, selectId } from "../../app/reducers/CurrentUserSlice";
-import { Toast } from "../../components/alerts/SweetAlert";
-import Popup from "../../components/alerts/Popup";
+import { Toast } from "../../Components/alerts/SweetAlert";
+import Popup from "../../Components/alerts/Popup";
 import { motion } from "framer-motion";
 import LockIcon from '@mui/icons-material/Lock';
 

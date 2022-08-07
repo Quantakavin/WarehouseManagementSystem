@@ -9,9 +9,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { GetUserGroup } from "../../api/UserGroupDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
-import GeneralButton from "../../components/buttons/GeneralButton";
-import CardSkeleton from "../../components/skeletons/CardSkeleton";
-import DataTable from "../../components/table/DataTable";
+import GeneralButton from "../../Components/buttons/GeneralButton";
+import CardSkeleton from "../../Components/skeletons/CardSkeleton";
+import DataTable from "../../Components/table/DataTable";
 
 const ViewUserGroup: React.FC = () => {
   const params = useParams();

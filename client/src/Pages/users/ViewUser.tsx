@@ -8,8 +8,8 @@ import DOMPurify from "dompurify";
 import { GetUser } from "../../api/UserDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
-import CardSkeleton from "../../components/skeletons/CardSkeleton";
-import GeneralButton from "../../components/buttons/GeneralButton";
+import CardSkeleton from "../../Components/skeletons/CardSkeleton";
+import GeneralButton from "../../Components/buttons/GeneralButton";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 const ViewUser: React.FC = () => {

@@ -20,17 +20,17 @@ import {
 } from "../../api/NotificationGroupDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
-import { Toast } from "../../components/alerts/SweetAlert";
-import GeneralButton from "../../components/buttons/GeneralButton";
-import SubmitButton from "../../components/buttons/SubmitButton";
-import ErrorAlert from "../../components/form/ErrorAlert";
-import FormContainer from "../../components/form/FormContainer";
-import FormField from "../../components/form/FormField";
-import FormSteps from "../../components/form/FormSteps";
-import FormTextArea from "../../components/form/FormTextArea";
-import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
-import SelectDropdown from "../../components/form/SelectDropdown";
-import SelectedList from "../../components/form/SelectedList";
+import { Toast } from "../../Components/alerts/SweetAlert";
+import GeneralButton from "../../Components/buttons/GeneralButton";
+import SubmitButton from "../../Components/buttons/SubmitButton";
+import ErrorAlert from "../../Components/form/ErrorAlert";
+import FormContainer from "../../Components/form/FormContainer";
+import FormField from "../../Components/form/FormField";
+import FormSteps from "../../Components/form/FormSteps";
+import FormTextArea from "../../Components/form/FormTextArea";
+import MultiSelectDropdown from "../../Components/form/MultiSelectDropdown";
+import SelectDropdown from "../../Components/form/SelectDropdown";
+import SelectedList from "../../Components/form/SelectedList";
 import {
   Company,
   NotiFeature,

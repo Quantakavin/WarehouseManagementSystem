@@ -9,11 +9,11 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { motion, useAnimation } from "framer-motion";
 import { gridDensityValueSelector } from "@mui/x-data-grid";
-import ErrorAlert from "../../components/form/ErrorAlert";
-import FormContainer from "../../components/form/FormContainer";
-import FormField from "../../components/form/FormField";
-import SelectDropdown from "../../components/form/SelectDropdown";
-import SubmitButton from "../../components/buttons/SubmitButton";
+import ErrorAlert from "../../Components/form/ErrorAlert";
+import FormContainer from "../../Components/form/FormContainer";
+import FormField from "../../Components/form/FormField";
+import SelectDropdown from "../../Components/form/SelectDropdown";
+import SubmitButton from "../../Components/buttons/SubmitButton";
 import { Company, NotiGroup, Option, UserGroup } from "../../utils/CommonTypes";
 import {
   EmailValidation,
@@ -28,10 +28,10 @@ import { PostUser } from "../../api/UserDB";
 import { GetUserGroups } from "../../api/UserGroupDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
-import { Toast } from "../../components/alerts/SweetAlert";
-import FormSteps from "../../components/form/FormSteps";
-import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
-import GeneralButton from "../../components/buttons/GeneralButton";
+import { Toast } from "../../Components/alerts/SweetAlert";
+import FormSteps from "../../Components/form/FormSteps";
+import MultiSelectDropdown from "../../Components/form/MultiSelectDropdown";
+import GeneralButton from "../../Components/buttons/GeneralButton";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 interface FormValues {
