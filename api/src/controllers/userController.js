@@ -52,7 +52,7 @@ module.exports.loginUser = async (req, res) => {
         }
         return res.status(401).json({ message: "User with email doesn't exist" });
     } catch (error) {
-        console.log(error)
+        console.log(error);
         if (error.status === 429) {
             return res.status(500).json({ message: 'Too many requests. Please try again later' });
         }
@@ -78,17 +78,15 @@ module.exports.resend2FAToken = async (req, res) => {
 module.exports.verify2FAToken = async (req, res) => {
     const { mobileno = null } = req.query;
     const { code } = req.body;
-    let verificationstatus = "";
-    console.log("the no is ", code)
+    let verificationstatus = '';
+    console.log('the no is ', code);
     try {
         await twilioClient.verify.v2
             .services(config.TwilioService)
             .verificationChecks.create({ to: ConvertMobileNo(mobileno), code })
-            .then((verificationCheck) =>
-                verificationstatus = verificationCheck
-            );
+            .then((verificationCheck) => (verificationstatus = verificationCheck));
         if (verificationstatus.status !== 'approved') {
-            console.log(verificationstatus)
+            console.log(verificationstatus);
             return res.status(400).json({ message: 'Incorrect code entered! Please try again.' });
         }
         return res.status(204).send();
@@ -210,7 +208,7 @@ module.exports.createUser = async (req, res) => {
         redisClient.del('users');
         return res.status(201).json({ message: 'User created successfully!' });
     } catch (error) {
-        console.log("the error object is ", error);
+        console.log('the error object is ', error);
         if (error.code === 'ER_DUP_ENTRY') {
             if (error.sqlMessage.endsWith(`key 'user_username_unique'`)) {
                 return res.status(422).json({ message: 'User with that username already exists' });

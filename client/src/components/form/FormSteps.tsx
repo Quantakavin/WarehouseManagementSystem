@@ -2,7 +2,7 @@ import { Container, Hidden } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Step from "@mui/material/Step";
 import StepConnector, {
-  stepConnectorClasses,
+    stepConnectorClasses
 } from "@mui/material/StepConnector";
 import { StepIconProps } from "@mui/material/StepIcon";
 import StepLabel from "@mui/material/StepLabel";

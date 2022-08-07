@@ -9,43 +9,42 @@ import FactCheckIcon from "@mui/icons-material/FactCheck";
 import MoreVert from "@mui/icons-material/MoreVert";
 import SaveIcon from "@mui/icons-material/Save";
 import UpdateIcon from "@mui/icons-material/Update";
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import { LoadingButton } from "@mui/lab";
 import { Stack, TextField, Tooltip, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import {
-  DataGrid,
-  GridActionsCellItem,
-  GridCellParams,
-  GridColDef,
-  GridColTypeDef,
-  GridEventListener,
-  GridFilterInputValueProps,
-  GridFilterItem,
-  GridFilterModel,
-  GridRenderCellParams,
-  GridRenderEditCellParams,
-  GridRowId,
-  GridRowModel,
-  GridRowModes,
-  GridRowModesModel,
-  GridRowParams,
-  GridToolbarColumnsButton,
-  GridToolbarContainer,
-  GridToolbarDensitySelector,
-  GridToolbarExport,
-  GridToolbarFilterButton,
-  GridToolbarQuickFilter,
-  GRID_DATE_COL_DEF,
-  MuiEvent,
-  useGridApiContext,
+    DataGrid,
+    GridActionsCellItem,
+    GridCellParams,
+    GridColDef,
+    GridColTypeDef,
+    GridEventListener,
+    GridFilterInputValueProps,
+    GridFilterItem,
+    GridFilterModel,
+    GridRenderCellParams,
+    GridRenderEditCellParams,
+    GridRowId,
+    GridRowModel,
+    GridRowModes,
+    GridRowModesModel,
+    GridRowParams,
+    GridToolbarColumnsButton,
+    GridToolbarContainer,
+    GridToolbarDensitySelector,
+    GridToolbarExport,
+    GridToolbarFilterButton,
+    GridToolbarQuickFilter,
+    GRID_DATE_COL_DEF,
+    MuiEvent,
+    useGridApiContext
 } from "@mui/x-data-grid";
 import {
-  DatePicker,
-  DateTimePicker,
-  LocalizationProvider,
+    DatePicker,
+    DateTimePicker,
+    LocalizationProvider
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
@@ -57,14 +56,14 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useAppSelector } from "../../app/hooks";
 import {
-  selectPermissions,
-  selectRole,
+    selectPermissions,
+    selectRole
 } from "../../app/reducers/CurrentUserSlice";
+import config from "../../config/config";
 import { RMA } from "../../utils/CommonTypes";
 import { Toast } from "../alerts/SweetAlert";
-import RejectModalButton from "../modals/rmaRejectModal";
 import ReasonModalButton from "../modals/rmaReasonModal";
-import config from "../../config/config";
+import RejectModalButton from "../modals/rmaRejectModal";
 
 const RmaDisplay: React.FC = () => {
   const navigate = useNavigate();
