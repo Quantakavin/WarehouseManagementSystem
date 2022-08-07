@@ -17,7 +17,7 @@ import CardField from "../../Components/cards/CardField";
 import CardSkeleton from "../../Components/skeletons/CardSkeleton";
 import IsEditableProvider, {
   EditableContext,
-} from "../../Components/context/isEditableContext";
+} from "../../components/context/IsEditableContext";
 import { useAppSelector } from "../../app/hooks";
 import {
   selectPermissions,
