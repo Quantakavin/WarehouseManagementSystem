@@ -3,7 +3,7 @@ const redis = require('redis');
 let redisClient = null;
 
 if(process.env.REDIS_URL){
-    let redisURL = url.parse(process.env.REDIS_URL);
+    let redisURL = process.env.REDIS_URL;
     redisClient = redis.createClient(redisURL)
 } else {
     redisClient = redis.createClient()
