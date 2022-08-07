@@ -12,10 +12,9 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import DoneIcon from "@mui/icons-material/Done";
 import { LoadingButton } from "@mui/lab";
 import { motion } from "framer-motion";
-import { Toast } from "../alerts/SweetAlert";
-import { TLoans } from "../../utils/CommonTypes";
-import TLoanRejectModalButton from "../modals/tloanRejectExtension";
 import config from "../../config/config";
+import { Toast } from "../alerts/SweetAlert";
+import TLoanRejectModalButton from "../modals/tloanRejectExtension";
 
 
 export default function TLoanManagerDisplay() {
