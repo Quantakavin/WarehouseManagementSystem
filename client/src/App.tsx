@@ -10,6 +10,8 @@ import TLoanDisplay2 from "./Components/display/TloanDisplay2";
 import TLoanManagerExtensionDisplay from "./Components/display/TloanManagerExtensionDisplay";
 import TopNav from "./Components/header/TopNav";
 import Sidebar from "./Components/sidebar/SideBar";
+import Login from "./Pages/auth/Login";
+import MultiFactorAuthentication from "./Pages/auth/MultiFactorAuthentication";
 import BinLocations from "./Pages/binlocations/BinLocations";
 import Dashboard from "./Pages/dashboards/Dashboards";
 import Error401 from "./Pages/error/Error401";
@@ -25,7 +27,8 @@ import ForgetPassword from "./Pages/resetpassword/ForgetPassword";
 import ResetPassword from "./Pages/resetpassword/ResetPassword";
 import CreateRMA from "./Pages/rma/NewRma";
 import RMA from "./Pages/rma/Rma";
-import NewTLoan from "./Pages/tloans/Newtloan";
+import Settings from "./Pages/settings/Settings";
+import NewTLoan from "./Pages/tloans/NewTloan";
 import TLoan from "./Pages/tloans/Tloan";
 import AddUserGroup from "./Pages/usergroups/AddUserGroup";
 import EditUserGroup from "./Pages/usergroups/EditUserGroup";
@@ -33,12 +36,9 @@ import UserGroups2 from "./Pages/usergroups/UserGroups2";
 import ViewUserGroup from "./Pages/usergroups/ViewUserGroup";
 import AddUser from "./Pages/users/AddUser";
 import EditUser from "./Pages/users/EditUser";
-import Login from "./Pages/auth/Login";
 import Profile from "./Pages/users/Profile";
 import Users2 from "./Pages/users/Users2";
 import ViewUser from "./Pages/users/ViewUser";
-import Settings from "./Pages/settings/Settings";
-import MultiFactorAuthentication from "./Pages/auth/MultiFactorAuthentication";
 
 // const context = useContext(EditableContext)
 // const {isEditable, TLoanIDGlobal} = context
