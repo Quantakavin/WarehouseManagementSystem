@@ -28,7 +28,7 @@ import ResetPassword from "./Pages/resetpassword/ResetPassword";
 import CreateRMA from "./Pages/rma/NewRma";
 import RMA from "./Pages/rma/Rma";
 import Settings from "./Pages/settings/Settings";
-import NewTLoan from "./Pages/tloans/Newtloan";
+import NewTLoan from "./Pages/tloans/NewTloan";
 import TLoan from "./Pages/tloans/Tloan";
 import AddUserGroup from "./Pages/usergroups/AddUserGroup";
 import EditUserGroup from "./Pages/usergroups/EditUserGroup";
