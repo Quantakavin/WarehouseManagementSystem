@@ -192,7 +192,7 @@ module.exports.delete = async (userID) => {
     return knex('User').where('UserID', userID).del();
 };
 
-module.exports.updateUserPassword = async (password, id) => {
+module.exports.updatePassword = async (password, id) => {
     const query = `UPDATE User SET Password = ? WHERE UserID = ?`;
     return knex.raw(query, [password, id]);
 };
