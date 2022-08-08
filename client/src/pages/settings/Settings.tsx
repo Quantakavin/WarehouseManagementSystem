@@ -203,7 +203,7 @@ const Settings: React.FC = () => {
     setShowDisableConfirmation(false);
   };
 
-  const handleChange = () => {
+  const handle2FAChange = () => {
     if (!enabled2FA) {
       setShowEnableConfirmation(true);
     } else {
@@ -516,7 +516,7 @@ const Settings: React.FC = () => {
                     </Typography>
                     <Switch
                       checked={enabled2FA}
-                      onChange={handleChange}
+                      onChange={handle2FAChange}
                       inputProps={{ "aria-label": "controlled" }}
                     />
                   </Grid>

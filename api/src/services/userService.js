@@ -22,7 +22,7 @@ module.exports.getAll = async () => {
 };
 
 module.exports.getByID = async (userID) => {
-    const query = `SELECT u.Username, u.Email, c.CompanyName, c.CompanyID, g.UserGroupName, g.UserGroupID, IFNULL(u.MobileNo, 'NULL') 'MobileNo'  FROM User u LEFT JOIN Company c ON u.CompanyID = c.CompanyID LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID WHERE u.UserID = ?`;
+    const query = `SELECT u.Active, u.Username, u.Email, c.CompanyName, c.CompanyID, g.UserGroupName, g.UserGroupID, IFNULL(u.MobileNo, 'NULL') 'MobileNo'  FROM User u LEFT JOIN Company c ON u.CompanyID = c.CompanyID LEFT JOIN UserGroup g ON u.UserGroupID = g.UserGroupID WHERE u.UserID = ?`;
     return knex.raw(query, [userID]);
 };
 

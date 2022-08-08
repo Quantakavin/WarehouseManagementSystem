@@ -96,7 +96,7 @@ const ViewUserGroup: React.FC = () => {
             <button
               style={{ alignSelf: "flex-start" }}
               className="cardbackbutton"
-              onClick={() => navigate(-1)}
+              onClick={() => navigate('/usergroups')}
               type="button"
             >
               <ArrowBackIosIcon fontSize="small" /> Back

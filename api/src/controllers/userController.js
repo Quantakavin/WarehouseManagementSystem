@@ -257,6 +257,12 @@ module.exports.updateUser = async (req, res) => {
         //     return JSON.parse(group)
         // })
         const results = await user.getByID(userID);
+        let finalactive = '';
+        if (active) {
+            finalactive = 'Y';
+        } else {
+            finalactive = 'N';
+        }
         if (results.length > 0) {
             if (password !== null) {
                 const hash = await bcrypt.hash(password, 10);
@@ -268,7 +274,7 @@ module.exports.updateUser = async (req, res) => {
                     mobileno,
                     company,
                     usergroup,
-                    active,
+                    finalactive,
                     notificationgroups
                 );
             } else {
@@ -279,7 +285,7 @@ module.exports.updateUser = async (req, res) => {
                     mobileno,
                     company,
                     usergroup,
-                    active,
+                    finalactive,
                     notificationgroups
                 );
             }

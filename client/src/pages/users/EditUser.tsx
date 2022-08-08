@@ -1,5 +1,5 @@
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { Box, Checkbox, SelectChangeEvent } from "@mui/material";
+import { Box, Checkbox, SelectChangeEvent, styled, Switch } from "@mui/material";
 import axios from "axios";
 import { motion, useAnimation } from "framer-motion";
 import React, { useEffect, useState } from "react";
@@ -32,7 +32,9 @@ import {
 } from "../../utils/FormValidation";
 import FormSteps from "../../Components/form/FormSteps";
 import { Typography } from "@material-ui/core";
-import { current } from "@reduxjs/toolkit";
+import Popup from "../../Components/alerts/Popup";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 interface FormValues {
   name: string;
@@ -43,6 +45,7 @@ interface FormValues {
   usergroup: number;
   notificationgroups: string[];
   usedefaultpassword?: boolean;
+  active: boolean;
 }
 
 const EditUser: React.FC = () => {
@@ -64,6 +67,12 @@ const EditUser: React.FC = () => {
   const [returnNotiGroups, setReturnNotiGroups] = useState<any[]>([]);
   const [passwordDefault, setPasswordDefault] = useState<boolean>(false);
   const [currentPassword, setCurrentPassword] = useState<string>(null);
+  const [userActive, setUserActive] = useState<boolean>(false);
+  const [showActivateConfirmation, setShowActivateConfirmation] =
+  useState<boolean>(false);
+  const [showInactivateConfirmation, setShowInactivateConfirmation] =
+  useState<boolean>(false);
+
   const {
     register,
     unregister,
@@ -80,6 +89,7 @@ const EditUser: React.FC = () => {
     {
       onSuccess: (data) => {
         // setUser(data.data[0]);
+        setUserActive(data.data[0].Active === 'Y')
         setSelectedNotiGroups(
           data.data[0].NotificationGroups.map((value) => {
             return value.NotiGroupID;
@@ -159,6 +169,7 @@ const EditUser: React.FC = () => {
   const onSubmit = (data: FormValues) => {
     const postdata = data;
     postdata.notificationgroups = returnNotiGroups;
+    postdata.active = userActive;
     // postdata.usedefaultpassword = passwordDefault;
     mutation.mutate(data, {
       onSuccess: () => {
@@ -178,7 +189,7 @@ const EditUser: React.FC = () => {
 
   const togglePasswordDefault = () => {
     if (passwordDefault) {
-      register("password", {...PasswordValidation, disabled: passwordDefault})
+      register("password", { ...PasswordValidation, disabled: passwordDefault })
       setValue("password", currentPassword)
       setCurrentPassword(null)
       setPasswordDefault(false)
@@ -260,8 +271,85 @@ const EditUser: React.FC = () => {
     2: <GroupAddIcon />,
   };
 
+  const Activate = () => {
+    setUserActive(true)
+    setShowActivateConfirmation(false)
+
+  }
+
+  const Inactivate = () => {
+    setUserActive(false)
+    setShowInactivateConfirmation(false)
+  }
+
+  const handleActiveChange = () => {
+    if (!userActive) {
+      setShowActivateConfirmation(true);
+    } else {
+      setShowInactivateConfirmation(true);
+    }
+    // setChecked(!checked);
+  };
+
   return (
     <>
+      <Popup
+        showpopup={showActivateConfirmation}
+        heading="Are you sure you want to activate this user"
+        subheading="By doing so, the user will be able to access the website again and perform actions in it"
+        popupimage={<CheckCircleIcon sx={{ color: "#31A961", fontSize: "150px" }} />}
+        closepopup={() => setShowActivateConfirmation(false)}
+        buttons={
+          <>
+            <button
+              style={{ alignSelf: "flex-start" }}
+              className="cardbackbutton"
+              onClick={() => setShowActivateConfirmation(false)}
+              type="button"
+            >
+              Cancel
+            </button>
+            <motion.button
+              style={{ alignSelf: "flex-end" }}
+              className="normalbutton"
+              onClick={Activate}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Activate
+            </motion.button>
+          </>
+        }
+      />
+
+      <Popup
+        showpopup={showInactivateConfirmation}
+        heading="Are you sure you want to inactivate"
+        subheading="By doing so, the user will not be allowed to access or perform actions in the website."
+        popupimage={<CancelIcon sx={{ color: "#D11A2A", fontSize: "150px" }} />}
+        closepopup={() => setShowInactivateConfirmation(false)}
+        buttons={
+          <>
+            <button
+              style={{ alignSelf: "flex-start" }}
+              className="cardbackbutton"
+              onClick={() => setShowInactivateConfirmation(false)}
+              type="button"
+            >
+              Cancel
+            </button>
+            <motion.button
+              style={{ alignSelf: "flex-end" }}
+              className="deletebutton"
+              onClick={Inactivate}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Inactivate
+            </motion.button>
+          </>
+        }
+      />
       <FormSteps steps={steps} activestep={step - 1} icons={icons} />
 
       <motion.div
@@ -314,10 +402,10 @@ const EditUser: React.FC = () => {
                   disabled={passwordDefault}
                   register={register}
                   error={errors.password}
-                  rules={{...PasswordValidation, disabled: passwordDefault}}
+                  rules={{ ...PasswordValidation, disabled: passwordDefault }}
                 />
                 <Box className="formcheckbox" sx={{ display: "flex", flexDirection: "row", alignItems: "center", mt: "-20px" }}>
-                  <Checkbox  checked={passwordDefault} onChange={togglePasswordDefault} />
+                  <Checkbox checked={passwordDefault} onChange={togglePasswordDefault} />
                   <Typography>Use Default</Typography>
                 </Box>
                 <SelectDropdown
@@ -370,6 +458,10 @@ const EditUser: React.FC = () => {
                   placeholder="Select Notification Groups..."
                   options={notiGroupOptions}
                 />
+                <Box className="formcheckbox" sx={{ display: "flex", flexDirection: "row", alignItems: "center", mt: "15px" }}>
+                  <Typography>Active</Typography>
+                  <Switch checked={userActive} onChange={handleActiveChange}/>
+                </Box>
 
                 {mutation.isError && axios.isAxiosError(mutation.error) ? (
                   <div style={{ marginTop: 25, marginBottom: -15 }}>

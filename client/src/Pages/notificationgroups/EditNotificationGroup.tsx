@@ -170,7 +170,7 @@ const AddNotificationGroup: React.FC = () => {
         queryClient.invalidateQueries("filternotificationgroups");
         queryClient.invalidateQueries("notificationgroupnames");
         queryClient.invalidateQueries(`notificationgroup${params.id}`);
-        navigate("/notificationgroups");
+        navigate(`/notificationgroup/${params.id}`);
       },
       onError: () => {
         controls.start("detecterror");
