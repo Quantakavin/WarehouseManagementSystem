@@ -207,7 +207,7 @@ const ModalButton = () => {
                     Extension For Loan #{TLoanID}
                   </h2>
 
-                  <FormControl sx={{ width: 150, marginLeft: 3, marginTop: 2 }}>
+                  <FormControl sx={{ width: 300, marginLeft: 3, marginTop: 2 }}>
                     <InputLabel>Extend By</InputLabel>
                     <Select
                       id="outlined-basic"
@@ -231,7 +231,7 @@ const ModalButton = () => {
                   {console.log(duration)}
 
                   <TextField
-                    sx={{ width: 400, marginLeft: 3, marginTop: 2 }}
+                    sx={{ width: 800, marginLeft: 3, marginTop: 2 }}
                     multiline
                     rows={5.2}
                     label="Reason For Extension"

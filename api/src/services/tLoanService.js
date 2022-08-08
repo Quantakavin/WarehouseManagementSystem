@@ -224,10 +224,11 @@ module.exports.getLoanByNumber = async (TLoanID) => {
     // c.CompanyName,
     // t.Requestor, FROM TLoan t JOIN Company C WHERE t.TLoanNumber = ?, t.CompanyName = c.CompanyName`
     const query = `   SELECT 
-	t.TLoanID,
+  t.TLoanID,
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(t.RequiredDate, "%Y-%m-%d") AS 'RequiredDate',
-  DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS 'EndDate',
+  DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS 'EndDate1',
+  IFNULL(DATE_FORMAT(DATE_ADD(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), INTERVAL tesel.duration  DAY), "%d-%m-%Y"), DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y")) AS 'EndDate',
   coalesce(c.CompanyName, t.CompanyName) AS "CompanyName",
   t.CustomerEmail,
   c.CompanyID,
@@ -248,7 +249,8 @@ module.exports.getLoanByNumber = async (TLoanID) => {
   FROM TLoan t 
   LEFT JOIN Company c ON t.CompanyName = c.CompanyID
   JOIN TLoanStatus ts ON ts.TLoanStatusID = t.TLoanStatusID
-  JOIN TLoanType tt on tt.TLoanTypeID = t.TLoanTypeID
+  JOIN TLoanType tt on tt.TLoanTypeID = t.TLoanTypeID 
+  LEFT JOIN (SELECT duration, TLoanID from TLoanExtension where TLoanExtensionStatusID = 2) tesel ON tesel.TLoanID = t.TLoanID
   JOIN TLoanExtension te on te.TLoanID = t.TLoanID 
   LEFT JOIN TLoanExtensionStatus tes ON tes.TLoanExtensionStatusID = te.TLoanExtensionStatusID
   WHERE t.TLoanID = ?

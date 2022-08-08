@@ -18,9 +18,6 @@ import { useAppDispatch } from "../../app/hooks";
 import { removeUser, setUser } from "../../app/reducers/CurrentUserSlice";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../Components/alerts/SweetAlert";
-import { Magic } from 'magic-sdk';
-
-const m = new Magic('pk_live_E8F0C9DC03C58C57')
 
 interface FormValues {
   email: string;
