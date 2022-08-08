@@ -96,6 +96,19 @@ $primary-color: #0a2540;
   }
 }
 
+.formcheckbox {
+  margin-left: 8%;
+  p {
+    font-weight: 450;
+    font-size: 14px;
+  }
+
+  @media screen and (max-width: 800px) {
+    text-align: left !important;
+  }
+
+}
+
 /*
 .formfield {
   width: 85%;
@@ -231,11 +244,10 @@ select {
 .textfield {
   color: #0a2540;
   flex-grow: 1;
-  border: solid 1px transparent;
   .MuiOutlinedInput-root {
     font-size: 10px;
   }
-  .MuiOutlinedInput-notchedOutline legend {
+  .MuiOutlinedInput-notchedOutline {
     display: none;
   }
 }

@@ -83,17 +83,6 @@ module.exports.update = async (
     active,
     notigroups
 ) => {
-    /*
-    return knex('User').where('UserID', userID).update({
-        Username: name,
-        Email: email,
-        Password: password,
-        MobileNo: mobileno,
-        CompanyID: company,
-        UserGroupID: usergroup,
-        Active: active
-    });
-    */
     return knex.transaction((trx) => {
         knex('User')
             .where('UserID', userID)
@@ -123,6 +112,46 @@ module.exports.update = async (
             .catch(trx.rollback);
     });
 };
+
+module.exports.updateWithoutPassword = async (
+    userID,
+    name,
+    email,
+    mobileno,
+    company,
+    usergroup,
+    active,
+    notigroups
+) => {
+    return knex.transaction((trx) => {
+        knex('User')
+            .where('UserID', userID)
+            .update({
+                Username: name,
+                Email: email,
+                MobileNo: mobileno,
+                CompanyID: company,
+                UserGroupID: usergroup,
+                Active: active
+            })
+            .transacting(trx)
+            .then(() => {
+                return knex('UserNotiGroup').where('UserID', userID).del().transacting(trx);
+            })
+            .then(() => {
+                if (notigroups.length > 0) {
+                    notigroups.forEach((notigroup) => {
+                        notigroup.UserID = userID; // eslint-disable-line no-param-reassign
+                    });
+                    return knex('UserNotiGroup').insert(notigroups).transacting(trx);
+                }
+                return null;
+            })
+            .then(trx.commit)
+            .catch(trx.rollback);
+    });
+};
+
 
 module.exports.update2FA = async (
     userID,

@@ -251,7 +251,7 @@ module.exports.update2FA = async (req, res) => {
 
 module.exports.updateUser = async (req, res) => {
     const userID = req.params.id;
-    const { name, email, password, mobileno, company, usergroup, active, notificationgroups } =
+    const { name, email, password=null, mobileno, company, usergroup, active, notificationgroups } =
         req.body;
     try {
         // const notigroups = notificationgroups.map((group) => {
@@ -259,18 +259,31 @@ module.exports.updateUser = async (req, res) => {
         // })
         const results = await user.getByID(userID);
         if (results.length > 0) {
-            const hash = await bcrypt.hash(password, 10);
-            await user.update(
-                userID,
-                name,
-                email,
-                hash,
-                mobileno,
-                company,
-                usergroup,
-                active,
-                notificationgroups
-            );
+            if (password !== null) {
+                const hash = await bcrypt.hash(password, 10);
+                await user.update(
+                    userID,
+                    name,
+                    email,
+                    hash,
+                    mobileno,
+                    company,
+                    usergroup,
+                    active,
+                    notificationgroups
+                );
+            } else {
+                await user.updateWithoutPassword(
+                    userID,
+                    name,
+                    email,
+                    mobileno,
+                    company,
+                    usergroup,
+                    active,
+                    notificationgroups
+                );
+            }
             redisClient.del(`user#${userID}`);
             return res.status(204).json({ message: 'User updated successfully!' });
         }

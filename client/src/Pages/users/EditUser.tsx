@@ -1,5 +1,5 @@
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { SelectChangeEvent } from "@mui/material";
+import { Box, Checkbox, SelectChangeEvent } from "@mui/material";
 import axios from "axios";
 import { motion, useAnimation } from "framer-motion";
 import React, { useEffect, useState } from "react";
@@ -31,15 +31,18 @@ import {
   UsernameValidation,
 } from "../../utils/FormValidation";
 import FormSteps from "../../Components/form/FormSteps";
+import { Typography } from "@material-ui/core";
+import { current } from "@reduxjs/toolkit";
 
 interface FormValues {
   name: string;
   email: string;
-  password: string;
+  password?: string;
   mobileno: string;
   company: number;
   usergroup: number;
   notificationgroups: string[];
+  usedefaultpassword?: boolean;
 }
 
 const EditUser: React.FC = () => {
@@ -59,15 +62,18 @@ const EditUser: React.FC = () => {
   // const [user, setUser] = useState<any>(null);
   const [selectedNotiGroups, setSelectedNotiGroups] = useState<string[]>([]);
   const [returnNotiGroups, setReturnNotiGroups] = useState<any[]>([]);
+  const [passwordDefault, setPasswordDefault] = useState<boolean>(false);
+  const [currentPassword, setCurrentPassword] = useState<string>(null);
   const {
     register,
+    unregister,
     trigger,
     handleSubmit,
     getValues,
-    control,
+    setValue,
     watch,
-    formState: { errors, isDirty },
-  } = useForm<FormValues>({ mode: "all" });
+    formState: { errors, isDirty, isValid },
+  } = useForm<FormValues>({ mode: "all", shouldUnregister: true });
   const UserQuery = useQuery(
     [`user${params.id}`, params.id],
     () => GetUser(params.id),
@@ -148,9 +154,12 @@ const EditUser: React.FC = () => {
     }),
   };
 
+  console.log("is form valid? ", isValid)
+
   const onSubmit = (data: FormValues) => {
     const postdata = data;
     postdata.notificationgroups = returnNotiGroups;
+    // postdata.usedefaultpassword = passwordDefault;
     mutation.mutate(data, {
       onSuccess: () => {
         Toast.fire({
@@ -167,21 +176,49 @@ const EditUser: React.FC = () => {
     });
   };
 
+  const togglePasswordDefault = () => {
+    if (passwordDefault) {
+      register("password", {...PasswordValidation, disabled: passwordDefault})
+      setValue("password", currentPassword)
+      setCurrentPassword(null)
+      setPasswordDefault(false)
+    } else {
+      setCurrentPassword(getValues("password"))
+      unregister("password")
+      setPasswordDefault(true)
+    }
+  }
+
   const nextStep = () => {
-    trigger(["name", "email", "mobileno", "password", "company"]).then(() => {
-      if (
-        isDirty &&
-        !errors.name &&
-        !errors.email &&
-        !errors.mobileno &&
-        !errors.password &&
-        !errors.company
-      ) {
-        setStep(step + 1);
-      } else {
-        controls.start("detecterror");
-      }
-    });
+    if (passwordDefault) {
+      trigger(["name", "email", "mobileno", "company"]).then(() => {
+        if (
+          !errors.name &&
+          !errors.email &&
+          !errors.mobileno &&
+          !errors.company
+        ) {
+          setStep(step + 1);
+        } else {
+          controls.start("detecterror");
+        }
+      });
+    } else {
+      trigger(["name", "email", "mobileno", "password", "company"]).then(() => {
+        if (
+          isDirty &&
+          !errors.name &&
+          !errors.email &&
+          !errors.mobileno &&
+          !errors.password &&
+          !errors.company
+        ) {
+          setStep(step + 1);
+        } else {
+          controls.start("detecterror");
+        }
+      });
+    }
   };
 
   const prevStep = () => {
@@ -230,8 +267,8 @@ const EditUser: React.FC = () => {
       <motion.div
         variants={variants}
         animate={controls}
-        // exit={{ x: "-100vw", opacity: 0 }}
-        // transition={{ duration: 5 }}
+      // exit={{ x: "-100vw", opacity: 0 }}
+      // transition={{ duration: 5 }}
       >
         <FormContainer
           header="Edit User"
@@ -274,10 +311,15 @@ const EditUser: React.FC = () => {
                   label="Password"
                   name="password"
                   type="password"
+                  disabled={passwordDefault}
                   register={register}
                   error={errors.password}
-                  rules={PasswordValidation}
+                  rules={{...PasswordValidation, disabled: passwordDefault}}
                 />
+                <Box className="formcheckbox" sx={{ display: "flex", flexDirection: "row", alignItems: "center", mt: "-20px" }}>
+                  <Checkbox  checked={passwordDefault} onChange={togglePasswordDefault} />
+                  <Typography>Use Default</Typography>
+                </Box>
                 <SelectDropdown
                   label="Company"
                   name="company"
@@ -349,6 +391,7 @@ const EditUser: React.FC = () => {
           )}
         </FormContainer>
       </motion.div>
+      <pre>{JSON.stringify(watch())}</pre>
     </>
   );
 };

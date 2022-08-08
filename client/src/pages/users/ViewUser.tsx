@@ -55,11 +55,11 @@ const ViewUser: React.FC = () => {
           </div>
           <div className="cardfield">
             <p className="cardfieldlabel">Notification Groups</p>
-            <p className="cardfieldvalue">
+            <div className="cardfieldvalue">
               {UserQuery.data.data[0].NotificationGroups.map((n) => {
-                return <Chip label={n.NotiGroupName} sx={{ fontWeight: 500, mr: "5px", mt: "5px"}} />
+                return <Chip key={n.NotiGroupID} label={n.NotiGroupName} sx={{ fontWeight: 500, mr: "5px", mt: "5px"}} />
               })}
-            </p>
+            </div>
           </div>
           <div
             className="flexcontainer"

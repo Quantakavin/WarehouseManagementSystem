@@ -13,7 +13,7 @@ router.post('/user', authorization.verifyAdmin, validation.validateUser, userCon
 router.put(
     '/user/:id',
     authorization.verifyAdmin,
-    validation.validateUser,
+    validation.validateUserUpdate,
     userController.updateUser
 );
 

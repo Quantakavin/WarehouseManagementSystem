@@ -69,6 +69,56 @@ const validation = {
         }
     },
 
+    validateUserUpdate: (req, res, next) => {
+        const { name, email, password, mobileno, company, usergroup } = req.body;
+
+        const passswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$/;
+        const phoneRegex = /^[6|8|9]\d{7}|\+65\s?[6|8|9]\d{7}|\(\+?65\)\s?[6|8|9]\d{7}$/;
+        if (name === '' || email === '' || password === '' || mobileno === '') {
+            res.status(400).json({
+                message: 'Please fill up all fields correctly'
+            });
+        } else if (company === null) {
+            res.status(400).json({
+                message: 'Please select the company the user belongs to'
+            });
+        } else if (usergroup === null) {
+            res.status(400).json({
+                message: 'Please select a user group to assign the user to'
+            });
+        } else if (
+            password !== undefined && 
+            passswordRegex.test(password) &&
+            validator.isEmail(email) &&
+            phoneRegex.test(mobileno)
+        ) {
+            next();
+        } else if (
+            //password is optional in case users choose default password - hence why it can be undefined
+            password === undefined  &&
+            validator.isEmail(email) &&
+            phoneRegex.test(mobileno)
+        ){
+            next();
+        } else if (!validator.isEmail(email)) {
+            res.status(400).json({
+                message: 'Please enter a valid email'
+            });
+        } else if (!passswordRegex.test(password)) {
+            res.status(400).json({
+                message: 'Please choose a stronger password'
+            });
+        } else if (!phoneRegex.test(mobileno)) {
+            res.status(400).json({
+                message: 'Please enter a valid phone number'
+            });
+        } else {
+            res.status(400).json({
+                message: 'Please fill up all fields correctly'
+            });
+        }
+    },
+
     validateMobileNo: (req, res, next) => {
         const { mobileno } = req.body;
         const phoneRegex = /^[6|8|9]\d{7}|\+65\s?[6|8|9]\d{7}|\(\+?65\)\s?[6|8|9]\d{7}$/;
