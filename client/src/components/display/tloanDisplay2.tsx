@@ -24,22 +24,22 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import {
-  DataGrid,
-  GridActionsCellItem,
-  GridColDef,
-  GridColumns,
-  GridEventListener,
-  GridRenderCellParams,
-  GridRowId,
-  GridRowModel,
-  GridRowModes,
-  GridRowModesModel,
-  GridRowParams,
-  GridRowsProp,
-  MuiEvent,
+    DataGrid,
+    GridActionsCellItem,
+    GridColDef,
+    GridColumns,
+    GridEventListener,
+    GridRenderCellParams,
+    GridRowId,
+    GridRowModel,
+    GridRowModes,
+    GridRowModesModel,
+    GridRowParams,
+    GridRowsProp,
+    MuiEvent
 } from "@mui/x-data-grid";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import axios from "axios";
 import dateFormat from "dateformat";
@@ -51,7 +51,7 @@ import { useAppSelector } from "../../app/hooks";
 import { selectPermissions } from "../../app/reducers/CurrentUserSlice";
 import config from "../../config/config";
 import { Toast, Toast2 } from "../alerts/SweetAlert";
-import { EditableContext } from "../context/isEditableContext";
+import { EditableContext } from "../context/IsEditableContext";
 import ModalButton from "../modals/tloanExtensionModal";
 import TLoanRejectModalButton from "../modals/tloanRejectModal";
 

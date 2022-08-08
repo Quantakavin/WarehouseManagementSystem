@@ -20,10 +20,10 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { removeUser, selectName } from "../../app/reducers/CurrentUserSlice";
 import {
-  Close,
-  Open,
-  Reset,
-  selectOpen,
+    Close,
+    Open,
+    Reset,
+    selectOpen
 } from "../../app/reducers/SidebarSlice";
 import defaultprofile from "../../assets/defaultprofile.png";
 import navbarbrand from "../../assets/navbarbrand.png";

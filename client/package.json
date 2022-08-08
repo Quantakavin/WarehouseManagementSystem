@@ -43,6 +43,7 @@
     "framer-motion": "^6.3.11",
     "framer-motion-3d": "^6.3.11",
     "lodash": "^4.17.21",
+    "magic-sdk": "^9.0.0",
     "material-table": "^2.0.3",
     "material-ui": "^0.20.2",
     "material-ui-search-bar": "^1.0.0",

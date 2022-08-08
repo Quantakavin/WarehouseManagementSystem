@@ -9,6 +9,14 @@ const {
     rmaInprogressMail,
     rmaClosedMail
 } = require('./emailNotificationController');
+const {
+    rmaAcceptedTele,
+    rmaRejectedTele,
+    rmaReceivedTele,
+    rmaVerifiedTele,
+    rmaClosedTele,
+    rmaProgressTele
+} = require('./telegramNotificationController');
 
 module.exports.getAllRMA = async (req, res) => {
     try {
@@ -341,7 +349,7 @@ module.exports.getClosedRMA = async (req, res) => {
     }
 };
 
-// Create RMA
+// Create RMA()
 module.exports.newRMA = async (req, res) => {
     const { contactperson, contactno, salesmanid, contactemail, company, products } = req.body;
     try {
@@ -375,10 +383,14 @@ module.exports.updateRmaAccepted = async (req, res) => {
         const gettingInfo = await rmaService.getEmployeeInfo(RmaID);
         const email = gettingInfo[0][0].Email.toString();
         const username = gettingInfo[0][0].Username.toString();
+        const telegramid = gettingInfo[0][0].TelegramID.toString();
         const results = await rmaService.getByRmaID(RmaID);
         console.log('called');
         if (results.length > 0) {
             await rmaService.updateRmaAccepted(RmaID);
+            if (telegramid !== null) {
+                rmaAcceptedTele(telegramid, username, RmaID);
+            }
             rmaAcceptedMail(email, username, RmaID);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
@@ -402,9 +414,13 @@ module.exports.updateRmaRejected = async (req, res) => {
         const gettingInfo = await rmaService.getEmployeeInfo(RmaID);
         const email = gettingInfo[0][0].Email.toString();
         const username = gettingInfo[0][0].Username.toString();
+        const telegramid = gettingInfo[0][0].TelegramID.toString();
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaRejected(RmaID, rejectreason);
+            if (telegramid !== null) {
+                rmaRejectedTele(telegramid, username, RmaID, rejectreason);
+            }
             rmaRejectedMail(email, username, RmaID, rejectreason);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
@@ -449,9 +465,13 @@ module.exports.updateRmaReceived = async (req, res) => {
         const gettingInfo = await rmaService.getEmployeeInfo(RmaID);
         const email = gettingInfo[0][0].Email.toString();
         const username = gettingInfo[0][0].Username.toString();
+        const telegramid = gettingInfo[0][0].TelegramID.toString();
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRMAReceived(RmaID, products);
+            if (telegramid !== null) {
+                rmaReceivedTele(telegramid, username, RmaID);
+            }
             rmaReceivedMail(email, username, RmaID);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
@@ -475,9 +495,13 @@ module.exports.updateRmaInstructions = async (req, res) => {
         const gettingInfo = await rmaService.getEmployeeInfo(RmaID);
         const email = gettingInfo[0][0].Email.toString();
         const username = gettingInfo[0][0].Username.toString();
+        const telegramid = gettingInfo[0][0].TelegramID.toString();
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaInstructions(RmaID, products);
+            if (telegramid !== null) {
+                rmaVerifiedTele(telegramid, username, RmaID);
+            }
             rmaVerifiedMail(email, username, RmaID);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
@@ -501,9 +525,13 @@ module.exports.updateRmaCoa = async (req, res) => {
         const gettingInfo = await rmaService.getEmployeeInfo(RmaID);
         const email = gettingInfo[0][0].Email.toString();
         const username = gettingInfo[0][0].Username.toString();
+        const telegramid = gettingInfo[0][0].TelegramID.toString();
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaCOA(RmaID, products);
+            if (telegramid !== null) {
+                rmaProgressTele(telegramid, username, RmaID);
+            }
             rmaInprogressMail(email, username, RmaID);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
@@ -526,9 +554,13 @@ module.exports.closeRma = async (req, res) => {
         const gettingInfo = await rmaService.getEmployeeInfo(RmaID);
         const email = gettingInfo[0][0].Email.toString();
         const username = gettingInfo[0][0].Username.toString();
+        const telegramid = gettingInfo[0][0].TelegramID.toString();
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.closeRma(RmaID);
+            if (telegramid !== null) {
+                rmaClosedTele(telegramid, username, RmaID);
+            }
             rmaClosedMail(email, username, RmaID);
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);

@@ -18,6 +18,9 @@ import { useAppDispatch } from "../../app/hooks";
 import { removeUser, setUser } from "../../app/reducers/CurrentUserSlice";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../Components/alerts/SweetAlert";
+import { Magic } from 'magic-sdk';
+
+const m = new Magic('pk_live_E8F0C9DC03C58C57')
 
 interface FormValues {
   email: string;
@@ -35,7 +38,7 @@ const Login: React.FC = () => {
 
   const mutation = useMutation(LoginUser, {
     onSuccess: (data) => {
-      const { token, id, name, usergroup, permissions, enabled2FA, mobileNo } = data.data;
+      const { token, id, name, usergroup, permissions, enabled2FA, mobileNo, telegramid } = data.data;
 
       if (enabled2FA === 1) {
         dispatch(removeUser())
@@ -48,7 +51,8 @@ const Login: React.FC = () => {
             enabled2FA: enabled2FA === 1,
             isAuthenticated: false,
             mobileNo: mobileNo,
-            token: token
+            token: token,
+            telegramid: telegramid
           })
         );
         return navigate("/2fa", { replace: true });
@@ -65,7 +69,8 @@ const Login: React.FC = () => {
           enabled2FA: enabled2FA === 1,
           isAuthenticated: true,
           mobileNo: mobileNo,
-          token: token
+          token: token,
+          telegramid: telegramid
         })
       );
       dispatch(ChangeTab({ currenttab: "Dashboard" }));

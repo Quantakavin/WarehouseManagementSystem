@@ -8,6 +8,7 @@ interface CurrentUserState {
   token: string | null;
   name: string | null;
   role: string | null;
+  telegramid: string | null;
   isAuthenticated?: boolean;
   enabled2FA?: boolean;
   permissions: any[];
@@ -19,10 +20,11 @@ const initialState: CurrentUserState = {
   name: null,
   token: null,
   role: null,
+  telegramid: null,
   isAuthenticated: false,
   enabled2FA: false,
   permissions: null,
-  mobileNo: null
+  mobileNo: null,
 };
 
 export const currentUserSlice = createSlice({
@@ -35,38 +37,41 @@ export const currentUserSlice = createSlice({
       state.token = action.payload.token;
       state.name = action.payload.name;
       state.role = action.payload.role;
+      state.telegramid = action.payload.telegramid;
       state.isAuthenticated = action.payload.isAuthenticated;
       state.permissions = action.payload.permissions;
       state.enabled2FA = action.payload.enabled2FA;
-      state.mobileNo = action.payload.mobileNo
+      state.mobileNo = action.payload.mobileNo;
     },
     removeUser: (state) => {
       state.id = null;
       state.token = null;
       state.name = null;
       state.role = null;
+      state.telegramid = null;
       state.isAuthenticated = false;
       state.enabled2FA = false;
       state.permissions = null;
-      state.mobileNo = null
+      state.mobileNo = null;
     },
     // authenticateUser: (state,  action: PayloadAction<{token: string | null}>) => {
     //   state.token = action.payload.token
     //   state.isAuthenticated = true
     // },
     authenticateUser: (state) => {
-      state.isAuthenticated = true
+      state.isAuthenticated = true;
     },
     enable2FA: (state) => {
       state.enabled2FA = true;
     },
     disable2FA: (state) => {
       state.enabled2FA = false;
-    }
+    },
   },
 });
 
-export const { setUser, removeUser, enable2FA, disable2FA, authenticateUser } = currentUserSlice.actions;
+export const { setUser, removeUser, enable2FA, disable2FA, authenticateUser } =
+  currentUserSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectToken = (state: RootState) => state.currentUser.token;
@@ -75,11 +80,11 @@ export const selectRole = (state: RootState) => state.currentUser.role;
 export const selectId = (state: RootState) => state.currentUser.id;
 export const selectIsAuthenticated = (state: RootState) =>
   state.currentUser.isAuthenticated;
-  export const selectEnabled2FA = (state: RootState) =>
+export const selectEnabled2FA = (state: RootState) =>
   state.currentUser.enabled2FA;
 export const selectPermissions = (state: RootState) =>
   state.currentUser.permissions;
-export const selectMobileNo = (state: RootState) =>
-  state.currentUser.mobileNo;
+export const selectMobileNo = (state: RootState) => state.currentUser.mobileNo;
+export const selectTelegramID = (state: RootState) => state.currentUser.telegramid;
 
 export default currentUserSlice.reducer;

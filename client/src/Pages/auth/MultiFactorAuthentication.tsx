@@ -9,13 +9,18 @@ import ErrorAlert from "../../Components/form/ErrorAlert";
 import FormContainer from "../../Components/form/FormContainer";
 import FormField from "../../Components/form/FormField";
 import SubmitButton from "../../Components/form/SubmitButton";
-import {
-  MultiFactorCodeValidation
-} from "../../utils/FormValidation";
+import { MultiFactorCodeValidation } from "../../utils/FormValidation";
 // import LoginUser from "../../api/user/LoginUser";
 import { LoginUser, Resend2FAToken, Verify2FAToken } from "../../api/UserDB";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { setUser, selectMobileNo, selectToken, authenticateUser, selectId, selectName } from "../../app/reducers/CurrentUserSlice";
+import {
+  setUser,
+  selectMobileNo,
+  selectToken,
+  authenticateUser,
+  selectId,
+  selectName,
+} from "../../app/reducers/CurrentUserSlice";
 import { ChangeTab, Reset } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../Components/alerts/SweetAlert";
 import { stubString } from "lodash";
@@ -41,7 +46,8 @@ const MultiFactorAuthentication: React.FC = () => {
   const resendmutation = useMutation(Resend2FAToken);
 
   const verifymutation = useMutation((data: FormValues) =>
-  Verify2FAToken(data, usermobileno));
+    Verify2FAToken(data, usermobileno)
+  );
 
   const controls = useAnimation();
 
@@ -70,7 +76,7 @@ const MultiFactorAuthentication: React.FC = () => {
           timer: 1500,
           width: 330,
         });
-        console.log("the data is ", data)
+        console.log("the data is ", data);
         return navigate("/dashboard", { replace: true });
       },
       onError: (data) => {
@@ -80,8 +86,8 @@ const MultiFactorAuthentication: React.FC = () => {
   };
 
   const resend = () => {
-    resendmutation.mutate({mobileno: usermobileno},)
-  }
+    resendmutation.mutate({ mobileno: usermobileno });
+  };
 
   return (
     <motion.div variants={variants} animate={controls}>
@@ -91,18 +97,23 @@ const MultiFactorAuthentication: React.FC = () => {
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
       >
-        <Typography className="formsubheading">To continue, please enter the 6-digit verification code send to
-          your phone ending in {usermobileno.substring(usermobileno.length-4)}</Typography>
+        <Typography className="formsubheading">
+          To continue, please enter the 6-digit verification code send to your
+          phone ending in {usermobileno.substring(usermobileno.length - 4)}
+        </Typography>
 
-          <Box className="formsubheading">Didnt recieve a code?         <Link
-          onClick={() => {
-            resend()
-          }}
-          underline="hover"
-          sx={{ ml: "10px" }}
-        >
-          Resend
-        </Link></Box>
+        <Box className="formsubheading">
+          Didnt receive a code?{" "}
+          <Link
+            onClick={() => {
+              resend();
+            }}
+            underline="hover"
+            sx={{ ml: "10px" }}
+          >
+            Resend
+          </Link>
+        </Box>
         <FormField
           label="Enter 6-digit Code"
           name="code"
@@ -114,13 +125,13 @@ const MultiFactorAuthentication: React.FC = () => {
         {verifymutation.isError && axios.isAxiosError(verifymutation.error) ? (
           <ErrorAlert error={verifymutation.error} />
         ) : null}
-         <Box className="flexcontainer" style={{ marginTop: 20 }}>
+        <Box className="flexcontainer" style={{ marginTop: 20 }}>
           <SubmitButton
             text="Continue"
             loading={verifymutation.isLoading}
             multipart={false}
           />
-        </Box> 
+        </Box>
         {/* <FormField
           label="Email Address"
           name="email"

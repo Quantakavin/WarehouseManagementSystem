@@ -26,6 +26,7 @@ module.exports.loginUser = async (req, res) => {
                     permissions: results2[0],
                     enabled2FA: results[0][0].Enabled2FA,
                     mobileNo: results[0][0].MobileNo,
+                    telegramid: results[0][0].TelegramID,
                     token: jwt.sign(
                         { id: results[0][0].UserID, role: results[0][0].UserGroupName },
                         config.JWTKey,
@@ -52,7 +53,7 @@ module.exports.loginUser = async (req, res) => {
         }
         return res.status(401).json({ message: "User with email doesn't exist" });
     } catch (error) {
-        console.log(error)
+        console.log(error);
         if (error.status === 429) {
             return res.status(500).json({ message: 'Too many requests. Please try again later' });
         }
@@ -78,17 +79,15 @@ module.exports.resend2FAToken = async (req, res) => {
 module.exports.verify2FAToken = async (req, res) => {
     const { mobileno = null } = req.query;
     const { code } = req.body;
-    let verificationstatus = "";
-    console.log("the no is ", code)
+    let verificationstatus = '';
+    console.log('the no is ', code);
     try {
         await twilioClient.verify.v2
             .services(config.TwilioService)
             .verificationChecks.create({ to: ConvertMobileNo(mobileno), code })
-            .then((verificationCheck) =>
-                verificationstatus = verificationCheck
-            );
+            .then((verificationCheck) => (verificationstatus = verificationCheck));
         if (verificationstatus.status !== 'approved') {
-            console.log(verificationstatus)
+            console.log(verificationstatus);
             return res.status(400).json({ message: 'Incorrect code entered! Please try again.' });
         }
         return res.status(204).send();
@@ -210,7 +209,7 @@ module.exports.createUser = async (req, res) => {
         redisClient.del('users');
         return res.status(201).json({ message: 'User created successfully!' });
     } catch (error) {
-        console.log("the error object is ", error);
+        console.log('the error object is ', error);
         if (error.code === 'ER_DUP_ENTRY') {
             if (error.sqlMessage.endsWith(`key 'user_username_unique'`)) {
                 return res.status(422).json({ message: 'User with that username already exists' });
@@ -319,6 +318,34 @@ module.exports.deleteUser = async (req, res) => {
         return res.status(404).json({ message: 'Cannot find User with that id' });
     } catch (error) {
         console.log(error);
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
+module.exports.updateUserTeleID = async (req, res) => {
+    const userID = req.params.id;
+    const { telegramid = null } = req.body;
+    try {
+        // const notigroups = notificationgroups.map((group) => {
+        //     return JSON.parse(group)
+        // })
+        const results = await user.getByID(userID);
+        if (results.length > 0) {
+            await user.updateTeleID(userID, telegramid);
+            redisClient.del(`user#${userID}`);
+            return res.status(204).json({ message: 'User telegram id updated successfully!' });
+        }
+        return res.status(404).json({ message: 'Cannot find user with that id' });
+    } catch (error) {
+        console.log(error);
+        if (error.code === 'ER_DUP_ENTRY') {
+            if (error.sqlMessage.endsWith(`key 'user_telegramid_unique'`)) {
+                return res
+                    .status(422)
+                    .json({ message: 'User with that Telegram ID already exists' });
+            }
+            return res.status(422).json({ message: 'User with that email already exists' });
+        }
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };

@@ -15,13 +15,11 @@ const Floor = () => {
   const colorMap = useLoader(THREE.TextureLoader, "Concrete030_4K_Color.png");
 
   return (
-
     <mesh
       position={[0, -11.5, 0]}
       rotation={[Math.PI / 2, 0, 0]}
       scale={[300, 300, 300]}
     >
-
       <planeBufferGeometry />
       <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
     </mesh>
@@ -30,10 +28,9 @@ const Floor = () => {
 
 interface SceneProps {
   selectedbintags: string[];
-
 }
 
-const Scene = ({selectedbintags}: SceneProps) => {
+const Scene = ({ selectedbintags }: SceneProps) => {
   const { gl, camera } = useThree();
 
   const controls = useRef<any>();
@@ -67,7 +64,6 @@ const Scene = ({selectedbintags}: SceneProps) => {
         ref={controls}
       />
       <Suspense fallback={null}>
-
         {/* Section A01 */}
         <FourColRack
           position={[0, 0, 0]}
@@ -299,17 +295,16 @@ const BinLocations = () => {
     () => GetBinsByBrand(searchName),
     {
       onSuccess: (data) => {
-        const returnbins = data.data.map((bin)=> {
-          return bin.BinTag
-        }) 
-        setSelectedBinTags(returnbins)
+        const returnbins = data.data.map((bin) => {
+          return bin.BinTag;
+        });
+        setSelectedBinTags(returnbins);
       },
     }
   );
 
-
   const handleInputChange = (inputstring: string) => {
-    setSelectedBinTags(null)
+    setSelectedBinTags(null);
     setInputName(inputstring);
   };
 
@@ -323,13 +318,17 @@ const BinLocations = () => {
     <div className="binlocation">
       <h1 className="binlocationTitle">Warehouse Visualisation</h1>
       <div className="flexcontainer">
-      <SearchBar
+        <SearchBar
           handleInputChange={handleInputChange}
           handleSearch={handleSearch}
           searchoptions={searchOptions}
         />
         {selectedBinTags != null ? selectedBinTags.join(", ") : null}
+        <br></br>
+        <h4>Empty Bin List</h4>
       </div>
+
+
       <div className="flexcontainer">
         <Canvas
           camera={{ fov: 45, position: [0, 40, 150] }}
@@ -340,7 +339,7 @@ const BinLocations = () => {
             width: "95%",
           }}
         >
-          <Scene selectedbintags={selectedBinTags}/>
+          <Scene selectedbintags={selectedBinTags} />
         </Canvas>
       </div>
     </div>

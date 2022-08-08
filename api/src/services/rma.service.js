@@ -397,13 +397,14 @@ module.exports.closeRma = async (RmaID) => {
     });
 };
 
-module.exports.getEmployeeInfo = async(RmaID) =>{
+module.exports.getEmployeeInfo = async (RmaID) => {
     const query = `
     SELECT u.Email,
-    u.Username
+    u.Username,
+    u.TelegramID
     FROM User u 
     JOIN Rma r ON r.SalesmanID = u.UserID 
     WHERE r.RmaID = ?
-    `
-    return knex.raw(query, [RmaID])
-}
+    `;
+    return knex.raw(query, [RmaID]);
+};

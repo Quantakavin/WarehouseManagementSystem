@@ -12,12 +12,12 @@ import { Chip, Grid } from "@mui/material";
 import { executeReducerBuilderCallback } from "@reduxjs/toolkit/dist/mapBuilders";
 import { GetProduct } from "../../api/ProductDB";
 import { Toast } from "../../Components/alerts/SweetAlert";
-import CardContainer from "../../Components/cards/CardContainer";
+import CardContainer from "../../Components/skeletons/CardSkeleton";
 import CardField from "../../Components/cards/CardField";
 import CardSkeleton from "../../Components/skeletons/CardSkeleton";
 import IsEditableProvider, {
   EditableContext,
-} from "../../Components/context/isEditableContext";
+} from "../../Components/context/IsEditableContext";
 import { useAppSelector } from "../../app/hooks";
 import {
   selectPermissions,

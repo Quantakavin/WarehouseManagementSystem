@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import CancelIcon from "@mui/icons-material/Close";
@@ -9,7 +10,6 @@ import FactCheckIcon from "@mui/icons-material/FactCheck";
 import MoreVert from "@mui/icons-material/MoreVert";
 import SaveIcon from "@mui/icons-material/Save";
 import UpdateIcon from "@mui/icons-material/Update";
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import { LoadingButton } from "@mui/lab";
 import { Stack, TextField, Tooltip, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -60,11 +60,11 @@ import {
   selectPermissions,
   selectRole,
 } from "../../app/reducers/CurrentUserSlice";
+import config from "../../config/config";
 import { RMA } from "../../utils/CommonTypes";
 import { Toast } from "../alerts/SweetAlert";
-import RejectModalButton from "../modals/rmaRejectModal";
 import ReasonModalButton from "../modals/rmaReasonModal";
-import config from "../../config/config";
+import RejectModalButton from "../modals/rmaRejectModal";
 
 const RmaDisplay: React.FC = () => {
   const navigate = useNavigate();
@@ -126,9 +126,7 @@ const RmaDisplay: React.FC = () => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const rowdata = await axios.get(
-        `${config.baseURL}/RMA/Product/${RmaID}`
-      );
+      const rowdata = await axios.get(`${config.baseURL}/RMA/Product/${RmaID}`);
 
       setRows(rowdata.data);
     };
