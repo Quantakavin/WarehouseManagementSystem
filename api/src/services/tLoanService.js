@@ -543,7 +543,7 @@ module.exports.updateStatus = async (TLoanID, statusChange) => {
     });
 };
 
-module.exports.getEmployeeEmail = async (TLoanID) => {
+module.exports.getEmployeeInfo = async (TLoanID) => {
     const query = `
     SELECT u.Email,
     u.Username,

@@ -128,7 +128,7 @@ module.exports.SubmitAfterEdit = async (req, res) => {
     } = req.body;
 
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
         const UserID = gettingInfo[0][0].UserID.toString();
         const results = await TLoan.getLoanByNumber(TLoanID);
         const tloanItems = items.map((item) => {
@@ -193,7 +193,7 @@ module.exports.DraftAfterEdit = async (req, res) => {
     } = req.body;
 
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
         const UserID = gettingInfo[0][0].UserID.toString();
         const results = await TLoan.getLoanByNumber(TLoanID);
         const tloanItems = items.map((item) => {
@@ -258,7 +258,7 @@ module.exports.newLoan = async (req, res) => {
         items
     } = req.body;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
         const UserID = gettingInfo[0][0].UserID.toString();
         const tloanItems = items.map((item) => {
             return item;
@@ -310,7 +310,7 @@ module.exports.SendDraft = async (req, res) => {
         items
     } = req.body;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
         const UserID = gettingInfo[0][0].UserID.toString();
         const tloanItems = items.map((item) => {
             return item;
@@ -436,7 +436,7 @@ module.exports.pendingLoan = async (req, res) => {
 module.exports.approveLoan = async (req, res) => {
     const { TLoanID } = req.params;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
         const email = gettingInfo[0][0].Email.toString();
         const username = gettingInfo[0][0].Username.toString();
         const UserID = gettingInfo[0][0].UserID.toString();
@@ -472,7 +472,7 @@ module.exports.rejectLoan = async (req, res) => {
     const { TLoanID } = req.params;
     const { remarks } = req.body;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
         const email = gettingInfo[0][0].Email.toString();
         const username = gettingInfo[0][0].Username.toString();
         const UserID = gettingInfo[0][0].UserID.toString();
@@ -507,7 +507,7 @@ module.exports.rejectLoan = async (req, res) => {
 module.exports.approveExtension = async (req, res) => {
     const { TLoanID } = req.params;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
         const email = gettingInfo[0][0].Email.toString();
         const username = gettingInfo[0][0].Username.toString();
         const UserID = gettingInfo[0][0].UserID.toString();
@@ -542,7 +542,7 @@ module.exports.rejectExtension = async (req, res) => {
     const { TLoanID } = req.params;
     const { remarks } = req.body;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
         const email = gettingInfo[0][0].Email.toString();
         const username = gettingInfo[0][0].Username.toString();
         const UserID = gettingInfo[0][0].UserID.toString();
@@ -695,7 +695,7 @@ module.exports.ManagerExtension = async (req, res) => {
 module.exports.LoanExtend = async (req, res) => {
     const {TLoanID, duration, reason } = req.body;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID)
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID)
         const UserID = (gettingInfo[0][0].UserID).toString()
         const results = await TLoan.loanExtension(TLoanID, duration, reason);
 
@@ -831,7 +831,7 @@ module.exports.updateStatus = async (req, res) => {
     const { TLoanID } = req.params;
     const { statusChange } = req.body;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
         const UserID = gettingInfo[0][0].UserID.toString();
         const results = await TLoan.updateStatus(TLoanID, statusChange);
         if (results) {
@@ -854,10 +854,10 @@ module.exports.updateStatus = async (req, res) => {
     }
 };
 
-module.exports.getEmail = async (req, res) => {
+module.exports.getEmployeeInfo = async (req, res) => {
     const { TLoanID } = req.body;
     try {
-        const results = await TLoan.getEmployeeEmail(TLoanID);
+        const results = await TLoan.getEmployeeInfo(TLoanID);
         if (results) {
             return res.status(200).send(results[0][0].Email);
         }
