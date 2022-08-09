@@ -2,7 +2,13 @@ import {
   Backdrop,
   Box,
   Fade,
+  FilledInput,
+  FormControl,
   Grid,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  Link,
   Modal,
   Paper,
   Switch,
@@ -18,6 +24,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import LockIcon from "@mui/icons-material/Lock";
 import TelegramIcon from "@mui/icons-material/Telegram";
+import PasswordIcon from '@mui/icons-material/Password';
 import { LoadingButton } from "@mui/lab";
 import axios from "axios";
 import { motion } from "framer-motion";
@@ -33,6 +40,9 @@ import Shield from "../../assets/shield.png";
 import Popup from "../../Components/alerts/Popup";
 import { Toast } from "../../Components/alerts/SweetAlert";
 import config from "../../config/config";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Visibility from "@mui/icons-material/Visibility";
+import useTogglePassword from "../../hooks/useTogglePassword";
 
 const style = {
   position: "absolute" as "absolute",
@@ -157,6 +167,85 @@ const Settings: React.FC = () => {
           console.error("There was an error!", error);
         });
     }, 500);
+  };
+
+  // const { toggle, passwordType, showPassword } = useTogglePassword();
+  const [password, setPassword] = useState("");
+  const [pwVisibility, setPWV] = useState(false)
+  const [pwType, setPWType] = useState("password");
+  const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
+  // const handleClickShowPassword = () => {
+  //   setValues({
+  //     ...values,
+  //     showPassword: !values.showPassword,
+  //   });
+  // };
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+  const toggle = () => {
+    if (pwType == "password") {
+      setPWType("text")
+    } else {
+      setPWType("password")
+    }
+  }
+  const handleOpenChangePassword = () => {
+    setShowChangePassword(true);
+  };
+  const handleCloseChangePassword = () => {
+    setError(false);
+    setErrorText("");
+    setShowChangePassword(false);
+  };
+  const handlePassword = (results) => {
+    setPassword(results.target.value);
+  };
+  const handleChangePassword = async () => {
+    setLoading(true);
+    if (password !== "") {
+      setTimeout(() => {
+        setLoading(false);
+        setShowChangePassword(false);
+        axios
+          .put(`${config.baseURL}/userpassword/${userID}`, password, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then(() => {
+            Toast.fire({
+              icon: "success",
+              title: `Successfully changed password`,
+              customClass: "swalpopup",
+              timer: 2000,
+              width: 310,
+            });
+          })
+          .catch((error) => {
+            Toast.fire({
+              icon: "error",
+              title: `Failed to change password`,
+              customClass: "swalpopup",
+              timer: 2000,
+              width: 310,
+            });
+            console.log(error);
+            console.error("There was an error!", error);
+          });
+      }, 500);
+    } else {
+      setError(true);
+      setErrorText("Please enter your new password");
+      Toast.fire({
+        icon: "error",
+        title: "Please enter your new password",
+        customClass: "swalpopup",
+        timer: 2000,
+        width: 450,
+      });
+      setLoading(false);
+    }
   };
 
   interface FormValues {
@@ -437,6 +526,141 @@ const Settings: React.FC = () => {
         }
       />
 
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={showChangePassword}
+        onClose={handleCloseChangePassword}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={showChangePassword}>
+          <Box sx={style}>
+            <Typography
+              variant="h6"
+              component="h2"
+              sx={{
+                display: "flex",
+                fontSize: "25px",
+                justifyContent: "center",
+              }}
+            >
+              Change Password
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <PasswordIcon
+                sx={{
+                  color: "black",
+                  fontSize: "150px",
+                  alignSelf: "center",
+                }}
+              />
+            </Box>
+
+            <FormControl sx={{ m: 1, width: '25ch' }} variant="filled">
+              <InputLabel htmlFor="filled-adornment-password">New Password</InputLabel>
+              <FilledInput
+                id="filled-adornment-password"
+                type={pwType}
+                value={password}
+                onChange={handlePassword}
+                multiline
+                fullWidth
+                required
+                onBlur={() => {
+                  if (password == "") {
+                    setError(true);
+                    setErrorText("Please enter your new password");
+                  } else {
+                    setError(false);
+                    setErrorText("");
+                  }
+                }}
+                error={error}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={toggle}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <Box
+              component="span"
+              sx={{
+                component: "span",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingTop: 3.7,
+              }}
+            >
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <LoadingButton
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                    paddingRight: 4,
+                  }}
+                  startIcon={<ArrowBackIosNewIcon />}
+                  onClick={handleCloseChangePassword}
+                >
+                  Back
+                </LoadingButton>
+              </motion.div>
+              <motion.div
+                whileHover={{
+                  scale: 1.1,
+                  transition: { duration: 0.3 },
+                }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <LoadingButton
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#31A961",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                  }}
+                  loading={loading}
+                  loadingPosition="end"
+                  endIcon={<DoneAllIcon />}
+                  onClick={handleChangePassword}
+                >
+                  Confirm
+                </LoadingButton>
+              </motion.div>
+            </Box>
+          </Box>
+        </Fade>
+      </Modal>
+
       <Box
         component="span"
         display="flex"
@@ -566,7 +790,7 @@ const Settings: React.FC = () => {
                         style={{ color: "#0A2540" }}
                       >
                         Receive updates on your RMA and T-Loan requests via the
-                        ISDNMS Telegram bot
+                        ISDNMS Telegram bot.
                       </Typography>
                     </Grid>
                   </Grid>
@@ -592,9 +816,69 @@ const Settings: React.FC = () => {
               </Grid>
             </Paper>
           </Grid>
+          <Grid item xs={6}>
+            <Paper
+              sx={{
+                p: 2,
+                flexGrow: 1,
+                justifyContent: "flex-start",
+                backgroundColor: (theme) =>
+                  theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+              }}
+            >
+              <Grid container spacing={2}>
+                <Grid
+                  item
+                  className="flexcontainer"
+                  sx={{ mr: "10px", ml: "10px" }}
+                >
+                  <PasswordIcon sx={{ fontSize: "50px", color: "black" }} />
+                </Grid>
+                <Grid item xs={12} sm container>
+                  <Grid item xs container direction="column" spacing={2}>
+                    <Grid item xs>
+                      <Typography
+                        gutterBottom
+                        variant="h6"
+                        style={{ color: "#0A2540", fontWeight: 600 }}
+                        component="div"
+                      >
+                        Change Password
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        gutterBottom
+                        style={{ color: "#0A2540" }}
+                      >
+                        Change your account password.
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Grid
+                    item
+                    className="flexcontainer"
+                    sx={{ flexDirection: "column" }}
+                  >
+                    <Link
+                      component="button"
+                      variant="body2"
+                      underline="hover"
+                      onClick={handleOpenChangePassword}
+                    >
+                      Change
+                    </Link>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Paper>
+          </Grid>
         </Grid>
       </Box>
     </Box>
   );
 };
 export default Settings;
+function useTogglePasword(): { toggle: any; passwordType: any; showPassword: any; } {
+  throw new Error("Function not implemented.");
+}
+
