@@ -57,7 +57,7 @@ const TLoanTabs: React.FC = () => {
   const [approvedTable, setApprovedTable] = useState([]);
   const [allCurrent, setAllCurrent] = useState([]);
   const [allHistory, setAllHistory] = useState([]);
-  const context = useContext(EditableContext);
+  const context: any = useContext(EditableContext);
   const { isEditable }= context;
   // Get and set current tloans data
   useEffect(() => {

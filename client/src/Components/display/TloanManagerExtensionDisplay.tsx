@@ -15,12 +15,12 @@ import { motion } from "framer-motion";
 import config from "../../config/config";
 import { Toast } from "../alerts/SweetAlert";
 import TLoanRejectModalButton from "../modals/tloanRejectExtension";
-
+import {TLoan} from '../../utils/CommonTypes'
 
 export default function TLoanManagerDisplay() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [loans, setLoans] = useState([]);
+  const [loans, setLoans] = useState<TLoan>([]);
   const [items, setItems] = useState([]);
   const [reasonField, setReasonField] = useState("");
   const { TLoanID } = useParams();

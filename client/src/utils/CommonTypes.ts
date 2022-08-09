@@ -52,13 +52,21 @@ export interface RMA {
   RmaStatusID: number;
 }
 
-export interface TLoans {
+export interface TLoan {
   TLoanID: number;
   StartDate: string;
   EndDate: string;
   CompanyName: string;
   CustomerEmail: string;
   ExtensionDuration: string;
+  TLoanType: string;
+  Purpose: string;
+  Duration: string;
+  Collection: string;
+  RequiredDate: string;
+  TLoanStatusID: number;
+  TLoanExtensionStatus: string;
+  TLoanStatus: string;
 }
 
 export type ActionMenuItem = {

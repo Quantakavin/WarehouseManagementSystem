@@ -31,8 +31,8 @@ const ViewProduct: React.FC = () => {
   const navigate = useNavigate();
   const [newProducts, setNewProducts] = useState([]);
   const [productGet, setProductGet] = useState([]);
-  const context = useContext(EditableContext);
-  const { isEditable, setIsEditable, TLoanIDGlobal } = context;
+  const context: any = useContext(EditableContext);
+  const { isEditable, TLoanIDGlobal } = context;
   const permissions = useAppSelector(selectPermissions);
 
   const ExternalApplication = permissions.some(

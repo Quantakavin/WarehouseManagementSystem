@@ -117,8 +117,6 @@ function newtloan() {
     })
   );
   const {
-    isEmpty,
-    totalUniqueItems,
     updateItemQuantity,
     removeItem,
     emptyCart,
@@ -321,9 +319,6 @@ function newtloan() {
     setItems(newProduct);
   }, [newProduct]);
 
-  // const items = rows.map(({ id, isNew, ...rows }) => rows);
-  // console.log(items);
-
   const handleChangeCompany = (event: SelectChangeEvent) => {
     setCompany(event.target.value);
   };
@@ -340,7 +335,7 @@ function newtloan() {
     setCollection(event.target.value);
   };
 
-  const handleChangeRequiredDate = (newValue: unknown) => {
+  const handleChangeRequiredDate = (newValue: '') => {
     setDateForm(newValue);
   };
 
@@ -945,14 +940,14 @@ function newtloan() {
                       inputFormat="yyyy-MM-dd"
                       value={dateForm}
                       onChange={handleChangeRequiredDate}
-                      inputProps={{ readOnly: true }}
-                  
+                      inputProps={{
+                        readOnly:true
+                      }}
                       renderInput={(params) => (
                         <TextField
                           id="filled-required"
                           variant="filled"
                           size="small"
-                    
                           {...params}
                           sx={{ width: 200, marginLeft: 3, marginTop: 2 }}
                         />

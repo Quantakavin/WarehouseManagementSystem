@@ -54,6 +54,7 @@ import { Toast, Toast2 } from "../alerts/SweetAlert";
 import { EditableContext } from "../context/IsEditableContext";
 import ModalButton from "../modals/tloanExtensionModal";
 import TLoanRejectModalButton from "../modals/tloanRejectModal";
+import { TLoan } from '../../utils/CommonTypes'
 
 export default function TloanDisplay() {
   const permissions = useAppSelector(selectPermissions);
@@ -61,9 +62,8 @@ export default function TloanDisplay() {
   const [loans, setLoans] = useState<TLoan>([]);
   const [itemsTable, setItemsTable] = useState([]);
   const [purposeField, setPurposeField] = useState("");
-  const context = useContext(EditableContext);
-  const { isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal } =
-    context;
+  const context: any = useContext(EditableContext);
+  const { isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal } = context;
   const { TLoanID } = useParams();
   const [type, setType] = useState("");
   const [company, setCompany] = useState("");
@@ -497,9 +497,6 @@ export default function TloanDisplay() {
           processRowUpdate={processRowUpdate}
           componentsProps={{
             toolbar: { setRows, setRowModesModel },
-          }}
-          components={{
-            Toolbar: EditToolbar,
           }}
           experimentalFeatures={{ newEditingApi: true }}
         />

@@ -32,7 +32,9 @@ import navbarbrand from "../../assets/navbarbrand.png";
 import {SocketContext} from '../../context/socket';
 import NotificationDropdown from "./NotificationDropdown";
 import { resetNotificationCount, selectNotificationCount } from "../../app/reducers/NotificationSlice";
-
+import IsEditableProvider, {
+  EditableContext,
+} from "../../Components/context/IsEditableContext";
 const TopNav = () => {
   const socket = useContext(SocketContext);
   const navigate = useNavigate();
@@ -48,7 +50,8 @@ const TopNav = () => {
   const isMenuOpen = Boolean(anchorEl);
   const isNotiMenuOpen = Boolean(notiAnchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
+  const context: any = useContext(EditableContext);
+  const { setIsEditable } = context;
   useEffect(() => {
     if(localStorage.getItem("token") !==null) {
       socket.emit("login" ,{userid: userid})
@@ -92,6 +95,7 @@ const TopNav = () => {
     dispatch(Reset());
     dispatch(resetNotificationCount());
     localStorage.clear();
+    setIsEditable(false)
     navigate("/");
   };
 
