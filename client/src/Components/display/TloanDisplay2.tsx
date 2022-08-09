@@ -160,7 +160,7 @@ export default function tloanDisplay() {
     };
     fetchData().catch(console.error);
   }, []);
-  console.log(itemsTable)
+ 
   const updateStatus = (e) =>{
     setLoading(false)
     setStatusChangeError(false)
@@ -1494,7 +1494,7 @@ export default function tloanDisplay() {
       setRDate(loans.RequiredDate);
     }
   }, []);
-  console.log(loans.TLoanExtensionStatusID);
+ 
   if (
     loans.TLoanStatusID === 3 ||
     loans.TLoanStatusID === 5 ||

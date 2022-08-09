@@ -44,10 +44,12 @@ const ModalButton = () => {
   const [durationError, setDurationError] = useState(false);
   const [reasonErrorText, setReasonErrorText] = useState("");
   const [durationErrorText, setDurationErrorText] = useState("");
+  const [endDate, setEndDate] = useState('')
+  const [checkDate, setCheckDate] = useState('')
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  console.log(TLoanID)
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,9 +65,14 @@ const ModalButton = () => {
       const loanDetail = await axios.get(
         `${config.baseURL}/tloanstatusid/${TLoanID}`
       );
+      const getDate = await axios.get(
+        `${config.baseURL}/tloans/${TLoanID}`
+      );
       setLoanID(loans.data[0].TLoanID);
       setExtensionStatus(extension.data[0].ExtensionStatus);
       setTLoanStatus(loanDetail.data[0].TLoanStatusID);
+      setEndDate(getDate.data.EndDate)
+      setCheckDate(getDate.data.CheckDate)
       // setLoan(Object.e)
     };
     // call the function
@@ -74,12 +81,32 @@ const ModalButton = () => {
       .catch(console.error);
   }, []);
  
-  // useEffect(() => {
-  //   const loanNo = JSON.stringify(loan);
-  //   setLoanID(loanNo);
-  // });
 
-  console.log(tloanid);
+    //getting current date
+    const today = new Date('2023/07/26');
+      const yyyy = today.getFullYear();
+      let mm = today.getMonth() + 1; // Months start at 0!
+      let dd = today.getDate();
+
+      if (dd < 10) dd = '0' + dd;
+      if (mm < 10) mm = '0' + mm;
+
+      const formattedToday = dd + '-' + mm + '-' + yyyy
+
+    //getting 5 days before EndDate
+   
+
+    const due = new Date(checkDate);
+    due.setDate(due.getDate()- 5)
+    const yyyy1 = due.getFullYear();
+    let mm1 = due.getMonth() + 1; // Months start at 0!
+    let dd1 = due.getDate();
+
+    if (dd1 < 10) dd1 = '0' + dd1;
+    if (mm1 < 10) mm1 = '0' + mm1;
+    const formattedDue = dd1 + '-' + mm1 + '-' + yyyy1
+
+  
 
   const submitExtension = (e) => {
     e.preventDefault();
@@ -122,7 +149,7 @@ const ModalButton = () => {
       }, 500);
     }
   };
-
+  
   // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
   const handleDuration = (event: SelectChangeEvent) => {
     setDuration(event.target.value);
@@ -138,7 +165,7 @@ const ModalButton = () => {
     ) {
       return null;
     }
-    if (extensionStatus !== "NIL") {
+    if (extensionStatus !== "NIL" || (formattedToday >= formattedDue ) === true) {
       return (
         <LoadingButton
           size="small"
@@ -228,7 +255,7 @@ const ModalButton = () => {
                       {durationErrorText}
                     </FormHelperText>
                   </FormControl>
-                  {console.log(duration)}
+                 
 
                   <TextField
                     sx={{ width: 800, marginLeft: 3, marginTop: 2 }}
@@ -242,7 +269,7 @@ const ModalButton = () => {
                     required
                   />
 
-                  {console.log(reason)}
+                 
                   <Box
                     component="span"
                     display="flex"
