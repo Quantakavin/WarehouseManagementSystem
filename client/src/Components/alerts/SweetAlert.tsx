@@ -27,7 +27,7 @@ export const Toast2 = Swal.mixin({
   showConfirmButton: false,
   showCloseButton: false,
   timerProgressBar: false,
-  allowOutsideClick: false,
+  allowOutsideClick: false
   // didOpen: (toast) => {
   //   toast.addEventListener("mouseenter", Swal.stopTimer);
   //   toast.addEventListener("mouseleave", Swal.stopTimer);

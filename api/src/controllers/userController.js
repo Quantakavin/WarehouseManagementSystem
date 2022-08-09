@@ -27,6 +27,7 @@ module.exports.loginUser = async (req, res) => {
                     enabled2FA: results[0][0].Enabled2FA,
                     mobileNo: results[0][0].MobileNo,
                     telegramid: results[0][0].TelegramID,
+                    unreadnotifications: results[0][0].Unreadnotifications,
                     token: jwt.sign(
                         { id: results[0][0].UserID, role: results[0][0].UserGroupName },
                         config.JWTKey,

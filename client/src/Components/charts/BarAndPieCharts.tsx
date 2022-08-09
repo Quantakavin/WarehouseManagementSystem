@@ -14,7 +14,7 @@ import {
   YAxis,
 } from "recharts";
 import config from "../../config/config";
-import "../../Styles/chart.scss";
+import "../../styles/chart.scss";
 
 const COLORS = ["#0088FE", "#00C49F"];
 

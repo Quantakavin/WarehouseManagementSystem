@@ -34,7 +34,7 @@ import NotificationDropdown from "./NotificationDropdown";
 import { resetNotificationCount, selectNotificationCount } from "../../app/reducers/NotificationSlice";
 import IsEditableProvider, {
   EditableContext,
-} from "../../Components/context/IsEditableContext";
+} from "../context/IsEditableContext";
 const TopNav = () => {
   const socket = useContext(SocketContext);
   const navigate = useNavigate();

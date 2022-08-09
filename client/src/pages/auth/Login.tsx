@@ -5,10 +5,10 @@ import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
 import { Box, Link } from "@mui/material";
-import ErrorAlert from "../../Components/form/ErrorAlert";
-import FormContainer from "../../Components/form/FormContainer";
-import FormField from "../../Components/form/FormField";
-import SubmitButton from "../../Components/form/SubmitButton";
+import ErrorAlert from "../../components/form/ErrorAlert";
+import FormContainer from "../../components/form/FormContainer";
+import FormField from "../../components/form/FormField";
+import SubmitButton from "../../components/form/SubmitButton";
 import {
   EmailValidation,
   PasswordValidation,
@@ -16,8 +16,9 @@ import {
 import { LoginUser } from "../../api/UserDB";
 import { useAppDispatch } from "../../app/hooks";
 import { removeUser, setUser } from "../../app/reducers/CurrentUserSlice";
+import { setNotificationCount } from "../../app/reducers/NotificationSlice";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
-import { Toast } from "../../Components/alerts/SweetAlert";
+import { Toast } from "../../components/alerts/SweetAlert";
 import {SocketContext} from '../../context/socket';
 
 
@@ -39,7 +40,7 @@ const Login: React.FC = () => {
 
   const mutation = useMutation(LoginUser, {
     onSuccess: (data) => {
-      const { token, id, name, usergroup, permissions, enabled2FA, mobileNo, telegramid } = data.data;
+      const { token, id, name, usergroup, permissions, enabled2FA, mobileNo, telegramid, unreadnotifications } = data.data;
 
       if (enabled2FA === 1) {
         dispatch(removeUser())
@@ -54,6 +55,11 @@ const Login: React.FC = () => {
             mobileNo: mobileNo,
             token: token,
             telegramid: telegramid
+          })
+        );
+        dispatch(
+          setNotificationCount({
+            notificationCount: unreadnotifications
           })
         );
         return navigate("/2fa", { replace: true });
@@ -72,6 +78,11 @@ const Login: React.FC = () => {
           mobileNo: mobileNo,
           token: token,
           telegramid: telegramid
+        })
+      );
+      dispatch(
+        setNotificationCount({
+          notificationCount: unreadnotifications
         })
       );
       socket.emit("login" ,{userid: id})

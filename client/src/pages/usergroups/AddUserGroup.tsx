@@ -13,21 +13,21 @@ import { GetFeatureRights, GetFeatures } from "../../api/FeatureDB";
 import { PostUserGroup } from "../../api/UserGroupDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
-import { Toast } from "../../Components/alerts/SweetAlert";
-import GeneralButton from "../../Components/buttons/GeneralButton";
-import ErrorAlert from "../../Components/form/ErrorAlert";
-import FormContainer from "../../Components/form/FormContainer";
-import FormField from "../../Components/form/FormField";
-import FormTextArea from "../../Components/form/FormTextArea";
-import MultiSelectDropdown from "../../Components/form/MultiSelectDropdown";
-import SelectedList from "../../Components/form/SelectedList";
-import SubmitButton from "../../Components/buttons/SubmitButton";
+import { Toast } from "../../components/alerts/SweetAlert";
+import GeneralButton from "../../components/buttons/GeneralButton";
+import ErrorAlert from "../../components/form/ErrorAlert";
+import FormContainer from "../../components/form/FormContainer";
+import FormField from "../../components/form/FormField";
+import FormTextArea from "../../components/form/FormTextArea";
+import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
+import SelectedList from "../../components/form/SelectedList";
+import SubmitButton from "../../components/buttons/SubmitButton";
 import { Feature, FeatureRight, Option } from "../../utils/CommonTypes";
 import {
   NameValidation,
   DescriptionValidation,
 } from "../../utils/FormValidation";
-import FormSteps from "../../Components/form/FormSteps";
+import FormSteps from "../../components/form/FormSteps";
 
 interface FormValues {
   name: string;

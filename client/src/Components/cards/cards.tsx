@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import config from "../../config/config";
-import "./cards.scss";
+import "../../styles/cards.scss";
 
 function Cards() {
   const userrole = useAppSelector(selectRole);

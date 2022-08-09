@@ -11,7 +11,7 @@ import {
   YAxis,
 } from "recharts";
 import config from "../../config/config";
-import "../../Styles/chart.scss";
+import "../../styles/chart.scss";
 
 const LineCharts = ({ title, dataKey, grid }) => {
   const [error, setError] = useState(null);

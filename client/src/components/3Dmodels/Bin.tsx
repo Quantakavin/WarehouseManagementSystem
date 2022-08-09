@@ -8,7 +8,7 @@ import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTF } from "three-stdlib";
 import config from "../../config/config";
-import "../../Styles/BinLocation.scss";
+import "../../styles/BinLocation.scss";
 // import { color } from "@mui/system";
 
 type GLTFResult = GLTF & {

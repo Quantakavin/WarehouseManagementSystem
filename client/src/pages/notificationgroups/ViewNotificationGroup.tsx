@@ -9,9 +9,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { GetNotificationGroup } from "../../api/NotificationGroupDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
-import GeneralButton from "../../Components/buttons/GeneralButton";
-import CardSkeleton from "../../Components/skeletons/CardSkeleton";
-import DataTable from "../../Components/table/DataTable";
+import GeneralButton from "../../components/buttons/GeneralButton";
+import CardSkeleton from "../../components/skeletons/CardSkeleton";
+import DataTable from "../../components/table/DataTable";
 
 const ViewNotificationGroup: React.FC = () => {
   const params = useParams();

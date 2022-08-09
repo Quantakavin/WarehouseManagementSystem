@@ -14,14 +14,14 @@ import { GetUser, UpdateUser } from "../../api/UserDB";
 import { GetUserGroups } from "../../api/UserGroupDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
-import { Toast } from "../../Components/alerts/SweetAlert";
-import GeneralButton from "../../Components/buttons/GeneralButton";
-import ErrorAlert from "../../Components/form/ErrorAlert";
-import FormContainer from "../../Components/form/FormContainer";
-import FormField from "../../Components/form/FormField";
-import MultiSelectDropdown from "../../Components/form/MultiSelectDropdown";
-import SelectDropdown from "../../Components/form/SelectDropdown";
-import SubmitButton from "../../Components/buttons/SubmitButton";
+import { Toast } from "../../components/alerts/SweetAlert";
+import GeneralButton from "../../components/buttons/GeneralButton";
+import ErrorAlert from "../../components/form/ErrorAlert";
+import FormContainer from "../../components/form/FormContainer";
+import FormField from "../../components/form/FormField";
+import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
+import SelectDropdown from "../../components/form/SelectDropdown";
+import SubmitButton from "../../components/buttons/SubmitButton";
 import { Company, NotiGroup, Option, UserGroup } from "../../utils/CommonTypes";
 import {
   EmailValidation,
@@ -30,9 +30,9 @@ import {
   SelectValidation,
   UsernameValidation,
 } from "../../utils/FormValidation";
-import FormSteps from "../../Components/form/FormSteps";
+import FormSteps from "../../components/form/FormSteps";
 import { Typography } from "@material-ui/core";
-import Popup from "../../Components/alerts/Popup";
+import Popup from "../../components/alerts/Popup";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 

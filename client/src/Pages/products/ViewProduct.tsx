@@ -12,13 +12,13 @@ import Divider from "@mui/material/Divider";
 import { Box, Button, Chip, Grid } from "@mui/material";
 import { executeReducerBuilderCallback } from "@reduxjs/toolkit/dist/mapBuilders";
 import { GetProduct } from "../../api/ProductDB";
-import { Toast } from "../../Components/alerts/SweetAlert";
-import CardContainer from "../../Components/Cards/CardContainer";
-import CardField from "../../Components/Cards/CardField";
-import CardSkeleton from "../../Components/skeletons/CardSkeleton";
+import { Toast } from "../../components/alerts/SweetAlert";
+import CardContainer from "../../components/cards/CardContainer";
+import CardField from "../../components/cards/CardField";
+import CardSkeleton from "../../components/skeletons/CardSkeleton";
 import IsEditableProvider, {
   EditableContext,
-} from "../../Components/context/IsEditableContext";
+} from "../../components/context/IsEditableContext";
 import { useAppSelector } from "../../app/hooks";
 import {
   selectPermissions,

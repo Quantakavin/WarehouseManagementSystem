@@ -5,13 +5,13 @@ import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
 import { Box, Link } from "@mui/material";
-import ErrorAlert from "../../Components/form/ErrorAlert";
-import FormContainer from "../../Components/form/FormContainer";
-import FormField from "../../Components/form/FormField";
-import SubmitButton from "../../Components/form/SubmitButton";
+import ErrorAlert from "../../components/form/ErrorAlert";
+import FormContainer from "../../components/form/FormContainer";
+import FormField from "../../components/form/FormField";
+import SubmitButton from "../../components/form/SubmitButton";
 import { EmailValidation } from "../../utils/FormValidation";
 import { ForgotPassword } from "../../api/ResetPasswordDB";
-import { Toast } from "../../Components/alerts/SweetAlert";
+import { Toast } from "../../components/alerts/SweetAlert";
 
 interface FormValues {
   email: string;

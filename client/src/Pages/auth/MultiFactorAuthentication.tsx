@@ -5,10 +5,10 @@ import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
 import { Box, Link, Typography } from "@mui/material";
-import ErrorAlert from "../../Components/form/ErrorAlert";
-import FormContainer from "../../Components/form/FormContainer";
-import FormField from "../../Components/form/FormField";
-import SubmitButton from "../../Components/form/SubmitButton";
+import ErrorAlert from "../../components/form/ErrorAlert";
+import FormContainer from "../../components/form/FormContainer";
+import FormField from "../../components/form/FormField";
+import SubmitButton from "../../components/form/SubmitButton";
 import { MultiFactorCodeValidation } from "../../utils/FormValidation";
 // import LoginUser from "../../api/user/LoginUser";
 import { LoginUser, Resend2FAToken, Verify2FAToken } from "../../api/UserDB";
@@ -22,7 +22,7 @@ import {
   selectName,
 } from "../../app/reducers/CurrentUserSlice";
 import { ChangeTab, Reset } from "../../app/reducers/SidebarSlice";
-import { Toast } from "../../Components/alerts/SweetAlert";
+import { Toast } from "../../components/alerts/SweetAlert";
 import { stubString } from "lodash";
 
 interface FormValues {

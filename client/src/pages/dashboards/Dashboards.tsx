@@ -1,7 +1,7 @@
-import Cards from "../../Components/Cards/Cards";
-import BarAndPieCharts from "../../Components/charts/BarAndPieCharts";
-import LineCharts from "../../Components/charts/LineCharts";
-import "../../Styles/Dashboard.scss";
+import Cards from "../../components/cards/Cards";
+import BarAndPieCharts from "../../components/charts/BarAndPieCharts";
+import LineCharts from "../../components/charts/LineCharts";
+import "../../styles/Dashboard.scss";
 
 import { Box, Grid } from "@mui/material";
 import { useAppSelector } from "../../app/hooks";

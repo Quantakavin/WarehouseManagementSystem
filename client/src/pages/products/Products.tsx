@@ -25,7 +25,7 @@ import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import IsEditableProvider, {
   EditableContext,
-} from "../../Components/context/IsEditableContext";
+} from "../../components/context/IsEditableContext";
 import config from "../../config/config";
 
 const Products: React.FC = () => {

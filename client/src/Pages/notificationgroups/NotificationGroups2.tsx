@@ -32,9 +32,9 @@ import {
 } from "../../api/NotificationGroupDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
-import Popup from "../../Components/alerts/Popup";
-import { Toast } from "../../Components/alerts/SweetAlert";
-import CustomToolbar from "../../Components/table/CustomToolbar";
+import Popup from "../../components/alerts/Popup";
+import { Toast } from "../../components/alerts/SweetAlert";
+import CustomToolbar from "../../components/table/CustomToolbar";
 
 const NotificationGroups2: React.FC = () => {
   const navigate = useNavigate();

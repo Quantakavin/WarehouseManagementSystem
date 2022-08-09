@@ -1,4 +1,4 @@
-import "../../Styles/Table.scss";
+import "../../styles/Table.scss";
 
 const TableField = ({ data, column }) => {
   return (

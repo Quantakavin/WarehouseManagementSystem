@@ -3,7 +3,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Suspense, useRef } from "react";
 import * as THREE from "three";
 import Rack from "./3ColRack";
-import "../../Styles/BinLocation.scss";
+import "../../styles/BinLocation.scss";
 
 const Scene = () => {
   // const [cameraPosition, setCameraPosition] = useState<[x: number, y: number, z: number]>([0, 40, 150])

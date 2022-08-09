@@ -42,7 +42,7 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "react-use-cart";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Autocomplete from "@mui/material/Autocomplete";
-import { Toast } from "../../Components/alerts/SweetAlert";
+import { Toast } from "../../components/alerts/SweetAlert";
 import { useAppSelector } from "../../app/hooks";
 import {
   selectPermissions,

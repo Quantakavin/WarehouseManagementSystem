@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import config from "../../config/config";
-import "./cards.scss";
+import "../../styles/cards.scss";
 
 const ProductCard = () => {
   // Item Details
