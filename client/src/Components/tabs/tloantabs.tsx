@@ -58,7 +58,7 @@ const TLoanTabs: React.FC = () => {
   const [allCurrent, setAllCurrent] = useState([]);
   const [allHistory, setAllHistory] = useState([]);
   const context = useContext(EditableContext);
-  const { isEditable } = context;
+  const { isEditable }= context;
   // Get and set current tloans data
   useEffect(() => {
     fetch(`${config.baseURL}/tloan/current/${userid}`)
