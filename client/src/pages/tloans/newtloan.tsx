@@ -485,8 +485,9 @@ function newtloan() {
   };
 
   const DraftLoan = (e) => {
-    e.preventDefault();
+   
     setLoading(true);
+    e.preventDefault();
     setTypeError(false);
     setCompanyError(false);
     setPurposeError(false);
@@ -502,11 +503,31 @@ function newtloan() {
         timer: 1500,
         width: 315,
       });
-      setSubmitLoading(false);
+      setLoading(false);
+    }
+    if (type === "") {
+      setTypeError(true);
+      setTypeErrorText("Selection required");
+      setLoading(false);
     }
     if (company === "") {
       setCompanyError(true);
-      setCompanyErrorText("Selection required");
+      setCompanyErrorText("Input required");
+      setLoading(false);
+    }
+    if (purpose === "") {
+      setPurposeError(true);
+      setPurposeErrorText("Required");
+      setLoading(false);
+    }
+    if (duration === "") {
+      setDurationError(true);
+      setDurationErrorText("Selection required");
+      setSubmitLoading(false);
+    }
+    if (requireddate === "") {
+      setRDateError(true);
+      setRDateErrorText("Select a date");
       setLoading(false);
     }
     if (email === "") {
@@ -516,6 +537,11 @@ function newtloan() {
     } else if (!email.match(emailRegex)) {
       setEmailError(true);
       setEmailErrorText("Invalid Email");
+      setLoading(false);
+    }
+    if (collection === "") {
+      setCollectionError(true);
+      setCollectionErrorText("Selection required");
       setLoading(false);
     }
     if (
@@ -529,7 +555,7 @@ function newtloan() {
     ) {
       setCompanyError(true);
       setCompanyErrorText("Valid Input Required");
-      setSubmitLoading(false);
+      setLoading(false);
     }
     if (
       type === "1" &&
@@ -542,13 +568,18 @@ function newtloan() {
     ) {
       setCompanyError(true);
       setCompanyErrorText("Input Required");
-      setSubmitLoading(false);
+      setLoading(false);
     }
     if (
       items.length !== 0 &&
+      type !== "" &&
       company !== "" &&
+      purpose !== "" &&
+      duration !== "" &&
+      requireddate !== "" &&
       email !== "" &&
-      email.match(emailRegex)
+      email.match(emailRegex) &&
+      collection !== ""
     ) {
       setTimeout(() => {
         try {
@@ -823,7 +854,7 @@ function newtloan() {
 
               <Box sx={{ display: "flex" }}>
                 <TextField
-                  sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
+                  sx={{ width: 885, marginLeft: 2, marginTop: 2 }}
                   multiline
                   id="filled-required"
                   variant="filled"
