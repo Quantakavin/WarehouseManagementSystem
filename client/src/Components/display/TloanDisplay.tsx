@@ -65,7 +65,7 @@ export default function TloanDisplay() {
   const context: any = useContext(EditableContext);
   const { isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal } = context;
   const { TLoanID } = useParams();
-  const [type, setType] = useState("");
+  const [type, setType] = useState<any>("");
   const [company, setCompany] = useState("");
   const [name, setName] = useState("");
   const [purpose, setPurpose] = useState("");
@@ -98,6 +98,7 @@ export default function TloanDisplay() {
   const [statusChange, setStatusChange] = useState("")
   const [statusChangeError, setStatusChangeError] = useState(false)
   const [statusChangeErrorText, setStatusChangeErrorText] = useState("")
+  const [minDateStr, setMinDateStr] = useState('')
 
   const ApprovalLoanPerms = permissions.some(
     (e) => e.FeatureName === "T-Loan Approval"
@@ -326,7 +327,12 @@ export default function TloanDisplay() {
    }
   const itemStorage = localStorage.getItem("react-use-cart");
   const cartItems = JSON.parse(itemStorage).items;
-
+  const minimumDate: any = new Date(new Date().getTime()+(10*24*60*60*1000))
+  const minimumDateString = minimumDate.toString();
+  useEffect(() => {
+    const correctFormat = dateFormat(minimumDateString, "yyyy-mm-dd");
+    setMinDateStr(correctFormat);
+  });
   useEffect(() => {
     if (cartItems === []) {
       return console.log("Nothing in cart");
@@ -682,7 +688,7 @@ export default function TloanDisplay() {
       TLoanID: TLoanIDGlobal,
     })
   );
-
+ 
   useEffect(() => {
     setItems(newProduct);
   }, [newProduct]);
@@ -826,6 +832,16 @@ export default function TloanDisplay() {
       setRDateError(true);
       setRDateErrorText("Select a date");
       setSubmitLoading(false);
+    }else if((requireddate < minDateStr) === true){
+      Toast.fire({
+        icon: "warning",
+        title: "Please Change Your Required Date",
+        customClass: "swalpopup",
+        timer: 2000,
+        width: 315,
+      });
+      setRDateError(true);
+      setSubmitLoading(false)
     }
     if (email === "") {
       setEmailError(true);
@@ -841,6 +857,7 @@ export default function TloanDisplay() {
       setCollectionErrorText("Selection required");
       setSubmitLoading(false);
     }
+  
     if (type === "2" && (company === "1" || company === "2" ||company === "3" ||company === "4" ||company === "5" ||company === "6")){
       setCompanyError(true);
       setCompanyErrorText("Valid Input Required");
@@ -850,7 +867,7 @@ export default function TloanDisplay() {
       setCompanyError(true);
       setCompanyErrorText("Input Required");
       setSubmitLoading(false);
-    }
+    } 
     if (
       items.length !== 0 &&
       type !== "" &&
@@ -919,12 +936,12 @@ export default function TloanDisplay() {
         timer: 1500,
         width: 315,
       });
-      setSubmitLoading(false);
+      setLoading(false);
     }
     if (company === "") {
       setCompanyError(true);
       setCompanyErrorText("Selection required");
-      setSubmitLoading(false);
+      setLoading(false);
     }
     if (email === "") {
       setEmailError(true);
@@ -935,15 +952,25 @@ export default function TloanDisplay() {
       setEmailErrorText("Invalid Email");
       setLoading(false);
     }
+    if( (requireddate < minDateStr) === true){
+      Toast.fire({
+        icon: "warning",
+        title: "Please Change Your Required Date",
+        customClass: "swalpopup",
+        timer: 2000,
+        width: 315,
+      });
+      setLoading(false)
+    }
     if (type === "2" && (company === "1" || company === "2" ||company === "3" ||company === "4" ||company === "5" ||company === "6")){
       setCompanyError(true);
       setCompanyErrorText("Valid Input Required");
-      setSubmitLoading(false);
+      setLoading(false);
     }
     if (type === "1" && (company !== "1" && company !== "2" && company !== "3" && company !== "4" && company !== "5" && company !== "6")){
       setCompanyError(true);
       setCompanyErrorText("Input Required");
-      setSubmitLoading(false);
+      setLoading(false);
     }
     if ( items.length !== 0 && company !== "" && email !== "" && email.match(emailRegex)) {
       setTimeout(() => {
@@ -987,6 +1014,7 @@ export default function TloanDisplay() {
       }, 500);
     }
   };
+ 
   const getData = () => {
     return (
       <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
@@ -1310,11 +1338,15 @@ export default function TloanDisplay() {
                     label="Required Date"
                     inputFormat="yyyy-MM-dd"
                     value={dateForm}
+                    minDate={minimumDate}
                     inputProps={{ readOnly: true }}
                     onClose={() => {
                       if (requireddate === "") {
                         setRDateError(true);
                         setRDateErrorText("Select a date");
+                      }else if( (requireddate < minDateStr) === true){
+                        setRDateError(true)
+                        setRDateErrorText("Select Another Date")
                       }
                     }}
                     onChange={handleChangeRequiredDate}
@@ -1325,6 +1357,14 @@ export default function TloanDisplay() {
                         size="small"
                         {...params}
                         sx={{ width: 200, marginLeft: 3, marginTop: 2 }}
+                        onBlur={() => {
+                          setRDateError(false)
+                          setDurationErrorText("")
+                          if ((requireddate < minDateStr)=== true) {
+                            setRDateError(true);
+                            setRDateErrorText("Select a date");
+                          }
+                        }}
                       />
                     )}
                   />
