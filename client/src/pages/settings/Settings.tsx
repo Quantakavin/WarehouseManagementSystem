@@ -4,6 +4,7 @@ import {
   Fade,
   FilledInput,
   FormControl,
+  FormHelperText,
   Grid,
   IconButton,
   InputAdornment,
@@ -24,7 +25,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import LockIcon from "@mui/icons-material/Lock";
 import TelegramIcon from "@mui/icons-material/Telegram";
-import PasswordIcon from '@mui/icons-material/Password';
+import PasswordIcon from "@mui/icons-material/Password";
 import { LoadingButton } from "@mui/lab";
 import axios from "axios";
 import { motion } from "framer-motion";
@@ -42,7 +43,6 @@ import { Toast } from "../../Components/alerts/SweetAlert";
 import config from "../../config/config";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
-import useTogglePassword from "../../hooks/useTogglePassword";
 
 const style = {
   position: "absolute" as "absolute",
@@ -55,6 +55,14 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
+interface State {
+  password: string;
+  showPassword: boolean;
+}
+
+const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$/i;
 
 const Settings: React.FC = () => {
   const navigate = useNavigate();
@@ -70,15 +78,20 @@ const Settings: React.FC = () => {
     useState<boolean>(false);
   const [showDisableConfirmation, setShowDisableConfirmation] =
     useState<boolean>(false);
-  const [showTeleEnableConfirmation, setShowTeleEnableConfirmation] =
-    useState<boolean>(false);
   const [showTeleDisableConfirmation, setShowTeleDisableConfirmation] =
     useState<boolean>(false);
   const [telegramID, setTelegramID] = useState("");
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("");
+  const [pwerror, setPWError] = useState(false);
+  const [pwerrorText, setPWErrorText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [values, setValues] = React.useState<State>({
+    password: "",
+    showPassword: false,
+  });
+  const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setError(false);
@@ -90,6 +103,9 @@ const Settings: React.FC = () => {
   };
   const DisableTeleID = {
     TelegramID: null,
+  };
+  const newpassword = {
+    password: values.password,
   };
   const isNumbers = (str) => /^[0-9]*$/.test(str);
   const handleTeleTextChange = (e) => {
@@ -169,46 +185,65 @@ const Settings: React.FC = () => {
     }, 500);
   };
 
-  // const { toggle, passwordType, showPassword } = useTogglePassword();
-  const [password, setPassword] = useState("");
-  const [pwVisibility, setPWV] = useState(false)
-  const [pwType, setPWType] = useState("password");
-  const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
-  // const handleClickShowPassword = () => {
-  //   setValues({
-  //     ...values,
-  //     showPassword: !values.showPassword,
-  //   });
-  // };
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
-  const toggle = () => {
-    if (pwType == "password") {
-      setPWType("text")
-    } else {
-      setPWType("password")
-    }
-  }
+  //Password modal open/close
   const handleOpenChangePassword = () => {
     setShowChangePassword(true);
   };
   const handleCloseChangePassword = () => {
-    setError(false);
-    setErrorText("");
+    setPWError(false);
     setShowChangePassword(false);
+    setValues("");
   };
-  const handlePassword = (results) => {
-    setPassword(results.target.value);
+  //Handle change of text in password field
+  const handleChange =
+    (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setValues({ ...values, [prop]: event.target.value });
+    };
+
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
+  };
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
   };
   const handleChangePassword = async () => {
     setLoading(true);
-    if (password !== "") {
+    setPWError(false);
+    if (!values.password.match(passwordRegex) && values.password != "") {
+      setPWError(true);
+      setPWErrorText("Please enter a valid password");
+      Toast.fire({
+        icon: "error",
+        title: "Please enter a valid password!",
+        customClass: "swalpopup",
+        timer: 2000,
+        width: 400,
+      });
+      setLoading(false);
+    } else if (values.password == "") {
+      setPWError(true);
+      setPWErrorText("Please enter a new password");
+      Toast.fire({
+        icon: "error",
+        title: "Please enter a new password",
+        customClass: "swalpopup",
+        timer: 2000,
+        width: 380,
+      });
+      setLoading(false);
+    } else if (values.password !== "" && values.password.match(passwordRegex)) {
       setTimeout(() => {
         setLoading(false);
+        setPWError(false);
         setShowChangePassword(false);
         axios
-          .put(`${config.baseURL}/userpassword/${userID}`, password, {
+          .put(`${config.baseURL}/userpassword/${userID}`, newpassword, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
@@ -219,7 +254,7 @@ const Settings: React.FC = () => {
               title: `Successfully changed password`,
               customClass: "swalpopup",
               timer: 2000,
-              width: 310,
+              width: 400,
             });
           })
           .catch((error) => {
@@ -234,17 +269,7 @@ const Settings: React.FC = () => {
             console.error("There was an error!", error);
           });
       }, 500);
-    } else {
-      setError(true);
-      setErrorText("Please enter your new password");
-      Toast.fire({
-        icon: "error",
-        title: "Please enter your new password",
-        customClass: "swalpopup",
-        timer: 2000,
-        width: 450,
-      });
-      setLoading(false);
+      setValues("", false);
     }
   };
 
@@ -566,38 +591,51 @@ const Settings: React.FC = () => {
               />
             </Box>
 
-            <FormControl sx={{ m: 1, width: '25ch' }} variant="filled">
-              <InputLabel htmlFor="filled-adornment-password">New Password</InputLabel>
+            <FormControl sx={{ m: 0, width: "100%" }} variant="outlined">
+              <InputLabel htmlFor="outlined-adornment-password">
+                Password
+              </InputLabel>
               <FilledInput
-                id="filled-adornment-password"
-                type={pwType}
-                value={password}
-                onChange={handlePassword}
-                multiline
-                fullWidth
-                required
+                id="outlined-adornment-password"
+                type={values.showPassword ? "text" : "password"}
+                value={values.password}
+                onChange={handleChange("password")}
+                error={pwerror}
                 onBlur={() => {
-                  if (password == "") {
-                    setError(true);
-                    setErrorText("Please enter your new password");
+                  if (
+                    values.password == "" ||
+                    !values.password.match(passwordRegex)
+                  ) {
+                    setPWError(true);
                   } else {
-                    setError(false);
-                    setErrorText("");
+                    setPWError(false);
                   }
                 }}
-                error={error}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      onClick={toggle}
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
                       edge="end"
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {values.showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 }
-              />
+                label="Password"
+              />{" "}
+              {!!pwerror && values.password == "" && (
+                <FormHelperText error>Please enter a password</FormHelperText>
+              )}
+              {!!pwerror &&
+                !values.password.match(passwordRegex) &&
+                values.password != "" && (
+                  <FormHelperText error>
+                    Password should be over 8 characters long with a mix of
+                    uppercase/lowercase letters and numbers
+                  </FormHelperText>
+                )}
             </FormControl>
             <Box
               component="span"
@@ -878,7 +916,10 @@ const Settings: React.FC = () => {
   );
 };
 export default Settings;
-function useTogglePasword(): { toggle: any; passwordType: any; showPassword: any; } {
+function useTogglePasword(): {
+  toggle: any;
+  passwordType: any;
+  showPassword: any;
+} {
   throw new Error("Function not implemented.");
 }
-
