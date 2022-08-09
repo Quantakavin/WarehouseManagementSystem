@@ -83,13 +83,13 @@ const ModalButton = () => {
  
 
     //getting current date
-    const today = new Date('2023/07/26');
+    const today = new Date();
       const yyyy = today.getFullYear();
-      let mm = today.getMonth() + 1; // Months start at 0!
-      let dd = today.getDate();
+      let mm = (today.getMonth() + 1).toString(); // Months start at 0!
+      let dd = (today.getDate()).toString() ;
 
-      if (dd < 10) dd = '0' + dd;
-      if (mm < 10) mm = '0' + mm;
+      if (parseInt(dd) < 10) dd = '0' + dd;
+      if (parseInt(mm) < 10) mm = '0' + mm;
 
       const formattedToday = dd + '-' + mm + '-' + yyyy
 
@@ -99,11 +99,11 @@ const ModalButton = () => {
     const due = new Date(checkDate);
     due.setDate(due.getDate()- 5)
     const yyyy1 = due.getFullYear();
-    let mm1 = due.getMonth() + 1; // Months start at 0!
-    let dd1 = due.getDate();
+    let mm1 = (due.getMonth() + 1).toString(); // Months start at 0!
+    let dd1 = (due.getDate()).toString();
 
-    if (dd1 < 10) dd1 = '0' + dd1;
-    if (mm1 < 10) mm1 = '0' + mm1;
+    if (parseInt(dd1) < 10) dd1 = '0' + dd1;
+    if (parseInt(mm1) < 10) mm1 = '0' + mm1;
     const formattedDue = dd1 + '-' + mm1 + '-' + yyyy1
 
   

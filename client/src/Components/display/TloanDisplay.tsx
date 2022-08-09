@@ -495,11 +495,11 @@ export default function TloanDisplay() {
           onRowEditStart={handleRowEditStart}
           onRowEditStop={handleRowEditStop}
           processRowUpdate={processRowUpdate}
-          components={{
-            Toolbar: EditToolbar,
-          }}
           componentsProps={{
             toolbar: { setRows, setRowModesModel },
+          }}
+          components={{
+            Toolbar: EditToolbar,
           }}
           experimentalFeatures={{ newEditingApi: true }}
         />
