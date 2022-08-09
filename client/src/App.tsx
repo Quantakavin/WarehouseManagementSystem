@@ -6,7 +6,7 @@ import { useAppSelector } from "./app/hooks";
 import { selectIsAuthenticated } from "./app/reducers/CurrentUserSlice";
 import IsEditableProvider from "./Components/context/IsEditableContext";
 import RmaDisplay from "./Components/display/RmaDisplay";
-import TLoanDisplay2 from "./Components/display/TloanDisplay2";
+import TLoanDisplay2 from "./Components/display/TloanDisplay";
 import TLoanManagerExtensionDisplay from "./Components/display/TloanManagerExtensionDisplay";
 import TopNav from "./Components/header/TopNav";
 import Sidebar from "./Components/sidebar/SideBar";
