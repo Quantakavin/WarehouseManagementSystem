@@ -11,6 +11,7 @@ const dashboardRoutes = require('./dashboardRoutes');
 const binRoutes = require('./binRoutes');
 const rmaRoutes = require('./rma.route');
 const resetPasswordRoutes = require('./resetPasswordRoutes');
+const notificationRoutes = require('./notificationRoutes');
 
 router.use(companyRoute);
 router.use(featureRoute);
@@ -24,5 +25,6 @@ router.use(dashboardRoutes);
 router.use(binRoutes);
 router.use(rmaRoutes);
 router.use(resetPasswordRoutes);
+router.use(notificationRoutes);
 
 module.exports = router;

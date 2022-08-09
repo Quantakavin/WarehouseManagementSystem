@@ -17,6 +17,7 @@ const {
     rmaClosedTele,
     rmaProgressTele
 } = require('./telegramNotificationController');
+const {createNotification} = require('./notificationController');
 
 module.exports.getAllRMA = async (req, res) => {
     try {
@@ -380,18 +381,23 @@ module.exports.newRMA = async (req, res) => {
 module.exports.updateRmaAccepted = async (req, res) => {
     const { RmaID } = req.params;
     try {
+        console.log("rma accepted called")
         const gettingInfo = await rmaService.getEmployeeInfo(RmaID);
+        const userid = gettingInfo[0][0].UserID;
         const email = gettingInfo[0][0].Email.toString();
         const username = gettingInfo[0][0].Username.toString();
-        const telegramid = gettingInfo[0][0].TelegramID.toString();
+        //const telegramid = gettingInfo[0][0].TelegramID.toString();
         const results = await rmaService.getByRmaID(RmaID);
-        console.log('called');
         if (results.length > 0) {
             await rmaService.updateRmaAccepted(RmaID);
+            /*
             if (telegramid !== null) {
                 rmaAcceptedTele(telegramid, username, RmaID);
             }
+            */
             rmaAcceptedMail(email, username, RmaID);
+            createNotification(12, userid, RmaID)
+
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);
@@ -402,7 +408,7 @@ module.exports.updateRmaAccepted = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
     } catch (error) {
-        console.log(error);
+        console.log("rma accept error is ", error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -412,16 +418,18 @@ module.exports.updateRmaRejected = async (req, res) => {
     const { rejectreason } = req.body;
     try {
         const gettingInfo = await rmaService.getEmployeeInfo(RmaID);
+        const userid = gettingInfo[0][0].UserID;
         const email = gettingInfo[0][0].Email.toString();
         const username = gettingInfo[0][0].Username.toString();
-        const telegramid = gettingInfo[0][0].TelegramID.toString();
+        //const telegramid = gettingInfo[0][0].TelegramID.toString();
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaRejected(RmaID, rejectreason);
-            if (telegramid !== null) {
-                rmaRejectedTele(telegramid, username, RmaID, rejectreason);
-            }
+            // if (telegramid !== null) {
+            //     rmaRejectedTele(telegramid, username, RmaID, rejectreason);
+            // }
             rmaRejectedMail(email, username, RmaID, rejectreason);
+            createNotification(13, userid, RmaID)
             redisClient.del('allRMA');
             redisClient.del(`rmaDetails#${RmaID}`);
             redisClient.del(`rmaProducts#${RmaID}`);

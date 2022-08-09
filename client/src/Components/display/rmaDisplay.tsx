@@ -110,6 +110,7 @@ const RmaDisplay: React.FC = () => {
     const fetchData = async () => {
       // get the data from the api
       const rmadata = await axios.get(`${config.baseURL}/RMA/${RmaID}`);
+      console.log("the data is " + JSON.stringify(rmadata.data))
 
       setRma(rmadata.data);
     };
@@ -120,7 +121,7 @@ const RmaDisplay: React.FC = () => {
     console.log(`Verification permissions: ${VerificationPerms}`);
     fetchData();
     // make sure to catch any error
-  }, []);
+  }, [RmaID]);
   // Get RMA products
   useEffect(() => {
     // declare the async data fetching function
@@ -133,7 +134,7 @@ const RmaDisplay: React.FC = () => {
     // call the function
     fetchData();
     // make sure to catch any error
-  }, []);
+  }, [RmaID]);
   // Accept RMA
   const acceptRMA = async () => {
     setLoading(true);

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,7 @@ import { removeUser, setUser } from "../../app/reducers/CurrentUserSlice";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../Components/alerts/SweetAlert";
 import { Magic } from 'magic-sdk';
+import {SocketContext} from '../../context/socket';
 
 const m = new Magic('pk_live_E8F0C9DC03C58C57')
 
@@ -30,6 +31,7 @@ interface FormValues {
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const socket = useContext(SocketContext);
   const {
     register,
     handleSubmit,
@@ -73,6 +75,7 @@ const Login: React.FC = () => {
           telegramid: telegramid
         })
       );
+      socket.emit("login" ,{userid: id})
       dispatch(ChangeTab({ currenttab: "Dashboard" }));
       Toast.fire({
         icon: "success",
