@@ -835,6 +835,7 @@ const Settings: React.FC = () => {
                 backgroundColor: (theme) =>
                   theme.palette.mode === "dark" ? "#1A2027" : "#fff",
               }}
+              onClick={handleOpenChangePassword}
             >
               <Grid container spacing={2}>
                 <Grid
@@ -863,20 +864,6 @@ const Settings: React.FC = () => {
                         Change your account password.
                       </Typography>
                     </Grid>
-                  </Grid>
-                  <Grid
-                    item
-                    className="flexcontainer"
-                    sx={{ flexDirection: "column" }}
-                  >
-                    <Link
-                      component="button"
-                      variant="body2"
-                      underline="hover"
-                      onClick={handleOpenChangePassword}
-                    >
-                      Change
-                    </Link>
                   </Grid>
                 </Grid>
               </Grid>
