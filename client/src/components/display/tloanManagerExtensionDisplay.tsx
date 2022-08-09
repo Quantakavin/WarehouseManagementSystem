@@ -20,7 +20,7 @@ import {TLoan} from '../../utils/CommonTypes'
 export default function TLoanManagerDisplay() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [loans, setLoans] = useState<TLoan>([]);
+  const [loans, setLoans] = useState<any>([]);
   const [items, setItems] = useState([]);
   const [reasonField, setReasonField] = useState("");
   const { TLoanID } = useParams();
