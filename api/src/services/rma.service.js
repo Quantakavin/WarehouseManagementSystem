@@ -10,10 +10,12 @@ module.exports.getByRmaID = async (RmaID) => {
                     r.Company,
                     r.ContactNo,
                     r.RmaStatusID,
+                    rs.RmaStatus as 'StatusText',
                     r.RejectReason
-                    FROM Rma r, User u 
+                    FROM Rma r, User u, RmaStatus rs
                     WHERE RmaID = ?
-                    AND r.SalesmanID = u.UserID;`;
+                    AND r.SalesmanID = u.UserID
+                    AND r.RmaStatusID = rs.RmaStatusID;`;
     return knex.raw(query, [RmaID]);
 };
 

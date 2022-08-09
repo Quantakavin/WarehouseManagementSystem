@@ -250,8 +250,16 @@ module.exports.update2FA = async (req, res) => {
 
 module.exports.updateUser = async (req, res) => {
     const userID = req.params.id;
-    const { name, email, password=null, mobileno, company, usergroup, active, notificationgroups } =
-        req.body;
+    const {
+        name,
+        email,
+        password = null,
+        mobileno,
+        company,
+        usergroup,
+        active,
+        notificationgroups
+    } = req.body;
     try {
         // const notigroups = notificationgroups.map((group) => {
         //     return JSON.parse(group)
@@ -357,10 +365,10 @@ module.exports.updateUserTeleID = async (req, res) => {
 };
 
 module.exports.updateUserPassword = async (req, res, next) => {
-    try {
-        const userID = req.params.id;
-        const password = req.body.password;
+    const userID = req.params.id;
+    const { password } = req.body;
 
+    try {
         if (!password) {
             return res.status(400).json({
                 message: 'Please enter password.'
