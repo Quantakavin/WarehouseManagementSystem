@@ -6,7 +6,7 @@ import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import config from "../../config/config";
 import "./cards.scss";
 
-function cards() {
+function Cards() {
   const userrole = useAppSelector(selectRole);
   // T-Loan Overview
   const [CurrentTloans, setCurrentTloans] = useState([]);
@@ -342,4 +342,4 @@ function cards() {
   );
 }
 
-export default cards;
+export default Cards;

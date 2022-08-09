@@ -128,7 +128,7 @@ module.exports.SubmitAfterEdit = async (req, res) => {
     } = req.body;
 
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
         const UserID = gettingInfo[0][0].UserID.toString();
         const results = await TLoan.getLoanByNumber(TLoanID);
         const tloanItems = items.map((item) => {
@@ -193,7 +193,7 @@ module.exports.DraftAfterEdit = async (req, res) => {
     } = req.body;
 
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
         const UserID = gettingInfo[0][0].UserID.toString();
         const results = await TLoan.getLoanByNumber(TLoanID);
         const tloanItems = items.map((item) => {
@@ -243,7 +243,6 @@ module.exports.DraftAfterEdit = async (req, res) => {
 };
 
 module.exports.newLoan = async (req, res) => {
-    const { TLoanID } = req.params;
     const {
         type,
         company,
@@ -258,8 +257,6 @@ module.exports.newLoan = async (req, res) => {
         items
     } = req.body;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
-        const UserID = gettingInfo[0][0].UserID.toString();
         const tloanItems = items.map((item) => {
             return item;
         });
@@ -276,17 +273,16 @@ module.exports.newLoan = async (req, res) => {
             collection,
             tloanItems
         );
-        redisClient.del(`TLoanItems#${TLoanID}`);
-        redisClient.del(`TLoan#${TLoanID}`);
-        redisClient.del(`TLoanIDs#${TLoanID}`);
+        // redisClient.del(`TLoanItems#${TLoanID}`);
+        // redisClient.del(`TLoan#${TLoanID}`);
+        // redisClient.del(`TLoanIDs#${TLoanID}`);
         redisClient.del('ManagerLoan');
         redisClient.del('ManagerExtension');
-        redisClient.del(`TLoanStatusID#${TLoanID}`);
-        redisClient.del(`ExtensionStatus#${TLoanID}`);
-        redisClient.del(`CurrentTLoan#${UserID}`);
-        redisClient.del(`PendingTLoan#${UserID}`);
-        redisClient.del(`DraftTLoan#${UserID}`);
-        redisClient.del(`HistoryTLoan#${UserID}`);
+      
+        redisClient.del(`CurrentTLoan#${user}`);
+        redisClient.del(`PendingTLoan#${user}`);
+        redisClient.del(`DraftTLoan#${user}`);
+        redisClient.del(`HistoryTLoan#${user}`);
         return res.status(201).json(tloanItems);
     } catch (error) {
         console.log(error);
@@ -295,7 +291,6 @@ module.exports.newLoan = async (req, res) => {
 };
 
 module.exports.SendDraft = async (req, res) => {
-    const { TLoanID } = req.params;
     const {
         type,
         company,
@@ -310,8 +305,7 @@ module.exports.SendDraft = async (req, res) => {
         items
     } = req.body;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
-        const UserID = gettingInfo[0][0].UserID.toString();
+    
         const tloanItems = items.map((item) => {
             return item;
         });
@@ -328,17 +322,12 @@ module.exports.SendDraft = async (req, res) => {
             collection,
             tloanItems
         );
-        redisClient.del(`TLoanItems#${TLoanID}`);
-        redisClient.del(`TLoan#${TLoanID}`);
-        redisClient.del(`TLoanIDs#${TLoanID}`);
         redisClient.del('ManagerLoan');
         redisClient.del('ManagerExtension');
-        redisClient.del(`TLoanStatusID#${TLoanID}`);
-        redisClient.del(`ExtensionStatus#${TLoanID}`);
-        redisClient.del(`CurrentTLoan#${UserID}`);
-        redisClient.del(`PendingTLoan#${UserID}`);
-        redisClient.del(`DraftTLoan#${UserID}`);
-        redisClient.del(`HistoryTLoan#${UserID}`);
+        redisClient.del(`CurrentTLoan#${user}`);
+        redisClient.del(`PendingTLoan#${user}`);
+        redisClient.del(`DraftTLoan#${user}`);
+        redisClient.del(`HistoryTLoan#${user}`);
         return res.status(201).json(tloanItems);
     } catch (error) {
         console.log(error);
@@ -436,11 +425,11 @@ module.exports.pendingLoan = async (req, res) => {
 module.exports.approveLoan = async (req, res) => {
     const { TLoanID } = req.params;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
-        const email = gettingInfo[0][0].Email.toString();
-        const username = gettingInfo[0][0].Username.toString();
-        const UserID = gettingInfo[0][0].UserID.toString();
-        const telegramid = gettingInfo[0][0].TelegramID.toString();
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
+        const email = (gettingInfo[0][0].Email);
+        const username = (gettingInfo[0][0].Username)
+        const UserID = (gettingInfo[0][0].UserID)
+        const telegramid = (gettingInfo[0][0].TelegramID)
         const results = await TLoan.approveLoan(TLoanID);
         if (results) {
             if (telegramid !== null) {
@@ -472,11 +461,11 @@ module.exports.rejectLoan = async (req, res) => {
     const { TLoanID } = req.params;
     const { remarks } = req.body;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
-        const email = gettingInfo[0][0].Email.toString();
-        const username = gettingInfo[0][0].Username.toString();
-        const UserID = gettingInfo[0][0].UserID.toString();
-        const telegramid = gettingInfo[0][0].TelegramID.toString();
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
+        const email = gettingInfo[0][0].Email
+        const username = gettingInfo[0][0].Username
+        const UserID = gettingInfo[0][0].UserID
+        const telegramid = gettingInfo[0][0].TelegramID
         const results = await TLoan.getLoanByNumber(TLoanID);
         if (results.length > 0) {
             if (telegramid !== null) {
@@ -507,11 +496,11 @@ module.exports.rejectLoan = async (req, res) => {
 module.exports.approveExtension = async (req, res) => {
     const { TLoanID } = req.params;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
-        const email = gettingInfo[0][0].Email.toString();
-        const username = gettingInfo[0][0].Username.toString();
-        const UserID = gettingInfo[0][0].UserID.toString();
-        const telegramid = gettingInfo[0][0].TelegramID.toString();
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
+        const email = gettingInfo[0][0].Email
+        const username = gettingInfo[0][0].Username
+        const UserID = gettingInfo[0][0].UserID
+        const telegramid = gettingInfo[0][0].TelegramID
         const results = await TLoan.approveExtension(TLoanID);
         if (results) {
             if (telegramid !== null) {
@@ -542,11 +531,11 @@ module.exports.rejectExtension = async (req, res) => {
     const { TLoanID } = req.params;
     const { remarks } = req.body;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
-        const email = gettingInfo[0][0].Email.toString();
-        const username = gettingInfo[0][0].Username.toString();
-        const UserID = gettingInfo[0][0].UserID.toString();
-        const telegramid = gettingInfo[0][0].TelegramID.toString();
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
+        const email = gettingInfo[0][0].Email
+        const username = gettingInfo[0][0].Username
+        const UserID = gettingInfo[0][0].UserID
+        const telegramid = gettingInfo[0][0].TelegramID
         const results = await TLoan.getLoanByNumber(TLoanID);
         if (results.length > 0) {
             if (telegramid !== null) {
@@ -695,7 +684,7 @@ module.exports.ManagerExtension = async (req, res) => {
 module.exports.LoanExtend = async (req, res) => {
     const {TLoanID, duration, reason } = req.body;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID)
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID)
         const UserID = (gettingInfo[0][0].UserID).toString()
         const results = await TLoan.loanExtension(TLoanID, duration, reason);
 
@@ -831,7 +820,7 @@ module.exports.updateStatus = async (req, res) => {
     const { TLoanID } = req.params;
     const { statusChange } = req.body;
     try {
-        const gettingInfo = await TLoan.getEmployeeEmail(TLoanID);
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
         const UserID = gettingInfo[0][0].UserID.toString();
         const results = await TLoan.updateStatus(TLoanID, statusChange);
         if (results) {
@@ -854,10 +843,10 @@ module.exports.updateStatus = async (req, res) => {
     }
 };
 
-module.exports.getEmail = async (req, res) => {
+module.exports.getEmployeeInfo = async (req, res) => {
     const { TLoanID } = req.body;
     try {
-        const results = await TLoan.getEmployeeEmail(TLoanID);
+        const results = await TLoan.getEmployeeInfo(TLoanID);
         if (results) {
             return res.status(200).send(results[0][0].Email);
         }

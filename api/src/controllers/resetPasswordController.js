@@ -197,7 +197,7 @@ module.exports.resetPassword = async (req, res, next) => {
         const salt = genSaltSync(10);
         const password = hashSync(newPassword, salt);
 
-        await userService.updateUserPassword(password, user[0][0].UserID);
+        await userService.updatePassword(password, user[0][0].UserID);
         await resetPasswordService.expireOldTokens(email, 1);
 
         res.status(200).json({

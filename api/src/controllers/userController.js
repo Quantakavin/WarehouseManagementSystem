@@ -355,3 +355,33 @@ module.exports.updateUserTeleID = async (req, res) => {
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
+
+module.exports.updateUserPassword = async (req, res, next) => {
+    try {
+        const userID = req.params.id;
+        const password = req.body.password;
+
+        if (!password) {
+            return res.status(400).json({
+                message: 'Please enter password.'
+            });
+        }
+
+        const results = await user.getByID(userID);
+
+        if (results.length > 0) {
+            const hash = await bcrypt.hash(password, 10);
+            await user.updatePassword(hash, userID);
+
+            return res.status(200).json({
+                message: 'Password changed successfully.'
+            });
+        }
+
+        return res.status(404).json({
+            message: 'Cannot find user with that id'
+        });
+    } catch (e) {
+        console.log(e);
+    }
+};
