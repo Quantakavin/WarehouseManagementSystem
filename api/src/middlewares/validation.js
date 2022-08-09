@@ -350,7 +350,7 @@ const validation = {
         products.map((product) => {
             if (product.Instructions === '') {
                 res.status(400).json({
-                    message: 'Please provide instructions for each product'
+                    message: 'Please provide instructions for each product!'
                 });
             } else {
                 next();

@@ -110,7 +110,7 @@ const RmaDisplay: React.FC = () => {
     const fetchData = async () => {
       // get the data from the api
       const rmadata = await axios.get(`${config.baseURL}/RMA/${RmaID}`);
-      console.log("the data is " + JSON.stringify(rmadata.data))
+      console.log("the data is " + JSON.stringify(rmadata.data));
 
       setRma(rmadata.data);
     };
@@ -821,8 +821,8 @@ const RmaDisplay: React.FC = () => {
       editable: false,
       cellClassName: (params: GridCellParams<boolean>) =>
         clsx("status-cell", {
-          true: params.value === true,
-          false: params.value === false,
+          true: params.value == true,
+          false: params.value == false,
         }),
     },
     {
