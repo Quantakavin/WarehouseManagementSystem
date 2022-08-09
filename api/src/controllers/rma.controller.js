@@ -369,19 +369,18 @@ module.exports.newRMA = async (req, res) => {
             redisClient.del('allRMA');
             redisClient.del('PendingRMA');
             redisClient.del(`myPendingRMA#${salesmanid}`);
-            return res.status(200).json(resultsrma);
+            return res.status(200).json({ message: 'RMA successfully created' });
         }
-        return res.status(500).send('Could Not Create The RMA');
+        return res.status(500).json({ message: 'Could Not Create The RMA' });
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error' });
     }
 };
 
 module.exports.updateRmaAccepted = async (req, res) => {
     const { RmaID } = req.params;
     try {
-        console.log('rma accepted called');
         const gettingInfo = await rmaService.getEmployeeInfo(RmaID);
         const userid = gettingInfo[0][0].UserID;
         const email = gettingInfo[0][0].Email.toString();
@@ -434,7 +433,7 @@ module.exports.updateRmaRejected = async (req, res) => {
             redisClient.del(`rmaByRmaID#${RmaID}`);
             redisClient.del('PendingRMA');
             redisClient.del('RejectedRMA');
-            return res.status(204).json({ message: 'RMA rejected successfully!' });
+            return res.status(204).json({ message: 'RMA rejected!' });
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
     } catch (error) {
@@ -455,7 +454,7 @@ module.exports.updateRmaChecklist = async (req, res) => {
             redisClient.del(`rmaByRmaID#${RmaID}`);
             redisClient.del('AcceptedRMA');
             redisClient.del('ProcessingRMA');
-            return res.status(204).json({ message: 'RMA receival status updated successfully!' });
+            return res.status(204).json({ message: 'RMA checklist updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
     } catch (error) {
@@ -574,7 +573,7 @@ module.exports.closeRma = async (req, res) => {
             redisClient.del(`rmaByRmaID#${RmaID}`);
             redisClient.del('InProgressRMA');
             redisClient.del('ClosedRMA');
-            return res.status(204).json({ message: 'RMA status updated successfully!' });
+            return res.status(204).json({ message: 'RMA closed successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
     } catch (error) {
