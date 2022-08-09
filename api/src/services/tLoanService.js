@@ -227,7 +227,6 @@ module.exports.getLoanByNumber = async (TLoanID) => {
   t.TLoanID,
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
   DATE_FORMAT(t.RequiredDate, "%Y-%m-%d") AS 'RequiredDate',
-  DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS 'EndDate1',
   DATE_FORMAT(DATE_ADD(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), INTERVAL IFNULL(tesel.duration,0)  DAY), "%d-%m-%Y") AS 'EndDate',
   coalesce(c.CompanyName, t.CompanyName) AS "CompanyName",
   t.CustomerEmail,
