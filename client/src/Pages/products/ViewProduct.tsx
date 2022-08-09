@@ -1,4 +1,5 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import Fab from "@mui/material/Fab";
 import axios from "axios";
@@ -8,12 +9,12 @@ import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "react-use-cart";
 import Divider from "@mui/material/Divider";
-import { Chip, Grid } from "@mui/material";
+import { Box, Button, Chip, Grid } from "@mui/material";
 import { executeReducerBuilderCallback } from "@reduxjs/toolkit/dist/mapBuilders";
 import { GetProduct } from "../../api/ProductDB";
 import { Toast } from "../../Components/alerts/SweetAlert";
-import CardContainer from "../../Components/Cards/CardContainer";
-import CardField from "../../Components/Cards/CardField";
+import CardContainer from "../../Components/cards/CardContainer";
+import CardField from "../../Components/cards/CardField";
 import CardSkeleton from "../../Components/skeletons/CardSkeleton";
 import IsEditableProvider, {
   EditableContext,
@@ -44,9 +45,7 @@ const ViewProduct: React.FC = () => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const product = await axios.get(
-        `${config.baseURL}/product/${params.id}`
-      );
+      const product = await axios.get(`${config.baseURL}/product/${params.id}`);
 
       setProductGet(product.data);
 
@@ -85,7 +84,7 @@ const ViewProduct: React.FC = () => {
   }
 
   const { totalItems, addItem } = useCart();
-  console.log(isEditable)
+  console.log(isEditable);
   const newLoanButton = () => {
     if (totalItems > 0) {
       return (
@@ -142,25 +141,21 @@ const ViewProduct: React.FC = () => {
             whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
             whileTap={{ scale: 0.9 }}
           >
-            <Fab
-              variant="extended"
-              aria-label="add"
-              onClick={addItemWithAlert}
+            <Button
+              size="small"
+              variant="contained"
               sx={{
                 color: "white",
-                backgroundColor: "#063970",
-                ":hover": { backgroundColor: "#031c38" },
-                float: "right",
-
-                marginRight: "5%",
-                height: "100%",
+                backgroundColor: "#31A961",
                 width: 200,
-                height: 65,
+                height: 50,
                 borderRadius: 10,
               }}
+              endIcon={<AddShoppingCartIcon />}
+              onClick={addItemWithAlert}
             >
-              Add Item To Loan
-            </Fab>
+              Add Item to Loan
+            </Button>
           </motion.div>
           // <Button
           // size="normal"
@@ -245,29 +240,39 @@ const ViewProduct: React.FC = () => {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item />
+              <Grid item xs={12} sx={{pt: 5}}>
+                <Box
+                  component="span"
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <motion.div
+                    className="animatable"
+                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <Button
+                      size="small"
+                      variant="contained"
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#063970",
+                        width: 150,
+                        height: 50,
+                        borderRadius: 10,
+                        paddingRight: 4,
+                      }}
+                      startIcon={<ArrowBackIosIcon />}
+                      onClick={() => navigate("/products")}
+                    >
+                      Back
+                    </Button>
+                  </motion.div>
+                  {addProduct()}
+                </Box>
+              </Grid>
             </Grid>
-            <div
-              className="flexcontainer"
-              style={{
-                flexDirection: "row",
-                marginLeft: "7%",
-                marginRight: "7%",
-                marginTop: 30,
-                marginBottom: 20,
-              }}
-            >
-              <button
-                style={{ alignSelf: "flex-start" }}
-                className="cardbackbutton"
-                onClick={() => navigate(-1)}
-                type="button"
-              >
-                <ArrowBackIosIcon fontSize="small" /> Back
-              </button>
-
-              {addProduct()}
-            </div>
           </CardContainer>
         )}
         {/* {addInside()} */}
@@ -335,18 +340,38 @@ const ViewProduct: React.FC = () => {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item />
+            <Grid item xs={12} sx={{pt: 5}}>
+              <Box
+                component="span"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#063970",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                      paddingRight: 4,
+                    }}
+                    startIcon={<ArrowBackIosIcon />}
+                    onClick={() => navigate("/products")}
+                  >
+                    Back
+                  </Button>
+                </motion.div>
+              </Box>
+            </Grid>
           </Grid>
-          <div
-            className="flexcontainer"
-            style={{
-              flexDirection: "row",
-              marginLeft: "7%",
-              marginRight: "7%",
-              marginTop: 30,
-              marginBottom: 20,
-            }}
-          />
         </CardContainer>
       )}
       {/* {addInside()} */}
