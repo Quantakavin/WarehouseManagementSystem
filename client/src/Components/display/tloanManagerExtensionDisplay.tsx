@@ -20,7 +20,7 @@ import {TLoan} from '../../utils/CommonTypes'
 export default function TLoanManagerDisplay() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [loans, setLoans] = useState<TLoan>([]);
+  const [loans, setLoans] = useState<any>([]);
   const [items, setItems] = useState([]);
   const [reasonField, setReasonField] = useState("");
   const { TLoanID } = useParams();
@@ -284,10 +284,10 @@ console.log(items)
                           {loans.CustomerEmail}
                         </div>
                       </Box>
-                      <Box sx={{ marginLeft: 10 }}>
-                        <div style={{}}>Extend Loan By:</div>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{color: "#F70404"}}>Extend Loan By:</div>
                         <div style={{ color: "black", fontWeight: "normal" }}>
-                          {loans.ExtensionDuration} Days
+                          <strong>{loans.ExtensionDuration} Days </strong>
                         </div>
                       </Box>
                     </Typography>

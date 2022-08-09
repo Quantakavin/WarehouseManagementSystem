@@ -180,6 +180,7 @@ const validation = {
     },
 
     validateLoan: (req, res, next) => {
+       
         const {
             type,
             company,
@@ -193,7 +194,16 @@ const validation = {
             collection,
             items
         } = req.body;
-
+        const today = (new Date(new Date().getTime()+(10*24*60*60*1000)))
+        const yyyy = today.getFullYear();
+        let mm = (today.getMonth() + 1).toString(); // Months start at 0!
+        let dd = (today.getDate()).toString() ;
+  
+        if (parseInt(dd) < 10) dd = '0' + dd;
+        if (parseInt(mm) < 10) mm = '0' + mm;
+       
+        const formattedToday = (yyyy + '-' + mm + '-' + dd).toString()
+        
         if (
             type === '' ||
             email === '' ||
@@ -203,6 +213,7 @@ const validation = {
             applicationdate === '' ||
             duration === '' ||
             requireddate === '' ||
+            (requireddate < formattedToday) === true||
             user === '' ||
             collection === '' ||
             (type === '2' &&
@@ -234,9 +245,17 @@ const validation = {
             next();
         }
     },
+    
 
     validateDraft: (req, res, next) => {
-        const { type, company, email, items } = req.body;
+        const { type, company, email, requireddate, items } = req.body;
+        const today = (new Date(new Date().getTime()+(10*24*60*60*1000)))
+        const yyyy = today.getFullYear();
+        let mm = (today.getMonth() + 1).toString(); // Months start at 0!
+        let dd = (today.getDate()).toString();
+        if (parseInt(dd) < 10) dd = '0' + dd;
+        if (parseInt(mm) < 10) mm = '0' + mm;  
+        const formattedToday = (yyyy + '-' + mm + '-' + dd).toString();
 
         if (
             email === '' ||
@@ -255,6 +274,7 @@ const validation = {
                 company !== '4' &&
                 company !== '5' &&
                 company !== '6') ||
+            ((requireddate < formattedToday) === true) ||
             items === []
         ) {
             res.status(400).json({
