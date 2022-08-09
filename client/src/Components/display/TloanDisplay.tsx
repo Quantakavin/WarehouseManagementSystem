@@ -55,7 +55,7 @@ import { EditableContext } from "../context/IsEditableContext";
 import ModalButton from "../modals/tloanExtensionModal";
 import TLoanRejectModalButton from "../modals/tloanRejectModal";
 
-export default function tloanDisplay() {
+export default function TloanDisplay() {
   const permissions = useAppSelector(selectPermissions);
   const navigate = useNavigate();
   const [loans, setLoans] = useState<TLoan>([]);

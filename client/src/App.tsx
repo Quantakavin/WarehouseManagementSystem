@@ -39,6 +39,7 @@ import EditUser from "./Pages/users/EditUser";
 import Profile from "./Pages/users/Profile";
 import Users2 from "./Pages/users/Users2";
 import ViewUser from "./Pages/users/ViewUser";
+import Notifications from "./Pages/notifications/Notifcations";
 
 // const context = useContext(EditableContext)
 // const {isEditable, TLoanIDGlobal} = context
@@ -162,6 +163,7 @@ const App: React.FC = () => {
                   element={<EditNotificationGroup />}
                 />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/notifications" element={<Notifications />} />
                 <Route path="/403" element={<Error403 />} />
                 <Route path="*" element={<Error404 />} />
               </Route>

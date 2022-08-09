@@ -6,6 +6,7 @@ import RmaReducer from "./RmaReducer";
 import SidebarReducer from "./SidebarSlice";
 import UserGroupTableFilterSlice from "./UserGroupTableFilterSlice";
 import UserTableFilterSlice from "./UserTableFilterSlice";
+import NotificationSlice from "./NotificationSlice";
 
 const RootReducer = combineReducers({
   currentUser: CurrentUserReducer,
@@ -13,6 +14,7 @@ const RootReducer = combineReducers({
   rma: RmaReducer,
   userTableFilter: UserTableFilterSlice,
   userGroupTableFilter: UserGroupTableFilterSlice,
+  notification: NotificationSlice,
   notiGroupTableFilter: NotiGroupTableFilterSlice,
   binlocation: BinLocationSlice,
 });
