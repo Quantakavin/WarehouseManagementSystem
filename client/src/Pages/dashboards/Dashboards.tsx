@@ -1,4 +1,4 @@
-import Cards from "../../Components/cards/Cards";
+import Cards from "../../Components/Cards/cards";
 import BarAndPieCharts from "../../Components/charts/BarAndPieCharts";
 import LineCharts from "../../Components/charts/LineCharts";
 import "../../Styles/Dashboard.scss";
