@@ -284,10 +284,10 @@ console.log(items)
                           {loans.CustomerEmail}
                         </div>
                       </Box>
-                      <Box sx={{ marginLeft: 10 }}>
-                        <div style={{}}>Extend Loan By:</div>
+                      <Box sx={{ marginLeft: 5 }}>
+                        <div style={{color: "#F70404"}}>Extend Loan By:</div>
                         <div style={{ color: "black", fontWeight: "normal" }}>
-                          {loans.ExtensionDuration} Days
+                          <strong>{loans.ExtensionDuration} Days </strong>
                         </div>
                       </Box>
                     </Typography>

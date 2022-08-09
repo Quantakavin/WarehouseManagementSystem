@@ -59,7 +59,7 @@ import { TLoan } from '../../utils/CommonTypes'
 export default function TloanDisplay() {
   const permissions = useAppSelector(selectPermissions);
   const navigate = useNavigate();
-  const [loans, setLoans] = useState<TLoan>([]);
+  const [loans, setLoans] = useState<any>([]);
   const [itemsTable, setItemsTable] = useState([]);
   const [purposeField, setPurposeField] = useState("");
   const context: any = useContext(EditableContext);
