@@ -1,6 +1,5 @@
 const knex = require('../config/database');
 
-
 // Get Brand Names
 module.exports.getBrandNames = async (Brand) => {
     const query = `SELECT DISTINCT Brand FROM BinProduct WHERE Brand LIKE ?`;
@@ -22,6 +21,12 @@ module.exports.getBinByProductBrand = async (Brand) => {
 // Get Bin By Item Name
 module.exports.getBinByProductName = async (ItemName) => {
     const query = `SELECT Bin.BinTag, Bin.BinID, BinProduct.ItemName FROM BinProduct LEFT JOIN Bin ON Bin.BinID = BinProduct.BinID WHERE ItemName LIKE ?`;
+    return knex.raw(query, [ItemName]);
+};
+
+// Get Bin By Brand no COUNT
+module.exports.getBinByProductName = async (ItemName) => {
+    const query = `SELECT Bin.BinTag, Bin.BinID, BinProduct.ItemName, Brand FROM BinProduct LEFT JOIN Bin ON Bin.BinID = BinProduct.BinID WHERE Brand LIKE ?`;
     return knex.raw(query, [ItemName]);
 };
 
