@@ -399,7 +399,7 @@ module.exports.closeRma = async (RmaID) => {
 
 module.exports.getEmployeeInfo = async (RmaID) => {
     const query = `
-    SELECT u.Email,
+    SELECT u.UserID, u.Email,
     u.Username,
     u.TelegramID
     FROM User u 

@@ -69,3 +69,15 @@ export type ActionMenuItem = {
   deleteFunction?: () => void;
   // deleteFunction?: UseMutationResult<AxiosResponse<any, any>, unknown, string, unknown>
 };
+
+export interface NotificationType {
+  NotiFeatureID: number;
+  NotiFeature: string;
+  NotiMessage: string;
+  Read: number;
+  ReceiverID: number;
+  NotificationID: number;
+  ContentID?: number;
+  Url?: string;
+  Icon?: string;
+}

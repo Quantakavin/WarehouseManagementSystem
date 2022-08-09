@@ -6,7 +6,7 @@ import RootReducer from "./reducers/RootReducer";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["currentUser", "sidebar"],
+  whitelist: ["currentUser", "sidebar", "notification"],
 };
 
 const persistedReducer = persistReducer(persistConfig, RootReducer);

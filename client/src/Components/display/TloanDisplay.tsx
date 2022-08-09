@@ -1139,7 +1139,7 @@ export default function TloanDisplay() {
                           borderRadius: 10,
                           paddingRight: 4,
                         }}
-                        onClick={() => navigate(-1)}
+                        onClick={() => navigate('/tloan')}
                         startIcon={<ArrowBackIosNewIcon />}
                       >
                         Back
@@ -1225,7 +1225,7 @@ export default function TloanDisplay() {
 
             <Box sx={{ display: "flex" }}>
               <TextField
-                sx={{ width: 970, marginLeft: 2, marginTop: 2 }}
+                sx={{ width: 885, marginLeft: 2, marginTop: 2 }}
                 multiline
                 id="filled-required"
                 variant="filled"

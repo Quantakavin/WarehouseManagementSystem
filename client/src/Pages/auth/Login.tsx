@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +18,9 @@ import { useAppDispatch } from "../../app/hooks";
 import { removeUser, setUser } from "../../app/reducers/CurrentUserSlice";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../Components/alerts/SweetAlert";
+import {SocketContext} from '../../context/socket';
+
+
 
 interface FormValues {
   email: string;
@@ -27,6 +30,7 @@ interface FormValues {
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const socket = useContext(SocketContext);
   const {
     register,
     handleSubmit,
@@ -70,6 +74,7 @@ const Login: React.FC = () => {
           telegramid: telegramid
         })
       );
+      socket.emit("login" ,{userid: id})
       dispatch(ChangeTab({ currenttab: "Dashboard" }));
       Toast.fire({
         icon: "success",

@@ -1,3 +1,4 @@
+import { useContext, useEffect, useState} from "react";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -7,7 +8,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { ListItemIcon, ListItemText } from "@mui/material";
+import { Badge, ListItemIcon, ListItemText } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -17,8 +18,9 @@ import Toolbar from "@mui/material/Toolbar";
 import { motion } from "framer-motion";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { io } from "socket.io-client";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { removeUser, selectName } from "../../app/reducers/CurrentUserSlice";
+import { removeUser, selectId, selectName } from "../../app/reducers/CurrentUserSlice";
 import {
     Close,
     Open,
@@ -27,17 +29,33 @@ import {
 } from "../../app/reducers/SidebarSlice";
 import defaultprofile from "../../assets/defaultprofile.png";
 import navbarbrand from "../../assets/navbarbrand.png";
+import {SocketContext} from '../../context/socket';
+import NotificationDropdown from "./NotificationDropdown";
+import { resetNotificationCount, selectNotificationCount } from "../../app/reducers/NotificationSlice";
 
 const TopNav = () => {
+  const socket = useContext(SocketContext);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const notificationcount = useAppSelector(selectNotificationCount)
   const isopen = useAppSelector(selectOpen);
   const username = useAppSelector(selectName);
+  const userid = useAppSelector(selectId);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [notiAnchorEl, setNotiAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
+  const isNotiMenuOpen = Boolean(notiAnchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  useEffect(() => {
+    if(localStorage.getItem("token") !==null) {
+      socket.emit("login" ,{userid: userid})
+    } else {
+      socket.emit("logout" ,{userid: userid})
+    }
+}, [])
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -56,11 +74,23 @@ const TopNav = () => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleNotiMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setNotiAnchorEl(event.currentTarget);
+  };
+
+  const handleNotiMenuClose = () => {
+    setNotiAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
   const logout = () => {
     setAnchorEl(null);
+    setNotiAnchorEl(null)
     setMobileMoreAnchorEl(null);
+    socket.emit("logout", {userid: userid})
     dispatch(removeUser());
     dispatch(Reset());
+    dispatch(resetNotificationCount());
     localStorage.clear();
     navigate("/");
   };
@@ -155,6 +185,16 @@ const TopNav = () => {
       </MenuItem>
     </Menu>
   );
+
+  const notiMenuId="navbar-notification-menu"
+  const renderNotiMenu = (
+    <NotificationDropdown 
+    menuId={notiMenuId}
+    anchorEl={notiAnchorEl}
+    isMenuOpen={isNotiMenuOpen}
+    handleMenuClose={handleNotiMenuClose}
+    />
+  )
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
@@ -319,16 +359,26 @@ const TopNav = () => {
               </a>
             ) : (
               [
+                <div
+                aria-label="Unread Notifications"
+                aria-controls={notiMenuId}
+                aria-haspopup="true"
+                onMouseEnter={handleNotiMenuOpen}
+                onMouseLeave={handleNotiMenuClose}
+                >
                 <IconButton
                   size="large"
-                  aria-label="show 17 new notifications"
                   color="inherit"
                 >
-                  <NotificationsIcon />
+                  <Badge sx={{mt: "5px", mb: "-5px"}} badgeContent={notificationcount} variant="dot" color="error">
+                  <NotificationsIcon sx={{}} />
+                  </Badge>
                   {/* <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge> */}
-                </IconButton>,
+                </IconButton>
+                {isNotiMenuOpen ? <>{renderNotiMenu}</>  :null}
+                </div>,
                 <div
                   className="navprofile flexcontainer"
                   style={{ flexDirection: "row" }}

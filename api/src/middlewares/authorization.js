@@ -18,6 +18,28 @@ const authorization = {
         }
     },
 
+    verifyCorrectUser: (req, res, next) => {
+        if (typeof req.headers.authorization !== 'undefined') {
+            const token = req.headers.authorization.split(' ')[1];
+
+            jwt.verify(token, config.JWTKey, (err, data) => {
+                if (err) {
+                    res.status(401).json({ message: 'You do not have access' });
+                } else {
+                    if (data.id.toString() !== req.params.id) {
+                        res.status(401).json({ message: 'You do not have access' });
+                    } else {
+                        next()
+                    }
+                }
+            });
+        } else {
+            res.status(401).send({ message: 'Please login first' });
+        }
+    },
+
+    
+
     verifyAdmin: (req, res, next) => {
         if (typeof req.headers.authorization !== 'undefined') {
             const token = req.headers.authorization.split(' ')[1];
