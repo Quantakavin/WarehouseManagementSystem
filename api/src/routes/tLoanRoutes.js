@@ -40,5 +40,5 @@ router.put(
     validation.validateStatusUpdate,
     TLoanController.updateStatus
 );
-router.get('/tloan/info/:TLoanID', TLoanController.getEmployeeInfo)
+router.get('/tloan/info/:TLoanID', TLoanController.getEmployeeInfo);
 module.exports = router;
