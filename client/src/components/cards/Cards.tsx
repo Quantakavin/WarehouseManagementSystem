@@ -156,7 +156,7 @@ function Cards() {
       <Grid container sx={{ marginTop: -2 }}>
         <Grid item xs={6}>
           <Card
-            sx={{ height: "100%", width: "98%", pt: 2, pb: 2, pl: 6, pr: 6 }}
+            sx={{ height: "100%", width: "98%", pt: 2, pb: 2, pl: 5, pr: 5 }}
           >
             <Typography
               variant="subtitle2"
@@ -172,46 +172,44 @@ function Cards() {
                   <Box sx={{fontWeight: 500, fontSize: "22px" }}>
                     RMA Overview
                   </Box>
-                  <Divider />
-                  <Divider sx={{mt: "10px", flexDirection: "row", display: "flex", justifyContent: "space-between", alignItems: "center"}} textAlign="left">
-                  <Chip sx={{flexGrow: 1}} label="Pending"/>
-                  <Chip sx={{flexGrow: 1, ml: "auto"}} label="Approved"/>
-                  </Divider>
+                  <Divider sx={{mt: "10px", mb:"10px", borderBottomWidth: 1, backgroundColor: "#0A2540"}} />
                 </Grid>
-                <Grid item xs={6}>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                <Grid item xs={4}>
+                <Chip label="Pending"/>
+                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
                     {PendingRMAs.length}
                   </Box>
                 </Grid>
-                <Grid item xs={6} sx={{ paddingLeft: 5 }}>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                <Grid item xs={4}>
+                  <Chip label="Approved"/>
+                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
                     {ApprovedRMAs.length}
                   </Box>
                 </Grid>
-                <Grid item xs={12}>
-                  <Divider sx={{color: "#d3d3d3", fontSize:"2px"}}/>
-                </Grid>
-                <Grid item xs={6}>
-                  <Box sx={{}}>Processing</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                <Grid item xs={4}>
+                <Chip label="Processing"/>
+                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
                     {ProcessingRMAs.length}
                   </Box>
                 </Grid>
-                <Grid item xs={6} sx={{ paddingLeft: 5 }}>
-                  <Box sx={{}}>Received</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                <Grid item xs={12}>
+                <Divider sx={{mt: "10px", mb:"10px", borderBottomWidth: 1, backgroundColor: "#0A2540"}} />
+                </Grid>
+                <Grid item xs={4}>
+                  <Chip label="Received"/>
+                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
                     {ReceivedRMAs.length}
                   </Box>
-                </Grid>
-                <Grid item xs={6}>
-                  <Box>Verified</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                </Grid>        
+                <Grid item xs={4}>
+                  <Chip label="Verified"/>
+                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
                     {VerifiedRMAs.length}
                   </Box>
                 </Grid>
-                <Grid item xs={6} sx={{ paddingLeft: 5 }}>
-                  <Box>In Progress</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                <Grid item xs={4}>
+                  <Chip label="In Progress"/>
+                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
                     {InprogressRMAs.length}
                   </Box>
                 </Grid>
@@ -226,39 +224,43 @@ function Cards() {
             <Typography
               variant="subtitle2"
               sx={{
-                color: "#063970",
-                fontWeight: "bold",
-                fontSize: 28,
-                fontFamily: "Roboto",
+                color: "#0A2540",
+                // fontWeight: "bold",
+                // fontSize: 28,
+                // fontFamily: "Roboto",
               }}
             >
               <Grid container>
+              <Grid item xs={12}>
+                  <Box sx={{fontWeight: 500, fontSize: "22px" }}>
+                    T-Loan Overview
+                  </Box>
+                  <Divider sx={{mt: "10px", mb:"10px", borderBottomWidth: 1, backgroundColor: "#0A2540"}} />
+                </Grid>
                 <Grid item xs={6}>
-                  <Box>Draft</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  <Chip label="Draft"/>
+                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
                     {DraftTloans.length}
                   </Box>
                 </Grid>
                 <Grid item xs={6} sx={{ paddingLeft: 6 }}>
-                  <Box>Pending</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                  <Chip label="Pending"/>
+                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
                     {PendingTloans.length}
                   </Box>
                 </Grid>
                 <Grid item xs={12}>
-                  <Divider>
-                    <Chip label="TLoans" />
-                  </Divider>
+                <Divider sx={{mt: "10px", mb:"10px", borderBottomWidth: 1, backgroundColor: "#0A2540"}} />
                 </Grid>
                 <Grid item xs={6}>
-                  <Box>Current</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                <Chip label="Current"/>
+                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
                     {CurrentTloans.length}
                   </Box>
                 </Grid>
                 <Grid item xs={6} sx={{ paddingLeft: 6 }}>
-                  <Box>On Extension</Box>
-                  <Box sx={{ color: "black", fontWeight: "normal" }}>
+                <Chip label="On Extension"/>
+                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
                     {ExtendedTloans.length}
                   </Box>
                 </Grid>
@@ -285,13 +287,13 @@ function Cards() {
             <Grid container>
               <Grid item xs={6}>
                 <Box>Approved</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                <Box sx={{ color: "#0A2540", fontWeight: "normal" }}>
                   {ApprovedRMAs.length}
                 </Box>
               </Grid>
               <Grid item xs={6} sx={{ paddingLeft: 5 }}>
                 <Box sx={{}}>Rejected</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                <Box sx={{ color: "#0A2540", fontWeight: "normal" }}>
                   {RejectedRMAs.length}
                 </Box>
               </Grid>
@@ -320,13 +322,13 @@ function Cards() {
             <Grid container>
               <Grid item xs={6}>
                 <Box>Draft</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                <Box sx={{ color: "#0A2540", fontWeight: "normal" }}>
                   {DraftTloans.length}
                 </Box>
               </Grid>
               <Grid item xs={6} sx={{ paddingLeft: 6 }}>
                 <Box>Current</Box>
-                <Box sx={{ color: "black", fontWeight: "normal" }}>
+                <Box sx={{ color: "#0A2540", fontWeight: "normal" }}>
                   {CurrentTloans.length}
                 </Box>
               </Grid>
