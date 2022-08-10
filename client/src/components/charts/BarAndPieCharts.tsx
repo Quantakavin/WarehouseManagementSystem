@@ -1,6 +1,6 @@
 import { Card, Grid } from "@mui/material";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -26,8 +26,7 @@ const renderCustomizedLabel = ({
   midAngle,
   innerRadius,
   outerRadius,
-  percent,
-  index,
+  percent
 }) => {
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -104,7 +103,7 @@ const Chart3 = ({}) => {
   // function Chart3() {
   return (
     <Grid container spacing={3}>
-      <Grid item xs={viewportwidth <1000 ? 12 : 6}>
+      <Grid item xs={viewportwidth < 1000 ? 12 : 6}>
         <Card sx={{ height: "100%", width: "98%", p: 2 }}>
           <h4 style={{ textAlign: "left" }}>TLoan Requests Grouped By Type</h4>
           <ResponsiveContainer width="100%" height="100%" aspect={4 / 1}>
@@ -130,7 +129,7 @@ const Chart3 = ({}) => {
           </ResponsiveContainer>
         </Card>
       </Grid>
-      <Grid item xs={viewportwidth <1000 ? 12 : 6}>
+      <Grid item xs={viewportwidth < 1000 ? 12 : 6}>
         <Card sx={{ height: "100%", width: "100%", p: 2 }}>
           <Grid container>
             <Grid item xs={12}>

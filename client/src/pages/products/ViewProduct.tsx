@@ -1,29 +1,23 @@
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import { Box, Button, Chip, Grid } from "@mui/material";
+import Divider from "@mui/material/Divider";
 import Fab from "@mui/material/Fab";
 import axios from "axios";
 import { motion } from "framer-motion";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "react-use-cart";
-import Divider from "@mui/material/Divider";
-import { Box, Button, Chip, Grid } from "@mui/material";
-import { executeReducerBuilderCallback } from "@reduxjs/toolkit/dist/mapBuilders";
 import { GetProduct } from "../../api/ProductDB";
+import { useAppSelector } from "../../app/hooks";
+import { selectPermissions } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import CardContainer from "../../components/cards/CardContainer";
 import CardField from "../../components/cards/CardField";
+import { EditableContext } from "../../components/context/IsEditableContext";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
-import IsEditableProvider, {
-  EditableContext,
-} from "../../components/context/IsEditableContext";
-import { useAppSelector } from "../../app/hooks";
-import {
-  selectPermissions,
-  selectRole,
-} from "../../app/reducers/CurrentUserSlice";
 import config from "../../config/config";
 
 const ViewProduct: React.FC = () => {
@@ -240,7 +234,7 @@ const ViewProduct: React.FC = () => {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={12} sx={{pt: 5}}>
+              <Grid item xs={12} sx={{ pt: 5 }}>
                 <Box
                   component="span"
                   display="flex"
@@ -340,7 +334,7 @@ const ViewProduct: React.FC = () => {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={12} sx={{pt: 5}}>
+            <Grid item xs={12} sx={{ pt: 5 }}>
               <Box
                 component="span"
                 display="flex"

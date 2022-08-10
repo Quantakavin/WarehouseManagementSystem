@@ -1,10 +1,10 @@
+import React from "react";
 import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
 
 const Error401 = () => {
   const navigate = useNavigate();
-  const URL = window.location.href;
 
   return (
     <Box sx={{ height: 1, width: 1, p: 3, pb: 0 }}>

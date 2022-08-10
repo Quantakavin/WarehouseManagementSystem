@@ -1,19 +1,19 @@
 import { Box, Card, Chip, Divider, Grid, Typography } from "@mui/material";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import config from "../../config/config";
 import "../../styles/cards.scss";
 import useWindowSize from "../../hooks/useWindowSize";
 
-function Cards() {
+const Cards = () => {
   const userrole = useAppSelector(selectRole);
   // T-Loan Overview
   const [CurrentTloans, setCurrentTloans] = useState([]);
   const [PendingTloans, setPendingTloans] = useState([]);
   const [DraftTloans, setDraftTloans] = useState([]);
-  const [ExtendedTloans, setExtenddedTloans] = useState([]);
+  const [ExtendedTloans, setExtendedTloans] = useState([]);
 
   // RMA Overview
   const [PendingRMAs, setPendingRMAs] = useState([]);
@@ -23,18 +23,17 @@ function Cards() {
   const [ReceivedRMAs, setReceivedRMAs] = useState([]);
   const [VerifiedRMAs, setVerifiedRMAs] = useState([]);
   const [InprogressRMAs, setInprogressRMAs] = useState([]);
-  const [ClosedRMAs, setClosedRMAs] = useState([]);
   const { viewportwidth } = useWindowSize();
 
   // getcurrentTloans
-  const getcurentTloans = async () => {
+  const getcurrentTloans = async () => {
     const response = await axios.get(`${config.baseURL}/getcurentTloans`);
 
     setCurrentTloans(response.data);
   };
 
   useEffect(() => {
-    getcurentTloans();
+    getcurrentTloans();
   }, []);
 
   // getpendingTloans
@@ -43,6 +42,10 @@ function Cards() {
 
     setPendingTloans(response.data);
   };
+
+  useEffect(() => {
+    getpendingTloans();
+  }, []);
 
   // getdraftTloans
   const getdraftTloans = async () => {
@@ -59,7 +62,7 @@ function Cards() {
   const getextendedTloans = async () => {
     const response = await axios.get(`${config.baseURL}/getpendingTloans`);
 
-    setPendingTloans(response.data);
+    setExtendedTloans(response.data);
   };
 
   useEffect(() => {
@@ -142,21 +145,10 @@ function Cards() {
     getIPRMAs();
   }, []);
 
-  // getclosedRMAs
-  const getclosedRMAs = async () => {
-    const response = await axios.get(`${config.baseURL}/getclosedRMAs`);
-
-    setClosedRMAs(response.data);
-  };
-
-  useEffect(() => {
-    getclosedRMAs();
-  }, []);
-
   if (userrole !== "Sales Manager") {
     return (
       <Grid container spacing={3} sx={{ marginTop: -2 }}>
-        <Grid item xs={viewportwidth <1000 ? 12: 6}>
+        <Grid item xs={viewportwidth < 1000 ? 12 : 6}>
           <Card
             sx={{ height: "100%", width: "98%", pt: 2, pb: 2, pl: 5, pr: 5 }}
           >
@@ -170,48 +162,110 @@ function Cards() {
               }}
             >
               <Grid container>
-              <Grid item xs={12}>
-                  <Box sx={{fontWeight: 500, fontSize: "22px" }}>
+                <Grid item xs={12}>
+                  <Box sx={{ fontWeight: 500, fontSize: "22px" }}>
                     RMA Overview
                   </Box>
-                  <Divider sx={{mt: "10px", mb:"10px", borderBottomWidth: 1, backgroundColor: "#0A2540"}} />
+                  <Divider
+                    sx={{
+                      mt: "10px",
+                      mb: "10px",
+                      borderBottomWidth: 1,
+                      backgroundColor: "#0A2540",
+                    }}
+                  />
                 </Grid>
                 <Grid item xs={4}>
-                <Chip label="Pending"/>
-                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
+                  <Chip label="Pending" />
+                  <Box
+                    sx={{
+                      color: "#0A2540",
+                      fontWeight: "normal",
+                      ml: "10px",
+                      mt: "5px",
+                      fontSize: "22px",
+                    }}
+                  >
                     {PendingRMAs.length}
                   </Box>
                 </Grid>
                 <Grid item xs={4}>
-                  <Chip label="Approved"/>
-                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
+                  <Chip label="Approved" />
+                  <Box
+                    sx={{
+                      color: "#0A2540",
+                      fontWeight: "normal",
+                      ml: "10px",
+                      mt: "5px",
+                      fontSize: "22px",
+                    }}
+                  >
                     {ApprovedRMAs.length}
                   </Box>
                 </Grid>
                 <Grid item xs={4}>
-                <Chip label="Processing"/>
-                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
+                  <Chip label="Processing" />
+                  <Box
+                    sx={{
+                      color: "#0A2540",
+                      fontWeight: "normal",
+                      ml: "10px",
+                      mt: "5px",
+                      fontSize: "22px",
+                    }}
+                  >
                     {ProcessingRMAs.length}
                   </Box>
                 </Grid>
                 <Grid item xs={12}>
-                <Divider sx={{mt: "10px", mb:"10px", borderBottomWidth: 1, backgroundColor: "#0A2540"}} />
+                  <Divider
+                    sx={{
+                      mt: "10px",
+                      mb: "10px",
+                      borderBottomWidth: 1,
+                      backgroundColor: "#0A2540",
+                    }}
+                  />
                 </Grid>
                 <Grid item xs={4}>
-                  <Chip label="Received"/>
-                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
+                  <Chip label="Received" />
+                  <Box
+                    sx={{
+                      color: "#0A2540",
+                      fontWeight: "normal",
+                      ml: "10px",
+                      mt: "5px",
+                      fontSize: "22px",
+                    }}
+                  >
                     {ReceivedRMAs.length}
                   </Box>
-                </Grid>        
+                </Grid>
                 <Grid item xs={4}>
-                  <Chip label="Verified"/>
-                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
+                  <Chip label="Verified" />
+                  <Box
+                    sx={{
+                      color: "#0A2540",
+                      fontWeight: "normal",
+                      ml: "10px",
+                      mt: "5px",
+                      fontSize: "22px",
+                    }}
+                  >
                     {VerifiedRMAs.length}
                   </Box>
                 </Grid>
                 <Grid item xs={4}>
-                  <Chip label="In Progress"/>
-                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
+                  <Chip label="In Progress" />
+                  <Box
+                    sx={{
+                      color: "#0A2540",
+                      fontWeight: "normal",
+                      ml: "10px",
+                      mt: "5px",
+                      fontSize: "22px",
+                    }}
+                  >
                     {InprogressRMAs.length}
                   </Box>
                 </Grid>
@@ -219,7 +273,7 @@ function Cards() {
             </Typography>
           </Card>
         </Grid>
-        <Grid item xs={viewportwidth <1000 ? 12: 6}>
+        <Grid item xs={viewportwidth < 1000 ? 12 : 6}>
           <Card
             sx={{ height: "100%", width: "100%", pt: 2, pb: 2, pl: 6, pr: 6 }}
           >
@@ -233,36 +287,82 @@ function Cards() {
               }}
             >
               <Grid container>
-              <Grid item xs={12}>
-                  <Box sx={{fontWeight: 500, fontSize: "22px" }}>
+                <Grid item xs={12}>
+                  <Box sx={{ fontWeight: 500, fontSize: "22px" }}>
                     T-Loan Overview
                   </Box>
-                  <Divider sx={{mt: "10px", mb:"10px", borderBottomWidth: 1, backgroundColor: "#0A2540"}} />
+                  <Divider
+                    sx={{
+                      mt: "10px",
+                      mb: "10px",
+                      borderBottomWidth: 1,
+                      backgroundColor: "#0A2540",
+                    }}
+                  />
                 </Grid>
                 <Grid item xs={6}>
-                  <Chip label="Draft"/>
-                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
+                  <Chip label="Draft" />
+                  <Box
+                    sx={{
+                      color: "#0A2540",
+                      fontWeight: "normal",
+                      ml: "10px",
+                      mt: "5px",
+                      fontSize: "22px",
+                    }}
+                  >
                     {DraftTloans.length}
                   </Box>
                 </Grid>
                 <Grid item xs={6} sx={{ paddingLeft: 6 }}>
-                  <Chip label="Pending"/>
-                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
+                  <Chip label="Pending" />
+                  <Box
+                    sx={{
+                      color: "#0A2540",
+                      fontWeight: "normal",
+                      ml: "10px",
+                      mt: "5px",
+                      fontSize: "22px",
+                    }}
+                  >
                     {PendingTloans.length}
                   </Box>
                 </Grid>
                 <Grid item xs={12}>
-                <Divider sx={{mt: "10px", mb:"10px", borderBottomWidth: 1, backgroundColor: "#0A2540"}} />
+                  <Divider
+                    sx={{
+                      mt: "10px",
+                      mb: "10px",
+                      borderBottomWidth: 1,
+                      backgroundColor: "#0A2540",
+                    }}
+                  />
                 </Grid>
                 <Grid item xs={6}>
-                <Chip label="Current"/>
-                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
+                  <Chip label="Current" />
+                  <Box
+                    sx={{
+                      color: "#0A2540",
+                      fontWeight: "normal",
+                      ml: "10px",
+                      mt: "5px",
+                      fontSize: "22px",
+                    }}
+                  >
                     {CurrentTloans.length}
                   </Box>
                 </Grid>
                 <Grid item xs={6} sx={{ paddingLeft: 6 }}>
-                <Chip label="On Extension"/>
-                  <Box sx={{ color: "#0A2540", fontWeight: "normal", ml: "10px", mt: "5px", fontSize: "22px" }}>
+                  <Chip label="On Extension" />
+                  <Box
+                    sx={{
+                      color: "#0A2540",
+                      fontWeight: "normal",
+                      ml: "10px",
+                      mt: "5px",
+                      fontSize: "22px",
+                    }}
+                  >
                     {ExtendedTloans.length}
                   </Box>
                 </Grid>
@@ -345,6 +445,6 @@ function Cards() {
       </Grid>
     </Grid>
   );
-}
+};
 
 export default Cards;

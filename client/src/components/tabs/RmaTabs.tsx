@@ -86,7 +86,7 @@ const Rmatabs: React.FC = () => {
     // declare the async data fetching function
     const fetchPendingData = async () => {
       // get the data from the api
-      const pendingrmadata = await axios
+      await axios
         .get(`${config.baseURL}/myPendingRMA/${userid}`)
         .then((pendingrmadata) => setMPTable(pendingrmadata.data));
       // setRma(Object.e)
@@ -94,21 +94,21 @@ const Rmatabs: React.FC = () => {
     // declare the async data fetching function
     const fetchAcceptedData = async () => {
       // get the data from the api
-      const acceptedrmadata = await axios
+      await axios
         .get(`${config.baseURL}/myAcceptedRMA/${userid}`)
         .then((acceptedrmadata) => setMATable(acceptedrmadata.data));
       // setRma(Object.e)
     };
     const fetchRejectedData = async () => {
       // get the data from the api
-      const rejectedrmadata = await axios
+      await axios
         .get(`${config.baseURL}/myRejectedRMA/${userid}`)
         .then((rejectedrmadata) => setMRTable(rejectedrmadata.data));
       // setRma(Object.e)
     };
     const fetchInProgressData = async () => {
       // get the data from the api
-      const inprogressrmadata = await axios
+      await axios
         .get(`${config.baseURL}/myIPRMA/${userid}`)
         .then((inprogressrmadata) => setMIPTable(inprogressrmadata.data));
       // setRma(Object.e)

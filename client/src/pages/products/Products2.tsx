@@ -1,9 +1,4 @@
-import {
-  Box,
-  Stack,
-  Typography,
-  unstable_createMuiStrictModeTheme,
-} from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import {
   DataGrid,
   GridFilterModel,
@@ -21,10 +16,7 @@ import { useNavigate } from "react-router";
 const Products2: React.FC = () => {
   const [row, setRow] = useState([]);
   const navigate = useNavigate();
-  const theme = unstable_createMuiStrictModeTheme();
   const [pageSize, setPageSize] = React.useState(25);
-  const [inputName, setInputName] = useState<string>(null);
-  const [value, setValue] = useState(0); // first tab
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/products?limit=100000&page=0`)
@@ -58,7 +50,7 @@ const Products2: React.FC = () => {
     },
   ];
 
-  function CustomToolbar() {
+  const CustomToolbar = () => {
     return (
       <GridToolbarContainer
         sx={{ display: "flex", flexWrap: "wrap", maxWidth: 613, p: 1 }}
@@ -74,13 +66,15 @@ const Products2: React.FC = () => {
         </Box>
       </GridToolbarContainer>
     );
-  }
+  };
 
   return (
     <Box sx={{ pl: 3, pr: 3, height: "100%", width: "100%" }}>
       <Box sx={{ display: "flex", height: "100%" }}>
         <Box sx={{ flexGrow: 1 }}>
-          <Typography sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}>
+          <Typography
+            sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+          >
             Products
           </Typography>
           <DataGrid

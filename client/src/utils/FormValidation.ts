@@ -32,4 +32,4 @@ export const MultiFactorCodeValidation = {
     value: /^[0-9]{6}$/,
     message: "Please enter a valid 6-digit code",
   },
-}
+};

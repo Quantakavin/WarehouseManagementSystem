@@ -6,17 +6,11 @@ import PageviewIcon from "@mui/icons-material/Pageview";
 import { Hidden } from "@mui/material";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "react-query";
+import { useInfiniteQuery, useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import {
   DeleteNotificationGroup,
   FilterNotificationGroups,
-  GetNotificationGroupNames,
 } from "../../api/NotificationGroupDB";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
@@ -69,29 +63,34 @@ const NotificationGroups: React.FC = () => {
 
   const headers = ["ID", "Name", "Description", "Action"];
 
-  const NotificationGroupnamesQuery = useQuery(
-    [`notificationgroupnames`, debouncedValue],
-    () => GetNotificationGroupNames(debouncedValue),
-    {
-      onSuccess: (data) => {
-        const namearray = data.data.map((record) => {
-          return record.Name;
-        });
-        setSearchOptions(namearray);
-      },
-    }
-  );
+  // const NotificationGroupnamesQuery = useQuery(
+  //   [`notificationgroupnames`, debouncedValue],
+  //   () => GetNotificationGroupNames(debouncedValue),
+  //   {
+  //     onSuccess: (data) => {
+  //       const namearray = data.data.map((record) => {
+  //         return record.Name;
+  //       });
+  //       setSearchOptions(namearray);
+  //     },
+  //   }
+  // );
 
   const NotificationGroupsQuery = useInfiniteQuery(
     [`filternotificationgroups`, sortColumn, sortOrder, searchName],
     FilterNotificationGroups,
     {
-      getNextPageParam: (lastPage, pages) => {
+      getNextPageParam: (lastPage) => {
         if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
         return undefined;
       },
     }
   );
+
+  const SelectDelete = (id: string) => {
+    setIdToDelete(id);
+    setShowConfirmation(true);
+  };
 
   const ActionMenu = (id: string) => {
     return [
@@ -126,11 +125,6 @@ const NotificationGroups: React.FC = () => {
         dispatch(ChangeSortColumn({ column: header }));
       }
     }
-  };
-
-  const SelectDelete = (id: string) => {
-    setIdToDelete(id);
-    setShowConfirmation(true);
   };
 
   const Delete = (id: string) => {

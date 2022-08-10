@@ -1,3 +1,4 @@
+import React from "react";
 import "../../styles/Table.scss";
 
 const TableField = ({ data, column }) => {

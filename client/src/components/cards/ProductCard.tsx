@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import config from "../../config/config";
 import "../../styles/cards.scss";
 
@@ -9,11 +9,11 @@ const ProductCard = () => {
 
   // Fetch Item Details Data
   const getitemDetails = async () => {
-    const response = await axios
+    const returndetails = await axios
       .get(`${config.baseURL}/testproducts`, {
         // offsetNo: 10
       })
-      .then((response) => setItemDetails(response.data));
+      .then(() => setItemDetails(returndetails.data));
   };
 
   useEffect(() => {

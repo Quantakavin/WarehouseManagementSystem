@@ -15,16 +15,15 @@ import { motion } from "framer-motion";
 import config from "../../config/config";
 import { Toast } from "../alerts/SweetAlert";
 import TLoanRejectModalButton from "../modals/tloanRejectExtension";
-import {TLoan} from '../../utils/CommonTypes'
 
-export default function TLoanManagerDisplay() {
+const TLoanManagerDisplay = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [loans, setLoans] = useState<any>([]);
   const [items, setItems] = useState([]);
   const [reasonField, setReasonField] = useState("");
   const { TLoanID } = useParams();
-  console.log(TLoanID)
+  console.log(TLoanID);
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
@@ -34,27 +33,24 @@ export default function TLoanManagerDisplay() {
         .then((data) => {
           setReasonField(data.data.Reason);
           setLoans(data.data);
-          
         });
 
       // setLoan(Object.e)
-      console.log(results)
+      console.log(results);
     };
     // call the function
     fetchData()
       // make sure to catch any error
       .catch(console.error);
   }, []);
-  
+
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const items = await axios.get(
-        `${config.baseURL}/tloanitems/${TLoanID}`
-      );
+      const returnitems = await axios.get(`${config.baseURL}/tloanitems/${TLoanID}`);
 
-      setItems(items.data);
+      setItems(returnitems.data);
 
       // setLoan(Object.e)
     };
@@ -63,7 +59,7 @@ export default function TLoanManagerDisplay() {
       // make sure to catch any error
       .catch(console.error);
   }, []);
-console.log(items)
+  console.log(items);
   interface GridCellExpandProps {
     value: string;
     width: number;
@@ -188,7 +184,7 @@ console.log(items)
         .then(() => {
           Toast.fire({
             icon: "success",
-            title: `Extension For TLoan ` + `#${TLoanID} Has Been Approved`,
+            title: `Extension For TLoan #${TLoanID} Has Been Approved`,
             customClass: "swalpopup",
             timer: 2000,
             width: 700,
@@ -229,11 +225,10 @@ console.log(items)
 
   const getData = () => {
     return (
-      
       <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
         <Box sx={{ display: "flex", height: "100%" }}>
           <Box sx={{ flexGrow: 1 }}>
-          <h2 style= {{margin:15}}>TLoan Extension Request </h2>
+            <h2 style={{ margin: 15 }}>TLoan Extension Request </h2>
             <Card>
               <CardContent>
                 <Grid container spacing={8}>
@@ -285,7 +280,7 @@ console.log(items)
                         </div>
                       </Box>
                       <Box sx={{ marginLeft: 5 }}>
-                        <div style={{color: "#F70404"}}>Extend Loan By:</div>
+                        <div style={{ color: "#F70404" }}>Extend Loan By:</div>
                         <div style={{ color: "black", fontWeight: "normal" }}>
                           <strong>{loans.ExtensionDuration} Days </strong>
                         </div>
@@ -395,6 +390,7 @@ console.log(items)
     );
   };
 
- return <div>{getData()}</div>;
- 
+  return <div>{getData()}</div>;
 }
+
+export default TLoanManagerDisplay;

@@ -6,19 +6,9 @@ import PageviewIcon from "@mui/icons-material/Pageview";
 import { Hidden } from "@mui/material";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "react-query";
+import { useInfiniteQuery, useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import {
-  DeleteUser,
-  FilterUsers,
-  GetAllUsers,
-  GetUsernames,
-} from "../../api/UserDB";
+import { DeleteUser, FilterUsers } from "../../api/UserDB";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import {
@@ -79,29 +69,34 @@ const Users: React.FC = () => {
     "Action",
   ];
 
-  const UsernamesQuery = useQuery(
-    [`usernames`, debouncedValue],
-    () => GetUsernames(debouncedValue),
-    {
-      onSuccess: (data) => {
-        const namearray = data.data.map((record) => {
-          return record.Name;
-        });
-        setSearchOptions(namearray);
-      },
-    }
-  );
+  // const UsernamesQuery = useQuery(
+  //   [`usernames`, debouncedValue],
+  //   () => GetUsernames(debouncedValue),
+  //   {
+  //     onSuccess: (data) => {
+  //       const namearray = data.data.map((record) => {
+  //         return record.Name;
+  //       });
+  //       setSearchOptions(namearray);
+  //     },
+  //   }
+  // );
 
   const UsersQuery = useInfiniteQuery(
     [`users`, sortColumn, sortOrder, searchName],
     FilterUsers,
     {
-      getNextPageParam: (lastPage, pages) => {
+      getNextPageParam: (lastPage) => {
         if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
         return undefined;
       },
     }
   );
+
+  const SelectDelete = (id: string) => {
+    setIdToDelete(id);
+    setShowConfirmation(true);
+  };
 
   const ActionMenu = (id: string) => {
     return [
@@ -136,11 +131,6 @@ const Users: React.FC = () => {
         dispatch(ChangeSortColumn({ column: header }));
       }
     }
-  };
-
-  const SelectDelete = (id: string) => {
-    setIdToDelete(id);
-    setShowConfirmation(true);
   };
 
   const Delete = (id: string) => {

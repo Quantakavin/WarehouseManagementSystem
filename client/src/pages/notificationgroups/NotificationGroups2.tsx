@@ -1,26 +1,14 @@
+import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import CancelIcon from "@mui/icons-material/Cancel";
-import {
-  Box,
-  Fab,
-  Stack,
-  Typography,
-  unstable_createMuiStrictModeTheme,
-} from "@mui/material";
+import { Box, Fab, Stack, Typography } from "@mui/material";
 import {
   DataGrid,
   GridActionsCellItem,
   GridFilterModel,
   GridRowParams,
-  GridToolbarColumnsButton,
-  GridToolbarContainer,
-  GridToolbarDensitySelector,
-  GridToolbarExport,
-  GridToolbarFilterButton,
-  GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
@@ -40,11 +28,10 @@ const NotificationGroups2: React.FC = () => {
   const navigate = useNavigate();
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
-    if (userrole != "Admin") {
+    if (userrole !== "Admin") {
       navigate("/403");
     }
   }, []);
-  const theme = unstable_createMuiStrictModeTheme();
   const [pageSize, setPageSize] = React.useState(25);
 
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);

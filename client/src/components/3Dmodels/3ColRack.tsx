@@ -125,7 +125,7 @@ interface ModelProps {
   racktag: string;
   position: [x: number, y: number, z: number];
   changeposition?: (num: [x: number, y: number, z: number]) => void;
-  currentbintags?: string[]
+  currentbintags?: string[];
 }
 
 const Model: React.FC<ModelProps> = ({
@@ -133,7 +133,7 @@ const Model: React.FC<ModelProps> = ({
   racktag,
   position,
   changeposition,
-  currentbintags
+  currentbintags,
 }) => {
   const group = useRef<THREE.Group>();
   const { nodes, materials } = useGLTF("/rackrow.gltf") as GLTFResult;

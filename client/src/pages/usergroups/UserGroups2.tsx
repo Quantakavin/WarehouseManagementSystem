@@ -1,30 +1,18 @@
+import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import CancelIcon from "@mui/icons-material/Cancel";
-import {
-  Box,
-  Fab,
-  Stack,
-  Typography,
-  unstable_createMuiStrictModeTheme,
-} from "@mui/material";
+import { Box, Fab, Stack, Typography } from "@mui/material";
 import {
   DataGrid,
   GridActionsCellItem,
   GridFilterModel,
   GridRowParams,
-  GridToolbarColumnsButton,
-  GridToolbarContainer,
-  GridToolbarDensitySelector,
-  GridToolbarExport,
-  GridToolbarFilterButton,
-  GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { useMutation, useQueryClient, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router";
 import { DeleteUserGroup, GetUserGroups } from "../../api/UserGroupDB";
 import { useAppSelector } from "../../app/hooks";
@@ -35,7 +23,6 @@ import CustomToolbar from "../../components/table/CustomToolbar";
 
 const UserGroups2: React.FC = () => {
   const navigate = useNavigate();
-  const theme = unstable_createMuiStrictModeTheme();
   const [pageSize, setPageSize] = React.useState(25);
   const userrole = useAppSelector(selectRole);
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);

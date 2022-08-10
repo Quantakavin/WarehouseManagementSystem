@@ -1,17 +1,17 @@
+import { Link } from "@mui/material";
 import axios from "axios";
+import { motion, useAnimation } from "framer-motion";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { motion, useAnimation } from "framer-motion";
-import { Link } from "@mui/material";
+import { ResetPassword } from "../../api/ResetPasswordDB";
+import { Toast } from "../../components/alerts/SweetAlert";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormContainer from "../../components/form/FormContainer";
 import FormField from "../../components/form/FormField";
 import SubmitButton from "../../components/form/SubmitButton";
 import { PasswordValidation } from "../../utils/FormValidation";
-import { ResetPassword } from "../../api/ResetPasswordDB";
-import { Toast } from "../../components/alerts/SweetAlert";
 
 function parseURLParams(url) {
   const queryStart = url.indexOf("?") + 1;
@@ -26,7 +26,7 @@ function parseURLParams(url) {
 
   if (query === url || query === "") return;
 
-  for (i = 0; i < pairs.length; i++) {
+  for (i = 0; i < pairs.length; i += 1) {
     nv = pairs[i].split("=", 2);
     n = decodeURIComponent(nv[0]);
     v = decodeURIComponent(nv[1]);
@@ -47,12 +47,14 @@ interface FormValues {
 
 const ResetToNewPassword: React.FC = () => {
   const navigate = useNavigate();
-  
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({ mode: "onSubmit" });
+
+  const controls = useAnimation();
 
   const mutation = useMutation(ResetPassword, {
     onSuccess: (data) => {
@@ -68,8 +70,6 @@ const ResetToNewPassword: React.FC = () => {
       controls.start("detecterror");
     },
   });
-
-  const controls = useAnimation();
 
   const variants = {
     detecterror: () => ({
@@ -96,7 +96,6 @@ const ResetToNewPassword: React.FC = () => {
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
       >
-
         <FormField
           label="Email"
           name="email"

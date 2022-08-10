@@ -1,10 +1,5 @@
-import {
-  Box,
-  Fab,
-  Stack,
-  Typography,
-  unstable_createMuiStrictModeTheme,
-} from "@mui/material";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import { Box, Fab, Stack, Typography } from "@mui/material";
 import {
   DataGrid,
   GridFilterModel,
@@ -16,26 +11,20 @@ import {
   GridToolbarFilterButton,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
-import React, { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router";
-import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { motion } from "framer-motion";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { useCart } from "react-use-cart";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
-import IsEditableProvider, {
-  EditableContext,
-} from "../../components/context/IsEditableContext";
+import { EditableContext } from "../../components/context/IsEditableContext";
 import config from "../../config/config";
 
 const Products: React.FC = () => {
   const [row, setRow] = useState([]);
   const userrole = useAppSelector(selectRole);
   const navigate = useNavigate();
-  const theme = unstable_createMuiStrictModeTheme();
   const [pageSize, setPageSize] = React.useState(25);
-  const [inputName, setInputName] = useState<string>(null);
-  const [value, setValue] = useState(0); // first tab
   const { totalItems, addItem } = useCart();
   const context = useContext(EditableContext);
   const { isEditable, setIsEditable, TLoanIDGlobal } = context;
@@ -122,9 +111,9 @@ const Products: React.FC = () => {
   };
 
   if (
-    userrole == "Sales Admin" ||
-    userrole == "Sales Engineer" ||
-    userrole == "Technical Staff"
+    userrole === "Sales Admin" ||
+    userrole === "Sales Engineer" ||
+    userrole === "Technical Staff"
   ) {
     return (
       <Box sx={{ pl: 3, pr: 3, pt: 1, height: "100%", width: "100%" }}>

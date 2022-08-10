@@ -1,26 +1,16 @@
+import React, { useEffect } from "react";
 import WarningIcon from "@mui/icons-material/Warning";
-import { useEffect } from "react";
 import {
-    FieldError,
-    Path,
-    PathValue,
-    RegisterOptions,
-    UseFormRegister,
-    UseFormSetValue,
-    UseFormWatch
+  FieldError,
+  Path,
+  PathValue,
+  RegisterOptions,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
 } from "react-hook-form";
 import ReactQuill from "react-quill";
 import styled from "styled-components";
-
-const Input = styled.textarea`
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 10px;
-  border: 1px solid #d3d3d3;
-  border-radius: 15px;
-  flex-grow: 1;
-  color: #0a2540;
-`;
 
 interface FormFieldProps<T> {
   label: string;
@@ -70,11 +60,6 @@ const FormTextArea = <T,>({
           onChange={onEditorStateChange}
           preserveWhitespace
         />
-        {/* <Input
-          {...(register && register(name, rules))}
-          defaultValue={defaultvalue}
-          rows={5}
-        ></Input> */}
       </div>
       <p className="errormsg">
         {error && (

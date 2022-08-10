@@ -1,29 +1,27 @@
+import { Box, Link, Typography } from "@mui/material";
 import axios from "axios";
-import React, { useEffect } from "react";
+import { motion, useAnimation } from "framer-motion";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { motion, useAnimation } from "framer-motion";
-import { Box, Link, Typography } from "@mui/material";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormContainer from "../../components/form/FormContainer";
 import FormField from "../../components/form/FormField";
 import SubmitButton from "../../components/form/SubmitButton";
 import { MultiFactorCodeValidation } from "../../utils/FormValidation";
 // import LoginUser from "../../api/user/LoginUser";
-import { LoginUser, Resend2FAToken, Verify2FAToken } from "../../api/UserDB";
+import { Resend2FAToken, Verify2FAToken } from "../../api/UserDB";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
-  setUser,
-  selectMobileNo,
-  selectToken,
   authenticateUser,
   selectId,
+  selectMobileNo,
   selectName,
+  selectToken,
 } from "../../app/reducers/CurrentUserSlice";
-import { ChangeTab, Reset } from "../../app/reducers/SidebarSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
-import { stubString } from "lodash";
 
 interface FormValues {
   code: number | string;

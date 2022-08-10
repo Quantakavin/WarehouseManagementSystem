@@ -146,7 +146,7 @@ const Model: React.FC<ModelProps> = ({
   racktag,
   position,
   changeposition,
-  currentbintags
+  currentbintags,
 }) => {
   const group = useRef<THREE.Group>();
   const { nodes, materials } = useGLTF("/rack.glb") as GLTFResult;

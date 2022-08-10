@@ -1,8 +1,7 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { Chip, Container, Divider } from "@mui/material";
+import { Box, Chip, Container, Divider } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import DOMPurify from "dompurify";
-import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
@@ -52,7 +51,7 @@ const ViewUserGroup: React.FC = () => {
   }
 
   return (
-    <>
+    <Box>
       {UserGroupQuery.status === "success" && (
         <Container className="cardcontainer shadow">
           <h2 className="cardheader">
@@ -70,9 +69,12 @@ const ViewUserGroup: React.FC = () => {
             }}
           />
           <Divider sx={{ mb: 3 }}>
-              <Chip label="Features" sx={{ fontWeight: 500 }} />
+            <Chip label="Features" sx={{ fontWeight: 500 }} />
           </Divider>
-          <div className="flexcontainer cardfield" style={{marginTop: 20, marginBottom: 10}}>
+          <div
+            className="flexcontainer cardfield"
+            style={{ marginTop: 20, marginBottom: 10 }}
+          >
             <p className="cardfieldlabel">Feature List:</p>
           </div>
           <div className="flexcontainer cardtable">
@@ -96,14 +98,14 @@ const ViewUserGroup: React.FC = () => {
             <button
               style={{ alignSelf: "flex-start" }}
               className="cardbackbutton"
-              onClick={() => navigate('/usergroups')}
+              onClick={() => navigate("/usergroups")}
               type="button"
             >
               <ArrowBackIosIcon fontSize="small" /> Back
             </button>
-            <GeneralButton 
-            text="Edit Details" 
-            clickfunction={() => navigate(`/editusergroup/${params.id}`)}
+            <GeneralButton
+              text="Edit Details"
+              clickfunction={() => navigate(`/editusergroup/${params.id}`)}
             />
             {/* <motion.button
               style={{ alignSelf: "flex-end" }}
@@ -117,7 +119,7 @@ const ViewUserGroup: React.FC = () => {
           </div>
         </Container>
       )}
-    </>
+    </Box>
   );
 };
 export default ViewUserGroup;

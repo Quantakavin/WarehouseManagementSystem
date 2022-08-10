@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { TextField } from "@material-ui/core";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import CloseIcon from "@mui/icons-material/Close";
@@ -9,23 +10,9 @@ import Fade from "@mui/material/Fade";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import config from "../../config/config";
 import { Toast } from "../alerts/SweetAlert";
-
-// const style = {
-//   position: "absolute" as "absolute",
-//   height: "40%",
-//   width: "30%",
-//   top: "50%",
-//   left: "50%",
-//   transform: "translate(-50%, -50%)",
-//   bgcolor: "background.paper",
-//   boxShadow: 24,
-//   p: 4,
-//   display: "block",
-// };
 
 const style = {
   position: "absolute" as "absolute",
@@ -39,7 +26,7 @@ const style = {
   p: 4,
 };
 
-export default function RejectModalButton() {
+const RejectModalButton = () => {
   const { RmaID } = useParams();
   const navigate = useNavigate();
   const [reason, setReason] = useState("");
@@ -79,9 +66,8 @@ export default function RejectModalButton() {
             });
             navigate("/rma");
           })
-          .catch((error) => {
-            this.setState({ errorMessage: error.message });
-            console.error("There was an error!", error);
+          .catch((e) => {
+            console.error("There was an error!", e);
           });
       }, 500);
     } else {
@@ -156,7 +142,7 @@ export default function RejectModalButton() {
               fullWidth
               rows={15}
               onBlur={() => {
-                if (reason == "") {
+                if (reason === "") {
                   setError(true);
                   setErrorText(
                     "Please provide a reason for rejecting this RMA request"
@@ -232,4 +218,6 @@ export default function RejectModalButton() {
       </Modal>
     </motion.div>
   );
-}
+};
+
+export default RejectModalButton;

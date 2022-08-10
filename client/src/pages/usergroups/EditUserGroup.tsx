@@ -1,3 +1,5 @@
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { SelectChangeEvent } from "@mui/material";
@@ -7,27 +9,25 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import { GetFeatureRights, GetFeatures } from "../../api/FeatureDB";
 import { GetUserGroup, UpdateUserGroup } from "../../api/UserGroupDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
+import GeneralButton from "../../components/buttons/GeneralButton";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormContainer from "../../components/form/FormContainer";
 import FormField from "../../components/form/FormField";
+import FormSteps from "../../components/form/FormSteps";
 import FormTextArea from "../../components/form/FormTextArea";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import SelectedList from "../../components/form/SelectedList";
 import SubmitButton from "../../components/form/SubmitButton";
 import { Feature, FeatureRight, Option } from "../../utils/CommonTypes";
 import {
-  NameValidation,
   DescriptionValidation,
+  NameValidation,
 } from "../../utils/FormValidation";
-import FormSteps from "../../components/form/FormSteps";
-import GeneralButton from "../../components/buttons/GeneralButton";
 
 interface FormValues {
   name: string;
@@ -49,7 +49,7 @@ const EditUserGroup: React.FC = () => {
     setValue,
     watch,
     trigger,
-    formState: { errors, isDirty },
+    formState: { errors },
   } = useForm<FormValues>({ mode: "all" });
   const [step, setStep] = useState<number>(1);
   const params = useParams();
@@ -97,19 +97,20 @@ const EditUserGroup: React.FC = () => {
       setFeatureOptions(features);
     },
   });
-  const featureRightsQuery = useQuery("featurerights", GetFeatureRights, {
-    onSuccess: (data) => {
-      const featurerights: Option[] = [];
-      data.data.forEach((featureright: FeatureRight) => {
-        featurerights.push({
-          id: featureright.FeatureRightID,
-          text: featureright.FeatureRight,
-          value: featureright.FeatureRightID,
-        });
-      });
-      setFeatureRightOptions(featurerights);
-    },
-  });
+
+  // const featureRightsQuery = useQuery("featurerights", GetFeatureRights, {
+  //   onSuccess: (data) => {
+  //     const featurerights: Option[] = [];
+  //     data.data.forEach((featureright: FeatureRight) => {
+  //       featurerights.push({
+  //         id: featureright.FeatureRightID,
+  //         text: featureright.FeatureRight,
+  //         value: featureright.FeatureRightID,
+  //       });
+  //     });
+  //     setFeatureRightOptions(featurerights);
+  //   },
+  // });
 
   const mutation = useMutation((data: FormValues) =>
     UpdateUserGroup(data, params.id)
@@ -227,7 +228,7 @@ const EditUserGroup: React.FC = () => {
   const SetDefaultOptions = (feature) => {
     let optiontoset = featureRightOptions[0]?.value;
     if (UserGroupQuery.isSuccess) {
-      for (let i = 0; i < UserGroupQuery.data.data[0].Features.length; i++) {
+      for (let i = 0; i < UserGroupQuery.data.data[0].Features.length; i += 1) {
         if (UserGroupQuery.data.data[0].Features[i].FeatureID === feature) {
           optiontoset = UserGroupQuery.data.data[0].Features[i].FeatureRightID;
         }

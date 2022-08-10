@@ -1,3 +1,4 @@
+import React from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,7 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { GetAllProducts } from "../../api/ProductDB";
 
-export default function BasicTable() {
+const BasicTable = () => {
   function createData(
     ItemNumber: string,
     ItemName: string,
@@ -30,7 +31,7 @@ export default function BasicTable() {
     const rows = [];
 
     GetAllProducts().then((data) => {
-      for (let i = 0; i < data.length; i++) {
+      for (let i = 0; i < data.length; i += 1) {
         rows.push(
           createData(
             data[i].ItemNo,
@@ -81,4 +82,6 @@ export default function BasicTable() {
       </Table>
     </TableContainer>
   );
-}
+};
+
+export default BasicTable;

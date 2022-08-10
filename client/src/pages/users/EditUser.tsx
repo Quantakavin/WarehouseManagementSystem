@@ -1,27 +1,32 @@
+import { Typography } from "@material-ui/core";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { Box, Checkbox, SelectChangeEvent, styled, Switch } from "@mui/material";
+import { Box, Checkbox, SelectChangeEvent, Switch } from "@mui/material";
 import axios from "axios";
 import { motion, useAnimation } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { GetCompanies } from "../../api/CompanyDB";
 import { GetNotificationGroups } from "../../api/NotificationGroupDB";
 import { GetUser, UpdateUser } from "../../api/UserDB";
 import { GetUserGroups } from "../../api/UserGroupDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import Popup from "../../components/alerts/Popup";
 import { Toast } from "../../components/alerts/SweetAlert";
 import GeneralButton from "../../components/buttons/GeneralButton";
+import SubmitButton from "../../components/buttons/SubmitButton";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormContainer from "../../components/form/FormContainer";
 import FormField from "../../components/form/FormField";
+import FormSteps from "../../components/form/FormSteps";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import SelectDropdown from "../../components/form/SelectDropdown";
-import SubmitButton from "../../components/buttons/SubmitButton";
 import { Company, NotiGroup, Option, UserGroup } from "../../utils/CommonTypes";
 import {
   EmailValidation,
@@ -30,11 +35,6 @@ import {
   SelectValidation,
   UsernameValidation,
 } from "../../utils/FormValidation";
-import FormSteps from "../../components/form/FormSteps";
-import { Typography } from "@material-ui/core";
-import Popup from "../../components/alerts/Popup";
-import CancelIcon from "@mui/icons-material/Cancel";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 interface FormValues {
   name: string;
@@ -69,9 +69,9 @@ const EditUser: React.FC = () => {
   const [currentPassword, setCurrentPassword] = useState<string>(null);
   const [userActive, setUserActive] = useState<boolean>(false);
   const [showActivateConfirmation, setShowActivateConfirmation] =
-  useState<boolean>(false);
+    useState<boolean>(false);
   const [showInactivateConfirmation, setShowInactivateConfirmation] =
-  useState<boolean>(false);
+    useState<boolean>(false);
 
   const {
     register,
@@ -89,7 +89,7 @@ const EditUser: React.FC = () => {
     {
       onSuccess: (data) => {
         // setUser(data.data[0]);
-        setUserActive(data.data[0].Active === 'Y')
+        setUserActive(data.data[0].Active === "Y");
         setSelectedNotiGroups(
           data.data[0].NotificationGroups.map((value) => {
             return value.NotiGroupID;
@@ -164,7 +164,7 @@ const EditUser: React.FC = () => {
     }),
   };
 
-  console.log("is form valid? ", isValid)
+  console.log("is form valid? ", isValid);
 
   const onSubmit = (data: FormValues) => {
     const postdata = data;
@@ -189,16 +189,19 @@ const EditUser: React.FC = () => {
 
   const togglePasswordDefault = () => {
     if (passwordDefault) {
-      register("password", { ...PasswordValidation, disabled: passwordDefault })
-      setValue("password", currentPassword)
-      setCurrentPassword(null)
-      setPasswordDefault(false)
+      register("password", {
+        ...PasswordValidation,
+        disabled: passwordDefault,
+      });
+      setValue("password", currentPassword);
+      setCurrentPassword(null);
+      setPasswordDefault(false);
     } else {
-      setCurrentPassword(getValues("password"))
-      unregister("password")
-      setPasswordDefault(true)
+      setCurrentPassword(getValues("password"));
+      unregister("password");
+      setPasswordDefault(true);
     }
-  }
+  };
 
   const nextStep = () => {
     if (passwordDefault) {
@@ -272,15 +275,14 @@ const EditUser: React.FC = () => {
   };
 
   const Activate = () => {
-    setUserActive(true)
-    setShowActivateConfirmation(false)
-
-  }
+    setUserActive(true);
+    setShowActivateConfirmation(false);
+  };
 
   const Inactivate = () => {
-    setUserActive(false)
-    setShowInactivateConfirmation(false)
-  }
+    setUserActive(false);
+    setShowInactivateConfirmation(false);
+  };
 
   const handleActiveChange = () => {
     if (!userActive) {
@@ -297,7 +299,9 @@ const EditUser: React.FC = () => {
         showpopup={showActivateConfirmation}
         heading="Are you sure you want to activate this user"
         subheading="By doing so, the user will be able to access the website again and perform actions in it"
-        popupimage={<CheckCircleIcon sx={{ color: "#31A961", fontSize: "150px" }} />}
+        popupimage={
+          <CheckCircleIcon sx={{ color: "#31A961", fontSize: "150px" }} />
+        }
         closepopup={() => setShowActivateConfirmation(false)}
         buttons={
           <>
@@ -355,8 +359,8 @@ const EditUser: React.FC = () => {
       <motion.div
         variants={variants}
         animate={controls}
-      // exit={{ x: "-100vw", opacity: 0 }}
-      // transition={{ duration: 5 }}
+        // exit={{ x: "-100vw", opacity: 0 }}
+        // transition={{ duration: 5 }}
       >
         <FormContainer
           header="Edit User"
@@ -404,8 +408,19 @@ const EditUser: React.FC = () => {
                   error={errors.password}
                   rules={{ ...PasswordValidation, disabled: passwordDefault }}
                 />
-                <Box className="formcheckbox" sx={{ display: "flex", flexDirection: "row", alignItems: "center", mt: "-20px" }}>
-                  <Checkbox checked={passwordDefault} onChange={togglePasswordDefault} />
+                <Box
+                  className="formcheckbox"
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    mt: "-20px",
+                  }}
+                >
+                  <Checkbox
+                    checked={passwordDefault}
+                    onChange={togglePasswordDefault}
+                  />
                   <Typography>Use Default</Typography>
                 </Box>
                 <SelectDropdown
@@ -458,9 +473,17 @@ const EditUser: React.FC = () => {
                   placeholder="Select Notification Groups..."
                   options={notiGroupOptions}
                 />
-                <Box className="formcheckbox" sx={{ display: "flex", flexDirection: "row", alignItems: "center", mt: "15px" }}>
+                <Box
+                  className="formcheckbox"
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    mt: "15px",
+                  }}
+                >
                   <Typography>Active</Typography>
-                  <Switch checked={userActive} onChange={handleActiveChange}/>
+                  <Switch checked={userActive} onChange={handleActiveChange} />
                 </Box>
 
                 {mutation.isError && axios.isAxiosError(mutation.error) ? (

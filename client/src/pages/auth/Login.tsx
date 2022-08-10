@@ -1,27 +1,25 @@
+import { Box, Link } from "@mui/material";
 import axios from "axios";
+import { motion, useAnimation } from "framer-motion";
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { motion, useAnimation } from "framer-motion";
-import { Box, Link } from "@mui/material";
-import ErrorAlert from "../../components/form/ErrorAlert";
-import FormContainer from "../../components/form/FormContainer";
-import FormField from "../../components/form/FormField";
-import SubmitButton from "../../components/form/SubmitButton";
-import {
-  EmailValidation,
-  PasswordValidation,
-} from "../../utils/FormValidation";
 import { LoginUser } from "../../api/UserDB";
 import { useAppDispatch } from "../../app/hooks";
 import { removeUser, setUser } from "../../app/reducers/CurrentUserSlice";
 import { setNotificationCount } from "../../app/reducers/NotificationSlice";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
-import {SocketContext} from '../../context/socket';
-
-
+import ErrorAlert from "../../components/form/ErrorAlert";
+import FormContainer from "../../components/form/FormContainer";
+import FormField from "../../components/form/FormField";
+import SubmitButton from "../../components/form/SubmitButton";
+import { SocketContext } from "../../context/socket";
+import {
+  EmailValidation,
+  PasswordValidation,
+} from "../../utils/FormValidation";
 
 interface FormValues {
   email: string;
@@ -38,12 +36,24 @@ const Login: React.FC = () => {
     formState: { errors },
   } = useForm<FormValues>({ mode: "onSubmit" });
 
+  const controls = useAnimation();
+
   const mutation = useMutation(LoginUser, {
     onSuccess: (data) => {
-      const { token, id, name, usergroup, permissions, enabled2FA, mobileNo, telegramid, unreadnotifications } = data.data;
+      const {
+        token,
+        id,
+        name,
+        usergroup,
+        permissions,
+        enabled2FA,
+        mobileNo,
+        telegramid,
+        unreadnotifications,
+      } = data.data;
 
       if (enabled2FA === 1) {
-        dispatch(removeUser())
+        dispatch(removeUser());
         dispatch(
           setUser({
             id,
@@ -52,14 +62,14 @@ const Login: React.FC = () => {
             permissions,
             enabled2FA: enabled2FA === 1,
             isAuthenticated: false,
-            mobileNo: mobileNo,
-            token: token,
-            telegramid: telegramid
+            mobileNo,
+            token,
+            telegramid,
           })
         );
         dispatch(
           setNotificationCount({
-            notificationCount: unreadnotifications
+            notificationCount: unreadnotifications,
           })
         );
         return navigate("/2fa", { replace: true });
@@ -75,17 +85,17 @@ const Login: React.FC = () => {
           permissions,
           enabled2FA: enabled2FA === 1,
           isAuthenticated: true,
-          mobileNo: mobileNo,
-          token: token,
-          telegramid: telegramid
+          mobileNo,
+          token,
+          telegramid,
         })
       );
       dispatch(
         setNotificationCount({
-          notificationCount: unreadnotifications
+          notificationCount: unreadnotifications,
         })
       );
-      socket.emit("login" ,{userid: id})
+      socket.emit("login", { userid: id });
       dispatch(ChangeTab({ currenttab: "Dashboard" }));
       Toast.fire({
         icon: "success",
@@ -100,8 +110,6 @@ const Login: React.FC = () => {
       controls.start("detecterror");
     },
   });
-
-  const controls = useAnimation();
 
   const variants = {
     detecterror: () => ({

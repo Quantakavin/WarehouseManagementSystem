@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { TextField } from "@material-ui/core";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import CancelIcon from "@mui/icons-material/Close";
@@ -9,7 +10,6 @@ import Fade from "@mui/material/Fade";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import config from "../../config/config";
 import { Toast } from "../alerts/SweetAlert";
@@ -26,7 +26,7 @@ const style = {
   p: 4,
 };
 
-export default function TLoanRejectModalButton() {
+const TLoanRejectModalButton = () => {
   const { TLoanID } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -59,8 +59,7 @@ export default function TLoanRejectModalButton() {
             .then(() => {
               Toast.fire({
                 icon: "success",
-                title:
-                  `TLoan Extension For TLoan` + `#${TLoanID} Has Been Rejected`,
+                title: `TLoan Extension For TLoan #${TLoanID} Has Been Rejected`,
                 customClass: "swalpopup",
                 timer: 2000,
                 width: 700,
@@ -68,7 +67,6 @@ export default function TLoanRejectModalButton() {
               navigate("/tloan");
             });
         } catch (error) {
-          this.setState({ errorMessage: error.message });
           console.error("There was an error!", error);
           setLoading(false);
         }
@@ -203,4 +201,6 @@ export default function TLoanRejectModalButton() {
       </Modal>
     </motion.div>
   );
-}
+};
+
+export default TLoanRejectModalButton;

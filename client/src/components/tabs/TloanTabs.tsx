@@ -1,13 +1,5 @@
 import { TabContext, TabPanel } from "@mui/lab";
-import {
-  Box,
-  Grid,
-  Stack,
-  Tab,
-  Tabs,
-  Typography,
-  unstable_createMuiStrictModeTheme,
-} from "@mui/material";
+import { Box, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
 import React, { useEffect, useState, useContext } from "react";
 import "react-tabs/style/react-tabs.css";
 
@@ -58,7 +50,7 @@ const TLoanTabs: React.FC = () => {
   const [allCurrent, setAllCurrent] = useState([]);
   const [allHistory, setAllHistory] = useState([]);
   const context: any = useContext(EditableContext);
-  const { isEditable }= context;
+  const { isEditable } = context;
   // Get and set current tloans data
   useEffect(() => {
     fetch(`${config.baseURL}/tloan/current/${userid}`)
@@ -138,9 +130,7 @@ const TLoanTabs: React.FC = () => {
   };
 
   const navigate = useNavigate();
-  const theme = unstable_createMuiStrictModeTheme();
   const [pageSize, setPageSize] = React.useState(25);
-  const [inputName, setInputName] = useState<string>(null);
 
   const [value, setValue] = useState(); // first tab
 
@@ -236,26 +226,27 @@ const TLoanTabs: React.FC = () => {
                   </Tabs>
                 </Box>
                 <Box>
-                {isEditable? null : 
-                  <motion.div
-                  className="animatable"
-                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <Fab
-                    variant="extended"
-                    aria-label="add"
-                    onClick={() => navigate("/products")}
-                    sx={{
-                      color: "white",
-                      backgroundColor: "#063970",
-                      ":hover": { backgroundColor: "#031c38" },
-                    }}
-                  >
-                    Create
-                    <PostAddIcon sx={{ ml: 2 }} />
-                  </Fab>
-                </motion.div>}
+                  {isEditable ? null : (
+                    <motion.div
+                      className="animatable"
+                      whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Fab
+                        variant="extended"
+                        aria-label="add"
+                        onClick={() => navigate("/products")}
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          ":hover": { backgroundColor: "#031c38" },
+                        }}
+                      >
+                        Create
+                        <PostAddIcon sx={{ ml: 2 }} />
+                      </Fab>
+                    </motion.div>
+                  )}
                 </Box>
               </Box>
               <Box sx={{ paddingLeft: 3 }} />
@@ -477,26 +468,27 @@ const TLoanTabs: React.FC = () => {
                   </Tabs>
                 </Box>
                 <Box>
-                {isEditable? null : 
-                  <motion.div
-                  className="animatable"
-                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <Fab
-                    variant="extended"
-                    aria-label="add"
-                    onClick={() => navigate("/products")}
-                    sx={{
-                      color: "white",
-                      backgroundColor: "#063970",
-                      ":hover": { backgroundColor: "#031c38" },
-                    }}
-                  >
-                    Create
-                    <PostAddIcon sx={{ ml: 2 }} />
-                  </Fab>
-                </motion.div>}
+                  {isEditable ? null : (
+                    <motion.div
+                      className="animatable"
+                      whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Fab
+                        variant="extended"
+                        aria-label="add"
+                        onClick={() => navigate("/products")}
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          ":hover": { backgroundColor: "#031c38" },
+                        }}
+                      >
+                        Create
+                        <PostAddIcon sx={{ ml: 2 }} />
+                      </Fab>
+                    </motion.div>
+                  )}
                 </Box>
               </Box>
               <Box sx={{ paddingLeft: 3 }} />
@@ -841,27 +833,27 @@ const TLoanTabs: React.FC = () => {
                   </Tabs>
                 </Box>
                 <Box>
-                {isEditable? null : 
-                  <motion.div
-                  className="animatable"
-                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <Fab
-                    variant="extended"
-                    aria-label="add"
-                    onClick={() => navigate("/products")}
-                    sx={{
-                      color: "white",
-                      backgroundColor: "#063970",
-                      ":hover": { backgroundColor: "#031c38" },
-                    }}
-                  >
-                    Create
-                    <PostAddIcon sx={{ ml: 2 }} />
-                  </Fab>
-                </motion.div>}
-                
+                  {isEditable ? null : (
+                    <motion.div
+                      className="animatable"
+                      whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Fab
+                        variant="extended"
+                        aria-label="add"
+                        onClick={() => navigate("/products")}
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          ":hover": { backgroundColor: "#031c38" },
+                        }}
+                      >
+                        Create
+                        <PostAddIcon sx={{ ml: 2 }} />
+                      </Fab>
+                    </motion.div>
+                  )}
                 </Box>
               </Box>
               <Box sx={{ paddingLeft: 3 }} />

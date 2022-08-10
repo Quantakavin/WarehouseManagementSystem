@@ -1,38 +1,7 @@
+import React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-
-const SearchBarUpdated = () => {
-  return (
-    <Stack spacing={2} sx={{ width: 300, marginLeft: "8%", marginTop: "20px" }}>
-      {/* <Autocomplete
-        id="free-solo-demo"
-        freeSolo
-        options={top100Films.map((option) => option.title)}
-        renderInput={(params) => <TextField {...params} label="freeSolo" />}
-      /> */}
-      <Autocomplete
-        freeSolo
-        id="free-solo-2-demo"
-        disableClearable
-        options={top100Films.map((option) => option.title)}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            placeholder="Search by RMA number..."
-            InputProps={{
-              ...params.InputProps,
-              type: "search",
-            }}
-            sx={{ backgroundColor: "white", color: "#0A2540" }}
-          />
-        )}
-      />
-    </Stack>
-  );
-};
-
-export default SearchBarUpdated;
 
 // Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
 const top100Films = [
@@ -162,3 +131,35 @@ const top100Films = [
   { title: "3 Idiots", year: 2009 },
   { title: "Monty Python and the Holy Grail", year: 1975 },
 ];
+
+const SearchBarUpdated = () => {
+  return (
+    <Stack spacing={2} sx={{ width: 300, marginLeft: "8%", marginTop: "20px" }}>
+      {/* <Autocomplete
+        id="free-solo-demo"
+        freeSolo
+        options={top100Films.map((option) => option.title)}
+        renderInput={(params) => <TextField {...params} label="freeSolo" />}
+      /> */}
+      <Autocomplete
+        freeSolo
+        id="free-solo-2-demo"
+        disableClearable
+        options={top100Films.map((option) => option.title)}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            placeholder="Search by RMA number..."
+            InputProps={{
+              ...params.InputProps,
+              type: "search",
+            }}
+            sx={{ backgroundColor: "white", color: "#0A2540" }}
+          />
+        )}
+      />
+    </Stack>
+  );
+};
+
+export default SearchBarUpdated;

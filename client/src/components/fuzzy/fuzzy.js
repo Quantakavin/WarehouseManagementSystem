@@ -1,6 +1,5 @@
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Fuse from "fuse.js";
-import { useEffect, useState } from "react";
 import { Navbar } from "react-bootstrap";
 import { BsCart3 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";

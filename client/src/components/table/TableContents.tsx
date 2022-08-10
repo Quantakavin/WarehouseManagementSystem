@@ -1,6 +1,6 @@
+import React from "react";
 import { TableBody, TableCell, TableRow } from "@mui/material";
 import { AxiosResponse } from "axios";
-import React from "react";
 import { ActionMenuItem } from "../../utils/CommonTypes";
 import ActionMenu from "./ActionMenu";
 
@@ -16,8 +16,8 @@ interface TableContentProps {
 const TableContents = ({ pages, menu }: TableContentProps) => {
   return (
     <TableBody>
-      {pages.map((group, i) => (
-        <React.Fragment key={i}>
+      {pages.map((group) => (
+        <React.Fragment key={group.nextPage - 1}>
           {group.response.data.map((row) => (
             <TableRow
               key={String(Object.values(row)[0])}

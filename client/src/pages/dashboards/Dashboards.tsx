@@ -1,9 +1,9 @@
+import React from "react";
+import { Box, Grid } from "@mui/material";
 import Cards from "../../components/cards/Cards";
 import BarAndPieCharts from "../../components/charts/BarAndPieCharts";
 import LineCharts from "../../components/charts/LineCharts";
 import "../../styles/Dashboard.scss";
-
-import { Box, Grid } from "@mui/material";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 
@@ -46,9 +46,7 @@ const Dashboards = () => {
           <Cards />
         </Grid>
         <Grid item xs={12}>
-          <BarAndPieCharts
-
-          />
+          <BarAndPieCharts />
         </Grid>
         <Grid item xs={12}>
           <LineCharts title={undefined} dataKey={undefined} grid={undefined} />

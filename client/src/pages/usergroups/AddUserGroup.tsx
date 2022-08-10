@@ -1,3 +1,5 @@
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { SelectChangeEvent } from "@mui/material";
@@ -7,27 +9,25 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import { GetFeatureRights, GetFeatures } from "../../api/FeatureDB";
 import { PostUserGroup } from "../../api/UserGroupDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import GeneralButton from "../../components/buttons/GeneralButton";
+import SubmitButton from "../../components/buttons/SubmitButton";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormContainer from "../../components/form/FormContainer";
 import FormField from "../../components/form/FormField";
+import FormSteps from "../../components/form/FormSteps";
 import FormTextArea from "../../components/form/FormTextArea";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import SelectedList from "../../components/form/SelectedList";
-import SubmitButton from "../../components/buttons/SubmitButton";
 import { Feature, FeatureRight, Option } from "../../utils/CommonTypes";
 import {
-  NameValidation,
   DescriptionValidation,
+  NameValidation,
 } from "../../utils/FormValidation";
-import FormSteps from "../../components/form/FormSteps";
 
 interface FormValues {
   name: string;
@@ -72,21 +72,23 @@ const AddUserGroup: React.FC = () => {
       setFeatureOptions(features);
     },
   });
-  const featureRightsQuery = useQuery("featurerights", GetFeatureRights, {
-    onSuccess: (data) => {
-      const featurerights: Option[] = [];
-      data.data.forEach((featureright: FeatureRight) => {
-        featurerights.push({
-          id: featureright.FeatureRightID,
-          text: featureright.FeatureRight,
-          value: featureright.FeatureRightID,
-        });
-      });
-      setFeatureRightOptions(featurerights);
-    },
-  });
+
+  // const featureRightsQuery = useQuery("featurerights", GetFeatureRights, {
+  //   onSuccess: (data) => {
+  //     const featurerights: Option[] = [];
+  //     data.data.forEach((featureright: FeatureRight) => {
+  //       featurerights.push({
+  //         id: featureright.FeatureRightID,
+  //         text: featureright.FeatureRight,
+  //         value: featureright.FeatureRightID,
+  //       });
+  //     });
+  //     setFeatureRightOptions(featurerights);
+  //   },
+  // });
 
   const mutation = useMutation(PostUserGroup);
+  const controls = useAnimation();
 
   const onSubmit = (data: FormValues) => {
     const postdata = data;
@@ -109,8 +111,6 @@ const AddUserGroup: React.FC = () => {
       },
     });
   };
-
-  const controls = useAnimation();
 
   const variants = {
     detecterror: () => ({

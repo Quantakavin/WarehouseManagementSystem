@@ -1,18 +1,13 @@
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import WarningIcon from "@mui/icons-material/Warning";
+import { IconButton, InputAdornment, OutlinedInput } from "@mui/material";
+import React from "react";
 import {
-    IconButton,
-    InputAdornment,
-    OutlinedInput,
-    TextField
-} from "@mui/material";
-import { useState } from "react";
-import {
-    FieldError,
-    Path,
-    RegisterOptions,
-    UseFormRegister
+  FieldError,
+  Path,
+  RegisterOptions,
+  UseFormRegister,
 } from "react-hook-form";
 import useTogglePasword from "../../hooks/useTogglePassword";
 
@@ -39,7 +34,7 @@ const FormField = <T,>({
   rules,
   error,
   readOnly,
-  disabled
+  disabled,
 }: FormFieldProps<T>) => {
   const { toggle, passwordType, showPassword } = useTogglePasword();
 
@@ -65,11 +60,10 @@ const FormField = <T,>({
           sx={{
             borderRadius: 3,
             border: "solid 1px #d3d3d3",
-            backgroundColor: disabled && "#e3e8ee"
+            backgroundColor: disabled && "#e3e8ee",
           }}
           inputProps={inputProps}
-
-        {...(register && register(name, rules))}
+          {...(register && register(name, rules))}
           endAdornment={
             type === "password" && (
               <InputAdornment position="end">
@@ -79,8 +73,8 @@ const FormField = <T,>({
                   disabled={disabled}
                   sx={{
                     "&:disabled": {
-                      opacity: "50%"
-                    }
+                      opacity: "50%",
+                    },
                   }}
                 >
                   {showPassword ? (

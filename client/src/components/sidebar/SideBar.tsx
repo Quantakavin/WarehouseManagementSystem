@@ -1,3 +1,4 @@
+import React from "react";
 import ArticleIcon from "@mui/icons-material/Article";
 import AssignmentReturnIcon from "@mui/icons-material/AssignmentReturn";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -12,15 +13,15 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
-import { CSSObject, styled, Theme, useTheme } from "@mui/material/styles";
+import { CSSObject, styled, Theme } from "@mui/material/styles";
 import { useNavigate } from "react-router";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../app/hooks";
 import {
-    selectName,
-    selectPermissions,
-    selectRole
+  selectName,
+  selectPermissions,
+  selectRole,
 } from "../../app/reducers/CurrentUserSlice";
-import { Close, Open, selectOpen } from "../../app/reducers/SidebarSlice";
+import { selectOpen } from "../../app/reducers/SidebarSlice";
 import defaultprofile from "../../assets/defaultprofile.png";
 import useWindowSize from "../../hooks/useWindowSize";
 import SidebarLink from "./SidebarLink";
@@ -77,9 +78,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const Sidebar = () => {
-  const theme = useTheme();
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const isopen = useAppSelector(selectOpen);
   const username = useAppSelector(selectName);
   const userrole = useAppSelector(selectRole);
@@ -100,7 +99,7 @@ const Sidebar = () => {
     return (
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <Drawer variant="permanent" open={(isopen && viewportwidth>800)}>
+        <Drawer variant="permanent" open={isopen && viewportwidth > 800}>
           <Toolbar />
           <DrawerHeader
             sx={{ backgroundColor: "#0a2540" }}
@@ -115,7 +114,13 @@ const Sidebar = () => {
               }}
             >
               <Box
-                sx={{ flex: 1, margin: (isopen && viewportwidth>800) ? "0px" : "10px -6px 10px 6px" }}
+                sx={{
+                  flex: 1,
+                  margin:
+                    isopen && viewportwidth > 800
+                      ? "0px"
+                      : "10px -6px 10px 6px",
+                }}
               >
                 <img
                   alt="ISDN Logo"
@@ -126,7 +131,7 @@ const Sidebar = () => {
                   style={{ marginRight: 15 }}
                 />
               </Box>
-              {(isopen && viewportwidth>800) ? (
+              {isopen && viewportwidth > 800 ? (
                 <Box style={{ flex: 3, marginTop: 8, marginBottom: -8 }}>
                   <p
                     style={{
@@ -165,7 +170,7 @@ const Sidebar = () => {
               marginLeft: "10%",
             }}
           >
-            {(isopen && viewportwidth>800) ? "MENU" : null}
+            {isopen && viewportwidth > 800 ? "MENU" : null}
           </p>
           <List
             sx={{
@@ -225,7 +230,7 @@ const Sidebar = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <Drawer variant="permanent" open={(isopen && viewportwidth>800)}>
+      <Drawer variant="permanent" open={isopen && viewportwidth > 800}>
         <Toolbar />
         <DrawerHeader
           sx={{ backgroundColor: "#0a2540" }}
@@ -240,7 +245,11 @@ const Sidebar = () => {
             }}
           >
             <Box
-              sx={{ flex: 1, margin: (isopen && viewportwidth>800) ? "0px" : "10px -6px 10px 6px" }}
+              sx={{
+                flex: 1,
+                margin:
+                  isopen && viewportwidth > 800 ? "0px" : "10px -6px 10px 6px",
+              }}
             >
               <img
                 alt="ISDN Logo"
@@ -251,7 +260,7 @@ const Sidebar = () => {
                 style={{ marginRight: 15 }}
               />
             </Box>
-            {(isopen && viewportwidth>800) ? (
+            {isopen && viewportwidth > 800 ? (
               <Box style={{ flex: 3, marginTop: 8, marginBottom: -8 }}>
                 <p
                   style={{
@@ -290,7 +299,7 @@ const Sidebar = () => {
             marginLeft: "10%",
           }}
         >
-          {(isopen && viewportwidth>800) ? "MENU" : null}
+          {isopen && viewportwidth > 800 ? "MENU" : null}
         </p>
         <List
           sx={{

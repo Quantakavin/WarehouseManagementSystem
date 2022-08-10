@@ -1,17 +1,17 @@
+import { Box, Link } from "@mui/material";
 import axios from "axios";
+import { motion, useAnimation } from "framer-motion";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { motion, useAnimation } from "framer-motion";
-import { Box, Link } from "@mui/material";
+import { ForgotPassword } from "../../api/ResetPasswordDB";
+import { Toast } from "../../components/alerts/SweetAlert";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormContainer from "../../components/form/FormContainer";
 import FormField from "../../components/form/FormField";
 import SubmitButton from "../../components/form/SubmitButton";
 import { EmailValidation } from "../../utils/FormValidation";
-import { ForgotPassword } from "../../api/ResetPasswordDB";
-import { Toast } from "../../components/alerts/SweetAlert";
 
 interface FormValues {
   email: string;
@@ -24,6 +24,8 @@ const ForgetPassword: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({ mode: "onSubmit" });
+
+  const controls = useAnimation();
 
   const mutation = useMutation(ForgotPassword, {
     onSuccess: (data) => {
@@ -40,8 +42,6 @@ const ForgetPassword: React.FC = () => {
       controls.start("detecterror");
     },
   });
-
-  const controls = useAnimation();
 
   const variants = {
     detecterror: () => ({

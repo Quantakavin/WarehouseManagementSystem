@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
@@ -13,7 +14,6 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import config from "../../config/config";
 import { Toast } from "../alerts/SweetAlert";
@@ -35,7 +35,6 @@ const ModalButton = () => {
 
   const [reason, setReason] = useState("");
   const [duration, setDuration] = useState("");
-  const [loan, setLoan] = useState("");
   const [tloanid, setLoanID] = useState("");
   const [loading, setLoading] = useState(false);
   const [extensionStatus, setExtensionStatus] = useState("");
@@ -44,8 +43,8 @@ const ModalButton = () => {
   const [durationError, setDurationError] = useState(false);
   const [reasonErrorText, setReasonErrorText] = useState("");
   const [durationErrorText, setDurationErrorText] = useState("");
-  const [endDate, setEndDate] = useState('')
-  const [checkDate, setCheckDate] = useState('')
+  const [endDate, setEndDate] = useState("");
+  const [checkDate, setCheckDate] = useState("");
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -56,23 +55,19 @@ const ModalButton = () => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const loans = await axios.get(
-        `${config.baseURL}/tloanid/${TLoanID}`
-      );
+      const loans = await axios.get(`${config.baseURL}/tloanid/${TLoanID}`);
       const extension = await axios.get(
         `${config.baseURL}/tloanExtensionStatus/${TLoanID}`
       );
       const loanDetail = await axios.get(
         `${config.baseURL}/tloanstatusid/${TLoanID}`
       );
-      const getDate = await axios.get(
-        `${config.baseURL}/tloans/${TLoanID}`
-      );
+      const getDate = await axios.get(`${config.baseURL}/tloans/${TLoanID}`);
       setLoanID(loans.data[0].TLoanID);
       setExtensionStatus(extension.data[0].ExtensionStatus);
       setTLoanStatus(loanDetail.data[0].TLoanStatusID);
-      setEndDate(getDate.data.EndDate)
-      setCheckDate(getDate.data.CheckDate)
+      setEndDate(getDate.data.EndDate);
+      setCheckDate(getDate.data.CheckDate);
       // setLoan(Object.e)
     };
     // call the function
@@ -80,33 +75,29 @@ const ModalButton = () => {
       // make sure to catch any error
       .catch(console.error);
   }, []);
- 
 
-    //getting current date
-    const today = new Date();
-      const yyyy = today.getFullYear();
-      let mm = (today.getMonth() + 1).toString(); // Months start at 0!
-      let dd = (today.getDate()).toString() ;
+  // getting current date
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  let mm = (today.getMonth() + 1).toString(); // Months start at 0!
+  let dd = today.getDate().toString();
 
-      if (parseInt(dd) < 10) dd = '0' + dd;
-      if (parseInt(mm) < 10) mm = '0' + mm;
+  if (parseInt(dd, 10) < 10) dd = `0${dd}`;
+  if (parseInt(mm, 10) < 10) mm = `0${mm}`;
 
-      const formattedToday = dd + '-' + mm + '-' + yyyy
+  const formattedToday = `${dd}-${mm}-${yyyy}`;
 
-    //getting 5 days before EndDate
-   
+  // getting 5 days before EndDate
 
-    const due = new Date(checkDate);
-    due.setDate(due.getDate()- 5)
-    const yyyy1 = due.getFullYear();
-    let mm1 = (due.getMonth() + 1).toString(); // Months start at 0!
-    let dd1 = (due.getDate()).toString();
+  const due = new Date(checkDate);
+  due.setDate(due.getDate() - 5);
+  const yyyy1 = due.getFullYear();
+  let mm1 = (due.getMonth() + 1).toString(); // Months start at 0!
+  let dd1 = due.getDate().toString();
 
-    if (parseInt(dd1) < 10) dd1 = '0' + dd1;
-    if (parseInt(mm1) < 10) mm1 = '0' + mm1;
-    const formattedDue = dd1 + '-' + mm1 + '-' + yyyy1
-
-  
+  if (parseInt(dd1) < 10) dd1 = `0${dd1}`;
+  if (parseInt(mm1) < 10) mm1 = `0${mm1}`;
+  const formattedDue = `${dd1}-${mm1}-${yyyy1}`;
 
   const submitExtension = (e) => {
     e.preventDefault();
@@ -124,9 +115,9 @@ const ModalButton = () => {
       setLoading(false);
     }
     if (reason !== "" && duration !== "") {
-      setTimeout(() => {
+      setTimeout(async () => {
         try {
-          const results = axios
+          await axios
             .post(`${config.baseURL}/tloan/extension`, {
               TLoanID,
               reason,
@@ -149,7 +140,7 @@ const ModalButton = () => {
       }, 500);
     }
   };
-  
+
   // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
   const handleDuration = (event: SelectChangeEvent) => {
     setDuration(event.target.value);
@@ -165,7 +156,7 @@ const ModalButton = () => {
     ) {
       return null;
     }
-    if (extensionStatus !== "NIL" || (formattedToday >= formattedDue ) === true) {
+    if (extensionStatus !== "NIL" || formattedToday >= formattedDue === true) {
       return (
         <LoadingButton
           size="small"
@@ -255,7 +246,6 @@ const ModalButton = () => {
                       {durationErrorText}
                     </FormHelperText>
                   </FormControl>
-                 
 
                   <TextField
                     sx={{ width: 800, marginLeft: 3, marginTop: 2 }}
@@ -269,7 +259,6 @@ const ModalButton = () => {
                     required
                   />
 
-                 
                   <Box
                     component="span"
                     display="flex"

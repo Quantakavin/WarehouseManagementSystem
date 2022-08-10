@@ -33,7 +33,7 @@ const Model: React.FC<ModelProps> = ({
   leveltag,
   sectiontag,
   position,
-  currentbintags
+  currentbintags,
 }) => {
   const group = useRef<THREE.Group>();
   const [BinsData, setBinsData] = useState<any>(null);
@@ -58,9 +58,9 @@ const Model: React.FC<ModelProps> = ({
 
   useEffect(() => {
     axios.get(`${config.baseURL}/bintag/${bintag}`).then((data) => {
-      console.log(data.data[0])
+      console.log(data.data[0]);
       if (data.data[0] == null) {
-        setExists(false)
+        setExists(false);
       } else {
         setBinsData(data.data[0]);
       }
@@ -87,52 +87,59 @@ const Model: React.FC<ModelProps> = ({
   //   console.log(BinsData);
 
   if (currentbintags?.includes(bintag)) {
-    console.log("this bin tag is included: ", bintag)
+    console.log("this bin tag is included: ", bintag);
   }
 
   return (
     <>
-    {exists?
-    <group
-      // onPointerOver={() => setIsSelected(true)}
-      // onPointerOut={() => setIsSelected(false)}
-      onClick={(e) =>{ 
-        e.stopPropagation();
-        setIsSelected(!isSelected)}
-      }
-      ref={group}
-      dispose={null}
-      position={position}
-      scale={[2.5, 2.5, 2.5]}
-    >
-      <mesh
-        geometry={nodes.Cube024.geometry}
-        material={nodes.Cube024.material}
-        position={[-1.42, 0.55, -3.13]}
-        scale={[0.85, 0.29, 0.51]}
-      >
-        {isSelected ? (
-          <Html distanceFactor={10}>
-            <div className="content">
-              BinTag:{BinsData.BinTag}
-              <br />
-              Column: {sectiontag}
-              <br />
-              Rack: {racktag}
-              <br />
-              Level: {leveltag}
-              <br />
-              Capacity:{BinsData.Volume} cm3
-              <br />
-              Amount of Items: {BinsData.AmountOfItems}
-              <br />
-            </div>
-          </Html>
-        ) : null}
+      {exists ? (
+        <group
+          // onPointerOver={() => setIsSelected(true)}
+          // onPointerOut={() => setIsSelected(false)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsSelected(!isSelected);
+          }}
+          ref={group}
+          dispose={null}
+          position={position}
+          scale={[2.5, 2.5, 2.5]}
+        >
+          <mesh
+            geometry={nodes.Cube024.geometry}
+            material={nodes.Cube024.material}
+            position={[-1.42, 0.55, -3.13]}
+            scale={[0.85, 0.29, 0.51]}
+          >
+            {isSelected ? (
+              <Html distanceFactor={10}>
+                <div className="content">
+                  BinTag:{BinsData.BinTag}
+                  <br />
+                  Column: {sectiontag}
+                  <br />
+                  Rack: {racktag}
+                  <br />
+                  Level: {leveltag}
+                  <br />
+                  Capacity:{BinsData.Volume} cm3
+                  <br />
+                  Amount of Items: {BinsData.AmountOfItems}
+                  <br />
+                </div>
+              </Html>
+            ) : null}
 
-        <meshStandardMaterial color={currentbintags?.includes(bintag) || isSelected ? "#8b0000" : "gray"} />
-      </mesh>
-    </group> : null}
+            <meshStandardMaterial
+              color={
+                currentbintags?.includes(bintag) || isSelected
+                  ? "#8b0000"
+                  : "gray"
+              }
+            />
+          </mesh>
+        </group>
+      ) : null}
     </>
   );
 };

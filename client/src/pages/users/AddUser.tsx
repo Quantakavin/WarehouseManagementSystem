@@ -1,19 +1,28 @@
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { Button, SelectChangeEvent } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material";
 import axios from "axios";
+import { motion, useAnimation } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import { motion, useAnimation } from "framer-motion";
-import { gridDensityValueSelector } from "@mui/x-data-grid";
+import { GetCompanies } from "../../api/CompanyDB";
+import { GetNotificationGroups } from "../../api/NotificationGroupDB";
+import { PostUser } from "../../api/UserDB";
+import { GetUserGroups } from "../../api/UserGroupDB";
+import { useAppSelector } from "../../app/hooks";
+import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { Toast } from "../../components/alerts/SweetAlert";
+import GeneralButton from "../../components/buttons/GeneralButton";
+import SubmitButton from "../../components/buttons/SubmitButton";
 import ErrorAlert from "../../components/form/ErrorAlert";
 import FormContainer from "../../components/form/FormContainer";
 import FormField from "../../components/form/FormField";
+import FormSteps from "../../components/form/FormSteps";
+import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import SelectDropdown from "../../components/form/SelectDropdown";
-import SubmitButton from "../../components/buttons/SubmitButton";
 import { Company, NotiGroup, Option, UserGroup } from "../../utils/CommonTypes";
 import {
   EmailValidation,
@@ -22,17 +31,6 @@ import {
   SelectValidation,
   UsernameValidation,
 } from "../../utils/FormValidation";
-import { GetCompanies } from "../../api/CompanyDB";
-import { GetNotificationGroups } from "../../api/NotificationGroupDB";
-import { PostUser } from "../../api/UserDB";
-import { GetUserGroups } from "../../api/UserGroupDB";
-import { useAppSelector } from "../../app/hooks";
-import { selectRole } from "../../app/reducers/CurrentUserSlice";
-import { Toast } from "../../components/alerts/SweetAlert";
-import FormSteps from "../../components/form/FormSteps";
-import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
-import GeneralButton from "../../components/buttons/GeneralButton";
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 interface FormValues {
   name: string;
@@ -275,7 +273,6 @@ const AddUser: React.FC = () => {
               </button>
 
               <GeneralButton
-              
                 text={
                   <>
                     Next{" "}

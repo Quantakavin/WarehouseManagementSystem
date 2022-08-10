@@ -1,10 +1,10 @@
+import React, { useState } from "react";
 import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
 import Autocomplete from "@mui/material/Autocomplete";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { motion } from "framer-motion";
-import { useState } from "react";
 
 interface SearchParams {
   searchoptions: string[];

@@ -1,14 +1,9 @@
+import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import {
-  Box,
-  Fab,
-  Stack,
-  Typography,
-  unstable_createMuiStrictModeTheme,
-} from "@mui/material";
+import { Box, Fab, Stack, Typography } from "@mui/material";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -19,7 +14,6 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router";
-import CancelIcon from "@mui/icons-material/Cancel";
 import { DeleteUser, GetAllUsers } from "../../api/UserDB";
 import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
@@ -36,7 +30,6 @@ const Users2: React.FC = () => {
     }
   }, []);
 
-  const theme = unstable_createMuiStrictModeTheme();
   const [pageSize, setPageSize] = React.useState(25);
   // const [hoveredRow, setHoveredRow] = React.useState(null);
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
@@ -97,7 +90,7 @@ const Users2: React.FC = () => {
     setShowError(false);
     setIdToDelete(null);
   };
-  
+
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [
       {

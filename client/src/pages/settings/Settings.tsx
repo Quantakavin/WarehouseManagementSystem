@@ -9,7 +9,6 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
-  Link,
   Modal,
   Paper,
   Switch,
@@ -18,17 +17,17 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useMutation } from "react-query";
-import { useNavigate } from "react-router-dom";
-import { Update2FA } from "../../api/UserDB";
-// import Shield from "@mui/icons-material/Shield";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import LockIcon from "@mui/icons-material/Lock";
-import TelegramIcon from "@mui/icons-material/Telegram";
 import PasswordIcon from "@mui/icons-material/Password";
+import TelegramIcon from "@mui/icons-material/Telegram";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { LoadingButton } from "@mui/lab";
 import axios from "axios";
 import { motion } from "framer-motion";
+import { Update2FA } from "../../api/UserDB";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   disable2FA,
@@ -41,8 +40,7 @@ import Shield from "../../assets/shield.png";
 import Popup from "../../components/alerts/Popup";
 import { Toast } from "../../components/alerts/SweetAlert";
 import config from "../../config/config";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Visibility from "@mui/icons-material/Visibility";
+
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -62,7 +60,6 @@ interface State {
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$/i;
 const Settings: React.FC = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const userID = useAppSelector(selectId);
   const enabled2FA = useAppSelector(selectEnabled2FA);
@@ -82,14 +79,12 @@ const Settings: React.FC = () => {
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("");
   const [pwerror, setPWError] = useState(false);
-  const [pwerrorText, setPWErrorText] = useState("");
   const [loading, setLoading] = useState(false);
   const [values, setValues] = React.useState<State>({
     password: "",
     showPassword: false,
   });
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
-  const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setError(false);
     setErrorText("");
@@ -135,9 +130,9 @@ const Settings: React.FC = () => {
               width: 310,
             });
           })
-          .catch((error) => {
-            console.log(error);
-            console.error("There was an error!", error);
+          .catch((e) => {
+            console.log(e);
+            console.error("There was an error!", e);
           });
       }, 500);
     } else {
@@ -180,7 +175,7 @@ const Settings: React.FC = () => {
         });
     }, 500);
   };
-  //Password modal open/close
+  // Password modal open/close
   const handleOpenChangePassword = () => {
     setShowChangePassword(true);
   };
@@ -189,7 +184,7 @@ const Settings: React.FC = () => {
     setShowChangePassword(false);
     setValues("");
   };
-  //Handle change of text in password field
+  // Handle change of text in password field
   const handleChange =
     (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setValues({ ...values, [prop]: event.target.value });
@@ -208,9 +203,8 @@ const Settings: React.FC = () => {
   const handleChangePassword = async () => {
     setLoading(true);
     setPWError(false);
-    if (!values.password.match(passwordRegex) && values.password != "") {
+    if (!values.password.match(passwordRegex) && values.password !== "") {
       setPWError(true);
-      setPWErrorText("Please enter a valid password");
       Toast.fire({
         icon: "error",
         title: "Please enter a valid password!",
@@ -219,9 +213,8 @@ const Settings: React.FC = () => {
         width: 400,
       });
       setLoading(false);
-    } else if (values.password == "") {
+    } else if (values.password === "") {
       setPWError(true);
-      setPWErrorText("Please enter a new password");
       Toast.fire({
         icon: "error",
         title: "Please enter a new password",
@@ -314,7 +307,7 @@ const Settings: React.FC = () => {
     // setChecked(!checked);
   };
   const handleTeleChange = () => {
-    if (enabledTele == false) {
+    if (enabledTele === false) {
       setOpen(true);
       //   setShowTeleEnableConfirmation(true);
     } else {
@@ -430,7 +423,7 @@ const Settings: React.FC = () => {
               multiline
               fullWidth
               onBlur={() => {
-                if (telegramID == "") {
+                if (telegramID === "") {
                   setError(true);
                   setErrorText("Please enter your Telegram User ID");
                 } else {
@@ -583,7 +576,7 @@ const Settings: React.FC = () => {
                 error={pwerror}
                 onBlur={() => {
                   if (
-                    values.password == "" ||
+                    values.password === "" ||
                     !values.password.match(passwordRegex)
                   ) {
                     setPWError(true);
@@ -604,12 +597,12 @@ const Settings: React.FC = () => {
                   </InputAdornment>
                 }
               />{" "}
-              {!!pwerror && values.password == "" && (
+              {!!pwerror && values.password === "" && (
                 <FormHelperText error>Please enter a password</FormHelperText>
               )}
               {!!pwerror &&
                 !values.password.match(passwordRegex) &&
-                values.password != "" && (
+                values.password !== "" && (
                   <FormHelperText error>
                     Password should be over 8 characters long with a mix of
                     uppercase/lowercase letters and numbers
@@ -703,7 +696,7 @@ const Settings: React.FC = () => {
                 flexGrow: 1,
                 justifyContent: "flex-start",
                 backgroundColor: (theme) =>
-                  theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+                  theme.palette.mode === "dark" ? "#1A2027" : "#FFFFFF",
               }}
             >
               <Grid container spacing={2}>

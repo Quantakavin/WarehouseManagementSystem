@@ -52,8 +52,7 @@ import axios from "axios";
 import clsx from "clsx";
 import locale from "date-fns/locale/en-US";
 import { motion } from "framer-motion";
-import * as React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useAppSelector } from "../../app/hooks";
 import {
@@ -68,7 +67,6 @@ import RejectModalButton from "../modals/rmaRejectModal";
 
 const RmaDisplay: React.FC = () => {
   const navigate = useNavigate();
-  const userrole = useAppSelector(selectRole);
   const permissions = useAppSelector(selectPermissions);
   const [rma, setRma] = useState<RMA>([]);
   const [rows, setRows] = useState([]);
@@ -110,7 +108,7 @@ const RmaDisplay: React.FC = () => {
     const fetchData = async () => {
       // get the data from the api
       const rmadata = await axios.get(`${config.baseURL}/RMA/${RmaID}`);
-      console.log("the data is " + JSON.stringify(rmadata.data));
+      console.log(`the data is ${JSON.stringify(rmadata.data)}`);
 
       setRma(rmadata.data);
     };
@@ -152,6 +150,7 @@ const RmaDisplay: React.FC = () => {
           navigate("/rma");
         })
         .catch((error) => {
+          console.log(error);
           setLoading(false);
         });
     }, 500);
@@ -173,6 +172,7 @@ const RmaDisplay: React.FC = () => {
           navigate("/rma");
         })
         .catch((error) => {
+          console.log(error);
           setLoading(false);
         });
     }, 500);
@@ -194,6 +194,7 @@ const RmaDisplay: React.FC = () => {
           navigate("/rma");
         })
         .catch((error) => {
+          console.log(error);
           setCompleteLoading(false);
         });
     }, 500);
@@ -215,6 +216,7 @@ const RmaDisplay: React.FC = () => {
           navigate("/rma");
         })
         .catch((error) => {
+          console.log(error);
           Toast.fire({
             icon: "error",
             title: "Please enter instructions for each product!",
@@ -243,6 +245,7 @@ const RmaDisplay: React.FC = () => {
           navigate("/rma");
         })
         .catch((error) => {
+          console.log(error);
           Toast.fire({
             icon: "error",
             title: "Please update the COA for each product!",
@@ -271,6 +274,7 @@ const RmaDisplay: React.FC = () => {
           navigate("/rma");
         })
         .catch((error) => {
+          console.log(error);
           setCloseLoading(false);
         });
     }, 500);
@@ -626,10 +630,6 @@ const RmaDisplay: React.FC = () => {
 
   const handleSaveClick = (id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-  };
-
-  const handleDeleteClick = (id: GridRowId) => () => {
-    setRows(rows.filter((row) => row.id !== id));
   };
 
   const handleCancelClick = (id: GridRowId) => () => {
@@ -1148,7 +1148,7 @@ const RmaDisplay: React.FC = () => {
     );
   }
   if (rma.RmaStatusID === 1) {
-    if (ApprovalPerms == true) {
+    if (ApprovalPerms === true) {
       return (
         <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
           <Typography
@@ -1420,7 +1420,7 @@ const RmaDisplay: React.FC = () => {
     );
   }
   if (rma.RmaStatusID === 7) {
-    if (UpdatePerms == true) {
+    if (UpdatePerms === true) {
       return (
         <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
           <Typography
@@ -1841,7 +1841,7 @@ const RmaDisplay: React.FC = () => {
       </Box>
     );
   }
-  if (ChecklistPerms == true) {
+  if (ChecklistPerms === true) {
     return (
       <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
         <Typography
@@ -2036,7 +2036,7 @@ const RmaDisplay: React.FC = () => {
       </Box>
     );
   }
-  if (VerificationPerms == true) {
+  if (VerificationPerms === true) {
     return (
       <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
         <Typography
@@ -2203,7 +2203,7 @@ const RmaDisplay: React.FC = () => {
       </Box>
     );
   }
-  if (UpdatePerms == true) {
+  if (UpdatePerms === true) {
     return (
       <Box sx={{ padding: 3, height: "100%", width: "100%" }}>
         <Typography

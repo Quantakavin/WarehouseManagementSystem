@@ -1,3 +1,4 @@
+import React from "react";
 import TLoanTabs from "../../components/tabs/TloanTabs";
 
 function tloan() {

@@ -23,9 +23,13 @@ const Profile: React.FC = () => {
       {UserQuery.status === "success" && (
         <Container className="cardcontainer shadow">
           <h2 className="cardheader">{UserQuery.data.data[0].Username}</h2>
-          <Chip className="cardsubheading" label={UserQuery.data.data[0].UserGroupName} sx={{ fontWeight: 500 }} />
+          <Chip
+            className="cardsubheading"
+            label={UserQuery.data.data[0].UserGroupName}
+            sx={{ fontWeight: 500 }}
+          />
           <Divider sx={{ mb: 3 }}>
-              <Chip label="Details" sx={{ fontWeight: 500 }} />
+            <Chip label="Details" sx={{ fontWeight: 500 }} />
           </Divider>
           <div className="cardfield">
             <p className="cardfieldlabel">Company</p>
@@ -45,7 +49,12 @@ const Profile: React.FC = () => {
             <p className="cardfieldlabel">Notification Groups</p>
             <p className="cardfieldvalue">
               {UserQuery.data.data[0].NotificationGroups.map((n) => {
-                return <Chip label={n.NotiGroupName} sx={{ fontWeight: 500, mr: "5px", mt: "5px"}} />
+                return (
+                  <Chip
+                    label={n.NotiGroupName}
+                    sx={{ fontWeight: 500, mr: "5px", mt: "5px" }}
+                  />
+                );
               })}
             </p>
           </div>

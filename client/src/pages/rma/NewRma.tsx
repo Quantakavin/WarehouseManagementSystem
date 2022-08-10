@@ -1,10 +1,10 @@
 import AddIcon from "@mui/icons-material/Add";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import CancelIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import SendIcon from "@mui/icons-material/Send";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { LoadingButton } from "@mui/lab";
 import {
   Card,
@@ -66,7 +66,6 @@ import config from "../../config/config";
 const CreateRMA: React.FC = () => {
   const navigate = useNavigate();
   const sid = useAppSelector(selectId);
-  const userrole = useAppSelector(selectRole);
   const permissions = useAppSelector(selectPermissions);
   const [loading, setLoading] = useState(false);
   const [rows, setRows] = useState([]);
@@ -713,212 +712,212 @@ const CreateRMA: React.FC = () => {
 
   return (
     <Box>
-    <Card
-      sx={{
-        width: "98%",
-        height: "100%",
-        m: 3,
-      }}
-    >
-      <CardContent>
-        <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-          <Box
-            component="form"
-            sx={{
-              "& .MuiTextField-root": { m: 1, width: "25ch" },
-              marginBottom: 2,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <h2 style={{ marginLeft: 7, marginBottom: 20 }}>
-              RMA Application Form
-            </h2>
-            <TextField
-              value={contactperson}
-              required
-              id="filled-required"
-              label="Customer Name"
-              variant="filled"
-              onBlur={() => {
-                setNameError(false);
-                setNameErrorText("");
-                if (contactperson === "") {
-                  setNameError(true);
-                  setNameErrorText("Required");
-                }
+      <Card
+        sx={{
+          width: "98%",
+          height: "100%",
+          m: 3,
+        }}
+      >
+        <CardContent>
+          <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+            <Box
+              component="form"
+              sx={{
+                "& .MuiTextField-root": { m: 1, width: "25ch" },
+                marginBottom: 2,
+                marginLeft: "auto",
+                marginRight: "auto",
               }}
-              onChange={(e) => setContactperson(e.target.value)}
-              error={nameError}
-              helperText={nameErrorText}
-            />
-            <TextField
-              value={contactemail}
-              required
-              id="filled-required"
-              label="Customer Email"
-              variant="filled"
-              onBlur={() => {
-                setEmailError(false);
-                setEmailErrorText("");
-                if (contactemail === "") {
-                  setEmailError(true);
-                  setEmailErrorText("Required");
-                } else if (!contactemail.match(emailRegex)) {
-                  setEmailError(true);
-                  setEmailErrorText("Invalid Email");
-                }
-              }}
-              onChange={(e) => setContactemail(e.target.value)}
-              error={emailError}
-              helperText={emailErrorText}
-            />
-            <TextField
-              value={company}
-              required
-              id="filled-required"
-              label="Company"
-              variant="filled"
-              onBlur={() => {
-                setCompError(false);
-                setCompErrorText("");
-                if (company === "") {
-                  setCompError(true);
-                  setCompErrorText("Required");
-                }
-              }}
-              onChange={(e) => setCompany(e.target.value)}
-              error={compError}
-              helperText={compErrorText}
-            />
-            <TextField
-              value={contactno}
-              required
-              id="filled-required"
-              label="Contact Number"
-              variant="filled"
-              onBlur={() => {
-                setNumError(false);
-                setNameErrorText("");
-                if (contactno === "") {
-                  setNumError(true);
-                  setNumErrorText("Required");
-                } else if (!contactno.match(phoneRegex)) {
-                  setNumError(true);
-                  setNumErrorText("Invalid contact number");
-                }
-              }}
-              onChange={(e) => setContactno(e.target.value)}
-              error={numError}
-              helperText={numErrorText}
-            />
-          </Box>
-          <Box
-            sx={{
-              height: 500,
-              width: "100%",
-              "& .actions": {
-                color: "text.secondary",
-              },
-              "& .textPrimary": {
-                color: "text.primary",
-              },
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
-            <LocalizationProvider
-              dateAdapter={AdapterDateFns}
-              adapterLocale={locale}
+              noValidate
+              autoComplete="off"
             >
-              <DataGrid
-                rows={rows}
-                columns={columns}
-                editMode="row"
-                rowModesModel={rowModesModel}
-                onRowEditStart={handleRowEditStart}
-                onRowEditStop={handleRowEditStop}
-                processRowUpdate={processRowUpdate}
-                components={{
-                  Toolbar: EditToolbar,
-                  NoRowsOverlay: () => (
-                    <Stack
-                      height="100%"
-                      alignItems="center"
-                      justifyContent="center"
-                    >
-                      No products added
-                    </Stack>
-                  ),
+              <h2 style={{ marginLeft: 7, marginBottom: 20 }}>
+                RMA Application Form
+              </h2>
+              <TextField
+                value={contactperson}
+                required
+                id="filled-required"
+                label="Customer Name"
+                variant="filled"
+                onBlur={() => {
+                  setNameError(false);
+                  setNameErrorText("");
+                  if (contactperson === "") {
+                    setNameError(true);
+                    setNameErrorText("Required");
+                  }
                 }}
-                componentsProps={{
-                  toolbar: { setRows, setRowModesModel },
-                }}
-                experimentalFeatures={{ newEditingApi: true }}
+                onChange={(e) => setContactperson(e.target.value)}
+                error={nameError}
+                helperText={nameErrorText}
               />
-            </LocalizationProvider>
-          </Box>
-          <Box
-            component="span"
-            paddingTop={2}
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <motion.div
-              className="animatable"
-              whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <LoadingButton
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#063970",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
-                  paddingRight: 4,
+              <TextField
+                value={contactemail}
+                required
+                id="filled-required"
+                label="Customer Email"
+                variant="filled"
+                onBlur={() => {
+                  setEmailError(false);
+                  setEmailErrorText("");
+                  if (contactemail === "") {
+                    setEmailError(true);
+                    setEmailErrorText("Required");
+                  } else if (!contactemail.match(emailRegex)) {
+                    setEmailError(true);
+                    setEmailErrorText("Invalid Email");
+                  }
                 }}
-                startIcon={<ArrowBackIosNewIcon />}
-                onClick={() => navigate("/rma")}
-              >
-                Back
-              </LoadingButton>
-            </motion.div>
-            <motion.div
-              variants={variants}
-              animate={controls}
-              className="animatable"
-              whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <LoadingButton
-                type="submit"
-                size="small"
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#31A961",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 10,
+                onChange={(e) => setContactemail(e.target.value)}
+                error={emailError}
+                helperText={emailErrorText}
+              />
+              <TextField
+                value={company}
+                required
+                id="filled-required"
+                label="Company"
+                variant="filled"
+                onBlur={() => {
+                  setCompError(false);
+                  setCompErrorText("");
+                  if (company === "") {
+                    setCompError(true);
+                    setCompErrorText("Required");
+                  }
                 }}
-                loading={loading}
-                endIcon={<SendIcon />}
-                loadingPosition="end"
-                onClick={handleSubmit}
+                onChange={(e) => setCompany(e.target.value)}
+                error={compError}
+                helperText={compErrorText}
+              />
+              <TextField
+                value={contactno}
+                required
+                id="filled-required"
+                label="Contact Number"
+                variant="filled"
+                onBlur={() => {
+                  setNumError(false);
+                  setNameErrorText("");
+                  if (contactno === "") {
+                    setNumError(true);
+                    setNumErrorText("Required");
+                  } else if (!contactno.match(phoneRegex)) {
+                    setNumError(true);
+                    setNumErrorText("Invalid contact number");
+                  }
+                }}
+                onChange={(e) => setContactno(e.target.value)}
+                error={numError}
+                helperText={numErrorText}
+              />
+            </Box>
+            <Box
+              sx={{
+                height: 500,
+                width: "100%",
+                "& .actions": {
+                  color: "text.secondary",
+                },
+                "& .textPrimary": {
+                  color: "text.primary",
+                },
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            >
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                adapterLocale={locale}
               >
-                Submit
-              </LoadingButton>
-            </motion.div>
-          </Box>
-        </form>
-      </CardContent>
-    </Card>
+                <DataGrid
+                  rows={rows}
+                  columns={columns}
+                  editMode="row"
+                  rowModesModel={rowModesModel}
+                  onRowEditStart={handleRowEditStart}
+                  onRowEditStop={handleRowEditStop}
+                  processRowUpdate={processRowUpdate}
+                  components={{
+                    Toolbar: EditToolbar,
+                    NoRowsOverlay: () => (
+                      <Stack
+                        height="100%"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        No products added
+                      </Stack>
+                    ),
+                  }}
+                  componentsProps={{
+                    toolbar: { setRows, setRowModesModel },
+                  }}
+                  experimentalFeatures={{ newEditingApi: true }}
+                />
+              </LocalizationProvider>
+            </Box>
+            <Box
+              component="span"
+              paddingTop={2}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <motion.div
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <LoadingButton
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#063970",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                    paddingRight: 4,
+                  }}
+                  startIcon={<ArrowBackIosNewIcon />}
+                  onClick={() => navigate("/rma")}
+                >
+                  Back
+                </LoadingButton>
+              </motion.div>
+              <motion.div
+                variants={variants}
+                animate={controls}
+                className="animatable"
+                whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <LoadingButton
+                  type="submit"
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    backgroundColor: "#31A961",
+                    width: 150,
+                    height: 50,
+                    borderRadius: 10,
+                  }}
+                  loading={loading}
+                  endIcon={<SendIcon />}
+                  loadingPosition="end"
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </LoadingButton>
+              </motion.div>
+            </Box>
+          </form>
+        </CardContent>
+      </Card>
     </Box>
   );
 };

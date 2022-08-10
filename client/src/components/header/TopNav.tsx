@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -16,38 +16,44 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import { motion } from "framer-motion";
-import React from "react";
+
 import { useNavigate } from "react-router-dom";
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { removeUser, selectId, selectName } from "../../app/reducers/CurrentUserSlice";
+import {
+  removeUser,
+  selectId,
+  selectName,
+} from "../../app/reducers/CurrentUserSlice";
 import {
   Close,
   Open,
   Reset,
-  selectOpen
+  selectOpen,
 } from "../../app/reducers/SidebarSlice";
 import defaultprofile from "../../assets/defaultprofile.png";
 import navbarbrand from "../../assets/navbarbrand.png";
-import { SocketContext } from '../../context/socket';
+import { SocketContext } from "../../context/socket";
 import NotificationDropdown from "./NotificationDropdown";
-import { resetNotificationCount, selectNotificationCount } from "../../app/reducers/NotificationSlice";
-import IsEditableProvider, {
-  EditableContext,
-} from "../context/IsEditableContext";
+import {
+  resetNotificationCount,
+  selectNotificationCount,
+} from "../../app/reducers/NotificationSlice";
+import { EditableContext } from "../context/IsEditableContext";
 import useWindowSize from "../../hooks/useWindowSize";
+
 const TopNav = () => {
   const socket = useContext(SocketContext);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const notificationcount = useAppSelector(selectNotificationCount)
+  const notificationcount = useAppSelector(selectNotificationCount);
   const isopen = useAppSelector(selectOpen);
   const username = useAppSelector(selectName);
   const userid = useAppSelector(selectId);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [notiAnchorEl, setNotiAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [notiAnchorEl, setNotiAnchorEl] = useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null);
+    useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
   const isNotiMenuOpen = Boolean(notiAnchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -56,11 +62,11 @@ const TopNav = () => {
   const { setIsEditable } = context;
   useEffect(() => {
     if (localStorage.getItem("token") !== null) {
-      socket.emit("login", { userid: userid })
+      socket.emit("login", { userid });
     } else {
-      socket.emit("logout", { userid: userid })
+      socket.emit("logout", { userid });
     }
-  }, [])
+  }, []);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -90,19 +96,19 @@ const TopNav = () => {
 
   const logout = () => {
     setAnchorEl(null);
-    setNotiAnchorEl(null)
+    setNotiAnchorEl(null);
     setMobileMoreAnchorEl(null);
-    socket.emit("logout", { userid: userid })
+    socket.emit("logout", { userid });
     dispatch(removeUser());
     dispatch(Reset());
     dispatch(resetNotificationCount());
     localStorage.clear();
-    setIsEditable(false)
+    setIsEditable(false);
     navigate("/");
   };
 
   const toggleDrawer = () => {
-    if ((isopen && viewportwidth>800)) {
+    if (isopen && viewportwidth > 800) {
       dispatch(Close());
     } else {
       dispatch(Open());
@@ -192,7 +198,7 @@ const TopNav = () => {
     </Menu>
   );
 
-  const notiMenuId = "navbar-notification-menu"
+  const notiMenuId = "navbar-notification-menu";
   const renderNotiMenu = (
     <NotificationDropdown
       menuId={notiMenuId}
@@ -200,7 +206,7 @@ const TopNav = () => {
       isMenuOpen={isNotiMenuOpen}
       handleMenuClose={handleNotiMenuClose}
     />
-  )
+  );
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
@@ -326,14 +332,14 @@ const TopNav = () => {
   );
 
   return (
-    <>
+    <Box>
       {/* <Box sx={{ flexGrow: 1, zIndex: '1500' }}> */}
       <AppBar
         position="fixed"
         sx={{ backgroundColor: "white", color: "#0a2540", width: "100%" }}
       >
         <Toolbar>
-          {localStorage.getItem("token") !== null && viewportwidth > 800 &&
+          {localStorage.getItem("token") !== null && viewportwidth > 800 && (
             <IconButton
               size="large"
               edge="start"
@@ -344,9 +350,20 @@ const TopNav = () => {
             >
               <MenuIcon />
             </IconButton>
-          }
+          )}
           <a className="" href="/">
-            <img alt="ISDN Logo" src={navbarbrand} width="130" height="40" style={{marginLeft: (localStorage.getItem("token") === null || viewportwidth < 800 ) ? "20%" : null}} />
+            <img
+              alt="ISDN Logo"
+              src={navbarbrand}
+              width="130"
+              height="40"
+              style={{
+                marginLeft:
+                  localStorage.getItem("token") === null || viewportwidth < 800
+                    ? "20%"
+                    : null,
+              }}
+            />
           </a>
           {/* <Typography variant="h6" noWrap component="div">
             Leaptron
@@ -374,18 +391,20 @@ const TopNav = () => {
                   onMouseEnter={handleNotiMenuOpen}
                   onMouseLeave={handleNotiMenuClose}
                 >
-                  <IconButton
-                    size="large"
-                    color="inherit"
-                  >
-                    <Badge sx={{ mt: "5px", mb: "-5px" }} badgeContent={notificationcount} variant="dot" color="error">
+                  <IconButton size="large" color="inherit">
+                    <Badge
+                      sx={{ mt: "5px", mb: "-5px" }}
+                      badgeContent={notificationcount}
+                      variant="dot"
+                      color="error"
+                    >
                       <NotificationsIcon sx={{}} />
                     </Badge>
                     {/* <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge> */}
                   </IconButton>
-                  {isNotiMenuOpen ? <>{renderNotiMenu}</> : null}
+                  {isNotiMenuOpen ? <Box>{renderNotiMenu}</Box> : null}
                 </div>,
                 <div
                   className="navprofile flexcontainer"
@@ -433,7 +452,7 @@ const TopNav = () => {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-    </>
+    </Box>
   );
 };
 

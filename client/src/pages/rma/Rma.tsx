@@ -1,3 +1,4 @@
+import React from "react";
 import Rmatabs from "../../components/tabs/RmaTabs";
 
 function rma() {

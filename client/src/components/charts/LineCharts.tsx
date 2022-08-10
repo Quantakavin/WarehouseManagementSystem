@@ -1,6 +1,6 @@
 import { Card, Grid } from "@mui/material";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CartesianGrid,
   Line,
@@ -15,7 +15,6 @@ import useWindowSize from "../../hooks/useWindowSize";
 import "../../styles/chart.scss";
 
 const LineCharts = ({ title, dataKey, grid }) => {
-  const [error, setError] = useState(null);
   const [tloan, setTloan] = useState([]);
   const [rma, setRMA] = useState([]);
   const [date, setDate] = useState(new Date());
@@ -50,7 +49,7 @@ const LineCharts = ({ title, dataKey, grid }) => {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={viewportwidth <1000 ? 12 : 6}>
+      <Grid item xs={viewportwidth < 1000 ? 12 : 6}>
         <Card sx={{ height: "100%", width: "98%", p: 2 }}>
           <Grid container>
             <Grid item xs={12}>
@@ -76,7 +75,7 @@ const LineCharts = ({ title, dataKey, grid }) => {
           </Grid>
         </Card>
       </Grid>
-      <Grid item xs={viewportwidth <1000 ? 12 : 6}>
+      <Grid item xs={viewportwidth < 1000 ? 12 : 6}>
         <Card sx={{ height: "100%", width: "100%", p: 2 }}>
           <Grid container>
             <Grid item xs={12}>

@@ -69,29 +69,34 @@ const UserGroups: React.FC = () => {
 
   const headers = ["ID", "Name", "Description", "Action"];
 
-  const UserGroupnamesQuery = useQuery(
-    [`usergroupnames`, debouncedValue],
-    () => GetUserGroupNames(debouncedValue),
-    {
-      onSuccess: (data) => {
-        const namearray = data.data.map((record) => {
-          return record.Name;
-        });
-        setSearchOptions(namearray);
-      },
-    }
-  );
+  // const UserGroupnamesQuery = useQuery(
+  //   [`usergroupnames`, debouncedValue],
+  //   () => GetUserGroupNames(debouncedValue),
+  //   {
+  //     onSuccess: (data) => {
+  //       const namearray = data.data.map((record) => {
+  //         return record.Name;
+  //       });
+  //       setSearchOptions(namearray);
+  //     },
+  //   }
+  // );
 
   const UserGroupsQuery = useInfiniteQuery(
     [`filterusergroups`, sortColumn, sortOrder, searchName],
     FilterUserGroups,
     {
-      getNextPageParam: (lastPage, pages) => {
+      getNextPageParam: (lastPage) => {
         if (lastPage.nextPage < lastPage.totalPages) return lastPage.nextPage;
         return undefined;
       },
     }
   );
+
+  const SelectDelete = (id: string) => {
+    setIdToDelete(id);
+    setShowConfirmation(true);
+  };
 
   const ActionMenu = (id: string) => {
     return [
@@ -127,11 +132,6 @@ const UserGroups: React.FC = () => {
         dispatch(ChangeSortColumn({ column: header }));
       }
     }
-  };
-
-  const SelectDelete = (id: string) => {
-    setIdToDelete(id);
-    setShowConfirmation(true);
   };
 
   const Delete = (id: string) => {

@@ -1,15 +1,13 @@
+import React, { Suspense, useRef, useState } from "react";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
-import { Suspense, useRef, useState } from "react";
 import * as THREE from "three";
 import TwoColRack from "../../components/3Dmodels/2ColRack";
 import ThreeColRack from "../../components/3Dmodels/3ColRack";
 import FourColRack from "../../components/3Dmodels/4ColRack";
-import "../../styles/BinLocation.scss";
 import SearchBar from "../../components/search/SearchBar";
 import useDebounce from "../../hooks/useDebounce";
-import { useQuery } from "react-query";
-import { GetBinsByBrand, GetBrandNames } from "../../api/BinLocationDB";
+import "../../styles/BinLocation.scss";
 
 const Floor = () => {
   const colorMap = useLoader(THREE.TextureLoader, "Concrete030_4K_Color.png");
@@ -277,31 +275,31 @@ const BinLocations = () => {
   const [selectedBinTags, setSelectedBinTags] = useState<string[]>(null);
   const debouncedValue = useDebounce<string>(inputName, 500);
 
-  const BrandNamesQuery = useQuery(
-    [`brandnames`, debouncedValue],
-    () => GetBrandNames(debouncedValue),
-    {
-      onSuccess: (data) => {
-        const brandarray = data.data.map((record) => {
-          return record.Brand;
-        });
-        setSearchOptions(brandarray);
-      },
-    }
-  );
+  // const BrandNamesQuery = useQuery(
+  //   [`brandnames`, debouncedValue],
+  //   () => GetBrandNames(debouncedValue),
+  //   {
+  //     onSuccess: (data) => {
+  //       const brandarray = data.data.map((record) => {
+  //         return record.Brand;
+  //       });
+  //       setSearchOptions(brandarray);
+  //     },
+  //   }
+  // );
 
-  const BinsByBrandQuery = useQuery(
-    [`binsbybrand`, searchName],
-    () => GetBinsByBrand(searchName),
-    {
-      onSuccess: (data) => {
-        const returnbins = data.data.map((bin) => {
-          return bin.BinTag;
-        });
-        setSelectedBinTags(returnbins);
-      },
-    }
-  );
+  // const BinsByBrandQuery = useQuery(
+  //   [`binsbybrand`, searchName],
+  //   () => GetBinsByBrand(searchName),
+  //   {
+  //     onSuccess: (data) => {
+  //       const returnbins = data.data.map((bin) => {
+  //         return bin.BinTag;
+  //       });
+  //       setSelectedBinTags(returnbins);
+  //     },
+  //   }
+  // );
 
   const handleInputChange = (inputstring: string) => {
     setSelectedBinTags(null);
@@ -323,10 +321,9 @@ const BinLocations = () => {
           handleSearch={handleSearch}
           searchoptions={searchOptions}
         />
-        <br></br>
+        <br />
         <h4>Empty Bin List</h4>
       </div>
-
 
       <div className="flexcontainer">
         <Canvas

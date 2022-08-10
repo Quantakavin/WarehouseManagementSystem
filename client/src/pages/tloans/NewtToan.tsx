@@ -17,7 +17,6 @@ import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import Modal from "@mui/material/Modal";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -31,23 +30,19 @@ import {
   GridRowsProp,
   MuiEvent,
 } from "@mui/x-data-grid";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css";
 import dateFormat from "dateformat";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "react-use-cart";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Autocomplete from "@mui/material/Autocomplete";
-import { Toast } from "../../components/alerts/SweetAlert";
 import { useAppSelector } from "../../app/hooks";
-import {
-  selectPermissions,
-  selectRole,
-} from "../../app/reducers/CurrentUserSlice";
+import { selectPermissions } from "../../app/reducers/CurrentUserSlice";
+import { Toast } from "../../components/alerts/SweetAlert";
 import config from "../../config/config";
 
 function newtloan() {
@@ -64,7 +59,7 @@ function newtloan() {
   const [email, setEmail] = useState("");
   const [collection, setCollection] = useState("");
   const [requireddate, setRDate] = useState("");
-  const [dateForm, setDateForm] = useState('');
+  const [dateForm, setDateForm] = useState("");
   const [typeError, setTypeError] = useState(false);
   const [companyError, setCompanyError] = useState(false);
   const [purposeError, setPurposeError] = useState(false);
@@ -79,7 +74,7 @@ function newtloan() {
   const [emailErrorText, setEmailErrorText] = useState("");
   const [collectionErrorText, setCollectionErrorText] = useState("");
   const [rdateErrorText, setRDateErrorText] = useState("");
-  const [minDateStr, setMinDateStr] = useState('')
+  const [minDateStr, setMinDateStr] = useState("");
   const permissions = useAppSelector(selectPermissions);
   const ExternalApplication = permissions.some(
     (e) => e.FeatureName === "T-Loan Application (Internal+External)"
@@ -117,12 +112,10 @@ function newtloan() {
       Quantity: quantity,
     })
   );
-  const {
-    updateItemQuantity,
-    removeItem,
-    emptyCart,
-  } = useCart();
-  const minimumDate: any = new Date(new Date().getTime()+(10*24*60*60*1000))
+  const { updateItemQuantity, removeItem, emptyCart } = useCart();
+  const minimumDate: any = new Date(
+    new Date().getTime() + 10 * 24 * 60 * 60 * 1000
+  );
   const minimumDateString = minimumDate.toString();
   useEffect(() => {
     const correctFormat = dateFormat(minimumDateString, "yyyy-mm-dd");
@@ -341,7 +334,7 @@ function newtloan() {
     setCollection(event.target.value);
   };
 
-  const handleChangeRequiredDate = (newValue: '') => {
+  const handleChangeRequiredDate = (newValue: "") => {
     setDateForm(newValue);
   };
 
@@ -396,7 +389,7 @@ function newtloan() {
       setRDateError(true);
       setRDateErrorText("Select a date");
       setSubmitLoading(false);
-    }else if((requireddate < minDateStr) === true){
+    } else if (requireddate < minDateStr === true) {
       Toast.fire({
         icon: "warning",
         title: "Please Select Your Required Date",
@@ -405,7 +398,7 @@ function newtloan() {
         width: 315,
       });
       setRDateError(true);
-      setSubmitLoading(false)
+      setSubmitLoading(false);
     }
     if (email === "") {
       setEmailError(true);
@@ -496,7 +489,6 @@ function newtloan() {
   };
 
   const DraftLoan = (e) => {
-   
     setLoading(true);
     e.preventDefault();
     setTypeError(false);
@@ -540,7 +532,7 @@ function newtloan() {
       setRDateError(true);
       setRDateErrorText("Select a date");
       setLoading(false);
-    }else if((requireddate < minDateStr) === true){
+    } else if (requireddate < minDateStr === true) {
       Toast.fire({
         icon: "warning",
         title: "Please Select Your Required Date",
@@ -549,7 +541,7 @@ function newtloan() {
         width: 315,
       });
       setRDateError(true);
-      setSubmitLoading(false)
+      setSubmitLoading(false);
     }
     if (email === "") {
       setEmailError(true);
@@ -661,8 +653,8 @@ function newtloan() {
             label="Loan Type"
             size="small"
             onBlur={() => {
-              setTypeError(false)
-              setTypeErrorText("")
+              setTypeError(false);
+              setTypeErrorText("");
               if (type === "") {
                 setTypeError(true);
                 setTypeErrorText("Selection required");
@@ -691,8 +683,8 @@ function newtloan() {
             label="Loan Type"
             size="small"
             onBlur={() => {
-              setTypeError(false)
-              setTypeErrorText("")
+              setTypeError(false);
+              setTypeErrorText("");
               if (type === "") {
                 setTypeError(true);
                 setTypeErrorText("Selection required");
@@ -710,7 +702,7 @@ function newtloan() {
     }
     return null;
   };
- 
+
   const ExternalOrInternal = () => {
     if (type === "1") {
       return (
@@ -724,8 +716,8 @@ function newtloan() {
             size="small"
             label="Company"
             onBlur={() => {
-              setCompanyError(false)
-              setCompanyErrorText("")
+              setCompanyError(false);
+              setCompanyErrorText("");
               if (company === "") {
                 setCompanyError(true);
                 setCompanyErrorText("Selection required");
@@ -756,8 +748,8 @@ function newtloan() {
           name="customer Company"
           sx={{ marginLeft: 3 }}
           onBlur={() => {
-            setCompanyError(false)
-            setCompanyErrorText("")
+            setCompanyError(false);
+            setCompanyErrorText("");
             if (company === "") {
               setCompanyError(true);
               setCompanyErrorText("Required");
@@ -782,8 +774,8 @@ function newtloan() {
           size="small"
           label="Company"
           onBlur={() => {
-            setCompanyError(false)
-            setCompanyErrorText("")
+            setCompanyError(false);
+            setCompanyErrorText("");
             if (company === "") {
               setCompanyError(true);
               setCompanyErrorText("Selection required");
@@ -804,9 +796,7 @@ function newtloan() {
       </FormControl>
     );
   };
-  
-   
-  
+
   const getCard = () => {
     const loanDuration = [
       { "1 Week": "7" },
@@ -856,8 +846,8 @@ function newtloan() {
                   name="customerEmail"
                   sx={{ marginLeft: 3 }}
                   onBlur={() => {
-                    setEmailError(false)
-                    setEmailErrorText("")
+                    setEmailError(false);
+                    setEmailErrorText("");
                     if (email === "") {
                       setEmailError(true);
                       setEmailErrorText("Required");
@@ -884,8 +874,8 @@ function newtloan() {
                   rows={4}
                   label="Purpose"
                   onBlur={() => {
-                    setPurposeError(false)
-                    setPurposeErrorText("")
+                    setPurposeError(false);
+                    setPurposeErrorText("");
                     if (purpose === "") {
                       setPurposeError(true);
                       setPurposeErrorText("Required");
@@ -908,8 +898,8 @@ function newtloan() {
                     size="small"
                     variant="filled"
                     onBlur={() => {
-                      setCollectionError(false)
-                      setCollectionErrorText("")
+                      setCollectionError(false);
+                      setCollectionErrorText("");
                       if (collection === "") {
                         setCollectionError(true);
                         setCollectionErrorText("Selection required");
@@ -937,8 +927,8 @@ function newtloan() {
                     label="Duration"
                     size="small"
                     onBlur={() => {
-                      setDurationError(false)
-                      setDurationErrorText("")
+                      setDurationError(false);
+                      setDurationErrorText("");
                       if (duration === "") {
                         setDurationError(true);
                         setDurationErrorText("Selection required");
@@ -970,9 +960,8 @@ function newtloan() {
                       onChange={handleChangeRequiredDate}
                       minDate={minimumDate}
                       inputProps={{
-                        readOnly:true
+                        readOnly: true,
                       }}
-                      
                       renderInput={(params) => (
                         <TextField
                           id="filled-required"

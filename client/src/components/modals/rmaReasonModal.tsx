@@ -1,5 +1,6 @@
-import CloseIcon from '@mui/icons-material/Close';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import React, { useEffect, useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { LoadingButton } from "@mui/lab";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
@@ -8,8 +9,7 @@ import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import config from "../../config/config";
 
 const style = {
@@ -24,14 +24,13 @@ const style = {
   p: 4,
 };
 
-interface rma {
+interface RmaType {
   RejectReason: string;
 }
 
-export default function ReasonModalButton() {
+const ReasonModalButton = () => {
   const { RmaID } = useParams();
-  const navigate = useNavigate();
-  const [rma, setRma] = useState<rma>([]);
+  const [rma, setRma] = useState<RmaType>([]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -40,7 +39,7 @@ export default function ReasonModalButton() {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const rma = await axios.get(`${config.baseURL}/RMA/${RmaID}`);
+      await axios.get(`${config.baseURL}/RMA/${RmaID}`);
 
       setRma(rma.data);
     };
@@ -66,7 +65,7 @@ export default function ReasonModalButton() {
           height: 50,
           borderRadius: 10,
         }}
-        endIcon={<VisibilityIcon/>}
+        endIcon={<VisibilityIcon />}
         onClick={handleOpen}
       >
         View Reason
@@ -121,9 +120,9 @@ export default function ReasonModalButton() {
                     height: 50,
                     borderRadius: 10,
                     paddingRight: 4,
-                    marginTop: 3.7
+                    marginTop: 3.7,
                   }}
-                  startIcon={<CloseIcon/>}
+                  startIcon={<CloseIcon />}
                   onClick={handleClose}
                 >
                   Close
@@ -135,4 +134,6 @@ export default function ReasonModalButton() {
       </Modal>
     </motion.div>
   );
-}
+};
+
+export default ReasonModalButton;

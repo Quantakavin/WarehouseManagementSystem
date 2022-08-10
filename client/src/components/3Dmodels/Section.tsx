@@ -1,6 +1,6 @@
 import { OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Suspense, useRef } from "react";
+import React, { Suspense, useRef } from "react";
 import * as THREE from "three";
 import Rack from "./3ColRack";
 import "../../styles/BinLocation.scss";

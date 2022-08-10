@@ -1,8 +1,7 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { Chip, Container, Divider } from "@mui/material";
+import { Box, Chip, Container, Divider } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import DOMPurify from "dompurify";
-import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
@@ -52,7 +51,7 @@ const ViewNotificationGroup: React.FC = () => {
   }
 
   return (
-    <>
+    <Box>
       {NotificationGroupQuery.status === "success" && (
         <Container className="cardcontainer shadow">
           <h2 className="cardheader">
@@ -66,16 +65,19 @@ const ViewNotificationGroup: React.FC = () => {
               ),
             }}
           />
-          <div className="cardfield" style={{marginTop: 20}}>
+          <div className="cardfield" style={{ marginTop: 20 }}>
             <p className="cardfieldlabel">Company</p>
             <p className="cardfieldvalue">
               {NotificationGroupQuery.data.data[0].CompanyName}
             </p>
           </div>
           <Divider sx={{ mb: 3 }}>
-              <Chip label="Notifications" sx={{ fontWeight: 500 }} />
+            <Chip label="Notifications" sx={{ fontWeight: 500 }} />
           </Divider>
-          <div className="flexcontainer cardfield" style={{marginTop: 20, marginBottom: 10}}>
+          <div
+            className="flexcontainer cardfield"
+            style={{ marginTop: 20, marginBottom: 10 }}
+          >
             <p className="cardfieldlabel">Notification List:</p>
           </div>
           <div className="flexcontainer cardtable">
@@ -99,19 +101,21 @@ const ViewNotificationGroup: React.FC = () => {
             <button
               style={{ alignSelf: "flex-start" }}
               className="cardbackbutton"
-              onClick={() => navigate('/notificationgroups')}
+              onClick={() => navigate("/notificationgroups")}
               type="button"
             >
               <ArrowBackIosIcon fontSize="small" /> Back
             </button>
-            <GeneralButton 
-            text="Edit Details" 
-            clickfunction={() => navigate(`/editnotificationgroup/${params.id}`)}
+            <GeneralButton
+              text="Edit Details"
+              clickfunction={() =>
+                navigate(`/editnotificationgroup/${params.id}`)
+              }
             />
           </div>
         </Container>
       )}
-    </>
+    </Box>
   );
 };
 export default ViewNotificationGroup;

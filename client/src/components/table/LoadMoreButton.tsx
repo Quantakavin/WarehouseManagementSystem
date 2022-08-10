@@ -1,5 +1,5 @@
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import React from "react";
 import { UseInfiniteQueryResult } from "react-query";
 
@@ -10,7 +10,7 @@ const LoadMoreButton: React.FC<QueryProps> = ({ query }) => {
   return (
     <div className="flexcontainer" style={{ width: "100%" }}>
       {query.hasNextPage ? (
-        <>
+        <Box>
           {query.isFetchingNextPage ? (
             <CircularProgress
               sx={{ color: "#0A2540", marginTop: "20px", marginBottom: "20px" }}
@@ -31,7 +31,7 @@ const LoadMoreButton: React.FC<QueryProps> = ({ query }) => {
               <AddCircleOutlineIcon /> Click to Load More
             </button>
           )}
-        </>
+        </Box>
       ) : (
         <p
           style={{

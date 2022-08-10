@@ -9,7 +9,12 @@ interface ButtonProps {
   endicon?: React.ReactNode;
 }
 
-const GeneralButton: React.FC<ButtonProps> = ({ text, clickfunction, starticon, endicon }) => {
+const GeneralButton: React.FC<ButtonProps> = ({
+  text,
+  clickfunction,
+  starticon,
+  endicon,
+}) => {
   return (
     <motion.div
       className="animatable"
