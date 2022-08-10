@@ -374,8 +374,8 @@ const Cards = () => {
     );
   }
   return (
-    <Grid container sx={{ marginTop: -2 }}>
-      <Grid item xs={6}>
+    <Grid spacing={3} container sx={{ marginTop: -2 }}>
+      <Grid item xs={viewportwidth < 1000 ? 12 : 6}>
         <Card sx={{ height: "100%", width: "98%", pt: 2, pb: 2, pl: 6, pr: 6 }}>
           <Typography
             variant="subtitle2"
@@ -387,28 +387,48 @@ const Cards = () => {
             }}
           >
             <Grid container>
+            <Grid item xs={12}>
+                  <Box sx={{ fontWeight: 500, fontSize: "22px" }}>
+                    RMA Overview
+                  </Box>
+                  <Divider
+                    sx={{
+                      mt: "10px",
+                      mb: "10px",
+                      borderBottomWidth: 1,
+                      backgroundColor: "#0A2540",
+                    }}
+                  />
+                </Grid>
               <Grid item xs={6}>
-                <Box>Approved</Box>
-                <Box sx={{ color: "#0A2540", fontWeight: "normal" }}>
+                <Chip label="Approved" />
+                <Box                     sx={{
+                      color: "#0A2540",
+                      fontWeight: "normal",
+                      ml: "10px",
+                      mt: "5px",
+                      fontSize: "22px",
+                    }}>
                   {ApprovedRMAs.length}
                 </Box>
               </Grid>
               <Grid item xs={6} sx={{ paddingLeft: 5 }}>
-                <Box sx={{}}>Rejected</Box>
-                <Box sx={{ color: "#0A2540", fontWeight: "normal" }}>
+                <Chip label="Rejected" />
+                <Box                     sx={{
+                      color: "#0A2540",
+                      fontWeight: "normal",
+                      ml: "10px",
+                      mt: "5px",
+                      fontSize: "22px",
+                    }}>
                   {RejectedRMAs.length}
                 </Box>
-              </Grid>
-              <Grid item xs={12}>
-                <Divider>
-                  <Chip label="RMA" />
-                </Divider>
               </Grid>
             </Grid>
           </Typography>
         </Card>
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={viewportwidth < 1000 ? 12 : 6}>
         <Card
           sx={{ height: "100%", width: "100%", pt: 2, pb: 2, pl: 6, pr: 6 }}
         >
@@ -422,22 +442,42 @@ const Cards = () => {
             }}
           >
             <Grid container>
+            <Grid item xs={12}>
+                  <Box sx={{ fontWeight: 500, fontSize: "22px" }}>
+                    T-Loan Overview
+                  </Box>
+                  <Divider
+                    sx={{
+                      mt: "10px",
+                      mb: "10px",
+                      borderBottomWidth: 1,
+                      backgroundColor: "#0A2540",
+                    }}
+                  />
+                </Grid>
               <Grid item xs={6}>
-                <Box>Draft</Box>
-                <Box sx={{ color: "#0A2540", fontWeight: "normal" }}>
+                <Chip label="Draft" />
+                <Box                     sx={{
+                      color: "#0A2540",
+                      fontWeight: "normal",
+                      ml: "10px",
+                      mt: "5px",
+                      fontSize: "22px",
+                    }}>
                   {DraftTloans.length}
                 </Box>
               </Grid>
               <Grid item xs={6} sx={{ paddingLeft: 6 }}>
-                <Box>Current</Box>
-                <Box sx={{ color: "#0A2540", fontWeight: "normal" }}>
+              <Chip label="Current" />
+                <Box                     sx={{
+                      color: "#0A2540",
+                      fontWeight: "normal",
+                      ml: "10px",
+                      mt: "5px",
+                      fontSize: "22px",
+                    }}>
                   {CurrentTloans.length}
                 </Box>
-              </Grid>
-              <Grid item xs={12}>
-                <Divider>
-                  <Chip label="TLoans" />
-                </Divider>
               </Grid>
             </Grid>
           </Typography>
