@@ -40,7 +40,6 @@ const Model: React.FC<ModelProps> = ({
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const [exists, setExists] = useState<boolean>(true);
   const { nodes, materials } = useGLTF("/box.glb") as GLTFResult;
-  const bintag = `${areatag}${racktag}${leveltag}${sectiontag}`;
 
   // Get Bin Information
   // function Bins () {
@@ -57,6 +56,7 @@ const Model: React.FC<ModelProps> = ({
   // get bin tag by bin tag
 
   useEffect(() => {
+    const bintag = `${areatag}${racktag}${leveltag}${sectiontag}`;
     axios.get(`${config.baseURL}/bintag/${bintag}`).then((data) => {
       console.log(data.data[0])
       if (data.data[0] == null) {
@@ -86,10 +86,6 @@ const Model: React.FC<ModelProps> = ({
 
   //   console.log(BinsData);
 
-  if (currentbintags?.includes(bintag)) {
-    console.log("this bin tag is included: ", bintag)
-  }
-
   return (
     <>
     {exists?
@@ -114,7 +110,7 @@ const Model: React.FC<ModelProps> = ({
         {isSelected ? (
           <Html distanceFactor={10}>
             <div className="content">
-              BinTag:{BinsData.BinTag}
+              BinTag:{BinsData?.BinTag}
               <br />
               Column: {sectiontag}
               <br />
@@ -122,15 +118,15 @@ const Model: React.FC<ModelProps> = ({
               <br />
               Level: {leveltag}
               <br />
-              Capacity:{BinsData.Volume} cm3
+              Capacity:{BinsData?.Volume} cm3
               <br />
-              Amount of Items: {BinsData.AmountOfItems}
+              Amount of Items: {BinsData?.AmountOfItems}
               <br />
             </div>
           </Html>
         ) : null}
 
-        <meshStandardMaterial color={currentbintags?.includes(bintag) || isSelected ? "#8b0000" : "gray"} />
+        <meshStandardMaterial color={currentbintags?.includes(`${areatag}${racktag}${leveltag}${sectiontag}`) || isSelected ? "#8b0000" : "gray"} />
       </mesh>
     </group> : null}
     </>
