@@ -285,7 +285,7 @@ module.exports.updateRmaAccepted = async (RmaID) => {
 };
 
 module.exports.updateRmaChecklist = async (RmaID, products) => {
-    return await knex.transaction((trx) => {
+    return knex.transaction((trx) => {
         knex('Rma')
             .where('RmaID', RmaID)
             .update({
@@ -293,9 +293,9 @@ module.exports.updateRmaChecklist = async (RmaID, products) => {
             })
             .transacting(trx)
             .then(async () => {
-                let rmaproducts = await products.map(async (product) => {
+                const rmaproducts = await products.map(async (product) => {
                     console.log(`${product.id} ${product.RmaProductStatus}`);
-                    return await knex('RmaProduct')
+                    return knex('RmaProduct')
                         .where('RmaProductPK', product.id)
                         .update({ RmaProductStatus: product.RmaProductStatus })
                         .transacting(trx);
@@ -330,7 +330,7 @@ module.exports.updateRMAReceived = async (RmaID) => {
             })
             .transacting(trx)
             .then(async () => {
-                return await knex('RmaProduct')
+                return knex('RmaProduct')
                     .where('RmaID', RmaID)
                     .update({ RmaProductStatus: 1 })
                     .transacting(trx);
@@ -341,7 +341,7 @@ module.exports.updateRMAReceived = async (RmaID) => {
 };
 
 module.exports.updateRmaInstructions = async (RmaID, products) => {
-    return await knex.transaction((trx) => {
+    return knex.transaction((trx) => {
         knex('Rma')
             .where('RmaID', RmaID)
             .update({
@@ -349,9 +349,9 @@ module.exports.updateRmaInstructions = async (RmaID, products) => {
             })
             .transacting(trx)
             .then(async () => {
-                let rmaproducts = await products.map(async (product) => {
+                const rmaproducts = await products.map(async (product) => {
                     console.log(`${product.id} ${product.Instructions}`);
-                    return await knex('RmaProduct')
+                    return knex('RmaProduct')
                         .where('RmaProductPK', product.id)
                         .update({ Instructions: product.Instructions })
                         .transacting(trx);
@@ -364,7 +364,7 @@ module.exports.updateRmaInstructions = async (RmaID, products) => {
 };
 
 module.exports.updateRmaCOA = async (RmaID, products) => {
-    return await knex.transaction((trx) => {
+    return knex.transaction((trx) => {
         knex('Rma')
             .where('RmaID', RmaID)
             .update({
@@ -372,9 +372,9 @@ module.exports.updateRmaCOA = async (RmaID, products) => {
             })
             .transacting(trx)
             .then(async () => {
-                let rmaproducts = await products.map(async (product) => {
+                const rmaproducts = await products.map(async (product) => {
                     console.log(`${product.id} ${product.CourseOfAction}`);
-                    return await knex('RmaProduct')
+                    return knex('RmaProduct')
                         .where('RmaProductPK', product.id)
                         .update({ CourseOfAction: product.CourseOfAction })
                         .transacting(trx);

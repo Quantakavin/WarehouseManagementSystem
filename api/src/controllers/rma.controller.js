@@ -191,7 +191,9 @@ module.exports.getMyIPRMA = async (req, res) => {
             );
             return res.status(200).send(results[0]);
         }
-        return res.status(404).json({ message: 'Cannot find RMA requests under you that are in progress!' });
+        return res
+            .status(404)
+            .json({ message: 'Cannot find RMA requests under you that are in progress!' });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
@@ -389,7 +391,7 @@ module.exports.updateRmaAccepted = async (req, res) => {
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaAccepted(RmaID);
-            if (telegramid !== null) {
+            if (telegramid != null) {
                 rmaAcceptedTele(telegramid, username, RmaID);
             }
             rmaAcceptedMail(email, username, RmaID);
@@ -422,7 +424,7 @@ module.exports.updateRmaRejected = async (req, res) => {
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaRejected(RmaID, rejectreason);
-            if (telegramid !== null) {
+            if (telegramid != null) {
                 rmaRejectedTele(telegramid, username, RmaID, rejectreason);
             }
             rmaRejectedMail(email, username, RmaID, rejectreason);
@@ -475,7 +477,7 @@ module.exports.updateRmaReceived = async (req, res) => {
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRMAReceived(RmaID, products);
-            if (telegramid !== null) {
+            if (telegramid != null) {
                 rmaReceivedTele(telegramid, username, RmaID);
             }
             createNotification(17, userid, RmaID);
@@ -507,8 +509,10 @@ module.exports.updateRmaInstructions = async (req, res) => {
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaInstructions(RmaID, products);
-            if (telegramid !== null) {
+            if (telegramid != null) {
+                console.log('Sending Telegram Notification');
                 rmaVerifiedTele(telegramid, username, RmaID);
+                console.log(`Telegram sent, telegram id is: ${telegramid}`);
             }
             createNotification(18, userid, RmaID);
             rmaVerifiedMail(email, username, RmaID);
@@ -539,8 +543,10 @@ module.exports.updateRmaCoa = async (req, res) => {
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaCOA(RmaID, products);
-            if (telegramid !== null) {
+            if (telegramid != null) {
+                console.log('Sending Telegram Notification');
                 rmaProgressTele(telegramid, username, RmaID);
+                console.log(`Telegram sent, telegram id is: ${telegramid}`);
             }
             createNotification(19, userid, RmaID);
             rmaInprogressMail(email, username, RmaID);
@@ -570,7 +576,7 @@ module.exports.closeRma = async (req, res) => {
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.closeRma(RmaID);
-            if (telegramid !== null) {
+            if (telegramid != null) {
                 rmaClosedTele(telegramid, username, RmaID);
             }
             rmaClosedMail(email, username, RmaID);
