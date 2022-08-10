@@ -1,53 +1,54 @@
-const express = require('express');
-const http = require('http');
 const cors = require('cors');
+const http = require('http');
+const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const formData = require('express-form-data');
+
+const app = express();
+const server = http.createServer(app);
 const io = require('socket.io')(server, {
     cors: {
         origin: '*'
     }
 });
+const formData = require('express-form-data');
+
 const routes = require('./src/routes/index');
 const config = require('./src/config/config');
-const { user_Connect, get_User, user_Logout, user_Disconnect } = require('./socketUsers');
+const { userConnect, getUser, userLogout, userDisconnect } = require('./socketUsers');
 
-const app = express();
 app.use('*', cors());
 
 const PORT = process.env.PORT || 5000;
-
-const server = http.createServer(app);
 
 io.on('connection', (socket) => {
     console.log('a user connected');
 
     socket.on('login', ({ userid }) => {
-        if (!get_User(userid)) {
-            user_Connect(socket.id, userid);
+        if (!getUser(userid)) {
+            userConnect(socket.id, userid);
         }
     });
 
     socket.on('logout', ({ userid }) => {
-        if (get_User(userid)) {
-            user_Logout(userid);
+        if (getUser(userid)) {
+            userLogout(userid);
         }
     });
 
     socket.on('disconnect', () => {
-        user_Disconnect(socket.id);
+        userDisconnect(socket.id);
         console.log(socket.id);
         console.log('user disconnected');
     });
 
     socket.on('send notification', ({ userid, notification }) => {
-        if (get_User(userid)) {
-            const p_user = get_User(userid);
+        if (getUser(userid)) {
+            const pUser = getUser(userid);
             console.log('send notification is called');
-            io.to(p_user.id).emit('notification', {
-                id: p_user.id,
-                userid: p_user.userid,
+            io.to(pUser.id).emit('notification', {
+                id: pUser.id,
+                userid: pUser.userid,
                 text: notification
             });
         }
