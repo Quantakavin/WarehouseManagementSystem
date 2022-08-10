@@ -51,21 +51,20 @@ export const RmaSlice = createSlice({
       state.ReasonForReturn = action.payload.ReasonForReturn;
       state.isAuthenticated = true;
     },
-    acceptRMA: (state) => {
-      state = initialState;
-      state.RmaStatusID;
+    acceptRMA: (state, action: PayloadAction<RmaState>) => {
+      state.RmaStatusID = action.payload.RmaStatusID;
     },
-    rejectRMA: (state) => {
-      state = initialState;
+    rejectRMA: (state, action: PayloadAction<RmaState>) => {
+      state.RmaStatusID = action.payload.RmaStatusID;
     },
-    receiveRMA: (state) => {
-      state = initialState;
+    receiveRMA: (state, action: PayloadAction<RmaState>) => {
+      state.RmaStatusID = action.payload.RmaStatusID;
     },
-    verifyRMA: (state) => {
-      state = initialState;
+    verifyRMA: (state, action: PayloadAction<RmaState>) => {
+      state.RmaStatusID = action.payload.RmaStatusID;
     },
-    COARMA: (state) => {
-      state = initialState;
+    COARMA: (state, action: PayloadAction<RmaState>) => {
+      state.RmaStatusID = action.payload.RmaStatusID;
     },
   },
 });
