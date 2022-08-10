@@ -141,12 +141,14 @@ module.exports.rmaAcceptedTele = (UserID, Username, RmaID) => {
 
 module.exports.rmaRejectedTele = (UserID, Username, RmaID, RejectReason) => {
     try {
+        console.log('Among Us');
         bot.sendMessage(
             UserID,
             `Hello ${Username}, your RMA request #${RmaID} has just been rejected, view the details at http://localhost:3000/rmaDetails/${RmaID}`
         );
         bot.sendMessage(UserID, `Reason: ${RejectReason}`);
     } catch (error) {
+        console.log('Among Us');
         console.log(error);
     }
 };

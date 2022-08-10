@@ -471,7 +471,7 @@ module.exports.updateRmaReceived = async (req, res) => {
         const email = gettingInfo[0][0].Email.toString();
         const userid = gettingInfo[0][0].UserID;
         const username = gettingInfo[0][0].Username.toString();
-        const telegramid = gettingInfo[0][0].TelegramID;
+        const telegramid = gettingInfo[0][0].TelegramID?.toString();
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRMAReceived(RmaID, products);
@@ -503,7 +503,7 @@ module.exports.updateRmaInstructions = async (req, res) => {
         const email = gettingInfo[0][0].Email.toString();
         const userid = gettingInfo[0][0].UserID;
         const username = gettingInfo[0][0].Username.toString();
-        const telegramid = gettingInfo[0][0].TelegramID.toString();
+        const telegramid = gettingInfo[0][0].TelegramID?.toString();
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaInstructions(RmaID, products);
@@ -535,7 +535,7 @@ module.exports.updateRmaCoa = async (req, res) => {
         const email = gettingInfo[0][0].Email.toString();
         const userid = gettingInfo[0][0].UserID;
         const username = gettingInfo[0][0].Username.toString();
-        const telegramid = gettingInfo[0][0].TelegramID.toString();
+        const telegramid = gettingInfo[0][0].TelegramID?.toString();
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.updateRmaCOA(RmaID, products);
@@ -566,7 +566,7 @@ module.exports.closeRma = async (req, res) => {
         const email = gettingInfo[0][0].Email.toString();
         const userid = gettingInfo[0][0].UserID;
         const username = gettingInfo[0][0].Username.toString();
-        const telegramid = gettingInfo[0][0].TelegramID.toString();
+        const telegramid = gettingInfo[0][0].TelegramID?.toString();
         const results = await rmaService.getByRmaID(RmaID);
         if (results.length > 0) {
             await rmaService.closeRma(RmaID);
