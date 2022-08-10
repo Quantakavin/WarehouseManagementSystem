@@ -8,7 +8,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./styles/main.scss";
 import { PersistGate } from "redux-persist/integration/react";
-import {SocketContext, socket} from './context/socket';
+import { SocketContext, socket } from "./context/socket";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -18,13 +18,13 @@ const queryClient = new QueryClient();
 root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-    <SocketContext.Provider value={socket}>
-      <Router>
-        <QueryClientProvider client={queryClient}>
-          <App />
-        </QueryClientProvider>
-      </Router>
-    </SocketContext.Provider>
+      <SocketContext.Provider value={socket}>
+        <Router>
+          <QueryClientProvider client={queryClient}>
+            <App />
+          </QueryClientProvider>
+        </Router>
+      </SocketContext.Provider>
     </PersistGate>
   </Provider>
 );

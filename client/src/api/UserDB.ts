@@ -104,12 +104,16 @@ export const Resend2FAToken = async (formData) => {
 };
 
 export const Verify2FAToken = async (formData, code: number | string) => {
-  return axios.post(`${config.baseURL}/verify2fatoken?mobileno=${code}`, formData, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
+  return axios.post(
+    `${config.baseURL}/verify2fatoken?mobileno=${code}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
 };
 
 export const DeleteUser = async (id: string) => {

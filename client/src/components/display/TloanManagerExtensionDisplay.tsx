@@ -48,7 +48,9 @@ const TLoanManagerDisplay = () => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const returnitems = await axios.get(`${config.baseURL}/tloanitems/${TLoanID}`);
+      const returnitems = await axios.get(
+        `${config.baseURL}/tloanitems/${TLoanID}`
+      );
 
       setItems(returnitems.data);
 
@@ -391,6 +393,6 @@ const TLoanManagerDisplay = () => {
   };
 
   return <div>{getData()}</div>;
-}
+};
 
 export default TLoanManagerDisplay;

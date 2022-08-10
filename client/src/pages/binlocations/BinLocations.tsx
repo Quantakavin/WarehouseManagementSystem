@@ -395,7 +395,6 @@ const Scene = ({ selectedbintags }: SceneProps) => {
           currentbintags={selectedbintags}
         />
 
-
         {/* Section A10 */}
         <FourColRack
           position={[0, 0, 180]}
@@ -440,7 +439,6 @@ const Scene = ({ selectedbintags }: SceneProps) => {
           changeposition={changeCameraPosition}
           currentbintags={selectedbintags}
         />
-
 
         {/* Section A11 */}
         <FourColRack
@@ -532,7 +530,7 @@ const Scene = ({ selectedbintags }: SceneProps) => {
         />
 
         {/* Section A13 */}
-          <FourColRack
+        <FourColRack
           position={[0, 0, 240]}
           areatag="A13"
           racktag="R01"
@@ -606,7 +604,7 @@ const Scene = ({ selectedbintags }: SceneProps) => {
         />
 
         {/* Section A15 */}
-          <FourColRack
+        <FourColRack
           position={[0, 0, 280]}
           areatag="A15"
           racktag="R01"
@@ -671,8 +669,6 @@ const Scene = ({ selectedbintags }: SceneProps) => {
           changeposition={changeCameraPosition}
           currentbintags={selectedbintags}
         />
-
-
 
         <Floor />
       </Suspense>

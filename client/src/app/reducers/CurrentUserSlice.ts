@@ -85,6 +85,7 @@ export const selectEnabled2FA = (state: RootState) =>
 export const selectPermissions = (state: RootState) =>
   state.currentUser.permissions;
 export const selectMobileNo = (state: RootState) => state.currentUser.mobileNo;
-export const selectTelegramID = (state: RootState) => state.currentUser.telegramid;
+export const selectTelegramID = (state: RootState) =>
+  state.currentUser.telegramid;
 
 export default currentUserSlice.reducer;

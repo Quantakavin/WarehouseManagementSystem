@@ -83,19 +83,16 @@ const TLoanDisplay = () => {
   const [durationError, setDurationError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [collectionError, setCollectionError] = useState(false);
-  const [requireddateError, setRDateError] = useState(false);
   const [typeErrorText, setTypeErrorText] = useState("");
   const [companyErrorText, setCompanyErrorText] = useState("");
   const [purposeErrorText, setPurposeErrorText] = useState("");
   const [durationErrorText, setDurationErrorText] = useState("");
   const [emailErrorText, setEmailErrorText] = useState("");
   const [collectionErrorText, setCollectionErrorText] = useState("");
-  const [rdateErrorText, setRDateErrorText] = useState("");
   const [submitLoading, setSubmitLoading] = useState(false);
   const [items, setItems] = useState([]);
   const [rows, setRows] = React.useState([]);
   const [loading, setLoading] = useState(false);
-  const [reasonField, setReasonField] = useState("");
   const [statusChange, setStatusChange] = useState("");
   const [statusChangeError, setStatusChangeError] = useState(false);
   const [statusChangeErrorText, setStatusChangeErrorText] = useState("");
@@ -132,11 +129,10 @@ const TLoanDisplay = () => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const loans = await axios
+      const result = await axios
         .get(`${config.baseURL}/tloans/${TLoanID}`)
         .then((data) => {
           setPurposeField(data.data.Purpose);
-          setReasonField(data.data.Reason);
           setRemarksField(data.data.Remarks);
           setEmail(data.data.CustomerEmail);
           setPurpose(data.data.Purpose);
@@ -147,6 +143,7 @@ const TLoanDisplay = () => {
           setLoans(data.data);
           setCompany(data.data.CompanyID || data.data.CompanyName);
         });
+      console.log(result)
     };
     fetchData().catch(console.error);
   }, [TLoanID]);
@@ -154,8 +151,10 @@ const TLoanDisplay = () => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      const items = await axios.get(`${config.baseURL}/tloanitems/${TLoanID}`);
-      setItemsTable(items.data);
+      const itemsAll = await axios.get(
+        `${config.baseURL}/tloanitems/${TLoanID}`
+        );
+      setItemsTable(itemsAll.data);
     };
     fetchData().catch(console.error);
   }, [TLoanID]);
@@ -197,140 +196,25 @@ const TLoanDisplay = () => {
   const handleChangeType = (event: SelectChangeEvent) => {
     setType(event.target.value);
   };
-
-  const TLoanTypeAccess = () => {
-    if (ExternalApplicationPerms === true) {
-      return (
-        <FormControl sx={{ width: 200, marginLeft: 3 }}>
-          <InputLabel>Loan Type</InputLabel>
-          <Select
-            id="filled-required"
-            variant="filled"
-            value={type}
-            onChange={handleChangeType}
-            label="Loan Type"
-            size="small"
-            onBlur={() => {
-              setTypeError(false);
-              setTypeErrorText("");
-              if (type === "") {
-                setTypeError(true);
-                setTypeErrorText("Selection required");
-              }
-            }}
-            error={typeError}
-          >
-            <MenuItem value="1">Internal</MenuItem>
-            <MenuItem value="2">External</MenuItem>
-          </Select>
-          <FormHelperText sx={{ color: "#d11919" }}>
-            {typeErrorText}
-          </FormHelperText>
-        </FormControl>
-      );
-    }
-    if (InternalApplicationPerms === true) {
-      return (
-        <FormControl sx={{ width: 200, marginLeft: 3 }}>
-          <InputLabel>Loan Type</InputLabel>
-          <Select
-            id="filled-required"
-            variant="filled"
-            value={type}
-            onChange={handleChangeType}
-            label="Loan Type"
-            size="small"
-            onBlur={() => {
-              setTypeError(false);
-              setTypeErrorText("");
-              if (type === "") {
-                setTypeError(true);
-                setTypeErrorText("Selection required");
-              }
-            }}
-            error={typeError}
-          >
-            <MenuItem value="1">Internal</MenuItem>
-          </Select>
-          <FormHelperText sx={{ color: "#d11919" }}>
-            {typeErrorText}
-          </FormHelperText>
-        </FormControl>
-      );
-    }
-    return null;
+  const handleChangeCompany = (event: SelectChangeEvent) => {
+    setCompany(event.target.value);
   };
 
-  const ExternalOrInternal = () => {
-    if (type === "1" || type === 1) {
-      return (
-        <FormControl sx={{ width: 200, marginLeft: 3 }}>
-          <InputLabel>Company</InputLabel>
-          <Select
-            id="filled-required"
-            variant="filled"
-            value={company}
-            onChange={handleChangeCompany}
-            size="small"
-            label="Company"
-            onBlur={() => {
-              setCompanyError(false);
-              setCompanyErrorText("");
-              if (company === "") {
-                setCompanyError(true);
-                setCompanyErrorText("Selection required");
-              }
-            }}
-            error={companyError}
-          >
-            <MenuItem value="1">SERVO_LIVE</MenuItem>
-            <MenuItem value="2">LEAPTRON_LIVE</MenuItem>
-            <MenuItem value="3">DIRAK181025</MenuItem>
-            <MenuItem value="4">PMC_LIVE</MenuItem>
-            <MenuItem value="5">PORTWELL_LIVE</MenuItem>
-            <MenuItem value="6">ALL</MenuItem>
-          </Select>
-          <FormHelperText sx={{ color: "#d11919" }}>
-            {companyErrorText}
-          </FormHelperText>
-        </FormControl>
-      );
-    }
-    if (type === "2" || type === 2) {
-      return (
-        <TextField
-          id="filled-required"
-          label="Customer Company"
-          variant="filled"
-          size="small"
-          name="customer Company"
-          sx={{ marginLeft: 3 }}
-          onBlur={() => {
-            setCompanyError(false);
-            setCompanyErrorText("");
-            if (company === "") {
-              setCompanyError(true);
-              setCompanyErrorText("Required");
-            }
-          }}
-          onChange={(e) => setCompany(e.target.value)}
-          value={company}
-          error={companyError}
-          helperText={companyErrorText}
-        />
-      );
-    }
+  const handleChangeDuration = (event: SelectChangeEvent) => {
+    setDuration(event.target.value);
   };
-  const itemStorage = localStorage.getItem("react-use-cart");
-  const cartItems = JSON.parse(itemStorage).items;
 
-  useEffect(() => {
-    if (cartItems === []) {
-      return console.log("Nothing in cart");
-    }
-    setRows(cartItems);
-  }, [cartItems]);
+  const handleChangeCollection = (event: SelectChangeEvent) => {
+    setCollection(event.target.value);
+  };
 
+  const handleChangeStatus = (event: SelectChangeEvent) => {
+    setStatusChange(event.target.value);
+  };
+  const handleChangeRequiredDate = (newValue: "" | null) => {
+    setDateForm(newValue);
+  };
+  const { addItem, emptyCart, updateItemQuantity, removeItem } = useCart();
   const FullFeaturedCrudGrid = () => {
     const handleRowEditStart = (
       params: GridRowParams,
@@ -656,7 +540,141 @@ const TLoanDisplay = () => {
     },
   ];
 
-  const { addItem, emptyCart, updateItemQuantity, removeItem } = useCart();
+  const TLoanTypeAccess = () => {
+    if (ExternalApplicationPerms === true) {
+      return (
+        <FormControl sx={{ width: 200, marginLeft: 3 }}>
+          <InputLabel>Loan Type</InputLabel>
+          <Select
+            id="filled-required"
+            variant="filled"
+            value={type}
+            onChange={handleChangeType}
+            label="Loan Type"
+            size="small"
+            onBlur={() => {
+              setTypeError(false);
+              setTypeErrorText("");
+              if (type === "") {
+                setTypeError(true);
+                setTypeErrorText("Selection required");
+              }
+            }}
+            error={typeError}
+          >
+            <MenuItem value="1">Internal</MenuItem>
+            <MenuItem value="2">External</MenuItem>
+          </Select>
+          <FormHelperText sx={{ color: "#d11919" }}>
+            {typeErrorText}
+          </FormHelperText>
+        </FormControl>
+      );
+    }
+    if (InternalApplicationPerms === true) {
+      return (
+        <FormControl sx={{ width: 200, marginLeft: 3 }}>
+          <InputLabel>Loan Type</InputLabel>
+          <Select
+            id="filled-required"
+            variant="filled"
+            value={type}
+            onChange={handleChangeType}
+            label="Loan Type"
+            size="small"
+            onBlur={() => {
+              setTypeError(false);
+              setTypeErrorText("");
+              if (type === "") {
+                setTypeError(true);
+                setTypeErrorText("Selection required");
+              }
+            }}
+            error={typeError}
+          >
+            <MenuItem value="1">Internal</MenuItem>
+          </Select>
+          <FormHelperText sx={{ color: "#d11919" }}>
+            {typeErrorText}
+          </FormHelperText>
+        </FormControl>
+      );
+    }
+    return null;
+  };
+
+  const ExternalOrInternal = () => {
+    if (type === "1" || type === 1) {
+      return (
+        <FormControl sx={{ width: 200, marginLeft: 3 }}>
+          <InputLabel>Company</InputLabel>
+          <Select
+            id="filled-required"
+            variant="filled"
+            value={company}
+            onChange={handleChangeCompany}
+            size="small"
+            label="Company"
+            onBlur={() => {
+              setCompanyError(false);
+              setCompanyErrorText("");
+              if (company === "") {
+                setCompanyError(true);
+                setCompanyErrorText("Selection required");
+              }
+            }}
+            error={companyError}
+          >
+            <MenuItem value="1">SERVO_LIVE</MenuItem>
+            <MenuItem value="2">LEAPTRON_LIVE</MenuItem>
+            <MenuItem value="3">DIRAK181025</MenuItem>
+            <MenuItem value="4">PMC_LIVE</MenuItem>
+            <MenuItem value="5">PORTWELL_LIVE</MenuItem>
+            <MenuItem value="6">ALL</MenuItem>
+          </Select>
+          <FormHelperText sx={{ color: "#d11919" }}>
+            {companyErrorText}
+          </FormHelperText>
+        </FormControl>
+      );
+    }
+    if (type === "2" || type === 2) {
+      return (
+        <TextField
+          id="filled-required"
+          label="Customer Company"
+          variant="filled"
+          size="small"
+          name="customer Company"
+          sx={{ marginLeft: 3 }}
+          onBlur={() => {
+            setCompanyError(false);
+            setCompanyErrorText("");
+            if (company === "") {
+              setCompanyError(true);
+              setCompanyErrorText("Required");
+            }
+          }}
+          onChange={(e) => setCompany(e.target.value)}
+          value={company}
+          error={companyError}
+          helperText={companyErrorText}
+        />
+      );
+    }  
+    return null
+  };
+  const itemStorage = localStorage.getItem("react-use-cart");
+  const cartItems = JSON.parse(itemStorage).items;
+
+  useEffect(() => {
+    if (cartItems === []) {
+      return console.log("Nothing in cart");
+    }
+    setRows(cartItems);
+  }, [cartItems]);
+
+ 
   const newBasket = itemsTable.map(
     ({ BasketItemID, ItemNo, ItemName, BatchNo, WarehouseCode, Quantity }) => ({
       id: BasketItemID,
@@ -711,25 +729,7 @@ const TLoanDisplay = () => {
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
-  const handleChangeCompany = (event: SelectChangeEvent) => {
-    setCompany(event.target.value);
-  };
-
-  const handleChangeDuration = (event: SelectChangeEvent) => {
-    setDuration(event.target.value);
-  };
-
-  const handleChangeCollection = (event: SelectChangeEvent) => {
-    setCollection(event.target.value);
-  };
-
-  const handleChangeStatus = (event: SelectChangeEvent) => {
-    setStatusChange(event.target.value);
-  };
-  const handleChangeRequiredDate = (newValue: "" | null) => {
-    setDateForm(newValue);
-  };
-
+  
   const emailRegex = /^\S+@\S+\.\S+$/i;
 
   const addItemArray = () => {
@@ -782,7 +782,7 @@ const TLoanDisplay = () => {
     setDurationError(false);
     setEmailError(false);
     setCollectionError(false);
-    setRDateError(false);
+   
     if (items.length === 0) {
       Toast.fire({
         icon: "error",
@@ -814,8 +814,6 @@ const TLoanDisplay = () => {
       setSubmitLoading(false);
     }
     if (requireddate === "") {
-      setRDateError(true);
-      setRDateErrorText("Select a date");
       setSubmitLoading(false);
     }
     if (email === "") {
@@ -914,7 +912,6 @@ const TLoanDisplay = () => {
     setDurationError(false);
     setEmailError(false);
     setCollectionError(false);
-    setRDateError(false);
     if (items.length === 0) {
       Toast.fire({
         icon: "error",
@@ -1330,12 +1327,6 @@ const TLoanDisplay = () => {
                     inputFormat="yyyy-MM-dd"
                     value={dateForm}
                     inputProps={{ readOnly: true }}
-                    onClose={() => {
-                      if (requireddate === "") {
-                        setRDateError(true);
-                        setRDateErrorText("Select a date");
-                      }
-                    }}
                     onChange={handleChangeRequiredDate}
                     renderInput={(params) => (
                       <TextField
@@ -1509,7 +1500,7 @@ const TLoanDisplay = () => {
       setRDate(loans.RequiredDate);
     }
   }, []);
-
+  
   if (
     loans.TLoanStatusID === 3 ||
     loans.TLoanStatusID === 5 ||
@@ -1992,6 +1983,7 @@ const TLoanDisplay = () => {
                           <Select
                             id="outlined-basic"
                             value={statusChange}
+                            error={statusChangeError}
                             onChange={handleChangeStatus}
                             label="update Status"
                             size="big"
@@ -2716,6 +2708,7 @@ const TLoanDisplay = () => {
       </Box>
     );
   } else return null;
+  
 };
 
 export default TLoanDisplay;
