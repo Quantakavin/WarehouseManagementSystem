@@ -1,22 +1,22 @@
 import { combineReducers } from "redux";
-import BinLocationSlice from "./BinLocationSlice";
+import BinLocationReducer from "./BinLocationSlice";
 import CurrentUserReducer from "./CurrentUserSlice";
-import NotiGroupTableFilterSlice from "./NotiGroupTableFilterSlice";
+import NotiGroupTableFilterReducer from "./NotiGroupTableFilterSlice";
 import RmaReducer from "./RmaReducer";
 import SidebarReducer from "./SidebarSlice";
-import UserGroupTableFilterSlice from "./UserGroupTableFilterSlice";
-import UserTableFilterSlice from "./UserTableFilterSlice";
-import NotificationSlice from "./NotificationSlice";
+import UserGroupTableFilterReducer from "./UserGroupTableFilterSlice";
+import UserTableFilterReducer from "./UserTableFilterSlice";
+import NotificationReducer from "./NotificationSlice";
 
 const RootReducer = combineReducers({
   currentUser: CurrentUserReducer,
   sidebar: SidebarReducer,
   rma: RmaReducer,
-  userTableFilter: UserTableFilterSlice,
-  userGroupTableFilter: UserGroupTableFilterSlice,
-  notification: NotificationSlice,
-  notiGroupTableFilter: NotiGroupTableFilterSlice,
-  binlocation: BinLocationSlice,
+  userTableFilter: UserTableFilterReducer,
+  userGroupTableFilter: UserGroupTableFilterReducer,
+  notification: NotificationReducer,
+  notiGroupTableFilter: NotiGroupTableFilterReducer,
+  binlocation: BinLocationReducer,
 });
 
 export default RootReducer;
