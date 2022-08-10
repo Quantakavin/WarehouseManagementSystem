@@ -8,15 +8,15 @@ module.exports.getBrandNames = async (Brand) => {
 
 // Get Bin By Bin Tag
 module.exports.getBinByBinTag = async (BinTag) => {
-    const query = `SELECT BinID, BinTag, HaiTag, Volume, Weight, BinType FROM Bin WHERE BinTag = ?`;
+    const query = `SELECT DISTINCT B.BinID, B.BinTag, B.HaiTag, B.Volume, B.Weight, B.BinType, count(BP.ItemNo) OVER() AS AmountOfItems FROM Bin B LEFT JOIN BinProduct BP ON B.BinID = BP.BinID WHERE B.BinTag = ?`;
     return knex.raw(query, [BinTag]);
 };
 
 // Get Bin By Product Brand
-module.exports.getBinByProductBrand = async (Brand) => {
-    const query = `SELECT Bin.BinTag, Bin.BinID, BinProduct.Brand, COUNT(ItemName) as Items FROM BinProduct LEFT JOIN Bin ON Bin.BinID = BinProduct.BinID WHERE Brand LIKE ?`;
-    return knex.raw(query, [Brand]);
-};
+// module.exports.getBinByProductBrand = async (Brand) => {
+//     const query = `SELECT Bin.BinTag, Bin.BinID, BinProduct.Brand, COUNT(ItemName) as Items FROM BinProduct LEFT JOIN Bin ON Bin.BinID = BinProduct.BinID WHERE Brand LIKE ?`;
+//     return knex.raw(query, [Brand]);
+// };
 
 // Get Bin By Item Name
 module.exports.getBinByProductName = async (ItemName) => {
@@ -25,7 +25,7 @@ module.exports.getBinByProductName = async (ItemName) => {
 };
 
 // Get Bin By Brand no COUNT
-module.exports.getBinByProductName = async (ItemName) => {
+module.exports.getBinByProductBrand = async (ItemName) => {
     const query = `SELECT Bin.BinTag, Bin.BinID, BinProduct.ItemName, Brand FROM BinProduct LEFT JOIN Bin ON Bin.BinID = BinProduct.BinID WHERE Brand LIKE ?`;
     return knex.raw(query, [ItemName]);
 };
