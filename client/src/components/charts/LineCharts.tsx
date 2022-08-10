@@ -11,6 +11,7 @@ import {
   YAxis,
 } from "recharts";
 import config from "../../config/config";
+import useWindowSize from "../../hooks/useWindowSize";
 import "../../styles/chart.scss";
 
 const LineCharts = ({ title, dataKey, grid }) => {
@@ -18,6 +19,7 @@ const LineCharts = ({ title, dataKey, grid }) => {
   const [tloan, setTloan] = useState([]);
   const [rma, setRMA] = useState([]);
   const [date, setDate] = useState(new Date());
+  const { viewportwidth } = useWindowSize();
 
   // Get Total Request Made from TLoan
   const getTloansRequest = async () => {
@@ -47,8 +49,8 @@ const LineCharts = ({ title, dataKey, grid }) => {
   }, []);
 
   return (
-    <Grid container>
-      <Grid item xs={6}>
+    <Grid container spacing={3}>
+      <Grid item xs={viewportwidth <1000 ? 12 : 6}>
         <Card sx={{ height: "100%", width: "98%", p: 2 }}>
           <Grid container>
             <Grid item xs={12}>
@@ -74,7 +76,7 @@ const LineCharts = ({ title, dataKey, grid }) => {
           </Grid>
         </Card>
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={viewportwidth <1000 ? 12 : 6}>
         <Card sx={{ height: "100%", width: "100%", p: 2 }}>
           <Grid container>
             <Grid item xs={12}>

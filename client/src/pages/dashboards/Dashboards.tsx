@@ -36,7 +36,7 @@ const Dashboards = () => {
 
   return (
     <Box sx={{ pl: 3, pr: 3, pt: 1 }}>
-      <Grid container spacing={3}>
+      <Grid container spacing={2}>
         <Grid item xs={12}>
           <h1 style={{ marginBottom: 0 }}>
             {localStorage.getItem("username")}'s Dashboard
@@ -47,9 +47,7 @@ const Dashboards = () => {
         </Grid>
         <Grid item xs={12}>
           <BarAndPieCharts
-            title={undefined}
-            dataKey={undefined}
-            grid={undefined}
+
           />
         </Grid>
         <Grid item xs={12}>

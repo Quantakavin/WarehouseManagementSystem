@@ -15,6 +15,7 @@ import {
 } from "recharts";
 import config from "../../config/config";
 import "../../styles/chart.scss";
+import useWindowSize from "../../hooks/useWindowSize";
 
 const COLORS = ["#0088FE", "#00C49F"];
 
@@ -47,6 +48,7 @@ const renderCustomizedLabel = ({
 
 const Chart3 = ({}) => {
   const [tloanrequest, settloanRequest] = useState([]);
+  const { viewportwidth } = useWindowSize();
 
   // Get Tloan Request Grouped By Companies
 
@@ -101,19 +103,19 @@ const Chart3 = ({}) => {
 
   // function Chart3() {
   return (
-    <Grid container>
-      <Grid item xs={6}>
+    <Grid container spacing={3}>
+      <Grid item xs={viewportwidth <1000 ? 12 : 6}>
         <Card sx={{ height: "100%", width: "98%", p: 2 }}>
           <h4 style={{ textAlign: "left" }}>TLoan Requests Grouped By Type</h4>
           <ResponsiveContainer width="100%" height="100%" aspect={4 / 1}>
-            <PieChart width={600} height={400}>
+            <PieChart>
               <Pie
                 data={requesttypes}
                 cx="50%"
                 cy="50%"
                 labelLine={false}
                 label={renderCustomizedLabel}
-                outerRadius={134}
+                outerRadius="100%"
                 fill="#8884d8"
                 dataKey="Requests"
               >
@@ -128,7 +130,7 @@ const Chart3 = ({}) => {
           </ResponsiveContainer>
         </Card>
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={viewportwidth <1000 ? 12 : 6}>
         <Card sx={{ height: "100%", width: "100%", p: 2 }}>
           <Grid container>
             <Grid item xs={12}>
