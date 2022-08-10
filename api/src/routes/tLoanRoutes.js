@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const validation = require('../middlewares/validation');
-const TLoanController = require('../controllers/tloanController');
+const TLoanController = require('../controllers/tLoanController');
 
 router.get('/tloan', TLoanController.allLoan);
 router.post('/tloan/newloan', validation.validateLoan, TLoanController.newLoan);

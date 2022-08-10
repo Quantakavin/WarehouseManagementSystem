@@ -1,12 +1,12 @@
-const rate_limiter = require('express-rate-limit');
+const rateLimiter = require('express-rate-limit');
 
-const loginLimiter = rate_limiter({
+const loginLimiter = rateLimiter({
     windows: 1 * 20 * 1000,
     max: 3,
     statusCode: 200,
     message: {
         status: 429,
-        error: 'Attemp to login to accout limit reachedm, please wait and try again in 10 minutes.'
+        error: 'Attempt to login to account limit reached, please wait and try again in 10 minutes.'
     }
 });
 

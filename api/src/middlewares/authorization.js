@@ -6,7 +6,7 @@ const authorization = {
         if (typeof req.headers.authorization !== 'undefined') {
             const token = req.headers.authorization.split(' ')[1];
 
-            jwt.verify(token, config.JWTKey, (err, data) => {
+            jwt.verify(token, config.JWTKey, (err) => {
                 if (err) {
                     res.status(401).json({ message: 'You do not have access' });
                 } else {
