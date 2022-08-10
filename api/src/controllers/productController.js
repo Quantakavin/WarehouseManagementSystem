@@ -19,7 +19,7 @@ module.exports.getAllProducts = async (req, res) => {
     try {
         const products = await redisClient.get(`products?limit=${limit}&page=${page}`);
         if (products !== null) {
-            console.log("Products have been found in redis")
+            console.log('Products have been found in redis');
             const redisresults = JSON.parse(products);
             return res.status(200).json(redisresults);
         }
@@ -82,9 +82,8 @@ module.exports.searchFilterProducts = async (req, res) => {
         );
         if (result.length > 0) {
             return res.status(200).send(result[0]);
-        } else {
-            return res.status(404).send('Cannot find product(s)!');
         }
+        return res.status(404).send('Cannot find product(s)!');
     } catch (error) {
         console.log(error);
         return res.status(500).send({

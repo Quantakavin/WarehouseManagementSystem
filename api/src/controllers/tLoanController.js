@@ -279,7 +279,7 @@ module.exports.newLoan = async (req, res) => {
         // redisClient.del(`TLoanIDs#${TLoanID}`);
         redisClient.del('ManagerLoan');
         redisClient.del('ManagerExtension');
-      
+
         redisClient.del(`CurrentTLoan#${user}`);
         redisClient.del(`PendingTLoan#${user}`);
         redisClient.del(`DraftTLoan#${user}`);
@@ -306,7 +306,6 @@ module.exports.SendDraft = async (req, res) => {
         items
     } = req.body;
     try {
-    
         const tloanItems = items.map((item) => {
             return item;
         });
@@ -428,9 +427,9 @@ module.exports.approveLoan = async (req, res) => {
     try {
         const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
         const email = gettingInfo[0][0].Email;
-        const username = gettingInfo[0][0].Username
-        const UserID = gettingInfo[0][0].UserID
-        const telegramid = gettingInfo[0][0].TelegramID
+        const username = gettingInfo[0][0].Username;
+        const { UserID } = gettingInfo[0][0];
+        const telegramid = gettingInfo[0][0].TelegramID;
         const results = await TLoan.approveLoan(TLoanID);
         if (results) {
             if (telegramid !== null) {
@@ -464,10 +463,10 @@ module.exports.rejectLoan = async (req, res) => {
     const { remarks } = req.body;
     try {
         const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
-        const email = gettingInfo[0][0].Email
-        const username = gettingInfo[0][0].Username
-        const UserID = gettingInfo[0][0].UserID
-        const telegramid = gettingInfo[0][0].TelegramID
+        const email = gettingInfo[0][0].Email;
+        const username = gettingInfo[0][0].Username;
+        const { UserID } = gettingInfo[0][0];
+        const telegramid = gettingInfo[0][0].TelegramID;
         const results = await TLoan.getLoanByNumber(TLoanID);
         if (results.length > 0) {
             if (telegramid !== null) {
@@ -500,10 +499,10 @@ module.exports.approveExtension = async (req, res) => {
     const { TLoanID } = req.params;
     try {
         const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
-        const email = gettingInfo[0][0].Email
-        const username = gettingInfo[0][0].Username
-        const UserID = gettingInfo[0][0].UserID
-        const telegramid = gettingInfo[0][0].TelegramID
+        const email = gettingInfo[0][0].Email;
+        const username = gettingInfo[0][0].Username;
+        const { UserID } = gettingInfo[0][0];
+        const telegramid = gettingInfo[0][0].TelegramID;
         const results = await TLoan.approveExtension(TLoanID);
         if (results) {
             if (telegramid !== null) {
@@ -536,10 +535,10 @@ module.exports.rejectExtension = async (req, res) => {
     const { remarks } = req.body;
     try {
         const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
-        const email = gettingInfo[0][0].Email
-        const username = gettingInfo[0][0].Username
-        const UserID = gettingInfo[0][0].UserID
-        const telegramid = gettingInfo[0][0].TelegramID
+        const email = gettingInfo[0][0].Email;
+        const username = gettingInfo[0][0].Username;
+        const { UserID } = gettingInfo[0][0];
+        const telegramid = gettingInfo[0][0].TelegramID;
         const results = await TLoan.getLoanByNumber(TLoanID);
         if (results.length > 0) {
             if (telegramid !== null) {
@@ -567,7 +566,6 @@ module.exports.rejectExtension = async (req, res) => {
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
-
 
 module.exports.ManagerLoan = async (req, res) => {
     try {
@@ -613,10 +611,10 @@ module.exports.ManagerExtension = async (req, res) => {
 };
 
 module.exports.LoanExtend = async (req, res) => {
-    const {TLoanID, duration, reason } = req.body;
+    const { TLoanID, duration, reason } = req.body;
     try {
-        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID)
-        const UserID = (gettingInfo[0][0].UserID).toString()
+        const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
+        const UserID = gettingInfo[0][0].UserID.toString();
         const results = await TLoan.loanExtension(TLoanID, duration, reason);
 
         if (results.length > 0) {

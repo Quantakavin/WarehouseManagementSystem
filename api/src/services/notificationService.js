@@ -1,8 +1,8 @@
 const knex = require('../config/database');
 
-module.exports.insert = async (NotiFeatureID, ReceiverID,ContentID) => {
-
-    return knex.insert({ NotiFeatureID: NotiFeatureID, ReceiverID: ReceiverID, Read: 0, ContentID: ContentID}, 'NotificationID')
+module.exports.insert = async (NotiFeatureID, ReceiverID, ContentID) => {
+    return knex
+        .insert({ NotiFeatureID, ReceiverID, Read: 0, ContentID }, 'NotificationID')
         .into('Notification');
 };
 
@@ -12,5 +12,5 @@ module.exports.getById = async (UserID) => {
 };
 
 module.exports.markAllAsRead = async (UserID) => {
-    return knex('Notification').update({ Read: 1 }).where({ReceiverID: UserID});
+    return knex('Notification').update({ Read: 1 }).where({ ReceiverID: UserID });
 };

@@ -389,7 +389,7 @@ module.exports.approveLoan = async (TLoanID) => {
     });
 };
 
-//Add status to db
+// Add status to db
 module.exports.rejectLoan = async (TLoanID, remarks) => {
     return knex.transaction((trx) => {
         knex('TLoan')
@@ -419,7 +419,7 @@ module.exports.dueLoan = async (number) => {
 
 module.exports.loanExtension = async (TLoanID, duration, reason) => {
     return knex('TLoanExtension').insert({
-        TLoanID: TLoanID,
+        TLoanID,
         TLoanExtensionStatusID: 1,
         Duration: duration,
         Reason: reason
@@ -448,7 +448,7 @@ module.exports.approveExtension = async (TLoanID) => {
     });
 };
 
-//Add status to db
+// Add status to db
 module.exports.rejectExtension = async (TLoanID, remarks) => {
     return knex.transaction((trx) => {
         knex('TLoanExtension')

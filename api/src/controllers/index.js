@@ -6,7 +6,7 @@ const tLoanController = require('./tLoanController');
 const rmaController = require('./rma.controller');
 const dashboardController = require('./dashboardController');
 const binsController = require('./binsController');
-const resetPasswordController = require('../controllers/resetPasswordController');
+const resetPasswordController = require('./resetPasswordController');
 
 module.exports = {
     userController,

@@ -1,18 +1,16 @@
 const express = require('express');
+
 const resetPassword = express.Router();
-const userService = require('../services/userService');
-const resetPasswordService = require('../services/resetPasswordService');
-const {
-    hashSync,
-    genSaltSync
-} = require('bcrypt');
+const { hashSync, genSaltSync } = require('bcrypt');
 const nodemailer = require('nodemailer');
 // const smime = require('nodemailer-smime');
 const crypto = require('crypto');
+const resetPasswordService = require('../services/resetPasswordService');
+const userService = require('../services/userService');
 
 module.exports.forgotPassword = async (req, res, next) => {
     try {
-        const email = req.body.email;
+        const { email } = req.body;
         console.log(email);
 
         // Get request origin from  the HOST header.
@@ -61,12 +59,7 @@ module.exports.forgotPassword = async (req, res, next) => {
     }
 };
 
-async function sendEmail({
-    from,
-    to,
-    subject,
-    html
-}) {
+async function sendEmail({ from, to, subject, html }) {
     const transporter = nodemailer.createTransport({
         host: 'smtp.office365.com', // change when not using ethereal host email
         port: 587,
@@ -184,7 +177,7 @@ async function sendPasswordResetEmail(email, resetToken, origin) {
 module.exports.resetPassword = async (req, res, next) => {
     try {
         const newPassword = req.body.password;
-        const email = req.body.email;
+        const { email } = req.body;
 
         if (!newPassword) {
             return res.status(400).json({

@@ -2,10 +2,10 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function(knex) {
+exports.up = function (knex) {
     return knex.schema.createTable('Notification', function (table) {
         table.integer('NotiFeatureID').notNullable();
-        table.integer("Read").defaultTo(0);
+        table.integer('Read').defaultTo(0);
         table
             .foreign('NotiFeatureID')
             .references('NotiFeatureID')
@@ -20,6 +20,6 @@ exports.up = function(knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function(knex) {
+exports.down = function (knex) {
     return knex.schema.dropTable('Notification');
 };

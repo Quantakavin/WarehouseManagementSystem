@@ -152,11 +152,7 @@ module.exports.updateWithoutPassword = async (
     });
 };
 
-
-module.exports.update2FA = async (
-    userID,
-    return2FA
-) => {
+module.exports.update2FA = async (userID, return2FA) => {
     /*
     return knex('User').where('UserID', userID).update({
         Username: name,
