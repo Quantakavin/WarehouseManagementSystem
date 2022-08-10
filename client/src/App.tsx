@@ -49,7 +49,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ loginpage }) => {
-  //const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   if (loginpage) {
     if (isAuthenticated) {
@@ -59,7 +59,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ loginpage }) => {
   }
   if (!isAuthenticated) {
     return <Navigate replace to="/login" />;
-    //return <Navigate replace to="/401" />;
+    // return <Navigate replace to="/401" />;
   }
   return <Outlet />;
 };
@@ -135,7 +135,7 @@ const App: React.FC = () => {
                 />
                 <Route
                   path="/tloanManagerExtension/:TLoanID"
-                  element={<TLoanManagerExtensionDisplay/>}
+                  element={<TLoanManagerExtensionDisplay />}
                 />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/user/:id" element={<ViewUser />} />
