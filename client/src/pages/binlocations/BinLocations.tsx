@@ -323,7 +323,6 @@ const BinLocations = () => {
           handleSearch={handleSearch}
           searchoptions={searchOptions}
         />
-        {selectedBinTags != null ? selectedBinTags.join(", ") : null}
         <br></br>
         <h4>Empty Bin List</h4>
       </div>

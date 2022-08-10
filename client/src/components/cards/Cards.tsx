@@ -161,29 +161,35 @@ function Cards() {
             <Typography
               variant="subtitle2"
               sx={{
-                color: "#063970",
-                fontWeight: "bold",
-                fontSize: 28,
-                fontFamily: "Roboto",
+                color: "#0A2540",
+                // fontWeight: "bold",
+                // fontSize: 28,
+                // fontFamily: "Roboto",
               }}
             >
               <Grid container>
+              <Grid item xs={12}>
+                  <Box sx={{fontWeight: 500, fontSize: "22px" }}>
+                    RMA Overview
+                  </Box>
+                  <Divider />
+                  <Divider sx={{mt: "10px", flexDirection: "row", display: "flex", justifyContent: "space-between", alignItems: "center"}} textAlign="left">
+                  <Chip sx={{flexGrow: 1}} label="Pending"/>
+                  <Chip sx={{flexGrow: 1, ml: "auto"}} label="Approved"/>
+                  </Divider>
+                </Grid>
                 <Grid item xs={6}>
-                  <Box>Pending</Box>
                   <Box sx={{ color: "black", fontWeight: "normal" }}>
                     {PendingRMAs.length}
                   </Box>
                 </Grid>
                 <Grid item xs={6} sx={{ paddingLeft: 5 }}>
-                  <Box>Approved</Box>
                   <Box sx={{ color: "black", fontWeight: "normal" }}>
                     {ApprovedRMAs.length}
                   </Box>
                 </Grid>
                 <Grid item xs={12}>
-                  <Divider>
-                    <Chip label="RMA" />
-                  </Divider>
+                  <Divider sx={{color: "#d3d3d3", fontSize:"2px"}}/>
                 </Grid>
                 <Grid item xs={6}>
                   <Box sx={{}}>Processing</Box>
@@ -196,11 +202,6 @@ function Cards() {
                   <Box sx={{ color: "black", fontWeight: "normal" }}>
                     {ReceivedRMAs.length}
                   </Box>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider>
-                    <Chip label="RMA" />
-                  </Divider>
                 </Grid>
                 <Grid item xs={6}>
                   <Box>Verified</Box>

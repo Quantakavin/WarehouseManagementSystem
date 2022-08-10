@@ -234,7 +234,8 @@ const Model: React.FC<ModelProps> = ({
   
   return (
     <group ref={group} dispose={null} position={position}
-    onClick={() => changeposition(position)}>
+    // onClick={() => changeposition(position)}
+    >
       {CreateBoxes()}
       <mesh geometry={nodes.Cube006.geometry} material={materials['Material.026']} position={[-7.5, 0.5, -2]} scale={[0.15, 11.5, 0.15]} />
       <mesh geometry={nodes.Cube001.geometry} material={materials['Material.040']} position={[2.5, -6, 0.01]} scale={[0.16, 0.14, 2]} />

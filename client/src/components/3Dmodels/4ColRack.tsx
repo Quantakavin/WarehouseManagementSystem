@@ -177,7 +177,7 @@ const Model: React.FC<ModelProps> = ({
       ref={group}
       dispose={null}
       position={position}
-      onClick={() => changeposition(position)}
+      // onClick={() => changeposition(position)}
     >
       {CreateBoxes()}
       <mesh

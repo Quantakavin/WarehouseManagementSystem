@@ -40,7 +40,6 @@ const Model: React.FC<ModelProps> = ({
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const [exists, setExists] = useState<boolean>(true);
   const { nodes, materials } = useGLTF("/box.glb") as GLTFResult;
-  const [CurrentBinID, setCurrentBinID] = useState([]);
   const bintag = `${areatag}${racktag}${leveltag}${sectiontag}`;
 
   // Get Bin Information
@@ -95,8 +94,12 @@ const Model: React.FC<ModelProps> = ({
     <>
     {exists?
     <group
-      onPointerOver={() => setIsSelected(true)}
-      onPointerOut={() => setIsSelected(false)}
+      // onPointerOver={() => setIsSelected(true)}
+      // onPointerOut={() => setIsSelected(false)}
+      onClick={(e) =>{ 
+        e.stopPropagation();
+        setIsSelected(!isSelected)}
+      }
       ref={group}
       dispose={null}
       position={position}
@@ -121,7 +124,7 @@ const Model: React.FC<ModelProps> = ({
               <br />
               Capacity:{BinsData.Volume} cm3
               <br />
-              Amount of Items:
+              Amount of Items: {BinsData.AmountOfItems}
               <br />
             </div>
           </Html>

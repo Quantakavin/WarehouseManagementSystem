@@ -48,7 +48,7 @@ const SearchBar = ({
             <TextField
               className="searchfield"
               {...params}
-              placeholder="Search by name..."
+              placeholder="Search..."
               InputProps={{
                 ...params.InputProps,
                 type: "search",
