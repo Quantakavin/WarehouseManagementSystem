@@ -5,6 +5,7 @@ import { useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import config from "../../config/config";
 import "../../styles/cards.scss";
+import useWindowSize from "../../hooks/useWindowSize";
 
 function Cards() {
   const userrole = useAppSelector(selectRole);
@@ -23,6 +24,7 @@ function Cards() {
   const [VerifiedRMAs, setVerifiedRMAs] = useState([]);
   const [InprogressRMAs, setInprogressRMAs] = useState([]);
   const [ClosedRMAs, setClosedRMAs] = useState([]);
+  const { viewportwidth } = useWindowSize();
 
   // getcurrentTloans
   const getcurentTloans = async () => {
@@ -153,8 +155,8 @@ function Cards() {
 
   if (userrole !== "Sales Manager") {
     return (
-      <Grid container sx={{ marginTop: -2 }}>
-        <Grid item xs={6}>
+      <Grid container spacing={3} sx={{ marginTop: -2 }}>
+        <Grid item xs={viewportwidth <1000 ? 12: 6}>
           <Card
             sx={{ height: "100%", width: "98%", pt: 2, pb: 2, pl: 5, pr: 5 }}
           >
@@ -217,7 +219,7 @@ function Cards() {
             </Typography>
           </Card>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={viewportwidth <1000 ? 12: 6}>
           <Card
             sx={{ height: "100%", width: "100%", pt: 2, pb: 2, pl: 6, pr: 6 }}
           >
