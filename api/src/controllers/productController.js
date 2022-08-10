@@ -19,6 +19,7 @@ module.exports.getAllProducts = async (req, res) => {
     try {
         const products = await redisClient.get(`products?limit=${limit}&page=${page}`);
         if (products !== null) {
+            console.log("Products have been found in redis")
             const redisresults = JSON.parse(products);
             return res.status(200).json(redisresults);
         }
