@@ -8,7 +8,6 @@ const routes = require('./src/routes/index');
 const config = require('./src/config/config');
 const mqtt = require('mqtt')
 const { user_Connect, get_User, user_Logout, user_Disconnect } = require("./socketUsers");
-
 const app = express();
 app.use('*', cors());
 
@@ -41,39 +40,38 @@ const io = require("socket.io")(server, {
 
 
  io.on('connection', (socket) => {
+
     console.log('a user connected');
 
-    socket.on("login", ({userid}) => {
+    socket.on('login', ({ userid }) => {
         if (!get_User(userid)) {
             user_Connect(socket.id, userid);
         }
-    })
+    });
 
-    socket.on("logout", ({userid}) => {
+    socket.on('logout', ({ userid }) => {
         if (get_User(userid)) {
             user_Logout(userid);
         }
-    })
-
-    socket.on("disconnect", () => {
-        user_Disconnect(socket.id);
-        console.log(socket.id)
-        console.log("user disconnected");
     });
 
-    socket.on("send notification", ({userid, notification}) => {
+    socket.on('disconnect', () => {
+        user_Disconnect(socket.id);
+        console.log(socket.id);
+        console.log('user disconnected');
+    });
+
+    socket.on('send notification', ({ userid, notification }) => {
         if (get_User(userid)) {
             const p_user = get_User(userid);
-            console.log(
-                "send notification is called"
-            )
-            io.to(p_user.id).emit("notification", {
+            console.log('send notification is called');
+            io.to(p_user.id).emit('notification', {
                 id: p_user.id,
                 userid: p_user.userid,
-                text: notification,
+                text: notification
             });
         }
-    })
+    });
 });
 
 app.use(formData.parse({}));
