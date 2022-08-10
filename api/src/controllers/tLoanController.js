@@ -62,10 +62,10 @@ module.exports.getItemsByTloan = async (req, res) => {
             });
             return res.status(200).json(results[0]);
         }
-        return res.status(404).send('This TLoan has no items');
+        return res.status(404).json({ message : 'This TLoan has no items'});
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -85,10 +85,10 @@ module.exports.getIDofLoan = async (req, res) => {
             });
             return res.status(200).json(results[0]);
         }
-        return res.status(404).send('There is no ID');
+        return res.status(404).json({ message: 'There is no ID' });
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -107,10 +107,10 @@ module.exports.allLoan = async (req, res) => {
             });
             return res.status(200).json(results[0]);
         }
-        return res.status(404).send('You have not made any TLoans');
+        return res.status(404).json({message: 'You have not made any TLoans'});
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -170,12 +170,12 @@ module.exports.SubmitAfterEdit = async (req, res) => {
             redisClient.del(`DraftTLoan#${UserID}`);
             redisClient.del(`HistoryTLoan#${UserID}`);
 
-            return res.status(200).send('Draft has been submitted');
+            return res.status(200).json({ message: 'Draft has been submitted'});
         }
-        return res.status(500).send('Submit draft failed');
+        return res.status(400).json({ message: 'Submit draft failed'});
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -234,12 +234,12 @@ module.exports.DraftAfterEdit = async (req, res) => {
             redisClient.del(`PendingTLoan#${UserID}`);
             redisClient.del(`DraftTLoan#${UserID}`);
             redisClient.del(`HistoryTLoan#${UserID}`);
-            return res.status(200).send('Draft has been saved');
+            return res.status(200).json({ message: 'Draft has been saved' });
         }
-        return res.status(500).send('Draft failed to save');
+        return res.status(400).json({ message : 'Draft failed to save'});
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -287,7 +287,7 @@ module.exports.newLoan = async (req, res) => {
         return res.status(201).json(tloanItems);
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -332,7 +332,7 @@ module.exports.SendDraft = async (req, res) => {
         return res.status(201).json(tloanItems);
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -352,10 +352,10 @@ module.exports.currentLoan = async (req, res) => {
             });
             return res.status(200).json(results[0]);
         }
-        return res.status(404).send('You have not made any TLoans');
+        return res.status(404).json({ message : 'You have not made any TLoans'});
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -374,10 +374,10 @@ module.exports.draftsLoan = async (req, res) => {
             });
             return res.status(200).json(results[0]);
         }
-        return res.status(404).send('You have not made any TLoans');
+        return res.status(404).json({ message : 'You have not made any TLoans'});
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -394,10 +394,10 @@ module.exports.historyLoan = async (req, res) => {
             redisClient.set(`HistoryTLoan#${UserID}`, JSON.stringify(results[0]));
             return res.status(200).json(results[0]);
         }
-        return res.status(404).send('You have not made any TLoans');
+        return res.status(404).json({ message :'You have not made any TLoans'});
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -416,10 +416,10 @@ module.exports.pendingLoan = async (req, res) => {
             });
             return res.status(200).json(results[0]);
         }
-        return res.status(404).send('You have not made any TLoans');
+        return res.status(404).json({ message: 'You have not made any TLoans'});
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -452,10 +452,10 @@ module.exports.approveLoan = async (req, res) => {
             redisClient.del(`HistoryTLoan#${UserID}`);
             return res.status(200).send('Status has been Updated');
         }
-        return res.status(500).send('Status failed to Update');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -487,12 +487,12 @@ module.exports.rejectLoan = async (req, res) => {
             redisClient.del(`DraftTLoan#${UserID}`);
             redisClient.del(`HistoryTLoan#${UserID}`);
             await TLoan.rejectLoan(TLoanID, remarks);
-            return res.status(200).send('Status has been Updated');
+            return res.status(200).json({ message : 'Status has been Updated'});
         }
-        return res.status(500).send('Status failed to Update');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -522,12 +522,12 @@ module.exports.approveExtension = async (req, res) => {
             redisClient.del(`PendingTLoan#${UserID}`);
             redisClient.del(`DraftTLoan#${UserID}`);
             redisClient.del(`HistoryTLoan#${UserID}`);
-            return res.status(200).send('Status has been Updated');
+            return res.status(200).json({ message: 'Status has been Updated' });
         }
-        return res.status(500).send('Status failed to Update');
+        return res.status(400).json({ message: 'Status failed to Update'});
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -559,12 +559,12 @@ module.exports.rejectExtension = async (req, res) => {
             redisClient.del(`DraftTLoan#${UserID}`);
             redisClient.del(`HistoryTLoan#${UserID}`);
             await TLoan.rejectExtension(TLoanID, remarks);
-            return res.status(200).send('Status has been Updated');
+            return res.status(200).json({ message : 'Status has been Updated' });
         }
-        return res.status(500).send('Status failed to Update');
+        return res.status(400).json({ message: 'Status failed to Update'});
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -583,10 +583,10 @@ module.exports.ManagerLoan = async (req, res) => {
             });
             return res.status(200).json(results[0]);
         }
-        return res.status(404).send('No Loans that are in need of approval');
+        return res.status(404).json({ message: 'No Loans that are in need of approval'});
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -605,10 +605,10 @@ module.exports.ManagerExtension = async (req, res) => {
             });
             return res.status(200).json(results[0]);
         }
-        return res.status(404).send('No Extensions that are in need of approval');
+        return res.status(404).json({ message : 'No Extensions that are in need of approval' });
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -633,10 +633,10 @@ module.exports.LoanExtend = async (req, res) => {
             redisClient.del(`HistoryTLoan#${UserID}`);
             return res.status(200).json(results[0]);
         }
-        return res.status(404).send('Could not submit extension request');
+        return res.status(404).json({ message : 'Could not submit extension request' });
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -655,10 +655,10 @@ module.exports.extensionStatus = async (req, res) => {
             });
             return res.status(200).json(results[0]);
         }
-        return res.status(500).send('Does not Exist!');
+        return res.status(404).json({ message: 'Does not Exist!'});
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -676,10 +676,10 @@ module.exports.getApprovedLoan = async (req, res) => {
             });
             return res.status(200).json(results[0]);
         }
-        return res.status(404).send('No approved Loans available');
+        return res.status(404).json({ message : 'No approved Loans available' });
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -698,10 +698,10 @@ module.exports.tloanStatusID = async (req, res) => {
             });
             return res.status(200).json(results[0]);
         }
-        return res.status(500).send('Does not Exist!');
+        return res.status(404).json({ message : 'Does not Exist!' });
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -719,10 +719,10 @@ module.exports.allCurrent = async (req, res) => {
             });
             return res.status(200).json(results[0]);
         }
-        return res.status(500).send('Does not Exist!');
+        return res.status(404).json({ message : 'Does not Exist!'});
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -740,10 +740,10 @@ module.exports.allHistory = async (req, res) => {
             });
             return res.status(200).json(results[0]);
         }
-        return res.status(500).send('Does not Exist!');
+        return res.status(404).json({ message :'Does not Exist!' });
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -765,12 +765,12 @@ module.exports.updateStatus = async (req, res) => {
             redisClient.del(`PendingTLoan#${UserID}`);
             redisClient.del(`DraftTLoan#${UserID}`);
             redisClient.del(`HistoryTLoan#${UserID}`);
-            return res.status(200).send('Status has been Updated');
+            return res.status(200).json({ message : 'Status has been Updated' });
         }
-        return res.status(500).send('Status failed to Update');
+        return res.status(400).json({ message : 'Status failed to Update' });
     } catch (error) {
         console.log(error);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -779,7 +779,7 @@ module.exports.getEmployeeInfo = async (req, res) => {
     try {
         const results = await TLoan.getEmployeeInfo(TLoanID);
         if (results) {
-            return res.status(200).send(results[0][0].Email);
+            return res.status(200).json(results[0][0].Email);
         }
     } catch (error) {
         console.log(error);
