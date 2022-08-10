@@ -58,7 +58,7 @@ module.exports.getAllBrandNames = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await bin.getBrandNames(name);
-        redisClient.set('brands#${name}', JSON.stringify(results[0]), 'EX', 60 * 60 * 24);
+        redisClient.set(`brands#${name}`, JSON.stringify(results[0]), 'EX', 60 * 60 * 24);
         return res.status(200).json(results[0]);
     } catch (error) {
         console.log(error);
@@ -166,7 +166,7 @@ module.exports.BinQtyBrand = async (req, res) => {
 };
 
 module.exports.BinQtyBinID = async (req, res) => {
-    let Brand = req.params.Brand;
+    const { BinID } = req.params;
     try {
         const searchBinID = await redisClient.get(`BinID#${BinID}`);
         if (searchBinID !== null) {

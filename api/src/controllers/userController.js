@@ -86,7 +86,9 @@ module.exports.verify2FAToken = async (req, res) => {
         await twilioClient.verify.v2
             .services(config.TwilioService)
             .verificationChecks.create({ to: ConvertMobileNo(mobileno), code })
-            .then((verificationCheck) => (verificationstatus = verificationCheck));
+            .then((verificationCheck) => {
+                verificationstatus = verificationCheck;
+            });
         if (verificationstatus.status !== 'approved') {
             console.log(verificationstatus);
             return res.status(400).json({ message: 'Incorrect code entered! Please try again.' });
@@ -365,7 +367,7 @@ module.exports.updateUserTeleID = async (req, res) => {
     }
 };
 
-module.exports.updateUserPassword = async (req, res, next) => {
+module.exports.updateUserPassword = async (req, res) => {
     const userID = req.params.id;
     const { password } = req.body;
 
@@ -392,5 +394,8 @@ module.exports.updateUserPassword = async (req, res, next) => {
         });
     } catch (e) {
         console.log(e);
+        return res.status(500).json({
+            message: 'Internal Server Error!'
+        });
     }
 };

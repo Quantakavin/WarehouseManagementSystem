@@ -251,8 +251,8 @@ const validation = {
         const yyyy = today.getFullYear();
         let mm = (today.getMonth() + 1).toString(); // Months start at 0!
         let dd = today.getDate().toString();
-        if (parseInt(dd) < 10) dd = `0${dd}`;
-        if (parseInt(mm) < 10) mm = `0${mm}`;
+        if (parseInt(dd, 10) < 10) dd = `0${dd}`;
+        if (parseInt(mm, 10) < 10) mm = `0${mm}`;
         const formattedToday = `${yyyy}-${mm}-${dd}`.toString();
 
         if (
@@ -367,12 +367,11 @@ const validation = {
         const { products } = req.body;
         products.map((product) => {
             if (product.Instructions === '') {
-                res.status(400).json({
+                return res.status(400).json({
                     message: 'Please provide instructions for each product!'
                 });
-            } else {
-                next();
             }
+            return next();
         });
     },
 
@@ -380,12 +379,11 @@ const validation = {
         const { products } = req.body;
         products.map((product) => {
             if (product.CourseOfAction === '') {
-                res.status(400).json({
+                return res.status(400).json({
                     message: 'Please provide an update to the course of action for each product!'
                 });
-            } else {
-                next();
             }
+            return next();
         });
     },
 
@@ -412,12 +410,11 @@ const validation = {
         const token = await resetPasswordService.findValidToken(resetToken, email, currentTime);
 
         if (token[0].length > 0) {
-            next();
-        } else {
-            res.status(401).json({
-                message: 'Invalid token, please generate a new one.'
-            });
+            return next();
         }
+        return res.status(401).json({
+            message: 'Invalid token, please generate a new one.'
+        });
     }
 };
 

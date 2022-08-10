@@ -18,15 +18,15 @@ const options = {
     })
 };
 
-const tloanoptions = {
-    reply_markup: JSON.stringify({
-        inline_keyboard: [
-            [{ text: 'Status', callback_data: '4' }],
-            [{ text: 'Progress', callback_data: '5' }],
-            [{ text: 'Customer Details', callback_data: '6' }]
-        ]
-    })
-};
+// const tloanoptions = {
+//     reply_markup: JSON.stringify({
+//         inline_keyboard: [
+//             [{ text: 'Status', callback_data: '4' }],
+//             [{ text: 'Progress', callback_data: '5' }],
+//             [{ text: 'Customer Details', callback_data: '6' }]
+//         ]
+//     })
+// };
 
 bot.on('message', (message) => {
     let progressmarker;

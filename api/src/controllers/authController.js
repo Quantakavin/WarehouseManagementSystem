@@ -1,3 +1,8 @@
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const config = require('../config/config');
+const user = require('../services/userService');
+
 module.exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -16,14 +21,14 @@ module.exports.loginUser = async (req, res) => {
                         }
                     )
                 };
-                const refresh_token = jwt.sign(
+                const refreshToken = jwt.sign(
                     { id: results[0][0].UserID },
                     config.refreshtokensecret,
                     {
                         expiresIn: 259200
                     }
                 );
-                res.cookie('refreshToken', refresh_token, {
+                res.cookie('refreshToken', refreshToken, {
                     httpOnly: true,
                     secured: true,
                     signed: true,
