@@ -17,6 +17,7 @@ import {
   selectCurrentTab,
   selectOpen,
 } from "../../app/reducers/SidebarSlice";
+import useWindowSize from "../../hooks/useWindowSize";
 
 interface SidebarLink {
   url: string;
@@ -29,6 +30,7 @@ const SidebarLink: React.FC<SidebarLink> = ({ url, name, icon }) => {
   const currenttab = useAppSelector(selectCurrentTab);
   const dispatch = useAppDispatch();
   const isopen = useAppSelector(selectOpen);
+  const { viewportwidth } = useWindowSize();
 
   const changetab = () => {
     dispatch(ChangeTab({ currenttab: name }));
@@ -66,7 +68,7 @@ const SidebarLink: React.FC<SidebarLink> = ({ url, name, icon }) => {
           // }}
           sx={{
             flex: 1,
-            textAlign: isopen ? "left" : "center",
+            textAlign: (isopen && viewportwidth>800) ? "left" : "center",
           }}
         >
           <LightTooltip title={name}>
@@ -81,7 +83,7 @@ const SidebarLink: React.FC<SidebarLink> = ({ url, name, icon }) => {
               {icon}
             </ListItemIcon>
           </LightTooltip>
-          {isopen ? (
+          {(isopen && viewportwidth>800) ? (
             <ListItemText
               primary={name}
               sx={{ marginLeft: "-20px" }}

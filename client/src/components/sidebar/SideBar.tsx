@@ -22,6 +22,7 @@ import {
 } from "../../app/reducers/CurrentUserSlice";
 import { Close, Open, selectOpen } from "../../app/reducers/SidebarSlice";
 import defaultprofile from "../../assets/defaultprofile.png";
+import useWindowSize from "../../hooks/useWindowSize";
 import SidebarLink from "./SidebarLink";
 
 const drawerWidth = 240;
@@ -83,6 +84,7 @@ const Sidebar = () => {
   const username = useAppSelector(selectName);
   const userrole = useAppSelector(selectRole);
   const userpermissions = useAppSelector(selectPermissions);
+  const { viewportwidth } = useWindowSize();
 
   console.log("the permissions are: ", userpermissions);
   console.log(
@@ -93,19 +95,12 @@ const Sidebar = () => {
         p.FeatureRight === "Full Access"
     )
   );
-  const toggleDrawer = () => {
-    if (isopen) {
-      dispatch(Close());
-    } else {
-      dispatch(Open());
-    }
-  };
 
   if (userrole !== "Admin") {
     return (
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <Drawer variant="permanent" open={isopen}>
+        <Drawer variant="permanent" open={(isopen && viewportwidth>800)}>
           <Toolbar />
           <DrawerHeader
             sx={{ backgroundColor: "#0a2540" }}
@@ -120,7 +115,7 @@ const Sidebar = () => {
               }}
             >
               <Box
-                sx={{ flex: 1, margin: isopen ? "0px" : "10px -6px 10px 6px" }}
+                sx={{ flex: 1, margin: (isopen && viewportwidth>800) ? "0px" : "10px -6px 10px 6px" }}
               >
                 <img
                   alt="ISDN Logo"
@@ -131,7 +126,7 @@ const Sidebar = () => {
                   style={{ marginRight: 15 }}
                 />
               </Box>
-              {isopen ? (
+              {(isopen && viewportwidth>800) ? (
                 <Box style={{ flex: 3, marginTop: 8, marginBottom: -8 }}>
                   <p
                     style={{
@@ -170,7 +165,7 @@ const Sidebar = () => {
               marginLeft: "10%",
             }}
           >
-            {isopen ? "MENU" : null}
+            {(isopen && viewportwidth>800) ? "MENU" : null}
           </p>
           <List
             sx={{
@@ -230,7 +225,7 @@ const Sidebar = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <Drawer variant="permanent" open={isopen}>
+      <Drawer variant="permanent" open={(isopen && viewportwidth>800)}>
         <Toolbar />
         <DrawerHeader
           sx={{ backgroundColor: "#0a2540" }}
@@ -245,7 +240,7 @@ const Sidebar = () => {
             }}
           >
             <Box
-              sx={{ flex: 1, margin: isopen ? "0px" : "10px -6px 10px 6px" }}
+              sx={{ flex: 1, margin: (isopen && viewportwidth>800) ? "0px" : "10px -6px 10px 6px" }}
             >
               <img
                 alt="ISDN Logo"
@@ -256,7 +251,7 @@ const Sidebar = () => {
                 style={{ marginRight: 15 }}
               />
             </Box>
-            {isopen ? (
+            {(isopen && viewportwidth>800) ? (
               <Box style={{ flex: 3, marginTop: 8, marginBottom: -8 }}>
                 <p
                   style={{
@@ -295,7 +290,7 @@ const Sidebar = () => {
             marginLeft: "10%",
           }}
         >
-          {isopen ? "MENU" : null}
+          {(isopen && viewportwidth>800) ? "MENU" : null}
         </p>
         <List
           sx={{

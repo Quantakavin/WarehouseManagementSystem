@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState} from "react";
+import { useContext, useEffect, useState } from "react";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -22,19 +22,20 @@ import { io } from "socket.io-client";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { removeUser, selectId, selectName } from "../../app/reducers/CurrentUserSlice";
 import {
-    Close,
-    Open,
-    Reset,
-    selectOpen
+  Close,
+  Open,
+  Reset,
+  selectOpen
 } from "../../app/reducers/SidebarSlice";
 import defaultprofile from "../../assets/defaultprofile.png";
 import navbarbrand from "../../assets/navbarbrand.png";
-import {SocketContext} from '../../context/socket';
+import { SocketContext } from '../../context/socket';
 import NotificationDropdown from "./NotificationDropdown";
 import { resetNotificationCount, selectNotificationCount } from "../../app/reducers/NotificationSlice";
 import IsEditableProvider, {
   EditableContext,
 } from "../context/IsEditableContext";
+import useWindowSize from "../../hooks/useWindowSize";
 const TopNav = () => {
   const socket = useContext(SocketContext);
   const navigate = useNavigate();
@@ -50,15 +51,16 @@ const TopNav = () => {
   const isMenuOpen = Boolean(anchorEl);
   const isNotiMenuOpen = Boolean(notiAnchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const { viewportwidth } = useWindowSize();
   const context: any = useContext(EditableContext);
   const { setIsEditable } = context;
   useEffect(() => {
-    if(localStorage.getItem("token") !==null) {
-      socket.emit("login" ,{userid: userid})
+    if (localStorage.getItem("token") !== null) {
+      socket.emit("login", { userid: userid })
     } else {
-      socket.emit("logout" ,{userid: userid})
+      socket.emit("logout", { userid: userid })
     }
-}, [])
+  }, [])
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -90,7 +92,7 @@ const TopNav = () => {
     setAnchorEl(null);
     setNotiAnchorEl(null)
     setMobileMoreAnchorEl(null);
-    socket.emit("logout", {userid: userid})
+    socket.emit("logout", { userid: userid })
     dispatch(removeUser());
     dispatch(Reset());
     dispatch(resetNotificationCount());
@@ -100,7 +102,7 @@ const TopNav = () => {
   };
 
   const toggleDrawer = () => {
-    if (isopen) {
+    if ((isopen && viewportwidth>800)) {
       dispatch(Close());
     } else {
       dispatch(Open());
@@ -190,13 +192,13 @@ const TopNav = () => {
     </Menu>
   );
 
-  const notiMenuId="navbar-notification-menu"
+  const notiMenuId = "navbar-notification-menu"
   const renderNotiMenu = (
-    <NotificationDropdown 
-    menuId={notiMenuId}
-    anchorEl={notiAnchorEl}
-    isMenuOpen={isNotiMenuOpen}
-    handleMenuClose={handleNotiMenuClose}
+    <NotificationDropdown
+      menuId={notiMenuId}
+      anchorEl={notiAnchorEl}
+      isMenuOpen={isNotiMenuOpen}
+      handleMenuClose={handleNotiMenuClose}
     />
   )
 
@@ -331,18 +333,20 @@ const TopNav = () => {
         sx={{ backgroundColor: "white", color: "#0a2540", width: "100%" }}
       >
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-            onClick={toggleDrawer}
-          >
-            {localStorage.getItem("token") !== null && <MenuIcon />}
-          </IconButton>
+          {localStorage.getItem("token") !== null && viewportwidth > 800 &&
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              sx={{ mr: 2 }}
+              onClick={toggleDrawer}
+            >
+              <MenuIcon />
+            </IconButton>
+          }
           <a className="" href="/">
-            <img alt="ISDN Logo" src={navbarbrand} width="130" height="40" />
+            <img alt="ISDN Logo" src={navbarbrand} width="130" height="40" style={{marginLeft: (localStorage.getItem("token") === null || viewportwidth < 800 ) ? "20%" : null}} />
           </a>
           {/* <Typography variant="h6" noWrap component="div">
             Leaptron
@@ -364,24 +368,24 @@ const TopNav = () => {
             ) : (
               [
                 <div
-                aria-label="Unread Notifications"
-                aria-controls={notiMenuId}
-                aria-haspopup="true"
-                onMouseEnter={handleNotiMenuOpen}
-                onMouseLeave={handleNotiMenuClose}
+                  aria-label="Unread Notifications"
+                  aria-controls={notiMenuId}
+                  aria-haspopup="true"
+                  onMouseEnter={handleNotiMenuOpen}
+                  onMouseLeave={handleNotiMenuClose}
                 >
-                <IconButton
-                  size="large"
-                  color="inherit"
-                >
-                  <Badge sx={{mt: "5px", mb: "-5px"}} badgeContent={notificationcount} variant="dot" color="error">
-                  <NotificationsIcon sx={{}} />
-                  </Badge>
-                  {/* <Badge badgeContent={17} color="error">
+                  <IconButton
+                    size="large"
+                    color="inherit"
+                  >
+                    <Badge sx={{ mt: "5px", mb: "-5px" }} badgeContent={notificationcount} variant="dot" color="error">
+                      <NotificationsIcon sx={{}} />
+                    </Badge>
+                    {/* <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge> */}
-                </IconButton>
-                {isNotiMenuOpen ? <>{renderNotiMenu}</>  :null}
+                  </IconButton>
+                  {isNotiMenuOpen ? <>{renderNotiMenu}</> : null}
                 </div>,
                 <div
                   className="navprofile flexcontainer"
