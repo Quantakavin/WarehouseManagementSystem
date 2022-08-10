@@ -1,39 +1,41 @@
-const c_users = [];
+const cUsers = [];
 
-function user_Connect(id, userid) {
-    const p_user = { id, userid };
+function userConnect(id, userid) {
+    const pUser = { id, userid };
 
-    c_users.push(p_user);
+    cUsers.push(pUser);
     console.log('user added');
-    console.log(c_users, 'users');
-    return p_user;
+    console.log(cUsers, 'users');
+    return pUser;
 }
 
-function get_User(id) {
-    return c_users.find((p_user) => p_user.userid === id);
+function getUser(id) {
+    return cUsers.find((pUser) => pUser.userid === id);
 }
 
-function user_Logout(id) {
-    const index = c_users.findIndex((p_user) => p_user.userid === id);
+function userLogout(id) {
+    const index = cUsers.findIndex((pUser) => pUser.userid === id);
 
     if (index !== -1) {
-        c_users.splice(index, 1)[0];
-        console.log('user removed');
-        console.log(c_users, 'users');
+        return cUsers.splice(index, 1)[0];
+        // console.log('user removed');
+        // console.log(cUsers, 'users');
     }
+    return null;
 }
 
-function user_Disconnect(id) {
-    const index = c_users.findIndex((p_user) => p_user.id === id);
+function userDisconnect(id) {
+    const index = cUsers.findIndex((pUser) => pUser.id === id);
 
     if (index !== -1) {
-        c_users.splice(index, 1)[0];
+        return cUsers.splice(index, 1)[0];
     }
+    return null;
 }
 
 module.exports = {
-    user_Connect,
-    get_User,
-    user_Logout,
-    user_Disconnect
+    userConnect,
+    getUser,
+    userLogout,
+    userDisconnect
 };
