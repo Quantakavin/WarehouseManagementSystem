@@ -24,13 +24,13 @@ module.exports.getByPrimaryKey = async (binProductPK) => {
 };
 
 module.exports.searchFilter = async (itemName, itemCode, binTag, batchNo, brand, warehouseCode) => {
-    var string = ``;
-    var list = [];
-    var counter = 0;
+    let string = ``;
+    const list = [];
+    let counter = 0;
     if (itemName) {
         string += `ItemName LIKE ?`;
-        list.push('%' + itemName + '%');
-        counter++;
+        list.push(`%${itemName}%`);
+        counter += 1;
     }
     if (itemCode) {
         if (counter > 0) {
@@ -39,7 +39,7 @@ module.exports.searchFilter = async (itemName, itemCode, binTag, batchNo, brand,
             string += ` ItemNo = ?`;
         }
         list.push(itemCode);
-        counter++;
+        counter += 1;
     }
     if (binTag) {
         if (counter > 0) {
@@ -48,7 +48,7 @@ module.exports.searchFilter = async (itemName, itemCode, binTag, batchNo, brand,
             string += ` BinID = ?`;
         }
         list.push(binTag);
-        counter++;
+        counter += 1;
     }
     if (batchNo) {
         if (counter > 0) {
@@ -57,7 +57,7 @@ module.exports.searchFilter = async (itemName, itemCode, binTag, batchNo, brand,
             string += ` BatchNo = ?`;
         }
         list.push(batchNo);
-        counter++;
+        counter += 1;
     }
     if (brand) {
         if (counter > 0) {
@@ -66,7 +66,7 @@ module.exports.searchFilter = async (itemName, itemCode, binTag, batchNo, brand,
             string += ` Brand = ?`;
         }
         list.push(brand);
-        counter++;
+        counter += 1;
     }
     if (warehouseCode) {
         if (counter > 0) {
@@ -75,10 +75,9 @@ module.exports.searchFilter = async (itemName, itemCode, binTag, batchNo, brand,
             string += ` WarehouseCode = ?`;
         }
         list.push(warehouseCode);
-        counter++;
+        counter += 1;
     }
-    const query =
-        `SELECT ItemNo, ItemName, BatchNo, Brand, Quantity FROM BinProduct WHERE ` + string;
+    const query = `SELECT ItemNo, ItemName, BatchNo, Brand, Quantity FROM BinProduct WHERE ${string}`;
     return knex.raw(query, list);
 };
 

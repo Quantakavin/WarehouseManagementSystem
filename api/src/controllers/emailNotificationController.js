@@ -193,7 +193,7 @@ module.exports.tloanRejectedMail = (email, username, TLoanID, remarks) => {
                     dynamicTemplateData: {
                         Username: username,
                         TLoanID,
-                        Remarks: remarks,
+                        Remarks: remarks
                     }
                 }
             ]

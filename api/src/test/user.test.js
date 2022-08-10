@@ -1,4 +1,5 @@
 import user from '../routes/userRoutes';
+
 const request = require('supertest');
 
 describe('Post /login', () => {

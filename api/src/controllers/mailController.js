@@ -1,4 +1,5 @@
 const sgMail = require('@sendgrid/mail');
+
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const msg = {
     to: 'manager@leaptron.com',
@@ -20,7 +21,7 @@ sgMail.send(msg).then(
         }
     }
 );
-//ES8
+// ES8
 (async () => {
     try {
         await sgMail.send(msg);

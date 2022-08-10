@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const authorization = require('../middlewares/authorization');
-const validation = require('../middlewares/validation');
-const notificationController= require('../controllers/notificationController');
+const notificationController = require('../controllers/notificationController');
 
 router.get(
     '/notifications/:id',

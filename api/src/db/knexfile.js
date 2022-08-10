@@ -1,5 +1,5 @@
 // Update with your config settings.
-//const config = require('../config/config')
+// const config = require('../config/config')
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 
