@@ -96,6 +96,7 @@ const TLoanDisplay = () => {
   const [statusChange, setStatusChange] = useState("");
   const [statusChangeError, setStatusChangeError] = useState(false);
   const [statusChangeErrorText, setStatusChangeErrorText] = useState("");
+  const [minDateStr, setMinDateStr] = useState("");
 
   const ApprovalLoanPerms = permissions.some(
     (e) => e.FeatureName === "T-Loan Approval"
@@ -192,7 +193,14 @@ const TLoanDisplay = () => {
       }, 500);
     }
   };
-
+  const minimumDate: any = new Date(
+    new Date().getTime() + 10 * 24 * 60 * 60 * 1000
+  );
+  const minimumDateString = minimumDate.toString();
+  useEffect(() => {
+    const correctFormat = dateFormat(minimumDateString, "yyyy-mm-dd");
+    setMinDateStr(correctFormat);
+  });
   const handleChangeType = (event: SelectChangeEvent) => {
     setType(event.target.value);
   };
@@ -815,6 +823,15 @@ const TLoanDisplay = () => {
     }
     if (requireddate === "") {
       setSubmitLoading(false);
+    } else if (requireddate < minDateStr === true) {
+      Toast.fire({
+        icon: "warning",
+        title: "Please Change Your Required Date",
+        customClass: "swalpopup",
+        timer: 2000,
+        width: 315,
+      });
+      setSubmitLoading(false);
     }
     if (email === "") {
       setEmailError(true);
@@ -865,7 +882,8 @@ const TLoanDisplay = () => {
       requireddate !== "" &&
       email !== "" &&
       email.match(emailRegex) &&
-      collection !== ""
+      collection !== "" &&
+      (requireddate < minDateStr) === false
     ) {
       setTimeout(() => {
         try {
@@ -925,7 +943,7 @@ const TLoanDisplay = () => {
     if (company === "") {
       setCompanyError(true);
       setCompanyErrorText("Selection required");
-      setSubmitLoading(false);
+      setLoading(false);
     }
     if (email === "") {
       setEmailError(true);
@@ -934,6 +952,18 @@ const TLoanDisplay = () => {
     } else if (!email.match(emailRegex)) {
       setEmailError(true);
       setEmailErrorText("Invalid Email");
+      setLoading(false);
+    }
+    if (requireddate === "") {
+      setLoading(false);
+    } else if (requireddate < minDateStr === true) {
+      Toast.fire({
+        icon: "warning",
+        title: "Please Change Your Required Date",
+        customClass: "swalpopup",
+        timer: 2000,
+        width: 315,
+      });
       setLoading(false);
     }
     if (
@@ -947,7 +977,7 @@ const TLoanDisplay = () => {
     ) {
       setCompanyError(true);
       setCompanyErrorText("Valid Input Required");
-      setSubmitLoading(false);
+      setLoading(false);
     }
     if (
       type === "1" &&
@@ -960,7 +990,7 @@ const TLoanDisplay = () => {
     ) {
       setCompanyError(true);
       setCompanyErrorText("Input Required");
-      setSubmitLoading(false);
+      setLoading(false);
     }
     if (
       items.length !== 0 &&
@@ -1326,6 +1356,7 @@ const TLoanDisplay = () => {
                     label="Required Date"
                     inputFormat="yyyy-MM-dd"
                     value={dateForm}
+                    minDate={minimumDate}
                     inputProps={{ readOnly: true }}
                     onChange={handleChangeRequiredDate}
                     renderInput={(params) => (
