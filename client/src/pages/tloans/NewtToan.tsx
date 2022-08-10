@@ -66,14 +66,12 @@ function newtloan() {
   const [durationError, setDurationError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [collectionError, setCollectionError] = useState(false);
-  const [requireddateError, setRDateError] = useState(false);
   const [typeErrorText, setTypeErrorText] = useState("");
   const [companyErrorText, setCompanyErrorText] = useState("");
   const [purposeErrorText, setPurposeErrorText] = useState("");
   const [durationErrorText, setDurationErrorText] = useState("");
   const [emailErrorText, setEmailErrorText] = useState("");
   const [collectionErrorText, setCollectionErrorText] = useState("");
-  const [rdateErrorText, setRDateErrorText] = useState("");
   const [minDateStr, setMinDateStr] = useState("");
   const permissions = useAppSelector(selectPermissions);
   const ExternalApplication = permissions.some(
@@ -354,7 +352,7 @@ function newtloan() {
     setDurationError(false);
     setEmailError(false);
     setCollectionError(false);
-    setRDateError(false);
+    
     if (items.length === 0) {
       Toast.fire({
         icon: "error",
@@ -386,8 +384,6 @@ function newtloan() {
       setSubmitLoading(false);
     }
     if (requireddate === "") {
-      setRDateError(true);
-      setRDateErrorText("Select a date");
       setSubmitLoading(false);
     } else if (requireddate < minDateStr === true) {
       Toast.fire({
@@ -397,7 +393,6 @@ function newtloan() {
         timer: 2000,
         width: 315,
       });
-      setRDateError(true);
       setSubmitLoading(false);
     }
     if (email === "") {
@@ -497,7 +492,6 @@ function newtloan() {
     setDurationError(false);
     setEmailError(false);
     setCollectionError(false);
-    setRDateError(false);
     if (items.length === 0) {
       Toast.fire({
         icon: "error",
@@ -526,11 +520,9 @@ function newtloan() {
     if (duration === "") {
       setDurationError(true);
       setDurationErrorText("Selection required");
-      setSubmitLoading(false);
+      setLoading(false);
     }
     if (requireddate === "") {
-      setRDateError(true);
-      setRDateErrorText("Select a date");
       setLoading(false);
     } else if (requireddate < minDateStr === true) {
       Toast.fire({
@@ -540,8 +532,7 @@ function newtloan() {
         timer: 2000,
         width: 315,
       });
-      setRDateError(true);
-      setSubmitLoading(false);
+      setLoading(false);
     }
     if (email === "") {
       setEmailError(true);

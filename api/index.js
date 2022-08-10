@@ -1,8 +1,10 @@
 const cors = require('cors');
 const http = require('http');
+const mqtt = require('mqtt');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const formData = require('express-form-data');
 
 const app = express();
 const server = http.createServer(app);
@@ -11,8 +13,6 @@ const io = require('socket.io')(server, {
         origin: '*'
     }
 });
-const formData = require('express-form-data');
-
 const routes = require('./src/routes/index');
 const config = require('./src/config/config');
 const { userConnect, getUser, userLogout, userDisconnect } = require('./socketUsers');
@@ -20,6 +20,23 @@ const { userConnect, getUser, userLogout, userDisconnect } = require('./socketUs
 app.use('*', cors());
 
 const PORT = process.env.PORT || 5000;
+
+const client = mqtt.connect('mqtt://test.mosquitto.org', { clientId: 'mqtt-tester' });
+
+client.on('connect', function () {
+    console.log('connected to mqtt client');
+    client.subscribe('quantity', function (err) {
+        if (!err) {
+            client.publish('quantity', 'Hello mqtt');
+        }
+    });
+});
+
+client.on('message', function (topic, message) {
+    // message is Buffer
+    console.log(message.toString());
+    client.end();
+});
 
 io.on('connection', (socket) => {
     console.log('a user connected');

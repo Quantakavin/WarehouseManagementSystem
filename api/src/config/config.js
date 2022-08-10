@@ -16,5 +16,6 @@ module.exports = {
     elasticcloudid: process.env.ELASTIC_CLOUD_ID,
     TwilioAccountSID: process.env.TWILIO_ACCOUNT_SID,
     TwilioAuthToken: process.env.TWILIO_AUTH_TOKEN,
-    TwilioService: process.env.TWILIO_SERVICE
+    TwilioService: process.env.TWILIO_SERVICE,
+    MQTTClient: process.env.MQTT_CLIENT
 };

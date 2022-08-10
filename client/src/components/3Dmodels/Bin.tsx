@@ -88,47 +88,56 @@ const Model: React.FC<ModelProps> = ({
 
   return (
     <>
-    {exists?
-    <group
-      // onPointerOver={() => setIsSelected(true)}
-      // onPointerOut={() => setIsSelected(false)}
-      onClick={(e) =>{ 
-        e.stopPropagation();
-        setIsSelected(!isSelected)}
-      }
-      ref={group}
-      dispose={null}
-      position={position}
-      scale={[2.5, 2.5, 2.5]}
-    >
-      <mesh
-        geometry={nodes.Cube024.geometry}
-        material={nodes.Cube024.material}
-        position={[-1.42, 0.55, -3.13]}
-        scale={[0.85, 0.29, 0.51]}
-      >
-        {isSelected ? (
-          <Html distanceFactor={10}>
-            <div className="content">
-              BinTag:{BinsData?.BinTag}
-              <br />
-              Column: {sectiontag}
-              <br />
-              Rack: {racktag}
-              <br />
-              Level: {leveltag}
-              <br />
-              Capacity:{BinsData?.Volume} cm3
-              <br />
-              Amount of Items: {BinsData?.AmountOfItems}
-              <br />
-            </div>
-          </Html>
-        ) : null}
+      {exists ? (
+        <group
+          // onPointerOver={() => setIsSelected(true)}
+          // onPointerOut={() => setIsSelected(false)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsSelected(!isSelected);
+          }}
+          ref={group}
+          dispose={null}
+          position={position}
+          scale={[2.5, 2.5, 2.5]}
+        >
+          <mesh
+            geometry={nodes.Cube024.geometry}
+            material={nodes.Cube024.material}
+            position={[-1.42, 0.55, -3.13]}
+            scale={[0.85, 0.29, 0.51]}
+          >
+            {isSelected ? (
+              <Html distanceFactor={10}>
+                <div className="content">
+                  BinTag:{BinsData?.BinTag}
+                  <br />
+                  Column: {sectiontag}
+                  <br />
+                  Rack: {racktag}
+                  <br />
+                  Level: {leveltag}
+                  <br />
+                  Capacity:{BinsData?.Volume} cm3
+                  <br />
+                  Amount of Items: {BinsData?.AmountOfItems}
+                  <br />
+                </div>
+              </Html>
+            ) : null}
 
-        <meshStandardMaterial color={currentbintags?.includes(`${areatag}${racktag}${leveltag}${sectiontag}`) || isSelected ? "#8b0000" : "gray"} />
-      </mesh>
-    </group> : null}
+            <meshStandardMaterial
+              color={
+                currentbintags?.includes(
+                  `${areatag}${racktag}${leveltag}${sectiontag}`
+                ) || isSelected
+                  ? "#8b0000"
+                  : "gray"
+              }
+            />
+          </mesh>
+        </group>
+      ) : null}
     </>
   );
 };
