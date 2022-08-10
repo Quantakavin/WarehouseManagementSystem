@@ -61,13 +61,14 @@ import { TLoan } from '../../utils/CommonTypes'
 export default function TloanDisplay() {
   const permissions = useAppSelector(selectPermissions);
   const navigate = useNavigate();
-  const [loans, setLoans] = useState<TLoan>([]);
+  const [loans, setLoans] = useState<any>([]);
   const [itemsTable, setItemsTable] = useState([]);
   const [purposeField, setPurposeField] = useState("");
+  const [remarksField, setRemarksField] = useState("");
   const context: any = useContext(EditableContext);
   const { isEditable, setIsEditable, TLoanIDGlobal, setTLoanIDGlobal } = context;
   const { TLoanID } = useParams();
-  const [type, setType] = useState("");
+  const [type, setType] = useState<any>("");
   const [company, setCompany] = useState("");
   const [name, setName] = useState("");
   const [purpose, setPurpose] = useState("");
@@ -139,6 +140,7 @@ export default function TloanDisplay() {
         .then((data) => {
           setPurposeField(data.data.Purpose);
           setReasonField(data.data.Reason);
+          setRemarksField(data.data.Remarks)
           setEmail(data.data.CustomerEmail);
           setPurpose(data.data.Purpose);
           setDuration(data.data.Duration);
@@ -146,7 +148,7 @@ export default function TloanDisplay() {
           setDateForm(data.data.RequiredDate);
           setType(data.data.TLoanTypeID);
           setLoans(data.data);
-          setCompany( data.data.CompanyID ||data.data.CompanyName )
+          setCompany( data.data.CompanyID ||data.data.CompanyName)
         });
     };
     fetchData().catch(console.error);
@@ -2537,5 +2539,158 @@ export default function TloanDisplay() {
         </Box>
       </Box>
     );
-  } else return null;
+  } else if(loans.TLoanStatusID === 9){
+      return ( 
+  <Box sx={{ padding: 3, paddingBottom: 0, height: "100%", width: "100%" }}>
+    <Box sx={{ display: "flex", height: "100%" }}>
+      <Box sx={{ flexGrow: 1 }}>
+        <Card>
+          <CardContent>
+            <Grid container spacing={8}>
+              <Grid item xs={12}>
+                <Typography
+                  gutterBottom
+                  variant="subtitle2"
+                  component="div"
+                  sx={{
+                    display: "flex",
+                    color: "#063970",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <h2>TLoan {loans.TLoanID}</h2>
+                  <Box sx={{ marginLeft: 5 }}>
+                    <div>Loan No.</div>
+                    <div style={{ color: "black", fontWeight: "normal" }}>
+                      {loans.TLoanID}
+                    </div>
+                  </Box>
+                  <Box sx={{ marginLeft: 5 }}>
+                    <div>Start Date:</div>
+                    <div style={{ color: "black", fontWeight: "normal" }}>
+                      {loans.StartDate}
+                    </div>
+                  </Box>
+                  <Box sx={{ marginLeft: 5 }}>
+                    <div style={{}}>End Date:</div>
+                    <div style={{ color: "black", fontWeight: "normal" }}>
+                      {loans.EndDate}
+                    </div>
+                  </Box>
+                  <Box sx={{ marginLeft: 5 }}>
+                    <div style={{}}>Company Name:</div>
+                    <div style={{ color: "black", fontWeight: "normal" }}>
+                      {loans.CompanyName}
+                    </div>
+                  </Box>
+                  <Box sx={{ marginLeft: 5 }}>
+                    <div style={{}}>Customer Email:</div>
+                    <div style={{ color: "black", fontWeight: "normal" }}>
+                      {loans.CustomerEmail}
+                    </div>
+                  </Box>
+                </Typography>
+              </Grid>
+              <Grid item xs={9}>
+                <DataGrid
+                  sx={{ background: "white", fontSize: 16 }}
+                  rows={itemsTable}
+                  columns={columns}
+                  editMode="row"
+                  getRowId={(item) => item.ItemNo}
+                  experimentalFeatures={{ newEditingApi: true }}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <TextField
+                  sx={{ display: "flex" }}
+                  id="outlined-purpose"
+                  multiline
+                  rows={11.5}
+                  label="Reason For Rejection"
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                  variant="filled"
+                  value={remarksField}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  gutterBottom
+                  variant="subtitle2"
+                  component="div"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: -5,
+                    marginLeft: -10,
+                    color: "#063970",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Box>
+                    <div>Collection Type:</div>
+                    <div style={{ color: "black", fontWeight: "normal" }}>
+                      {loans.Collection}
+                    </div>
+                  </Box>
+                  <Box sx={{ marginLeft: 5 }}>
+                    <div>Type:</div>
+                    <div style={{ color: "black", fontWeight: "normal" }}>
+                      {loans.TLoanType}
+                    </div>
+                  </Box>
+                  <Box sx={{ marginLeft: 5 }}>
+                    <div style={{}}>Status:</div>
+                    <div style={{ color: "red", fontWeight: "normal" }}>
+                      {loans.TLoanStatus}
+                    </div>
+                  </Box>
+              
+                </Typography>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                component="span"
+                sx={{
+                  component: "span",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <motion.div
+                  className="animatable"
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <LoadingButton
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#063970",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                      paddingRight: 4,
+                    }}
+                    startIcon={<ArrowBackIosNewIcon />}
+                    onClick={() => navigate(-1)}
+                  >
+                    Back
+                  </LoadingButton>
+                </motion.div>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
+      </Box>
+    </Box>
+  </Box>
+);
+  }else return null;
 }

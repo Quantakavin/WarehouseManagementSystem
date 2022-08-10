@@ -236,6 +236,7 @@ module.exports.getLoanByNumber = async (TLoanID) => {
   tt.TLoanType,
   t.Collection,
   t.Purpose,
+  t.Remarks,
   t.TLoanStatusID,
   t.TLoanTypeID,
   t.CompanyName AS 'CompanyID', 
