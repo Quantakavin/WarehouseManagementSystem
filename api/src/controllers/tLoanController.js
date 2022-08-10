@@ -12,6 +12,7 @@ const {
     tloanExtensionAcceptedTele,
     tloanExtensionRejectedTele
 } = require('./telegramNotificationController');
+const { createNotification } = require('./notificationController');
 
 module.exports.getLoanByNo = async (req, res) => {
     const { TLoanID } = req.params;
@@ -435,6 +436,7 @@ module.exports.approveLoan = async (req, res) => {
             if (telegramid !== null) {
                 tloanAcceptedTele(telegramid, username, TLoanID);
             }
+            createNotification(10, UserID, TLoanID);
             tloanAcceptedMail(email, username, TLoanID);
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
@@ -471,6 +473,7 @@ module.exports.rejectLoan = async (req, res) => {
             if (telegramid !== null) {
                 tloanRejectedTele(telegramid, username, TLoanID, remarks);
             }
+            createNotification(11, UserID, TLoanID);
             tloanRejectedMail(email, username, TLoanID, remarks);
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
@@ -506,6 +509,7 @@ module.exports.approveExtension = async (req, res) => {
             if (telegramid !== null) {
                 tloanExtensionAcceptedTele(telegramid, username, TLoanID);
             }
+            createNotification(14, UserID, TLoanID);
             tloanExtensionAcceptedMail(email, username, TLoanID);
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
@@ -541,6 +545,7 @@ module.exports.rejectExtension = async (req, res) => {
             if (telegramid !== null) {
                 tloanExtensionRejectedTele(telegramid, username, TLoanID, remarks);
             }
+            createNotification(15, UserID, TLoanID);
             tloanExtensionRejectedMail(email, username, TLoanID, remarks);
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');

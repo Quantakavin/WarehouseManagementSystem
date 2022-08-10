@@ -64,7 +64,7 @@ function newtloan() {
   const [email, setEmail] = useState("");
   const [collection, setCollection] = useState("");
   const [requireddate, setRDate] = useState("");
-  const [dateForm, setDateForm] = useState("");
+  const [dateForm, setDateForm] = useState('');
   const [typeError, setTypeError] = useState(false);
   const [companyError, setCompanyError] = useState(false);
   const [purposeError, setPurposeError] = useState(false);
@@ -79,6 +79,7 @@ function newtloan() {
   const [emailErrorText, setEmailErrorText] = useState("");
   const [collectionErrorText, setCollectionErrorText] = useState("");
   const [rdateErrorText, setRDateErrorText] = useState("");
+  const [minDateStr, setMinDateStr] = useState('')
   const permissions = useAppSelector(selectPermissions);
   const ExternalApplication = permissions.some(
     (e) => e.FeatureName === "T-Loan Application (Internal+External)"
@@ -121,7 +122,12 @@ function newtloan() {
     removeItem,
     emptyCart,
   } = useCart();
-
+  const minimumDate: any = new Date(new Date().getTime()+(10*24*60*60*1000))
+  const minimumDateString = minimumDate.toString();
+  useEffect(() => {
+    const correctFormat = dateFormat(minimumDateString, "yyyy-mm-dd");
+    setMinDateStr(correctFormat);
+  });
   const [rows, setRows] = React.useState([]);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
@@ -390,6 +396,16 @@ function newtloan() {
       setRDateError(true);
       setRDateErrorText("Select a date");
       setSubmitLoading(false);
+    }else if((requireddate < minDateStr) === true){
+      Toast.fire({
+        icon: "warning",
+        title: "Please Select Your Required Date",
+        customClass: "swalpopup",
+        timer: 2000,
+        width: 315,
+      });
+      setRDateError(true);
+      setSubmitLoading(false)
     }
     if (email === "") {
       setEmailError(true);
@@ -524,6 +540,16 @@ function newtloan() {
       setRDateError(true);
       setRDateErrorText("Select a date");
       setLoading(false);
+    }else if((requireddate < minDateStr) === true){
+      Toast.fire({
+        icon: "warning",
+        title: "Please Select Your Required Date",
+        customClass: "swalpopup",
+        timer: 2000,
+        width: 315,
+      });
+      setRDateError(true);
+      setSubmitLoading(false)
     }
     if (email === "") {
       setEmailError(true);
@@ -778,7 +804,9 @@ function newtloan() {
       </FormControl>
     );
   };
-
+  
+   
+  
   const getCard = () => {
     const loanDuration = [
       { "1 Week": "7" },
@@ -940,9 +968,11 @@ function newtloan() {
                       inputFormat="yyyy-MM-dd"
                       value={dateForm}
                       onChange={handleChangeRequiredDate}
+                      minDate={minimumDate}
                       inputProps={{
                         readOnly:true
                       }}
+                      
                       renderInput={(params) => (
                         <TextField
                           id="filled-required"
