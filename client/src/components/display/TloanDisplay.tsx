@@ -1,3 +1,5 @@
+
+
 import FormHelperText from "@material-ui/core/FormHelperText";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
@@ -148,7 +150,7 @@ export default function TloanDisplay() {
         });
     };
     fetchData().catch(console.error);
-  }, []);
+  }, [TLoanID]);
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
@@ -159,7 +161,7 @@ export default function TloanDisplay() {
       setItemsTable(items.data);
     };
     fetchData().catch(console.error);
-  }, []);
+  }, [TLoanID]);
  
   const updateStatus = (e) =>{
     setLoading(false)

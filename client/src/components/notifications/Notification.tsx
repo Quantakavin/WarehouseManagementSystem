@@ -1,4 +1,4 @@
-import { Grid, MenuItem, Paper, Typography } from "@mui/material";
+import { Box, Grid, MenuItem, Paper, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { SocketContext } from '../../context/socket';
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -9,13 +9,15 @@ import config from "../../config/config";
 import { NotificationType } from "../../utils/CommonTypes"
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import InfoIcon from '@mui/icons-material/Info';
 import { useNavigate } from "react-router-dom";
 
 interface NotificationProps {
     notification: NotificationType;
+    maxWidth: string;
 }
 
-const Notification: React.FC<NotificationProps> = ({notification}) => {
+const Notification: React.FC<NotificationProps> = ({notification, maxWidth}) => {
   const socket = useContext(SocketContext);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -27,9 +29,11 @@ const Notification: React.FC<NotificationProps> = ({notification}) => {
   let notimessage = notification.NotiMessage;
 
   switch(notification.Icon) {
-    case "Approved": icon=<CheckCircleIcon sx={{fontSize: "25px", color: "#31A961"}}/>;
+    case "Approved": icon=<CheckCircleIcon sx={{fontSize: "30px", color: "#31A961"}}/>;
     break;
-    case "Rejected": icon=<CancelIcon sx={{fontSize: "25px", color: "#D11A2A"}}/>;
+    case "Rejected": icon=<CancelIcon sx={{fontSize: "30px", color: "#D11A2A"}}/>;
+    break;
+    case "Information": icon=<InfoIcon sx={{fontSize: "30px", color: "#3F4D65"}}/>;
     break;
   }
 
@@ -42,7 +46,7 @@ const Notification: React.FC<NotificationProps> = ({notification}) => {
 
 
   return (
-  <MenuItem key={notification.NotificationID} onClick={() => navigate(url)}>
+  <Box onClick={() => navigate(url)}>
                   <Grid container spacing={2}>
                 <Grid
                   item
@@ -57,7 +61,7 @@ const Notification: React.FC<NotificationProps> = ({notification}) => {
                     <Grid item xs>
                       <Typography
                         gutterBottom
-                        sx={{ color: "#0A2540", fontWeight: 600, overflow: "hidden", width: "220px",textOverflow: "ellipsis"  }}
+                        sx={{ color: "#0A2540", fontWeight: 600, overflow: "hidden", width: maxWidth,textOverflow: "ellipsis"  }}
                         component="div"
                       >
                         {notification.NotiFeature}
@@ -65,7 +69,7 @@ const Notification: React.FC<NotificationProps> = ({notification}) => {
                       <Typography
                         variant="body2"
                         gutterBottom
-                        sx={{ color: "#0A2540", overflow: "hidden", width: "220px",textOverflow: "ellipsis"}}
+                        sx={{ color: "#0A2540", overflow: "hidden", width: maxWidth,textOverflow: "ellipsis"}}
                       >
                         {notimessage}
                       </Typography>
@@ -79,7 +83,7 @@ const Notification: React.FC<NotificationProps> = ({notification}) => {
                   </Grid>
                 </Grid>
               </Grid>
-  </MenuItem>
+  </Box>
   )
 }
 

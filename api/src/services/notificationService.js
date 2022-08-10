@@ -7,7 +7,7 @@ module.exports.insert = async (NotiFeatureID, ReceiverID,ContentID) => {
 };
 
 module.exports.getById = async (UserID) => {
-    const query = `SELECT nf.NotiFeatureID, nf.NotiFeature, nf.NotiMessage, n.Read, n.ReceiverID, n.NotificationID, n.ContentID, nf.Icon, nf.Url FROM Notification n INNER JOIN NotiFeature nf ON n.NotiFeatureID = nf.NotiFeatureID WHERE n.ReceiverID = ?`;
+    const query = `SELECT nf.NotiFeatureID, nf.NotiFeature, nf.NotiMessage, n.Read, n.ReceiverID, n.NotificationID, n.ContentID, nf.Icon, nf.Url FROM Notification n INNER JOIN NotiFeature nf ON n.NotiFeatureID = nf.NotiFeatureID WHERE n.ReceiverID = ? ORDER BY n.NotificationID DESC`;
     return knex.raw(query, [UserID]);
 };
 
