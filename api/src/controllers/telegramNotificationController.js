@@ -82,7 +82,6 @@ bot.on('message', (message) => {
                         bot.sendMessage(UserID, `Answer`, options);
                     }
                 }
-
                 bot.editMessageText(text, opts);
             });
         }
