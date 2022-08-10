@@ -38,7 +38,7 @@ module.exports.getLoanByNo = async (req, res) => {
             });
             return res.status(200).send(output[0]);
         }
-        return res.status(404).json({ message: 'Cannot find' });
+        return res.status(404).json({ message: 'Cannot Find TLoan' });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
@@ -449,7 +449,7 @@ module.exports.approveLoan = async (req, res) => {
             redisClient.del(`PendingTLoan#${UserID}`);
             redisClient.del(`DraftTLoan#${UserID}`);
             redisClient.del(`HistoryTLoan#${UserID}`);
-            return res.status(200).send('Status has been Updated');
+            return res.status(200).json({message : 'Status has been Updated'});
         }
         return res.status(500).json({ message: 'Internal Server Error!' });
     } catch (error) {
@@ -629,9 +629,11 @@ module.exports.LoanExtend = async (req, res) => {
             redisClient.del(`PendingTLoan#${UserID}`);
             redisClient.del(`DraftTLoan#${UserID}`);
             redisClient.del(`HistoryTLoan#${UserID}`);
-            return res.status(200).json(results[0]);
+            return res.status(201).json(results[0]);
         }
-        return res.status(404).json({ message: 'Could not submit extension request' });
+
+        return res.status(400).json({ message : 'Could not submit extension request' });
+
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });

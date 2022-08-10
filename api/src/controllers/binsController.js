@@ -1,9 +1,9 @@
 const redisClient = require('../config/caching');
 const bin = require('../services/binsService');
 
-// Get Bin By Bin Tag
+//Get Bin By Bin Tag
 module.exports.binTag = async (req, res) => {
-    const { BinTag } = req.params;
+    let BinTag = req.params.BinTag;
     try {
         const searchBinTag = await redisClient.get(`BinTag#${BinTag}`);
         if (searchBinTag !== null) {
@@ -18,8 +18,9 @@ module.exports.binTag = async (req, res) => {
         if (results.length > 0) {
             console.log('bintag working');
             return res.status(200).json(results);
+        } else {
+            return res.status(404).send('There is no such BinTag');
         }
-        return res.status(404).send('There is no such BinTag');
     } catch (error) {
         console.log('bintag not working');
         return res.status(500).send('Internal Server Error');
@@ -38,8 +39,9 @@ module.exports.binInfo = async (req, res) => {
         if (results.length > 0) {
             console.log('endpoint working');
             return res.status(200).json(results[0]);
+        } else {
+            return res.status(404).send('There is no such BinInfo');
         }
-        return res.status(404).send('There is no such BinInfo');
     } catch (error) {
         console.log(error);
         return res.status(500).send('Internal Server Error');
@@ -64,9 +66,10 @@ module.exports.getAllBrandNames = async (req, res) => {
     }
 };
 
-// Get Bin By Product Brand
+
+//Get Bin By Product Brand
 module.exports.brand = async (req, res) => {
-    const { Brand } = req.params;
+    let Brand = req.params.Brand;
     try {
         const searchBrand = await redisClient.get(`Brand#${Brand}-Bins`);
         if (searchBrand !== null) {
@@ -77,10 +80,11 @@ module.exports.brand = async (req, res) => {
         redisClient.set(`Brand#${Brand}-Bins`, JSON.stringify(results[0]));
 
         if (results.length > 0) {
-            console.log(results);
+            console.log("the searched bins are ", results)
             return res.status(200).json(results[0]);
+        } else {
+            return res.status(404).send('');
         }
-        return res.status(404).send('');
     } catch (error) {
         console.log(error);
         return res.status(500).send('Internal Server Error');
@@ -89,7 +93,7 @@ module.exports.brand = async (req, res) => {
 
 // Get Bin By Item Name
 module.exports.ItemName = async (req, res) => {
-    const { ItemName } = req.params;
+    let ItemName = req.params.ItemName;
     try {
         const searchItemName = await redisClient.get(`ItemName#${ItemName}`);
         if (searchItemName !== null) {
@@ -103,8 +107,9 @@ module.exports.ItemName = async (req, res) => {
             console.log('endpoint working');
             console.log(results);
             return res.status(200).json(results[0]);
+        } else {
+            return res.status(404).send('');
         }
-        return res.status(404).send('');
     } catch (error) {
         console.log(error);
         return res.status(500).send('Internal Server Error');
@@ -113,7 +118,7 @@ module.exports.ItemName = async (req, res) => {
 
 // Get Bin Location, Items, Item Compmany, Capacity by Bin Tag
 module.exports.BinProducts = async (req, res) => {
-    const { BinTag } = req.params;
+    let BinTag = req.params.BinTag;
     try {
         const searchBinTag = await redisClient.get(`BinTag#${BinTag}`);
         if (searchBinTag !== null) {
@@ -127,8 +132,9 @@ module.exports.BinProducts = async (req, res) => {
             console.log('endpoint working');
             console.log(results);
             return res.status(200).json(results[0]);
+        } else {
+            return res.status(404).send('');
         }
-        return res.status(404).send('');
     } catch (error) {
         console.log(error);
         return res.status(500).send('Internal Server Error');
@@ -137,7 +143,7 @@ module.exports.BinProducts = async (req, res) => {
 
 // Get Amount of Items in Bin
 module.exports.BinQtyBrand = async (req, res) => {
-    const { Brand } = req.params;
+    let Brand = req.params.Brand;
     try {
         const searchBrand = await redisClient.get(`Brand#${Brand}`);
         if (searchBrand !== null) {
@@ -150,8 +156,9 @@ module.exports.BinQtyBrand = async (req, res) => {
         if (results.length > 0) {
             console.log('endpoint working');
             return res.status(200).json(results[0]);
+        } else {
+            return res.status(404).send('');
         }
-        return res.status(404).send('');
     } catch (error) {
         console.log(error);
         return res.status(500).send('Internal Server Error');
@@ -172,8 +179,9 @@ module.exports.BinQtyBinID = async (req, res) => {
         if (results.length > 0) {
             console.log('endpoint working');
             return res.status(200).json(results[0]);
+        } else {
+            return res.status(404).send('');
         }
-        return res.status(404).send('');
     } catch (error) {
         console.log(error);
         return res.status(500).send('Internal Server Error');

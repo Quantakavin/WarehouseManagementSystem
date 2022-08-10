@@ -14,9 +14,9 @@ const Floor = () => {
 
   return (
     <mesh
-      position={[0, -11.5, 0]}
+      position={[-100, -11.5, 200]}
       rotation={[Math.PI / 2, 0, 0]}
-      scale={[300, 300, 300]}
+      scale={[500, 600, 600]}
     >
       <planeBufferGeometry />
       <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
@@ -58,7 +58,7 @@ const Scene = ({ selectedbintags }: SceneProps) => {
       <pointLight position={[40, 40, 40]} />
       <OrbitControls
         maxPolarAngle={Math.PI / 2}
-        maxDistance={150}
+        maxDistance={500}
         ref={controls}
       />
       <Suspense fallback={null}>
@@ -262,6 +262,418 @@ const Scene = ({ selectedbintags }: SceneProps) => {
           changeposition={changeCameraPosition}
           currentbintags={selectedbintags}
         />
+
+        {/* Section A07 */}
+        <FourColRack
+          position={[0, 0, 120]}
+          areatag="A07"
+          racktag="R01"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[25, 0, 120]}
+          areatag="A07"
+          racktag="R02"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[50, 0, 120]}
+          areatag="A07"
+          racktag="R03"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[75, 0, 120]}
+          areatag="A07"
+          racktag="R04"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[100, 0, 120]}
+          areatag="A07"
+          racktag="R05"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <TwoColRack
+          position={[120, 0, 120]}
+          areatag="A07"
+          racktag="R06"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+
+        {/* Section A08 */}
+        <FourColRack
+          position={[0, 0, 140]}
+          areatag="A08"
+          racktag="R01"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[25, 0, 140]}
+          areatag="A08"
+          racktag="R02"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[50, 0, 140]}
+          areatag="A08"
+          racktag="R03"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[75, 0, 140]}
+          areatag="A08"
+          racktag="R04"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[100, 0, 140]}
+          areatag="A08"
+          racktag="R05"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <TwoColRack
+          position={[120, 0, 140]}
+          areatag="A08"
+          racktag="R06"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+
+        {/* Section A09 */}
+        <FourColRack
+          position={[0, 0, 160]}
+          areatag="A09"
+          racktag="R01"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[25, 0, 160]}
+          areatag="A09"
+          racktag="R02"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[50, 0, 160]}
+          areatag="A09"
+          racktag="R03"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[75, 0, 160]}
+          areatag="A09"
+          racktag="R04"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[100, 0, 160]}
+          areatag="A09"
+          racktag="R05"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <TwoColRack
+          position={[120, 0, 160]}
+          areatag="A09"
+          racktag="R06"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+
+
+        {/* Section A10 */}
+        <FourColRack
+          position={[0, 0, 180]}
+          areatag="A10"
+          racktag="R01"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[25, 0, 180]}
+          areatag="A10"
+          racktag="R02"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <TwoColRack
+          position={[45, 0, 180]}
+          areatag="A10"
+          racktag="R03"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+
+        <FourColRack
+          position={[70, 0, 180]}
+          areatag="A10"
+          racktag="R04"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[95, 0, 180]}
+          areatag="A10"
+          racktag="R05"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <TwoColRack
+          position={[115, 0, 180]}
+          areatag="A10"
+          racktag="R06"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+
+
+        {/* Section A11 */}
+        <FourColRack
+          position={[0, 0, 200]}
+          areatag="A11"
+          racktag="R01"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[25, 0, 200]}
+          areatag="A11"
+          racktag="R02"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <TwoColRack
+          position={[45, 0, 200]}
+          areatag="A11"
+          racktag="R03"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+
+        <FourColRack
+          position={[70, 0, 200]}
+          areatag="A11"
+          racktag="R04"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[95, 0, 200]}
+          areatag="A11"
+          racktag="R05"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <TwoColRack
+          position={[115, 0, 200]}
+          areatag="A11"
+          racktag="R06"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+
+        {/* Section A12 */}
+        <FourColRack
+          position={[0, 0, 220]}
+          areatag="A12"
+          racktag="R01"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[25, 0, 220]}
+          areatag="A12"
+          racktag="R02"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[50, 0, 220]}
+          areatag="A12"
+          racktag="R03"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[75, 0, 220]}
+          areatag="A12"
+          racktag="R04"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[100, 0, 220]}
+          areatag="A12"
+          racktag="R05"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <TwoColRack
+          position={[120, 0, 220]}
+          areatag="A12"
+          racktag="R06"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+
+        {/* Section A13 */}
+          <FourColRack
+          position={[0, 0, 240]}
+          areatag="A13"
+          racktag="R01"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[25, 0, 240]}
+          areatag="A13"
+          racktag="R02"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[50, 0, 240]}
+          areatag="A13"
+          racktag="R03"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[75, 0, 240]}
+          areatag="A13"
+          racktag="R04"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[100, 0, 240]}
+          areatag="A13"
+          racktag="R05"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <TwoColRack
+          position={[120, 0, 240]}
+          areatag="A13"
+          racktag="R06"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+
+        {/* Section A14 */}
+        <FourColRack
+          position={[0, 0, 260]}
+          areatag="A14"
+          racktag="R01"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[25, 0, 260]}
+          areatag="A14"
+          racktag="R02"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[50, 0, 260]}
+          areatag="A14"
+          racktag="R03"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[75, 0, 260]}
+          areatag="A14"
+          racktag="R04"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+
+        {/* Section A15 */}
+          <FourColRack
+          position={[0, 0, 280]}
+          areatag="A15"
+          racktag="R01"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[25, 0, 280]}
+          areatag="A15"
+          racktag="R02"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[50, 0, 280]}
+          areatag="A15"
+          racktag="R03"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[75, 0, 280]}
+          areatag="A15"
+          racktag="R04"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+
+        {/* Section A16 */}
+        <FourColRack
+          position={[0, 0, 300]}
+          areatag="A16"
+          racktag="R01"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[25, 0, 300]}
+          areatag="A16"
+          racktag="R02"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[50, 0, 300]}
+          areatag="A16"
+          racktag="R03"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[75, 0, 300]}
+          areatag="A16"
+          racktag="R04"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+        <FourColRack
+          position={[100, 0, 300]}
+          areatag="A16"
+          racktag="R05"
+          changeposition={changeCameraPosition}
+          currentbintags={selectedbintags}
+        />
+
+
+
         <Floor />
       </Suspense>
     </>
