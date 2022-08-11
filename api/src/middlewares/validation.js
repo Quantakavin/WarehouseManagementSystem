@@ -245,6 +245,20 @@ const validation = {
         }
     },
 
+    validatePassword(req, res, next) {
+        const { password } = req.body;
+
+        const passswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$/;
+
+        if (passswordRegex.test(password)) {
+            next()
+        } else {
+            res.status(400).json({
+                message: 'Please enter a valid password'
+            });
+        }
+    },
+
     validateDraft: (req, res, next) => {
         const { type, company, email, requireddate, items } = req.body;
         const today = new Date(new Date().getTime() + 10 * 24 * 60 * 60 * 1000);
