@@ -141,7 +141,7 @@ module.exports.updateNotificationGroup = async (req, res) => {
                 company,
                 notifications
             );
-            redisClient.del(`notificationGroups${notificationGroupID}`);
+            redisClient.del(`notificationGroup${notificationGroupID}`);
             return res.status(200).json({ message: 'Notification Group updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find Notification Group with that id' });
