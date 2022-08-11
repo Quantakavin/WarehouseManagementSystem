@@ -77,6 +77,7 @@ const TLoanDisplay = () => {
   const [collection, setCollection] = useState("");
   const [requireddate, setRDate] = useState("");
   const [dateForm, setDateForm] = useState("");
+  const [statusID, setStatusID] = useState("")
   const [typeError, setTypeError] = useState(false);
   const [companyError, setCompanyError] = useState(false);
   const [purposeError, setPurposeError] = useState(false);
@@ -93,6 +94,7 @@ const TLoanDisplay = () => {
   const [items, setItems] = useState([]);
   const [rows, setRows] = React.useState([]);
   const [loading, setLoading] = useState(false);
+  const [statusLoading, setStatusLoading] = useState(false)
   const [statusChange, setStatusChange] = useState("");
   const [statusChangeError, setStatusChangeError] = useState(false);
   const [statusChangeErrorText, setStatusChangeErrorText] = useState("");
@@ -142,6 +144,7 @@ const TLoanDisplay = () => {
           setDateForm(data.data.RequiredDate);
           setType(data.data.TLoanTypeID);
           setLoans(data.data);
+          setStatusID(data.data.TLoanStatusID)
           setCompany(data.data.CompanyID || data.data.CompanyName);
         });
       console.log(result)
@@ -159,22 +162,29 @@ const TLoanDisplay = () => {
     };
     fetchData().catch(console.error);
   }, [TLoanID]);
-
+  
   const updateStatus = () => {
-    setLoading(false);
+    setStatusLoading(true);
     setStatusChangeError(false);
     if (statusChange === "") {
       setStatusChangeError(true);
       setStatusChangeErrorText("Please Select A Status");
+      setStatusLoading(false)
     }
-    if (statusChange !== "") {
+    if(statusChange === (statusID).toString()){
+      setStatusChangeError(true);
+      setStatusChangeErrorText("Please Select A Different Status");
+      setStatusLoading(false)
+    }
+    if (statusChange !== "" &&
+        statusChange !== (statusID).toString()) {
       setTimeout(() => {
         try {
           const results = axios
             .put(`${config.baseURL}/tloan/updatestatus/${TLoanID}`, {
               statusChange,
             })
-            .then(() => {
+            .then(() => {  
               Toast.fire({
                 icon: "success",
                 title: "Status Successfully Updated",
@@ -182,13 +192,13 @@ const TLoanDisplay = () => {
                 timer: 1500,
                 width: 700,
               });
-              window.location.reload();
-
               console.log(results);
+              window.location.reload();
             });
+           
         } catch (error) {
           console.log(error.response);
-          setLoading(false);
+          setStatusLoading(false);
         }
       }, 500);
     }
@@ -2047,7 +2057,7 @@ const TLoanDisplay = () => {
                               marginLeft: 5,
                               marginRight: 2,
                             }}
-                            loading={submitLoading}
+                            loading={statusLoading}
                             loadingPosition="end"
                             endIcon={<DoneAllIcon />}
                             onClick={updateStatus}
