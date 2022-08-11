@@ -215,12 +215,12 @@ const Sidebar = () => {
             }}
             className="flexcontainer"
           >
-            <SidebarLink url="/Tloan" name="T-Loan" icon={<ArticleIcon />} />
             <SidebarLink
               url="/RMA"
               name="RMA"
               icon={<AssignmentReturnIcon />}
             />
+            <SidebarLink url="/Tloan" name="T-Loan" icon={<ArticleIcon />} />
           </List>
           {/* <hr className="solid" style={{ height: 2, color: "#A4AAB6" }} /> */}
         </Drawer>
@@ -344,8 +344,8 @@ const Sidebar = () => {
           }}
           className="flexcontainer"
         >
-          <SidebarLink url="/Tloan" name="T-Loan" icon={<ArticleIcon />} />
           <SidebarLink url="/RMA" name="RMA" icon={<AssignmentReturnIcon />} />
+          <SidebarLink url="/Tloan" name="T-Loan" icon={<ArticleIcon />} />
         </List>
         <Divider />
         <List
