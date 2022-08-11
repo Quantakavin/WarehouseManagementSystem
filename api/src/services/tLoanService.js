@@ -280,7 +280,7 @@ module.exports.getCurrent = async (UserID) => {
   SELECT 
   t.TLoanID,
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
-  DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
+  DATE_FORMAT(DATE_ADD(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), INTERVAL IFNULL(tesel.duration,0)  DAY), "%d-%m-%Y") AS 'EndDate',
   COALESCE (c.CompanyName, t.CompanyName) AS 'CompanyName',
   t.CustomerEmail,
   u.UserID,
@@ -288,6 +288,7 @@ module.exports.getCurrent = async (UserID) => {
   FROM TLoan t 
   LEFT JOIN Company c
   ON t.CompanyName = c.CompanyID 
+  LEFT JOIN (SELECT duration, TLoanID from TLoanExtension where TLoanExtensionStatusID = 2) tesel ON tesel.TLoanID = t.TLoanID
   JOIN User u ON  t.UserID= u.UserID 
   WHERE t.UserID=? AND t.TLoanStatusID IN (3,5,6,7);`;
     return knex.raw(query, [UserID]);
@@ -298,13 +299,14 @@ module.exports.getPending = async (UserID) => {
   SELECT
   t.TLoanID,
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
-  DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
+  DATE_FORMAT(DATE_ADD(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), INTERVAL IFNULL(tesel.duration,0)  DAY), "%d-%m-%Y") AS 'EndDate',
   COALESCE (c.CompanyName, t.CompanyName) AS 'CompanyName',
   t.CustomerEmail,
   u.UserID,
   count(t.TLoanID) OVER() AS full_count
   FROM TLoan t LEFT JOIN Company c
   ON t.CompanyName = c.CompanyID 
+  LEFT JOIN (SELECT duration, TLoanID from TLoanExtension where TLoanExtensionStatusID = 2) tesel ON tesel.TLoanID = t.TLoanID
   JOIN User u ON  t.UserID= u.UserID 
   WHERE t.UserID=? AND t.TLoanStatusID = "4";`;
     return knex.raw(query, [UserID]);
@@ -315,7 +317,7 @@ module.exports.getDraft = async (UserID) => {
   SELECT 
   t.TLoanID,
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
-  DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
+  DATE_FORMAT(DATE_ADD(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), INTERVAL IFNULL(tesel.duration,0)  DAY), "%d-%m-%Y") AS 'EndDate',
   COALESCE (c.CompanyName, t.CompanyName) AS 'CompanyName',
   t.CustomerEmail,
   u.UserID,
@@ -323,6 +325,7 @@ module.exports.getDraft = async (UserID) => {
   FROM TLoan t 
   LEFT JOIN Company c
   ON t.CompanyName = c.CompanyID 
+  LEFT JOIN (SELECT duration, TLoanID from TLoanExtension where TLoanExtensionStatusID = 2) tesel ON tesel.TLoanID = t.TLoanID
   JOIN User u ON  t.UserID= u.UserID 
   WHERE t.UserID=? AND t.TLoanStatusID = "1";`;
     return knex.raw(query, [UserID]);
@@ -333,7 +336,7 @@ module.exports.getHistory = async (UserID) => {
   SELECT 
   t.TLoanID,
   DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
-  DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
+  DATE_FORMAT(DATE_ADD(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), INTERVAL IFNULL(tesel.duration,0)  DAY), "%d-%m-%Y") AS 'EndDate',
   COALESCE (c.CompanyName, t.CompanyName) AS 'CompanyName',
   t.CustomerEmail,
   u.UserID,
@@ -341,6 +344,7 @@ module.exports.getHistory = async (UserID) => {
   FROM TLoan t 
   LEFT JOIN Company c
   ON t.CompanyName = c.CompanyID 
+  LEFT JOIN (SELECT duration, TLoanID from TLoanExtension where TLoanExtensionStatusID = 2) tesel ON tesel.TLoanID = t.TLoanID
   JOIN User u ON  t.UserID= u.UserID 
   WHERE t.UserID=? AND t.TLoanStatusID = "8";`;
     return knex.raw(query, [UserID]);
