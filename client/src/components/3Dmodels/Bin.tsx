@@ -64,8 +64,8 @@ const Model: React.FC<ModelProps> = ({
       } else {
         setBinsData(data.data[0]);
       }
-    });
-  }, []);
+    })
+  }, [areatag, sectiontag, leveltag, racktag]);
 
   // get bin products and amount of items
 
@@ -90,12 +90,20 @@ const Model: React.FC<ModelProps> = ({
     <>
       {exists ? (
         <group
-          // onPointerOver={() => setIsSelected(true)}
-          // onPointerOut={() => setIsSelected(false)}
-          onClick={(e) => {
+          onPointerOver={(e) => {
             e.stopPropagation();
-            setIsSelected(!isSelected);
-          }}
+            setIsSelected(true);
+          }
+          }
+          onPointerOut={(e) => {
+            e.stopPropagation();
+            setIsSelected(false)
+          }
+          }
+          // onClick={(e) => {
+          //   e.stopPropagation();
+          //   setIsSelected(!isSelected);
+          // }}
           ref={group}
           dispose={null}
           position={position}
@@ -132,7 +140,7 @@ const Model: React.FC<ModelProps> = ({
                   `${areatag}${racktag}${leveltag}${sectiontag}`
                 ) || isSelected
                   ? "#8b0000"
-                  : "gray"
+                  : "#e3e8ee"
               }
             />
           </mesh>

@@ -165,7 +165,7 @@ const Model: React.FC<ModelProps> = ({
       ref={group}
       dispose={null}
       position={position}
-      // onClick={() => changeposition(position)}
+      onClick={() => changeposition(position)}
     >
       {CreateBoxes()}
       {/* <Bin position={[3.5, 1.5, 8]} areatag="A03" racktag="R03" leveltag="L01" sectiontag="S01" />

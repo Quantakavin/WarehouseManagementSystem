@@ -8,6 +8,8 @@ import FourColRack from "../../components/3Dmodels/4ColRack";
 import SearchBar from "../../components/search/SearchBar";
 import useDebounce from "../../hooks/useDebounce";
 import "../../styles/BinLocation.scss";
+import { useQuery } from "react-query";
+import { GetBinsByBrand, GetBrandNames } from "../../api/BinLocationDB";
 
 const Floor = () => {
   const colorMap = useLoader(THREE.TextureLoader, "Concrete030_4K_Color.png");
@@ -40,7 +42,7 @@ const Scene = ({ selectedbintags }: SceneProps) => {
     camera.position.set(
       newPosition[0],
       newPosition[1] + 20,
-      newPosition[2] + 30
+      newPosition[2] + 15
     );
 
     controls.current.target = new THREE.Vector3(
@@ -683,31 +685,31 @@ const BinLocations = () => {
   const [selectedBinTags, setSelectedBinTags] = useState<string[]>(null);
   const debouncedValue = useDebounce<string>(inputName, 500);
 
-  // const BrandNamesQuery = useQuery(
-  //   [`brandnames`, debouncedValue],
-  //   () => GetBrandNames(debouncedValue),
-  //   {
-  //     onSuccess: (data) => {
-  //       const brandarray = data.data.map((record) => {
-  //         return record.Brand;
-  //       });
-  //       setSearchOptions(brandarray);
-  //     },
-  //   }
-  // );
+  useQuery(
+    [`brandnames`, debouncedValue],
+    () => GetBrandNames(debouncedValue),
+    {
+      onSuccess: (data) => {
+        const brandarray = data.data.map((record) => {
+          return record.Brand;
+        });
+        setSearchOptions(brandarray);
+      },
+    }
+  );
 
-  // const BinsByBrandQuery = useQuery(
-  //   [`binsbybrand`, searchName],
-  //   () => GetBinsByBrand(searchName),
-  //   {
-  //     onSuccess: (data) => {
-  //       const returnbins = data.data.map((bin) => {
-  //         return bin.BinTag;
-  //       });
-  //       setSelectedBinTags(returnbins);
-  //     },
-  //   }
-  // );
+  useQuery(
+    [`binsbybrand`, searchName],
+    () => GetBinsByBrand(searchName),
+    {
+      onSuccess: (data) => {
+        const returnbins = data.data.map((bin) => {
+          return bin.BinTag;
+        });
+        setSelectedBinTags(returnbins);
+      },
+    }
+  );
 
   const handleInputChange = (inputstring: string) => {
     setSelectedBinTags(null);
