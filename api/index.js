@@ -30,11 +30,15 @@ const client = mqtt.connect(config.MQTTHost, { clientId: config.MQTTClient, prot
 client.on('connect', function () {
     console.log('connected to mqtt client');
     client.subscribe('quantity');
+    client.subscribe('binlocation');
 
     client.on('message', (topic, message) => {
         if(topic === 'quantity') {
           const parsedmessage = JSON.parse("[" + message + "]")
           productController.updateQuantity(parsedmessage[0].ItemNo, parsedmessage[0].BatchNo, parsedmessage[0].Quantity)
+        } else if (topic === 'binlocation') {
+            const parsedmessage = JSON.parse("[" + message + "]")
+            productController.updateBinLocation(parsedmessage[0].ItemNo, parsedmessage[0].BatchNo, parsedmessage[0].CurrentBinTag, parsedmessage[0].FinalBinTag)
         }
       })
 });

@@ -18,6 +18,17 @@ module.exports.getAll = async (limit, page) => {
     return knex.raw(query, [Number(limit), Number(page)]);
 };
 
+module.exports.getByItemCode= async(ItemNo, BatchNo) => {
+    const query=`SELECT BinProductPK FROM BinProduct WHERE ItemNo = ? AND BatchNo = ?`;
+    return knex.raw(query, [ItemNo, BatchNo])
+}
+
+// module.exports.getByItemCodeAndBinTag= async(ItemNo, BatchNo, FinalBinTag) => {
+//     const query=`SELECT BinProductPK FROM BinProduct bp LEFT JOIN Bin b ON b.BinID = bp.BinID WHERE ItemNo = ? AND BatchNo = ? AND BinTag = ?`;
+//     return knex.raw(query, [ItemNo, BatchNo, FinalBinTag])
+// }
+
+
 module.exports.getByPrimaryKey = async (binProductPK) => {
     const query = `SELECT p.*, b.BinTag2 FROM BinProduct p LEFT JOIN Bin b ON p.BinID = b.BinID WHERE p.BinProductPK = ?`;
     return knex.raw(query, [binProductPK]);
@@ -96,3 +107,19 @@ module.exports.updateQuantity = async (ItemNo, BatchNo, Quantity) => {
     })
 };
 
+module.exports.updateBinLocation = async (ItemNo, BatchNo, CurrentBinTag, FinalBinTag) => {
+    return knex.raw(`update BinProduct set BinID = (select BinID from Bin where BinTag2 = ?) where ItemNo = ? and BatchNo = ? and BinID = (select BinID from Bin where BinTag2 = ?)`, [FinalBinTag, ItemNo, BatchNo, CurrentBinTag])
+    // return knex('BinProduct')
+    // .where('ItemNo', ItemNo)
+    // .andWhere('BatchNo', BatchNo)
+    // .andWhere('BinID', knex('Bin').select('BinID').where('BinTag2', CurrentBinTag))
+    // // .returning('BinProductPK')
+    // .update({
+    //     BinID: knex('Bin').select('BinID').where('BinTag2', FinalBinTag)
+    // }).then((row) => {
+    //     console.log("the return is ", row)
+    // })
+};
+
+// 'BinID',knex.raw("SELECT BinID FROM Bin WHERE BinTag2 = ?", CurrrentBinTag)
+// knex.raw("SELECT BinID FROM Bin WHERE BinTag2 = ?",  FinalBinTag)
