@@ -85,3 +85,14 @@ module.exports.getAllpag = async () => {
     const query = `SELECT ItemNo, ItemName, BatchNo, Brand, Quantity FROM BinProduct LIMIT 100`;
     return knex.raw(query);
 };
+
+module.exports.updateQuantity = async (ItemNo, BatchNo, Quantity) => {
+    return knex('BinProduct')
+    .where('ItemNo', ItemNo)
+    .andWhere('BatchNo', BatchNo)
+    .returning('BinProductPK')
+    .update({
+        Quantity: Quantity
+    })
+};
+

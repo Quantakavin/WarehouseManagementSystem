@@ -17,5 +17,8 @@ module.exports = {
     TwilioAccountSID: process.env.TWILIO_ACCOUNT_SID,
     TwilioAuthToken: process.env.TWILIO_AUTH_TOKEN,
     TwilioService: process.env.TWILIO_SERVICE,
-    MQTTClient: process.env.MQTT_CLIENT
+    MQTTHost: process.env.MQTT_HOST,
+    MQTTClient: process.env.MQTT_CLIENTID,
+    MQTTPassword: process.env.MQTT_PASSWORD,
+    MQTTUsername: process.env.MQTT_USERNAME
 };
