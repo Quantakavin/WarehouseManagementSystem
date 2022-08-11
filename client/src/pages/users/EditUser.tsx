@@ -328,7 +328,7 @@ const EditUser: React.FC = () => {
 
       <Popup
         showpopup={showInactivateConfirmation}
-        heading="Are you sure you want to inactivate"
+        heading="Are you sure you want to inactivate this user"
         subheading="By doing so, the user will not be allowed to access or perform actions in the website."
         popupimage={<CancelIcon sx={{ color: "#D11A2A", fontSize: "150px" }} />}
         closepopup={() => setShowInactivateConfirmation(false)}
