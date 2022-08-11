@@ -38,7 +38,7 @@ const Model: React.FC<ModelProps> = ({
   const group = useRef<THREE.Group>();
   const [BinsData, setBinsData] = useState<any>(null);
   const [isSelected, setIsSelected] = useState<boolean>(false);
-  const [exists, setExists] = useState<boolean>(true);
+  // const [exists, setExists] = useState<boolean>(true);
   const { nodes, materials } = useGLTF("/box.glb") as GLTFResult;
 
   // Get Bin Information
@@ -55,17 +55,27 @@ const Model: React.FC<ModelProps> = ({
 
   // get bin tag by bin tag
 
-  useEffect(() => {
-    const bintag = `${areatag}${racktag}${leveltag}${sectiontag}`;
-    axios.get(`${config.baseURL}/bintag/${bintag}`).then((data) => {
+  // useEffect(() => {
+  //   const bintag = `${areatag}${racktag}${leveltag}${sectiontag}`;
+  //   axios.get(`${config.baseURL}/bintag/${bintag}`).then((data) => {
+  //     console.log(data.data[0]);
+  //     if (data.data[0] == null) {
+  //       setExists(false);
+  //     } else {
+  //       setBinsData(data.data[0]);
+  //     }
+  //   })
+  // }, [areatag, sectiontag, leveltag, racktag]);
+
+  const RetrieveBinInfo = async() => {
+    setIsSelected(true)
+    return await axios.get(`${config.baseURL}/bintag/${areatag}${racktag}${leveltag}${sectiontag}`).then((data) => {
       console.log(data.data[0]);
-      if (data.data[0] == null) {
-        setExists(false);
-      } else {
+      if (data.data[0] != null) {
         setBinsData(data.data[0]);
       }
     })
-  }, [areatag, sectiontag, leveltag, racktag]);
+  }
 
   // get bin products and amount of items
 
@@ -88,11 +98,11 @@ const Model: React.FC<ModelProps> = ({
 
   return (
     <>
-      {exists ? (
+      {/* {exists ? ( */}
         <group
           onPointerOver={(e) => {
             e.stopPropagation();
-            setIsSelected(true);
+            RetrieveBinInfo();
           }
           }
           onPointerOut={(e) => {
@@ -115,7 +125,7 @@ const Model: React.FC<ModelProps> = ({
             position={[-1.42, 0.55, -3.13]}
             scale={[0.85, 0.29, 0.51]}
           >
-            {isSelected ? (
+            {isSelected && BinsData != null ? (
               <Html distanceFactor={10}>
                 <div className="content">
                   BinTag:{BinsData?.BinTag}
@@ -145,7 +155,7 @@ const Model: React.FC<ModelProps> = ({
             />
           </mesh>
         </group>
-      ) : null}
+      {/* ) : null} */}
     </>
   );
 };
