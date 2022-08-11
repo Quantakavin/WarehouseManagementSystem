@@ -841,7 +841,6 @@ const CreateRMA: React.FC = () => {
                   onRowEditStop={handleRowEditStop}
                   processRowUpdate={processRowUpdate}
                   components={{
-                  LoadingOverlay: CircularProgress,
                     Toolbar: EditToolbar,
                     NoRowsOverlay: () => (
                       <Stack

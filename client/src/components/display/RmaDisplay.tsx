@@ -11,7 +11,13 @@ import MoreVert from "@mui/icons-material/MoreVert";
 import SaveIcon from "@mui/icons-material/Save";
 import UpdateIcon from "@mui/icons-material/Update";
 import { LoadingButton } from "@mui/lab";
-import { Stack, TextField, Tooltip, Typography } from "@mui/material";
+import {
+  LinearProgress,
+  Stack,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
@@ -72,6 +78,7 @@ const RmaDisplay: React.FC = () => {
   const [rows, setRows] = useState([]);
   const [pageSize, setPageSize] = useState(25);
   const [loading, setLoading] = useState(false);
+  const [tableLoading, setTableLoading] = useState(false);
   const [closeLoading, setCloseLoading] = useState(false);
   const [completeLoading, setCompleteLoading] = useState(false);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
@@ -104,6 +111,7 @@ const RmaDisplay: React.FC = () => {
   });
   // Get RMA details
   useEffect(() => {
+    setTableLoading(true);
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
@@ -122,12 +130,14 @@ const RmaDisplay: React.FC = () => {
   }, [RmaID]);
   // Get RMA products
   useEffect(() => {
+    setTableLoading(true);
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
       const rowdata = await axios.get(`${config.baseURL}/RMA/Product/${RmaID}`);
 
       setRows(rowdata.data);
+      setTableLoading(false);
     };
     // call the function
     fetchData();
@@ -1099,6 +1109,7 @@ const RmaDisplay: React.FC = () => {
               adapterLocale={locale}
             >
               <DataGrid
+                loading={loading}
                 sx={{ background: "white", fontSize: 16 }}
                 rows={rows}
                 columns={staticcolumns}
@@ -1109,6 +1120,9 @@ const RmaDisplay: React.FC = () => {
                 onFilterModelChange={(newFilterModel) =>
                   setFilterModel(newFilterModel)
                 }
+                components={{
+                  LoadingOverlay: LinearProgress,
+                }}
               />
             </LocalizationProvider>
           </Box>
@@ -1208,6 +1222,7 @@ const RmaDisplay: React.FC = () => {
           <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
             <Box sx={{ flexGrow: 1 }}>
               <DataGrid
+                loading={tableLoading}
                 sx={{ background: "white", fontSize: 16 }}
                 rows={rows}
                 columns={staticcolumns}
@@ -1217,7 +1232,7 @@ const RmaDisplay: React.FC = () => {
                 onPageSizeChange={(newPage) => setPageSize(newPage)}
                 pagination
                 components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                   Toolbar: CustomToolbar,
                   NoRowsOverlay: () => (
                     <Stack
@@ -1369,6 +1384,7 @@ const RmaDisplay: React.FC = () => {
               adapterLocale={locale}
             >
               <DataGrid
+                loading={tableLoading}
                 sx={{ background: "white", fontSize: 16 }}
                 rows={rows}
                 columns={staticcolumns}
@@ -1382,6 +1398,9 @@ const RmaDisplay: React.FC = () => {
                   toolbar: { setRows, setRowModesModel },
                 }}
                 experimentalFeatures={{ newEditingApi: true }}
+                components={{
+                  LoadingOverlay: LinearProgress,
+                }}
               />
             </LocalizationProvider>
           </Box>
@@ -1489,6 +1508,7 @@ const RmaDisplay: React.FC = () => {
               }}
             >
               <DataGrid
+                loading={tableLoading}
                 sx={{ background: "white", fontSize: 16 }}
                 rows={rows}
                 columns={coacolumns}
@@ -1498,7 +1518,7 @@ const RmaDisplay: React.FC = () => {
                 onPageSizeChange={(newPage) => setPageSize(newPage)}
                 pagination
                 components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                   Toolbar: CustomToolbar,
                   NoRowsOverlay: () => (
                     <Stack
@@ -1676,6 +1696,7 @@ const RmaDisplay: React.FC = () => {
               adapterLocale={locale}
             >
               <DataGrid
+                loading={tableLoading}
                 sx={{ background: "white", fontSize: 16 }}
                 rows={rows}
                 columns={staticcolumns}
@@ -1686,6 +1707,9 @@ const RmaDisplay: React.FC = () => {
                 onFilterModelChange={(newFilterModel) =>
                   setFilterModel(newFilterModel)
                 }
+                components={{
+                  LoadingOverlay: LinearProgress,
+                }}
                 // onRowEditStart={handleRowEditStart}
                 // processRowUpdate={processRowUpdate}
                 // componentsProps={{
@@ -1794,6 +1818,7 @@ const RmaDisplay: React.FC = () => {
               adapterLocale={locale}
             >
               <DataGrid
+                loading={tableLoading}
                 sx={{ background: "white", fontSize: 16 }}
                 rows={rows}
                 columns={staticcolumns}
@@ -1804,6 +1829,9 @@ const RmaDisplay: React.FC = () => {
                 onFilterModelChange={(newFilterModel) =>
                   setFilterModel(newFilterModel)
                 }
+                components={{
+                  LoadingOverlay: LinearProgress,
+                }}
               />
             </LocalizationProvider>
           </Box>
@@ -1915,6 +1943,7 @@ const RmaDisplay: React.FC = () => {
             }}
           >
             <DataGrid
+              loading={tableLoading}
               sx={{ background: "white", fontSize: 16 }}
               rows={rows}
               columns={whcolumns}
@@ -1932,7 +1961,7 @@ const RmaDisplay: React.FC = () => {
               onPageSizeChange={(newPage) => setPageSize(newPage)}
               pagination
               components={{
-                  LoadingOverlay: CircularProgress,
+                LoadingOverlay: LinearProgress,
                 Toolbar: CustomToolbar,
                 NoRowsOverlay: () => (
                   <Stack
@@ -2107,6 +2136,7 @@ const RmaDisplay: React.FC = () => {
             }}
           >
             <DataGrid
+              loading={tableLoading}
               sx={{ background: "white", fontSize: 16 }}
               rows={rows}
               columns={icolumns}
@@ -2116,7 +2146,7 @@ const RmaDisplay: React.FC = () => {
               onPageSizeChange={(newPage) => setPageSize(newPage)}
               pagination
               components={{
-                  LoadingOverlay: CircularProgress,
+                LoadingOverlay: LinearProgress,
                 Toolbar: CustomToolbar,
                 NoRowsOverlay: () => (
                   <Stack
@@ -2275,6 +2305,7 @@ const RmaDisplay: React.FC = () => {
             }}
           >
             <DataGrid
+              loading={tableLoading}
               sx={{ background: "white", fontSize: 16 }}
               rows={rows}
               columns={coacolumns}
@@ -2284,7 +2315,7 @@ const RmaDisplay: React.FC = () => {
               onPageSizeChange={(newPage) => setPageSize(newPage)}
               pagination
               components={{
-                  LoadingOverlay: CircularProgress,
+                LoadingOverlay: LinearProgress,
                 Toolbar: CustomToolbar,
                 NoRowsOverlay: () => (
                   <Stack
@@ -2425,6 +2456,7 @@ const RmaDisplay: React.FC = () => {
       <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
         <Box sx={{ flexGrow: 1 }}>
           <DataGrid
+            loading={tableLoading}
             sx={{ background: "white", fontSize: 16 }}
             rows={rows}
             columns={staticcolumns}
@@ -2434,6 +2466,9 @@ const RmaDisplay: React.FC = () => {
             onFilterModelChange={(newFilterModel) =>
               setFilterModel(newFilterModel)
             }
+            components={{
+              LoadingOverlay: LinearProgress,
+            }}
           />
         </Box>
       </Box>

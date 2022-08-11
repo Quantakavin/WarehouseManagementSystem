@@ -1,4 +1,4 @@
-import { Box, Grid, Paper, Popper } from "@mui/material";
+import { Box, Grid, LinearProgress, Paper, Popper } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
@@ -22,9 +22,11 @@ const TLoanManagerDisplay = () => {
   const [loans, setLoans] = useState<any>([]);
   const [items, setItems] = useState([]);
   const [reasonField, setReasonField] = useState("");
+  const [tableLoading, setTableLoading] = useState(false);
   const { TLoanID } = useParams();
   console.log(TLoanID);
   useEffect(() => {
+    setLoading(true);
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
@@ -33,6 +35,7 @@ const TLoanManagerDisplay = () => {
         .then((data) => {
           setReasonField(data.data.Reason);
           setLoans(data.data);
+          setTableLoading(false);
         });
 
       // setLoan(Object.e)
@@ -45,6 +48,7 @@ const TLoanManagerDisplay = () => {
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
@@ -53,7 +57,7 @@ const TLoanManagerDisplay = () => {
       );
 
       setItems(returnitems.data);
-
+      setTableLoading(false);
       // setLoan(Object.e)
     };
     // call the function
@@ -291,12 +295,16 @@ const TLoanManagerDisplay = () => {
                   </Grid>
                   <Grid item xs={9}>
                     <DataGrid
+                      loading={tableLoading}
                       sx={{ background: "white", fontSize: 16 }}
                       rows={items}
                       columns={columns}
                       editMode="row"
                       getRowId={(item) => item.ItemNo}
                       experimentalFeatures={{ newEditingApi: true }}
+                      components={{
+                        LoadingOverlay: LinearProgress,
+                      }}
                     />
                   </Grid>
                   <Grid item xs={3}>

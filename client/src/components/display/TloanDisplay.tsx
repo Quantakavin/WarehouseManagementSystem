@@ -77,7 +77,7 @@ const TLoanDisplay = () => {
   const [collection, setCollection] = useState("");
   const [requireddate, setRDate] = useState("");
   const [dateForm, setDateForm] = useState("");
-  const [statusID, setStatusID] = useState("")
+  const [statusID, setStatusID] = useState("");
   const [typeError, setTypeError] = useState(false);
   const [companyError, setCompanyError] = useState(false);
   const [purposeError, setPurposeError] = useState(false);
@@ -94,7 +94,8 @@ const TLoanDisplay = () => {
   const [items, setItems] = useState([]);
   const [rows, setRows] = React.useState([]);
   const [loading, setLoading] = useState(false);
-  const [statusLoading, setStatusLoading] = useState(false)
+  const [tableLoading, setTableLoading] = useState(false);
+  const [statusLoading, setStatusLoading] = useState(false);
   const [statusChange, setStatusChange] = useState("");
   const [statusChangeError, setStatusChangeError] = useState(false);
   const [statusChangeErrorText, setStatusChangeErrorText] = useState("");
@@ -129,6 +130,7 @@ const TLoanDisplay = () => {
     }
   });
   useEffect(() => {
+    setTableLoading(true);
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
@@ -144,47 +146,49 @@ const TLoanDisplay = () => {
           setDateForm(data.data.RequiredDate);
           setType(data.data.TLoanTypeID);
           setLoans(data.data);
-          setStatusID(data.data.TLoanStatusID)
+          setStatusID(data.data.TLoanStatusID);
           setCompany(data.data.CompanyID || data.data.CompanyName);
+          setTableLoading(false);
         });
-      console.log(result)
+      console.log(result);
     };
     fetchData().catch(console.error);
   }, [TLoanID]);
   useEffect(() => {
+    setTableLoading(true);
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
       const itemsAll = await axios.get(
         `${config.baseURL}/tloanitems/${TLoanID}`
-        );
+      );
       setItemsTable(itemsAll.data);
+      setTableLoading(false);
     };
     fetchData().catch(console.error);
   }, [TLoanID]);
-  
+
   const updateStatus = () => {
     setStatusLoading(true);
     setStatusChangeError(false);
     if (statusChange === "") {
       setStatusChangeError(true);
       setStatusChangeErrorText("Please Select A Status");
-      setStatusLoading(false)
+      setStatusLoading(false);
     }
-    if(statusChange === (statusID).toString()){
+    if (statusChange === statusID.toString()) {
       setStatusChangeError(true);
       setStatusChangeErrorText("Please Select A Different Status");
-      setStatusLoading(false)
+      setStatusLoading(false);
     }
-    if (statusChange !== "" &&
-        statusChange !== (statusID).toString()) {
+    if (statusChange !== "" && statusChange !== statusID.toString()) {
       setTimeout(() => {
         try {
           const results = axios
             .put(`${config.baseURL}/tloan/updatestatus/${TLoanID}`, {
               statusChange,
             })
-            .then(() => {  
+            .then(() => {
               Toast.fire({
                 icon: "success",
                 title: "Status Successfully Updated",
@@ -195,7 +199,6 @@ const TLoanDisplay = () => {
               console.log(results);
               window.location.reload();
             });
-           
         } catch (error) {
           console.log(error.response);
           setStatusLoading(false);
@@ -386,6 +389,7 @@ const TLoanDisplay = () => {
         }}
       >
         <DataGrid
+          loading={tableLoading}
           rows={rows}
           columns={columns}
           editMode="row"
@@ -398,6 +402,9 @@ const TLoanDisplay = () => {
             toolbar: { setRows, setRowModesModel },
           }}
           experimentalFeatures={{ newEditingApi: true }}
+          components={{
+            LoadingOverlay: LinearProgress,
+          }}
         />
       </Box>
     );
@@ -679,8 +686,8 @@ const TLoanDisplay = () => {
           helperText={companyErrorText}
         />
       );
-    }  
-    return null
+    }
+    return null;
   };
   const itemStorage = localStorage.getItem("react-use-cart");
   const cartItems = JSON.parse(itemStorage).items;
@@ -692,7 +699,6 @@ const TLoanDisplay = () => {
     setRows(cartItems);
   }, [cartItems]);
 
- 
   const newBasket = itemsTable.map(
     ({ BasketItemID, ItemNo, ItemName, BatchNo, WarehouseCode, Quantity }) => ({
       id: BasketItemID,
@@ -747,7 +753,7 @@ const TLoanDisplay = () => {
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
-  
+
   const emailRegex = /^\S+@\S+\.\S+$/i;
 
   const addItemArray = () => {
@@ -800,7 +806,7 @@ const TLoanDisplay = () => {
     setDurationError(false);
     setEmailError(false);
     setCollectionError(false);
-   
+
     if (items.length === 0) {
       Toast.fire({
         icon: "error",
@@ -893,7 +899,7 @@ const TLoanDisplay = () => {
       email !== "" &&
       email.match(emailRegex) &&
       collection !== "" &&
-      (requireddate < minDateStr) === false
+      requireddate < minDateStr === false
     ) {
       setTimeout(() => {
         try {
@@ -1105,12 +1111,16 @@ const TLoanDisplay = () => {
                   </Grid>
                   <Grid item xs={9}>
                     <DataGrid
+                      loading={tableLoading}
                       sx={{ background: "white", fontSize: 16 }}
                       rows={itemsTable}
                       columns={columns}
                       editMode="row"
                       getRowId={(item) => item.ItemNo}
                       experimentalFeatures={{ newEditingApi: true }}
+                      components={{
+                        LoadingOverlay: LinearProgress,
+                      }}
                     />
                   </Grid>
                   <Grid item xs={3}>
@@ -1541,7 +1551,7 @@ const TLoanDisplay = () => {
       setRDate(loans.RequiredDate);
     }
   }, []);
-  
+
   if (
     loans.TLoanStatusID === 3 ||
     loans.TLoanStatusID === 5 ||
@@ -1607,12 +1617,16 @@ const TLoanDisplay = () => {
                     </Grid>
                     <Grid item xs={9}>
                       <DataGrid
+                        loading={tableLoading}
                         sx={{ background: "white", fontSize: 16 }}
                         rows={itemsTable}
                         columns={columns}
                         editMode="row"
                         getRowId={(item) => item.ItemNo}
                         experimentalFeatures={{ newEditingApi: true }}
+                        components={{
+                          LoadingOverlay: LinearProgress,
+                        }}
                       />
                     </Grid>
                     <Grid item xs={3}>
@@ -1770,12 +1784,16 @@ const TLoanDisplay = () => {
                     </Grid>
                     <Grid item xs={9}>
                       <DataGrid
+                        loading={tableLoading}
                         sx={{ background: "white", fontSize: 16 }}
                         rows={itemsTable}
                         columns={columns}
                         editMode="row"
                         getRowId={(item) => item.ItemNo}
                         experimentalFeatures={{ newEditingApi: true }}
+                        components={{
+                          LoadingOverlay: LinearProgress,
+                        }}
                       />
                     </Grid>
                     <Grid item xs={3}>
@@ -1939,12 +1957,16 @@ const TLoanDisplay = () => {
                     </Grid>
                     <Grid item xs={12}>
                       <DataGrid
+                        loading={tableLoading}
                         sx={{ background: "white", fontSize: 16, height: 300 }}
                         rows={itemsTable}
                         columns={columns}
                         editMode="row"
                         getRowId={(item) => item.ItemNo}
                         experimentalFeatures={{ newEditingApi: true }}
+                        components={{
+                          LoadingOverlay: LinearProgress,
+                        }}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -2134,12 +2156,16 @@ const TLoanDisplay = () => {
                     </Grid>
                     <Grid item xs={9}>
                       <DataGrid
+                        loading={tableLoading}
                         sx={{ background: "white", fontSize: 16 }}
                         rows={itemsTable}
                         columns={columns}
                         editMode="row"
                         getRowId={(item) => item.ItemNo}
                         experimentalFeatures={{ newEditingApi: true }}
+                        components={{
+                          LoadingOverlay: LinearProgress,
+                        }}
                       />
                     </Grid>
                     <Grid item xs={3}>
@@ -2324,12 +2350,16 @@ const TLoanDisplay = () => {
                   </Grid>
                   <Grid item xs={9}>
                     <DataGrid
+                      loading={tableLoading}
                       sx={{ background: "white", fontSize: 16 }}
                       rows={itemsTable}
                       columns={columns}
                       editMode="row"
                       getRowId={(item) => item.ItemNo}
                       experimentalFeatures={{ newEditingApi: true }}
+                      components={{
+                        LoadingOverlay: LinearProgress,
+                      }}
                     />
                   </Grid>
                   <Grid item xs={3}>
@@ -2492,12 +2522,16 @@ const TLoanDisplay = () => {
                   </Grid>
                   <Grid item xs={9}>
                     <DataGrid
+                      loading={tableLoading}
                       sx={{ background: "white", fontSize: 16 }}
                       rows={itemsTable}
                       columns={columns}
                       editMode="row"
                       getRowId={(item) => item.ItemNo}
                       experimentalFeatures={{ newEditingApi: true }}
+                      components={{
+                        LoadingOverlay: LinearProgress,
+                      }}
                     />
                   </Grid>
                   <Grid item xs={3}>
@@ -2650,12 +2684,16 @@ const TLoanDisplay = () => {
                   </Grid>
                   <Grid item xs={9}>
                     <DataGrid
+                      loading={tableLoading}
                       sx={{ background: "white", fontSize: 16 }}
                       rows={itemsTable}
                       columns={columns}
                       editMode="row"
                       getRowId={(item) => item.ItemNo}
                       experimentalFeatures={{ newEditingApi: true }}
+                      components={{
+                        LoadingOverlay: LinearProgress,
+                      }}
                     />
                   </Grid>
                   <Grid item xs={3}>
@@ -2749,7 +2787,6 @@ const TLoanDisplay = () => {
       </Box>
     );
   } else return null;
-  
 };
 
 export default TLoanDisplay;

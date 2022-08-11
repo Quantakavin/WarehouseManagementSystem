@@ -300,7 +300,6 @@ function newtloan() {
           onRowEditStop={handleRowEditStop}
           processRowUpdate={processRowUpdate}
           components={{
-                  LoadingOverlay: CircularProgress,
             Toolbar: EditToolbar,
           }}
           componentsProps={{

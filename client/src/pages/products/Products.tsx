@@ -1,5 +1,5 @@
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
-import { Box, CircularProgress, Fab, Stack, Typography } from "@mui/material";
+import { Box, LinearProgress, Fab, Stack, Typography } from "@mui/material";
 import {
   DataGrid,
   GridFilterModel,
@@ -27,12 +27,15 @@ const Products: React.FC = () => {
   const [pageSize, setPageSize] = React.useState(25);
   const { totalItems, addItem } = useCart();
   const context = useContext(EditableContext);
+  const [loading, setLoading] = useState(false);
   const { isEditable, setIsEditable, TLoanIDGlobal } = context;
 
   useEffect(() => {
+    setLoading(true)
     fetch(`${config.baseURL}/products?limit=100000&page=0`)
       .then((data) => data.json())
-      .then((data) => setRow(data));
+      .then((data) => setRow(data))
+      .then(() => setLoading(false));
   }, []);
   console.log(isEditable);
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
@@ -141,10 +144,11 @@ const Products: React.FC = () => {
               onPageSizeChange={(newPage) => setPageSize(newPage)}
               pagination
               headerHeight={50}
+              loading={loading}
               // rowHeight={70}
               // getRowHeight={() => "auto"}
               components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                 Toolbar: CustomToolbar,
                 NoRowsOverlay: () => (
                   <Stack
@@ -195,10 +199,11 @@ const Products: React.FC = () => {
             onPageSizeChange={(newPage) => setPageSize(newPage)}
             pagination
             headerHeight={50}
+            loading={loading}
             // rowHeight={70}
             // getRowHeight={() => "auto"}
             components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
               Toolbar: CustomToolbar,
               NoRowsOverlay: () => (
                 <Stack

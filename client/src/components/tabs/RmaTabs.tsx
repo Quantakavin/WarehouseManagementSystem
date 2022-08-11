@@ -1,6 +1,6 @@
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import { TabContext, TabPanel } from "@mui/lab";
-import { Box, CircularProgress, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
+import { Box, LinearProgress, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
 import Fab from "@mui/material/Fab";
 import {
   DataGrid,
@@ -38,51 +38,67 @@ const Rmatabs: React.FC = () => {
   const [myAcceptedTable, setMATable] = useState([]);
   const [myRejectedTable, setMRTable] = useState([]);
   const [myInProgressTable, setMIPTable] = useState([]);
+  const [tableLoading, setTableLoading] = useState(false);
   const [value, setValue] = useState(); // first tab
 
   useEffect(() => {
+    setTableLoading(true)
     fetch(`${config.baseURL}/pendingRMA`)
       .then((data) => data.json())
       .then((data) => setPendingTable(data));
+      setTableLoading(false)
   }, []);
 
   useEffect(() => {
+    setTableLoading(true)
     fetch(`${config.baseURL}/acceptedRMA`)
       .then((data) => data.json())
       .then((data) => setApprovedTable(data));
+      setTableLoading(false)
   }, []);
 
   useEffect(() => {
+    setTableLoading(true)
     fetch(`${config.baseURL}/checklistRMA`)
       .then((data) => data.json())
       .then((data) => setChecklistTable(data));
+      setTableLoading(false)
   }, []);
 
   useEffect(() => {
+    setTableLoading(true)
     fetch(`${config.baseURL}/receivedRMA`)
       .then((data) => data.json())
       .then((data) => setReceivedTable(data));
+      setTableLoading(false)
   }, []);
 
   useEffect(() => {
+    setTableLoading(true)
     fetch(`${config.baseURL}/verifiedRMA`)
       .then((data) => data.json())
       .then((data) => setVerifiedTable(data));
+      setTableLoading(false)
   }, []);
 
   useEffect(() => {
+    setTableLoading(true)
     fetch(`${config.baseURL}/inprogressRMA`)
       .then((data) => data.json())
       .then((data) => setInProgressTable(data));
+      setTableLoading(false)
   }, []);
 
   useEffect(() => {
+    setTableLoading(true)
     fetch(`${config.baseURL}/closedRMA`)
       .then((data) => data.json())
       .then((data) => setClosedTable(data));
+      setTableLoading(false)
   }, []);
 
   useEffect(() => {
+    setTableLoading(true)
     // declare the async data fetching function
     const fetchPendingData = async () => {
       // get the data from the api
@@ -118,6 +134,7 @@ const Rmatabs: React.FC = () => {
     fetchAcceptedData();
     fetchRejectedData();
     fetchInProgressData();
+    setTableLoading(false)
     // make sure to catch any error
   }, []);
 
@@ -281,6 +298,7 @@ const Rmatabs: React.FC = () => {
                   <Box sx={{ display: "flex", height: 600, width: "100%" }}>
                     <Box sx={{ flexGrow: 1 }}>
                       <DataGrid
+                    loading={tableLoading}
                         sx={{ background: "white", fontSize: 18 }}
                         rows={myPendingTable}
                         columns={columns}
@@ -290,8 +308,7 @@ const Rmatabs: React.FC = () => {
                         onPageSizeChange={(newPage) => setPageSize(newPage)}
                         pagination
                         components={{
-                  LoadingOverlay: CircularProgress,
-                          LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                           Toolbar: CustomToolbar,
                           NoRowsOverlay: () => (
                             <Stack
@@ -318,6 +335,7 @@ const Rmatabs: React.FC = () => {
                   <Box sx={{ display: "flex", height: 600, width: "100%" }}>
                     <Box sx={{ flexGrow: 1 }}>
                       <DataGrid
+                    loading={tableLoading}
                         sx={{
                           background: "white",
                           fontSize: 18,
@@ -329,7 +347,7 @@ const Rmatabs: React.FC = () => {
                         onPageSizeChange={(newPage) => setPageSize(newPage)}
                         pagination
                         components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                           Toolbar: CustomToolbar,
                           NoRowsOverlay: () => (
                             <Stack
@@ -356,6 +374,7 @@ const Rmatabs: React.FC = () => {
                   <Box sx={{ display: "flex", height: 600, width: "100%" }}>
                     <Box sx={{ flexGrow: 1 }}>
                       <DataGrid
+                    loading={tableLoading}
                         sx={{
                           background: "white",
                           fontSize: 18,
@@ -367,7 +386,7 @@ const Rmatabs: React.FC = () => {
                         onPageSizeChange={(newPage) => setPageSize(newPage)}
                         pagination
                         components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                           Toolbar: CustomToolbar,
                           NoRowsOverlay: () => (
                             <Stack
@@ -394,6 +413,7 @@ const Rmatabs: React.FC = () => {
                   <Box sx={{ display: "flex", height: 600, width: "100%" }}>
                     <Box sx={{ flexGrow: 1 }}>
                       <DataGrid
+                    loading={tableLoading}
                         sx={{
                           background: "white",
                           fontSize: 18,
@@ -405,7 +425,7 @@ const Rmatabs: React.FC = () => {
                         onPageSizeChange={(newPage) => setPageSize(newPage)}
                         pagination
                         components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                           Toolbar: CustomToolbar,
                           NoRowsOverlay: () => (
                             <Stack
@@ -486,13 +506,14 @@ const Rmatabs: React.FC = () => {
               <TabPanel value="3" sx={{ height: "inherit", width: "inherit" }}>
                 <Box sx={{ height: "inherit", width: "inherit" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={receivedTable}
                     columns={columns}
                     getRowId={(row) => row.RmaID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -637,6 +658,7 @@ const Rmatabs: React.FC = () => {
               <TabPanel value="1" sx={{ height: "inherit", width: "inherit" }}>
                 <Box sx={{ height: "inherit", width: "inherit" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{
                       background: "white",
                       fontSize: 18,
@@ -650,7 +672,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -675,6 +697,7 @@ const Rmatabs: React.FC = () => {
               <TabPanel value="2" sx={{ height: "inherit", width: "inherit" }}>
                 <Box sx={{ height: "inherit", width: "inherit" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={approvedTable}
                     columns={columns}
@@ -683,7 +706,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -714,13 +737,14 @@ const Rmatabs: React.FC = () => {
               <TabPanel value="3" sx={{ height: "inherit", width: "inherit" }}>
                 <Box sx={{ height: "inherit", width: "inherit" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={receivedTable}
                     columns={columns}
                     getRowId={(row) => row.RmaID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -751,13 +775,14 @@ const Rmatabs: React.FC = () => {
               <TabPanel value="4" sx={{ height: "inherit", width: "inherit" }}>
                 <Box sx={{ height: "inherit", width: "inherit" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={verifiedTable}
                     columns={columns}
                     getRowId={(row) => row.RmaID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -788,13 +813,14 @@ const Rmatabs: React.FC = () => {
               <TabPanel value="5" sx={{ height: "inherit", width: "inherit" }}>
                 <Box sx={{ height: "inherit", width: "inherit" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={inprogressTable}
                     columns={columns}
                     getRowId={(row) => row.RmaID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -825,13 +851,14 @@ const Rmatabs: React.FC = () => {
               <TabPanel value="6" sx={{ height: "inherit", width: "inherit" }}>
                 <Box sx={{ height: "inherit", width: "inherit" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={closedTable}
                     columns={columns}
                     getRowId={(row) => row.RmaID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -940,13 +967,14 @@ const Rmatabs: React.FC = () => {
               <TabPanel value="4" sx={{ height: "inherit", width: "inherit" }}>
                 <Box sx={{ height: "inherit", width: "inherit" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={verifiedTable}
                     columns={columns}
                     getRowId={(row) => row.RmaID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -977,13 +1005,14 @@ const Rmatabs: React.FC = () => {
               <TabPanel value="5" sx={{ height: "inherit", width: "inherit" }}>
                 <Box sx={{ height: "inherit", width: "inherit" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={inprogressTable}
                     columns={columns}
                     getRowId={(row) => row.RmaID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1014,13 +1043,14 @@ const Rmatabs: React.FC = () => {
               <TabPanel value="6" sx={{ height: "inherit", width: "inherit" }}>
                 <Box sx={{ height: "inherit", width: "inherit" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={closedTable}
                     columns={columns}
                     getRowId={(row) => row.RmaID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1117,6 +1147,7 @@ const Rmatabs: React.FC = () => {
               <TabPanel value="2" sx={{ height: "inherit", width: "inherit" }}>
                 <Box sx={{ height: "inherit", width: "inherit" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={approvedTable}
                     columns={columns}
@@ -1125,7 +1156,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1156,6 +1187,7 @@ const Rmatabs: React.FC = () => {
               <TabPanel value="3" sx={{ height: "inherit", width: "inherit" }}>
                 <Box sx={{ height: "inherit", width: "inherit" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={checklistTable}
                     columns={columns}
@@ -1164,7 +1196,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1300,6 +1332,7 @@ const Rmatabs: React.FC = () => {
               <Box sx={{ display: "flex", height: 600, width: "100%" }}>
                 <Box sx={{ flexGrow: 1 }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={pendingTable}
                     columns={columns}
@@ -1309,7 +1342,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1336,6 +1369,7 @@ const Rmatabs: React.FC = () => {
               <Box sx={{ display: "flex", height: 600, width: "100%" }}>
                 <Box sx={{ flexGrow: 1 }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{
                       background: "white",
                       fontSize: 18,
@@ -1347,7 +1381,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1374,6 +1408,7 @@ const Rmatabs: React.FC = () => {
               <Box sx={{ display: "flex", height: 600, width: "100%" }}>
                 <Box sx={{ flexGrow: 1 }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{
                       background: "white",
                       fontSize: 18,
@@ -1385,7 +1420,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1412,6 +1447,7 @@ const Rmatabs: React.FC = () => {
               <Box sx={{ display: "flex", height: 600, width: "100%" }}>
                 <Box sx={{ flexGrow: 1 }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{
                       background: "white",
                       fontSize: 18,
@@ -1423,7 +1459,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1450,6 +1486,7 @@ const Rmatabs: React.FC = () => {
               <Box sx={{ display: "flex", height: 600, width: "100%" }}>
                 <Box sx={{ flexGrow: 1 }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{
                       background: "white",
                       fontSize: 18,
@@ -1461,7 +1498,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1488,6 +1525,7 @@ const Rmatabs: React.FC = () => {
               <Box sx={{ display: "flex", height: 600, width: "100%" }}>
                 <Box sx={{ flexGrow: 1 }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{
                       background: "white",
                       fontSize: 18,
@@ -1499,7 +1537,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack

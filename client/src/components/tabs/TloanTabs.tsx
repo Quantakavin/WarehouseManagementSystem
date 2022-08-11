@@ -1,5 +1,5 @@
 import { TabContext, TabPanel } from "@mui/lab";
-import { Box, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Grid, LinearProgress, Stack, Tab, Tabs, Typography } from "@mui/material";
 import React, { useEffect, useState, useContext } from "react";
 import "react-tabs/style/react-tabs.css";
 
@@ -49,57 +49,75 @@ const TLoanTabs: React.FC = () => {
   const [approvedTable, setApprovedTable] = useState([]);
   const [allCurrent, setAllCurrent] = useState([]);
   const [allHistory, setAllHistory] = useState([]);
+  const [tableLoading, setTableLoading] = useState(false);
   const context: any = useContext(EditableContext);
   const { isEditable } = context;
   // Get and set current tloans data
   useEffect(() => {
+    setTableLoading(true);
     fetch(`${config.baseURL}/tloan/current/${userid}`)
       .then((data) => data.json())
       .then((data) => setCurrentTable(data));
   }, []);
   // Get and set pending tloans data
   useEffect(() => {
+    setTableLoading(true);
     fetch(`${config.baseURL}/tloan/pending/${userid}`)
       .then((data) => data.json())
       .then((data) => setPendingTable(data));
+      setTableLoading(false);
   }, []);
   // Get and set draft data
   useEffect(() => {
+    setTableLoading(true);
     fetch(`${config.baseURL}/tloan/drafts/${userid}`)
       .then((data) => data.json())
       .then((data) => setDraftTable(data));
+      setTableLoading(false);
   }, []);
   // Get and set history data
   useEffect(() => {
+    setTableLoading(true);
     fetch(`${config.baseURL}/tloan/history/${userid}`)
       .then((data) => data.json())
       .then((data) => setHistoryTable(data));
+      setTableLoading(false);
   }, []);
 
   useEffect(() => {
+    setTableLoading(true);
     fetch(`${config.baseURL}/tloan/ManagerLoan`)
       .then((data) => data.json())
       .then((data) => setManagerLoan(data));
+      setTableLoading(false);
   }, []);
   useEffect(() => {
+    setTableLoading(true);
     fetch(`${config.baseURL}/tloan/ManagerExtension`)
       .then((data) => data.json())
       .then((data) => setExtensionTable(data));
+      setTableLoading(false);
   }, []);
   useEffect(() => {
+    setTableLoading(true);
     fetch(`${config.baseURL}/tloan/approvedLoans`)
       .then((data) => data.json())
       .then((data) => setApprovedTable(data));
+      setTableLoading(false);
   }, []);
   useEffect(() => {
+    setTableLoading(true);
     fetch(`${config.baseURL}/tloan/allCurrent`)
       .then((data) => data.json())
       .then((data) => setAllCurrent(data));
+      setTableLoading(false);
   }, []);
   useEffect(() => {
+    setTableLoading(true);
     fetch(`${config.baseURL}/tloan/allHistory`)
       .then((data) => data.json())
       .then((data) => setAllHistory(data));
+      setTableLoading(false);
   }, []);
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [
@@ -255,6 +273,7 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="1">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={currentTable}
                     columns={columns}
@@ -263,7 +282,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -288,6 +307,7 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="2">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={pendingTable}
                     columns={columns}
@@ -296,7 +316,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -321,13 +341,14 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="3">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={draftTable}
                     columns={columns}
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -352,13 +373,14 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="4">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={historyTable}
                     columns={columns}
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -501,6 +523,7 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="1">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={currentTable}
                     columns={columns}
@@ -509,7 +532,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -534,6 +557,7 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="2">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={pendingTable}
                     columns={columns}
@@ -542,7 +566,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -567,13 +591,14 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="3">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={draftTable}
                     columns={columns}
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -598,13 +623,14 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="4">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={historyTable}
                     columns={columns}
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -688,6 +714,7 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="1">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={managerLoan}
                     columns={managerColumns}
@@ -696,7 +723,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -721,6 +748,7 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="2">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={extensionsTable}
                     columns={managerColumns}
@@ -729,7 +757,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -872,6 +900,7 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="1">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={currentTable}
                     columns={columns}
@@ -880,7 +909,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -905,6 +934,7 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="2">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={pendingTable}
                     columns={columns}
@@ -913,7 +943,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -938,13 +968,14 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="3">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={draftTable}
                     columns={columns}
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -969,13 +1000,14 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="4">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={historyTable}
                     columns={columns}
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1046,6 +1078,7 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="1">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={approvedTable}
                     columns={columns}
@@ -1054,7 +1087,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1152,6 +1185,7 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="1">
                 <div style={{ display: "flex", height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={allCurrent}
                     columns={columns}
@@ -1160,7 +1194,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1186,13 +1220,14 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="2">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={allHistory}
                     columns={columns}
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1333,6 +1368,7 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="1">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={currentTable}
                     columns={columns}
@@ -1341,7 +1377,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1366,6 +1402,7 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="2">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={pendingTable}
                     columns={columns}
@@ -1374,7 +1411,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1399,13 +1436,14 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="3">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={draftTable}
                     columns={columns}
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1430,13 +1468,14 @@ const TLoanTabs: React.FC = () => {
               <TabPanel value="4">
                 <div style={{ height: 600, width: "100%" }}>
                   <DataGrid
+                    loading={tableLoading}
                     sx={{ background: "white", fontSize: 18 }}
                     rows={historyTable}
                     columns={columns}
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack

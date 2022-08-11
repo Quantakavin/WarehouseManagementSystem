@@ -3,7 +3,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Box, Fab, Stack, Typography } from "@mui/material";
+import { Box, Fab, LinearProgress, Stack, Typography } from "@mui/material";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -37,6 +37,7 @@ const NotificationGroups2: React.FC = () => {
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const [showError, setShowError] = useState<boolean>(false);
   const [idToDelete, setIdToDelete] = useState<string>(null);
+  const [tableLoading, setTableLoading] = useState(false);
   const queryClient = useQueryClient();
 
   const mutation = useMutation(DeleteNotificationGroup);
@@ -228,6 +229,7 @@ const NotificationGroups2: React.FC = () => {
             </Box>
           </Box>
           <DataGrid
+            loading={tableLoading}
             sx={{ background: "white", fontSize: 18 }}
             rows={NotificationGroupsQuery.data?.data ?? []}
             columns={columns}
@@ -239,7 +241,7 @@ const NotificationGroups2: React.FC = () => {
             // rowHeight={70}
             // getRowHeight={() => "auto"}
             components={{
-                  LoadingOverlay: CircularProgress,
+              LoadingOverlay: LinearProgress,
               Toolbar: CustomToolbar,
               NoRowsOverlay: () => (
                 <Stack

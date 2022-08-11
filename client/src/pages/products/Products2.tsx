@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, LinearProgress, Stack, Typography } from "@mui/material";
 import {
   DataGrid,
   GridFilterModel,
@@ -89,7 +89,7 @@ const Products2: React.FC = () => {
             // rowHeight={70}
             // getRowHeight={() => "auto"}
             components={{
-                  LoadingOverlay: CircularProgress,
+                  LoadingOverlay: LinearProgress,
               Toolbar: CustomToolbar,
               NoRowsOverlay: () => (
                 <Stack
