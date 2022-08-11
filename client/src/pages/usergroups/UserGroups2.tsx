@@ -238,7 +238,7 @@ const UserGroups2: React.FC = () => {
                   alignItems="center"
                   justifyContent="center"
                 >
-                  No Users
+                  No User Groups
                 </Stack>
               ),
             }}
