@@ -14,6 +14,31 @@ const redisClient = require('../config/caching');
 //         });
 //     }
 // };
+
+// module.exports.updateBinid = async (ProductName, BinTag = null) => {
+//     try {
+//         await notification.insert(NotiFeatureID, ReceiverID, ContentID);
+//     } catch (error) {
+//         console.log(error);
+//     }
+// };
+
+module.exports.updateQuantity = async (ItemNo, BatchNo, Quantity) => {
+    // const { NotiFeatureID, ReceiverID } = req.body;
+    try {
+        const results = await productService.updateQuantity(ItemNo, BatchNo, Quantity);
+        if (results != null) {
+            redisClient.del(`product#2`);
+        }
+        console.log("deleted key:m", returnid)
+        // return res.status(204).send();
+    } catch (error) {
+        console.log("the error is", error);
+        return null;
+        // return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
 module.exports.getAllProducts = async (req, res) => {
     const { limit, page } = req.query;
     try {

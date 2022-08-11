@@ -5,6 +5,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const formData = require('express-form-data');
+const productController = require('./src/controllers/productController');
 
 const app = express();
 const server = http.createServer(app);
@@ -21,21 +22,21 @@ app.use('*', cors());
 
 const PORT = process.env.PORT || 5000;
 
-const client = mqtt.connect('mqtt://test.mosquitto.org', { clientId: 'mqtt-tester' });
+//const client = mqtt.connect('mqtt://test.mosquitto.org', { clientId: 'mqtt-tester' });
+//const client = mqtt.connect('mqtt://isdnwms.dscloud.me/', { clientId: 'cef93cb6-85b4-4c41-9696-63c4ab8d65f4', protocol: "mqtt", password: "Leaptron!62889125", username: "isdnwms_user04" });
+const client = mqtt.connect(config.MQTTHost, { clientId: config.MQTTClient, protocol: "mqtt", password: config.MQTTPassword, username: config.MQTTUsername });
+
 
 client.on('connect', function () {
     console.log('connected to mqtt client');
-    client.subscribe('quantity', function (err) {
-        if (!err) {
-            client.publish('quantity', 'Hello mqtt');
-        }
-    });
-});
+    client.subscribe('quantity');
 
-client.on('message', function (topic, message) {
-    // message is Buffer
-    console.log(message.toString());
-    client.end();
+    client.on('message', (topic, message) => {
+        if(topic === 'quantity') {
+          const parsedmessage = JSON.parse("[" + message + "]")
+          productController.updateQuantity(parsedmessage[0].ItemNo, parsedmessage[0].BatchNo, parsedmessage[0].Quantity)
+        }
+      })
 });
 
 io.on('connection', (socket) => {
@@ -66,7 +67,7 @@ io.on('connection', (socket) => {
             io.to(pUser.id).emit('notification', {
                 id: pUser.id,
                 userid: pUser.userid,
-                text: notification
+                notification: notification
             });
         }
     });
