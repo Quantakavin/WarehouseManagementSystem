@@ -690,7 +690,6 @@ const CreateRMA: React.FC = () => {
       company &&
       contactno.match(phoneRegex)
     ) {
-      setTimeout(() => {
         axios
           .post(`${config.baseURL}/newRMA`, rmadetails)
           .then(() => {
@@ -706,7 +705,6 @@ const CreateRMA: React.FC = () => {
           .catch((error) => {
             console.log(error.response.data.message);
           });
-      }, 2000);
     }
   };
 

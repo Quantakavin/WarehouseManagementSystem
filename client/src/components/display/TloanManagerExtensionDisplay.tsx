@@ -184,7 +184,6 @@ const TLoanManagerDisplay = () => {
 
   const ApproveLoan = async () => {
     setLoading(true);
-    setTimeout(() => {
       axios
         .put(`${config.baseURL}/tloan/approveExtension/${TLoanID}`)
         .then(() => {
@@ -201,7 +200,6 @@ const TLoanManagerDisplay = () => {
           console.error("There was an error!", error);
           setLoading(false);
         });
-    }, 500);
   };
 
   const columns: GridColDef[] = [

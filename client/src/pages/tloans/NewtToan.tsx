@@ -446,7 +446,6 @@ function newtloan() {
       email.match(emailRegex) &&
       collection !== ""
     ) {
-      setTimeout(() => {
         try {
           const results = axios
             .post(`${config.baseURL}/tloan/newloan`, {
@@ -479,7 +478,6 @@ function newtloan() {
           console.log(error.response);
           setSubmitLoading(false);
         }
-      }, 500);
     }
   };
 
@@ -585,7 +583,6 @@ function newtloan() {
       email.match(emailRegex) &&
       collection !== ""
     ) {
-      setTimeout(() => {
         try {
           const results = axios
             .post(`${config.baseURL}/tloan/loanDrafting`, {
@@ -618,7 +615,6 @@ function newtloan() {
           console.log(error.response);
           setLoading(false);
         }
-      }, 500);
     }
   };
 

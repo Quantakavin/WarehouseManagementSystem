@@ -61,7 +61,6 @@ const TLoanRejectModalButton = () => {
         width: 350,
       });
     } else {
-      setTimeout(() => {
         try {
           axios
             .put(`${config.baseURL}/tloan/reject/${TLoanID}`, {
@@ -81,7 +80,6 @@ const TLoanRejectModalButton = () => {
           setLoading(false);
           console.error("There was an error!", error);
         }
-      }, 500);
     }
   };
 

@@ -52,7 +52,6 @@ const RejectModalButton = () => {
   const handleConfirm = async () => {
     setLoading(true);
     if (reason !== "") {
-      setTimeout(() => {
         setLoading(false);
         axios
           .put(`${config.baseURL}/rejectRMA/${RmaID}`, rejectreason)
@@ -69,7 +68,6 @@ const RejectModalButton = () => {
           .catch((e) => {
             console.error("There was an error!", e);
           });
-      }, 500);
     } else {
       setError(true);
       setErrorText("Please provide a reason for rejecting this RMA request");

@@ -115,29 +115,27 @@ const ModalButton = () => {
       setLoading(false);
     }
     if (reason !== "" && duration !== "") {
-      setTimeout(async () => {
-        try {
-          await axios
-            .post(`${config.baseURL}/tloan/extension`, {
-              TLoanID,
-              reason,
-              duration,
-            })
-            .then(() => {
-              Toast.fire({
-                icon: "success",
-                title: "TLoan Extension Successfully Applied",
-                customClass: "swalpopup",
-                timer: 1500,
-                width: 700,
-              });
-              navigate("/tloan");
+      try {
+        axios
+          .post(`${config.baseURL}/tloan/extension`, {
+            TLoanID,
+            reason,
+            duration,
+          })
+          .then(() => {
+            Toast.fire({
+              icon: "success",
+              title: "TLoan Extension Successfully Applied",
+              customClass: "swalpopup",
+              timer: 1500,
+              width: 700,
             });
-        } catch (error) {
-          setLoading(false);
-          console.log(error.response);
-        }
-      }, 500);
+            navigate("/tloan");
+          });
+      } catch (error) {
+        setLoading(false);
+        console.log(error.response);
+      }
     }
   };
 

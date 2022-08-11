@@ -112,7 +112,6 @@ const Settings: React.FC = () => {
   const handleConfirm = async () => {
     setLoading(true);
     if (telegramID !== "") {
-      setTimeout(() => {
         setLoading(false);
         setOpen(false);
         axios
@@ -136,7 +135,6 @@ const Settings: React.FC = () => {
             console.log(e);
             console.error("There was an error!", e);
           });
-      }, 500);
     } else {
       setError(true);
       setErrorText("Please provide your Telegram User ID");
@@ -152,7 +150,6 @@ const Settings: React.FC = () => {
   };
   const handleDisableTeleConfirm = async () => {
     setLoading(true);
-    setTimeout(() => {
       setLoading(false);
       axios
         .put(`${config.baseURL}/userTele/${userID}`, DisableTeleID, {
@@ -175,7 +172,6 @@ const Settings: React.FC = () => {
           console.log(error);
           console.error("There was an error!", error);
         });
-    }, 500);
   };
   // Password modal open/close
   const handleOpenChangePassword = () => {
@@ -226,7 +222,6 @@ const Settings: React.FC = () => {
       });
       setLoading(false);
     } else if (values.password !== "" && values.password.match(passwordRegex)) {
-      setTimeout(() => {
         setLoading(false);
         setPWError(false);
         setShowChangePassword(false);
@@ -256,7 +251,6 @@ const Settings: React.FC = () => {
             console.log(error);
             console.error("There was an error!", error);
           });
-      }, 500);
       setValues({password:"", showPassword:false});
     }
   };

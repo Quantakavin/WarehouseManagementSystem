@@ -146,7 +146,6 @@ const RmaDisplay: React.FC = () => {
   // Accept RMA
   const acceptRMA = async () => {
     setLoading(true);
-    setTimeout(() => {
       axios
         .put(`${config.baseURL}/acceptRMA/${RmaID}`)
         .then(() => {
@@ -163,12 +162,10 @@ const RmaDisplay: React.FC = () => {
           console.log(error);
           setLoading(false);
         });
-    }, 500);
   };
   // Update RMA checklist
   const updateChecklist = async () => {
     setLoading(true);
-    setTimeout(() => {
       axios
         .put(`${config.baseURL}/updatechecklistRMA/${RmaID}`, rmabody)
         .then(() => {
@@ -185,12 +182,10 @@ const RmaDisplay: React.FC = () => {
           console.log(error);
           setLoading(false);
         });
-    }, 500);
   };
   // Receive RMA
   const receiveRMA = async () => {
     setCompleteLoading(true);
-    setTimeout(() => {
       axios
         .put(`${config.baseURL}/receiveRMA/${RmaID}`)
         .then(() => {
@@ -207,12 +202,10 @@ const RmaDisplay: React.FC = () => {
           console.log(error);
           setCompleteLoading(false);
         });
-    }, 500);
   };
   // Verify RMA
   const verifyRMA = async () => {
     setLoading(true);
-    setTimeout(() => {
       axios
         .put(`${config.baseURL}/verifyRMA/${RmaID}`, rmabody)
         .then(() => {
@@ -236,12 +229,10 @@ const RmaDisplay: React.FC = () => {
           });
           setLoading(false);
         });
-    }, 500);
   };
   // COA RMA
   const COARMA = async () => {
     setLoading(true);
-    setTimeout(() => {
       axios
         .put(`${config.baseURL}/COARMA/${RmaID}`, rmabody)
         .then(() => {
@@ -265,12 +256,10 @@ const RmaDisplay: React.FC = () => {
           });
           setLoading(false);
         });
-    }, 500);
   };
   // Close RMA
   const closeRMA = async () => {
     setCloseLoading(true);
-    setTimeout(() => {
       axios
         .put(`${config.baseURL}/closeRMA/${RmaID}`)
         .then(() => {
@@ -287,7 +276,6 @@ const RmaDisplay: React.FC = () => {
           console.log(error);
           setCloseLoading(false);
         });
-    }, 500);
   };
 
   function buildApplyDateFilterFn(

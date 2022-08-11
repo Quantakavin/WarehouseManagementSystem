@@ -182,7 +182,6 @@ const TLoanDisplay = () => {
       setStatusLoading(false);
     }
     if (statusChange !== "" && statusChange !== statusID.toString()) {
-      setTimeout(() => {
         try {
           const results = axios
             .put(`${config.baseURL}/tloan/updatestatus/${TLoanID}`, {
@@ -203,7 +202,6 @@ const TLoanDisplay = () => {
           console.log(error.response);
           setStatusLoading(false);
         }
-      }, 500);
     }
   };
   const minimumDate: any = new Date(
@@ -901,7 +899,6 @@ const TLoanDisplay = () => {
       collection !== "" &&
       requireddate < minDateStr === false
     ) {
-      setTimeout(() => {
         try {
           const results = axios
             .put(`${config.baseURL}/tloan/submitEditedDraft/${TLoanID}`, {
@@ -934,7 +931,6 @@ const TLoanDisplay = () => {
           console.log(error.response);
           setSubmitLoading(false);
         }
-      }, 500);
     }
   };
   const DraftLoan = (e) => {
@@ -1014,7 +1010,6 @@ const TLoanDisplay = () => {
       email !== "" &&
       email.match(emailRegex)
     ) {
-      setTimeout(() => {
         try {
           const results = axios
             .put(`${config.baseURL}/tloan/draftEditedDraft/${TLoanID}`, {
@@ -1049,7 +1044,6 @@ const TLoanDisplay = () => {
           console.log(error.response);
           setSubmitLoading(false);
         }
-      }, 500);
     }
   };
   const getData = () => {

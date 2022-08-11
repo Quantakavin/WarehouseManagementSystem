@@ -50,7 +50,6 @@ const TLoanRejectModalButton = () => {
       setRemarksErrorText("Input Is Needed");
       setLoading(false);
     } else {
-      setTimeout(() => {
         try {
           axios
             .put(`${config.baseURL}/tloan/rejectExtension/${TLoanID}`, {
@@ -70,7 +69,6 @@ const TLoanRejectModalButton = () => {
           console.error("There was an error!", error);
           setLoading(false);
         }
-      }, 500);
     }
   };
 
