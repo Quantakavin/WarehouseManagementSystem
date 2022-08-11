@@ -40,6 +40,7 @@ import Shield from "../../assets/shield.png";
 import Popup from "../../components/alerts/Popup";
 import { Toast } from "../../components/alerts/SweetAlert";
 import config from "../../config/config";
+import useWindowSize from "../../hooks/useWindowSize";
 
 const style = {
   position: "absolute" as "absolute",
@@ -85,6 +86,7 @@ const Settings: React.FC = () => {
     showPassword: false,
   });
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
+  const { viewportwidth } = useWindowSize();
   const handleClose = () => {
     setError(false);
     setErrorText("");
@@ -182,7 +184,7 @@ const Settings: React.FC = () => {
   const handleCloseChangePassword = () => {
     setPWError(false);
     setShowChangePassword(false);
-    setValues("");
+    setValues({password:"", showPassword: false});
   };
   // Handle change of text in password field
   const handleChange =
@@ -255,7 +257,7 @@ const Settings: React.FC = () => {
             console.error("There was an error!", error);
           });
       }, 500);
-      setValues("", false);
+      setValues({password:"", showPassword:false});
     }
   };
   interface FormValues {
@@ -689,7 +691,7 @@ const Settings: React.FC = () => {
       </Box>
       <Box className="flexcontainer" sx={{ maxWidth: "100%" }}>
         <Grid container spacing={2}>
-          <Grid item xs={6}>
+          <Grid item xs={viewportwidth < 1000 ? 12 : 6}>
             <Paper
               sx={{
                 p: 2,
@@ -720,7 +722,7 @@ const Settings: React.FC = () => {
                       <Typography
                         gutterBottom
                         variant="h6"
-                        style={{ color: "#0A2540", fontWeight: 600 }}
+                        sx={{ color: "#0A2540", fontWeight: 600 }}
                         component="div"
                       >
                         Enable 2 Factor Authentication
@@ -757,7 +759,7 @@ const Settings: React.FC = () => {
               </Grid>
             </Paper>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={viewportwidth < 1000 ? 12 : 6}>
             <Paper
               sx={{
                 p: 2,
@@ -819,7 +821,7 @@ const Settings: React.FC = () => {
               </Grid>
             </Paper>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={viewportwidth < 1000 ? 12 : 6}>
             <Paper
               sx={{
                 p: 2,

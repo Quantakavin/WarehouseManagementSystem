@@ -506,7 +506,7 @@ const EditUser: React.FC = () => {
           )}
         </FormContainer>
       </motion.div>
-      <pre>{JSON.stringify(watch())}</pre>
+
     </>
   );
 };
