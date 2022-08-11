@@ -6,9 +6,9 @@ import PageviewIcon from "@mui/icons-material/Pageview";
 import { Hidden } from "@mui/material";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { useInfiniteQuery, useMutation, useQueryClient } from "react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { DeleteUser, FilterUsers } from "../../api/UserDB";
+import { DeleteUser, FilterUsers, GetUsernames } from "../../api/UserDB";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
 import {
@@ -69,18 +69,18 @@ const Users: React.FC = () => {
     "Action",
   ];
 
-  // const UsernamesQuery = useQuery(
-  //   [`usernames`, debouncedValue],
-  //   () => GetUsernames(debouncedValue),
-  //   {
-  //     onSuccess: (data) => {
-  //       const namearray = data.data.map((record) => {
-  //         return record.Name;
-  //       });
-  //       setSearchOptions(namearray);
-  //     },
-  //   }
-  // );
+  useQuery(
+    [`usernames`, debouncedValue],
+    () => GetUsernames(debouncedValue),
+    {
+      onSuccess: (data) => {
+        const namearray = data.data.map((record) => {
+          return record.Name;
+        });
+        setSearchOptions(namearray);
+      },
+    }
+  );
 
   const UsersQuery = useInfiniteQuery(
     [`users`, sortColumn, sortOrder, searchName],

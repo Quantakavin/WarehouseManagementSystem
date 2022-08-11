@@ -137,9 +137,7 @@ module.exports.getUserGroupByName = async (req, res) => {
 
 module.exports.createUserGroup = async (req, res) => {
     const { name, description, features } = req.body;
-    console.log('features are', features);
     try {
-        console.log(req.body)
         await userGroup.insert(name, description, features);
         redisClient.del('userGroups');
         return res.status(201).json({ message: 'User Group created successfully!' });
