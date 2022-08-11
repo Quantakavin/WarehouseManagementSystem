@@ -73,19 +73,19 @@ const AddUserGroup: React.FC = () => {
     },
   });
 
-  // const featureRightsQuery = useQuery("featurerights", GetFeatureRights, {
-  //   onSuccess: (data) => {
-  //     const featurerights: Option[] = [];
-  //     data.data.forEach((featureright: FeatureRight) => {
-  //       featurerights.push({
-  //         id: featureright.FeatureRightID,
-  //         text: featureright.FeatureRight,
-  //         value: featureright.FeatureRightID,
-  //       });
-  //     });
-  //     setFeatureRightOptions(featurerights);
-  //   },
-  // });
+  useQuery("featurerights", GetFeatureRights, {
+    onSuccess: (data) => {
+      const featurerights: Option[] = [];
+      data.data.forEach((featureright: FeatureRight) => {
+        featurerights.push({
+          id: featureright.FeatureRightID,
+          text: featureright.FeatureRight,
+          value: featureright.FeatureRightID,
+        });
+      });
+      setFeatureRightOptions(featurerights);
+    },
+  });
 
   const mutation = useMutation(PostUserGroup);
   const controls = useAnimation();

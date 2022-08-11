@@ -69,18 +69,18 @@ const UserGroups: React.FC = () => {
 
   const headers = ["ID", "Name", "Description", "Action"];
 
-  // const UserGroupnamesQuery = useQuery(
-  //   [`usergroupnames`, debouncedValue],
-  //   () => GetUserGroupNames(debouncedValue),
-  //   {
-  //     onSuccess: (data) => {
-  //       const namearray = data.data.map((record) => {
-  //         return record.Name;
-  //       });
-  //       setSearchOptions(namearray);
-  //     },
-  //   }
-  // );
+  useQuery(
+    [`usergroupnames`, debouncedValue],
+    () => GetUserGroupNames(debouncedValue),
+    {
+      onSuccess: (data) => {
+        const namearray = data.data.map((record) => {
+          return record.Name;
+        });
+        setSearchOptions(namearray);
+      },
+    }
+  );
 
   const UserGroupsQuery = useInfiniteQuery(
     [`filterusergroups`, sortColumn, sortOrder, searchName],

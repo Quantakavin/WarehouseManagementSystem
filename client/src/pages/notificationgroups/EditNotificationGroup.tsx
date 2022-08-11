@@ -9,7 +9,8 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { GetNotificationFeatures } from "../../api/NotificationFeatureDB";
+import { GetCompanies } from "../../api/CompanyDB";
+import { GetNotificationFeatures, GetNotificationTypes } from "../../api/NotificationFeatureDB";
 import {
   GetNotificationGroup,
   UpdateNotificationGroup,
@@ -27,7 +28,7 @@ import FormTextArea from "../../components/form/FormTextArea";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import SelectDropdown from "../../components/form/SelectDropdown";
 import SelectedList from "../../components/form/SelectedList";
-import { NotiFeature, Option } from "../../utils/CommonTypes";
+import { Company, NotiFeature, NotiType, Option } from "../../utils/CommonTypes";
 import {
   DescriptionValidation,
   NameValidation,
@@ -92,24 +93,24 @@ const AddNotificationGroup: React.FC = () => {
     }
   );
 
-  // const companiesQuery = useQuery(
-  //   "companies",
-  //   GetCompanies,
+  useQuery(
+    "companies",
+    GetCompanies,
 
-  //   {
-  //     onSuccess: (data) => {
-  //       const companies: Option[] = [];
-  //       data.data.forEach((company: Company) => {
-  //         companies.push({
-  //           id: company.CompanyID,
-  //           text: company.CompanyName,
-  //           value: company.CompanyID,
-  //         });
-  //       });
-  //       setCompanyOptions(companies);
-  //     },
-  //   }
-  // );
+    {
+      onSuccess: (data) => {
+        const companies: Option[] = [];
+        data.data.forEach((company: Company) => {
+          companies.push({
+            id: company.CompanyID,
+            text: company.CompanyName,
+            value: company.CompanyID,
+          });
+        });
+        setCompanyOptions(companies);
+      },
+    }
+  );
 
   const notiFeaturesQuery = useQuery(
     "notificationfeatures",
@@ -129,19 +130,19 @@ const AddNotificationGroup: React.FC = () => {
     }
   );
 
-  // const notiTypesQuery = useQuery("notificationtypes", GetNotificationTypes, {
-  //   onSuccess: (data) => {
-  //     const notificationtypes: Option[] = [];
-  //     data.data.forEach((featureright: NotiType) => {
-  //       notificationtypes.push({
-  //         id: featureright.NotiTypeID,
-  //         text: featureright.NotiType,
-  //         value: featureright.NotiTypeID,
-  //       });
-  //     });
-  //     setNotiTypeOptions(notificationtypes);
-  //   },
-  // });
+  useQuery("notificationtypes", GetNotificationTypes, {
+    onSuccess: (data) => {
+      const notificationtypes: Option[] = [];
+      data.data.forEach((featureright: NotiType) => {
+        notificationtypes.push({
+          id: featureright.NotiTypeID,
+          text: featureright.NotiType,
+          value: featureright.NotiTypeID,
+        });
+      });
+      setNotiTypeOptions(notificationtypes);
+    },
+  });
 
   const mutation = useMutation((data: FormValues) =>
     UpdateNotificationGroup(data, params.id)

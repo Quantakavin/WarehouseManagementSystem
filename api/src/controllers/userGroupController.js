@@ -107,20 +107,20 @@ module.exports.getUserGroupById = async (req, res) => {
     }
 };
 
-module.exports.getUserGroupById2 = async (req, res) => {
-    const userGroupID = req.params.id;
-    try {
-        const results = await userGroup.getByID(userGroupID);
-        let output = [];
-        if (results[0].length > 0) {
-            [output] = results;
-            return res.status(200).json(output[0]);
-        }
-        return res.status(404).json({ message: 'Cannot find user group with that id' });
-    } catch (error) {
-        return res.status(500).json({ message: 'Internal Server Error!' });
-    }
-};
+// module.exports.getUserGroupById2 = async (req, res) => {
+//     const userGroupID = req.params.id;
+//     try {
+//         const results = await userGroup.getByID(userGroupID);
+//         let output = [];
+//         if (results[0].length > 0) {
+//             [output] = results;
+//             return res.status(200).json(output[0]);
+//         }
+//         return res.status(404).json({ message: 'Cannot find user group with that id' });
+//     } catch (error) {
+//         return res.status(500).json({ message: 'Internal Server Error!' });
+//     }
+// };
 
 module.exports.getUserGroupByName = async (req, res) => {
     const { name } = req.query;
@@ -139,6 +139,7 @@ module.exports.createUserGroup = async (req, res) => {
     const { name, description, features } = req.body;
     console.log('features are', features);
     try {
+        console.log(req.body)
         await userGroup.insert(name, description, features);
         redisClient.del('userGroups');
         return res.status(201).json({ message: 'User Group created successfully!' });
