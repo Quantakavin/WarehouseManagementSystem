@@ -10,7 +10,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 module.exports = {
     development: {
         client: 'mysql',
-        debug: true,
+        // debug: true,
         connection: {
             host: process.env.DBHOST,
             port: 3307,
