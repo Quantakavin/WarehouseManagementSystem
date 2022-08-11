@@ -59,7 +59,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ loginpage }) => {
     return <Outlet />;
   }
   if (!isAuthenticated) {
-    return <Navigate replace to="/login" />;
+    return <Navigate replace to="/401" />;
     // return <Navigate replace to="/401" />;
   }
   return <Outlet />;
