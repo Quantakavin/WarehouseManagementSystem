@@ -17,6 +17,7 @@ import {
   TextField,
   Tooltip,
   Typography,
+  styled
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -268,7 +269,7 @@ const RmaDisplay: React.FC = () => {
             title: `RMA #${rma.RmaID} Closed`,
             customClass: "swalpopup",
             timer: 1500,
-            width: 290,
+            width: 300,
           });
           navigate("/rma");
         })

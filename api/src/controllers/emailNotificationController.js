@@ -18,7 +18,7 @@ module.exports.rmaAcceptedMail = (email, username, RmaID) => {
                     dynamicTemplateData: {
                         Username: username,
                         RmaID,
-                        URL: `http://localhost:3000/rmaDetails/${RmaID}`
+                        URL: `https://isdnwarehouse.netlify.app/rmaDetails/${RmaID}`
                     }
                 }
             ]
@@ -44,7 +44,7 @@ module.exports.rmaRejectedMail = (email, username, RmaID, rejectreason) => {
                         Username: username,
                         RmaID,
                         RejectReason: rejectreason,
-                        URL: `http://localhost:3000/rmaDetails/${RmaID}`
+                        URL: `https://isdnwarehouse.netlify.app/rmaDetails/${RmaID}`
                     }
                 }
             ]
@@ -117,7 +117,7 @@ module.exports.rmaInprogressMail = (email, username, RmaID) => {
                     dynamicTemplateData: {
                         Username: username,
                         RmaID,
-                        URL: `http://localhost:3000/rmaDetails/${RmaID}`
+                        URL: `https://isdnwarehouse.netlify.app/rmaDetails/${RmaID}`
                     }
                 }
             ]
@@ -167,7 +167,7 @@ module.exports.tloanAcceptedMail = (email, username, TLoanID) => {
                     dynamicTemplateData: {
                         Username: username,
                         TLoanID,
-                        URL: `http://localhost:3000/tloandetails/${TLoanID}`
+                        URL: `https://isdnwarehouse.netlify.app/tloandetails/${TLoanID}`
                     }
                 }
             ]
@@ -219,7 +219,7 @@ module.exports.tloanExtensionAcceptedMail = (email, username, TLoanID) => {
                     dynamicTemplateData: {
                         Username: username,
                         TLoanID,
-                        URL: `http://localhost:3000/tloandetails/${TLoanID}`
+                        URL: `https://isdnwarehouse.netlify.app/tloandetails/${TLoanID}`
                     }
                 }
             ]

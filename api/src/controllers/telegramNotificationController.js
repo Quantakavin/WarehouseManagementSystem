@@ -131,7 +131,7 @@ module.exports.rmaAcceptedTele = (UserID, Username, RmaID) => {
     try {
         bot.sendMessage(
             UserID,
-            `Hello ${Username}, your RMA request #${RmaID} has just been approved, view the details at http://localhost:3000/rmaDetails/${RmaID}`
+            `Hello ${Username}, your RMA request #${RmaID} has just been approved, view the details at https://isdnwarehouse.netlify.app/rmaDetails/${RmaID}`
         );
     } catch (error) {
         console.log(error);
@@ -143,7 +143,7 @@ module.exports.rmaRejectedTele = (UserID, Username, RmaID, RejectReason) => {
         console.log('Among Us');
         bot.sendMessage(
             UserID,
-            `Hello ${Username}, your RMA request #${RmaID} has just been rejected, view the details at http://localhost:3000/rmaDetails/${RmaID}`
+            `Hello ${Username}, your RMA request #${RmaID} has just been rejected, view the details at https://isdnwarehouse.netlify.app/rmaDetails/${RmaID}`
         );
         bot.sendMessage(UserID, `Reason: ${RejectReason}`);
     } catch (error) {
@@ -178,7 +178,7 @@ module.exports.rmaProgressTele = (UserID, Username, RmaID) => {
     try {
         bot.sendMessage(
             UserID,
-            `Hello ${Username}, progress for your RMA request #${RmaID} has just been updated, view the details at http://localhost:3000/rmaDetails/${RmaID}`
+            `Hello ${Username}, progress for your RMA request #${RmaID} has just been updated, view the details at https://isdnwarehouse.netlify.app/rmaDetails/${RmaID}`
         );
     } catch (error) {
         console.log(error);
@@ -200,7 +200,7 @@ module.exports.tloanAcceptedTele = (UserID, Username, TLoanID) => {
     try {
         bot.sendMessage(
             UserID,
-            `Hello ${Username}, your T-Loan request #${TLoanID} has just been approved, view the details at http://localhost:3000/tloandetails/${TLoanID}`
+            `Hello ${Username}, your T-Loan request #${TLoanID} has just been approved, view the details at https://isdnwarehouse.netlify.app/tloandetails/${TLoanID}`
         );
     } catch (error) {
         console.log(error);
@@ -222,7 +222,7 @@ module.exports.tloanExtensionAcceptedTele = (UserID, Username, TLoanID) => {
     try {
         bot.sendMessage(
             UserID,
-            `Hello ${Username}, your Extension request for T-Loan #${TLoanID} has just been approved, view the details at http://localhost:3000/tloandetails/${TLoanID}`
+            `Hello ${Username}, your Extension request for T-Loan #${TLoanID} has just been approved, view the details at https://isdnwarehouse.netlify.app/tloandetails/${TLoanID}`
         );
     } catch (error) {
         console.log(error);
