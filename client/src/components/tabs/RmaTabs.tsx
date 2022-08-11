@@ -1,6 +1,6 @@
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import { TabContext, TabPanel } from "@mui/lab";
-import { Box, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
 import Fab from "@mui/material/Fab";
 import {
   DataGrid,
@@ -290,6 +290,8 @@ const Rmatabs: React.FC = () => {
                         onPageSizeChange={(newPage) => setPageSize(newPage)}
                         pagination
                         components={{
+                  LoadingOverlay: CircularProgress,
+                          LoadingOverlay: CircularProgress,
                           Toolbar: CustomToolbar,
                           NoRowsOverlay: () => (
                             <Stack
@@ -327,6 +329,7 @@ const Rmatabs: React.FC = () => {
                         onPageSizeChange={(newPage) => setPageSize(newPage)}
                         pagination
                         components={{
+                  LoadingOverlay: CircularProgress,
                           Toolbar: CustomToolbar,
                           NoRowsOverlay: () => (
                             <Stack
@@ -364,6 +367,7 @@ const Rmatabs: React.FC = () => {
                         onPageSizeChange={(newPage) => setPageSize(newPage)}
                         pagination
                         components={{
+                  LoadingOverlay: CircularProgress,
                           Toolbar: CustomToolbar,
                           NoRowsOverlay: () => (
                             <Stack
@@ -401,6 +405,7 @@ const Rmatabs: React.FC = () => {
                         onPageSizeChange={(newPage) => setPageSize(newPage)}
                         pagination
                         components={{
+                  LoadingOverlay: CircularProgress,
                           Toolbar: CustomToolbar,
                           NoRowsOverlay: () => (
                             <Stack
@@ -487,6 +492,7 @@ const Rmatabs: React.FC = () => {
                     getRowId={(row) => row.RmaID}
                     pageSize={12}
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -644,6 +650,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -676,6 +683,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -712,6 +720,7 @@ const Rmatabs: React.FC = () => {
                     getRowId={(row) => row.RmaID}
                     pageSize={12}
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -748,6 +757,7 @@ const Rmatabs: React.FC = () => {
                     getRowId={(row) => row.RmaID}
                     pageSize={12}
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -784,6 +794,7 @@ const Rmatabs: React.FC = () => {
                     getRowId={(row) => row.RmaID}
                     pageSize={12}
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -820,6 +831,7 @@ const Rmatabs: React.FC = () => {
                     getRowId={(row) => row.RmaID}
                     pageSize={12}
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -934,6 +946,7 @@ const Rmatabs: React.FC = () => {
                     getRowId={(row) => row.RmaID}
                     pageSize={12}
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -970,6 +983,7 @@ const Rmatabs: React.FC = () => {
                     getRowId={(row) => row.RmaID}
                     pageSize={12}
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1006,6 +1020,7 @@ const Rmatabs: React.FC = () => {
                     getRowId={(row) => row.RmaID}
                     pageSize={12}
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1110,6 +1125,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1148,6 +1164,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1292,6 +1309,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1329,6 +1347,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1366,6 +1385,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1403,6 +1423,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1440,6 +1461,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1477,6 +1499,7 @@ const Rmatabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack

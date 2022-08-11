@@ -235,6 +235,7 @@ const Users2: React.FC = () => {
             pagination
             headerHeight={50}
             components={{
+                  LoadingOverlay: CircularProgress,
               Toolbar: CustomToolbar,
               NoRowsOverlay: () => (
                 <Stack

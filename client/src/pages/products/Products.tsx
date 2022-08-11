@@ -1,5 +1,5 @@
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
-import { Box, Fab, Stack, Typography } from "@mui/material";
+import { Box, CircularProgress, Fab, Stack, Typography } from "@mui/material";
 import {
   DataGrid,
   GridFilterModel,
@@ -144,6 +144,7 @@ const Products: React.FC = () => {
               // rowHeight={70}
               // getRowHeight={() => "auto"}
               components={{
+                  LoadingOverlay: CircularProgress,
                 Toolbar: CustomToolbar,
                 NoRowsOverlay: () => (
                   <Stack
@@ -197,6 +198,7 @@ const Products: React.FC = () => {
             // rowHeight={70}
             // getRowHeight={() => "auto"}
             components={{
+                  LoadingOverlay: CircularProgress,
               Toolbar: CustomToolbar,
               NoRowsOverlay: () => (
                 <Stack

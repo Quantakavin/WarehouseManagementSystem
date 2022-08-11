@@ -239,6 +239,7 @@ const NotificationGroups2: React.FC = () => {
             // rowHeight={70}
             // getRowHeight={() => "auto"}
             components={{
+                  LoadingOverlay: CircularProgress,
               Toolbar: CustomToolbar,
               NoRowsOverlay: () => (
                 <Stack

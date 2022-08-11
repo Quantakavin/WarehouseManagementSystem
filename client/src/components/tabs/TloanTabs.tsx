@@ -263,6 +263,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -295,6 +296,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -325,6 +327,7 @@ const TLoanTabs: React.FC = () => {
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -355,6 +358,7 @@ const TLoanTabs: React.FC = () => {
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -505,6 +509,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -537,6 +542,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -567,6 +573,7 @@ const TLoanTabs: React.FC = () => {
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -597,6 +604,7 @@ const TLoanTabs: React.FC = () => {
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -688,6 +696,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -720,6 +729,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -870,6 +880,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -902,6 +913,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -932,6 +944,7 @@ const TLoanTabs: React.FC = () => {
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -962,6 +975,7 @@ const TLoanTabs: React.FC = () => {
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1040,6 +1054,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1145,6 +1160,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1176,6 +1192,7 @@ const TLoanTabs: React.FC = () => {
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1324,6 +1341,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1356,6 +1374,7 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1386,6 +1405,7 @@ const TLoanTabs: React.FC = () => {
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
@@ -1416,6 +1436,7 @@ const TLoanTabs: React.FC = () => {
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
+                  LoadingOverlay: CircularProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: () => (
                         <Stack
