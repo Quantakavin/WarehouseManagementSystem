@@ -9,6 +9,15 @@ export const GetBrandNames = async (name: string) => {
   });
 };
 
+export const GetEmptyBins = async () => {
+  return axios.get(`${config.baseURL}/emptybins`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+
 export const GetBinsByBrand = async (name: string) => {
   return axios.get(`${config.baseURL}/brand/${name}`, {
     headers: {

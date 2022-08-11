@@ -5,6 +5,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { motion } from "framer-motion";
+import { Hidden } from "@mui/material";
 
 interface SearchParams {
   searchoptions: string[];

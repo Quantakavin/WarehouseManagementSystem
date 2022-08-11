@@ -10,6 +10,8 @@ import useDebounce from "../../hooks/useDebounce";
 import "../../styles/BinLocation.scss";
 import { useQuery } from "react-query";
 import { GetBinsByBrand, GetBrandNames } from "../../api/BinLocationDB";
+import { Link } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Floor = () => {
   const colorMap = useLoader(THREE.TextureLoader, "Concrete030_4K_Color.png");
@@ -684,6 +686,7 @@ const BinLocations = () => {
   const [searchName, setSearchName] = useState<string>(null);
   const [selectedBinTags, setSelectedBinTags] = useState<string[]>(null);
   const debouncedValue = useDebounce<string>(inputName, 500);
+  const navigate = useNavigate();
 
   useQuery(
     [`brandnames`, debouncedValue],
@@ -725,15 +728,14 @@ const BinLocations = () => {
   return (
     <div className="binlocation">
       <h1 className="binlocationTitle">Warehouse Visualisation</h1>
-      <div className="flexcontainer">
+      <div className="flexcontainer" style={{marginBottom: "5px"}}>
         <SearchBar
           handleInputChange={handleInputChange}
           handleSearch={handleSearch}
           searchoptions={searchOptions}
         />
-        <br />
-        <h4>Empty Bin List</h4>
       </div>
+      <Link onClick={() => navigate('/emptybins')} sx={{marginLeft: "9%", fontSize: "12px", marginTop: "5px"}}>View Empty Bins</Link>
 
       <div className="flexcontainer">
         <Canvas

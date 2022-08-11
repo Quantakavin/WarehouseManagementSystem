@@ -9,5 +9,6 @@ router.get('/itemname/:ItemName', binsController.ItemName);
 router.get('/binproducts/:BinTag', binsController.BinProducts);
 router.get('/binqtybrand/:Brand', binsController.BinQtyBrand);
 router.get('/binqtybinid/:BinID', binsController.BinQtyBinID);
+router.get('/emptybins', binsController.emptyBins);
 
 module.exports = router;

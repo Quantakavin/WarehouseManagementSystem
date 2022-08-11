@@ -12,6 +12,11 @@ module.exports.getBinByBinTag = async (BinTag) => {
     return knex.raw(query, [BinTag]);
 };
 
+module.exports.getEmptyBins = async() => {
+    const query = `SELECT BinTag2, B.BinID FROM Bin B LEFT JOIN BinProduct BP ON B.BinID = BP.BinID WHERE BP.BinID IS NULL;`
+    return knex.raw(query)
+}
+
 // Get Bin By Product Brand
 // module.exports.getBinByProductBrand = async (Brand) => {
 //     const query = `SELECT Bin.BinTag, Bin.BinID, BinProduct.Brand, COUNT(ItemName) as Items FROM BinProduct LEFT JOIN Bin ON Bin.BinID = BinProduct.BinID WHERE Brand LIKE ?`;

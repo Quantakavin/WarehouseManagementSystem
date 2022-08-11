@@ -12,6 +12,7 @@ import TopNav from "./components/header/TopNav";
 import Sidebar from "./components/sidebar/SideBar";
 import Login from "./pages/auth/Login";
 import MultiFactorAuthentication from "./pages/auth/MultiFactorAuthentication";
+import EmptyBins from "./pages/binlocations/EmptyBins";
 import BinLocations from "./pages/binlocations/BinLocations";
 import Dashboard from "./pages/dashboards/Dashboards";
 import Error401 from "./pages/error/Error401";
@@ -104,6 +105,7 @@ const App: React.FC = () => {
                     </CartProvider>
                   }
                 />
+                <Route path="/emptybins" element={<EmptyBins />} />
                 <Route path="/binlocations" element={<BinLocations />} />
                 <Route path="/rma" element={<RMA />} />
                 <Route path="/createRma" element={<CreateRMA />} />

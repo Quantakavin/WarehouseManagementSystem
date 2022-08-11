@@ -64,6 +64,22 @@ module.exports.getAllBrandNames = async (req, res) => {
     }
 };
 
+module.exports.emptyBins = async (req, res) => {
+    try {
+        const emptyBins = await redisClient.get(`emptybins`);
+        if (emptyBins != null) {
+            const redisresults = JSON.parse(emptyBins);
+            return res.status(200).json(redisresults);
+        }
+        const results = await bin.getEmptyBins();
+        redisClient.set(`emptybins`, JSON.stringify(results[0]), 'EX', 60 * 60 * 24);
+        return res.status(200).json(results[0]);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+}
+
 // Get Bin By Product Brand
 module.exports.brand = async (req, res) => {
     const { Brand } = req.params;
