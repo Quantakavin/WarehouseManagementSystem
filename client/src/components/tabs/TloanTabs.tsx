@@ -1,5 +1,14 @@
 import { TabContext, TabPanel } from "@mui/lab";
-import { Box, Grid, LinearProgress, Stack, styled, Tab, Tabs, Typography } from "@mui/material";
+import {
+  Box,
+  Grid,
+  LinearProgress,
+  Stack,
+  styled,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState, useContext } from "react";
 import "react-tabs/style/react-tabs.css";
 
@@ -22,6 +31,9 @@ import { useAppSelector } from "../../app/hooks";
 import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
 import config from "../../config/config";
 import { EditableContext } from "../context/IsEditableContext";
+import axios from "axios";
+import { useAppDispatch } from "../../app/hooks";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 
 const columns = [
   { field: "TLoanID", headerName: "Loan No.", flex: 4 },
@@ -52,73 +64,88 @@ const TLoanTabs: React.FC = () => {
   const [tableLoading, setTableLoading] = useState(false);
   const context: any = useContext(EditableContext);
   const { isEditable } = context;
-  // Get and set current tloans data
-  useEffect(() => {
-    setTableLoading(true);
-    fetch(`${config.baseURL}/tloan/current/${userid}`)
-      .then((data) => data.json())
-      .then((data) => setCurrentTable(data));
-  }, []);
-  // Get and set pending tloans data
-  useEffect(() => {
-    setTableLoading(true);
-    fetch(`${config.baseURL}/tloan/pending/${userid}`)
-      .then((data) => data.json())
-      .then((data) => setPendingTable(data));
-      setTableLoading(false);
-  }, []);
-  // Get and set draft data
-  useEffect(() => {
-    setTableLoading(true);
-    fetch(`${config.baseURL}/tloan/drafts/${userid}`)
-      .then((data) => data.json())
-      .then((data) => setDraftTable(data));
-      setTableLoading(false);
-  }, []);
-  // Get and set history data
-  useEffect(() => {
-    setTableLoading(true);
-    fetch(`${config.baseURL}/tloan/history/${userid}`)
-      .then((data) => data.json())
-      .then((data) => setHistoryTable(data));
-      setTableLoading(false);
-  }, []);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    setTableLoading(true);
-    fetch(`${config.baseURL}/tloan/ManagerLoan`)
-      .then((data) => data.json())
-      .then((data) => setManagerLoan(data));
-      setTableLoading(false);
-  }, []);
+    dispatch(ChangeTab({ currenttab: "T-Loan" }));
+  });
   useEffect(() => {
     setTableLoading(true);
-    fetch(`${config.baseURL}/tloan/ManagerExtension`)
-      .then((data) => data.json())
-      .then((data) => setExtensionTable(data));
-      setTableLoading(false);
+    const fetchCurrentData = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/current/${userid}`)
+        .then((currentTloanData) => setCurrentTable(currentTloanData.data));
+      // setRma(Object.e)
+    };
+    const fetchPendingData = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/pending/${userid}`)
+        .then((pendingTloanData) => setPendingTable(pendingTloanData.data));
+      // setRma(Object.e)
+    };
+    const fetchDraftData = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/drafts/${userid}`)
+        .then((draftData) => setDraftTable(draftData.data));
+      // setRma(Object.e)
+    };
+    const fetchHistoryData = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/history/${userid}`)
+        .then((historyData) => setHistoryTable(historyData.data));
+      // setRma(Object.e)
+    };
+    const fetchManagerData = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/ManagerLoan`)
+        .then((pendingTloanData) => setManagerLoan(pendingTloanData.data));
+      // setRma(Object.e)
+    };
+    const fetchManagerExData = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/ManagerExtension`)
+        .then((draftData) => setExtensionTable(draftData.data));
+      // setRma(Object.e)
+    };
+    const fetchApprovedData = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/approvedLoans`)
+        .then((approvedData) => setApprovedTable(approvedData.data));
+      // setRma(Object.e)
+    };
+    const fetchAllCurrent = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/allCurrent`)
+        .then((allCurrentData) => setAllCurrent(allCurrentData.data));
+      // setRma(Object.e)
+    };
+    const fetchAllHistory = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/allHistory`)
+        .then((allDraftsData) => setAllHistory(allDraftsData.data));
+      // setRma(Object.e)
+    };
+    fetchCurrentData();
+    fetchPendingData();
+    fetchDraftData();
+    fetchHistoryData();
+    fetchManagerData();
+    fetchManagerExData();
+    fetchApprovedData();
+    fetchAllCurrent();
+    fetchAllHistory();
+    setTableLoading(false);
   }, []);
-  useEffect(() => {
-    setTableLoading(true);
-    fetch(`${config.baseURL}/tloan/approvedLoans`)
-      .then((data) => data.json())
-      .then((data) => setApprovedTable(data));
-      setTableLoading(false);
-  }, []);
-  useEffect(() => {
-    setTableLoading(true);
-    fetch(`${config.baseURL}/tloan/allCurrent`)
-      .then((data) => data.json())
-      .then((data) => setAllCurrent(data));
-      setTableLoading(false);
-  }, []);
-  useEffect(() => {
-    setTableLoading(true);
-    fetch(`${config.baseURL}/tloan/allHistory`)
-      .then((data) => data.json())
-      .then((data) => setAllHistory(data));
-      setTableLoading(false);
-  }, []);
+
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [
       {
@@ -353,9 +380,9 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -379,9 +406,9 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -403,9 +430,9 @@ const TLoanTabs: React.FC = () => {
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -427,9 +454,9 @@ const TLoanTabs: React.FC = () => {
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -571,9 +598,9 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -597,9 +624,9 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -621,9 +648,9 @@ const TLoanTabs: React.FC = () => {
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -645,9 +672,9 @@ const TLoanTabs: React.FC = () => {
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -730,9 +757,9 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -756,9 +783,9 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -900,9 +927,9 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -926,9 +953,9 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -950,9 +977,9 @@ const TLoanTabs: React.FC = () => {
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -974,9 +1001,9 @@ const TLoanTabs: React.FC = () => {
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1046,9 +1073,9 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1145,9 +1172,9 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1170,9 +1197,9 @@ const TLoanTabs: React.FC = () => {
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1312,9 +1339,9 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1338,9 +1365,9 @@ const TLoanTabs: React.FC = () => {
                     onPageSizeChange={(newPage) => setPageSize(newPage)}
                     pagination
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1362,9 +1389,9 @@ const TLoanTabs: React.FC = () => {
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1386,9 +1413,9 @@ const TLoanTabs: React.FC = () => {
                     getRowId={(row) => row.TLoanID}
                     pageSize={12}
                     components={{
-                  LoadingOverlay: LinearProgress,
+                      LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>

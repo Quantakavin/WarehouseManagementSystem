@@ -27,8 +27,9 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "react-tabs/style/react-tabs.css";
-import { useAppSelector } from "../../app/hooks";
+import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import config from "../../config/config";
 
 const Rmatabs: React.FC = () => {
@@ -49,6 +50,11 @@ const Rmatabs: React.FC = () => {
   const [myInProgressTable, setMIPTable] = useState([]);
   const [tableLoading, setTableLoading] = useState(false);
   const [value, setValue] = useState(); // first tab
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(ChangeTab({ currenttab: "RMA" }));
+  });
 
   useEffect(() => {
     setTableLoading(true);
@@ -420,7 +426,7 @@ const Rmatabs: React.FC = () => {
                         pagination
                         components={{
                           LoadingOverlay: LinearProgress,
-                          NoRowsOverlay: CustomNoRowsOverlay
+                          NoRowsOverlay: CustomNoRowsOverlay,
                         }}
                         filterModel={filterModel}
                         onFilterModelChange={(newFilterModel) =>
@@ -713,7 +719,7 @@ const Rmatabs: React.FC = () => {
                     components={{
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -739,7 +745,7 @@ const Rmatabs: React.FC = () => {
                     components={{
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -769,7 +775,7 @@ const Rmatabs: React.FC = () => {
                     components={{
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -799,7 +805,7 @@ const Rmatabs: React.FC = () => {
                     components={{
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -829,7 +835,7 @@ const Rmatabs: React.FC = () => {
                     components={{
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -859,7 +865,7 @@ const Rmatabs: React.FC = () => {
                     components={{
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -967,7 +973,7 @@ const Rmatabs: React.FC = () => {
                     components={{
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -997,7 +1003,7 @@ const Rmatabs: React.FC = () => {
                     components={{
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -1027,7 +1033,7 @@ const Rmatabs: React.FC = () => {
                     components={{
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -1125,7 +1131,7 @@ const Rmatabs: React.FC = () => {
                     components={{
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -1157,7 +1163,7 @@ const Rmatabs: React.FC = () => {
                     components={{
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -1295,7 +1301,7 @@ const Rmatabs: React.FC = () => {
                     components={{
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1326,7 +1332,7 @@ const Rmatabs: React.FC = () => {
                     components={{
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1357,7 +1363,7 @@ const Rmatabs: React.FC = () => {
                     components={{
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1388,7 +1394,7 @@ const Rmatabs: React.FC = () => {
                     components={{
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1419,7 +1425,7 @@ const Rmatabs: React.FC = () => {
                     components={{
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1450,7 +1456,7 @@ const Rmatabs: React.FC = () => {
                     components={{
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
-                      NoRowsOverlay: CustomNoRowsOverlay
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
