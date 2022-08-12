@@ -3,7 +3,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Box, Fab, Stack, styled, Typography } from "@mui/material";
+import {
+  Box,
+  Fab,
+  LinearProgress,
+  Stack,
+  styled,
+  Typography,
+} from "@mui/material";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -31,14 +38,15 @@ const UserGroups2: React.FC = () => {
   const [idToDelete, setIdToDelete] = useState<string>(null);
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
-
+  const [usergroups, setUserGroups] = useState([]);
+  const [loading, setLoading] = useState(false);
   const mutation = useMutation(DeleteUserGroup);
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
     } else {
-      dispatch(ChangeTab({currenttab: "User Groups"}))
+      dispatch(ChangeTab({ currenttab: "User Groups" }));
     }
   }, []);
   // const [hoveredRow, setHoveredRow] = React.useState(null);
@@ -55,6 +63,14 @@ const UserGroups2: React.FC = () => {
   */
 
   const UserGroupsQuery = useQuery(`usergroups`, GetUserGroups);
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setUserGroups(UserGroupsQuery.data.data);
+      setLoading(false);
+    }, 500);
+  });
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [
@@ -135,27 +151,27 @@ const UserGroups2: React.FC = () => {
     },
   ];
 
-  const StyledGridOverlay = styled('div')(({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    '& .ant-empty-img-1': {
-      fill: theme.palette.mode === 'light' ? '#aeb8c2' : '#262626',
+  const StyledGridOverlay = styled("div")(({ theme }) => ({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+    "& .ant-empty-img-1": {
+      fill: theme.palette.mode === "light" ? "#aeb8c2" : "#262626",
     },
-    '& .ant-empty-img-2': {
-      fill: theme.palette.mode === 'light' ? '#f5f5f7' : '#595959',
+    "& .ant-empty-img-2": {
+      fill: theme.palette.mode === "light" ? "#f5f5f7" : "#595959",
     },
-    '& .ant-empty-img-3': {
-      fill: theme.palette.mode === 'light' ? '#dce0e6' : '#434343',
+    "& .ant-empty-img-3": {
+      fill: theme.palette.mode === "light" ? "#dce0e6" : "#434343",
     },
-    '& .ant-empty-img-4': {
-      fill: theme.palette.mode === 'light' ? '#fff' : '#1c1c1c',
+    "& .ant-empty-img-4": {
+      fill: theme.palette.mode === "light" ? "#fff" : "#1c1c1c",
     },
-    '& .ant-empty-img-5': {
-      fillOpacity: theme.palette.mode === 'light' ? '0.8' : '0.08',
-      fill: theme.palette.mode === 'light' ? '#f5f5f5' : '#fff',
+    "& .ant-empty-img-5": {
+      fillOpacity: theme.palette.mode === "light" ? "0.8" : "0.08",
+      fill: theme.palette.mode === "light" ? "#f5f5f5" : "#fff",
     },
   }));
 
@@ -296,8 +312,9 @@ const UserGroups2: React.FC = () => {
             </Box>
           </Box>
           <DataGrid
+            loading={loading}
             sx={{ background: "white", fontSize: 18 }}
-            rows={UserGroupsQuery.data?.data ?? []}
+            rows={usergroups}
             columns={columns}
             getRowId={(row) => row.UserGroupID}
             pageSize={pageSize}
@@ -307,8 +324,9 @@ const UserGroups2: React.FC = () => {
             // rowHeight={70}
             // getRowHeight={() => "auto"}
             components={{
+              LoadingOverlay: LinearProgress,
               Toolbar: CustomToolbar,
-              NoRowsOverlay: CustomNoRowsOverlay
+              NoRowsOverlay: CustomNoRowsOverlay,
             }}
             componentsProps={{
               row: {

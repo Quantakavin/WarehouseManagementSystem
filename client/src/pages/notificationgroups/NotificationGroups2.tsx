@@ -3,7 +3,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Box, Fab, LinearProgress, Stack, styled, Typography } from "@mui/material";
+import {
+  Box,
+  Fab,
+  LinearProgress,
+  Stack,
+  styled,
+  Typography,
+} from "@mui/material";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -28,13 +35,13 @@ import CustomToolbar from "../../components/table/CustomToolbar";
 const NotificationGroups2: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  
+
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
     } else {
-      dispatch(ChangeTab({currenttab: "Notification Groups"}))
+      dispatch(ChangeTab({ currenttab: "Notification Groups" }));
     }
   }, []);
   const [pageSize, setPageSize] = React.useState(25);
@@ -42,7 +49,8 @@ const NotificationGroups2: React.FC = () => {
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const [showError, setShowError] = useState<boolean>(false);
   const [idToDelete, setIdToDelete] = useState<string>(null);
-  const [tableLoading, setTableLoading] = useState(false);
+  const [notificationgroups, setNotificationGroups] = useState([]);
+  const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
 
   const mutation = useMutation(DeleteNotificationGroup);
@@ -50,9 +58,17 @@ const NotificationGroups2: React.FC = () => {
   // const [hoveredRow, setHoveredRow] = React.useState(null);
 
   const NotificationGroupsQuery = useQuery(
-    `notificatiobgroups`,
+    `notificationgroups`,
     GetNotificationGroups
   );
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setNotificationGroups(NotificationGroupsQuery.data.data);
+      setLoading(false);
+    }, 500);
+  });
 
   const SelectDelete = (id: string) => {
     setIdToDelete(id);
@@ -133,27 +149,27 @@ const NotificationGroups2: React.FC = () => {
     },
   ];
 
-  const StyledGridOverlay = styled('div')(({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    '& .ant-empty-img-1': {
-      fill: theme.palette.mode === 'light' ? '#aeb8c2' : '#262626',
+  const StyledGridOverlay = styled("div")(({ theme }) => ({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+    "& .ant-empty-img-1": {
+      fill: theme.palette.mode === "light" ? "#aeb8c2" : "#262626",
     },
-    '& .ant-empty-img-2': {
-      fill: theme.palette.mode === 'light' ? '#f5f5f7' : '#595959',
+    "& .ant-empty-img-2": {
+      fill: theme.palette.mode === "light" ? "#f5f5f7" : "#595959",
     },
-    '& .ant-empty-img-3': {
-      fill: theme.palette.mode === 'light' ? '#dce0e6' : '#434343',
+    "& .ant-empty-img-3": {
+      fill: theme.palette.mode === "light" ? "#dce0e6" : "#434343",
     },
-    '& .ant-empty-img-4': {
-      fill: theme.palette.mode === 'light' ? '#fff' : '#1c1c1c',
+    "& .ant-empty-img-4": {
+      fill: theme.palette.mode === "light" ? "#fff" : "#1c1c1c",
     },
-    '& .ant-empty-img-5': {
-      fillOpacity: theme.palette.mode === 'light' ? '0.8' : '0.08',
-      fill: theme.palette.mode === 'light' ? '#f5f5f5' : '#fff',
+    "& .ant-empty-img-5": {
+      fillOpacity: theme.palette.mode === "light" ? "0.8" : "0.08",
+      fill: theme.palette.mode === "light" ? "#f5f5f5" : "#fff",
     },
   }));
 
@@ -305,9 +321,9 @@ const NotificationGroups2: React.FC = () => {
             </Box>
           </Box>
           <DataGrid
-            loading={tableLoading}
+            loading={loading}
             sx={{ background: "white", fontSize: 18 }}
-            rows={NotificationGroupsQuery.data?.data ?? []}
+            rows={notificationgroups}
             columns={columns}
             getRowId={(row) => row.NotiGroupID}
             pageSize={pageSize}
@@ -319,7 +335,7 @@ const NotificationGroups2: React.FC = () => {
             components={{
               LoadingOverlay: LinearProgress,
               Toolbar: CustomToolbar,
-              NoRowsOverlay: CustomNoRowsOverlay
+              NoRowsOverlay: CustomNoRowsOverlay,
             }}
             componentsProps={
               {

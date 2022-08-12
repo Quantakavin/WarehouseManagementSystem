@@ -71,79 +71,81 @@ const TLoanTabs: React.FC = () => {
   });
   useEffect(() => {
     setTableLoading(true);
-    const fetchCurrentData = async () => {
-      // get the data from the api
-      await axios
-        .get(`${config.baseURL}/tloan/current/${userid}`)
-        .then((currentTloanData) => setCurrentTable(currentTloanData.data));
-      // setRma(Object.e)
-    };
-    const fetchPendingData = async () => {
-      // get the data from the api
-      await axios
-        .get(`${config.baseURL}/tloan/pending/${userid}`)
-        .then((pendingTloanData) => setPendingTable(pendingTloanData.data));
-      // setRma(Object.e)
-    };
-    const fetchDraftData = async () => {
-      // get the data from the api
-      await axios
-        .get(`${config.baseURL}/tloan/drafts/${userid}`)
-        .then((draftData) => setDraftTable(draftData.data));
-      // setRma(Object.e)
-    };
-    const fetchHistoryData = async () => {
-      // get the data from the api
-      await axios
-        .get(`${config.baseURL}/tloan/history/${userid}`)
-        .then((historyData) => setHistoryTable(historyData.data));
-      // setRma(Object.e)
-    };
-    const fetchManagerData = async () => {
-      // get the data from the api
-      await axios
-        .get(`${config.baseURL}/tloan/ManagerLoan`)
-        .then((pendingTloanData) => setManagerLoan(pendingTloanData.data));
-      // setRma(Object.e)
-    };
-    const fetchManagerExData = async () => {
-      // get the data from the api
-      await axios
-        .get(`${config.baseURL}/tloan/ManagerExtension`)
-        .then((draftData) => setExtensionTable(draftData.data));
-      // setRma(Object.e)
-    };
-    const fetchApprovedData = async () => {
-      // get the data from the api
-      await axios
-        .get(`${config.baseURL}/tloan/approvedLoans`)
-        .then((approvedData) => setApprovedTable(approvedData.data));
-      // setRma(Object.e)
-    };
-    const fetchAllCurrent = async () => {
-      // get the data from the api
-      await axios
-        .get(`${config.baseURL}/tloan/allCurrent`)
-        .then((allCurrentData) => setAllCurrent(allCurrentData.data));
-      // setRma(Object.e)
-    };
-    const fetchAllHistory = async () => {
-      // get the data from the api
-      await axios
-        .get(`${config.baseURL}/tloan/allHistory`)
-        .then((allDraftsData) => setAllHistory(allDraftsData.data));
-      // setRma(Object.e)
-    };
-    fetchCurrentData();
-    fetchPendingData();
-    fetchDraftData();
-    fetchHistoryData();
-    fetchManagerData();
-    fetchManagerExData();
-    fetchApprovedData();
-    fetchAllCurrent();
-    fetchAllHistory();
-    setTableLoading(false);
+    setTimeout(() => {
+      const fetchCurrentData = async () => {
+        // get the data from the api
+        await axios
+          .get(`${config.baseURL}/tloan/current/${userid}`)
+          .then((currentTloanData) => setCurrentTable(currentTloanData.data));
+        // setRma(Object.e)
+      };
+      const fetchPendingData = async () => {
+        // get the data from the api
+        await axios
+          .get(`${config.baseURL}/tloan/pending/${userid}`)
+          .then((pendingTloanData) => setPendingTable(pendingTloanData.data));
+        // setRma(Object.e)
+      };
+      const fetchDraftData = async () => {
+        // get the data from the api
+        await axios
+          .get(`${config.baseURL}/tloan/drafts/${userid}`)
+          .then((draftData) => setDraftTable(draftData.data));
+        // setRma(Object.e)
+      };
+      const fetchHistoryData = async () => {
+        // get the data from the api
+        await axios
+          .get(`${config.baseURL}/tloan/history/${userid}`)
+          .then((historyData) => setHistoryTable(historyData.data));
+        // setRma(Object.e)
+      };
+      const fetchManagerData = async () => {
+        // get the data from the api
+        await axios
+          .get(`${config.baseURL}/tloan/ManagerLoan`)
+          .then((pendingTloanData) => setManagerLoan(pendingTloanData.data));
+        // setRma(Object.e)
+      };
+      const fetchManagerExData = async () => {
+        // get the data from the api
+        await axios
+          .get(`${config.baseURL}/tloan/ManagerExtension`)
+          .then((draftData) => setExtensionTable(draftData.data));
+        // setRma(Object.e)
+      };
+      const fetchApprovedData = async () => {
+        // get the data from the api
+        await axios
+          .get(`${config.baseURL}/tloan/approvedLoans`)
+          .then((approvedData) => setApprovedTable(approvedData.data));
+        // setRma(Object.e)
+      };
+      const fetchAllCurrent = async () => {
+        // get the data from the api
+        await axios
+          .get(`${config.baseURL}/tloan/allCurrent`)
+          .then((allCurrentData) => setAllCurrent(allCurrentData.data));
+        // setRma(Object.e)
+      };
+      const fetchAllHistory = async () => {
+        // get the data from the api
+        await axios
+          .get(`${config.baseURL}/tloan/allHistory`)
+          .then((allDraftsData) => setAllHistory(allDraftsData.data));
+        // setRma(Object.e)
+      };
+      fetchCurrentData();
+      fetchPendingData();
+      fetchDraftData();
+      fetchHistoryData();
+      fetchManagerData();
+      fetchManagerExData();
+      fetchApprovedData();
+      fetchAllCurrent();
+      fetchAllHistory();
+      setTableLoading(false);
+    }, 500);
   }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({

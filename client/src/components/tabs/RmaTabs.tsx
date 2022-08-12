@@ -58,75 +58,79 @@ const Rmatabs: React.FC = () => {
   //Retrieving RMA request data for each table
   useEffect(() => {
     setTableLoading(true);
-    // declare the async data fetching function
-    const fetchPendingData = async () => {
-      await axios
-        .get(`${config.baseURL}/myPendingRMA/${userid}`)
-        .then((pendingrmadata) => setMPTable(pendingrmadata.data));
-    };
-    const fetchAcceptedData = async () => {
-      await axios
-        .get(`${config.baseURL}/myAcceptedRMA/${userid}`)
-        .then((acceptedrmadata) => setMATable(acceptedrmadata.data));
-    };
-    const fetchRejectedData = async () => {
-      await axios
-        .get(`${config.baseURL}/myRejectedRMA/${userid}`)
-        .then((rejectedrmadata) => setMRTable(rejectedrmadata.data));
-    };
-    const fetchInProgressData = async () => {
-      await axios
-        .get(`${config.baseURL}/myIPRMA/${userid}`)
-        .then((inprogressrmadata) => setMIPTable(inprogressrmadata.data));
-    };
-    const fetchAllPendingData = async () => {
-      await axios
-        .get(`${config.baseURL}/pendingRMA`)
-        .then((pendingRmaData) => setPendingTable(pendingRmaData.data));
-    };
-    const fetchAllAcceptedData = async () => {
-      await axios
-        .get(`${config.baseURL}/acceptedRMA`)
-        .then((acceptedRmaData) => setApprovedTable(acceptedRmaData.data));
-    };
-    const fetchProcessingData = async () => {
-      await axios
-        .get(`${config.baseURL}/checklistRMA`)
-        .then((processingRmaData) => setChecklistTable(processingRmaData.data));
-    };
-    const fetchReceivedData = async () => {
-      await axios
-        .get(`${config.baseURL}/receivedRMA`)
-        .then((receivedRmaData) => setReceivedTable(receivedRmaData.data));
-    };
-    const fetchVerifiedData = async () => {
-      await axios
-        .get(`${config.baseURL}/verifiedRMA`)
-        .then((verifiedRmaData) => setVerifiedTable(verifiedRmaData.data));
-    };
-    const fetchAllInProgressData = async () => {
-      await axios
-        .get(`${config.baseURL}/inprogressRMA`)
-        .then((ipRmaData) => setInProgressTable(ipRmaData.data));
-    };
-    const fetchClosedData = async () => {
-      await axios
-        .get(`${config.baseURL}/closedRMA`)
-        .then((closedRmaData) => setClosedTable(closedRmaData.data));
-    };
-    // call the functions
-    fetchPendingData();
-    fetchAcceptedData();
-    fetchRejectedData();
-    fetchInProgressData();
-    fetchAllPendingData();
-    fetchAllAcceptedData();
-    fetchProcessingData();
-    fetchReceivedData();
-    fetchVerifiedData();
-    fetchAllInProgressData();
-    fetchClosedData();
-    setTableLoading(false);
+    setTimeout(() => {
+      // declare the async data fetching function
+      const fetchPendingData = async () => {
+        await axios
+          .get(`${config.baseURL}/myPendingRMA/${userid}`)
+          .then((pendingrmadata) => setMPTable(pendingrmadata.data));
+      };
+      const fetchAcceptedData = async () => {
+        await axios
+          .get(`${config.baseURL}/myAcceptedRMA/${userid}`)
+          .then((acceptedrmadata) => setMATable(acceptedrmadata.data));
+      };
+      const fetchRejectedData = async () => {
+        await axios
+          .get(`${config.baseURL}/myRejectedRMA/${userid}`)
+          .then((rejectedrmadata) => setMRTable(rejectedrmadata.data));
+      };
+      const fetchInProgressData = async () => {
+        await axios
+          .get(`${config.baseURL}/myIPRMA/${userid}`)
+          .then((inprogressrmadata) => setMIPTable(inprogressrmadata.data));
+      };
+      const fetchAllPendingData = async () => {
+        await axios
+          .get(`${config.baseURL}/pendingRMA`)
+          .then((pendingRmaData) => setPendingTable(pendingRmaData.data));
+      };
+      const fetchAllAcceptedData = async () => {
+        await axios
+          .get(`${config.baseURL}/acceptedRMA`)
+          .then((acceptedRmaData) => setApprovedTable(acceptedRmaData.data));
+      };
+      const fetchProcessingData = async () => {
+        await axios
+          .get(`${config.baseURL}/checklistRMA`)
+          .then((processingRmaData) =>
+            setChecklistTable(processingRmaData.data)
+          );
+      };
+      const fetchReceivedData = async () => {
+        await axios
+          .get(`${config.baseURL}/receivedRMA`)
+          .then((receivedRmaData) => setReceivedTable(receivedRmaData.data));
+      };
+      const fetchVerifiedData = async () => {
+        await axios
+          .get(`${config.baseURL}/verifiedRMA`)
+          .then((verifiedRmaData) => setVerifiedTable(verifiedRmaData.data));
+      };
+      const fetchAllInProgressData = async () => {
+        await axios
+          .get(`${config.baseURL}/inprogressRMA`)
+          .then((ipRmaData) => setInProgressTable(ipRmaData.data));
+      };
+      const fetchClosedData = async () => {
+        await axios
+          .get(`${config.baseURL}/closedRMA`)
+          .then((closedRmaData) => setClosedTable(closedRmaData.data));
+      };
+      // call the functions
+      fetchPendingData();
+      fetchAcceptedData();
+      fetchRejectedData();
+      fetchInProgressData();
+      fetchAllPendingData();
+      fetchAllAcceptedData();
+      fetchProcessingData();
+      fetchReceivedData();
+      fetchVerifiedData();
+      fetchAllInProgressData();
+      fetchClosedData();
+      setTableLoading(false);
+    }, 500);
   }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
