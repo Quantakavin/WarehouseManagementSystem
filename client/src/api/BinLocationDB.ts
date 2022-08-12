@@ -17,7 +17,6 @@ export const GetEmptyBins = async () => {
   });
 };
 
-
 export const GetBinsByBrand = async (name: string) => {
   return axios.get(`${config.baseURL}/brand/${name}`, {
     headers: {

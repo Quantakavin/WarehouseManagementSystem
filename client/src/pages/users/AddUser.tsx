@@ -46,13 +46,13 @@ interface FormValues {
 const AddUser: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  
+
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
     } else {
-      dispatch(ChangeTab({currenttab: "Users"}))
+      dispatch(ChangeTab({ currenttab: "Users" }));
     }
   }, []);
   const [companyOptions, setCompanyOptions] = useState<Option[]>([]);

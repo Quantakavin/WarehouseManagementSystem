@@ -109,8 +109,8 @@ const Model: React.FC<ModelProps> = ({
   racktag,
   position,
   changeposition,
-  currentbintags
-}) =>   {
+  currentbintags,
+}) => {
   const group = useRef<THREE.Group>();
   const { nodes, materials } = useGLTF("/smallrack.glb") as GLTFResult;
 
@@ -1040,7 +1040,7 @@ const Model: React.FC<ModelProps> = ({
       />
     </group>
   );
-}
+};
 
 useGLTF.preload("/smallrack.glb");
 export default Model;

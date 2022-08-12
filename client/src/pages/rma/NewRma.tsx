@@ -104,7 +104,7 @@ const CreateRMA: React.FC = () => {
     if (!permissions.some((e) => e.FeatureName === "RMA Application")) {
       navigate("/403");
     } else {
-      dispatch(ChangeTab({currenttab: "RMA"}))
+      dispatch(ChangeTab({ currenttab: "RMA" }));
     }
   }, []);
 
@@ -694,45 +694,45 @@ const CreateRMA: React.FC = () => {
       company &&
       contactno.match(phoneRegex)
     ) {
-        axios
-          .post(`${config.baseURL}/newRMA`, rmadetails)
-          .then(() => {
-            Toast.fire({
-              icon: "success",
-              title: "RMA Successfully Submitted",
-              customClass: "swalpopup",
-              timer: 1500,
-              width: 700,
-            });
-            navigate("/rma");
-          })
-          .catch((error) => {
-            console.log(error.response.data.message);
+      axios
+        .post(`${config.baseURL}/newRMA`, rmadetails)
+        .then(() => {
+          Toast.fire({
+            icon: "success",
+            title: "RMA Successfully Submitted",
+            customClass: "swalpopup",
+            timer: 1500,
+            width: 700,
           });
+          navigate("/rma");
+        })
+        .catch((error) => {
+          console.log(error.response.data.message);
+        });
     }
   };
 
-  const StyledGridOverlay = styled('div')(({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    '& .ant-empty-img-1': {
-      fill: theme.palette.mode === 'light' ? '#aeb8c2' : '#262626',
+  const StyledGridOverlay = styled("div")(({ theme }) => ({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+    "& .ant-empty-img-1": {
+      fill: theme.palette.mode === "light" ? "#aeb8c2" : "#262626",
     },
-    '& .ant-empty-img-2': {
-      fill: theme.palette.mode === 'light' ? '#f5f5f7' : '#595959',
+    "& .ant-empty-img-2": {
+      fill: theme.palette.mode === "light" ? "#f5f5f7" : "#595959",
     },
-    '& .ant-empty-img-3': {
-      fill: theme.palette.mode === 'light' ? '#dce0e6' : '#434343',
+    "& .ant-empty-img-3": {
+      fill: theme.palette.mode === "light" ? "#dce0e6" : "#434343",
     },
-    '& .ant-empty-img-4': {
-      fill: theme.palette.mode === 'light' ? '#fff' : '#1c1c1c',
+    "& .ant-empty-img-4": {
+      fill: theme.palette.mode === "light" ? "#fff" : "#1c1c1c",
     },
-    '& .ant-empty-img-5': {
-      fillOpacity: theme.palette.mode === 'light' ? '0.8' : '0.08',
-      fill: theme.palette.mode === 'light' ? '#f5f5f5' : '#fff',
+    "& .ant-empty-img-5": {
+      fillOpacity: theme.palette.mode === "light" ? "0.8" : "0.08",
+      fill: theme.palette.mode === "light" ? "#f5f5f5" : "#fff",
     },
   }));
 
@@ -915,7 +915,8 @@ const CreateRMA: React.FC = () => {
                   processRowUpdate={processRowUpdate}
                   components={{
                     Toolbar: EditToolbar,
-                    NoRowsOverlay: CustomNoRowsOverlay
+                    NoRowsOverlay: CustomNoRowsOverlay,
+                    NoResultsOverlay: CustomNoRowsOverlay,
                   }}
                   componentsProps={{
                     toolbar: { setRows, setRowModesModel },

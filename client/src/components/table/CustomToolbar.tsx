@@ -15,7 +15,7 @@ const CustomToolbar = () => {
       sx={{ display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1 }}
     >
       <Box>
-        <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
+        <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={250} />
       </Box>
       <Box>
         <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />

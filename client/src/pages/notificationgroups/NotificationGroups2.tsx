@@ -17,6 +17,7 @@ import {
   GridFilterModel,
   GridRowParams,
 } from "@mui/x-data-grid";
+import axios from "axios";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -31,6 +32,7 @@ import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import Popup from "../../components/alerts/Popup";
 import { Toast } from "../../components/alerts/SweetAlert";
 import CustomToolbar from "../../components/table/CustomToolbar";
+import config from "../../config/config";
 
 const NotificationGroups2: React.FC = () => {
   const navigate = useNavigate();
@@ -56,19 +58,23 @@ const NotificationGroups2: React.FC = () => {
   const mutation = useMutation(DeleteNotificationGroup);
 
   // const [hoveredRow, setHoveredRow] = React.useState(null);
-
-  const NotificationGroupsQuery = useQuery(
-    `notificationgroups`,
-    GetNotificationGroups
-  );
-
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
-      setNotificationGroups(NotificationGroupsQuery.data.data);
-      setLoading(false);
-    }, 500);
-  });
+    // declare the async data fetching function
+    const fetchNotificationGroupsData = async () => {
+      await axios
+        .get(`${config.baseURL}/notificationgroups`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((notificationgroupsData) =>
+          setNotificationGroups(notificationgroupsData.data)
+        );
+    };
+    fetchNotificationGroupsData();
+    setLoading(false);
+  }, []);
 
   const SelectDelete = (id: string) => {
     setIdToDelete(id);
@@ -336,6 +342,7 @@ const NotificationGroups2: React.FC = () => {
               LoadingOverlay: LinearProgress,
               Toolbar: CustomToolbar,
               NoRowsOverlay: CustomNoRowsOverlay,
+              NoResultsOverlay: CustomNoRowsOverlay,
             }}
             componentsProps={
               {

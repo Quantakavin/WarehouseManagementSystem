@@ -17,9 +17,9 @@ const Profile: React.FC = () => {
   );
 
   const dispatch = useAppDispatch();
-  
+
   useEffect(() => {
-    dispatch(ChangeTab({currenttab: "Null"}))
+    dispatch(ChangeTab({ currenttab: "Null" }));
   }, []);
 
   if (UserQuery.isLoading || UserQuery.isError) {

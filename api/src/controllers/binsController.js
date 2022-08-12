@@ -78,7 +78,7 @@ module.exports.emptyBins = async (req, res) => {
         console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
-}
+};
 
 // Get Bin By Product Brand
 module.exports.brand = async (req, res) => {

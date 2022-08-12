@@ -17,6 +17,7 @@ import {
   GridFilterModel,
   GridRowParams,
 } from "@mui/x-data-grid";
+import axios from "axios";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -28,6 +29,7 @@ import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import Popup from "../../components/alerts/Popup";
 import { Toast } from "../../components/alerts/SweetAlert";
 import CustomToolbar from "../../components/table/CustomToolbar";
+import config from "../../config/config";
 
 const Users2: React.FC = () => {
   const navigate = useNavigate();
@@ -63,15 +65,22 @@ const Users2: React.FC = () => {
   };
   */
 
-  const UsersQuery = useQuery(`users`, GetAllUsers);
-
+  // const UsersQuery = useQuery(`users`, GetAllUsers);
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
-      setUsers(UsersQuery.data.data);
-      setLoading(false);
-    }, 500);
-  });
+    // declare the async data fetching function
+    const fetchUsersData = async () => {
+      await axios
+        .get(`${config.baseURL}/users`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((usersData) => setUsers(usersData.data));
+    };
+    fetchUsersData();
+    setLoading(false);
+  }, []);
 
   const SelectDelete = (id: string) => {
     setIdToDelete(id);
@@ -331,6 +340,7 @@ const Users2: React.FC = () => {
               LoadingOverlay: LinearProgress,
               Toolbar: CustomToolbar,
               NoRowsOverlay: CustomNoRowsOverlay,
+              NoResultsOverlay: CustomNoRowsOverlay,
             }}
             componentsProps={
               {

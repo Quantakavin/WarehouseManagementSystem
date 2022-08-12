@@ -34,6 +34,7 @@ import { EditableContext } from "../context/IsEditableContext";
 import axios from "axios";
 import { useAppDispatch } from "../../app/hooks";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
+import CustomToolbar from "../table/CustomToolbar";
 
 const columns = [
   { field: "TLoanID", headerName: "Loan No.", flex: 4 },
@@ -71,81 +72,79 @@ const TLoanTabs: React.FC = () => {
   });
   useEffect(() => {
     setTableLoading(true);
-    setTimeout(() => {
-      const fetchCurrentData = async () => {
-        // get the data from the api
-        await axios
-          .get(`${config.baseURL}/tloan/current/${userid}`)
-          .then((currentTloanData) => setCurrentTable(currentTloanData.data));
-        // setRma(Object.e)
-      };
-      const fetchPendingData = async () => {
-        // get the data from the api
-        await axios
-          .get(`${config.baseURL}/tloan/pending/${userid}`)
-          .then((pendingTloanData) => setPendingTable(pendingTloanData.data));
-        // setRma(Object.e)
-      };
-      const fetchDraftData = async () => {
-        // get the data from the api
-        await axios
-          .get(`${config.baseURL}/tloan/drafts/${userid}`)
-          .then((draftData) => setDraftTable(draftData.data));
-        // setRma(Object.e)
-      };
-      const fetchHistoryData = async () => {
-        // get the data from the api
-        await axios
-          .get(`${config.baseURL}/tloan/history/${userid}`)
-          .then((historyData) => setHistoryTable(historyData.data));
-        // setRma(Object.e)
-      };
-      const fetchManagerData = async () => {
-        // get the data from the api
-        await axios
-          .get(`${config.baseURL}/tloan/ManagerLoan`)
-          .then((pendingTloanData) => setManagerLoan(pendingTloanData.data));
-        // setRma(Object.e)
-      };
-      const fetchManagerExData = async () => {
-        // get the data from the api
-        await axios
-          .get(`${config.baseURL}/tloan/ManagerExtension`)
-          .then((draftData) => setExtensionTable(draftData.data));
-        // setRma(Object.e)
-      };
-      const fetchApprovedData = async () => {
-        // get the data from the api
-        await axios
-          .get(`${config.baseURL}/tloan/approvedLoans`)
-          .then((approvedData) => setApprovedTable(approvedData.data));
-        // setRma(Object.e)
-      };
-      const fetchAllCurrent = async () => {
-        // get the data from the api
-        await axios
-          .get(`${config.baseURL}/tloan/allCurrent`)
-          .then((allCurrentData) => setAllCurrent(allCurrentData.data));
-        // setRma(Object.e)
-      };
-      const fetchAllHistory = async () => {
-        // get the data from the api
-        await axios
-          .get(`${config.baseURL}/tloan/allHistory`)
-          .then((allDraftsData) => setAllHistory(allDraftsData.data));
-        // setRma(Object.e)
-      };
-      fetchCurrentData();
-      fetchPendingData();
-      fetchDraftData();
-      fetchHistoryData();
-      fetchManagerData();
-      fetchManagerExData();
-      fetchApprovedData();
-      fetchAllCurrent();
-      fetchAllHistory();
-      setTableLoading(false);
-    }, 500);
+    const fetchCurrentData = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/current/${userid}`)
+        .then((currentTloanData) => setCurrentTable(currentTloanData.data));
+      // setRma(Object.e)
+    };
+    const fetchPendingData = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/pending/${userid}`)
+        .then((pendingTloanData) => setPendingTable(pendingTloanData.data));
+      // setRma(Object.e)
+    };
+    const fetchDraftData = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/drafts/${userid}`)
+        .then((draftData) => setDraftTable(draftData.data));
+      // setRma(Object.e)
+    };
+    const fetchHistoryData = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/history/${userid}`)
+        .then((historyData) => setHistoryTable(historyData.data));
+      // setRma(Object.e)
+    };
+    const fetchManagerData = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/ManagerLoan`)
+        .then((pendingTloanData) => setManagerLoan(pendingTloanData.data));
+      // setRma(Object.e)
+    };
+    const fetchManagerExData = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/ManagerExtension`)
+        .then((draftData) => setExtensionTable(draftData.data));
+      // setRma(Object.e)
+    };
+    const fetchApprovedData = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/approvedLoans`)
+        .then((approvedData) => setApprovedTable(approvedData.data));
+      // setRma(Object.e)
+    };
+    const fetchAllCurrent = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/allCurrent`)
+        .then((allCurrentData) => setAllCurrent(allCurrentData.data));
+      // setRma(Object.e)
+    };
+    const fetchAllHistory = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/allHistory`)
+        .then((allDraftsData) => setAllHistory(allDraftsData.data));
+      // setRma(Object.e)
+    };
+    fetchCurrentData();
+    fetchPendingData();
+    fetchDraftData();
+    fetchHistoryData();
+    fetchManagerData();
+    fetchManagerExData();
+    fetchApprovedData();
+    fetchAllCurrent();
+    fetchAllHistory();
+    setTableLoading(false);
   }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
@@ -157,24 +156,6 @@ const TLoanTabs: React.FC = () => {
       },
     ],
   });
-
-  const CustomToolbar = () => {
-    return (
-      <GridToolbarContainer
-        sx={{ display: "flex", flexWrap: "wrap", maxWidth: 613, p: 1 }}
-      >
-        <Box>
-          <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
-        </Box>
-        <Box>
-          <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
-          <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
-          <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
-          <GridToolbarExport sx={{ color: "#0A2540" }} />
-        </Box>
-      </GridToolbarContainer>
-    );
-  };
 
   const StyledGridOverlay = styled("div")(({ theme }) => ({
     display: "flex",
@@ -385,6 +366,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -411,6 +393,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -435,6 +418,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -459,6 +443,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -603,6 +588,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -629,6 +615,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -653,6 +640,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -677,6 +665,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -762,6 +751,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -788,6 +778,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -932,6 +923,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -958,6 +950,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -982,6 +975,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1006,6 +1000,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1078,6 +1073,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1177,6 +1173,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1202,6 +1199,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1344,6 +1342,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1370,6 +1369,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1394,6 +1394,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1418,6 +1419,7 @@ const TLoanTabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>

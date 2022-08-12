@@ -67,15 +67,19 @@ const Model: React.FC<ModelProps> = ({
   //   })
   // }, [areatag, sectiontag, leveltag, racktag]);
 
-  const RetrieveBinInfo = async() => {
-    setIsSelected(true)
-    return await axios.get(`${config.baseURL}/bintag/${areatag}${racktag}${leveltag}${sectiontag}`).then((data) => {
-      console.log(data.data[0]);
-      if (data.data[0] != null) {
-        setBinsData(data.data[0]);
-      }
-    })
-  }
+  const RetrieveBinInfo = async () => {
+    setIsSelected(true);
+    return await axios
+      .get(
+        `${config.baseURL}/bintag/${areatag}${racktag}${leveltag}${sectiontag}`
+      )
+      .then((data) => {
+        console.log(data.data[0]);
+        if (data.data[0] != null) {
+          setBinsData(data.data[0]);
+        }
+      });
+  };
 
   // get bin products and amount of items
 
@@ -99,62 +103,60 @@ const Model: React.FC<ModelProps> = ({
   return (
     <>
       {/* {exists ? ( */}
-        <group
-          onPointerOver={(e) => {
-            e.stopPropagation();
-            RetrieveBinInfo();
-          }
-          }
-          onPointerOut={(e) => {
-            e.stopPropagation();
-            setIsSelected(false)
-          }
-          }
-          // onClick={(e) => {
-          //   e.stopPropagation();
-          //   setIsSelected(!isSelected);
-          // }}
-          ref={group}
-          dispose={null}
-          position={position}
-          scale={[2.5, 2.5, 2.5]}
+      <group
+        onPointerOver={(e) => {
+          e.stopPropagation();
+          RetrieveBinInfo();
+        }}
+        onPointerOut={(e) => {
+          e.stopPropagation();
+          setIsSelected(false);
+        }}
+        // onClick={(e) => {
+        //   e.stopPropagation();
+        //   setIsSelected(!isSelected);
+        // }}
+        ref={group}
+        dispose={null}
+        position={position}
+        scale={[2.5, 2.5, 2.5]}
+      >
+        <mesh
+          geometry={nodes.Cube024.geometry}
+          material={nodes.Cube024.material}
+          position={[-1.42, 0.55, -3.13]}
+          scale={[0.85, 0.29, 0.51]}
         >
-          <mesh
-            geometry={nodes.Cube024.geometry}
-            material={nodes.Cube024.material}
-            position={[-1.42, 0.55, -3.13]}
-            scale={[0.85, 0.29, 0.51]}
-          >
-            {isSelected && BinsData != null ? (
-              <Html distanceFactor={10}>
-                <div className="content">
-                  BinTag:{BinsData?.BinTag}
-                  <br />
-                  Column: {sectiontag}
-                  <br />
-                  Rack: {racktag}
-                  <br />
-                  Level: {leveltag}
-                  <br />
-                  Capacity:{BinsData?.Volume} cm3
-                  <br />
-                  Amount of Items: {BinsData?.AmountOfItems}
-                  <br />
-                </div>
-              </Html>
-            ) : null}
+          {isSelected && BinsData != null ? (
+            <Html distanceFactor={10}>
+              <div className="content">
+                BinTag:{BinsData?.BinTag}
+                <br />
+                Column: {sectiontag}
+                <br />
+                Rack: {racktag}
+                <br />
+                Level: {leveltag}
+                <br />
+                Capacity:{BinsData?.Volume} cm3
+                <br />
+                Amount of Items: {BinsData?.AmountOfItems}
+                <br />
+              </div>
+            </Html>
+          ) : null}
 
-            <meshStandardMaterial
-              color={
-                currentbintags?.includes(
-                  `${areatag}${racktag}${leveltag}${sectiontag}`
-                ) || isSelected
-                  ? "#8b0000"
-                  : "#e3e8ee"
-              }
-            />
-          </mesh>
-        </group>
+          <meshStandardMaterial
+            color={
+              currentbintags?.includes(
+                `${areatag}${racktag}${leveltag}${sectiontag}`
+              ) || isSelected
+                ? "#8b0000"
+                : "#e3e8ee"
+            }
+          />
+        </mesh>
+      </group>
       {/* ) : null} */}
     </>
   );

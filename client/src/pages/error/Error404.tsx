@@ -18,94 +18,93 @@ const Error404 = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(ChangeTab({currenttab: "null"}))
+    dispatch(ChangeTab({ currenttab: "null" }));
   }, []);
 
-
   return (
-    <Grid container sx={{height: "100%", width: 1, p: 3, pb: 0}}>
+    <Grid container sx={{ height: "100%", width: 1, p: 3, pb: 0 }}>
       <Grid item xs={12}>
-          <Card
-            sx={{
-              display: "flex",
-              height: "100%",
-              width: "100%",
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
-          >
-            <CardContent>
-              <Grid container>
-                <Grid item xs={12}>
+        <Card
+          sx={{
+            display: "flex",
+            height: "100%",
+            width: "100%",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <CardContent>
+            <Grid container>
+              <Grid item xs={12}>
+                <Typography
+                  sx={{
+                    color: "black",
+                    fontWeight: "bold",
+                    fontSize: 250,
+                    textAlign: "center",
+                  }}
+                >
+                  404
+                  <br />
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Box
+                  sx={{
+                    color: "black",
+                    fontWeight: "normal",
+                    textAlign: "center",
+                    fontSize: 40,
+                  }}
+                >
                   <Typography
                     sx={{
-                      color: "black",
+                      color: "#063970",
                       fontWeight: "bold",
-                      fontSize: 250,
-                      textAlign: "center",
+                      fontSize: 70,
                     }}
                   >
-                    404
+                    Oops!
                     <br />
                   </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Box
-                    sx={{
-                      color: "black",
-                      fontWeight: "normal",
-                      textAlign: "center",
-                      fontSize: 40,
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        color: "#063970",
-                        fontWeight: "bold",
-                        fontSize: 70,
-                      }}
-                    >
-                      Oops!
-                      <br />
-                    </Typography>
-                    The page you are looking for doesn't exist
-                    <br />
-                    Please return to the page you were on
-                  </Box>
-                </Grid>
-                <Grid item xs={12}>
-                  <Box
-                    component="span"
-                    paddingTop={2}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <motion.div
-                      className="animatable"
-                      whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      <Button
-                        size="small"
-                        variant="contained"
-                        sx={{
-                          color: "white",
-                          backgroundColor: "#063970",
-                          width: 150,
-                          height: 50,
-                          borderRadius: 10,
-                        }}
-                        onClick={() => navigate(-1)}
-                      >
-                        Back
-                      </Button>
-                    </motion.div>
-                  </Box>
-                </Grid>
+                  The page you are looking for doesn't exist
+                  <br />
+                  Please return to the page you were on
+                </Box>
               </Grid>
-            </CardContent>
-          </Card>
+              <Grid item xs={12}>
+                <Box
+                  component="span"
+                  paddingTop={2}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <motion.div
+                    className="animatable"
+                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <Button
+                      size="small"
+                      variant="contained"
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#063970",
+                        width: 150,
+                        height: 50,
+                        borderRadius: 10,
+                      }}
+                      onClick={() => navigate(-1)}
+                    >
+                      Back
+                    </Button>
+                  </motion.div>
+                </Box>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
       </Grid>
     </Grid>
   );

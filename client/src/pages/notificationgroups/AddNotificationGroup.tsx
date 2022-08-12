@@ -10,7 +10,10 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { GetCompanies } from "../../api/CompanyDB";
-import { GetNotificationFeatures, GetNotificationTypes } from "../../api/NotificationFeatureDB";
+import {
+  GetNotificationFeatures,
+  GetNotificationTypes,
+} from "../../api/NotificationFeatureDB";
 import { PostNotificationGroup } from "../../api/NotificationGroupDB";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
@@ -26,7 +29,12 @@ import FormTextArea from "../../components/form/FormTextArea";
 import MultiSelectDropdown from "../../components/form/MultiSelectDropdown";
 import SelectDropdown from "../../components/form/SelectDropdown";
 import SelectedList from "../../components/form/SelectedList";
-import { Company, NotiFeature, NotiType, Option } from "../../utils/CommonTypes";
+import {
+  Company,
+  NotiFeature,
+  NotiType,
+  Option,
+} from "../../utils/CommonTypes";
 import {
   DescriptionValidation,
   NameValidation,
@@ -44,13 +52,13 @@ const AddNotificationGroup: React.FC = () => {
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-  
+
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
     } else {
-      dispatch(ChangeTab({currenttab: "Notification Groups"}))
+      dispatch(ChangeTab({ currenttab: "Notification Groups" }));
     }
   }, []);
   const {

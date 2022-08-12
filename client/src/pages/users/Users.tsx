@@ -6,7 +6,12 @@ import PageviewIcon from "@mui/icons-material/Pageview";
 import { Hidden } from "@mui/material";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "react-query";
 import { useNavigate } from "react-router-dom";
 import { DeleteUser, FilterUsers, GetUsernames } from "../../api/UserDB";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -30,13 +35,13 @@ const Users: React.FC = () => {
   const sortOrder = useAppSelector(selectSortOrder);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  
+
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
     } else {
-      dispatch(ChangeTab({currenttab: "Notification Groups"}))
+      dispatch(ChangeTab({ currenttab: "Notification Groups" }));
     }
   }, []);
   const [searchOptions, setSearchOptions] = useState<string[]>([]);
@@ -71,18 +76,14 @@ const Users: React.FC = () => {
     "Action",
   ];
 
-  useQuery(
-    [`usernames`, debouncedValue],
-    () => GetUsernames(debouncedValue),
-    {
-      onSuccess: (data) => {
-        const namearray = data.data.map((record) => {
-          return record.Name;
-        });
-        setSearchOptions(namearray);
-      },
-    }
-  );
+  useQuery([`usernames`, debouncedValue], () => GetUsernames(debouncedValue), {
+    onSuccess: (data) => {
+      const namearray = data.data.map((record) => {
+        return record.Name;
+      });
+      setSearchOptions(namearray);
+    },
+  });
 
   const UsersQuery = useInfiniteQuery(
     [`users`, sortColumn, sortOrder, searchName],

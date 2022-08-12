@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAppDispatch } from "../../app/hooks";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
+import CustomToolbar from "../../components/table/CustomToolbar";
 
 const Products2: React.FC = () => {
   const [row, setRow] = useState([]);
@@ -29,7 +30,7 @@ const Products2: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(ChangeTab({currenttab: "Products"}))
+    dispatch(ChangeTab({ currenttab: "Products" }));
   }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
@@ -58,45 +59,27 @@ const Products2: React.FC = () => {
     },
   ];
 
-  const CustomToolbar = () => {
-    return (
-      <GridToolbarContainer
-        sx={{ display: "flex", flexWrap: "wrap", maxWidth: 613, p: 1 }}
-      >
-        <Box>
-          <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
-        </Box>
-        <Box>
-          <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
-          <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
-          <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
-          <GridToolbarExport sx={{ color: "#0A2540" }} />
-        </Box>
-      </GridToolbarContainer>
-    );
-  };
-
-  const StyledGridOverlay = styled('div')(({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    '& .ant-empty-img-1': {
-      fill: theme.palette.mode === 'light' ? '#aeb8c2' : '#262626',
+  const StyledGridOverlay = styled("div")(({ theme }) => ({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+    "& .ant-empty-img-1": {
+      fill: theme.palette.mode === "light" ? "#aeb8c2" : "#262626",
     },
-    '& .ant-empty-img-2': {
-      fill: theme.palette.mode === 'light' ? '#f5f5f7' : '#595959',
+    "& .ant-empty-img-2": {
+      fill: theme.palette.mode === "light" ? "#f5f5f7" : "#595959",
     },
-    '& .ant-empty-img-3': {
-      fill: theme.palette.mode === 'light' ? '#dce0e6' : '#434343',
+    "& .ant-empty-img-3": {
+      fill: theme.palette.mode === "light" ? "#dce0e6" : "#434343",
     },
-    '& .ant-empty-img-4': {
-      fill: theme.palette.mode === 'light' ? '#fff' : '#1c1c1c',
+    "& .ant-empty-img-4": {
+      fill: theme.palette.mode === "light" ? "#fff" : "#1c1c1c",
     },
-    '& .ant-empty-img-5': {
-      fillOpacity: theme.palette.mode === 'light' ? '0.8' : '0.08',
-      fill: theme.palette.mode === 'light' ? '#f5f5f5' : '#fff',
+    "& .ant-empty-img-5": {
+      fillOpacity: theme.palette.mode === "light" ? "0.8" : "0.08",
+      fill: theme.palette.mode === "light" ? "#f5f5f5" : "#fff",
     },
   }));
 
@@ -168,9 +151,10 @@ const Products2: React.FC = () => {
             // rowHeight={70}
             // getRowHeight={() => "auto"}
             components={{
-                  LoadingOverlay: LinearProgress,
+              LoadingOverlay: LinearProgress,
               Toolbar: CustomToolbar,
-              NoRowsOverlay: CustomNoRowsOverlay
+              NoRowsOverlay: CustomNoRowsOverlay,
+              NoResultsOverlay: CustomNoRowsOverlay,
             }}
             filterModel={filterModel}
             onFilterModelChange={(newFilterModel) =>

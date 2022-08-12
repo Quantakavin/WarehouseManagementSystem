@@ -14,13 +14,13 @@ const ViewUser: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  
+
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
     } else {
-      dispatch(ChangeTab({currenttab: "Users"}))
+      dispatch(ChangeTab({ currenttab: "Users" }));
     }
   }, []);
 

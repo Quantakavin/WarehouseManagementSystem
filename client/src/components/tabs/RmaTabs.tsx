@@ -31,6 +31,7 @@ import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import config from "../../config/config";
+import CustomToolbar from "../table/CustomToolbar";
 
 const Rmatabs: React.FC = () => {
   const navigate = useNavigate();
@@ -58,79 +59,75 @@ const Rmatabs: React.FC = () => {
   //Retrieving RMA request data for each table
   useEffect(() => {
     setTableLoading(true);
-    setTimeout(() => {
-      // declare the async data fetching function
-      const fetchPendingData = async () => {
-        await axios
-          .get(`${config.baseURL}/myPendingRMA/${userid}`)
-          .then((pendingrmadata) => setMPTable(pendingrmadata.data));
-      };
-      const fetchAcceptedData = async () => {
-        await axios
-          .get(`${config.baseURL}/myAcceptedRMA/${userid}`)
-          .then((acceptedrmadata) => setMATable(acceptedrmadata.data));
-      };
-      const fetchRejectedData = async () => {
-        await axios
-          .get(`${config.baseURL}/myRejectedRMA/${userid}`)
-          .then((rejectedrmadata) => setMRTable(rejectedrmadata.data));
-      };
-      const fetchInProgressData = async () => {
-        await axios
-          .get(`${config.baseURL}/myIPRMA/${userid}`)
-          .then((inprogressrmadata) => setMIPTable(inprogressrmadata.data));
-      };
-      const fetchAllPendingData = async () => {
-        await axios
-          .get(`${config.baseURL}/pendingRMA`)
-          .then((pendingRmaData) => setPendingTable(pendingRmaData.data));
-      };
-      const fetchAllAcceptedData = async () => {
-        await axios
-          .get(`${config.baseURL}/acceptedRMA`)
-          .then((acceptedRmaData) => setApprovedTable(acceptedRmaData.data));
-      };
-      const fetchProcessingData = async () => {
-        await axios
-          .get(`${config.baseURL}/checklistRMA`)
-          .then((processingRmaData) =>
-            setChecklistTable(processingRmaData.data)
-          );
-      };
-      const fetchReceivedData = async () => {
-        await axios
-          .get(`${config.baseURL}/receivedRMA`)
-          .then((receivedRmaData) => setReceivedTable(receivedRmaData.data));
-      };
-      const fetchVerifiedData = async () => {
-        await axios
-          .get(`${config.baseURL}/verifiedRMA`)
-          .then((verifiedRmaData) => setVerifiedTable(verifiedRmaData.data));
-      };
-      const fetchAllInProgressData = async () => {
-        await axios
-          .get(`${config.baseURL}/inprogressRMA`)
-          .then((ipRmaData) => setInProgressTable(ipRmaData.data));
-      };
-      const fetchClosedData = async () => {
-        await axios
-          .get(`${config.baseURL}/closedRMA`)
-          .then((closedRmaData) => setClosedTable(closedRmaData.data));
-      };
-      // call the functions
-      fetchPendingData();
-      fetchAcceptedData();
-      fetchRejectedData();
-      fetchInProgressData();
-      fetchAllPendingData();
-      fetchAllAcceptedData();
-      fetchProcessingData();
-      fetchReceivedData();
-      fetchVerifiedData();
-      fetchAllInProgressData();
-      fetchClosedData();
-      setTableLoading(false);
-    }, 500);
+    // declare the async data fetching function
+    const fetchPendingData = async () => {
+      await axios
+        .get(`${config.baseURL}/myPendingRMA/${userid}`)
+        .then((pendingrmadata) => setMPTable(pendingrmadata.data));
+    };
+    const fetchAcceptedData = async () => {
+      await axios
+        .get(`${config.baseURL}/myAcceptedRMA/${userid}`)
+        .then((acceptedrmadata) => setMATable(acceptedrmadata.data));
+    };
+    const fetchRejectedData = async () => {
+      await axios
+        .get(`${config.baseURL}/myRejectedRMA/${userid}`)
+        .then((rejectedrmadata) => setMRTable(rejectedrmadata.data));
+    };
+    const fetchInProgressData = async () => {
+      await axios
+        .get(`${config.baseURL}/myIPRMA/${userid}`)
+        .then((inprogressrmadata) => setMIPTable(inprogressrmadata.data));
+    };
+    const fetchAllPendingData = async () => {
+      await axios
+        .get(`${config.baseURL}/pendingRMA`)
+        .then((pendingRmaData) => setPendingTable(pendingRmaData.data));
+    };
+    const fetchAllAcceptedData = async () => {
+      await axios
+        .get(`${config.baseURL}/acceptedRMA`)
+        .then((acceptedRmaData) => setApprovedTable(acceptedRmaData.data));
+    };
+    const fetchProcessingData = async () => {
+      await axios
+        .get(`${config.baseURL}/checklistRMA`)
+        .then((processingRmaData) => setChecklistTable(processingRmaData.data));
+    };
+    const fetchReceivedData = async () => {
+      await axios
+        .get(`${config.baseURL}/receivedRMA`)
+        .then((receivedRmaData) => setReceivedTable(receivedRmaData.data));
+    };
+    const fetchVerifiedData = async () => {
+      await axios
+        .get(`${config.baseURL}/verifiedRMA`)
+        .then((verifiedRmaData) => setVerifiedTable(verifiedRmaData.data));
+    };
+    const fetchAllInProgressData = async () => {
+      await axios
+        .get(`${config.baseURL}/inprogressRMA`)
+        .then((ipRmaData) => setInProgressTable(ipRmaData.data));
+    };
+    const fetchClosedData = async () => {
+      await axios
+        .get(`${config.baseURL}/closedRMA`)
+        .then((closedRmaData) => setClosedTable(closedRmaData.data));
+    };
+    // call the functions
+    fetchPendingData();
+    fetchAcceptedData();
+    fetchRejectedData();
+    fetchInProgressData();
+    fetchAllPendingData();
+    fetchAllAcceptedData();
+    fetchProcessingData();
+    fetchReceivedData();
+    fetchVerifiedData();
+    fetchAllInProgressData();
+    fetchClosedData();
+    setTableLoading(false);
   }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
@@ -154,24 +151,6 @@ const Rmatabs: React.FC = () => {
     { field: "Company", headerName: "Company", flex: 8 },
     { field: "CustomerEmail", headerName: "Customer Email", flex: 8 },
   ];
-
-  const CustomToolbar = () => {
-    return (
-      <GridToolbarContainer
-        sx={{ display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1 }}
-      >
-        <Box>
-          <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
-        </Box>
-        <Box>
-          <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
-          <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
-          <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
-          <GridToolbarExport sx={{ color: "#0A2540" }} />
-        </Box>
-      </GridToolbarContainer>
-    );
-  };
 
   const StyledGridOverlay = styled("div")(({ theme }) => ({
     display: "flex",
@@ -377,6 +356,7 @@ const Rmatabs: React.FC = () => {
                           LoadingOverlay: LinearProgress,
                           Toolbar: CustomToolbar,
                           NoRowsOverlay: CustomNoRowsOverlay,
+                          NoResultsOverlay: CustomNoRowsOverlay,
                         }}
                         filterModel={filterModel}
                         onFilterModelChange={(newFilterModel) =>
@@ -406,7 +386,9 @@ const Rmatabs: React.FC = () => {
                         pagination
                         components={{
                           LoadingOverlay: LinearProgress,
+                          Toolbar: CustomToolbar,
                           NoRowsOverlay: CustomNoRowsOverlay,
+                          NoResultsOverlay: CustomNoRowsOverlay,
                         }}
                         filterModel={filterModel}
                         onFilterModelChange={(newFilterModel) =>
@@ -438,6 +420,7 @@ const Rmatabs: React.FC = () => {
                           LoadingOverlay: LinearProgress,
                           Toolbar: CustomToolbar,
                           NoRowsOverlay: CustomNoRowsOverlay,
+                          NoResultsOverlay: CustomNoRowsOverlay,
                         }}
                         filterModel={filterModel}
                         onFilterModelChange={(newFilterModel) =>
@@ -469,6 +452,7 @@ const Rmatabs: React.FC = () => {
                           LoadingOverlay: LinearProgress,
                           Toolbar: CustomToolbar,
                           NoRowsOverlay: CustomNoRowsOverlay,
+                          NoResultsOverlay: CustomNoRowsOverlay,
                         }}
                         filterModel={filterModel}
                         onFilterModelChange={(newFilterModel) =>
@@ -549,6 +533,7 @@ const Rmatabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -700,6 +685,7 @@ const Rmatabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -726,6 +712,7 @@ const Rmatabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -756,6 +743,7 @@ const Rmatabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -786,6 +774,7 @@ const Rmatabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -816,6 +805,7 @@ const Rmatabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -846,6 +836,7 @@ const Rmatabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -954,6 +945,7 @@ const Rmatabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -984,6 +976,7 @@ const Rmatabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -1014,6 +1007,7 @@ const Rmatabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -1112,6 +1106,7 @@ const Rmatabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -1144,6 +1139,7 @@ const Rmatabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     componentsProps={{
                       toolbar: {
@@ -1282,6 +1278,7 @@ const Rmatabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1313,6 +1310,7 @@ const Rmatabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1344,6 +1342,7 @@ const Rmatabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1375,6 +1374,7 @@ const Rmatabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1406,6 +1406,7 @@ const Rmatabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>
@@ -1437,6 +1438,7 @@ const Rmatabs: React.FC = () => {
                       LoadingOverlay: LinearProgress,
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
+                      NoResultsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>

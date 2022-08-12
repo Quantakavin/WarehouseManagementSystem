@@ -14,7 +14,7 @@ const Dashboards = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(ChangeTab({currenttab: "Dashboard"}))
+    dispatch(ChangeTab({ currenttab: "Dashboard" }));
   }, []);
 
   const userrole = useAppSelector(selectRole);

@@ -251,7 +251,7 @@ const validation = {
         const passswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9@$!%*#?&]{8,}$/;
 
         if (passswordRegex.test(password)) {
-            next()
+            next();
         } else {
             res.status(400).json({
                 message: 'Please enter a valid password'

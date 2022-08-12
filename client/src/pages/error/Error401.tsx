@@ -1,5 +1,12 @@
 import React, { useEffect } from "react";
-import { Box, Button, Card, CardContent, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -14,7 +21,7 @@ const Error401 = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(ChangeTab({currenttab: "null"}))
+    dispatch(ChangeTab({ currenttab: "null" }));
   }, []);
 
   return (

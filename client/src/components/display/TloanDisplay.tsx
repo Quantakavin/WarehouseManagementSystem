@@ -188,28 +188,28 @@ const TLoanDisplay = () => {
       setStatusLoading(false);
     }
     if (statusChange !== "" && statusChange !== statusID.toString()) {
-        try {
-          const results = axios
-            .put(`${config.baseURL}/tloan/updatestatus/${TLoanID}`, {
-              statusChange,
-            })
-            .then(() => {
-              Toast.fire({
-                icon: "success",
-                title: "Status Successfully Updated",
-                customClass: "swalpopup",
-                timer: 1500,
-                width: 700,
-              });
-              console.log(results);
-              setTimeout(function(){
-                window.location.reload();
-             }, 2500);
+      try {
+        const results = axios
+          .put(`${config.baseURL}/tloan/updatestatus/${TLoanID}`, {
+            statusChange,
+          })
+          .then(() => {
+            Toast.fire({
+              icon: "success",
+              title: "Status Successfully Updated",
+              customClass: "swalpopup",
+              timer: 1500,
+              width: 700,
             });
-        } catch (error) {
-          console.log(error.response);
-          setStatusLoading(false);
-        }
+            console.log(results);
+            setTimeout(function () {
+              window.location.reload();
+            }, 2500);
+          });
+      } catch (error) {
+        console.log(error.response);
+        setStatusLoading(false);
+      }
     }
   };
   const minimumDate: any = new Date(
@@ -907,38 +907,38 @@ const TLoanDisplay = () => {
       collection !== "" &&
       requireddate < minDateStr === false
     ) {
-        try {
-          const results = axios
-            .put(`${config.baseURL}/tloan/submitEditedDraft/${TLoanID}`, {
-              type,
-              company,
-              purpose,
-              applicationdate,
-              duration,
-              requireddate,
-              email,
-              collection,
-              items,
-            })
-            .then(() => {
-              Toast.fire({
-                icon: "success",
-                title: "TLoan Successfully Submitted",
-                customClass: "swalpopup",
-                timer: 1500,
-                width: 700,
-              });
-              navigate("/tloan");
-              emptyCart();
-              setIsEditable(false);
-              setTLoanIDGlobal(null);
+      try {
+        const results = axios
+          .put(`${config.baseURL}/tloan/submitEditedDraft/${TLoanID}`, {
+            type,
+            company,
+            purpose,
+            applicationdate,
+            duration,
+            requireddate,
+            email,
+            collection,
+            items,
+          })
+          .then(() => {
+            Toast.fire({
+              icon: "success",
+              title: "TLoan Successfully Submitted",
+              customClass: "swalpopup",
+              timer: 1500,
+              width: 700,
             });
+            navigate("/tloan");
+            emptyCart();
+            setIsEditable(false);
+            setTLoanIDGlobal(null);
+          });
 
-          console.log(results);
-        } catch (error) {
-          console.log(error.response);
-          setSubmitLoading(false);
-        }
+        console.log(results);
+      } catch (error) {
+        console.log(error.response);
+        setSubmitLoading(false);
+      }
     }
   };
   const DraftLoan = (e) => {
@@ -1018,40 +1018,40 @@ const TLoanDisplay = () => {
       email !== "" &&
       email.match(emailRegex)
     ) {
-        try {
-          const results = axios
-            .put(`${config.baseURL}/tloan/draftEditedDraft/${TLoanID}`, {
-              type,
-              company,
-              name,
-              purpose,
-              applicationdate,
-              duration,
-              requireddate,
-              user,
-              email,
-              collection,
-              items,
-            })
-            .then(() => {
-              Toast.fire({
-                icon: "info",
-                title: "TLoan has been put into Draft",
-                customClass: "swalpopup",
-                timer: 1500,
-                width: 700,
-              });
-              navigate("/tloan");
-              setIsEditable(false);
-              setTLoanIDGlobal(null);
-              emptyCart();
+      try {
+        const results = axios
+          .put(`${config.baseURL}/tloan/draftEditedDraft/${TLoanID}`, {
+            type,
+            company,
+            name,
+            purpose,
+            applicationdate,
+            duration,
+            requireddate,
+            user,
+            email,
+            collection,
+            items,
+          })
+          .then(() => {
+            Toast.fire({
+              icon: "info",
+              title: "TLoan has been put into Draft",
+              customClass: "swalpopup",
+              timer: 1500,
+              width: 700,
             });
+            navigate("/tloan");
+            setIsEditable(false);
+            setTLoanIDGlobal(null);
+            emptyCart();
+          });
 
-          console.log(results);
-        } catch (error) {
-          console.log(error.response);
-          setSubmitLoading(false);
-        }
+        console.log(results);
+      } catch (error) {
+        console.log(error.response);
+        setSubmitLoading(false);
+      }
     }
   };
   const getData = () => {

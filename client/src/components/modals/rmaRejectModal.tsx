@@ -52,22 +52,22 @@ const RejectModalButton = () => {
   const handleConfirm = async () => {
     setLoading(true);
     if (reason !== "") {
-        setLoading(false);
-        axios
-          .put(`${config.baseURL}/rejectRMA/${RmaID}`, rejectreason)
-          .then(() => {
-            Toast.fire({
-              icon: "success",
-              title: `RMA #${RmaID} Rejected`,
-              customClass: "swalpopup",
-              timer: 2000,
-              width: 310,
-            });
-            navigate("/rma");
-          })
-          .catch((e) => {
-            console.error("There was an error!", e);
+      setLoading(false);
+      axios
+        .put(`${config.baseURL}/rejectRMA/${RmaID}`, rejectreason)
+        .then(() => {
+          Toast.fire({
+            icon: "success",
+            title: `RMA #${RmaID} Rejected`,
+            customClass: "swalpopup",
+            timer: 2000,
+            width: 310,
           });
+          navigate("/rma");
+        })
+        .catch((e) => {
+          console.error("There was an error!", e);
+        });
     } else {
       setError(true);
       setErrorText("Please provide a reason for rejecting this RMA request");

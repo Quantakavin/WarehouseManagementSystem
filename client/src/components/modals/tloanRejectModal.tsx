@@ -61,25 +61,25 @@ const TLoanRejectModalButton = () => {
         width: 350,
       });
     } else {
-        try {
-          axios
-            .put(`${config.baseURL}/tloan/reject/${TLoanID}`, {
-              remarks,
-            })
-            .then(() => {
-              Toast.fire({
-                icon: "success",
-                title: `TLoan #${TLoanID} Has Been Rejected`,
-                customClass: "swalpopup",
-                timer: 2000,
-                width: 700,
-              });
-              navigate("/tloan");
+      try {
+        axios
+          .put(`${config.baseURL}/tloan/reject/${TLoanID}`, {
+            remarks,
+          })
+          .then(() => {
+            Toast.fire({
+              icon: "success",
+              title: `TLoan #${TLoanID} Has Been Rejected`,
+              customClass: "swalpopup",
+              timer: 2000,
+              width: 700,
             });
-        } catch (error) {
-          setLoading(false);
-          console.error("There was an error!", error);
-        }
+            navigate("/tloan");
+          });
+      } catch (error) {
+        setLoading(false);
+        console.error("There was an error!", error);
+      }
     }
   };
 

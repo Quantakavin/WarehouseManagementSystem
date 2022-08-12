@@ -71,7 +71,7 @@ const ViewProduct: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(ChangeTab({currenttab: "Products"}))
+    dispatch(ChangeTab({ currenttab: "Products" }));
   }, []);
 
   console.log(newProducts);

@@ -1,4 +1,11 @@
-import { Box, Grid, LinearProgress, Paper, Popper, styled } from "@mui/material";
+import {
+  Box,
+  Grid,
+  LinearProgress,
+  Paper,
+  Popper,
+  styled,
+} from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
@@ -184,22 +191,22 @@ const TLoanManagerDisplay = () => {
 
   const ApproveLoan = async () => {
     setLoading(true);
-      axios
-        .put(`${config.baseURL}/tloan/approveExtension/${TLoanID}`)
-        .then(() => {
-          Toast.fire({
-            icon: "success",
-            title: `Extension For TLoan #${TLoanID} Has Been Approved`,
-            customClass: "swalpopup",
-            timer: 2000,
-            width: 700,
-          });
-          navigate("/tloan");
-        })
-        .catch((error) => {
-          console.error("There was an error!", error);
-          setLoading(false);
+    axios
+      .put(`${config.baseURL}/tloan/approveExtension/${TLoanID}`)
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: `Extension For TLoan #${TLoanID} Has Been Approved`,
+          customClass: "swalpopup",
+          timer: 2000,
+          width: 700,
         });
+        navigate("/tloan");
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+        setLoading(false);
+      });
   };
 
   const columns: GridColDef[] = [

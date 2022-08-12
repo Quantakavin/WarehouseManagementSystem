@@ -6,7 +6,12 @@ import PageviewIcon from "@mui/icons-material/Pageview";
 import { Hidden } from "@mui/material";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "react-query";
 import { useNavigate } from "react-router-dom";
 import {
   DeleteNotificationGroup,
@@ -32,13 +37,13 @@ import useDebounce from "../../hooks/useDebounce";
 const NotificationGroups: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  
+
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
     } else {
-      dispatch(ChangeTab({currenttab: "Notification Groups"}))
+      dispatch(ChangeTab({ currenttab: "Notification Groups" }));
     }
   }, []);
   const sortColumn = useAppSelector(selectSortColumn);

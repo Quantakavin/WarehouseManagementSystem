@@ -22,7 +22,7 @@ const ViewUserGroup: React.FC = () => {
     if (userrole !== "Admin") {
       navigate("/403");
     } else {
-      dispatch(ChangeTab({currenttab: "User Groups"}))
+      dispatch(ChangeTab({ currenttab: "User Groups" }));
     }
   }, []);
   const [features, setFeatures] = useState<any[]>([]);

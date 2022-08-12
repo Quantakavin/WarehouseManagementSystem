@@ -28,17 +28,17 @@ module.exports.updateQuantity = async (ItemNo, BatchNo, Quantity) => {
     try {
         const results = await productService.updateQuantity(ItemNo, BatchNo, Quantity);
         if (results != null) {
-            const results2  = await productService.getByItemCode(ItemNo, BatchNo)
+            const results2 = await productService.getByItemCode(ItemNo, BatchNo);
             if (results2 != null) {
                 results2[0].forEach((result) => {
                     redisClient.del(`product#${result.BinProductPK}`);
-                })
+                });
             }
         }
         return null;
         // return res.status(204).send();
     } catch (error) {
-        console.log("the error is", error);
+        console.log('the error is', error);
         return null;
         // return res.status(500).json({ message: 'Internal Server Error!' });
     }
@@ -47,26 +47,28 @@ module.exports.updateQuantity = async (ItemNo, BatchNo, Quantity) => {
 module.exports.updateBinLocation = async (ItemNo, BatchNo, CurrentBinTag, FinalBinTag) => {
     // const { NotiFeatureID, ReceiverID } = req.body;
     try {
-        const results = await productService.updateBinLocation(ItemNo, BatchNo, CurrentBinTag, FinalBinTag);
+        const results = await productService.updateBinLocation(
+            ItemNo,
+            BatchNo,
+            CurrentBinTag,
+            FinalBinTag
+        );
         if (results != null) {
-            const results2  = await productService.getByItemCode(ItemNo, BatchNo)
+            const results2 = await productService.getByItemCode(ItemNo, BatchNo);
             if (results2 != null) {
                 results2[0].forEach((result) => {
                     redisClient.del(`product#${result.BinProductPK}`);
-                })
+                });
             }
         }
         return null;
         // return res.status(204).send();
     } catch (error) {
-        console.log("the error is", error);
+        console.log('the error is', error);
         return null;
         // return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
-
-
-
 
 module.exports.getAllProducts = async (req, res) => {
     const { limit, page } = req.query;

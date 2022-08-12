@@ -387,40 +387,44 @@ const Cards = () => {
             }}
           >
             <Grid container>
-            <Grid item xs={12}>
-                  <Box sx={{ fontWeight: 500, fontSize: "22px" }}>
-                    RMA Overview
-                  </Box>
-                  <Divider
-                    sx={{
-                      mt: "10px",
-                      mb: "10px",
-                      borderBottomWidth: 1,
-                      backgroundColor: "#0A2540",
-                    }}
-                  />
-                </Grid>
+              <Grid item xs={12}>
+                <Box sx={{ fontWeight: 500, fontSize: "22px" }}>
+                  RMA Overview
+                </Box>
+                <Divider
+                  sx={{
+                    mt: "10px",
+                    mb: "10px",
+                    borderBottomWidth: 1,
+                    backgroundColor: "#0A2540",
+                  }}
+                />
+              </Grid>
               <Grid item xs={6}>
                 <Chip label="Approved" />
-                <Box                     sx={{
-                      color: "#0A2540",
-                      fontWeight: "normal",
-                      ml: "10px",
-                      mt: "5px",
-                      fontSize: "22px",
-                    }}>
+                <Box
+                  sx={{
+                    color: "#0A2540",
+                    fontWeight: "normal",
+                    ml: "10px",
+                    mt: "5px",
+                    fontSize: "22px",
+                  }}
+                >
                   {ApprovedRMAs.length}
                 </Box>
               </Grid>
               <Grid item xs={6} sx={{ paddingLeft: 5 }}>
                 <Chip label="Rejected" />
-                <Box                     sx={{
-                      color: "#0A2540",
-                      fontWeight: "normal",
-                      ml: "10px",
-                      mt: "5px",
-                      fontSize: "22px",
-                    }}>
+                <Box
+                  sx={{
+                    color: "#0A2540",
+                    fontWeight: "normal",
+                    ml: "10px",
+                    mt: "5px",
+                    fontSize: "22px",
+                  }}
+                >
                   {RejectedRMAs.length}
                 </Box>
               </Grid>
@@ -442,40 +446,44 @@ const Cards = () => {
             }}
           >
             <Grid container>
-            <Grid item xs={12}>
-                  <Box sx={{ fontWeight: 500, fontSize: "22px" }}>
-                    T-Loan Overview
-                  </Box>
-                  <Divider
-                    sx={{
-                      mt: "10px",
-                      mb: "10px",
-                      borderBottomWidth: 1,
-                      backgroundColor: "#0A2540",
-                    }}
-                  />
-                </Grid>
+              <Grid item xs={12}>
+                <Box sx={{ fontWeight: 500, fontSize: "22px" }}>
+                  T-Loan Overview
+                </Box>
+                <Divider
+                  sx={{
+                    mt: "10px",
+                    mb: "10px",
+                    borderBottomWidth: 1,
+                    backgroundColor: "#0A2540",
+                  }}
+                />
+              </Grid>
               <Grid item xs={6}>
                 <Chip label="Draft" />
-                <Box                     sx={{
-                      color: "#0A2540",
-                      fontWeight: "normal",
-                      ml: "10px",
-                      mt: "5px",
-                      fontSize: "22px",
-                    }}>
+                <Box
+                  sx={{
+                    color: "#0A2540",
+                    fontWeight: "normal",
+                    ml: "10px",
+                    mt: "5px",
+                    fontSize: "22px",
+                  }}
+                >
                   {DraftTloans.length}
                 </Box>
               </Grid>
               <Grid item xs={6} sx={{ paddingLeft: 6 }}>
-              <Chip label="Current" />
-                <Box                     sx={{
-                      color: "#0A2540",
-                      fontWeight: "normal",
-                      ml: "10px",
-                      mt: "5px",
-                      fontSize: "22px",
-                    }}>
+                <Chip label="Current" />
+                <Box
+                  sx={{
+                    color: "#0A2540",
+                    fontWeight: "normal",
+                    ml: "10px",
+                    mt: "5px",
+                    fontSize: "22px",
+                  }}
+                >
                   {CurrentTloans.length}
                 </Box>
               </Grid>

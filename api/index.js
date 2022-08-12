@@ -24,8 +24,12 @@ const PORT = process.env.PORT || 5000;
 
 //const client = mqtt.connect('mqtt://test.mosquitto.org', { clientId: 'mqtt-tester' });
 //const client = mqtt.connect('mqtt://isdnwms.dscloud.me/', { clientId: 'cef93cb6-85b4-4c41-9696-63c4ab8d65f4', protocol: "mqtt", password: "Leaptron!62889125", username: "isdnwms_user04" });
-const client = mqtt.connect(config.MQTTHost, { clientId: config.MQTTClient, protocol: "mqtt", password: config.MQTTPassword, username: config.MQTTUsername });
-
+const client = mqtt.connect(config.MQTTHost, {
+    clientId: config.MQTTClient,
+    protocol: 'mqtt',
+    password: config.MQTTPassword,
+    username: config.MQTTUsername
+});
 
 client.on('connect', function () {
     console.log('connected to mqtt client');
@@ -33,14 +37,23 @@ client.on('connect', function () {
     client.subscribe('binlocation');
 
     client.on('message', (topic, message) => {
-        if(topic === 'quantity') {
-          const parsedmessage = JSON.parse("[" + message + "]")
-          productController.updateQuantity(parsedmessage[0].ItemNo, parsedmessage[0].BatchNo, parsedmessage[0].Quantity)
+        if (topic === 'quantity') {
+            const parsedmessage = JSON.parse('[' + message + ']');
+            productController.updateQuantity(
+                parsedmessage[0].ItemNo,
+                parsedmessage[0].BatchNo,
+                parsedmessage[0].Quantity
+            );
         } else if (topic === 'binlocation') {
-            const parsedmessage = JSON.parse("[" + message + "]")
-            productController.updateBinLocation(parsedmessage[0].ItemNo, parsedmessage[0].BatchNo, parsedmessage[0].CurrentBinTag, parsedmessage[0].FinalBinTag)
+            const parsedmessage = JSON.parse('[' + message + ']');
+            productController.updateBinLocation(
+                parsedmessage[0].ItemNo,
+                parsedmessage[0].BatchNo,
+                parsedmessage[0].CurrentBinTag,
+                parsedmessage[0].FinalBinTag
+            );
         }
-      })
+    });
 });
 
 io.on('connection', (socket) => {

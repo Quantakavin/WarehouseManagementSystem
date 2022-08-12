@@ -69,7 +69,7 @@ const Settings: React.FC = () => {
   const [enabledTele, setEnabledTele] = useState(false);
   useEffect(() => {
     setEnabledTele(currentTeleID !== null);
-    dispatch(ChangeTab({currenttab: "Null"}))
+    dispatch(ChangeTab({ currenttab: "Null" }));
   }, []);
   const [showEnableConfirmation, setShowEnableConfirmation] =
     useState<boolean>(false);
@@ -114,29 +114,29 @@ const Settings: React.FC = () => {
   const handleConfirm = async () => {
     setLoading(true);
     if (telegramID !== "") {
-        setLoading(false);
-        setOpen(false);
-        axios
-          .put(`${config.baseURL}/userTele/${userID}`, TeleID, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then(() => {
-            console.log("called");
-            setEnabledTele(true);
-            Toast.fire({
-              icon: "success",
-              title: `Telegram Notifications Enabled`,
-              customClass: "swalpopup",
-              timer: 2000,
-              width: 310,
-            });
-          })
-          .catch((e) => {
-            console.log(e);
-            console.error("There was an error!", e);
+      setLoading(false);
+      setOpen(false);
+      axios
+        .put(`${config.baseURL}/userTele/${userID}`, TeleID, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then(() => {
+          console.log("called");
+          setEnabledTele(true);
+          Toast.fire({
+            icon: "success",
+            title: `Telegram Notifications Enabled`,
+            customClass: "swalpopup",
+            timer: 2000,
+            width: 310,
           });
+        })
+        .catch((e) => {
+          console.log(e);
+          console.error("There was an error!", e);
+        });
     } else {
       setError(true);
       setErrorText("Please provide your Telegram User ID");
@@ -152,28 +152,28 @@ const Settings: React.FC = () => {
   };
   const handleDisableTeleConfirm = async () => {
     setLoading(true);
-      setLoading(false);
-      axios
-        .put(`${config.baseURL}/userTele/${userID}`, DisableTeleID, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then(() => {
-          setShowTeleDisableConfirmation(false);
-          setEnabledTele(false);
-          Toast.fire({
-            icon: "success",
-            title: `Telegram Notifications Disabled`,
-            customClass: "swalpopup",
-            timer: 2000,
-            width: 310,
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-          console.error("There was an error!", error);
+    setLoading(false);
+    axios
+      .put(`${config.baseURL}/userTele/${userID}`, DisableTeleID, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then(() => {
+        setShowTeleDisableConfirmation(false);
+        setEnabledTele(false);
+        Toast.fire({
+          icon: "success",
+          title: `Telegram Notifications Disabled`,
+          customClass: "swalpopup",
+          timer: 2000,
+          width: 310,
         });
+      })
+      .catch((error) => {
+        console.log(error);
+        console.error("There was an error!", error);
+      });
   };
   // Password modal open/close
   const handleOpenChangePassword = () => {
@@ -182,7 +182,7 @@ const Settings: React.FC = () => {
   const handleCloseChangePassword = () => {
     setPWError(false);
     setShowChangePassword(false);
-    setValues({password:"", showPassword: false});
+    setValues({ password: "", showPassword: false });
   };
   // Handle change of text in password field
   const handleChange =
@@ -224,36 +224,36 @@ const Settings: React.FC = () => {
       });
       setLoading(false);
     } else if (values.password !== "" && values.password.match(passwordRegex)) {
-        setLoading(false);
-        setPWError(false);
-        setShowChangePassword(false);
-        axios
-          .put(`${config.baseURL}/userpassword/${userID}`, newpassword, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then(() => {
-            Toast.fire({
-              icon: "success",
-              title: `Successfully changed password`,
-              customClass: "swalpopup",
-              timer: 2000,
-              width: 400,
-            });
-          })
-          .catch((error) => {
-            Toast.fire({
-              icon: "error",
-              title: `Failed to change password`,
-              customClass: "swalpopup",
-              timer: 2000,
-              width: 310,
-            });
-            console.log(error);
-            console.error("There was an error!", error);
+      setLoading(false);
+      setPWError(false);
+      setShowChangePassword(false);
+      axios
+        .put(`${config.baseURL}/userpassword/${userID}`, newpassword, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then(() => {
+          Toast.fire({
+            icon: "success",
+            title: `Successfully changed password`,
+            customClass: "swalpopup",
+            timer: 2000,
+            width: 400,
           });
-      setValues({password:"", showPassword:false});
+        })
+        .catch((error) => {
+          Toast.fire({
+            icon: "error",
+            title: `Failed to change password`,
+            customClass: "swalpopup",
+            timer: 2000,
+            width: 310,
+          });
+          console.log(error);
+          console.error("There was an error!", error);
+        });
+      setValues({ password: "", showPassword: false });
     }
   };
   interface FormValues {

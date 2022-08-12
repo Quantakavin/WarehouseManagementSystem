@@ -6,21 +6,21 @@ source: https://sketchfab.com/3d-models/plastic-storage-container-40073fa4ac1d47
 title: Plastic Storage Container
 */
 import React, { useEffect, useRef, useState } from "react";
-import * as THREE from 'three'
+import * as THREE from "three";
 import { Html, useGLTF } from "@react-three/drei";
-import { GLTF } from 'three-stdlib';
+import { GLTF } from "three-stdlib";
 import axios from "axios";
 import config from "../../config/config";
 import "../../styles/BinLocation.scss";
 
 type GLTFResult = GLTF & {
   nodes: {
-    StorageContainer_StorageContainer_0: THREE.Mesh
-  }
+    StorageContainer_StorageContainer_0: THREE.Mesh;
+  };
   materials: {
-    StorageContainer: THREE.MeshStandardMaterial
-  }
-}
+    StorageContainer: THREE.MeshStandardMaterial;
+  };
+};
 
 interface ModelProps {
   areatag: string;
@@ -43,7 +43,9 @@ const Model: React.FC<ModelProps> = ({
   const [BinsData, setBinsData] = useState<any>(null);
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const [exists, setExists] = useState<boolean>(true);
-  const { nodes, materials } = useGLTF('/plasticcontainer/scene.gltf') as GLTFResult;
+  const { nodes, materials } = useGLTF(
+    "/plasticcontainer/scene.gltf"
+  ) as GLTFResult;
 
   useEffect(() => {
     const bintag = `${areatag}${racktag}${leveltag}${sectiontag}`;
@@ -59,53 +61,57 @@ const Model: React.FC<ModelProps> = ({
 
   return (
     <>
-    {exists ? (
-    <group
-      onClick={(e) => {
-        e.stopPropagation();
-        setIsSelected(!isSelected);
-      }}
-      ref={group}
-      dispose={null}
-      position={position}
-      scale={[2.5, 2.5, 2.5]}
-    >
-      <group rotation={[-Math.PI / 2, 0, 0]} scale={0.01}>
-        <group rotation={[Math.PI / 2, 0, 0]}>
-          <mesh geometry={nodes.StorageContainer_StorageContainer_0.geometry} material={materials.StorageContainer} />
-          {isSelected ? (
-              <Html distanceFactor={10}>
-                <div className="content">
-                  BinTag:{BinsData?.BinTag}
-                  <br />
-                  Column: {sectiontag}
-                  <br />
-                  Rack: {racktag}
-                  <br />
-                  Level: {leveltag}
-                  <br />
-                  Capacity:{BinsData?.Volume} cm3
-                  <br />
-                  Amount of Items: {BinsData?.AmountOfItems}
-                  <br />
-                </div>
-              </Html>
-            ) : null}
-          <meshStandardMaterial
-              color={
-                currentbintags?.includes(
-                  `${areatag}${racktag}${leveltag}${sectiontag}`
-                ) || isSelected
-                  ? "#8b0000"
-                  : "gray"
-              }
-            />
+      {exists ? (
+        <group
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsSelected(!isSelected);
+          }}
+          ref={group}
+          dispose={null}
+          position={position}
+          scale={[2.5, 2.5, 2.5]}
+        >
+          <group rotation={[-Math.PI / 2, 0, 0]} scale={0.01}>
+            <group rotation={[Math.PI / 2, 0, 0]}>
+              <mesh
+                geometry={nodes.StorageContainer_StorageContainer_0.geometry}
+                material={materials.StorageContainer}
+              />
+              {isSelected ? (
+                <Html distanceFactor={10}>
+                  <div className="content">
+                    BinTag:{BinsData?.BinTag}
+                    <br />
+                    Column: {sectiontag}
+                    <br />
+                    Rack: {racktag}
+                    <br />
+                    Level: {leveltag}
+                    <br />
+                    Capacity:{BinsData?.Volume} cm3
+                    <br />
+                    Amount of Items: {BinsData?.AmountOfItems}
+                    <br />
+                  </div>
+                </Html>
+              ) : null}
+              <meshStandardMaterial
+                color={
+                  currentbintags?.includes(
+                    `${areatag}${racktag}${leveltag}${sectiontag}`
+                  ) || isSelected
+                    ? "#8b0000"
+                    : "gray"
+                }
+              />
+            </group>
+          </group>
         </group>
-      </group>
-    </group>
-    ): null}</>
-  )
-}
+      ) : null}
+    </>
+  );
+};
 
-useGLTF.preload('/scene.gltf')
+useGLTF.preload("/scene.gltf");
 export default Model;

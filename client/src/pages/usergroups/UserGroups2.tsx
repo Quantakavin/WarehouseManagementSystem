@@ -17,6 +17,7 @@ import {
   GridFilterModel,
   GridRowParams,
 } from "@mui/x-data-grid";
+import axios from "axios";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -28,6 +29,7 @@ import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import Popup from "../../components/alerts/Popup";
 import { Toast } from "../../components/alerts/SweetAlert";
 import CustomToolbar from "../../components/table/CustomToolbar";
+import config from "../../config/config";
 
 const UserGroups2: React.FC = () => {
   const navigate = useNavigate();
@@ -61,16 +63,21 @@ const UserGroups2: React.FC = () => {
     setHoveredRow(null);
   };
   */
-
-  const UserGroupsQuery = useQuery(`usergroups`, GetUserGroups);
-
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
-      setUserGroups(UserGroupsQuery.data.data);
-      setLoading(false);
-    }, 500);
-  });
+    // declare the async data fetching function
+    const fetchUserGroupssData = async () => {
+      await axios
+        .get(`${config.baseURL}/usergroups`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((usergroupsData) => setUserGroups(usergroupsData.data));
+    };
+    fetchUserGroupssData();
+    setLoading(false);
+  }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [
@@ -327,6 +334,7 @@ const UserGroups2: React.FC = () => {
               LoadingOverlay: LinearProgress,
               Toolbar: CustomToolbar,
               NoRowsOverlay: CustomNoRowsOverlay,
+              NoResultsOverlay: CustomNoRowsOverlay,
             }}
             componentsProps={{
               row: {

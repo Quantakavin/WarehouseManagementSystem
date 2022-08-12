@@ -50,25 +50,25 @@ const TLoanRejectModalButton = () => {
       setRemarksErrorText("Input Is Needed");
       setLoading(false);
     } else {
-        try {
-          axios
-            .put(`${config.baseURL}/tloan/rejectExtension/${TLoanID}`, {
-              remarks,
-            })
-            .then(() => {
-              Toast.fire({
-                icon: "success",
-                title: `Extension For TLoan #${TLoanID} Has Been Rejected`,
-                customClass: "swalpopup",
-                timer: 2000,
-                width: 700,
-              });
-              navigate("/tloan");
+      try {
+        axios
+          .put(`${config.baseURL}/tloan/rejectExtension/${TLoanID}`, {
+            remarks,
+          })
+          .then(() => {
+            Toast.fire({
+              icon: "success",
+              title: `Extension For TLoan #${TLoanID} Has Been Rejected`,
+              customClass: "swalpopup",
+              timer: 2000,
+              width: 700,
             });
-        } catch (error) {
-          console.error("There was an error!", error);
-          setLoading(false);
-        }
+            navigate("/tloan");
+          });
+      } catch (error) {
+        console.error("There was an error!", error);
+        setLoading(false);
+      }
     }
   };
 

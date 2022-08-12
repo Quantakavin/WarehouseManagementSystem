@@ -17,13 +17,13 @@ const ViewNotificationGroup: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  
+
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
     } else {
-      dispatch(ChangeTab({currenttab: "Notification Groups"}))
+      dispatch(ChangeTab({ currenttab: "Notification Groups" }));
     }
   }, []);
   const [notiFeatures, setNotiFeatures] = useState<any[]>([]);

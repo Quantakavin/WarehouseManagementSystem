@@ -26,6 +26,11 @@ router.post('/verify2fatoken', validation.validate2FAToken, userController.verif
 
 router.delete('/user/:id', authorization.verifyAdmin, userController.deleteUser);
 
-router.put('/userpassword/:id', authorization.verifyUser, validation.validatePassword, userController.updateUserPassword);
+router.put(
+    '/userpassword/:id',
+    authorization.verifyUser,
+    validation.validatePassword,
+    userController.updateUserPassword
+);
 
 module.exports = router;

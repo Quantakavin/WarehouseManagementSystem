@@ -4,13 +4,12 @@ import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import Rmatabs from "../../components/tabs/RmaTabs";
 
 function rma() {
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(ChangeTab({currenttab: "RMA"}))
+    dispatch(ChangeTab({ currenttab: "RMA" }));
   }, []);
-  
+
   return (
     <div>
       {/* <SideBar/> */}

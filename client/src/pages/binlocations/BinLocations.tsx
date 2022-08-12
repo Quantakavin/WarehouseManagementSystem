@@ -693,7 +693,7 @@ const BinLocations = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(ChangeTab({currenttab: "Bin Locations"}))
+    dispatch(ChangeTab({ currenttab: "Bin Locations" }));
   }, []);
 
   useQuery(
@@ -709,18 +709,14 @@ const BinLocations = () => {
     }
   );
 
-  useQuery(
-    [`binsbybrand`, searchName],
-    () => GetBinsByBrand(searchName),
-    {
-      onSuccess: (data) => {
-        const returnbins = data.data.map((bin) => {
-          return bin.BinTag;
-        });
-        setSelectedBinTags(returnbins);
-      },
-    }
-  );
+  useQuery([`binsbybrand`, searchName], () => GetBinsByBrand(searchName), {
+    onSuccess: (data) => {
+      const returnbins = data.data.map((bin) => {
+        return bin.BinTag;
+      });
+      setSelectedBinTags(returnbins);
+    },
+  });
 
   const handleInputChange = (inputstring: string) => {
     setSelectedBinTags(null);
@@ -736,14 +732,19 @@ const BinLocations = () => {
   return (
     <div className="binlocation">
       <h1 className="binlocationTitle">Warehouse Visualisation</h1>
-      <div className="flexcontainer" style={{marginBottom: "5px"}}>
+      <div className="flexcontainer" style={{ marginBottom: "5px" }}>
         <SearchBar
           handleInputChange={handleInputChange}
           handleSearch={handleSearch}
           searchoptions={searchOptions}
         />
       </div>
-      <Link onClick={() => navigate('/emptybins')} sx={{marginLeft: "9%", fontSize: "12px", marginTop: "5px"}}>View Empty Bins</Link>
+      <Link
+        onClick={() => navigate("/emptybins")}
+        sx={{ marginLeft: "9%", fontSize: "12px", marginTop: "5px" }}
+      >
+        View Empty Bins
+      </Link>
 
       <div className="flexcontainer">
         <Canvas

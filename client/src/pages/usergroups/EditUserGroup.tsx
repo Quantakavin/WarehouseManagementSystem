@@ -39,13 +39,13 @@ interface FormValues {
 const EditUserGroup: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  
+
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
     } else {
-      dispatch(ChangeTab({currenttab: "User Groups"}))
+      dispatch(ChangeTab({ currenttab: "User Groups" }));
     }
   }, []);
   const {

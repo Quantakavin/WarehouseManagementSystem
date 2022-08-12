@@ -17,7 +17,7 @@ import {
   TextField,
   Tooltip,
   Typography,
-  styled
+  styled,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -72,6 +72,7 @@ import { Toast } from "../alerts/SweetAlert";
 import ReasonModalButton from "../modals/rmaReasonModal";
 import RejectModalButton from "../modals/rmaRejectModal";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
+import CustomToolbar from "../../components/table/CustomToolbar";
 
 const RmaDisplay: React.FC = () => {
   const navigate = useNavigate();
@@ -114,9 +115,9 @@ const RmaDisplay: React.FC = () => {
   });
 
   useEffect(() => {
-    dispatch(ChangeTab({currenttab: "RMA"}))
+    dispatch(ChangeTab({ currenttab: "RMA" }));
   }, []);
-  
+
   // Get RMA details
   useEffect(() => {
     setTableLoading(true);
@@ -154,136 +155,136 @@ const RmaDisplay: React.FC = () => {
   // Accept RMA
   const acceptRMA = async () => {
     setLoading(true);
-      axios
-        .put(`${config.baseURL}/acceptRMA/${RmaID}`)
-        .then(() => {
-          Toast.fire({
-            icon: "success",
-            title: `RMA #${rma.RmaID} Accepted`,
-            customClass: "swalpopup",
-            timer: 1500,
-            width: 320,
-          });
-          navigate("/rma");
-        })
-        .catch((error) => {
-          console.log(error);
-          setLoading(false);
+    axios
+      .put(`${config.baseURL}/acceptRMA/${RmaID}`)
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: `RMA #${rma.RmaID} Accepted`,
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 320,
         });
+        navigate("/rma");
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
   };
   // Update RMA checklist
   const updateChecklist = async () => {
     setLoading(true);
-      axios
-        .put(`${config.baseURL}/updatechecklistRMA/${RmaID}`, rmabody)
-        .then(() => {
-          Toast.fire({
-            icon: "success",
-            title: `RMA #${rma.RmaID} Checklist Updated`,
-            customClass: "swalpopup",
-            timer: 1500,
-            width: 380,
-          });
-          navigate("/rma");
-        })
-        .catch((error) => {
-          console.log(error);
-          setLoading(false);
+    axios
+      .put(`${config.baseURL}/updatechecklistRMA/${RmaID}`, rmabody)
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: `RMA #${rma.RmaID} Checklist Updated`,
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 380,
         });
+        navigate("/rma");
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
   };
   // Receive RMA
   const receiveRMA = async () => {
     setCompleteLoading(true);
-      axios
-        .put(`${config.baseURL}/receiveRMA/${RmaID}`)
-        .then(() => {
-          Toast.fire({
-            icon: "success",
-            title: `RMA #${rma.RmaID} Received`,
-            customClass: "swalpopup",
-            timer: 1500,
-            width: 310,
-          });
-          navigate("/rma");
-        })
-        .catch((error) => {
-          console.log(error);
-          setCompleteLoading(false);
+    axios
+      .put(`${config.baseURL}/receiveRMA/${RmaID}`)
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: `RMA #${rma.RmaID} Received`,
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 310,
         });
+        navigate("/rma");
+      })
+      .catch((error) => {
+        console.log(error);
+        setCompleteLoading(false);
+      });
   };
   // Verify RMA
   const verifyRMA = async () => {
     setLoading(true);
-      axios
-        .put(`${config.baseURL}/verifyRMA/${RmaID}`, rmabody)
-        .then(() => {
-          Toast.fire({
-            icon: "success",
-            title: `RMA #${rma.RmaID} Products Verified`,
-            customClass: "swalpopup",
-            timer: 1500,
-            width: 370,
-          });
-          navigate("/rma");
-        })
-        .catch((error) => {
-          console.log(error);
-          Toast.fire({
-            icon: "error",
-            title: "Please enter instructions for each product!",
-            customClass: "swalpopup",
-            timer: 1500,
-            width: 480,
-          });
-          setLoading(false);
+    axios
+      .put(`${config.baseURL}/verifyRMA/${RmaID}`, rmabody)
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: `RMA #${rma.RmaID} Products Verified`,
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 370,
         });
+        navigate("/rma");
+      })
+      .catch((error) => {
+        console.log(error);
+        Toast.fire({
+          icon: "error",
+          title: "Please enter instructions for each product!",
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 480,
+        });
+        setLoading(false);
+      });
   };
   // COA RMA
   const COARMA = async () => {
     setLoading(true);
-      axios
-        .put(`${config.baseURL}/COARMA/${RmaID}`, rmabody)
-        .then(() => {
-          Toast.fire({
-            icon: "success",
-            title: `RMA #${rma.RmaID} Progress Updated`,
-            customClass: "swalpopup",
-            timer: 1500,
-            width: 380,
-          });
-          navigate("/rma");
-        })
-        .catch((error) => {
-          console.log(error);
-          Toast.fire({
-            icon: "error",
-            title: "Please update the COA for each product!",
-            customClass: "swalpopup",
-            timer: 1500,
-            width: 460,
-          });
-          setLoading(false);
+    axios
+      .put(`${config.baseURL}/COARMA/${RmaID}`, rmabody)
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: `RMA #${rma.RmaID} Progress Updated`,
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 380,
         });
+        navigate("/rma");
+      })
+      .catch((error) => {
+        console.log(error);
+        Toast.fire({
+          icon: "error",
+          title: "Please update the COA for each product!",
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 460,
+        });
+        setLoading(false);
+      });
   };
   // Close RMA
   const closeRMA = async () => {
     setCloseLoading(true);
-      axios
-        .put(`${config.baseURL}/closeRMA/${RmaID}`)
-        .then(() => {
-          Toast.fire({
-            icon: "success",
-            title: `RMA #${rma.RmaID} Closed`,
-            customClass: "swalpopup",
-            timer: 1500,
-            width: 300,
-          });
-          navigate("/rma");
-        })
-        .catch((error) => {
-          console.log(error);
-          setCloseLoading(false);
+    axios
+      .put(`${config.baseURL}/closeRMA/${RmaID}`)
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: `RMA #${rma.RmaID} Closed`,
+          customClass: "swalpopup",
+          timer: 1500,
+          width: 300,
         });
+        navigate("/rma");
+      })
+      .catch((error) => {
+        console.log(error);
+        setCloseLoading(false);
+      });
   };
 
   function buildApplyDateFilterFn(
@@ -656,24 +657,6 @@ const RmaDisplay: React.FC = () => {
     return updatedRow;
   };
 
-  const CustomToolbar = () => {
-    return (
-      <GridToolbarContainer
-        sx={{ display: "flex", flexWrap: "wrap", maxWidth: 380, p: 1 }}
-      >
-        <Box>
-          <GridToolbarQuickFilter sx={{ color: "#0A2540" }} debounceMs={1000} />
-        </Box>
-        <Box>
-          <GridToolbarColumnsButton sx={{ color: "#0A2540" }} />
-          <GridToolbarFilterButton sx={{ color: "#0A2540" }} />
-          <GridToolbarDensitySelector sx={{ color: "#0A2540" }} />
-          <GridToolbarExport sx={{ color: "#0A2540" }} />
-        </Box>
-      </GridToolbarContainer>
-    );
-  };
-
   // const columns: GridColDef[] = [
   //   { field: "id", headerName: "PK", flex: 1, editable: true },
   //   { field: "ItemCode", headerName: "Item Code", flex: 2, editable: true },
@@ -1041,27 +1024,27 @@ const RmaDisplay: React.FC = () => {
     },
   ];
 
-  const StyledGridOverlay = styled('div')(({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    '& .ant-empty-img-1': {
-      fill: theme.palette.mode === 'light' ? '#aeb8c2' : '#262626',
+  const StyledGridOverlay = styled("div")(({ theme }) => ({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+    "& .ant-empty-img-1": {
+      fill: theme.palette.mode === "light" ? "#aeb8c2" : "#262626",
     },
-    '& .ant-empty-img-2': {
-      fill: theme.palette.mode === 'light' ? '#f5f5f7' : '#595959',
+    "& .ant-empty-img-2": {
+      fill: theme.palette.mode === "light" ? "#f5f5f7" : "#595959",
     },
-    '& .ant-empty-img-3': {
-      fill: theme.palette.mode === 'light' ? '#dce0e6' : '#434343',
+    "& .ant-empty-img-3": {
+      fill: theme.palette.mode === "light" ? "#dce0e6" : "#434343",
     },
-    '& .ant-empty-img-4': {
-      fill: theme.palette.mode === 'light' ? '#fff' : '#1c1c1c',
+    "& .ant-empty-img-4": {
+      fill: theme.palette.mode === "light" ? "#fff" : "#1c1c1c",
     },
-    '& .ant-empty-img-5': {
-      fillOpacity: theme.palette.mode === 'light' ? '0.8' : '0.08',
-      fill: theme.palette.mode === 'light' ? '#f5f5f5' : '#fff',
+    "& .ant-empty-img-5": {
+      fillOpacity: theme.palette.mode === "light" ? "0.8" : "0.08",
+      fill: theme.palette.mode === "light" ? "#f5f5f5" : "#fff",
     },
   }));
 
@@ -1301,7 +1284,8 @@ const RmaDisplay: React.FC = () => {
                 components={{
                   LoadingOverlay: LinearProgress,
                   Toolbar: CustomToolbar,
-                  NoRowsOverlay: CustomNoRowsOverlay
+                  NoRowsOverlay: CustomNoRowsOverlay,
+                  NoResultsOverlay: CustomNoRowsOverlay,
                 }}
                 filterModel={filterModel}
                 onFilterModelChange={(newFilterModel) =>
@@ -1579,7 +1563,8 @@ const RmaDisplay: React.FC = () => {
                 components={{
                   LoadingOverlay: LinearProgress,
                   Toolbar: CustomToolbar,
-                  NoRowsOverlay: CustomNoRowsOverlay
+                  NoRowsOverlay: CustomNoRowsOverlay,
+                  NoResultsOverlay: CustomNoRowsOverlay,
                 }}
                 filterModel={filterModel}
                 onFilterModelChange={(newFilterModel) =>
@@ -2014,7 +1999,8 @@ const RmaDisplay: React.FC = () => {
               components={{
                 LoadingOverlay: LinearProgress,
                 Toolbar: CustomToolbar,
-                NoRowsOverlay: CustomNoRowsOverlay
+                NoRowsOverlay: CustomNoRowsOverlay,
+                NoResultsOverlay: CustomNoRowsOverlay,
               }}
               filterModel={filterModel}
               onFilterModelChange={(newFilterModel) =>
@@ -2191,7 +2177,8 @@ const RmaDisplay: React.FC = () => {
               components={{
                 LoadingOverlay: LinearProgress,
                 Toolbar: CustomToolbar,
-                NoRowsOverlay: CustomNoRowsOverlay
+                NoRowsOverlay: CustomNoRowsOverlay,
+                NoResultsOverlay: CustomNoRowsOverlay,
               }}
               filterModel={filterModel}
               onFilterModelChange={(newFilterModel) =>
@@ -2352,7 +2339,8 @@ const RmaDisplay: React.FC = () => {
               components={{
                 LoadingOverlay: LinearProgress,
                 Toolbar: CustomToolbar,
-                NoRowsOverlay: CustomNoRowsOverlay
+                NoRowsOverlay: CustomNoRowsOverlay,
+                NoResultsOverlay: CustomNoRowsOverlay,
               }}
               filterModel={filterModel}
               onFilterModelChange={(newFilterModel) =>

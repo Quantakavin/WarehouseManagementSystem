@@ -54,13 +54,13 @@ const EditUser: React.FC = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
-  
+
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
     } else {
-      dispatch(ChangeTab({currenttab: "Users"}))
+      dispatch(ChangeTab({ currenttab: "Users" }));
     }
   }, []);
   const [companyOptions, setCompanyOptions] = useState<Option[]>([]);
@@ -511,7 +511,6 @@ const EditUser: React.FC = () => {
           )}
         </FormContainer>
       </motion.div>
-
     </>
   );
 };
