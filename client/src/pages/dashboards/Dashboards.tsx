@@ -1,14 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Grid } from "@mui/material";
 import Cards from "../../components/cards/Cards";
 import BarAndPieCharts from "../../components/charts/BarAndPieCharts";
 import LineCharts from "../../components/charts/LineCharts";
 import "../../styles/Dashboard.scss";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 
 const Dashboards = () => {
   // implement switch case
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(ChangeTab({currenttab: "Dashboard"}))
+  }, []);
 
   const userrole = useAppSelector(selectRole);
 

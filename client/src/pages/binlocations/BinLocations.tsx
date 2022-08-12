@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import * as THREE from "three";
@@ -12,6 +12,8 @@ import { useQuery } from "react-query";
 import { GetBinsByBrand, GetBrandNames } from "../../api/BinLocationDB";
 import { Link } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../app/hooks";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 
 const Floor = () => {
   const colorMap = useLoader(THREE.TextureLoader, "Concrete030_4K_Color.png");
@@ -687,6 +689,12 @@ const BinLocations = () => {
   const [selectedBinTags, setSelectedBinTags] = useState<string[]>(null);
   const debouncedValue = useDebounce<string>(inputName, 500);
   const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(ChangeTab({currenttab: "Bin Locations"}))
+  }, []);
 
   useQuery(
     [`brandnames`, debouncedValue],

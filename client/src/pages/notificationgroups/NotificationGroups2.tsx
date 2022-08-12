@@ -18,18 +18,23 @@ import {
   DeleteNotificationGroup,
   GetNotificationGroups,
 } from "../../api/NotificationGroupDB";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import Popup from "../../components/alerts/Popup";
 import { Toast } from "../../components/alerts/SweetAlert";
 import CustomToolbar from "../../components/table/CustomToolbar";
 
 const NotificationGroups2: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
+    } else {
+      dispatch(ChangeTab({currenttab: "Notification Groups"}))
     }
   }, []);
   const [pageSize, setPageSize] = React.useState(25);

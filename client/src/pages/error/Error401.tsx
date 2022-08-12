@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, Card, CardContent, Grid, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  ChangeTab,
+  selectCurrentTab,
+  selectOpen,
+} from "../../app/reducers/SidebarSlice";
 
 const Error401 = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(ChangeTab({currenttab: "null"}))
+  }, []);
 
   return (
     <Grid container sx={{ height: "100%", width: 1, p: 3, pb: 0 }}>

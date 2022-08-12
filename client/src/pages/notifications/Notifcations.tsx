@@ -1,15 +1,23 @@
 import { Box, Switch, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import Shield from "@mui/icons-material/Shield";
 import { useQuery } from "react-query";
 import { GetNotifications } from "../../api/NotificationDB";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectId } from "../../app/reducers/CurrentUserSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import Notification from "../../components/notifications/Notification";
 
 const Notifications: React.FC = () => {
   const userID = useAppSelector(selectId);
   const [seeAll, setSeeAll] = useState<boolean>(false);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(ChangeTab({currenttab: "null"}))
+  }, []);
+
 
   const NotificationsQuery = useQuery(
     [`notifications`, userID.toString()],

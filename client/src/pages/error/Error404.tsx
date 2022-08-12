@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Button,
@@ -9,9 +9,18 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
+import { useAppDispatch } from "../../app/hooks";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 
 const Error404 = () => {
   const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(ChangeTab({currenttab: "null"}))
+  }, []);
+
 
   return (
     <Grid container sx={{height: "100%", width: 1, p: 3, pb: 0}}>

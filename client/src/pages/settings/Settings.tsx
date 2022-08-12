@@ -41,6 +41,7 @@ import Popup from "../../components/alerts/Popup";
 import { Toast } from "../../components/alerts/SweetAlert";
 import config from "../../config/config";
 import useWindowSize from "../../hooks/useWindowSize";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 
 const style = {
   position: "absolute" as "absolute",
@@ -68,6 +69,7 @@ const Settings: React.FC = () => {
   const [enabledTele, setEnabledTele] = useState(false);
   useEffect(() => {
     setEnabledTele(currentTeleID !== null);
+    dispatch(ChangeTab({currenttab: "Null"}))
   }, []);
   const [showEnableConfirmation, setShowEnableConfirmation] =
     useState<boolean>(false);

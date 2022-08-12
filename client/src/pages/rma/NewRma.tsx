@@ -54,12 +54,13 @@ import { motion, useAnimation } from "framer-motion";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   selectId,
   selectPermissions,
   selectRole,
 } from "../../app/reducers/CurrentUserSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import config from "../../config/config";
 
@@ -84,6 +85,7 @@ const CreateRMA: React.FC = () => {
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
+  const dispatch = useAppDispatch();
   const phoneRegex =
     /^[6|8|9]\d{7}|\+65\s?[6|8|9]\d{7}|\(\+?65\)\s?[6|8|9]\d{7}$/i;
   const emailRegex = /^\S+@\S+\.\S+$/i;
@@ -101,6 +103,8 @@ const CreateRMA: React.FC = () => {
   useEffect(() => {
     if (!permissions.some((e) => e.FeatureName === "RMA Application")) {
       navigate("/403");
+    } else {
+      dispatch(ChangeTab({currenttab: "RMA"}))
     }
   }, []);
 

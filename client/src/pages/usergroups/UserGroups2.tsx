@@ -15,8 +15,9 @@ import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router";
 import { DeleteUserGroup, GetUserGroups } from "../../api/UserGroupDB";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import Popup from "../../components/alerts/Popup";
 import { Toast } from "../../components/alerts/SweetAlert";
 import CustomToolbar from "../../components/table/CustomToolbar";
@@ -24,16 +25,20 @@ import CustomToolbar from "../../components/table/CustomToolbar";
 const UserGroups2: React.FC = () => {
   const navigate = useNavigate();
   const [pageSize, setPageSize] = React.useState(25);
-  const userrole = useAppSelector(selectRole);
+  // const userrole = useAppSelector(selectRole);
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const [showError, setShowError] = useState<boolean>(false);
   const [idToDelete, setIdToDelete] = useState<string>(null);
   const queryClient = useQueryClient();
+  const dispatch = useAppDispatch();
 
   const mutation = useMutation(DeleteUserGroup);
+  const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
+    } else {
+      dispatch(ChangeTab({currenttab: "User Groups"}))
     }
   }, []);
   // const [hoveredRow, setHoveredRow] = React.useState(null);

@@ -1,9 +1,11 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Chip, Container, Divider } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { GetProfile } from "../../api/UserDB";
+import { useAppDispatch } from "../../app/hooks";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
 
 const Profile: React.FC = () => {
@@ -13,6 +15,12 @@ const Profile: React.FC = () => {
     [`user${localStorage.getItem("user_id")}`, localStorage.getItem("user_id")],
     () => GetProfile(localStorage.getItem("user_id"))
   );
+
+  const dispatch = useAppDispatch();
+  
+  useEffect(() => {
+    dispatch(ChangeTab({currenttab: "Null"}))
+  }, []);
 
   if (UserQuery.isLoading || UserQuery.isError) {
     return <CardSkeleton NoOfFields={4} />;

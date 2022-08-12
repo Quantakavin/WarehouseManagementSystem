@@ -15,8 +15,9 @@ import { motion } from "framer-motion";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useCart } from "react-use-cart";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import { EditableContext } from "../../components/context/IsEditableContext";
 import config from "../../config/config";
 
@@ -26,9 +27,16 @@ const Products: React.FC = () => {
   const navigate = useNavigate();
   const [pageSize, setPageSize] = React.useState(25);
   const { totalItems, addItem } = useCart();
-  const context = useContext(EditableContext);
+  const context: any = useContext(EditableContext);
   const [loading, setLoading] = useState(false);
   const { isEditable, setIsEditable, TLoanIDGlobal } = context;
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(ChangeTab({currenttab: "Products"}))
+  }, []);
+
 
   useEffect(() => {
     setLoading(true)

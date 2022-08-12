@@ -15,18 +15,23 @@ import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router";
 import { DeleteUser, GetAllUsers } from "../../api/UserDB";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import Popup from "../../components/alerts/Popup";
 import { Toast } from "../../components/alerts/SweetAlert";
 import CustomToolbar from "../../components/table/CustomToolbar";
 
 const Users2: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
+    } else {
+      dispatch(ChangeTab({currenttab: "Users"}))
     }
   }, []);
 
