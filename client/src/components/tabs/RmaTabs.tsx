@@ -131,7 +131,7 @@ const Rmatabs: React.FC = () => {
       fetchAllInProgressData();
       fetchClosedData();
       setTableLoading(false);
-    }, 500);
+    }, 1000);
   }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
