@@ -202,7 +202,9 @@ const TLoanDisplay = () => {
                 width: 700,
               });
               console.log(results);
-              window.location.reload();
+              setTimeout(function(){
+                window.location.reload();
+             }, 2500);
             });
         } catch (error) {
           console.log(error.response);
