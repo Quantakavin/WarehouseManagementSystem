@@ -78,7 +78,7 @@ const UserGroups2: React.FC = () => {
       };
       fetchUserGroupssData();
       setLoading(false);
-    }, 250);
+    }, 500);
   }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({

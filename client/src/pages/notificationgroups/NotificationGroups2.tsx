@@ -75,7 +75,7 @@ const NotificationGroups2: React.FC = () => {
       };
       fetchNotificationGroupsData();
       setLoading(false);
-    }, 250);
+    }, 500);
   }, []);
 
   const SelectDelete = (id: string) => {

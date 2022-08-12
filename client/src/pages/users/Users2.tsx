@@ -81,7 +81,7 @@ const Users2: React.FC = () => {
       };
       fetchUsersData();
       setLoading(false);
-    }, 250);
+    }, 500);
   }, []);
 
   const SelectDelete = (id: string) => {
