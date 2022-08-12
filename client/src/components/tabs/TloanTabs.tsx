@@ -56,6 +56,8 @@ const TLoanTabs: React.FC = () => {
   const [currentTable, setCurrentTable] = useState([]);
   const [pendingTable, setPendingTable] = useState([]);
   const [draftTable, setDraftTable] = useState([]);
+  const [pickingTable, setPickingTable] = useState([]);
+  const [readyTable, setReadyTable] = useState([]);
   const [historyTable, setHistoryTable] = useState([]);
   const [managerLoan, setManagerLoan] = useState([]);
   const [extensionsTable, setExtensionTable] = useState([]);
@@ -117,7 +119,7 @@ const TLoanTabs: React.FC = () => {
     const fetchApprovedData = async () => {
       // get the data from the api
       await axios
-        .get(`${config.baseURL}/tloan/approvedLoans`)
+        .get(`${config.baseURL}/tloan/approvedloans`)
         .then((approvedData) => setApprovedTable(approvedData.data));
       // setRma(Object.e)
     };
@@ -132,7 +134,21 @@ const TLoanTabs: React.FC = () => {
       // get the data from the api
       await axios
         .get(`${config.baseURL}/tloan/allHistory`)
-        .then((allDraftsData) => setAllHistory(allDraftsData.data));
+        .then((allHistoryData) => setAllHistory(allHistoryData.data));
+      // setRma(Object.e)
+    };
+    const fetchPickingData = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/pickingloans`)
+        .then((pickingData) => setPickingTable(pickingData.data));
+      // setRma(Object.e)
+    };
+    const fetchReadyData = async () => {
+      // get the data from the api
+      await axios
+        .get(`${config.baseURL}/tloan/readyloans`)
+        .then((readyData) => setReadyTable(readyData.data));
       // setRma(Object.e)
     };
     fetchCurrentData();
@@ -144,6 +160,8 @@ const TLoanTabs: React.FC = () => {
     fetchApprovedData();
     fetchAllCurrent();
     fetchAllHistory();
+    fetchReadyData();
+    fetchPickingData();
     setTableLoading(false);
   }, []);
 
@@ -1054,6 +1072,30 @@ const TLoanTabs: React.FC = () => {
                       width: "15%",
                     }}
                   />
+                  <Tab
+                    label="Picking"
+                    value="2"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
+                  <Tab
+                    label="Ready"
+                    value="3"
+                    sx={{
+                      color: "grey",
+                      backgroundColor: "White",
+                      borderRadius: 2,
+                      marginRight: 2,
+                      height: "100%",
+                      width: "15%",
+                    }}
+                  />
                 </Tabs>
               </Box>
             </Grid>
@@ -1074,6 +1116,58 @@ const TLoanTabs: React.FC = () => {
                       Toolbar: CustomToolbar,
                       NoRowsOverlay: CustomNoRowsOverlay,
                       NoResultsOverlay: CustomNoRowsOverlay,
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
+                  />
+                </div>
+              </TabPanel>
+              <TabPanel value="2">
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    loading={tableLoading}
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={pickingTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      LoadingOverlay: LinearProgress,
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: CustomNoRowsOverlay,
+                    }}
+                    filterModel={filterModel}
+                    onFilterModelChange={(newFilterModel) =>
+                      setFilterModel(newFilterModel)
+                    }
+                    onRowClick={(params: GridRowParams) => {
+                      navigate(`/tloandetails/${params.id}`);
+                    }}
+                  />
+                </div>
+              </TabPanel>
+              <TabPanel value="3">
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    loading={tableLoading}
+                    sx={{ background: "white", fontSize: 18 }}
+                    rows={readyTable}
+                    columns={columns}
+                    getRowId={(row) => row.TLoanID}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPage) => setPageSize(newPage)}
+                    pagination
+                    components={{
+                      LoadingOverlay: LinearProgress,
+                      Toolbar: CustomToolbar,
+                      NoRowsOverlay: CustomNoRowsOverlay,
                     }}
                     filterModel={filterModel}
                     onFilterModelChange={(newFilterModel) =>

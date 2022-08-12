@@ -27,6 +27,8 @@ router.post('/tloan/extension', validation.validateExtensionRequest, TLoanContro
 router.get('/tloanid/:TLoanID', TLoanController.getIDofLoan);
 router.get('/tloanstatusid/:TLoanID', TLoanController.tloanStatusID);
 router.get('/tloan/approvedloans', TLoanController.getApprovedLoan);
+router.get('/tloan/pickingloans', TLoanController.getPickingLoan);
+router.get('/tloan/readyloans', TLoanController.getReadyLoan);
 router.put('/tloan/submitEditedDraft/:TLoanID', TLoanController.SubmitAfterEdit);
 router.put(
     '/tloan/draftEditedDraft/:TLoanID',
