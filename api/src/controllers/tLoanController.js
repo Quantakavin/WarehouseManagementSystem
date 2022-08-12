@@ -681,6 +681,46 @@ module.exports.getApprovedLoan = async (req, res) => {
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
+module.exports.getPickingLoan = async (req, res) => {
+    try {
+        const TLoans = await redisClient.get('PickingLoan');
+        if (TLoans !== null) {
+            const redisresults = JSON.parse(TLoans);
+            return res.status(200).json(redisresults);
+        }
+        const results = await TLoan.getPicking();
+        if (results.length > 0) {
+            redisClient.set('PickingLoan', JSON.stringify(results[0]), {
+                EX: 60 * 5
+            });
+            return res.status(200).json(results[0]);
+        }
+        return res.status(404).json({ message: 'No approved Loans available' });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+module.exports.getReadyLoan = async (req, res) => {
+    try {
+        const TLoans = await redisClient.get('ReadyLoan');
+        if (TLoans !== null) {
+            const redisresults = JSON.parse(TLoans);
+            return res.status(200).json(redisresults);
+        }
+        const results = await TLoan.getReady();
+        if (results.length > 0) {
+            redisClient.set('ReadyLoan', JSON.stringify(results[0]), {
+                EX: 60 * 5
+            });
+            return res.status(200).json(results[0]);
+        }
+        return res.status(404).json({ message: 'No approved Loans available' });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
 
 module.exports.tloanStatusID = async (req, res) => {
     const { TLoanID } = req.params;
@@ -755,6 +795,8 @@ module.exports.updateStatus = async (req, res) => {
         const results = await TLoan.updateStatus(TLoanID, statusChange);
         if (results) {
             redisClient.del('ApprovedLoan');
+            redisClient.del('PickingLoan');
+            redisClient.del('ReadyLoan');
             redisClient.del(`TLoanItems#${TLoanID}`);
             redisClient.del(`TLoan#${TLoanID}`);
             redisClient.del(`TLoanIDs#${TLoanID}`);

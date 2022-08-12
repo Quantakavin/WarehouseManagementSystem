@@ -490,7 +490,37 @@ module.exports.getApproved = async () => {
     count(t.TLoanID) OVER() AS full_count
     FROM TLoan t LEFT JOIN Company c
     ON t.CompanyName = c.CompanyID 
-    WHERE t.TLoanStatusID IN (3,5,6)
+    WHERE t.TLoanStatusID = 3
+ `;
+    return knex.raw(query);
+};
+
+module.exports.getPicking = async () => {
+    const query = `   SELECT
+    t.TLoanID,
+    DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
+    DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
+    COALESCE (c.CompanyName, t.CompanyName) AS 'CompanyName',
+    t.CustomerEmail,
+    count(t.TLoanID) OVER() AS full_count
+    FROM TLoan t LEFT JOIN Company c
+    ON t.CompanyName = c.CompanyID 
+    WHERE t.TLoanStatusID = 5
+ `;
+    return knex.raw(query);
+};
+
+module.exports.getReady = async () => {
+    const query = `   SELECT
+    t.TLoanID,
+    DATE_FORMAT(t.RequiredDate, "%d-%m-%Y") AS 'StartDate',
+    DATE_FORMAT(DATE_ADD(t.RequiredDate, INTERVAL t.duration DAY), "%d-%m-%Y") AS "EndDate",
+    COALESCE (c.CompanyName, t.CompanyName) AS 'CompanyName',
+    t.CustomerEmail,
+    count(t.TLoanID) OVER() AS full_count
+    FROM TLoan t LEFT JOIN Company c
+    ON t.CompanyName = c.CompanyID 
+    WHERE t.TLoanStatusID = 6
  `;
     return knex.raw(query);
 };
