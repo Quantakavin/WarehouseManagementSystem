@@ -22,6 +22,7 @@ import {
   SortAsc,
   SortDesc,
 } from "../../app/reducers/NotiGroupTableFilterSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import Popup from "../../components/alerts/Popup";
 import { Toast } from "../../components/alerts/SweetAlert";
 import SearchBarUpdated from "../../components/search/SearchBar";
@@ -30,15 +31,19 @@ import useDebounce from "../../hooks/useDebounce";
 
 const NotificationGroups: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
+    } else {
+      dispatch(ChangeTab({currenttab: "Notification Groups"}))
     }
   }, []);
   const sortColumn = useAppSelector(selectSortColumn);
   const sortOrder = useAppSelector(selectSortOrder);
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const [searchOptions, setSearchOptions] = useState<string[]>([]);
   const [inputName, setInputName] = useState<string>(null);
   const [searchName, setSearchName] = useState<string>("");

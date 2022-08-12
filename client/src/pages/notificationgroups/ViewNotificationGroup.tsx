@@ -6,8 +6,9 @@ import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetNotificationGroup } from "../../api/NotificationGroupDB";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import GeneralButton from "../../components/buttons/GeneralButton";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
 import DataTable from "../../components/table/DataTable";
@@ -15,10 +16,14 @@ import DataTable from "../../components/table/DataTable";
 const ViewNotificationGroup: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
+    } else {
+      dispatch(ChangeTab({currenttab: "Notification Groups"}))
     }
   }, []);
   const [notiFeatures, setNotiFeatures] = useState<any[]>([]);

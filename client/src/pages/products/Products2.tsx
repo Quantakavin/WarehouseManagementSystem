@@ -12,6 +12,8 @@ import {
 } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { useAppDispatch } from "../../app/hooks";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 
 const Products2: React.FC = () => {
   const [row, setRow] = useState([]);
@@ -22,6 +24,12 @@ const Products2: React.FC = () => {
     fetch(`http://localhost:5000/api/products?limit=100000&page=0`)
       .then((data) => data.json())
       .then((data) => setRow(data));
+  }, []);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(ChangeTab({currenttab: "Products"}))
   }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({

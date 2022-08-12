@@ -11,8 +11,9 @@ import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "react-use-cart";
 import { GetProduct } from "../../api/ProductDB";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectPermissions } from "../../app/reducers/CurrentUserSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import CardContainer from "../../components/cards/CardContainer";
 import CardField from "../../components/cards/CardField";
@@ -66,6 +67,12 @@ const ViewProduct: React.FC = () => {
     );
     setNewProducts(newProduct);
   }, [productGet]);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(ChangeTab({currenttab: "Products"}))
+  }, []);
 
   console.log(newProducts);
 
