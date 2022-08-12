@@ -60,20 +60,22 @@ const NotificationGroups2: React.FC = () => {
   // const [hoveredRow, setHoveredRow] = React.useState(null);
   useEffect(() => {
     setLoading(true);
-    // declare the async data fetching function
-    const fetchNotificationGroupsData = async () => {
-      await axios
-        .get(`${config.baseURL}/notificationgroups`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then((notificationgroupsData) =>
-          setNotificationGroups(notificationgroupsData.data)
-        );
-    };
-    fetchNotificationGroupsData();
-    setLoading(false);
+    setTimeout(() => {
+      // declare the async data fetching function
+      const fetchNotificationGroupsData = async () => {
+        await axios
+          .get(`${config.baseURL}/notificationgroups`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then((notificationgroupsData) =>
+            setNotificationGroups(notificationgroupsData.data)
+          );
+      };
+      fetchNotificationGroupsData();
+      setLoading(false);
+    }, 250);
   }, []);
 
   const SelectDelete = (id: string) => {
