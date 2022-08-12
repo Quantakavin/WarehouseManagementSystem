@@ -61,7 +61,7 @@ import locale from "date-fns/locale/en-US";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { useAppSelector } from "../../app/hooks";
+import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import {
   selectPermissions,
   selectRole,
@@ -71,6 +71,7 @@ import { RMA } from "../../utils/CommonTypes";
 import { Toast } from "../alerts/SweetAlert";
 import ReasonModalButton from "../modals/rmaReasonModal";
 import RejectModalButton from "../modals/rmaRejectModal";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 
 const RmaDisplay: React.FC = () => {
   const navigate = useNavigate();
@@ -84,6 +85,7 @@ const RmaDisplay: React.FC = () => {
   const [completeLoading, setCompleteLoading] = useState(false);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const { RmaID } = useParams();
+  const dispatch = useAppDispatch();
   const ApprovalPerms = permissions.some(
     (e) => e.FeatureName === "RMA Approval"
   );
@@ -110,6 +112,11 @@ const RmaDisplay: React.FC = () => {
       },
     ],
   });
+
+  useEffect(() => {
+    dispatch(ChangeTab({currenttab: "RMA"}))
+  }, []);
+  
   // Get RMA details
   useEffect(() => {
     setTableLoading(true);

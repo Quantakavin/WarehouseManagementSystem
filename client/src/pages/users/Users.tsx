@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { DeleteUser, FilterUsers, GetUsernames } from "../../api/UserDB";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import {
   ChangeSortColumn,
   selectSortColumn,
@@ -28,10 +29,14 @@ const Users: React.FC = () => {
   const sortColumn = useAppSelector(selectSortColumn);
   const sortOrder = useAppSelector(selectSortOrder);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
+    } else {
+      dispatch(ChangeTab({currenttab: "Notification Groups"}))
     }
   }, []);
   const [searchOptions, setSearchOptions] = useState<string[]>([]);
@@ -44,9 +49,6 @@ const Users: React.FC = () => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation(DeleteUser);
-
-  const dispatch = useAppDispatch();
-
   const handleSearch = (stringtosearch: string) => {
     if (inputName === "") {
       setSearchName("");

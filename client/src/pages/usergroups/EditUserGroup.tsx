@@ -11,8 +11,9 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetFeatureRights, GetFeatures } from "../../api/FeatureDB";
 import { GetUserGroup, UpdateUserGroup } from "../../api/UserGroupDB";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import GeneralButton from "../../components/buttons/GeneralButton";
 import ErrorAlert from "../../components/form/ErrorAlert";
@@ -37,10 +38,14 @@ interface FormValues {
 
 const EditUserGroup: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
+    } else {
+      dispatch(ChangeTab({currenttab: "User Groups"}))
     }
   }, []);
   const {

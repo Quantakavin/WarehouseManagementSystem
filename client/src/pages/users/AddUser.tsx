@@ -12,8 +12,9 @@ import { GetCompanies } from "../../api/CompanyDB";
 import { GetNotificationGroups } from "../../api/NotificationGroupDB";
 import { PostUser } from "../../api/UserDB";
 import { GetUserGroups } from "../../api/UserGroupDB";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import { Toast } from "../../components/alerts/SweetAlert";
 import GeneralButton from "../../components/buttons/GeneralButton";
 import SubmitButton from "../../components/buttons/SubmitButton";
@@ -44,10 +45,14 @@ interface FormValues {
 
 const AddUser: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
+    } else {
+      dispatch(ChangeTab({currenttab: "Users"}))
     }
   }, []);
   const [companyOptions, setCompanyOptions] = useState<Option[]>([]);

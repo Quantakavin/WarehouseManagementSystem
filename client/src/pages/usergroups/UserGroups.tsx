@@ -20,6 +20,7 @@ import {
 } from "../../api/UserGroupDB";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import {
   ChangeSortColumn,
   selectSortColumn,
@@ -38,10 +39,13 @@ const UserGroups: React.FC = () => {
   const sortOrder = useAppSelector(selectSortOrder);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
+    } else {
+      dispatch(ChangeTab({currenttab: "User Groups"}))
     }
   }, []);
   const [searchOptions, setSearchOptions] = useState<string[]>([]);

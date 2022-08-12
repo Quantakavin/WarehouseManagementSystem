@@ -6,8 +6,9 @@ import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetUserGroup } from "../../api/UserGroupDB";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import GeneralButton from "../../components/buttons/GeneralButton";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
 import DataTable from "../../components/table/DataTable";
@@ -16,9 +17,12 @@ const ViewUserGroup: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
   const userrole = useAppSelector(selectRole);
+  const dispatch = useAppDispatch();
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
+    } else {
+      dispatch(ChangeTab({currenttab: "User Groups"}))
     }
   }, []);
   const [features, setFeatures] = useState<any[]>([]);

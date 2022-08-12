@@ -4,18 +4,23 @@ import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetUser } from "../../api/UserDB";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import GeneralButton from "../../components/buttons/GeneralButton";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
 
 const ViewUser: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  
   const userrole = useAppSelector(selectRole);
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
+    } else {
+      dispatch(ChangeTab({currenttab: "Users"}))
     }
   }, []);
 

@@ -27,7 +27,7 @@ const Products: React.FC = () => {
   const navigate = useNavigate();
   const [pageSize, setPageSize] = React.useState(25);
   const { totalItems, addItem } = useCart();
-  const context = useContext(EditableContext);
+  const context: any = useContext(EditableContext);
   const [loading, setLoading] = useState(false);
   const { isEditable, setIsEditable, TLoanIDGlobal } = context;
 
