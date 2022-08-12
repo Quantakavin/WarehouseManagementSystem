@@ -58,7 +58,7 @@ const TLoanRejectModalButton = () => {
             .then(() => {
               Toast.fire({
                 icon: "success",
-                title: `TLoan Extension For TLoan #${TLoanID} Has Been Rejected`,
+                title: `Extension For TLoan #${TLoanID} Has Been Rejected`,
                 customClass: "swalpopup",
                 timer: 2000,
                 width: 700,
