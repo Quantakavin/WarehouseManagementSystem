@@ -125,7 +125,7 @@ const ModalButton = () => {
           .then(() => {
             Toast.fire({
               icon: "success",
-              title: "TLoan Extension Successfully Applied",
+              title: `TLoan Extension For TLoan `  + `#${TLoanID} Has Been Successfully Applied`,
               customClass: "swalpopup",
               timer: 1500,
               width: 700,

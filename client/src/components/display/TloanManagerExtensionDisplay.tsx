@@ -26,7 +26,7 @@ const TLoanManagerDisplay = () => {
   const { TLoanID } = useParams();
   console.log(TLoanID);
   useEffect(() => {
-    setLoading(true);
+    setTableLoading(true);
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
@@ -48,7 +48,7 @@ const TLoanManagerDisplay = () => {
   }, []);
 
   useEffect(() => {
-    setLoading(true);
+    setTableLoading(true);
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
