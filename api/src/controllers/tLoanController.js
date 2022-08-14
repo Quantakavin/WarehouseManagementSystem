@@ -788,9 +788,18 @@ module.exports.updateStatus = async (req, res) => {
     const { statusChange } = req.body;
     try {
         const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
-        const UserID = gettingInfo[0][0].UserID.toString();
+        const {UserID} = gettingInfo[0][0]
         const results = await TLoan.updateStatus(TLoanID, statusChange);
-        if (results.length > 0) {
+        console.log(statusChange)
+        if (results) {
+           if(statusChange === '5'){
+            createNotification(21, UserID, TLoanID);
+           }else if(statusChange === '6'){
+            createNotification(22, UserID, TLoanID);
+           }else if(statusChange === '7'){
+            createNotification(23, UserID, TLoanID);
+           }
+            
             redisClient.del('ApprovedLoan');
             redisClient.del('PickingLoan');
             redisClient.del('ReadyLoan');
