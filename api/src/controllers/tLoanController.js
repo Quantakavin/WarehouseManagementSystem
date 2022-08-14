@@ -424,8 +424,9 @@ module.exports.approveLoan = async (req, res) => {
         const username = gettingInfo[0][0].Username;
         const { UserID } = gettingInfo[0][0];
         const telegramid = gettingInfo[0][0].TelegramID;
-        const results = await TLoan.approveLoan(TLoanID);
+        const results = await TLoan.getLoanByNumber(TLoanID)
         if (results.length > 0) {
+            await TLoan.approveLoan(TLoanID);
             if (telegramid !== null) {
                 tloanAcceptedTele(telegramid, username, TLoanID);
             }
@@ -461,8 +462,9 @@ module.exports.rejectLoan = async (req, res) => {
         const username = gettingInfo[0][0].Username;
         const { UserID } = gettingInfo[0][0];
         const telegramid = gettingInfo[0][0].TelegramID;
-        const results = await TLoan.getLoanByNumber(TLoanID);
+        const results = await TLoan.getLoanByNumber(TLoanID)
         if (results.length > 0) {
+            await TLoan.rejectLoan(TLoanID, remarks);
             if (telegramid !== null) {
                 tloanRejectedTele(telegramid, username, TLoanID, remarks);
             }
@@ -479,7 +481,6 @@ module.exports.rejectLoan = async (req, res) => {
             redisClient.del(`PendingTLoan#${UserID}`);
             redisClient.del(`DraftTLoan#${UserID}`);
             redisClient.del(`HistoryTLoan#${UserID}`);
-            await TLoan.rejectLoan(TLoanID, remarks);
             return res.status(200).json({ message: 'Status has been Updated' });
         }
         return res.status(500).json({ message: 'Internal Server Error!' });
@@ -497,8 +498,9 @@ module.exports.approveExtension = async (req, res) => {
         const username = gettingInfo[0][0].Username;
         const { UserID } = gettingInfo[0][0];
         const telegramid = gettingInfo[0][0].TelegramID;
-        const results = await TLoan.approveExtension(TLoanID);
+        const results = await TLoan.getLoanByNumber(TLoanID);
         if (results.length > 0) {
+            await TLoan.approveExtension(TLoanID);
             if (telegramid !== null) {
                 tloanExtensionAcceptedTele(telegramid, username, TLoanID);
             }
@@ -535,6 +537,7 @@ module.exports.rejectExtension = async (req, res) => {
         const telegramid = gettingInfo[0][0].TelegramID;
         const results = await TLoan.getLoanByNumber(TLoanID);
         if (results.length > 0) {
+            await TLoan.rejectExtension(TLoanID, remarks);
             if (telegramid !== null) {
                 tloanExtensionRejectedTele(telegramid, username, TLoanID, remarks);
             }
@@ -551,7 +554,6 @@ module.exports.rejectExtension = async (req, res) => {
             redisClient.del(`PendingTLoan#${UserID}`);
             redisClient.del(`DraftTLoan#${UserID}`);
             redisClient.del(`HistoryTLoan#${UserID}`);
-            await TLoan.rejectExtension(TLoanID, remarks);
             return res.status(200).json({ message: 'Status has been Updated' });
         }
         return res.status(400).json({ message: 'Status failed to Update' });
