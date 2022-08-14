@@ -68,7 +68,6 @@ const Users2: React.FC = () => {
   // const UsersQuery = useQuery(`users`, GetAllUsers);
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
       // declare the async data fetching function
       const fetchUsersData = async () => {
         await axios
@@ -81,7 +80,6 @@ const Users2: React.FC = () => {
       };
       fetchUsersData();
       setLoading(false);
-    }, 1000);
   }, []);
 
   const SelectDelete = (id: string) => {

@@ -36,20 +36,6 @@ import { useAppDispatch } from "../../app/hooks";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import CustomToolbar from "../table/CustomToolbar";
 
-const columns = [
-  { field: "TLoanID", headerName: "Loan No.", flex: 4 },
-  { field: "StartDate", headerName: "Start Date", flex: 1 },
-  { field: "EndDate", headerName: "End Date", flex: 4 },
-  { field: "CompanyName", headerName: "Company Name", flex: 3 },
-  { field: "CustomerEmail", headerName: "Customer Email", flex: 3 },
-];
-
-const managerColumns = [
-  { field: "TLoanID", headerName: "Loan No.", flex: 2.5 },
-  { field: "StartDate", headerName: "Start Date", flex: 1 },
-  { field: "Requestor", headerName: "Employee Name", flex: 3 },
-  { field: "TLoanType", headerName: "Loan Type", flex: 3 },
-];
 const TLoanTabs: React.FC = () => {
   const userid = useAppSelector(selectId);
   const userrole = useAppSelector(selectRole);
@@ -74,7 +60,6 @@ const TLoanTabs: React.FC = () => {
   });
   useEffect(() => {
     setTableLoading(true);
-    setTimeout(() => {
       const fetchCurrentData = async () => {
         // get the data from the api
         await axios
@@ -164,7 +149,6 @@ const TLoanTabs: React.FC = () => {
       fetchReadyData();
       fetchPickingData();
       setTableLoading(false);
-    }, 1000);
   }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
@@ -252,6 +236,21 @@ const TLoanTabs: React.FC = () => {
   const [pageSize, setPageSize] = React.useState(25);
 
   const [value, setValue] = useState(); // first tab
+
+  const columns = [
+    { field: "TLoanID", headerName: "Loan No.", flex: 4 },
+    { field: "StartDate", headerName: "Start Date", flex: 1 },
+    { field: "EndDate", headerName: "End Date", flex: 4 },
+    { field: "CompanyName", headerName: "Company Name", flex: 3 },
+    { field: "CustomerEmail", headerName: "Customer Email", flex: 3 },
+  ];
+
+  const managerColumns = [
+    { field: "TLoanID", headerName: "Loan No.", flex: 2.5 },
+    { field: "StartDate", headerName: "Start Date", flex: 1 },
+    { field: "Requestor", headerName: "Employee Name", flex: 3 },
+    { field: "TLoanType", headerName: "Loan Type", flex: 3 },
+  ];
 
   const handleChange = (_event, newValue) => {
     setValue(newValue);

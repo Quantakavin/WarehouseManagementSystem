@@ -59,7 +59,6 @@ const Rmatabs: React.FC = () => {
   //Retrieving RMA request data for each table
   useEffect(() => {
     setTableLoading(true);
-    setTimeout(() => {
       // declare the async data fetching function
       const fetchPendingData = async () => {
         await axios
@@ -131,7 +130,6 @@ const Rmatabs: React.FC = () => {
       fetchAllInProgressData();
       fetchClosedData();
       setTableLoading(false);
-    }, 1000);
   }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({

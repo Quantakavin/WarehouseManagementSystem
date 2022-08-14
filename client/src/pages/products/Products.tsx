@@ -45,7 +45,7 @@ const Products: React.FC = () => {
       .then((data) => setRow(data))
       .then(() => setLoading(false));
   }, []);
-  console.log(isEditable);
+
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [
       {

@@ -44,6 +44,7 @@ const UserGroups2: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const mutation = useMutation(DeleteUserGroup);
   const userrole = useAppSelector(selectRole);
+
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
@@ -51,21 +52,9 @@ const UserGroups2: React.FC = () => {
       dispatch(ChangeTab({ currenttab: "User Groups" }));
     }
   }, []);
-  // const [hoveredRow, setHoveredRow] = React.useState(null);
 
-  /*
-  const onMouseEnterRow = (event) => {
-    const id = Number(event.currentTarget.getAttribute("data-id"));
-    setHoveredRow(id);
-  };
-
-  const onMouseLeaveRow = (event) => {
-    setHoveredRow(null);
-  };
-  */
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
       // declare the async data fetching function
       const fetchUserGroupssData = async () => {
         await axios
@@ -78,7 +67,6 @@ const UserGroups2: React.FC = () => {
       };
       fetchUserGroupssData();
       setLoading(false);
-    }, 1000);
   }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
