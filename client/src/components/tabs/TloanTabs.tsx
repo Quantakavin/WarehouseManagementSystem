@@ -99,7 +99,6 @@ const TLoanTabs: React.FC = () => {
         .then(() => setTableLoading(false));
     };
     fetchData();
-    // setTableLoading(false);
   }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
