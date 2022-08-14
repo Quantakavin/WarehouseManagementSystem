@@ -50,8 +50,8 @@ const Users2: React.FC = () => {
   const [showError, setShowError] = useState<boolean>(false);
   const [idToDelete, setIdToDelete] = useState<string>(null);
   const queryClient = useQueryClient();
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  //const [users, setUsers] = useState([]);
+  //const [loading, setLoading] = useState(false);
   const mutation = useMutation(DeleteUser);
 
   /*
@@ -65,7 +65,9 @@ const Users2: React.FC = () => {
   };
   */
 
-  // const UsersQuery = useQuery(`users`, GetAllUsers);
+  const UsersQuery = useQuery(`users`, GetAllUsers);
+
+  /*
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
@@ -81,6 +83,7 @@ const Users2: React.FC = () => {
       .then(() => setLoading(false));
     }, 1000)
   }, []);
+  */
 
   const SelectDelete = (id: string) => {
     setIdToDelete(id);
@@ -327,9 +330,9 @@ const Users2: React.FC = () => {
           </Box>
 
           <DataGrid
-            loading={loading}
+            loading={UsersQuery.isLoading}
             sx={{ background: "white", fontSize: 18 }}
-            rows={users}
+            rows={UsersQuery.data.data}
             columns={columns}
             getRowId={(row) => row.UserID}
             pageSize={pageSize}

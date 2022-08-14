@@ -6,6 +6,7 @@ import TwoColRack from "../../components/3Dmodels/2ColRack";
 import ThreeColRack from "../../components/3Dmodels/3ColRack";
 import FourColRack from "../../components/3Dmodels/4ColRack";
 import Office from "../../components/3Dmodels/Office";
+import Pallets from "../../components/3Dmodels/Palletsandboxes";
 import SearchBar from "../../components/search/SearchBar";
 import useDebounce from "../../hooks/useDebounce";
 import "../../styles/BinLocation.scss";
@@ -70,26 +71,31 @@ const Scene = ({ selectedbintags }: SceneProps) => {
       />
       <Suspense fallback={null}>
 
-      <Office position={[0,-10,-100]} />
+      <Office position={[-30,-10,-80]} />
+
+      <Pallets position={[-40,-12,-80]} />
+      <Pallets position={[-80,-12,-80]} />
+      <Pallets position={[-40,-12,-140]} />
+      <Pallets position={[-80,-12,-140]} />
 
 
         {/* Section A01 */}
         <FourColRack
-          position={[0, 0, 0]}
+          position={[120, 0, -10]}
           areatag="A01"
           racktag="R01"
           changeposition={changeCameraPosition}
           currentbintags={selectedbintags}
         />
         <FourColRack
-          position={[25, 0, 0]}
+          position={[95, 0, -10]}
           areatag="A01"
           racktag="R02"
           changeposition={changeCameraPosition}
           currentbintags={selectedbintags}
         />
         <ThreeColRack
-          position={[45, 0, 0]}
+          position={[70, 0, -10]}
           areatag="A01"
           racktag="R03"
           changeposition={changeCameraPosition}
@@ -98,21 +104,21 @@ const Scene = ({ selectedbintags }: SceneProps) => {
 
         {/* Section A02 */}
         <FourColRack
-          position={[0, 0, 20]}
+          position={[120, 0, 10]}
           areatag="A02"
           racktag="R01"
           changeposition={changeCameraPosition}
           currentbintags={selectedbintags}
         />
         <FourColRack
-          position={[25, 0, 20]}
+          position={[95, 0, 10]}
           areatag="A02"
           racktag="R02"
           changeposition={changeCameraPosition}
           currentbintags={selectedbintags}
         />
         <ThreeColRack
-          position={[45, 0, 20]}
+          position={[70, 0, 10]}
           areatag="A02"
           racktag="R03"
           changeposition={changeCameraPosition}

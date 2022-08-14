@@ -6,6 +6,7 @@ import * as THREE from 'three'
 import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
+import { Euler } from '@react-three/fiber'
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -96,11 +97,17 @@ type GLTFResult = GLTF & {
   }
 }
 
-export default function Model({ ...props }: JSX.IntrinsicElements['group']) {
+interface ModelProps {
+  position: [x: number, y: number, z: number];
+  rotation?: Euler;
+}
+
+
+const Model: React.FC<ModelProps> = ({position, rotation}) => {
   const group = useRef<THREE.Group>()
   const { nodes, materials } = useGLTF('/palletsandboxes.glb') as GLTFResult
   return (
-    <group ref={group} {...props} dispose={null}>
+    <group ref={group} dispose={null} position={position} scale={[1.5,1.5,1.5]} rotation={rotation}>
       <group position={[6, -0.57, 50]} rotation={[-Math.PI / 2, 0, 0]} scale={2.63}>
         <group rotation={[Math.PI / 2, 0, 0]} />
       </group>
@@ -109,9 +116,9 @@ export default function Model({ ...props }: JSX.IntrinsicElements['group']) {
       </group>
       <group position={[-2, 6.43, 59]} rotation={[-Math.PI / 2, 0, 0]} scale={[0.09, 0.11, 0.09]} />
       <group position={[21.04, 0.8, -0.31]} />
-      <group position={[-33.86, -0.91, -40.49]}>
+      {/* <group position={[-33.86, -0.91, -40.49]}>
         <mesh geometry={nodes.Object_16.geometry} material={materials['5_-_Default']} position={[0, 0, -1.92]} />
-      </group>
+      </group> */}
       <group position={[-5, 2.43, 50]} rotation={[-Math.PI / 2, 0, 0]} scale={1.8}>
         <group position={[-5.69, -6.22, 6.25]} rotation={[-0.27, 0.6, 1.93]} />
         <group position={[2.71, 3.57, -5.48]} rotation={[-2.26, 0.75, -1.96]} />
@@ -339,3 +346,4 @@ export default function Model({ ...props }: JSX.IntrinsicElements['group']) {
 }
 
 useGLTF.preload('/palletsandboxes.glb')
+export default Model;
