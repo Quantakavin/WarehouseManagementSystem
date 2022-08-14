@@ -36,7 +36,7 @@ module.exports.createTLoan = async (
     collection,
     tloanItems
 ) => {
-    knex.transaction((trx)=> {
+    return knex.transaction((trx)=> {
         knex.insert(
             {
                 TLoanTypeID: type,
@@ -66,7 +66,7 @@ module.exports.createTLoan = async (
                 }
                 return null
             })
-            .then(trx.commit)
+            .then(trx.commit)   
             .catch(trx.rollback);
     });
 };
@@ -84,7 +84,7 @@ module.exports.SendTLoanToDraft = async (
     collection,
     tloanItems
 ) => {
-    knex.transaction((trx) => {
+    return knex.transaction((trx) => {
         knex.insert(
             {
                 TLoanTypeID: type,

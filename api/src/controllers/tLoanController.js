@@ -251,6 +251,7 @@ module.exports.newLoan = async (req, res) => {
         const tloanItems = items.map((item) => {
             return item;
         });
+        
         const results = await TLoan.createTLoan(
             type,
             company,
@@ -264,6 +265,7 @@ module.exports.newLoan = async (req, res) => {
             collection,
             tloanItems
         );
+        console.log(results)
         if ( results.length > 0 ){
             redisClient.del('ManagerLoan');
             redisClient.del('ManagerExtension');
@@ -661,6 +663,7 @@ module.exports.getApprovedLoan = async (req, res) => {
             return res.status(200).json(redisresults);
         }
         const results = await TLoan.getApproved();
+        console.log(results)
         if (results.length > 0) {
             redisClient.set('ApprovedLoan', JSON.stringify(results[0]), {
                 EX: 60 * 5
