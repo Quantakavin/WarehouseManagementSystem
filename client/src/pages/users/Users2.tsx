@@ -34,16 +34,7 @@ import config from "../../config/config";
 const Users2: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
   const userrole = useAppSelector(selectRole);
-  useEffect(() => {
-    if (userrole !== "Admin") {
-      navigate("/403");
-    } else {
-      dispatch(ChangeTab({ currenttab: "Users" }));
-    }
-  }, []);
-
   const [pageSize, setPageSize] = React.useState(25);
   // const [hoveredRow, setHoveredRow] = React.useState(null);
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
@@ -54,32 +45,26 @@ const Users2: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const mutation = useMutation(DeleteUser);
 
-  /*
-  const onMouseEnterRow = (event) => {
-    const id = Number(event.currentTarget.getAttribute("data-id"));
-    setHoveredRow(id);
-  };
+  useEffect(() => {
+    if (userrole !== "Admin") {
+      navigate("/403");
+    } else {
+      dispatch(ChangeTab({ currenttab: "Users" }));
+    }
+  }, []);
 
-  const onMouseLeaveRow = () => {
-    setHoveredRow(null);
-  };
-  */
-
-  // const UsersQuery = useQuery(`users`, GetAllUsers);
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
-    // declare the async data fetching function
-    fetch(`${config.baseURL}/users`, {
-      method: "get",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((data) => data.json())
-      .then((data) => setUsers(data))
-      .then(() => setLoading(false));
-    }, 1000)
+      // declare the async data fetching function
+      axios
+        .get(`${config.baseURL}/users`, {
+          method: "get",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => setUsers(response.data))
+        .then(() => setLoading(false));
   }, []);
 
   const SelectDelete = (id: string) => {
