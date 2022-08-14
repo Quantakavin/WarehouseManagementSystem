@@ -37,8 +37,16 @@ import config from "../../config/config";
 const NotificationGroups2: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
+  const queryClient = useQueryClient();
+  const mutation = useMutation(DeleteNotificationGroup);
   const userrole = useAppSelector(selectRole);
+  const [pageSize, setPageSize] = React.useState(25);
+  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+  const [showError, setShowError] = useState<boolean>(false);
+  const [idToDelete, setIdToDelete] = useState<string>(null);
+  const [notificationgroups, setNotificationGroups] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
@@ -46,34 +54,20 @@ const NotificationGroups2: React.FC = () => {
       dispatch(ChangeTab({ currenttab: "Notification Groups" }));
     }
   }, []);
-  const [pageSize, setPageSize] = React.useState(25);
-
-  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
-  const [showError, setShowError] = useState<boolean>(false);
-  const [idToDelete, setIdToDelete] = useState<string>(null);
-  const [notificationgroups, setNotificationGroups] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation(DeleteNotificationGroup);
 
   // const [hoveredRow, setHoveredRow] = React.useState(null);
   useEffect(() => {
     setLoading(true);
-      // declare the async data fetching function
-      const fetchNotificationGroupsData = async () => {
-        await axios
-          .get(`${config.baseURL}/notificationgroups`, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((notificationgroupsData) =>
-            setNotificationGroups(notificationgroupsData.data)
-          );
-      };
-      fetchNotificationGroupsData();
-      setLoading(false);
+    // declare the async data fetching function
+    fetch(`${config.baseURL}/notificationgroups`, {
+      method: "get",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((data) => data.json())
+      .then((data) => setNotificationGroups(data))
+      .then(() => setLoading(false));
   }, []);
 
   const SelectDelete = (id: string) => {

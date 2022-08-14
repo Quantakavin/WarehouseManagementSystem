@@ -68,18 +68,16 @@ const Users2: React.FC = () => {
   // const UsersQuery = useQuery(`users`, GetAllUsers);
   useEffect(() => {
     setLoading(true);
-      // declare the async data fetching function
-      const fetchUsersData = async () => {
-        await axios
-          .get(`${config.baseURL}/users`, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((usersData) => setUsers(usersData.data));
-      };
-      fetchUsersData();
-      setLoading(false);
+    // declare the async data fetching function
+    fetch(`${config.baseURL}/users`, {
+      method: "get",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((data) => data.json())
+      .then((data) => setUsers(data))
+      .then(() => setLoading(false));
   }, []);
 
   const SelectDelete = (id: string) => {
