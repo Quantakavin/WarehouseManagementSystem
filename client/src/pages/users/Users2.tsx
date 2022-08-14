@@ -34,8 +34,17 @@ import config from "../../config/config";
 const Users2: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
   const userrole = useAppSelector(selectRole);
+  const [pageSize, setPageSize] = React.useState(25);
+  // const [hoveredRow, setHoveredRow] = React.useState(null);
+  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+  const [showError, setShowError] = useState<boolean>(false);
+  const [idToDelete, setIdToDelete] = useState<string>(null);
+  const queryClient = useQueryClient();
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const mutation = useMutation(DeleteUser);
+
   useEffect(() => {
     if (userrole !== "Admin") {
       navigate("/403");
@@ -44,46 +53,19 @@ const Users2: React.FC = () => {
     }
   }, []);
 
-  const [pageSize, setPageSize] = React.useState(25);
-  // const [hoveredRow, setHoveredRow] = React.useState(null);
-  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
-  const [showError, setShowError] = useState<boolean>(false);
-  const [idToDelete, setIdToDelete] = useState<string>(null);
-  const queryClient = useQueryClient();
-  //const [users, setUsers] = useState([]);
-  //const [loading, setLoading] = useState(false);
-  const mutation = useMutation(DeleteUser);
-
-  /*
-  const onMouseEnterRow = (event) => {
-    const id = Number(event.currentTarget.getAttribute("data-id"));
-    setHoveredRow(id);
-  };
-
-  const onMouseLeaveRow = () => {
-    setHoveredRow(null);
-  };
-  */
-
-  const UsersQuery = useQuery(`users`, GetAllUsers);
-
-  /*
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
-    // declare the async data fetching function
-    fetch(`${config.baseURL}/users`, {
-      method: "get",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((data) => data.json())
-      .then((data) => setUsers(data))
-      .then(() => setLoading(false));
-    }, 1000)
+      // declare the async data fetching function
+      axios
+        .get(`${config.baseURL}/users`, {
+          method: "get",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => setUsers(response.data))
+        .then(() => setLoading(false));
   }, []);
-  */
 
   const SelectDelete = (id: string) => {
     setIdToDelete(id);
@@ -330,9 +312,9 @@ const Users2: React.FC = () => {
           </Box>
 
           <DataGrid
-            loading={UsersQuery.isLoading}
+            loading={loading}
             sx={{ background: "white", fontSize: 18 }}
-            rows={UsersQuery.data.data}
+            rows={users}
             columns={columns}
             getRowId={(row) => row.UserID}
             pageSize={pageSize}

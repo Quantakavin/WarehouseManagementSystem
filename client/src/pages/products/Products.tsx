@@ -18,6 +18,7 @@ import {
   GridToolbarFilterButton,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
+import axios from "axios";
 import { motion } from "framer-motion";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -40,9 +41,9 @@ const Products: React.FC = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${config.baseURL}/products?limit=100000&page=0`)
-      .then((data) => data.json())
-      .then((data) => setRow(data))
+    axios
+      .get(`${config.baseURL}/products?limit=100000&page=0`)
+      .then((response) => setRow(response.data))
       .then(() => setLoading(false));
   }, []);
 

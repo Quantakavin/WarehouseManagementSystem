@@ -55,18 +55,16 @@ const UserGroups2: React.FC = () => {
 
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
       // declare the async data fetching function
-      fetch(`${config.baseURL}/usergroups`, {
-        method: "get",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-        .then((data) => data.json())
-        .then((data) => setUserGroups(data))
+      axios
+        .get(`${config.baseURL}/usergroups`, {
+          method: "get",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => setUserGroups(response.data))
         .then(() => setLoading(false));
-    }, 1000);
   }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
