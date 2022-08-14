@@ -63,42 +63,43 @@ const TLoanTabs: React.FC = () => {
     setTableLoading(true);
     const fetchData = async () => {
       // get the data from the api
-      await axios
+      axios
         .get(`${config.baseURL}/tloan/current/${userid}`)
         .then((currentTloanData) => setCurrentTable(currentTloanData.data));
-      await axios
+      axios
         .get(`${config.baseURL}/tloan/pending/${userid}`)
         .then((pendingTloanData) => setPendingTable(pendingTloanData.data));
-      await axios
+      axios
         .get(`${config.baseURL}/tloan/drafts/${userid}`)
         .then((draftData) => setDraftTable(draftData.data));
-      await axios
+      axios
         .get(`${config.baseURL}/tloan/history/${userid}`)
         .then((historyData) => setHistoryTable(historyData.data));
-      await axios
+      axios
         .get(`${config.baseURL}/tloan/ManagerLoan`)
         .then((pendingTloanData) => setManagerLoan(pendingTloanData.data));
-      await axios
+      axios
         .get(`${config.baseURL}/tloan/ManagerExtension`)
         .then((draftData) => setExtensionTable(draftData.data));
-      await axios
+      axios
         .get(`${config.baseURL}/tloan/approvedloans`)
         .then((approvedData) => setApprovedTable(approvedData.data));
-      await axios
+      axios
         .get(`${config.baseURL}/tloan/allCurrent`)
         .then((allCurrentData) => setAllCurrent(allCurrentData.data));
-      await axios
+      axios
         .get(`${config.baseURL}/tloan/allHistory`)
         .then((allHistoryData) => setAllHistory(allHistoryData.data));
-      await axios
+      axios
         .get(`${config.baseURL}/tloan/pickingloans`)
         .then((pickingData) => setPickingTable(pickingData.data));
-      await axios
+      axios
         .get(`${config.baseURL}/tloan/readyloans`)
-        .then((readyData) => setReadyTable(readyData.data));
+        .then((readyData) => setReadyTable(readyData.data))
+        .then(() => setTableLoading(false));
     };
     fetchData();
-    setTableLoading(false);
+    // setTableLoading(false);
   }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({

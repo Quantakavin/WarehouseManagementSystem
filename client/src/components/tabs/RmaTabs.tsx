@@ -73,27 +73,27 @@ const Rmatabs: React.FC = () => {
         axios
           .get(`${config.baseURL}/myIPRMA/${userid}`)
           .then((inprogressrmadata) => setMIPTable(inprogressrmadata.data));
-        await axios
+        axios
           .get(`${config.baseURL}/pendingRMA`)
           .then((pendingRmaData) => setPendingTable(pendingRmaData.data));
-        await axios
+        axios
           .get(`${config.baseURL}/acceptedRMA`)
           .then((acceptedRmaData) => setApprovedTable(acceptedRmaData.data));
-        await axios
+        axios
           .get(`${config.baseURL}/checklistRMA`)
           .then((processingRmaData) =>
             setChecklistTable(processingRmaData.data)
           );
-        await axios
+        axios
           .get(`${config.baseURL}/receivedRMA`)
           .then((receivedRmaData) => setReceivedTable(receivedRmaData.data));
-        await axios
+        axios
           .get(`${config.baseURL}/verifiedRMA`)
           .then((verifiedRmaData) => setVerifiedTable(verifiedRmaData.data));
-        await axios
+        axios
           .get(`${config.baseURL}/inprogressRMA`)
           .then((ipRmaData) => setInProgressTable(ipRmaData.data));
-        await axios
+        axios
           .get(`${config.baseURL}/closedRMA`)
           .then((closedRmaData) => setClosedTable(closedRmaData.data));
       };
