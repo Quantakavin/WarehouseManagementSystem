@@ -778,7 +778,7 @@ module.exports.allHistory = async (req, res) => {
                 EX: 60 * 5
             });
             return res.status(200).json(results[0]);
-        }
+        } 
         return res.status(404).json({ message: 'Does not Exist!' });
     } catch (error) {
         console.log(error);
