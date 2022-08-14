@@ -68,6 +68,7 @@ const Users2: React.FC = () => {
   // const UsersQuery = useQuery(`users`, GetAllUsers);
   useEffect(() => {
     setLoading(true);
+    setTimeout(() => {
     // declare the async data fetching function
     fetch(`${config.baseURL}/users`, {
       method: "get",
@@ -78,6 +79,7 @@ const Users2: React.FC = () => {
       .then((data) => data.json())
       .then((data) => setUsers(data))
       .then(() => setLoading(false));
+    }, 1000)
   }, []);
 
   const SelectDelete = (id: string) => {
