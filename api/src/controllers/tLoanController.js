@@ -274,17 +274,16 @@ module.exports.newLoan = async (req, res) => {
             collection,
             tloanItems
         );
-        // redisClient.del(`TLoanItems#${TLoanID}`);
-        // redisClient.del(`TLoan#${TLoanID}`);
-        // redisClient.del(`TLoanIDs#${TLoanID}`);
-        redisClient.del('ManagerLoan');
-        redisClient.del('ManagerExtension');
-
-        redisClient.del(`CurrentTLoan#${user}`);
-        redisClient.del(`PendingTLoan#${user}`);
-        redisClient.del(`DraftTLoan#${user}`);
-        redisClient.del(`HistoryTLoan#${user}`);
-        return res.status(201).json(tloanItems);
+        if(results.length > 0){
+            redisClient.del('ManagerLoan');
+            redisClient.del('ManagerExtension');
+            redisClient.del(`CurrentTLoan#${user}`);
+            redisClient.del(`PendingTLoan#${user}`);
+            redisClient.del(`DraftTLoan#${user}`);
+            redisClient.del(`HistoryTLoan#${user}`);
+            return res.status(201).json(tloanItems);
+        }
+        return res.status(400).json({ message: 'Draft failed to save' });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
@@ -322,13 +321,16 @@ module.exports.SendDraft = async (req, res) => {
             collection,
             tloanItems
         );
-        redisClient.del('ManagerLoan');
-        redisClient.del('ManagerExtension');
-        redisClient.del(`CurrentTLoan#${user}`);
-        redisClient.del(`PendingTLoan#${user}`);
-        redisClient.del(`DraftTLoan#${user}`);
-        redisClient.del(`HistoryTLoan#${user}`);
-        return res.status(201).json(tloanItems);
+        if(results.length > 0){
+            redisClient.del('ManagerLoan');
+            redisClient.del('ManagerExtension');
+            redisClient.del(`CurrentTLoan#${user}`);
+            redisClient.del(`PendingTLoan#${user}`);
+            redisClient.del(`DraftTLoan#${user}`);
+            redisClient.del(`HistoryTLoan#${user}`);
+            return res.status(201).json(tloanItems);
+        }
+        return res.status(400).json({ message: 'Draft failed to save' });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
@@ -431,7 +433,7 @@ module.exports.approveLoan = async (req, res) => {
         const { UserID } = gettingInfo[0][0];
         const telegramid = gettingInfo[0][0].TelegramID;
         const results = await TLoan.approveLoan(TLoanID);
-        if (results) {
+        if (results.length > 0) {
             if (telegramid !== null) {
                 tloanAcceptedTele(telegramid, username, TLoanID);
             }
