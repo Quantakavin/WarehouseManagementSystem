@@ -5,6 +5,7 @@ import * as THREE from "three";
 import TwoColRack from "../../components/3Dmodels/2ColRack";
 import ThreeColRack from "../../components/3Dmodels/3ColRack";
 import FourColRack from "../../components/3Dmodels/4ColRack";
+import Office from "../../components/3Dmodels/Office";
 import SearchBar from "../../components/search/SearchBar";
 import useDebounce from "../../hooks/useDebounce";
 import "../../styles/BinLocation.scss";
@@ -68,6 +69,10 @@ const Scene = ({ selectedbintags }: SceneProps) => {
         ref={controls}
       />
       <Suspense fallback={null}>
+
+      <Office position={[0,-10,-100]} />
+
+
         {/* Section A01 */}
         <FourColRack
           position={[0, 0, 0]}
