@@ -154,6 +154,7 @@ module.exports.updateUserGroup = async (req, res) => {
         const results = await userGroup.getByID(userGroupID);
         if (results[0].length > 0) {
             await userGroup.update(userGroupID, name, description, features);
+            redisClient.del(`userGroups`);
             redisClient.del(`userGroup#${userGroupID}`);
             return res.status(200).json({ message: 'User Group updated successfully!' });
         }
@@ -172,6 +173,7 @@ module.exports.deleteUserGroup = async (req, res) => {
             const results2 = await user.getByUserGroup(userGroupID);
             if (results2[0][0].Count === 0) {
                 await userGroup.delete(userGroupID);
+                redisClient.del(`userGroup#${userGroupID}`);
                 redisClient.del('userGroups');
                 return res.status(200).json({ message: 'User Group deleted successfully!' });
             }

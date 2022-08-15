@@ -225,7 +225,6 @@ const NotificationGroups2: React.FC = () => {
     const id = Number(event.currentTarget.getAttribute("data-id"));
     setHoveredRow(id);
   };
-
   const onMouseLeaveRow = (event) => {
     setHoveredRow(null);
   };

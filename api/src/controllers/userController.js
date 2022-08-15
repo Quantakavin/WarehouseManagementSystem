@@ -301,6 +301,7 @@ module.exports.updateUser = async (req, res) => {
                 );
             }
             redisClient.del(`user#${userID}`);
+            redisClient.del(`users`);
             return res.status(204).json({ message: 'User updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find user with that id' });
@@ -325,6 +326,7 @@ module.exports.deleteUser = async (req, res) => {
             console.log(results2);
             if (results2[0][0].Count === 0) {
                 await user.delete(userID);
+                redisClient.del(`user#${userID}`);
                 redisClient.del('users');
                 return res.status(200).json({ message: 'User deleted successfully!' });
             }
