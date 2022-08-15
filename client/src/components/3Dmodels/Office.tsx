@@ -260,7 +260,9 @@ const Model: React.FC<ModelProps> = ({position}) => {
       </group>
       <group position={[-8, 0.43, 67]} rotation={[-Math.PI / 2, 0, 0]} scale={1.8} />
       <group position={[-9, 2.43, 56]} rotation={[-Math.PI / 2, 0, 0]} scale={1.8}>
-        <mesh geometry={nodes.Cube_0016.geometry} material={materials['Material.020']} position={[-1.79, 3.12, 2.08]} rotation={[0, 0, 1.57]} scale={[0.55, 0.34, 0.34]} />
+        <mesh geometry={nodes.Cube_0016.geometry} material={materials['Material.020']} position={[-1.79, 3.12, 2.08]} rotation={[0, 0, 1.57]} scale={[0.55, 0.34, 0.34]} >
+        <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
+        </mesh>
       </group>
       <group position={[11, 7.43, 60]} rotation={[-Math.PI / 2, 0, 0]} scale={0.01}>
         <group rotation={[Math.PI / 2, 0, 0]} />
@@ -351,7 +353,9 @@ const Model: React.FC<ModelProps> = ({position}) => {
         </group>
       </group>
       <group position={[-11, -0.57, 56]} rotation={[-Math.PI / 2, 0, 0]} scale={[2.05, 1.8, 1.8]}>
-        <mesh geometry={nodes.Cube_0030.geometry} material={materials['Material.054']} position={[-1.14, 4.08, 2.59]} rotation={[0, 0, 1.57]} scale={[0.55, 0.52, 0.4]} />
+        <mesh geometry={nodes.Cube_0030.geometry} material={materials['Material.054']} position={[-1.14, 4.08, 2.59]} rotation={[0, 0, 1.57]} scale={[0.55, 0.52, 0.4]} >
+        <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
+        </mesh>
       </group>
       <group position={[-10, -0.57, 58]} rotation={[-Math.PI / 2, 0, 0]} scale={[2.24, 1.8, 1.8]}>
         <mesh geometry={nodes.Cube_0031.geometry} material={materials['Material.055']} position={[-1.37, 3.98, 2.59]} rotation={[0, 0, 1.57]} scale={[0.55, 0.48, 0.4]} >
@@ -370,10 +374,14 @@ const Model: React.FC<ModelProps> = ({position}) => {
         </mesh>
       </group>
       <group position={[-11, -0.57, 66]} rotation={[-Math.PI / 2, 0, 0]} scale={[2.05, 1.8, 1.8]}>
-        <mesh geometry={nodes.Cube_0035.geometry} material={materials['Material.059']} position={[-1.14, 4.57, 2.75]} rotation={[0, 0, 1.49]} scale={[0.18, 0.52, 0.4]} />
+        <mesh geometry={nodes.Cube_0035.geometry} material={materials['Material.059']} position={[-1.14, 4.57, 2.75]} rotation={[0, 0, 1.49]} scale={[0.18, 0.52, 0.4]} >
+        <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
+        </mesh>
       </group>
       <group position={[-11, -2.57, 66]} rotation={[-Math.PI / 2, 0, 0]} scale={[2.05, 1.8, 1.8]}>
-        <mesh geometry={nodes.Cube_0036.geometry} material={materials['Material.060']} position={[-1.14, 4.08, 2.19]} rotation={[0, 0, 1.71]} scale={[0.55, 0.52, 0.4]} />
+        <mesh geometry={nodes.Cube_0036.geometry} material={materials['Material.060']} position={[-1.14, 4.08, 2.19]} rotation={[0, 0, 1.71]} scale={[0.55, 0.52, 0.4]} >
+        <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
+        </mesh>
       </group>
       <group position={[-10, -2.57, 68]} rotation={[-Math.PI / 2, 0, 0]} scale={[2.24, 1.8, 1.8]}>
         <mesh geometry={nodes.Cube_0037.geometry} material={materials['Material.061']} position={[-1.37, 3.98, 2.19]} rotation={[0, 0, 1.57]} scale={[0.55, 0.48, 0.4]} >
@@ -392,7 +400,9 @@ const Model: React.FC<ModelProps> = ({position}) => {
         </mesh>
       </group>
       <group position={[-11, -2.57, 56]} rotation={[-Math.PI / 2, 0, 0]} scale={[2.05, 1.8, 1.8]}>
-        <mesh geometry={nodes.Cube_0041.geometry} material={materials['Material.065']} position={[-1.14, 4.08, 2.19]} rotation={[0, 0, 1.57]} scale={[0.55, 0.52, 0.4]} />
+        <mesh geometry={nodes.Cube_0041.geometry} material={materials['Material.065']} position={[-1.14, 4.08, 2.19]} rotation={[0, 0, 1.57]} scale={[0.55, 0.52, 0.4]} >
+        <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
+        </mesh>
       </group>
       <group position={[25, -2.57, 58]} rotation={[-Math.PI / 2, 0, 1.54]} scale={[2.24, 1.8, 1.8]}>
         <mesh geometry={nodes.Cube_0042.geometry} material={materials['Material.072']} position={[-1.37, 3.98, 2.19]} rotation={[0, 0, 1.66]} scale={[0.55, 0.48, 0.4]} >
@@ -400,7 +410,9 @@ const Model: React.FC<ModelProps> = ({position}) => {
         </mesh>
       </group>
       <group position={[23, -2.57, 58]} rotation={[-Math.PI / 2, 0, 1.54]} scale={[2.05, 1.8, 1.8]}>
-        <mesh geometry={nodes.Cube_0043.geometry} material={materials['Material.073']} position={[-1.14, 4.08, 2.19]} rotation={[0, 0, 1.51]} scale={[0.55, 0.52, 0.4]} />
+        <mesh geometry={nodes.Cube_0043.geometry} material={materials['Material.073']} position={[-1.14, 4.08, 2.19]} rotation={[0, 0, 1.51]} scale={[0.55, 0.52, 0.4]} >
+        <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
+        </mesh>
       </group>
       <group position={[30, -2.57, 58]} rotation={[-Math.PI / 2, 0, 1.54]} scale={[2.24, 1.8, 1.8]}>
         <mesh geometry={nodes.Cube_0044.geometry} material={materials['Material.074']} position={[-1.37, 3.98, 2.19]} rotation={[0, 0, 1.57]} scale={[0.55, 0.48, 0.4]} >
@@ -409,7 +421,9 @@ const Model: React.FC<ModelProps> = ({position}) => {
       </group>
       <group position={[27, -2.57, 58]} rotation={[-Math.PI / 2, 0, 1.54]} scale={[2.05, 1.8, 1.8]} />
       <group position={[27, -0.57, 58]} rotation={[-Math.PI / 2, 0, 1.54]} scale={[2.05, 1.8, 1.8]}>
-        <mesh geometry={nodes.Cube_0046.geometry} material={materials['Material.076']} position={[-1.14, 4.08, 2.74]} rotation={[0, 0, 1.49]} scale={[0.55, 0.52, 0.4]} />
+        <mesh geometry={nodes.Cube_0046.geometry} material={materials['Material.076']} position={[-1.14, 4.08, 2.74]} rotation={[0, 0, 1.49]} scale={[0.55, 0.52, 0.4]} >
+        <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
+        </mesh>
       </group>
       <group position={[30, -0.57, 58]} rotation={[-Math.PI / 2, 0, 1.54]} scale={[2.24, 1.8, 1.8]}>
         <mesh geometry={nodes.Cube_0047.geometry} material={materials['Material.077']} position={[-1.37, 3.87, 2.77]} rotation={[0, 0, 1.73]} scale={[0.55, 0.48, 0.4]} >
@@ -417,7 +431,9 @@ const Model: React.FC<ModelProps> = ({position}) => {
         </mesh>
       </group>
       <group position={[23, -0.57, 58]} rotation={[-Math.PI / 2, 0, 1.54]} scale={[2.05, 1.8, 1.8]}>
-        <mesh geometry={nodes.Cube_0048.geometry} material={materials['Material.078']} position={[-1.14, 4.08, 2.75]} rotation={[0, 0, 1.63]} scale={[0.55, 0.52, 0.4]} />
+        <mesh geometry={nodes.Cube_0048.geometry} material={materials['Material.078']} position={[-1.14, 4.08, 2.75]} rotation={[0, 0, 1.63]} scale={[0.55, 0.52, 0.4]} >
+        <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
+        </mesh>
       </group>
       <group position={[25, -0.57, 58]} rotation={[-Math.PI / 2, 0, 1.54]} scale={[2.24, 1.8, 1.8]} />
       <group position={[3, -2.57, 58]} rotation={[-Math.PI / 2, 0, 1.57]} scale={[2.24, 1.8, 1.8]}>
@@ -426,7 +442,9 @@ const Model: React.FC<ModelProps> = ({position}) => {
         </mesh>
       </group>
       <group position={[0, -2.57, 58]} rotation={[-Math.PI / 2, 0, 1.57]} scale={[2.05, 1.8, 1.8]}>
-        <mesh geometry={nodes.Cube_0051.geometry} material={materials['Material.081']} position={[-1.14, 5.57, 2.19]} rotation={[0, 0, 1.51]} scale={[0.55, 0.52, 0.4]} />
+        <mesh geometry={nodes.Cube_0051.geometry} material={materials['Material.081']} position={[-1.14, 5.57, 2.19]} rotation={[0, 0, 1.51]} scale={[0.55, 0.52, 0.4]} >
+        <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
+        </mesh>
       </group>
       <group position={[7, -2.57, 58]} rotation={[-Math.PI / 2, 0, 1.57]} scale={[2.24, 1.8, 1.8]}>
         <mesh geometry={nodes.Cube_0052.geometry} material={materials['Material.082']} position={[-1.37, 5.47, 2.19]} rotation={[0, 0, 1.57]} scale={[0.55, 0.48, 0.4]} >
@@ -434,10 +452,14 @@ const Model: React.FC<ModelProps> = ({position}) => {
         </mesh>
       </group>
       <group position={[5, -2.57, 58]} rotation={[-Math.PI / 2, 0, 1.57]} scale={[2.05, 1.8, 1.8]}>
-        <mesh geometry={nodes.Cube_0053.geometry} material={materials['Material.083']} position={[-1.14, 5.57, 2.1]} rotation={[0, 0, 1.71]} scale={[0.42, 0.4, 0.31]} />
+        <mesh geometry={nodes.Cube_0053.geometry} material={materials['Material.083']} position={[-1.14, 5.57, 2.1]} rotation={[0, 0, 1.71]} scale={[0.42, 0.4, 0.31]} >
+        <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
+        </mesh>
       </group>
       <group position={[5, -0.57, 58]} rotation={[-Math.PI / 2, 0, 1.57]} scale={[2.05, 1.8, 1.8]}>
-        <mesh geometry={nodes.Cube_0054.geometry} material={materials['Material.084']} position={[-1.14, 5.57, 2.66]} rotation={[1.56, 0, 1.51]} scale={[0.35, 0.52, 0.4]} />
+        <mesh geometry={nodes.Cube_0054.geometry} material={materials['Material.084']} position={[-1.14, 5.57, 2.66]} rotation={[1.56, 0, 1.51]} scale={[0.35, 0.52, 0.4]} >
+        <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
+        </mesh>
       </group>
       <group position={[7, -0.57, 58]} rotation={[-Math.PI / 2, 0, 1.57]} scale={[2.24, 1.8, 1.8]}>
         <mesh geometry={nodes.Cube_0055.geometry} material={materials['Material.085']} position={[-1.37, 5.36, 2.8]} rotation={[0, 0, 1.73]} scale={[0.55, 0.48, 0.4]} >
@@ -445,21 +467,31 @@ const Model: React.FC<ModelProps> = ({position}) => {
         </mesh>
       </group>
       <group position={[0, -0.57, 58]} rotation={[-Math.PI / 2, 0, 1.57]} scale={[2.05, 1.8, 1.8]}>
-        <mesh geometry={nodes.Cube_0056.geometry} material={materials['Material.086']} position={[-1.14, 5.57, 2.34]} rotation={[0, 0, 1.63]} scale={[0.55, 0.52, 0.4]} />
+        <mesh geometry={nodes.Cube_0056.geometry} material={materials['Material.086']} position={[-1.14, 5.57, 2.34]} rotation={[0, 0, 1.63]} scale={[0.55, 0.52, 0.4]} >
+        <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
+        </mesh>
       </group>
       <group position={[3, -0.57, 58]} rotation={[-Math.PI / 2, 0, 1.57]} scale={[2.24, 1.8, 1.8]} />
       <group position={[3, -0.57, 66]} rotation={[-Math.PI / 2, 0, 0]} scale={1.8}>
-        <mesh geometry={nodes.Cube_0058.geometry} material={materials['Material.088']} position={[-1.5, 3.12, 2.54]} rotation={[0, 0, 1.57]} scale={[0.36, 0.22, 0.22]} />
+        <mesh geometry={nodes.Cube_0058.geometry} material={materials['Material.088']} position={[-1.5, 3.12, 2.54]} rotation={[0, 0, 1.57]} scale={[0.36, 0.22, 0.22]} >
+        <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
+        </mesh>
       </group>
       <group position={[3, -2.57, 66]} rotation={[-Math.PI / 2, 0, 0]} scale={1.8}>
-        <mesh geometry={nodes.Cube_0059.geometry} material={materials['Material.089']} position={[-1.5, 3.12, 2.13]} rotation={[0, 0, 1.57]} scale={[0.55, 0.34, 0.34]} />
+        <mesh geometry={nodes.Cube_0059.geometry} material={materials['Material.089']} position={[-1.5, 3.12, 2.13]} rotation={[0, 0, 1.57]} scale={[0.55, 0.34, 0.34]} >
+        <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
+        </mesh>
       </group>
       <group position={[-11, -0.57, 67]} rotation={[-Math.PI / 2, 0, 0.04]} scale={[2.05, 1.8, 1.8]}>
-        <mesh geometry={nodes.Cube_0033.geometry} material={materials['Material.090']} position={[-1.14, 4.57, 2.75]} rotation={[0, 0, 1.49]} scale={[0.18, 0.52, 0.4]} />
+        <mesh geometry={nodes.Cube_0033.geometry} material={materials['Material.090']} position={[-1.14, 4.57, 2.75]} rotation={[0, 0, 1.49]} scale={[0.18, 0.52, 0.4]} >
+        <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
+        </mesh>
       </group>
       <group position={[-9, 2.43, 59]} rotation={[-Math.PI / 2, 0, 0]} scale={1.8} />
       <group position={[-9, 2.43, 63]} rotation={[-Math.PI / 2, 0, 0]} scale={1.8}>
-        <mesh geometry={nodes.Cube_0060.geometry} material={materials['Material.092']} position={[2.39, 1.08, 1.96]} rotation={[0, 0, 1.49]} scale={[-0.85, -1.38, -0.16]} />
+        <mesh geometry={nodes.Cube_0060.geometry} material={materials['Material.092']} position={[2.39, 1.08, 1.96]} rotation={[0, 0, 1.49]} scale={[-0.85, -1.38, -0.16]} >
+        <meshBasicMaterial map={colorMap} side={THREE.DoubleSide} />
+        </mesh>
       </group>
       <mesh geometry={nodes.Cube006.geometry} material={materials['Material.007']} position={[-15, 3.43, 63]} rotation={[-Math.PI, 1.57, -Math.PI]} scale={[0.17, 2.62, 0.15]} />
       <mesh geometry={nodes.Cube037.geometry} material={materials['Material.007']} position={[-15, 3.43, 53]} rotation={[-Math.PI, 1.57, -Math.PI]} scale={[0.17, 2.62, 0.15]} />

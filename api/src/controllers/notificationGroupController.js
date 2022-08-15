@@ -143,6 +143,7 @@ module.exports.updateNotificationGroup = async (req, res) => {
             );
             console.log('the id is ', notificationGroupID);
             redisClient.del(`notificationGroup#${notificationGroupID}`);
+            redisClient.del('notificationGroups');
             return res.status(200).json({ message: 'Notification Group updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find Notification Group with that id' });
@@ -159,6 +160,7 @@ module.exports.deleteNotificationGroup = async (req, res) => {
             const results2 = await user.getByNotificationGroup(notificationGroupID);
             if (results2[0][0].Count === 0) {
                 await notificationGroup.delete(notificationGroupID);
+                redisClient.del(`notificationGroup#${notificationGroupID}`);
                 redisClient.del('notificationGroups');
                 return res
                     .status(200)

@@ -71,12 +71,12 @@ const Scene = ({ selectedbintags }: SceneProps) => {
       />
       <Suspense fallback={null}>
 
-      <Office position={[-30,-10,-80]} />
+      {/* <Office position={[-30,-10,-80]} /> */}
 
-      <Pallets position={[-40,-12,-80]} />
-      <Pallets position={[-80,-12,-80]} />
-      <Pallets position={[-40,-12,-140]} />
-      <Pallets position={[-80,-12,-140]} />
+      <Pallets position={[-40,-12,-80]}/>
+      <Pallets position={[-80,-12,-80]}/>
+      <Pallets position={[-40,-12,-140]}/>
+      <Pallets position={[-80,-12,-140]}/>
 
 
         {/* Section A01 */}
