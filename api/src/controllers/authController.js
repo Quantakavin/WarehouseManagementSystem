@@ -47,94 +47,99 @@ module.exports.loginUser = async (req, res) => {
 };
 
 exports.refresh_token = async (req, res) => {
-    const { signedCookies = {} } = req //get the cookie from the request header
-    const { refreshToken } = signedCookies //get the cookie by key
+    const { signedCookies = {} } = req; // get the cookie from the request header
+    const { refreshToken } = signedCookies; // get the cookie by key
     if (refreshToken) {
         try {
-            const payload = jwt.verify(refreshToken, config.cookiesecret)
-            const userId = payload.user_id
-            let getUser = await auth.findUser(userId)
+            const payload = jwt.verify(refreshToken, config.cookiesecret);
+            const userId = payload.user_id;
+            const getUser = await auth.findUser(userId);
             if (getUser.length == 1) {
                 const token = {
                     user_id: results[0].user_id,
                     displayName: results[0].username,
                     email: results[0].email,
-                    token: jwt.sign({
-                        userId: results[0].user_id,
-                    },
-                        config.JWTKey, {
-                        expiresIn: 60 * 5
-                        // 5 minutes expiry
-                    })
+                    token: jwt.sign(
+                        {
+                            userId: results[0].user_id
+                        },
+                        config.JWTKey,
+                        {
+                            expiresIn: 60 * 5
+                            // 5 minutes expiry
+                        }
+                    )
                 };
-                //updates refresh token (remember me feature)
-                const refresh_token = jwt.sign({
-                    user_id:
-                        results[0].user_id
-                }, config.cookiesecret, {
-                    expiresIn: 60 * 60 * 24 * 3 //3 days
-                })
+                // updates refresh token (remember me feature)
+                const refresh_token = jwt.sign(
+                    {
+                        user_id: results[0].user_id
+                    },
+                    config.cookiesecret,
+                    {
+                        expiresIn: 60 * 60 * 24 * 3 // 3 days
+                    }
+                );
                 res.cookie('refreshToken', refresh_token, {
                     httpOnly: true,
                     secured: true,
-                    signed: true, maxAge: 60 * 60 * 24 * 3 * 1000, sameSite: "none",
-                })
+                    signed: true,
+                    maxAge: 60 * 60 * 24 * 3 * 1000,
+                    sameSite: 'none'
+                });
                 return res.status(200).send(token);
-            } else {
-                return res.status(401).send()
             }
+            return res.status(401).send();
         } catch (error) {
-            return res.status(401).send()
+            return res.status(401).send();
         }
     } else {
-        return res.status(401).send()
+        return res.status(401).send();
     }
-}
+};
 
 exports.logout = async (req, res) => {
-    const { signedCookies = {} } = req
-    const { refreshToken } = signedCookies
+    const { signedCookies = {} } = req;
+    const { refreshToken } = signedCookies;
     if (refreshToken) {
         try {
-            const payload = jwt.verify(refreshToken, config.cookiesecret)
-            const userId = payload.user_id
-            let getUser = await auth.findUser(userId)
-            if (getUser.length == 1) {
-                res.clearCookie("refreshToken")
-                return res.status(200).send()
+            const payload = jwt.verify(refreshToken, config.cookiesecret);
+            const userId = payload.user_id;
+            const getUser = await auth.findUser(userId);
+            if (getUser.length === 1) {
+                res.clearCookie('refreshToken');
+                return res.status(200).send();
             }
         } catch (error) {
-            return res.status(401).send('error')
+            return res.status(401).send('error');
         }
     }
-}
-
+};
 
 exports.isLoggedIn = async (req, res, next) => {
-    let auth = req.headers.authorization
-    if (!auth) return res.status(400).send(codes(400, 'Invalid Request'))
+    const auth = req.headers.authorization;
+    if (!auth) return res.status(400).send(codes(400, 'Invalid Request'));
     try {
-        let token = auth.split(' ')[1]
-        let { userId, email } = jwt.verify(token, config.JWTKey)
-        let getLoggedInData = await user.isLoggedInService(userId, email)
+        const token = auth.split(' ')[1];
+        const { userId, email } = jwt.verify(token, config.JWTKey);
+        const getLoggedInData = await user.isLoggedInService(userId, email);
         if (getLoggedInData.length == 1) {
-            let getSuspendedAccount = await
-                user.isSuspendedService(userId)
+            const getSuspendedAccount = await user.isSuspendedService(userId);
             if (getSuspendedAccount[0].status == 2) {
-                req.userId = userId
-                req.email = email
-                next()
+                req.userId = userId;
+                req.email = email;
+                next();
             } else {
-                return res.status(403).send(codes(403))
+                return res.status(403).send(codes(403));
             }
         } else {
-            return res.status(401).send(codes(401))
+            return res.status(401).send(codes(401));
         }
     } catch (error) {
-        console.log(error)
+        console.log(error);
         if (error.expiredAt) {
-            return res.status(401).send(codes(401))
+            return res.status(401).send(codes(401));
         }
-        return res.status(400).send(codes(400))
+        return res.status(400).send(codes(400));
     }
-}
+};
