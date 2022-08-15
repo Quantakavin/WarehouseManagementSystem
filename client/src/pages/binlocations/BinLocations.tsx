@@ -71,7 +71,7 @@ const Scene = ({ selectedbintags }: SceneProps) => {
       />
       <Suspense fallback={null}>
 
-      {/* <Office position={[-30,-10,-80]} /> */}
+      <Office position={[-30,-10,-80]} />
 
       <Pallets position={[-40,-12,-80]}/>
       <Pallets position={[-80,-12,-80]}/>
@@ -436,21 +436,21 @@ const Scene = ({ selectedbintags }: SceneProps) => {
         />
 
         <FourColRack
-          position={[70, 0, 180]}
+          position={[75, 0, 180]}
           areatag="A10"
           racktag="R04"
           changeposition={changeCameraPosition}
           currentbintags={selectedbintags}
         />
         <FourColRack
-          position={[95, 0, 180]}
+          position={[100, 0, 180]}
           areatag="A10"
           racktag="R05"
           changeposition={changeCameraPosition}
           currentbintags={selectedbintags}
         />
         <TwoColRack
-          position={[115, 0, 180]}
+          position={[120, 0, 180]}
           areatag="A10"
           racktag="R06"
           changeposition={changeCameraPosition}
@@ -481,21 +481,21 @@ const Scene = ({ selectedbintags }: SceneProps) => {
         />
 
         <FourColRack
-          position={[70, 0, 200]}
+          position={[75, 0, 200]}
           areatag="A11"
           racktag="R04"
           changeposition={changeCameraPosition}
           currentbintags={selectedbintags}
         />
         <FourColRack
-          position={[95, 0, 200]}
+          position={[100, 0, 200]}
           areatag="A11"
           racktag="R05"
           changeposition={changeCameraPosition}
           currentbintags={selectedbintags}
         />
         <TwoColRack
-          position={[115, 0, 200]}
+          position={[120, 0, 200]}
           areatag="A11"
           racktag="R06"
           changeposition={changeCameraPosition}

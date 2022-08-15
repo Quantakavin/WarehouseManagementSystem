@@ -5,6 +5,7 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   Box,
+  Button,
   Fab,
   LinearProgress,
   Stack,
@@ -42,7 +43,7 @@ const Users2: React.FC = () => {
   const [idToDelete, setIdToDelete] = useState<string>(null);
   const queryClient = useQueryClient();
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const mutation = useMutation(DeleteUser);
 
   useEffect(() => {
@@ -53,19 +54,28 @@ const Users2: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    setLoading(true);
-      // declare the async data fetching function
-      axios
-        .get(`${config.baseURL}/users`, {
-          method: "get",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then((response) => setUsers(response.data))
-        .then(() => setLoading(false));
-  }, []);
+  const UsersQuery = useQuery(
+    'users',
+    GetAllUsers, {
+      onSuccess: (data) => {
+        setUsers(data.data)
+      }
+    }
+  );
+
+  // useEffect(() => {
+  //   setLoading(true);
+  //     // declare the async data fetching function
+  //     axios
+  //       .get(`${config.baseURL}/users`, {
+  //         method: "get",
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       })
+  //       .then((response) => setUsers(response.data))
+  //       .then(() => setLoading(false));
+  // }, []);
 
   const SelectDelete = (id: string) => {
     setIdToDelete(id);
@@ -91,7 +101,7 @@ const Users2: React.FC = () => {
         // queryClient.invalidateQueries('filterusergroups');
         queryClient.invalidateQueries("usernames");
         setIdToDelete(null);
-        navigate("/users");
+        //navigate("/users");
       },
     });
   };
@@ -239,15 +249,11 @@ const Users2: React.FC = () => {
             >
               Cancel
             </button>
-            <motion.button
-              style={{ alignSelf: "flex-end" }}
-              className="deletebutton"
-              onClick={() => Delete(idToDelete)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="animatable deletebutton" style={{ alignSelf: "flex-end" }} onClick={() => Delete(idToDelete)}>
+            <Button sx={{textTransform: "none", color: "white", fontWeight: 500}}>
               Delete Anyway
-            </motion.button>
+            </Button>
+            </motion.div>
           </>
         }
       />
@@ -312,7 +318,7 @@ const Users2: React.FC = () => {
           </Box>
 
           <DataGrid
-            loading={loading}
+            loading={UsersQuery.isLoading}
             sx={{ background: "white", fontSize: 18 }}
             rows={users}
             columns={columns}

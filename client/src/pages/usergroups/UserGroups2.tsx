@@ -40,8 +40,8 @@ const UserGroups2: React.FC = () => {
   const [idToDelete, setIdToDelete] = useState<string>(null);
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
-  const [usergroups, setUserGroups] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [userGroups, setUserGroups] = useState([]);
+  //const [loading, setLoading] = useState(false);
   const mutation = useMutation(DeleteUserGroup);
   const userrole = useAppSelector(selectRole);
 
@@ -53,19 +53,29 @@ const UserGroups2: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    setLoading(true);
-      // declare the async data fetching function
-      axios
-        .get(`${config.baseURL}/usergroups`, {
-          method: "get",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then((response) => setUserGroups(response.data))
-        .then(() => setLoading(false));
-  }, []);
+  const UserGroupsQuery = useQuery(
+    'usergroups',
+    GetUserGroups, {
+      onSuccess: (data) => {
+        setUserGroups(data.data)
+      }
+    }
+  );
+
+
+  // useEffect(() => {
+  //   setLoading(true);
+  //     // declare the async data fetching function
+  //     axios
+  //       .get(`${config.baseURL}/usergroups`, {
+  //         method: "get",
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       })
+  //       .then((response) => setUserGroups(response.data))
+  //       .then(() => setLoading(false));
+  // }, []);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [
@@ -307,9 +317,9 @@ const UserGroups2: React.FC = () => {
             </Box>
           </Box>
           <DataGrid
-            loading={loading}
+            loading={UserGroupsQuery.isLoading}
             sx={{ background: "white", fontSize: 18 }}
-            rows={usergroups}
+            rows={userGroups}
             columns={columns}
             getRowId={(row) => row.UserGroupID}
             pageSize={pageSize}

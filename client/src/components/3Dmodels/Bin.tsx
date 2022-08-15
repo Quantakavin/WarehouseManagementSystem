@@ -38,6 +38,7 @@ const Model: React.FC<ModelProps> = ({
   const group = useRef<THREE.Group>();
   const [BinsData, setBinsData] = useState<any>(null);
   const [isSelected, setIsSelected] = useState<boolean>(false);
+  const timer = useRef(null);
   // const [exists, setExists] = useState<boolean>(true);
   const { nodes, materials } = useGLTF("/box.glb") as GLTFResult;
 
@@ -67,18 +68,20 @@ const Model: React.FC<ModelProps> = ({
   //   })
   // }, [areatag, sectiontag, leveltag, racktag]);
 
-  const RetrieveBinInfo = async () => {
-    setIsSelected(true);
-    return await axios
-      .get(
-        `${config.baseURL}/bintag/${areatag}${racktag}${leveltag}${sectiontag}`
-      )
-      .then((data) => {
-        console.log(data.data[0]);
-        if (data.data[0] != null) {
-          setBinsData(data.data[0]);
-        }
-      });
+  const RetrieveBinInfo = () => {
+    timer.current = setTimeout(() => {
+      setIsSelected(true);
+      axios
+        .get(
+          `${config.baseURL}/bintag/${areatag}${racktag}${leveltag}${sectiontag}`
+        )
+        .then((data) => {
+          console.log(data.data[0]);
+          if (data.data[0] != null) {
+            setBinsData(data.data[0]);
+          }
+        });
+    }, 250);
   };
 
   // get bin products and amount of items
@@ -110,6 +113,7 @@ const Model: React.FC<ModelProps> = ({
         }}
         onPointerOut={(e) => {
           e.stopPropagation();
+          clearTimeout(timer.current);
           setIsSelected(false);
         }}
         // onClick={(e) => {

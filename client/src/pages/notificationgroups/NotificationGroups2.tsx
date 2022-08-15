@@ -44,8 +44,8 @@ const NotificationGroups2: React.FC = () => {
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const [showError, setShowError] = useState<boolean>(false);
   const [idToDelete, setIdToDelete] = useState<string>(null);
-  const [notificationgroups, setNotificationGroups] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [notificationGroups, setNotificationGroups] = useState([]);
+  // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (userrole !== "Admin") {
@@ -55,20 +55,30 @@ const NotificationGroups2: React.FC = () => {
     }
   }, []);
 
+  const NotificationGroupQuery = useQuery(
+    'notificationgroups',
+    GetNotificationGroups, {
+      onSuccess: (data) => {
+        setNotificationGroups(data.data)
+      }
+    }
+  );
+
+
   // const [hoveredRow, setHoveredRow] = React.useState(null);
-  useEffect(() => {
-    setLoading(true);
-      // declare the async data fetching function
-      axios
-        .get(`${config.baseURL}/notificationgroups`, {
-          method: "get",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then((response) => setNotificationGroups(response.data))
-        .then(() => setLoading(false));
-  }, []);
+  // useEffect(() => {
+  //   setLoading(true);
+  //     // declare the async data fetching function
+  //     axios
+  //       .get(`${config.baseURL}/notificationgroups`, {
+  //         method: "get",
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       })
+  //       .then((response) => setNotificationGroups(response.data))
+  //       .then(() => setLoading(false));
+  // }, []);
 
   const SelectDelete = (id: string) => {
     setIdToDelete(id);
@@ -320,9 +330,9 @@ const NotificationGroups2: React.FC = () => {
             </Box>
           </Box>
           <DataGrid
-            loading={loading}
+            loading={NotificationGroupQuery.isLoading}
             sx={{ background: "white", fontSize: 18 }}
-            rows={notificationgroups}
+            rows={notificationGroups}
             columns={columns}
             getRowId={(row) => row.NotiGroupID}
             pageSize={pageSize}
