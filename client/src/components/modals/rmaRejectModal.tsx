@@ -52,10 +52,10 @@ const RejectModalButton = () => {
   const handleConfirm = async () => {
     setLoading(true);
     if (reason !== "") {
-      setLoading(false);
       axios
         .put(`${config.baseURL}/rejectRMA/${RmaID}`, rejectreason)
         .then(() => {
+          setLoading(false);
           Toast.fire({
             icon: "success",
             title: `RMA #${RmaID} Rejected`,
@@ -66,6 +66,7 @@ const RejectModalButton = () => {
           navigate("/rma");
         })
         .catch((e) => {
+          setLoading(false);
           console.error("There was an error!", e);
         });
     } else {

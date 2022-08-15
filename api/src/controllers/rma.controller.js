@@ -144,6 +144,13 @@ module.exports.getMyAcceptedRMA = async (req, res) => {
             redisClient.set(`myAcceptedRMA#${SalesmanID}`, JSON.stringify(results[0]), {
                 EX: 60 * 60 * 24
             });
+            redisClient.del('PendingRMA');
+            redisClient.del('AcceptedRMA');
+            redisClient.del('ReceivedRMA');
+            redisClient.del('ProcessingRMA');
+            redisClient.del('VerifiedRMA');
+            redisClient.del('InProgressRMA');
+            redisClient.del('ClosedRMA');
             return res.status(200).send(results[0]);
         }
         return res.status(404).json({ message: 'Cannot find accepted RMA requests under you!' });
@@ -210,6 +217,13 @@ module.exports.getPendingRMA = async (req, res) => {
         const results = await rmaService.getPendingRMA();
         redisClient.set('PendingRMA', JSON.stringify(results[0]), { EX: 60 * 60 * 24 });
         if (results.length > 0) {
+            redisClient.del('PendingRMA');
+            redisClient.del('AcceptedRMA');
+            redisClient.del('ReceivedRMA');
+            redisClient.del('ProcessingRMA');
+            redisClient.del('VerifiedRMA');
+            redisClient.del('InProgressRMA');
+            redisClient.del('ClosedRMA');
             return res.status(200).json(results[0]);
         }
         return res.status(404).send('No RMAs found!');
@@ -248,6 +262,13 @@ module.exports.getInProgressChecklist = async (req, res) => {
         const results = await rmaService.getInProgressChecklist();
         redisClient.set('ProcessingRMA', JSON.stringify(results[0]), { EX: 60 * 60 * 24 });
         if (results.length > 0) {
+            redisClient.del('PendingRMA');
+            redisClient.del('AcceptedRMA');
+            redisClient.del('ReceivedRMA');
+            redisClient.del('ProcessingRMA');
+            redisClient.del('VerifiedRMA');
+            redisClient.del('InProgressRMA');
+            redisClient.del('ClosedRMA');
             return res.status(200).json(results[0]);
         }
         return res.status(404).send('No RMAs in processing found!');
@@ -286,6 +307,13 @@ module.exports.getReceivedRMA = async (req, res) => {
         const results = await rmaService.getReceivedRMA();
         redisClient.set('ReceivedRMA', JSON.stringify(results[0]), { EX: 60 * 60 * 24 });
         if (results.length > 0) {
+            redisClient.del('PendingRMA');
+            redisClient.del('AcceptedRMA');
+            redisClient.del('ReceivedRMA');
+            redisClient.del('ProcessingRMA');
+            redisClient.del('VerifiedRMA');
+            redisClient.del('InProgressRMA');
+            redisClient.del('ClosedRMA');
             return res.status(200).json(results[0]);
         }
         return res.status(404).send('No received RMAs found!');

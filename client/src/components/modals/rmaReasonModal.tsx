@@ -24,9 +24,13 @@ const style = {
   p: 4,
 };
 
+interface Rma {
+  RejectReason: string;
+}
+
 const ReasonModalButton = () => {
   const { RmaID } = useParams();
-  const [rma, setRma] = useState([]);
+  const [rma, setRma] = useState<Rma>([]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -35,9 +39,9 @@ const ReasonModalButton = () => {
     // declare the async data fetching function
     const fetchData = async () => {
       // get the data from the api
-      await axios.get(`${config.baseURL}/RMA/${RmaID}`);
+      const rma = await axios.get(`${config.baseURL}/RMA/${RmaID}`);
 
-      setRma(data);
+      setRma(rma.data);
     };
     // call the function
     fetchData()

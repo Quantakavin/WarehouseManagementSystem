@@ -92,18 +92,12 @@ module.exports.getSalesmanIPRMA = async (SalesmanID) => {
                     r.Company,
                     r.CustomerEmail
                     FROM Rma r, User u 
-                    WHERE (SalesmanID = ? 
-                    AND RmaStatusID = 3
-                    AND r.SalesmanID = u.UserID)
-                    OR (SalesmanID = ? 
-                    AND RmaStatusID = 5
-                    AND r.SalesmanID = u.UserID)
-                    OR (SalesmanID = ? 
-                    AND RmaStatusID = 6
-                    AND r.SalesmanID = u.UserID)
-                    OR (SalesmanID = ? 
-                    AND RmaStatusID = 7
-                    AND r.SalesmanID = u.UserID);`;
+                    WHERE SalesmanID = ? 
+                    AND r.SalesmanID = u.UserID
+                    AND (RmaStatusID = 3
+                    OR RmaStatusID = 5
+                    OR RmaStatusID = 6
+                    OR RmaStatusID = 7);`;
     return knex.raw(query, [SalesmanID]);
 };
 

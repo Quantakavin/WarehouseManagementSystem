@@ -50,6 +50,8 @@ export interface RMA {
   Company: string;
   ContactNo: number;
   RmaStatusID: number;
+  StatusText: string;
+  RejectReason: string;
 }
 
 export interface TLoan {
