@@ -155,7 +155,7 @@ module.exports.rmaRejectedTele = (UserID, Username, RmaID, RejectReason) => {
 module.exports.rmaReceivedTele = (UserID, Username, RmaID) => {
     try {
         bot.sendPhoto(UserID, isdnlogo, {
-            caption: `Hello ${Username}, the products for your RMA request #${RmaID} have just been received,`
+            caption: `Hello ${Username}, the products for your RMA request #${RmaID} have just been received, view the details at https://isdnwarehouse.netlify.app/rmaDetails/${RmaID}`
         });
     } catch (error) {
         console.log(error);
@@ -165,7 +165,7 @@ module.exports.rmaReceivedTele = (UserID, Username, RmaID) => {
 module.exports.rmaVerifiedTele = (UserID, Username, RmaID) => {
     try {
         bot.sendPhoto(UserID, isdnlogo, {
-            caption: `Hello ${Username}, the products for your RMA request #${RmaID} have just been verified,`
+            caption: `Hello ${Username}, the products for your RMA request #${RmaID} have just been verified, view the details at https://isdnwarehouse.netlify.app/rmaDetails/${RmaID}`
         });
     } catch (error) {
         console.log(error);

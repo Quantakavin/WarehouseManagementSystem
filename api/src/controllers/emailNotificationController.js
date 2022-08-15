@@ -183,7 +183,6 @@ module.exports.tloanAcceptedMail = (email, username, TLoanID) => {
 module.exports.tloanRejectedMail = (email, username, TLoanID, remarks) => {
     sgMail
         .send({
-            // to: 'shine.thw@gmail.com', // Change to your recipient
             from: 'shine.thw@gmail.com', // Change to your verified sender
             subject: 'T-Loan Approved',
             templateId: 'd-1fd651d001e744ed976bd3aa9f464c32',

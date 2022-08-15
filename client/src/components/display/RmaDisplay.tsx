@@ -1150,6 +1150,12 @@ const RmaDisplay: React.FC = () => {
               {rma.ContactNo}
             </Box>
           </Box>
+          <Box sx={{ marginLeft: 5 }}>
+            <Box sx={{}}>STATUS</Box>
+            <Box sx={{ color: "black", fontWeight: "normal" }}>
+              {rma.StatusText}
+            </Box>
+          </Box>
         </Typography>
 
         <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
@@ -1265,6 +1271,12 @@ const RmaDisplay: React.FC = () => {
               <Box sx={{}}>CONTACT NUMBER</Box>
               <Box sx={{ color: "black", fontWeight: "normal" }}>
                 {rma.ContactNo}
+              </Box>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>STATUS</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.StatusText}
               </Box>
             </Box>
           </Typography>
@@ -1418,6 +1430,12 @@ const RmaDisplay: React.FC = () => {
               {rma.ContactNo}
             </Box>
           </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>STATUS</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.StatusText}
+              </Box>
+            </Box>
         </Typography>
 
         <Box sx={{ display: "flex", height: "99%", width: "100%" }}>
@@ -1536,6 +1554,12 @@ const RmaDisplay: React.FC = () => {
               <Box sx={{}}>CONTACT NUMBER</Box>
               <Box sx={{ color: "black", fontWeight: "normal" }}>
                 {rma.ContactNo}
+              </Box>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>STATUS</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.StatusText}
               </Box>
             </Box>
           </Typography>
@@ -1723,6 +1747,12 @@ const RmaDisplay: React.FC = () => {
               {rma.ContactNo}
             </Box>
           </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>STATUS</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.StatusText}
+              </Box>
+            </Box>
         </Typography>
 
         <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
@@ -1845,6 +1875,12 @@ const RmaDisplay: React.FC = () => {
               {rma.ContactNo}
             </Box>
           </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>STATUS</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.StatusText}
+              </Box>
+            </Box>
         </Typography>
 
         <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
@@ -1962,6 +1998,12 @@ const RmaDisplay: React.FC = () => {
               {rma.ContactNo}
             </Box>
           </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>STATUS</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.StatusText}
+              </Box>
+            </Box>
         </Typography>
 
         <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
@@ -2152,6 +2194,12 @@ const RmaDisplay: React.FC = () => {
               {rma.ContactNo}
             </Box>
           </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>STATUS</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.StatusText}
+              </Box>
+            </Box>
         </Typography>
 
         <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
@@ -2314,6 +2362,12 @@ const RmaDisplay: React.FC = () => {
               {rma.ContactNo}
             </Box>
           </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>STATUS</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.StatusText}
+              </Box>
+            </Box>
         </Typography>
 
         <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
@@ -2466,6 +2520,12 @@ const RmaDisplay: React.FC = () => {
             {rma.ContactNo}
           </Box>
         </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <Box sx={{}}>STATUS</Box>
+              <Box sx={{ color: "black", fontWeight: "normal" }}>
+                {rma.StatusText}
+              </Box>
+            </Box>
       </Typography>
 
       <Box sx={{ display: "flex", height: "97%", width: "100%" }}>
