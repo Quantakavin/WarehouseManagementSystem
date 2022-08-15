@@ -6,6 +6,8 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 const { TOKEN } = process.env;
 const bot = new TelegramBot(TOKEN, { polling: true });
+const isdnlogo =
+    'https://www.pngitem.com/pimgs/m/621-6213396_isdn-holdings-limited-isdn-holdings-logo-hd-png.png';
 // const { rmaService } = require('../services');
 
 // const options = {
@@ -129,10 +131,9 @@ const bot = new TelegramBot(TOKEN, { polling: true });
 
 module.exports.rmaAcceptedTele = (UserID, Username, RmaID) => {
     try {
-        bot.sendMessage(
-            UserID,
-            `Hello ${Username}, your RMA request #${RmaID} has just been approved, view the details at https://isdnwarehouse.netlify.app/rmaDetails/${RmaID}`
-        );
+        bot.sendPhoto(UserID, isdnlogo, {
+            caption: `Hello ${Username}, your RMA request #${RmaID} has just been approved, view the details at https://isdnwarehouse.netlify.app/rmaDetails/${RmaID}`
+        });
     } catch (error) {
         console.log(error);
     }
@@ -141,10 +142,9 @@ module.exports.rmaAcceptedTele = (UserID, Username, RmaID) => {
 module.exports.rmaRejectedTele = (UserID, Username, RmaID, RejectReason) => {
     try {
         console.log('Among Us');
-        bot.sendMessage(
-            UserID,
-            `Hello ${Username}, your RMA request #${RmaID} has just been rejected, view the details at https://isdnwarehouse.netlify.app/rmaDetails/${RmaID}`
-        );
+        bot.sendPhoto(UserID, isdnlogo, {
+            caption: `Hello ${Username}, your RMA request #${RmaID} has just been rejected, view the details at https://isdnwarehouse.netlify.app/rmaDetails/${RmaID}`
+        });
         bot.sendMessage(UserID, `Reason: ${RejectReason}`);
     } catch (error) {
         console.log('Among Us');
@@ -154,10 +154,9 @@ module.exports.rmaRejectedTele = (UserID, Username, RmaID, RejectReason) => {
 
 module.exports.rmaReceivedTele = (UserID, Username, RmaID) => {
     try {
-        bot.sendMessage(
-            UserID,
-            `Hello ${Username}, the products for your RMA request #${RmaID} have just been received,`
-        );
+        bot.sendPhoto(UserID, isdnlogo, {
+            caption: `Hello ${Username}, the products for your RMA request #${RmaID} have just been received,`
+        });
     } catch (error) {
         console.log(error);
     }
@@ -165,10 +164,9 @@ module.exports.rmaReceivedTele = (UserID, Username, RmaID) => {
 
 module.exports.rmaVerifiedTele = (UserID, Username, RmaID) => {
     try {
-        bot.sendMessage(
-            UserID,
-            `Hello ${Username}, the products for your RMA request #${RmaID} have just been verified,`
-        );
+        bot.sendPhoto(UserID, isdnlogo, {
+            caption: `Hello ${Username}, the products for your RMA request #${RmaID} have just been verified,`
+        });
     } catch (error) {
         console.log(error);
     }
@@ -176,10 +174,9 @@ module.exports.rmaVerifiedTele = (UserID, Username, RmaID) => {
 
 module.exports.rmaProgressTele = (UserID, Username, RmaID) => {
     try {
-        bot.sendMessage(
-            UserID,
-            `Hello ${Username}, progress for your RMA request #${RmaID} has just been updated, view the details at https://isdnwarehouse.netlify.app/rmaDetails/${RmaID}`
-        );
+        bot.sendPhoto(UserID, isdnlogo, {
+            caption: `Hello ${Username}, progress for your RMA request #${RmaID} has just been updated, view the details at https://isdnwarehouse.netlify.app/rmaDetails/${RmaID}`
+        });
     } catch (error) {
         console.log(error);
     }
@@ -187,10 +184,9 @@ module.exports.rmaProgressTele = (UserID, Username, RmaID) => {
 
 module.exports.rmaClosedTele = (UserID, Username, RmaID) => {
     try {
-        bot.sendMessage(
-            UserID,
-            `Hello ${Username}, your RMA request #${RmaID} has just been closed,`
-        );
+        bot.sendPhoto(UserID, isdnlogo, {
+            caption: `Hello ${Username}, your RMA request #${RmaID} has just been closed,`
+        });
     } catch (error) {
         console.log(error);
     }
@@ -198,10 +194,9 @@ module.exports.rmaClosedTele = (UserID, Username, RmaID) => {
 
 module.exports.tloanAcceptedTele = (UserID, Username, TLoanID) => {
     try {
-        bot.sendMessage(
-            UserID,
-            `Hello ${Username}, your T-Loan request #${TLoanID} has just been approved, view the details at https://isdnwarehouse.netlify.app/tloandetails/${TLoanID}`
-        );
+        bot.sendPhoto(UserID, isdnlogo, {
+            caption: `Hello ${Username}, your T-Loan request #${TLoanID} has just been approved, view the details at https://isdnwarehouse.netlify.app/tloandetails/${TLoanID}`
+        });
     } catch (error) {
         console.log(error);
     }
@@ -209,10 +204,10 @@ module.exports.tloanAcceptedTele = (UserID, Username, TLoanID) => {
 
 module.exports.tloanRejectedTele = (UserID, Username, TLoanID, Remarks) => {
     try {
-        bot.sendMessage(
-            UserID,
-            `Hello ${Username}, your T-Loan request #${TLoanID} has just been rejected, Remarks: ${Remarks}`
-        );
+        bot.sendPhoto(UserID, isdnlogo, {
+            caption: `Hello ${Username}, your T-Loan request #${TLoanID} has just been rejected`
+        });
+        bot.sendMessage(UserID, `Reason: ${Remarks}`);
     } catch (error) {
         console.log(error);
     }
@@ -220,10 +215,9 @@ module.exports.tloanRejectedTele = (UserID, Username, TLoanID, Remarks) => {
 
 module.exports.tloanExtensionAcceptedTele = (UserID, Username, TLoanID) => {
     try {
-        bot.sendMessage(
-            UserID,
-            `Hello ${Username}, your Extension request for T-Loan #${TLoanID} has just been approved, view the details at https://isdnwarehouse.netlify.app/tloandetails/${TLoanID}`
-        );
+        bot.sendPhoto(UserID, isdnlogo, {
+            caption: `Hello ${Username}, your Extension request for T-Loan #${TLoanID} has just been approved, view the details at https://isdnwarehouse.netlify.app/tloandetails/${TLoanID}`
+        });
     } catch (error) {
         console.log(error);
     }
@@ -231,10 +225,10 @@ module.exports.tloanExtensionAcceptedTele = (UserID, Username, TLoanID) => {
 
 module.exports.tloanExtensionRejectedTele = (UserID, Username, TLoanID, Remarks) => {
     try {
-        bot.sendMessage(
-            UserID,
-            `Hello ${Username}, your Extension request for T-Loan #${TLoanID} has just been rejected, Remarks: ${Remarks}`
-        );
+        bot.sendPhoto(UserID, isdnlogo, {
+            caption: `Hello ${Username}, your Extension request for T-Loan #${TLoanID} has just been rejected`
+        });
+        bot.sendMessage(UserID, `Remarks: ${Remarks}`);
     } catch (error) {
         console.log(error);
     }

@@ -36,7 +36,7 @@ module.exports.createTLoan = async (
     collection,
     tloanItems
 ) => {
-    knex.transaction(function (trx) {
+    return knex.transaction((trx)=> {
         knex.insert(
             {
                 TLoanTypeID: type,
@@ -57,12 +57,16 @@ module.exports.createTLoan = async (
         )
             .into('TLoan')
             .transacting(trx)
-            .then(function (ids) {
-                tloanItems.forEach((item) => (item.TLoanID = ids[0]));
-                return knex('TLoanOutItem').insert(tloanItems).transacting(trx);
+            .then((TLoanID) => {
+                if(tloanItems.length > 0){
+                    tloanItems.forEach((item) => {
+                        [item.TLoanID] = TLoanID
+                    })
+                    return knex('TLoanOutItem').insert(tloanItems).transacting(trx);
+                }
+                return null
             })
-
-            .then(trx.commit)
+            .then(trx.commit)   
             .catch(trx.rollback);
     });
 };
@@ -80,7 +84,7 @@ module.exports.SendTLoanToDraft = async (
     collection,
     tloanItems
 ) => {
-    knex.transaction(function (trx) {
+    return knex.transaction((trx) => {
         knex.insert(
             {
                 TLoanTypeID: type,
@@ -101,9 +105,14 @@ module.exports.SendTLoanToDraft = async (
         )
             .into('TLoan')
             .transacting(trx)
-            .then(function (ids) {
-                tloanItems.forEach((item) => (item.TLoanID = ids[0]));
-                return knex('TLoanOutItem').insert(tloanItems).transacting(trx);
+            .then((TLoanID) => {
+                if(tloanItems.length > 0){
+                    tloanItems.forEach((item) => {
+                        [item.TLoanID] = TLoanID
+                    })
+                    return knex('TLoanOutItem').insert(tloanItems).transacting(trx);
+                }
+                return null
             })
 
             .then(trx.commit)
