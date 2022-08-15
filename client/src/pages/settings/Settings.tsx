@@ -791,7 +791,7 @@ const Settings: React.FC = () => {
                         style={{ color: "#0A2540" }}
                       >
                         Receive updates on your RMA and T-Loan requests via the
-                        ISDNMS Telegram bot.
+                        ISDNWMS Telegram bot.
                       </Typography>
                     </Grid>
                   </Grid>
