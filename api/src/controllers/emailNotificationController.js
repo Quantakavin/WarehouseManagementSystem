@@ -9,7 +9,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 module.exports.rmaAcceptedMail = (email, username, RmaID) => {
     sgMail
         .send({
-            from: 'info@isdnholdings.com', // Change to your verified sender
+            from: 'shine.thw@gmail.com', // Change to your verified sender
             subject: 'RMA Approved',
             templateId: 'd-1c4b7d2230ea47f2997c87dbc696a875',
             personalizations: [
@@ -34,7 +34,7 @@ module.exports.rmaAcceptedMail = (email, username, RmaID) => {
 module.exports.rmaRejectedMail = (email, username, RmaID, rejectreason) => {
     sgMail
         .send({
-            from: 'info@isdnholdings.com', // Change to your verified sender
+            from: 'shine.thw@gmail.com', // Change to your verified sender
             subject: 'RMA Rejected',
             templateId: 'd-03dd5c5e80c8479f96d2cffb4fd8232a',
             personalizations: [
@@ -60,7 +60,7 @@ module.exports.rmaRejectedMail = (email, username, RmaID, rejectreason) => {
 module.exports.rmaReceivedMail = (email, username, RmaID) => {
     sgMail
         .send({
-            from: 'info@isdnholdings.com', // Change to your verified sender
+            from: 'shine.thw@gmail.com', // Change to your verified sender
             subject: 'RMA Products Received',
             templateId: 'd-38569b642c5e4edcb0907b5117dcd170',
             personalizations: [
@@ -84,7 +84,7 @@ module.exports.rmaReceivedMail = (email, username, RmaID) => {
 module.exports.rmaVerifiedMail = (email, username, RmaID) => {
     sgMail
         .send({
-            from: 'info@isdnholdings.com', // Change to your verified sender
+            from: 'shine.thw@gmail.com', // Change to your verified sender
             subject: 'RMA Products Verified',
             templateId: 'd-b9e24118425a40e484bc427898a03ab8',
             personalizations: [
@@ -108,7 +108,7 @@ module.exports.rmaVerifiedMail = (email, username, RmaID) => {
 module.exports.rmaInprogressMail = (email, username, RmaID) => {
     sgMail
         .send({
-            from: 'info@isdnholdings.com', // Change to your verified sender
+            from: 'shine.thw@gmail.com', // Change to your verified sender
             subject: 'RMA In Progress',
             templateId: 'd-7e69aac661674008825aa00f79505a32',
             personalizations: [
@@ -133,7 +133,7 @@ module.exports.rmaInprogressMail = (email, username, RmaID) => {
 module.exports.rmaClosedMail = (email, username, RmaID) => {
     sgMail
         .send({
-            from: 'info@isdnholdings.com', // Change to your verified sender
+            from: 'shine.thw@gmail.com', // Change to your verified sender
             subject: 'RMA poop Closed',
             templateId: 'd-5d4c35c7a40f40db81fe077b31eb35c4',
             personalizations: [
@@ -158,7 +158,7 @@ module.exports.tloanAcceptedMail = (email, username, TLoanID) => {
     console.log(TLoanID);
     sgMail
         .send({
-            from: 'info@isdnholdings.com', // Change to your verified sender
+            from: 'shine.thw@gmail.com', // Change to your verified sender
             subject: 'T-Loan Approved',
             templateId: 'd-bc60b4d141fd452f88714ed54a78fbe2',
             personalizations: [
@@ -183,7 +183,7 @@ module.exports.tloanAcceptedMail = (email, username, TLoanID) => {
 module.exports.tloanRejectedMail = (email, username, TLoanID, remarks) => {
     sgMail
         .send({
-            from: 'info@isdnholdings.com', // Change to your verified sender
+            from: 'shine.thw@gmail.com', // Change to your verified sender
             subject: 'T-Loan Approved',
             templateId: 'd-1fd651d001e744ed976bd3aa9f464c32',
             personalizations: [
@@ -208,8 +208,8 @@ module.exports.tloanRejectedMail = (email, username, TLoanID, remarks) => {
 module.exports.tloanExtensionAcceptedMail = (email, username, TLoanID) => {
     sgMail
         .send({
-            // to: 'info@isdnholdings.com', // Change to your recipient
-            from: 'info@isdnholdings.com', // Change to your verified sender
+            // to: 'shine.thw@gmail.com', // Change to your recipient
+            from: 'shine.thw@gmail.com', // Change to your verified sender
             subject: 'T-Loan Extension Approved',
             templateId: 'd-426c38a58f73486bbe2f53f378e31082',
             personalizations: [
@@ -234,8 +234,8 @@ module.exports.tloanExtensionAcceptedMail = (email, username, TLoanID) => {
 module.exports.tloanExtensionRejectedMail = (email, username, TLoanID, remarks) => {
     sgMail
         .send({
-            // to: 'info@isdnholdings.com', // Change to your recipient
-            from: 'info@isdnholdings.com', // Change to your verified sender
+            // to: 'shine.thw@gmail.com', // Change to your recipient
+            from: 'shine.thw@gmail.com', // Change to your verified sender
             subject: 'T-Loan Extension Rejected',
             templateId: 'd-a0c83a5bca4941ed8f1baeb7c7aa3604',
             personalizations: [
