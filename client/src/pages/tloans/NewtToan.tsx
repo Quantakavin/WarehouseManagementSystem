@@ -401,6 +401,7 @@ function newtloan() {
   };
 
   const handleChangeType = (event: SelectChangeEvent) => {
+    setCompany("")
     setType(event.target.value);
   };
 
