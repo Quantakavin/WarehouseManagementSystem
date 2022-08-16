@@ -53,6 +53,7 @@ function newtloan() {
   const [company, setCompany] = useState("");
   const [name, setName] = useState("");
   const [purpose, setPurpose] = useState("");
+  const [shipping, setShipping] = useState("")
   const [applicationdate, setADate] = useState("");
   const [duration, setDuration] = useState("");
   const [user, setUser] = useState("");
@@ -65,6 +66,7 @@ function newtloan() {
   const [purposeError, setPurposeError] = useState(false);
   const [durationError, setDurationError] = useState(false);
   const [emailError, setEmailError] = useState(false);
+  const [shippingError, setShippingError] = useState(false);
   const [collectionError, setCollectionError] = useState(false);
   const [typeErrorText, setTypeErrorText] = useState("");
   const [companyErrorText, setCompanyErrorText] = useState("");
@@ -72,6 +74,7 @@ function newtloan() {
   const [durationErrorText, setDurationErrorText] = useState("");
   const [emailErrorText, setEmailErrorText] = useState("");
   const [collectionErrorText, setCollectionErrorText] = useState("");
+  const [shippingErrorText, setShippingErrorText] = useState("");
   const [minDateStr, setMinDateStr] = useState("");
   const permissions = useAppSelector(selectPermissions);
   const ExternalApplication = permissions.some(
@@ -406,6 +409,7 @@ function newtloan() {
   };
 
   const handleChangeCollection = (event: SelectChangeEvent) => {
+    setShipping("")
     setCollection(event.target.value);
   };
 
@@ -429,7 +433,7 @@ function newtloan() {
     setDurationError(false);
     setEmailError(false);
     setCollectionError(false);
-
+    setShippingError(false)
     if (items.length === 0) {
       Toast.fire({
         icon: "error",
@@ -486,6 +490,11 @@ function newtloan() {
       setCollectionErrorText("Selection required");
       setSubmitLoading(false);
     }
+    if (shipping === "") {
+      setShippingError(true);
+      setShippingErrorText("Required");
+      setSubmitLoading(false);
+    }
     if (
       type === "2" &&
       (company === "1" ||
@@ -521,7 +530,8 @@ function newtloan() {
       requireddate !== "" &&
       email !== "" &&
       email.match(emailRegex) &&
-      collection !== ""
+      collection !== ""&&
+      shipping !== ""
     ) {
       try {
         const results = axios
@@ -536,6 +546,7 @@ function newtloan() {
             user,
             email,
             collection,
+            shipping,
             items,
           })
           .then(() => {
@@ -567,6 +578,7 @@ function newtloan() {
     setDurationError(false);
     setEmailError(false);
     setCollectionError(false);
+    setShippingError(false)
     if (items.length === 0) {
       Toast.fire({
         icon: "error",
@@ -623,6 +635,11 @@ function newtloan() {
       setCollectionErrorText("Selection required");
       setLoading(false);
     }
+    if (shipping === "") {
+      setShippingError(true);
+      setShippingErrorText("Required");
+      setLoading(false);
+    }
     if (
       type === "2" &&
       (company === "1" ||
@@ -658,7 +675,8 @@ function newtloan() {
       requireddate !== "" &&
       email !== "" &&
       email.match(emailRegex) &&
-      collection !== ""
+      collection !== "" &&
+      shipping !== ""
     ) {
       try {
         const results = axios
@@ -673,6 +691,7 @@ function newtloan() {
             user,
             email,
             collection,
+            shipping,
             items,
           })
           .then(() => {
@@ -702,7 +721,14 @@ function newtloan() {
     setADate(date);
     const Employee = localStorage.getItem("username");
     setName(Employee);
-  });
+  }); 
+
+  useEffect(()=>{
+    if(collection === "Self-Collection"){
+      setShipping('Self-Collection, No Address Needed')
+    }
+  })
+  
 
   const TLoanTypeAccess = () => {
     if (ExternalApplication === true) {
@@ -861,6 +887,77 @@ function newtloan() {
     );
   };
 
+  const shippingInput = () =>{
+    if(collection === "Self-Collection"){
+      return(
+        <TextField
+        sx={{ width: "50%", marginLeft: 2, marginTop: 2 }}
+        multiline
+        id="filled-required"
+        variant="filled"
+        rows={4}
+        label="Shipping Address"
+        value={shipping}
+        onBlur={() => {
+          setShippingError(false);
+          setShippingErrorText("");
+          if (shipping === "") {
+            setShippingError(true);
+            setShippingErrorText("Required");
+          }
+        }}
+        onChange={(e) => setShipping(e.target.value)}
+        error={shippingError}
+        helperText={shippingErrorText}
+        disabled
+      />
+      )
+    }else if (collection === "Delivery"){
+      return (
+        <TextField
+      sx={{ width: "50%", marginLeft: 2, marginTop: 2 }}
+      multiline
+      id="filled-required"
+      variant="filled"
+      rows={4}
+      label="Shipping Address"
+      value={shipping}
+      onBlur={() => {
+        setShippingError(false);
+        setShippingErrorText("");
+        if (shipping === "") {
+          setShippingError(true);
+          setShippingErrorText("Required");
+        }
+      }}
+      onChange={(e) => setShipping(e.target.value)}
+      error={shippingError}
+      helperText={shippingErrorText}
+    />
+      )
+    } return (<TextField
+      sx={{ width: "50%", marginLeft: 2, marginTop: 2 }}
+      multiline
+      id="filled-required"
+      variant="filled"
+      rows={4}
+      label="Shipping Address"
+      value={shipping}
+      onBlur={() => {
+        setShippingError(false);
+        setShippingErrorText("");
+        if (shipping === "") {
+          setShippingError(true);
+          setShippingErrorText("Required");
+        }
+      }}
+      onChange={(e) => setShipping(e.target.value)}
+      error={shippingError}
+      helperText={shippingErrorText}
+      disabled
+    />)
+  }
+ 
   const getCard = () => {
     const loanDuration = [
       { "1 Week": "7" },
@@ -892,7 +989,7 @@ function newtloan() {
             <h2>Apply TLoan</h2>
             {FullFeaturedCrudGrid()}
             <form onSubmit={submitLoan} style={{ width: "100%" }}>
-              <Box sx={{ marginTop: 1, display: "flex", marginLeft: 2 }}>
+              <Box sx={{ marginTop: 1, display: "flex", width:"100%",justifyContent:"space-between", paddingRight: 2, paddingLeft: 2 }}>
                 <TextField
                   id="filled-required"
                   label="Employee Name"
@@ -927,32 +1024,8 @@ function newtloan() {
                 />
                 {TLoanTypeAccess()}
                 {ExternalOrInternal()}
-              </Box>
 
-              <Box sx={{ display: "flex" }}>
-                <TextField
-                  sx={{ width: 885, marginLeft: 2, marginTop: 2 }}
-                  multiline
-                  id="filled-required"
-                  variant="filled"
-                  rows={4}
-                  label="Purpose"
-                  onBlur={() => {
-                    setPurposeError(false);
-                    setPurposeErrorText("");
-                    if (purpose === "") {
-                      setPurposeError(true);
-                      setPurposeErrorText("Required");
-                    }
-                  }}
-                  onChange={(e) => setPurpose(e.target.value)}
-                  error={purposeError}
-                  helperText={purposeErrorText}
-                />
-              </Box>
-              <Box sx={{ marginLeft: 2, display: "flex" }}>
-                {/* Collection */}
-                <FormControl sx={{ width: 200, marginTop: 2 }}>
+                <FormControl sx={{ width: 200,marginLeft: 3 }}>
                   <InputLabel>Collection Type</InputLabel>
                   <Select
                     id="filled-required"
@@ -981,7 +1054,7 @@ function newtloan() {
                     {collectionErrorText}
                   </FormHelperText>
                 </FormControl>
-                <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
+                <FormControl sx={{ width: 200, marginLeft: 3}}>
                   <InputLabel>Duration</InputLabel>
                   <Select
                     id="filled-required"
@@ -1014,7 +1087,7 @@ function newtloan() {
                   </FormHelperText>
                 </FormControl>
                 {/* Type */}
-
+              <Box sx={{width: 200, marginLeft: 3}}>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <Stack>
                     <DatePicker
@@ -1032,14 +1105,56 @@ function newtloan() {
                           variant="filled"
                           size="small"
                           {...params}
-                          sx={{ width: 200, marginLeft: 3, marginTop: 2 }}
+                         
                         />
                       )}
                     />
                   </Stack>
                 </LocalizationProvider>
+                </Box>
               </Box>
 
+              <Box sx={{ display: "flex", paddingRight: 2 }}>
+                <TextField
+                  sx={{ width: "50%", marginLeft: 2, marginTop: 2 }}
+                  multiline
+                  id="filled-required"
+                  variant="filled"
+                  rows={4}
+                  label="Purpose"
+                  onBlur={() => {
+                    setPurposeError(false);
+                    setPurposeErrorText("");
+                    if (purpose === "") {
+                      setPurposeError(true);
+                      setPurposeErrorText("Required");
+                    }
+                  }}
+                  onChange={(e) => setPurpose(e.target.value)}
+                  error={purposeError}
+                  helperText={purposeErrorText}
+                />
+                  {/* <TextField
+                    sx={{ width: "50%", marginLeft: 2, marginTop: 2 }}
+                    multiline
+                    id="filled-required"
+                    variant="filled"
+                    rows={4}
+                    label="Shipping Address"
+                    onBlur={() => {
+                      setShippingError(false);
+                      setShippingErrorText("");
+                      if (shipping === "") {
+                        setShippingError(true);
+                        setShippingErrorText("Required");
+                      }
+                    }}
+                    onChange={(e) => setShipping(e.target.value)}
+                    error={shippingError}
+                    helperText={shippingErrorText}
+                  /> */}
+                  {shippingInput()}
+              </Box>
               <Box
                 component="span"
                 display="flex"

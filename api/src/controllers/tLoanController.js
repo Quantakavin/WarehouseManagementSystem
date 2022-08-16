@@ -125,6 +125,7 @@ module.exports.SubmitAfterEdit = async (req, res) => {
         requireddate,
         email,
         collection,
+        shipping,
         items
     } = req.body;
 
@@ -148,6 +149,7 @@ module.exports.SubmitAfterEdit = async (req, res) => {
                 requireddate,
                 email,
                 collection,
+                shipping,
                 tloanItems
             );
             if (results2.length > 0) {
@@ -185,6 +187,7 @@ module.exports.DraftAfterEdit = async (req, res) => {
         requireddate,
         email,
         collection,
+        shipping,
         items
     } = req.body;
 
@@ -208,6 +211,7 @@ module.exports.DraftAfterEdit = async (req, res) => {
                 requireddate,
                 email,
                 collection,
+                shipping,
                 tloanItems
             );
             if (results2.length > 0) {
@@ -245,6 +249,7 @@ module.exports.newLoan = async (req, res) => {
         user,
         email,
         collection,
+        shipping,
         items
     } = req.body;
     try {
@@ -263,6 +268,7 @@ module.exports.newLoan = async (req, res) => {
             user,
             email,
             collection,
+            shipping,
             tloanItems
         );
         console.log(results);
@@ -294,6 +300,7 @@ module.exports.SendDraft = async (req, res) => {
         user,
         email,
         collection,
+        shipping,
         items
     } = req.body;
     try {
@@ -311,6 +318,7 @@ module.exports.SendDraft = async (req, res) => {
             user,
             email,
             collection,
+            shipping,
             tloanItems
         );
         if (results.length > 0) {

@@ -77,7 +77,7 @@ const ModalButton = () => {
   }, []);
 
   // getting current date
-  const today = new Date();
+  const today = new Date('2002/07/22');
   const yyyy = today.getFullYear();
   let mm = (today.getMonth() + 1).toString(); // Months start at 0!
   let dd = today.getDate().toString();
@@ -85,7 +85,7 @@ const ModalButton = () => {
   if (parseInt(dd, 10) < 10) dd = `0${dd}`;
   if (parseInt(mm, 10) < 10) mm = `0${mm}`;
 
-  const formattedToday = `${dd}-${mm}-${yyyy}`;
+  const formattedToday = `${yyyy}/${mm}/${dd}`;
 
   // getting 5 days before EndDate
 
@@ -97,7 +97,7 @@ const ModalButton = () => {
 
   if (parseInt(dd1) < 10) dd1 = `0${dd1}`;
   if (parseInt(mm1) < 10) mm1 = `0${mm1}`;
-  const formattedDue = `${dd1}-${mm1}-${yyyy1}`;
+  const formattedDue = `${yyyy1}/${mm1}/${dd1}`;
 
   const submitExtension = (e) => {
     e.preventDefault();
