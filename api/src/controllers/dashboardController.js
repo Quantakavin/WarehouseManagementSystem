@@ -186,7 +186,7 @@ module.exports.RMACurrentStats = async (req, res) => {
         if (results.length > 0) {
             return res.status(200).json(results[0]);
         }
-        return res.status(404).send('Error retriving T-Loan Statistic');
+        return res.status(404).send('Error retriving RMA Statistic');
     } catch (error) {
         console.log(error);
         return res.status(500).send('Internal Server Error');
