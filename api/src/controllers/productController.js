@@ -31,6 +31,7 @@ module.exports.updateQuantity = async (ItemNo, BatchNo, Quantity) => {
             const results2 = await productService.getByItemCode(ItemNo, BatchNo);
             if (results2 != null) {
                 results2[0].forEach((result) => {
+                    // console.log("first result is ", result.BinProductPK)
                     redisClient.del(`product#${result.BinProductPK}`);
                 });
             }

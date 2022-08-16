@@ -39,12 +39,14 @@ client.on('connect', function () {
 
     client.on('message', (topic, message) => {
         if (topic === 'quantity') {
+            // console.log("quantity message received")
             const parsedmessage = JSON.parse('[' + message + ']');
             productController.updateQuantity(
                 parsedmessage[0].ItemNo,
                 parsedmessage[0].BatchNo,
                 parsedmessage[0].Quantity
             );
+            io.emit('changedQuantity', parsedmessage[0].Quantity)
         } else if (topic === 'binlocation') {
             const parsedmessage = JSON.parse('[' + message + ']');
             productController.updateBinLocation(
@@ -53,6 +55,7 @@ client.on('connect', function () {
                 parsedmessage[0].CurrentBinTag,
                 parsedmessage[0].FinalBinTag
             );
+            io.emit('changedBinLocation', parsedmessage[0].FinalBinTag)
         }
     });
 });
