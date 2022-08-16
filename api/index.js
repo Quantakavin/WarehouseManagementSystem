@@ -39,7 +39,7 @@ client.on('connect', function () {
 
     client.on('message', (topic, message) => {
         if (topic === 'quantity') {
-            console.log("quantity message received")
+            // console.log("quantity message received")
             const parsedmessage = JSON.parse('[' + message + ']');
             productController.updateQuantity(
                 parsedmessage[0].ItemNo,
