@@ -46,6 +46,7 @@ client.on('connect', function () {
                 parsedmessage[0].BatchNo,
                 parsedmessage[0].Quantity
             );
+            io.emit('changedQuantity', parsedmessage[0].Quantity)
         } else if (topic === 'binlocation') {
             const parsedmessage = JSON.parse('[' + message + ']');
             productController.updateBinLocation(
@@ -54,6 +55,7 @@ client.on('connect', function () {
                 parsedmessage[0].CurrentBinTag,
                 parsedmessage[0].FinalBinTag
             );
+            io.emit('changedBinLocation', parsedmessage[0].FinalBinTag)
         }
     });
 });

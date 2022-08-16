@@ -20,22 +20,30 @@ import CardField from "../../components/cards/CardField";
 import { EditableContext } from "../../components/context/IsEditableContext";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
 import config from "../../config/config";
+import { SocketContext } from "../../context/socket";
 
 const ViewProduct: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const socket = useContext(SocketContext);
   const [newProducts, setNewProducts] = useState([]);
   const [productGet, setProductGet] = useState([]);
+  const [quantity, setQuantity] = useState<string>(null);
+  const [binLocation, setBinLocation] = useState<string>(null);
   const context: any = useContext(EditableContext);
   const { isEditable, TLoanIDGlobal } = context;
   const permissions = useAppSelector(selectPermissions);
+  const dispatch = useAppDispatch();
 
-  const ExternalApplication = permissions.some(
-    (e) => e.FeatureName === "T-Loan Application (Internal+External)"
-  );
-  const InternalApplication = permissions.some(
-    (e) => e.FeatureName === "T-Loan Application (Internal)"
-  );
+  useEffect(() => {
+    socket.on("changedQuantity", (quantity) => {
+      setQuantity(quantity);
+    });
+    socket.on("changedBinLocation", (binlocation) => {
+      setBinLocation(binlocation);
+    });
+  }, []);
+
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
@@ -52,8 +60,6 @@ const ViewProduct: React.FC = () => {
       .catch(console.error);
   }, []);
 
-  console.log(productGet);
-
   useEffect(() => {
     const newProduct = productGet.map(
       ({ BinProductPK, ItemNo, ItemName, BatchNo, WarehouseCode }) => ({
@@ -68,21 +74,31 @@ const ViewProduct: React.FC = () => {
     setNewProducts(newProduct);
   }, [productGet]);
 
-  const dispatch = useAppDispatch();
-
   useEffect(() => {
     dispatch(ChangeTab({ currenttab: "Products" }));
   }, []);
 
-  console.log(newProducts);
-
-  const ProductQuery = useQuery([`product${params.id}`, params.id], () =>
-    GetProduct(params.id)
+  const ProductQuery = useQuery(
+    [`product${params.id}`, params.id],
+    () => GetProduct(params.id),
+    {
+      onSuccess: (data) => {
+        setQuantity(data.data[0].Quantity);
+        setBinLocation(data.data[0].BinTag2)
+      },
+    }
   );
 
   if (ProductQuery.isLoading || ProductQuery.isError) {
     return <CardSkeleton NoOfFields={4} />;
   }
+
+  const ExternalApplication = permissions.some(
+    (e) => e.FeatureName === "T-Loan Application (Internal+External)"
+  );
+  const InternalApplication = permissions.some(
+    (e) => e.FeatureName === "T-Loan Application (Internal)"
+  );
 
   const { totalItems, addItem } = useCart();
   console.log(isEditable);
@@ -202,16 +218,13 @@ const ViewProduct: React.FC = () => {
                 />
                 <CardField
                   label="Bin Tag"
-                  value={ProductQuery.data.data[0].BinTag2}
+                  value={binLocation}
                 />
                 <CardField
                   label="Warehouse Code"
                   value={ProductQuery.data.data[0].WarehouseCode}
                 />
-                <CardField
-                  label="Available Quantity"
-                  value={ProductQuery.data.data[0].Quantity}
-                />
+                <CardField label="Available Quantity" value={quantity} />
               </Grid>
               <Grid item xs={5}>
                 <Grid container>
@@ -302,16 +315,13 @@ const ViewProduct: React.FC = () => {
               />
               <CardField
                 label="Bin Tag"
-                value={ProductQuery.data.data[0].BinTag2}
+                value={binLocation}
               />
               <CardField
                 label="Warehouse Code"
                 value={ProductQuery.data.data[0].WarehouseCode}
               />
-              <CardField
-                label="Available Quantity"
-                value={ProductQuery.data.data[0].Quantity}
-              />
+              <CardField label="Available Quantity" value={quantity} />
             </Grid>
             <Grid item xs={5}>
               <Grid container>

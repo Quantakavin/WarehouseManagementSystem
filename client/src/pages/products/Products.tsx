@@ -23,8 +23,9 @@ import { motion } from "framer-motion";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useCart } from "react-use-cart";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRole } from "../../app/reducers/CurrentUserSlice";
+import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import { EditableContext } from "../../components/context/IsEditableContext";
 import CustomToolbar from "../../components/table/CustomToolbar";
 import config from "../../config/config";
@@ -38,6 +39,11 @@ const Products: React.FC = () => {
   const context: any = useContext(EditableContext);
   const [loading, setLoading] = useState(false);
   const { isEditable, setIsEditable, TLoanIDGlobal } = context;
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(ChangeTab({ currenttab: "Products" }));
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -129,7 +135,7 @@ const Products: React.FC = () => {
     },
   }));
 
-  function CustomNoRowsOverlay() {
+  const CustomNoRowsOverlay = () => {
     return (
       <StyledGridOverlay>
         <svg
@@ -174,7 +180,7 @@ const Products: React.FC = () => {
         <Box sx={{ mt: 1 }}>No Products Found</Box>
       </StyledGridOverlay>
     );
-  }
+  };
 
   if (
     userrole === "Sales Admin" ||
