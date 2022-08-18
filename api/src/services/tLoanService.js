@@ -34,6 +34,7 @@ module.exports.createTLoan = async (
     user,
     email,
     collection,
+    shipping,
     tloanItems
 ) => {
     return knex.transaction((trx) => {
@@ -51,7 +52,8 @@ module.exports.createTLoan = async (
                 Remarks: null,
                 UserID: user,
                 CustomerEmail: email,
-                Collection: collection
+                Collection: collection,
+                ShippingAddress: shipping
             },
             'TLoanID'
         )
@@ -82,6 +84,7 @@ module.exports.SendTLoanToDraft = async (
     user,
     email,
     collection,
+    shipping,
     tloanItems
 ) => {
     return knex.transaction((trx) => {
@@ -99,7 +102,8 @@ module.exports.SendTLoanToDraft = async (
                 Remarks: null,
                 UserID: user,
                 CustomerEmail: email,
-                Collection: collection
+                Collection: collection,
+                ShippingAddress: shipping
             },
             'TLoanID'
         )
@@ -160,6 +164,7 @@ module.exports.SubmitAfterEdit = async (
     requireddate,
     email,
     collection,
+    shipping,
     tloanItems
 ) => {
     return knex.transaction((trx) => {
@@ -175,7 +180,8 @@ module.exports.SubmitAfterEdit = async (
                     RequiredDate: requireddate,
                     TLoanStatusID: 4,
                     CustomerEmail: email,
-                    Collection: collection
+                    Collection: collection,
+                    ShippingAddress: shipping
                 },
                 'TLoanID'
             )
@@ -199,6 +205,7 @@ module.exports.DraftAfterEdit = async (
     requireddate,
     email,
     collection,
+    shipping,
     tloanItems
 ) => {
     return knex.transaction((trx) => {
@@ -213,7 +220,8 @@ module.exports.DraftAfterEdit = async (
                     Duration: duration,
                     RequiredDate: requireddate,
                     CustomerEmail: email,
-                    Collection: collection
+                    Collection: collection,
+                    ShippingAddress: shipping
                 },
                 'TLoanID'
             )

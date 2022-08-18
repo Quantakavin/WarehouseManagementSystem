@@ -80,6 +80,7 @@ const TLoanDisplay = () => {
   const [duration, setDuration] = useState("");
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
+  const [shipping, setShipping] = useState("");
   const [collection, setCollection] = useState("");
   const [requireddate, setRDate] = useState("");
   const [dateForm, setDateForm] = useState("");
@@ -89,12 +90,14 @@ const TLoanDisplay = () => {
   const [purposeError, setPurposeError] = useState(false);
   const [durationError, setDurationError] = useState(false);
   const [emailError, setEmailError] = useState(false);
+  const [shippingError, setShippingError] = useState(false);
   const [collectionError, setCollectionError] = useState(false);
   const [typeErrorText, setTypeErrorText] = useState("");
   const [companyErrorText, setCompanyErrorText] = useState("");
   const [purposeErrorText, setPurposeErrorText] = useState("");
   const [durationErrorText, setDurationErrorText] = useState("");
   const [emailErrorText, setEmailErrorText] = useState("");
+  const [shippingErrorText, setShippingErrorText] = useState("");
   const [collectionErrorText, setCollectionErrorText] = useState("");
   const [submitLoading, setSubmitLoading] = useState(false);
   const [items, setItems] = useState([]);
@@ -698,6 +701,81 @@ const TLoanDisplay = () => {
   const itemStorage = localStorage.getItem("react-use-cart");
   const cartItems = JSON.parse(itemStorage).items;
 
+  useEffect(()=>{
+    if(collection === "Self-Collection"){
+      setShipping('Self-Collection, No Address Needed')
+    }
+  })
+  const shippingInput = () =>{
+    if(collection === "Self-Collection"){
+      return(
+        <TextField
+        sx={{ width: "50%", marginLeft: 2, marginTop: 2 }}
+        multiline
+        id="filled-required"
+        variant="filled"
+        rows={4}
+        label="Shipping Address"
+        value={shipping}
+        onBlur={() => {
+          setShippingError(false);
+          setShippingErrorText("");
+          if (shipping === "") {
+            setShippingError(true);
+            setShippingErrorText("Required");
+          }
+        }}
+        onChange={(e) => setShipping(e.target.value)}
+        error={shippingError}
+        helperText={shippingErrorText}
+        disabled
+      />
+      )
+    }else if (collection === "Delivery"){
+      return (
+        <TextField
+      sx={{ width: "50%", marginLeft: 2, marginTop: 2 }}
+      multiline
+      id="filled-required"
+      variant="filled"
+      rows={4}
+      label="Shipping Address"
+      value={shipping}
+      onBlur={() => {
+        setShippingError(false);
+        setShippingErrorText("");
+        if (shipping === "") {
+          setShippingError(true);
+          setShippingErrorText("Required");
+        }
+      }}
+      onChange={(e) => setShipping(e.target.value)}
+      error={shippingError}
+      helperText={shippingErrorText}
+    />
+      )
+    } return (<TextField
+      sx={{ width: "50%", marginLeft: 2, marginTop: 2 }}
+      multiline
+      id="filled-required"
+      variant="filled"
+      rows={4}
+      label="Shipping Address"
+      value={shipping}
+      onBlur={() => {
+        setShippingError(false);
+        setShippingErrorText("");
+        if (shipping === "") {
+          setShippingError(true);
+          setShippingErrorText("Required");
+        }
+      }}
+      onChange={(e) => setShipping(e.target.value)}
+      error={shippingError}
+      helperText={shippingErrorText}
+      disabled
+    />)
+  }
   useEffect(() => {
     if (cartItems === []) {
       return console.log("Nothing in cart");
@@ -812,7 +890,7 @@ const TLoanDisplay = () => {
     setDurationError(false);
     setEmailError(false);
     setCollectionError(false);
-
+    setShippingError(false)
     if (items.length === 0) {
       Toast.fire({
         icon: "error",
@@ -869,6 +947,11 @@ const TLoanDisplay = () => {
       setCollectionErrorText("Selection required");
       setSubmitLoading(false);
     }
+    if (shipping === "") {
+      setShippingError(true);
+      setShippingErrorText("Required");
+      setSubmitLoading(false);
+    }
     if (
       type === "2" &&
       (company === "1" ||
@@ -905,7 +988,8 @@ const TLoanDisplay = () => {
       email !== "" &&
       email.match(emailRegex) &&
       collection !== "" &&
-      requireddate < minDateStr === false
+      requireddate < minDateStr === false &&
+      shipping !== ""
     ) {
       try {
         const results = axios
@@ -918,6 +1002,7 @@ const TLoanDisplay = () => {
             requireddate,
             email,
             collection,
+            shipping,
             items,
           })
           .then(() => {
@@ -950,6 +1035,7 @@ const TLoanDisplay = () => {
     setDurationError(false);
     setEmailError(false);
     setCollectionError(false);
+    setShippingError(false)
     if (items.length === 0) {
       Toast.fire({
         icon: "error",
@@ -986,6 +1072,11 @@ const TLoanDisplay = () => {
       });
       setLoading(false);
     }
+    if (shipping === "") {
+      setShippingError(true);
+      setShippingErrorText("Required");
+      setLoading(false);
+    }
     if (
       type === "2" &&
       (company === "1" ||
@@ -1014,9 +1105,15 @@ const TLoanDisplay = () => {
     }
     if (
       items.length !== 0 &&
+      type !== "" &&
       company !== "" &&
+      purpose !== "" &&
+      duration !== "" &&
+      requireddate !== "" &&
       email !== "" &&
-      email.match(emailRegex)
+      email.match(emailRegex) &&
+      collection !== "" &&
+      shipping !== ""
     ) {
       try {
         const results = axios
@@ -1031,6 +1128,7 @@ const TLoanDisplay = () => {
             user,
             email,
             collection,
+            shipping,
             items,
           })
           .then(() => {
@@ -1286,115 +1384,136 @@ const TLoanDisplay = () => {
               />
               {TLoanTypeAccess()}
               {ExternalOrInternal()}
-            </Box>
+              <FormControl sx={{ width: 200,marginLeft: 3 }}>
+                  <InputLabel>Collection Type</InputLabel>
+                  <Select
+                    id="filled-required"
+                    value={collection}
+                    onChange={handleChangeCollection}
+                    label="Collection Type"
+                    size="small"
+                    variant="filled"
+                    onBlur={() => {
+                      setCollectionError(false);
+                      setCollectionErrorText("");
+                      if (collection === "") {
+                        setCollectionError(true);
+                        setCollectionErrorText("Selection required");
+                      }
+                    }}
+                    error={collectionError}
+                  >
+                    {/* <MenuItem value="">
+            <em>None</em>
+          </MenuItem> */}
+                    <MenuItem value="Self-Collection">Self-Collection</MenuItem>
+                    <MenuItem value="Delivery">Delivery</MenuItem>
+                  </Select>
+                  <FormHelperText sx={{ color: "#d11919" }}>
+                    {collectionErrorText}
+                  </FormHelperText>
+                </FormControl>
+                <FormControl sx={{ width: 200, marginLeft: 3}}>
+                  <InputLabel>Duration</InputLabel>
+                  <Select
+                    id="filled-required"
+                    value={duration}
+                    onChange={handleChangeDuration}
+                    variant="filled"
+                    label="Duration"
+                    size="small"
+                    onBlur={() => {
+                      setDurationError(false);
+                      setDurationErrorText("");
+                      if (duration === "") {
+                        setDurationError(true);
+                        setDurationErrorText("Selection required");
+                      }
+                    }}
+                    error={durationError}
+                  >
+                    {loanDuration.map((element) => {
+                      const [[key, val]] = Object.entries(element);
+                      return (
+                        <MenuItem value={val} key={key}>
+                          {key}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                  <FormHelperText sx={{ color: "#d11919" }}>
+                    {durationErrorText}
+                  </FormHelperText>
+                </FormControl>
+                {/* Type */}
+              <Box sx={{width: 200, marginLeft: 3}}>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <Stack>
+                    <DatePicker
+                      label="Required Date"
+                      inputFormat="yyyy-MM-dd"
+                      value={dateForm}
+                      onChange={handleChangeRequiredDate}
+                      minDate={minimumDate}
+                      inputProps={{
+                        readOnly: true,
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          id="filled-required"
+                          variant="filled"
+                          size="small"
+                          {...params}
+                         
+                        />
+                      )}
+                    />
+                  </Stack>
+                </LocalizationProvider>
+                </Box>
+              </Box>
 
-            <Box sx={{ display: "flex" }}>
-              <TextField
-                sx={{ width: 885, marginLeft: 2, marginTop: 2 }}
-                multiline
-                id="filled-required"
-                variant="filled"
-                rows={4}
-                label="Purpose"
-                value={purpose}
-                onBlur={() => {
-                  setPurposeError(false);
-                  setPurposeErrorText("");
-                  if (purpose === "") {
-                    setPurposeError(true);
-                    setPurposeErrorText("Required");
-                  }
-                }}
-                onChange={(e) => setPurpose(e.target.value)}
-                error={purposeError}
-                helperText={purposeErrorText}
-              />
-            </Box>
-            <Box sx={{ marginLeft: 2, display: "flex" }}>
-              {/* Collection */}
-              <FormControl sx={{ width: 200, marginTop: 2 }}>
-                <InputLabel>Collection Type</InputLabel>
-                <Select
+              <Box sx={{ display: "flex", paddingRight: 2 }}>
+                <TextField
+                  sx={{ width: "50%", marginLeft: 2, marginTop: 2 }}
+                  multiline
                   id="filled-required"
-                  value={collection}
-                  onChange={handleChangeCollection}
-                  label="Collection Type"
-                  size="small"
                   variant="filled"
+                  rows={4}
+                  label="Purpose"
                   onBlur={() => {
-                    setCollectionError(false);
-                    setCollectionErrorText("");
-                    if (collection === "") {
-                      setCollectionError(true);
-                      setCollectionErrorText("Selection required");
+                    setPurposeError(false);
+                    setPurposeErrorText("");
+                    if (purpose === "") {
+                      setPurposeError(true);
+                      setPurposeErrorText("Required");
                     }
                   }}
-                  error={collectionError}
-                >
-                  <MenuItem value="Self-Collection">Self-Collection</MenuItem>
-                  <MenuItem value="Delivery">Delivery</MenuItem>
-                </Select>
-                <FormHelperText sx={{ color: "#d11919" }}>
-                  {collectionErrorText}
-                </FormHelperText>
-              </FormControl>
-
-              {/* Type */}
-              <FormControl sx={{ width: 200, marginLeft: 3, marginTop: 2 }}>
-                <InputLabel>Duration</InputLabel>
-                <Select
-                  id="filled-required"
-                  variant="filled"
-                  value={duration}
-                  onChange={handleChangeDuration}
-                  label="Duration"
-                  size="small"
-                  onBlur={() => {
-                    setDurationError(false);
-                    setDurationErrorText("");
-                    if (duration === "") {
-                      setDurationError(true);
-                      setDurationErrorText("Selection required");
-                    }
-                  }}
-                  error={durationError}
-                >
-                  {loanDuration.map((element) => {
-                    const [[key, val]] = Object.entries(element);
-                    return (
-                      <MenuItem value={val} key={key}>
-                        {key}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-                <FormHelperText sx={{ color: "#d11919" }}>
-                  {durationErrorText}
-                </FormHelperText>
-              </FormControl>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <Stack>
-                  <DatePicker
-                    label="Required Date"
-                    inputFormat="yyyy-MM-dd"
-                    value={dateForm}
-                    minDate={minimumDate}
-                    inputProps={{ readOnly: true }}
-                    onChange={handleChangeRequiredDate}
-                    renderInput={(params) => (
-                      <TextField
-                        id="filled-required"
-                        variant="filled"
-                        size="small"
-                        {...params}
-                        sx={{ width: 200, marginLeft: 3, marginTop: 2 }}
-                      />
-                    )}
-                  />
-                </Stack>
-              </LocalizationProvider>
-            </Box>
-
+                  onChange={(e) => setPurpose(e.target.value)}
+                  error={purposeError}
+                  helperText={purposeErrorText}
+                />
+                  {/* <TextField
+                    sx={{ width: "50%", marginLeft: 2, marginTop: 2 }}
+                    multiline
+                    id="filled-required"
+                    variant="filled"
+                    rows={4}
+                    label="Shipping Address"
+                    onBlur={() => {
+                      setShippingError(false);
+                      setShippingErrorText("");
+                      if (shipping === "") {
+                        setShippingError(true);
+                        setShippingErrorText("Required");
+                      }
+                    }}
+                    onChange={(e) => setShipping(e.target.value)}
+                    error={shippingError}
+                    helperText={shippingErrorText}
+                  /> */}
+                  {shippingInput()}
+              </Box>
             <Box
               component="span"
               display="flex"

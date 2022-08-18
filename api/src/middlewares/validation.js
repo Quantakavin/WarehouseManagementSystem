@@ -191,6 +191,7 @@ const validation = {
             user,
             email,
             collection,
+            shipping,
             items
         } = req.body;
         const today = new Date(new Date().getTime() + 10 * 24 * 60 * 60 * 1000);
@@ -215,6 +216,7 @@ const validation = {
             requireddate < formattedToday === true ||
             user === '' ||
             collection === '' ||
+            shipping === ''||
             (type === '2' &&
                 (company === '1' ||
                     company === '2' ||
