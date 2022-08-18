@@ -155,6 +155,7 @@ const TLoanDisplay = () => {
           setDateForm(data.data.RequiredDate);
           setType(data.data.TLoanTypeID);
           setLoans(data.data);
+          setShipping(data.data.ShippingAddress)
           setStatusID(data.data.TLoanStatusID);
           setCompany(data.data.CompanyID || data.data.CompanyName);
           setTableLoading(false);
@@ -235,6 +236,7 @@ const TLoanDisplay = () => {
   };
 
   const handleChangeCollection = (event: SelectChangeEvent) => {
+    setShipping("")
     setCollection(event.target.value);
   };
 
@@ -1480,6 +1482,7 @@ const TLoanDisplay = () => {
                   id="filled-required"
                   variant="filled"
                   rows={4}
+                  value={purpose}
                   label="Purpose"
                   onBlur={() => {
                     setPurposeError(false);
