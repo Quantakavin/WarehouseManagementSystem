@@ -55,11 +55,6 @@ module.exports.loginUser = async (req, res) => {
         return res.status(401).json({ message: "User with email doesn't exist" });
     } catch (error) {
         console.log(error);
-        console.log("the host is " + process.env.DBHOST);
-        console.log("the user is " + process.env.DBUSER);
-        console.log("the password is " + process.env.DBPASSWORD);
-        console.log("the port is " + process.env.DBPORT);
-        console.log("the db name is " + process.env.DBNAME);
         if (error.status === 429) {
             return res.status(500).json({ message: 'Too many requests. Please try again later' });
         }
