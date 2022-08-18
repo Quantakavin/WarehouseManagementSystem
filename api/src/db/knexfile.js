@@ -9,7 +9,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 
 module.exports = {
     development: {
-        client: 'mysql2',
+        client: 'mysql',
         // debug: true,
         connection: {
             host: process.env.DBHOST,
@@ -28,7 +28,7 @@ module.exports = {
     },
 
     staging: {
-        client: 'mysql2',
+        client: 'mysql',
         connection: {
             host: process.env.DBHOST,
             port: process.env.DBPORT,
@@ -46,7 +46,7 @@ module.exports = {
     },
 
     production: {
-        client: 'mysql2',
+        client: 'mysql',
         connection: {
             host: process.env.DBHOST,
             port: process.env.DBPORT,
@@ -64,7 +64,7 @@ module.exports = {
     },
 
     test: {
-        client: 'mysql2',
+        client: 'mysql',
         connection: {
             host: process.env.DBHOST,
             port: process.env.DBPORT,
