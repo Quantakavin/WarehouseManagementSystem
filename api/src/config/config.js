@@ -7,6 +7,7 @@ module.exports = {
     dbname: process.env.DBNAME,
     dbuser: process.env.DBUSER,
     dbpassword: process.env.DBPASSWORD,
+    dbport: process.env.DBPORT,
     JWTKey: process.env.JWTKEY,
     environment: process.env.NODE_ENV,
     refreshtokensecret: process.env.REFRESH_TOKEN_SECRET,

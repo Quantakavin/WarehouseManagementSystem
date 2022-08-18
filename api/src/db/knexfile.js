@@ -13,7 +13,7 @@ module.exports = {
         // debug: true,
         connection: {
             host: process.env.DBHOST,
-            port: 3307,
+            port: process.env.PORT,
             user: process.env.DBUSER,
             password: process.env.DBPASSWORD,
             database: process.env.DBNAME
@@ -31,7 +31,7 @@ module.exports = {
         client: 'mysql',
         connection: {
             host: process.env.DBHOST,
-            port: 3307,
+            port: process.env.PORT,
             user: process.env.DBUSER,
             password: process.env.DBPASSWORD,
             database: process.env.DBNAME
@@ -49,7 +49,7 @@ module.exports = {
         client: 'mysql',
         connection: {
             host: process.env.DBHOST,
-            port: 3307,
+            port: process.env.PORT,
             user: process.env.DBUSER,
             password: process.env.DBPASSWORD,
             database: process.env.DBNAME
@@ -67,7 +67,7 @@ module.exports = {
         client: 'mysql',
         connection: {
             host: process.env.DBHOST,
-            port: 3307,
+            port: process.env.PORT,
             user: process.env.DBUSER,
             password: process.env.DBPASSWORD,
             database: process.env.DBNAME
