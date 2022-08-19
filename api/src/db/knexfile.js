@@ -15,7 +15,7 @@ module.exports = {
             host: process.env.DBHOST,
             port: process.env.DBPORT,
             user: process.env.DBUSER,
-            password: process.env.DBPASSWORD,
+            password: 'Leaptron!62889125',
             database: process.env.DBNAME
         },
         pool: {
@@ -51,7 +51,7 @@ module.exports = {
             host: process.env.DBHOST,
             port: process.env.DBPORT,
             user: process.env.DBUSER,
-            password: process.env.DBPASSWORD,
+            password: 'Leaptron!62889125',
             database: process.env.DBNAME
         },
         pool: {
