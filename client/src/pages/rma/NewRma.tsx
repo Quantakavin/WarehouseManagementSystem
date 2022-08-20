@@ -86,6 +86,7 @@ const CreateRMA: React.FC = () => {
     {}
   );
   const dispatch = useAppDispatch();
+  const maximumdate: any = new Date(new Date().getTime());
   const phoneRegex =
     /^[6|8|9]\d{7}|\+65\s?[6|8|9]\d{7}|\(\+?65\)\s?[6|8|9]\d{7}$/i;
   const emailRegex = /^\S+@\S+\.\S+$/i;
@@ -284,6 +285,7 @@ const CreateRMA: React.FC = () => {
     return (
       <DatePicker
         value={value}
+        maxDate={maximumdate}
         renderInput={(params) => <TextField {...params} />}
         onChange={handleChange}
         inputFormat="dd-MM-yyyy"
