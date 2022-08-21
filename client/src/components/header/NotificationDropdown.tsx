@@ -164,12 +164,17 @@ const NotificationDropdown: React.FC<NotificationDropdown> = ({
           Notifications {notificationcount > 0 && `(${notificationcount})`}
         </Typography>
         {notificationcount > 0 && (
-          <Button
-            onClick={() => mutation.mutate()}
-            sx={{ textTransform: "none", ml: "auto", fontSize: "12px" }}
-          >
-            Mark all as read
-          </Button>
+          <>
+            {
+              mutation.isLoading? <CircularProgress size="20px" sx={{ml: "auto"}} /> :
+              <Button
+                onClick={() => mutation.mutate()}
+                sx={{ textTransform: "none", ml: "auto", fontSize: "12px" }}
+              >
+                Mark all as read
+              </Button>
+            }
+          </>
         )}
       </Box>
       <Divider />
