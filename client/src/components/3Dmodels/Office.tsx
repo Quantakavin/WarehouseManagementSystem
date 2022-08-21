@@ -164,7 +164,7 @@ interface ModelProps {
 const Model: React.FC<ModelProps> = ({ position }) => {
   const group = useRef<THREE.Group>();
   const { nodes, materials } = useGLTF("/office.glb") as GLTFResult;
-  const colorMap = useLoader(THREE.TextureLoader, "cardboard_texture.png");
+  const colorMap = useLoader(THREE.TextureLoader, "/cardboard_texture.png");
 
   return (
     <group

@@ -106,6 +106,7 @@ const App: React.FC = () => {
                   }
                 />
                 <Route path="/emptybins" element={<EmptyBins />} />
+                <Route path="/binlocations/:BinTag" element={<BinLocations />} />
                 <Route path="/binlocations" element={<BinLocations />} />
                 <Route path="/rma" element={<RMA />} />
                 <Route path="/createRma" element={<CreateRMA />} />
