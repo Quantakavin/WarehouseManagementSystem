@@ -6,6 +6,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   Box,
   Button,
+  CircularProgress,
   Fab,
   LinearProgress,
   Stack,
@@ -249,11 +250,20 @@ const Users2: React.FC = () => {
             >
               Cancel
             </button>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="animatable deletebutton" style={{ alignSelf: "flex-end" }} onClick={() => Delete(idToDelete)}>
+            <motion.button
+              style={{ alignSelf: "flex-end", width: "auto", minWidth: "155px" }}
+              className="deletebutton"
+              onClick={() => Delete(idToDelete)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {mutation.isLoading? <CircularProgress size={15} color="inherit" /> : "Delete Anyway"}
+            </motion.button>
+            {/* <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="animatable deletebutton" style={{ alignSelf: "flex-end" }} onClick={() => Delete(idToDelete)}>
             <Button sx={{textTransform: "none", color: "white", fontWeight: 500}}>
               Delete Anyway
             </Button>
-            </motion.div>
+            </motion.div> */}
           </>
         }
       />
