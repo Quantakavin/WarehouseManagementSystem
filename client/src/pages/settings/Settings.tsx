@@ -1,6 +1,7 @@
 import {
   Backdrop,
   Box,
+  CircularProgress,
   Fade,
   FilledInput,
   FormControl,
@@ -333,14 +334,15 @@ const Settings: React.FC = () => {
               Cancel
             </button>
             <motion.button
-              style={{ alignSelf: "flex-end" }}
+              style={{ alignSelf: "flex-end", width: "auto", minWidth: "100px" }}
               className="normalbutton"
               onClick={() => enable()}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Enable
+              {mutation.isLoading? <CircularProgress size={15} color="inherit" /> : "Enable"}
             </motion.button>
+
           </>
         }
       />
@@ -361,13 +363,13 @@ const Settings: React.FC = () => {
               Cancel
             </button>
             <motion.button
-              style={{ alignSelf: "flex-end" }}
+              style={{ alignSelf: "flex-end", width: "auto", minWidth: "100px" }}
               className="deletebutton"
               onClick={() => disable()}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Disable
+              {mutation.isLoading? <CircularProgress size={15} color="inherit" /> : "Disable"}
             </motion.button>
           </>
         }
