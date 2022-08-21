@@ -189,8 +189,9 @@ module.exports.delete = async (userID) => {
 };
 
 module.exports.updatePassword = async (password, id) => {
-    const query = `UPDATE User SET Password = ? WHERE UserID = ?`;
-    return knex.raw(query, [password, id]);
+    return knex('User').where('UserID', id).update({
+        Password: password
+    });
 };
 
 module.exports.updateTeleID = async (userID, telegramid) => {
