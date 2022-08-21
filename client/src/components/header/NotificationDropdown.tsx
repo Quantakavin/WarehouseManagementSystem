@@ -166,7 +166,7 @@ const NotificationDropdown: React.FC<NotificationDropdown> = ({
         {notificationcount > 0 && (
           <>
             {
-              mutation.isLoading? <CircularProgress size="20px" sx={{ml: "auto"}} /> :
+              mutation.isLoading || mutation.isSuccess? <CircularProgress size="20px" sx={{ml: "auto"}} /> :
               <Button
                 onClick={() => mutation.mutate()}
                 sx={{ textTransform: "none", ml: "auto", fontSize: "12px" }}
