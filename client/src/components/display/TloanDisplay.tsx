@@ -1230,7 +1230,19 @@ const TLoanDisplay = () => {
                       sx={{ display: "flex" }}
                       id="outlined-purpose"
                       multiline
-                      rows={11.5}
+                      rows={5}
+                      label="Shipping Address"
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="outlined"
+                      defaultValue={loans.ShippingAddress}
+                    />
+                     <TextField
+                      sx={{ display: "flex", marginTop: 1.5 }}
+                      id="outlined-purpose"
+                      multiline
+                      rows={5}
                       label="Purpose"
                       InputProps={{
                         readOnly: true,
@@ -1759,12 +1771,12 @@ const TLoanDisplay = () => {
                         id="outlined-purpose"
                         multiline
                         rows={11.5}
-                        label="Purpose"
+                        label="Shipping Address"
                         InputProps={{
                           readOnly: true,
                         }}
                         variant="filled"
-                        value={purposeField}
+                        value={shipping}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -2302,9 +2314,9 @@ const TLoanDisplay = () => {
                         InputProps={{
                           readOnly: true,
                         }}
-                        label="Purpose"
+                        label="Shipping Address"
                         variant="filled"
-                        value={purposeField}
+                        value={shipping}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -2492,12 +2504,12 @@ const TLoanDisplay = () => {
                       id="outlined-purpose"
                       multiline
                       rows={11.5}
-                      label="Purpose"
+                      label="Shipping Address"
                       InputProps={{
                         readOnly: true,
                       }}
                       variant="filled"
-                      value={purposeField}
+                      value={shipping}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -2664,12 +2676,12 @@ const TLoanDisplay = () => {
                       id="outlined-purpose"
                       multiline
                       rows={11.5}
-                      label="Purpose"
+                      label="Shipping Address"
                       InputProps={{
                         readOnly: true,
                       }}
                       variant="filled"
-                      value={purposeField}
+                      value={shipping}
                     />
                   </Grid>
                   <Grid item xs={12}>
