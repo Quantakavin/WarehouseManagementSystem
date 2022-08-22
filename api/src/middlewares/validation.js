@@ -216,7 +216,7 @@ const validation = {
             requireddate < formattedToday === true ||
             user === '' ||
             collection === '' ||
-            shipping === ''||
+            shipping === '' ||
             (type === '2' &&
                 (company === '1' ||
                     company === '2' ||
@@ -342,9 +342,7 @@ const validation = {
 
     validateRmaSubmission: (req, res, next) => {
         const { contactperson, contactno, salesmanid, contactemail, company, products } = req.body;
-        console.log(`Body ${JSON.stringify(req.body)}`);
         if (products.length === 0) {
-            console.log('no products');
             res.status(400).json({
                 message: 'Please add at least 1 product to the table'
             });

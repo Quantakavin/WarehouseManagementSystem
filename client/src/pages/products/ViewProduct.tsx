@@ -384,8 +384,32 @@ const ViewProduct: React.FC = () => {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <motion.div
+              <div className="flexcontainer" style={{flexDirection: "row"}}>
+                  <motion.div
+                    className="animatable"
+                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <Button
+                      size="small"
+                      variant="contained"
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#063970",
+                        width: 150,
+                        height: 50,
+                        borderRadius: 10,
+                        paddingRight: 4,
+                      }}
+                      startIcon={<ArrowBackIosIcon />}
+                      onClick={() => navigate("/products")}
+                    >
+                      Back
+                    </Button>
+                  </motion.div>
+                  <motion.div
                   className="animatable"
+                  style={{marginLeft: '15px'}}
                   whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
                   whileTap={{ scale: 0.9 }}
                 >
@@ -400,12 +424,13 @@ const ViewProduct: React.FC = () => {
                       borderRadius: 10,
                       paddingRight: 4,
                     }}
-                    startIcon={<ArrowBackIosIcon />}
-                    onClick={() => navigate("/products")}
+                    startIcon={<LocationOnIcon />}
+                    onClick={() => navigate(`/binlocations/${binLocation.replace(/-/g, '')}`)}
                   >
-                    Back
+                    Location
                   </Button>
                 </motion.div>
+                </div>
               </Box>
             </Grid>
           </Grid>

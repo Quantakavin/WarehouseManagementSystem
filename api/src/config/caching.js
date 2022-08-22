@@ -9,6 +9,7 @@ if (process.env.REDIS_URL) {
     redisClient = redis.createClient();
 }
 redisClient.on('error', (err) =>
+    // eslint-disable-next-line no-console
     console.log(`Redis Client Error ${err} and redis url is ${process.env.REDIS_URL}`)
 );
 

@@ -297,7 +297,7 @@ module.exports.updateRmaChecklist = async (RmaID, products) => {
             .transacting(trx)
             .then(async () => {
                 const rmaproducts = await products.map(async (product) => {
-                    console.log(`${product.id} ${product.RmaProductStatus}`);
+                    // console.log(`${product.id} ${product.RmaProductStatus}`);
                     return knex('RmaProduct')
                         .where('RmaProductPK', product.id)
                         .update({ RmaProductStatus: product.RmaProductStatus })
@@ -353,7 +353,7 @@ module.exports.updateRmaInstructions = async (RmaID, products) => {
             .transacting(trx)
             .then(async () => {
                 const rmaproducts = await products.map(async (product) => {
-                    console.log(`${product.id} ${product.Instructions}`);
+                    // console.log(`${product.id} ${product.Instructions}`);
                     return knex('RmaProduct')
                         .where('RmaProductPK', product.id)
                         .update({ Instructions: product.Instructions })
@@ -376,7 +376,7 @@ module.exports.updateRmaCOA = async (RmaID, products) => {
             .transacting(trx)
             .then(async () => {
                 const rmaproducts = await products.map(async (product) => {
-                    console.log(`${product.id} ${product.CourseOfAction}`);
+                    // console.log(`${product.id} ${product.CourseOfAction}`);
                     return knex('RmaProduct')
                         .where('RmaProductPK', product.id)
                         .update({ CourseOfAction: product.CourseOfAction })
