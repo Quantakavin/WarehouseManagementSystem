@@ -37,22 +37,22 @@ const Notification: React.FC<NotificationProps> = ({
       icon = <CancelIcon sx={{ fontSize: "30px", color: "#D11A2A" }} />;
       break;
     case "Received":
-      icon = <CallReceivedIcon sx={{ fontSize: "30px", color: "#3F4D65" }} />;
+      icon = <CallReceivedIcon sx={{ fontSize: "30px", color: "#0a2540" }} />;
       break;
     case "Verified":
-      icon = <VerifiedIcon sx={{ fontSize: "30px", color: "#3F4D65" }} />;
+      icon = <VerifiedIcon sx={{ fontSize: "30px", color: "#0a2540" }} />;
       break;
     case "Progress":
-      icon = <UpdateIcon sx={{ fontSize: "30px", color: "#3F4D65" }} />;
+      icon = <UpdateIcon sx={{ fontSize: "30px", color: "#0a2540" }} />;
       break;
     case "Closed":
       icon = <TaskIcon sx={{ fontSize: "30px", color: "#3F4D65" }} />;
       break;
       case "Ready":
-        icon = <SignLanguageIcon sx={{ fontSize: "30px", color: "#3F4D65" }} />;
+        icon = <SignLanguageIcon sx={{ fontSize: "30px", color: "#31A961" }} />;
         break;
         case "Due":
-          icon = <HourglassBottomIcon sx={{ fontSize: "30px", color: "#3F4D65" }} />;
+          icon = <HourglassBottomIcon sx={{ fontSize: "30px", color: "#D11A2A" }} />;
           break;
       case "Information":
         icon = <InfoIcon sx={{ fontSize: "30px", color: "#3F4D65" }} />;
