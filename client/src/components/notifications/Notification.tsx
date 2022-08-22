@@ -1,6 +1,10 @@
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import InfoIcon from "@mui/icons-material/Info";
+import CallReceivedIcon from "@mui/icons-material/CallReceived";
+import VerifiedIcon from "@mui/icons-material/Verified";
+import UpdateIcon from "@mui/icons-material/Update";
+import TaskIcon from "@mui/icons-material/Task";
 import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -30,8 +34,17 @@ const Notification: React.FC<NotificationProps> = ({
     case "Rejected":
       icon = <CancelIcon sx={{ fontSize: "30px", color: "#D11A2A" }} />;
       break;
-    case "Information":
-      icon = <InfoIcon sx={{ fontSize: "30px", color: "#3F4D65" }} />;
+    case "Received":
+      icon = <CallReceivedIcon sx={{ fontSize: "30px", color: "#3F4D65" }} />;
+      break;
+    case "Verified":
+      icon = <VerifiedIcon sx={{ fontSize: "30px", color: "#3F4D65" }} />;
+      break;
+    case "Progress":
+      icon = <UpdateIcon sx={{ fontSize: "30px", color: "#3F4D65" }} />;
+      break;
+    case "Closed":
+      icon = <TaskIcon sx={{ fontSize: "30px", color: "#3F4D65" }} />;
       break;
     default:
       icon = <CheckCircleIcon sx={{ fontSize: "30px", color: "#31A961" }} />;
