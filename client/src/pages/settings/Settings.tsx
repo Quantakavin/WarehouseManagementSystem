@@ -131,7 +131,7 @@ const Settings: React.FC = () => {
             title: `Telegram Notifications Enabled`,
             customClass: "swalpopup",
             timer: 2000,
-            width: 310,
+            width: 450,
           });
         })
         .catch((e) => {
@@ -168,7 +168,7 @@ const Settings: React.FC = () => {
           title: `Telegram Notifications Disabled`,
           customClass: "swalpopup",
           timer: 2000,
-          width: 310,
+          width: 450,
         });
       })
       .catch((error) => {
