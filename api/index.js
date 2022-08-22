@@ -58,7 +58,7 @@ client.on('connect', function () {
             io.emit('changedBinLocation', parsedmessage[0].FinalBinTag)
         }
     });
-});
+}); 
 
 io.on('connection', (socket) => {
     console.log('a user connected');
