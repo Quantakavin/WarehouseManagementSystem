@@ -5,6 +5,7 @@ import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   Box,
+  CircularProgress,
   Fab,
   LinearProgress,
   Stack,
@@ -246,6 +247,16 @@ const UserGroups2: React.FC = () => {
               Cancel
             </button>
             <motion.button
+              style={{ alignSelf: "flex-end", width: "auto", minWidth: "155px" }}
+              className="deletebutton"
+              onClick={() => Delete(idToDelete)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {mutation.isLoading? <CircularProgress size={15} color="inherit" /> : "Delete Anyway"}
+            </motion.button>
+            {/* 
+            <motion.button
               style={{ alignSelf: "flex-end" }}
               className="deletebutton"
               onClick={() => Delete(idToDelete)}
@@ -253,7 +264,7 @@ const UserGroups2: React.FC = () => {
               whileTap={{ scale: 0.95 }}
             >
               Delete Anyway
-            </motion.button>
+            </motion.button> */}
           </>
         }
       />

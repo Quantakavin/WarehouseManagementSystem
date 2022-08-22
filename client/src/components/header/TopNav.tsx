@@ -234,7 +234,7 @@ const TopNav = () => {
           <MenuItem
             sx={{ color: "#0A2540" }}
             onClick={() => {
-              navigate("/");
+              navigate("/notifications");
             }}
           >
             <ListItemIcon sx={{ color: "#0A2540" }}>

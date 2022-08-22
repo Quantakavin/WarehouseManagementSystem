@@ -13,12 +13,12 @@ import "../../styles/BinLocation.scss";
 import { useQuery } from "react-query";
 import { GetBinsByBrand, GetBrandNames } from "../../api/BinLocationDB";
 import { Link } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
 
 const Floor = () => {
-  const colorMap = useLoader(THREE.TextureLoader, "Concrete030_4K_Color.png");
+  const colorMap = useLoader(THREE.TextureLoader, "/Concrete030_4K_Color.png");
 
   return (
     <mesh
@@ -693,17 +693,23 @@ const Scene = ({ selectedbintags }: SceneProps) => {
   );
 };
 
-const BinLocations = () => {
+const BinLocations: React.FC = () => {
   const [searchOptions, setSearchOptions] = useState<string[]>([]);
   const [inputName, setInputName] = useState<string>(null);
   const [searchName, setSearchName] = useState<string>(null);
   const [selectedBinTags, setSelectedBinTags] = useState<string[]>(null);
   const debouncedValue = useDebounce<string>(inputName, 500);
+  const params = useParams();
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
 
+  console.log("the bin tags are " + selectedBinTags)
+
   useEffect(() => {
+    if (params.BinTag) {
+      setSelectedBinTags([params.BinTag])
+    }
     dispatch(ChangeTab({ currenttab: "Bin Locations" }));
   }, []);
 
@@ -725,7 +731,9 @@ const BinLocations = () => {
       const returnbins = data.data.map((bin) => {
         return bin.BinTag;
       });
-      setSelectedBinTags(returnbins);
+      if (returnbins.length !== 0) {
+        setSelectedBinTags(returnbins);
+      }
     },
   });
 

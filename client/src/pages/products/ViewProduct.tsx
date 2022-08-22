@@ -21,6 +21,7 @@ import { EditableContext } from "../../components/context/IsEditableContext";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
 import config from "../../config/config";
 import { SocketContext } from "../../context/socket";
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 const ViewProduct: React.FC = () => {
   const params = useParams();
@@ -261,6 +262,7 @@ const ViewProduct: React.FC = () => {
                   justifyContent="space-between"
                   alignItems="center"
                 >
+                  <div className="flexcontainer" style={{flexDirection: "row"}}>
                   <motion.div
                     className="animatable"
                     whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
@@ -283,6 +285,30 @@ const ViewProduct: React.FC = () => {
                       Back
                     </Button>
                   </motion.div>
+                  <motion.div
+                  className="animatable"
+                  style={{marginLeft: '15px'}}
+                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#063970",
+                      width: 150,
+                      height: 50,
+                      borderRadius: 10,
+                      paddingRight: 4,
+                    }}
+                    startIcon={<LocationOnIcon />}
+                    onClick={() => navigate(`/binlocations/${binLocation.replace(/-/g, '')}`)}
+                  >
+                    Location
+                  </Button>
+                </motion.div>
+                </div>
                   {addProduct()}
                 </Box>
               </Grid>
