@@ -5,6 +5,8 @@ import CallReceivedIcon from "@mui/icons-material/CallReceived";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import UpdateIcon from "@mui/icons-material/Update";
 import TaskIcon from "@mui/icons-material/Task";
+import SignLanguageIcon from '@mui/icons-material/SignLanguage';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -46,6 +48,15 @@ const Notification: React.FC<NotificationProps> = ({
     case "Closed":
       icon = <TaskIcon sx={{ fontSize: "30px", color: "#3F4D65" }} />;
       break;
+      case "Ready":
+        icon = <SignLanguageIcon sx={{ fontSize: "30px", color: "#3F4D65" }} />;
+        break;
+        case "Due":
+          icon = <HourglassBottomIcon sx={{ fontSize: "30px", color: "#3F4D65" }} />;
+          break;
+      case "Information":
+        icon = <InfoIcon sx={{ fontSize: "30px", color: "#3F4D65" }} />;
+        break;
     default:
       icon = <CheckCircleIcon sx={{ fontSize: "30px", color: "#31A961" }} />;
       break;
