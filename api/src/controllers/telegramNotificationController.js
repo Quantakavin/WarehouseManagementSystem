@@ -8,17 +8,17 @@ const { TOKEN } = process.env;
 const bot = new TelegramBot(TOKEN, { polling: true });
 const isdnlogo =
     'https://www.pngitem.com/pimgs/m/621-6213396_isdn-holdings-limited-isdn-holdings-logo-hd-png.png';
-// const { rmaService } = require('../services');
+const { rmaService } = require('../services');
 
-// const options = {
-//     reply_markup: JSON.stringify({
-//         inline_keyboard: [
-//             [{ text: 'Status', callback_data: '1' }],
-//             [{ text: 'Progress', callback_data: '2' }],
-//             [{ text: 'Customer Details', callback_data: '3' }]
-//         ]
-//     })
-// };
+const options = {
+    reply_markup: JSON.stringify({
+        inline_keyboard: [
+            [{ text: 'Status', callback_data: '1' }],
+            [{ text: 'Progress', callback_data: '2' }],
+            [{ text: 'Customer Details', callback_data: '3' }]
+        ]
+    })
+};
 
 // const tloanoptions = {
 //     reply_markup: JSON.stringify({
@@ -30,49 +30,49 @@ const isdnlogo =
 //     })
 // };
 
-// bot.on('message', (message) => {
-//     const UserID = message.chat.id;
-//     if (message.text === 'RMA') {
-//         bot.sendMessage(UserID, `RMA Request Options`, options);
-//         bot.on('callback_query', function onCallbackQuery(callbackQuery) {
-//             const action = callbackQuery.data;
-//             const msg = callbackQuery.message;
-//             const opts = {
-//                 chat_id: msg.chat.id,
-//                 message_id: msg.message_id
-//             };
-//             let text;
+bot.on('message', (message) => {
+    const UserID = message.chat.id;
+    if (message.text === 'RMA') {
+        bot.sendMessage(UserID, `RMA Request Options`, options);
+        bot.on('callback_query', function onCallbackQuery(callbackQuery) {
+            const action = callbackQuery.data;
+            const msg = callbackQuery.message;
+            const opts = {
+                chat_id: msg.chat.id,
+                message_id: msg.message_id
+            };
+            let text;
 
-//             switch (action) {
-//                 case '1': {
-//                     bot.sendMessage(UserID, `Please provide an RmaID`);
-//                     bot.on('message', async (rmaid) => {
-//                         const RmaID = rmaid.text;
-//                         const results = await rmaService.getByRmaID(RmaID);
-//                         const status = results[0][0].StatusText;
-//                         bot.sendMessage(UserID, `Status of RMA #${RmaID} is ${status}`);
-//                     });
-//                     break;
-//                 }
-//                 case '2': {
-//                     bot.sendMessage(
-//                         UserID,
-//                         `Current Progress for RMA #108: On the way to supplier`
-//                     );
-//                     break;
-//                 }
-//                 case '3': {
-//                     bot.sendMessage(UserID, `Customer Name: Shine Tan, Customer Contact: 96963677`);
-//                     break;
-//                 }
-//                 default: {
-//                     bot.sendMessage(UserID, `Answer`, options);
-//                 }
-//             }
-//             bot.editMessageText(text, opts);
-//         });
-//     }
-// });
+            switch (action) {
+                case '1': {
+                    bot.sendMessage(UserID, `Please provide an RmaID`);
+                    bot.on('message', async (rmaid) => {
+                        const RmaID = rmaid.text;
+                        const results = await rmaService.getByRmaID(RmaID);
+                        const status = results[0][0].StatusText;
+                        bot.sendMessage(UserID, `Status of RMA #${RmaID} is ${status}`);
+                    });
+                    break;
+                }
+                case '2': {
+                    bot.sendMessage(
+                        UserID,
+                        `Current Progress for RMA #108: On the way to supplier`
+                    );
+                    break;
+                }
+                case '3': {
+                    bot.sendMessage(UserID, `Customer Name: Shine Tan, Customer Contact: 96963677`);
+                    break;
+                }
+                default: {
+                    bot.sendMessage(UserID, `Answer`, options);
+                }
+            }
+            bot.editMessageText(text, opts);
+        });
+    }
+});
 
 module.exports.rmaAcceptedTele = (UserID, Username, RmaID) => {
     try {
