@@ -29,7 +29,11 @@ router.get('/tloanstatusid/:TLoanID', TLoanController.tloanStatusID);
 router.get('/tloan/approvedloans', TLoanController.getApprovedLoan);
 router.get('/tloan/pickingloans', TLoanController.getPickingLoan);
 router.get('/tloan/readyloans', TLoanController.getReadyLoan);
-router.put('/tloan/submitEditedDraft/:TLoanID',validation.validateLoan, TLoanController.SubmitAfterEdit);
+router.put(
+    '/tloan/submitEditedDraft/:TLoanID',
+    validation.validateLoan,
+    TLoanController.SubmitAfterEdit
+);
 router.put(
     '/tloan/draftEditedDraft/:TLoanID',
     validation.validateLoan,

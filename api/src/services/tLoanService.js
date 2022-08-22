@@ -62,7 +62,7 @@ module.exports.createTLoan = async (
             .then((TLoanID) => {
                 if (tloanItems.length > 0) {
                     tloanItems.forEach((item) => {
-                        [item.TLoanID] = TLoanID;
+                        [item.TLoanID] = TLoanID; // eslint-disable-line no-param-reassign
                     });
                     return knex('TLoanOutItem').insert(tloanItems).transacting(trx);
                 }
@@ -112,7 +112,7 @@ module.exports.SendTLoanToDraft = async (
             .then((TLoanID) => {
                 if (tloanItems.length > 0) {
                     tloanItems.forEach((item) => {
-                        [item.TLoanID] = TLoanID;
+                        [item.TLoanID] = TLoanID; // eslint-disable-line no-param-reassign
                     });
                     return knex('TLoanOutItem').insert(tloanItems).transacting(trx);
                 }

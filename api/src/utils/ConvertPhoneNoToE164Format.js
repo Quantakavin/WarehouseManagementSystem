@@ -1,5 +1,4 @@
 const ConvertMobileNo = (mobileNo) => {
-    console.log('Mobile no is ', mobileNo);
     let returnNo = null;
     if (mobileNo.startsWith('+65')) {
         if (mobileNo.charAt(3) === ' ') {
