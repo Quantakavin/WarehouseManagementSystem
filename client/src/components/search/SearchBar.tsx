@@ -5,7 +5,8 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { motion } from "framer-motion";
-import { Hidden } from "@mui/material";
+import { Box, Hidden } from "@mui/material";
+import GeneralButton from "../buttons/GeneralButton";
 
 interface SearchParams {
   searchoptions: string[];
@@ -25,7 +26,7 @@ const SearchBar = ({
       <Stack
         spacing={2}
         className="searchbar"
-        style={{ marginLeft: "8%", alignSelf: "flex-start" }}
+        style={{ alignSelf: "flex-start" }}
       >
         {/* 
           <TextField
@@ -54,21 +55,28 @@ const SearchBar = ({
                 ...params.InputProps,
                 type: "search",
               }}
-              size="small"
               sx={{ backgroundColor: "white", color: "#0A2540" }}
             />
           )}
         />
       </Stack>
 
-      <motion.button
+      <Box sx={{ml: "15px", mr: "auto", mt: "10px"}}>
+      <GeneralButton 
+      text="Search"
+      clickfunction={() => handleSearch(selectedOption)}
+      starticon={<SearchIcon fontSize="small" />}
+      />
+      </Box>
+      {/* <motion.button
         className="searchbutton"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => handleSearch(selectedOption)}
       >
         <SearchIcon fontSize="small" /> Search
-      </motion.button>
+      </motion.button> */}
+
     </>
   );
 };

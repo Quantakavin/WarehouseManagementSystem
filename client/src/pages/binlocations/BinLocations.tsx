@@ -12,7 +12,7 @@ import useDebounce from "../../hooks/useDebounce";
 import "../../styles/BinLocation.scss";
 import { useQuery } from "react-query";
 import { GetBinsByBrand, GetBrandNames } from "../../api/BinLocationDB";
-import { Link } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
@@ -71,12 +71,12 @@ const Scene = ({ selectedbintags }: SceneProps) => {
       />
       <Suspense fallback={null}>
 
-      <Office position={[-30,-10,-80]} />
+        <Office position={[-30, -10, -80]} />
 
-      <Pallets position={[-40,-12,-80]}/>
-      <Pallets position={[-80,-12,-80]}/>
-      <Pallets position={[-40,-12,-140]}/>
-      <Pallets position={[-80,-12,-140]}/>
+        <Pallets position={[-40, -12, -80]} />
+        <Pallets position={[-80, -12, -80]} />
+        <Pallets position={[-40, -12, -140]} />
+        <Pallets position={[-80, -12, -140]} />
 
 
         {/* Section A01 */}
@@ -749,9 +749,23 @@ const BinLocations: React.FC = () => {
   };
 
   return (
-    <div className="binlocation">
-      <h1 className="binlocationTitle">Warehouse Visualisation</h1>
-      <div className="flexcontainer" style={{ marginBottom: "5px" }}>
+    <Box sx={{ pl: 3, pr: 3, pt: 1 }}>
+    <Box sx={{ display: "flex", height: "100%" }}>
+    <Box sx={{ flexGrow: 1 }}>
+      {/* <h1 className="binlocationTitle">Warehouse Visualisation</h1> */}
+      <Box
+            component="span"
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+      <Typography
+        sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+      >
+        Warehouse Visualisation
+      </Typography>
+      </Box>
+      <div className="flexcontainer" style={{ marginBottom: "5px"}}>
         <SearchBar
           handleInputChange={handleInputChange}
           handleSearch={handleSearch}
@@ -760,7 +774,7 @@ const BinLocations: React.FC = () => {
       </div>
       <Link
         onClick={() => navigate("/emptybins")}
-        sx={{ marginLeft: "9%", fontSize: "12px", marginTop: "5px" }}
+        sx={{ fontSize: "12px", marginTop: "5px", marginLeft: "10px"}}
       >
         View Empty Bins
       </Link>
@@ -771,14 +785,15 @@ const BinLocations: React.FC = () => {
           style={{
             border: "solid 1px black",
             height: 1000,
-            marginTop: 20,
-            width: "95%",
+            marginTop: 20
           }}
         >
           <Scene selectedbintags={selectedBinTags} />
         </Canvas>
       </div>
-    </div>
+    </Box>
+    </Box>
+    </Box>
   );
 };
 
