@@ -136,8 +136,10 @@ module.exports.SubmitAfterEdit = async (req, res) => {
         const tloanItems = items.map((item) => {
             return item;
         });
-
+        const getManagerID = await TLoan.getSalesManagerID();
+        const managerid = getManagerID[0][0].UserID
         if (results.length > 0) {
+
             await TLoan.DeleteProductsByID(TLoanID);
             const results2 = await TLoan.SubmitAfterEdit(
                 TLoanID,
@@ -150,14 +152,15 @@ module.exports.SubmitAfterEdit = async (req, res) => {
                 email,
                 collection,
                 shipping,
+                managerid,
                 tloanItems
             );
             if (results2.length > 0) {
                 redisClient.del(`TLoanItems#${TLoanID}`);
                 redisClient.del(`TLoan#${TLoanID}`);
                 redisClient.del(`TLoanIDs#${TLoanID}`);
-                redisClient.del('ManagerLoan');
-                redisClient.del('ManagerExtension');
+                redisClient.del(`ManagerLoan#${managerid}`);
+                redisClient.del(`ManagerExtension#${managerid}`);
                 redisClient.del(`TLoanStatusID#${TLoanID}`);
                 redisClient.del(`ExtensionStatus#${TLoanID}`);
                 redisClient.del(`CurrentTLoan#${UserID}`);
@@ -218,10 +221,8 @@ module.exports.DraftAfterEdit = async (req, res) => {
                 redisClient.del(`TLoanItems#${TLoanID}`);
                 redisClient.del(`TLoan#${TLoanID}`);
                 redisClient.del(`TLoanIDs#${TLoanID}`);
-                redisClient.del('ManagerLoan');
                 redisClient.del(`TLoanStatusID#${TLoanID}`);
                 redisClient.del(`ExtensionStatus#${TLoanID}`);
-                redisClient.del('ManagerExtension');
                 redisClient.del(`CurrentTLoan#${UserID}`);
                 redisClient.del(`PendingTLoan#${UserID}`);
                 redisClient.del(`DraftTLoan#${UserID}`);
@@ -256,7 +257,8 @@ module.exports.newLoan = async (req, res) => {
         const tloanItems = items.map((item) => {
             return item;
         });
-
+        const getManagerID = await TLoan.getSalesManagerID();
+        const managerid = getManagerID[0][0].UserID
         const results = await TLoan.createTLoan(
             type,
             company,
@@ -269,12 +271,13 @@ module.exports.newLoan = async (req, res) => {
             email,
             collection,
             shipping,
+            managerid,
             tloanItems
         );
         console.log(results);
         if (results.length > 0) {
-            redisClient.del('ManagerLoan');
-            redisClient.del('ManagerExtension');
+            redisClient.del(`ManagerLoan#${managerid}`);
+            redisClient.del(`ManagerExtension#${managerid}`);
             redisClient.del(`CurrentTLoan#${user}`);
             redisClient.del(`PendingTLoan#${user}`);
             redisClient.del(`DraftTLoan#${user}`);
@@ -322,8 +325,6 @@ module.exports.SendDraft = async (req, res) => {
             tloanItems
         );
         if (results.length > 0) {
-            redisClient.del('ManagerLoan');
-            redisClient.del('ManagerExtension');
             redisClient.del(`CurrentTLoan#${user}`);
             redisClient.del(`PendingTLoan#${user}`);
             redisClient.del(`DraftTLoan#${user}`);
@@ -433,6 +434,8 @@ module.exports.approveLoan = async (req, res) => {
         const { UserID } = gettingInfo[0][0];
         const telegramid = gettingInfo[0][0].TelegramID;
         const results = await TLoan.getLoanByNumber(TLoanID);
+        const getManagerIDFromTLoan = await TLoan.getManagerIDFromTLoan(TLoanID)
+        const SalesManagerID = getManagerIDFromTLoan[0][0].SalesManagerID
         if (results.length > 0) {
             await TLoan.approveLoan(TLoanID);
             if (telegramid !== null) {
@@ -440,8 +443,8 @@ module.exports.approveLoan = async (req, res) => {
             }
             createNotification(10, UserID, TLoanID);
             tloanAcceptedMail(email, username, TLoanID);
-            redisClient.del('ManagerLoan');
-            redisClient.del('ManagerExtension');
+            redisClient.del(`ManagerLoan#${SalesManagerID}`);
+            redisClient.del(`ManagerExtension#${SalesManagerID}`);
             redisClient.del('ApprovedLoan');
             redisClient.del(`TLoanItems#${TLoanID}`);
             redisClient.del(`TLoan#${TLoanID}`);
@@ -471,6 +474,8 @@ module.exports.rejectLoan = async (req, res) => {
         const { UserID } = gettingInfo[0][0];
         const telegramid = gettingInfo[0][0].TelegramID;
         const results = await TLoan.getLoanByNumber(TLoanID);
+        const getManagerIDFromTLoan = await TLoan.getManagerIDFromTLoan(TLoanID)
+        const SalesManagerID = getManagerIDFromTLoan[0][0].SalesManagerID
         if (results.length > 0) {
             await TLoan.rejectLoan(TLoanID, remarks);
             if (telegramid !== null) {
@@ -478,8 +483,8 @@ module.exports.rejectLoan = async (req, res) => {
             }
             createNotification(11, UserID, TLoanID);
             tloanRejectedMail(email, username, TLoanID, remarks);
-            redisClient.del('ManagerLoan');
-            redisClient.del('ManagerExtension');
+            redisClient.del(`ManagerLoan#${SalesManagerID}`);
+            redisClient.del(`ManagerExtension#${SalesManagerID}`);
             redisClient.del(`TLoanItems#${TLoanID}`);
             redisClient.del(`TLoan#${TLoanID}`);
             redisClient.del(`TLoanIDs#${TLoanID}`);
@@ -507,6 +512,8 @@ module.exports.approveExtension = async (req, res) => {
         const { UserID } = gettingInfo[0][0];
         const telegramid = gettingInfo[0][0].TelegramID;
         const results = await TLoan.getLoanByNumber(TLoanID);
+        const getManagerIDFromTLoan = await TLoan.getManagerIDFromTLoan(TLoanID)
+        const SalesManagerID = getManagerIDFromTLoan[0][0].SalesManagerID
         if (results.length > 0) {
             await TLoan.approveExtension(TLoanID);
             if (telegramid !== null) {
@@ -514,8 +521,8 @@ module.exports.approveExtension = async (req, res) => {
             }
             createNotification(14, UserID, TLoanID);
             tloanExtensionAcceptedMail(email, username, TLoanID);
-            redisClient.del('ManagerLoan');
-            redisClient.del('ManagerExtension');
+            redisClient.del(`ManagerLoan#${SalesManagerID}`);
+            redisClient.del(`ManagerExtension#${SalesManagerID}`);
             redisClient.del(`TLoanItems#${TLoanID}`);
             redisClient.del(`TLoan#${TLoanID}`);
             redisClient.del(`TLoanIDs#${TLoanID}`);
@@ -544,6 +551,8 @@ module.exports.rejectExtension = async (req, res) => {
         const { UserID } = gettingInfo[0][0];
         const telegramid = gettingInfo[0][0].TelegramID;
         const results = await TLoan.getLoanByNumber(TLoanID);
+        const getManagerIDFromTLoan = await TLoan.getManagerIDFromTLoan(TLoanID)
+        const SalesManagerID = getManagerIDFromTLoan[0][0].SalesManagerID
         if (results.length > 0) {
             await TLoan.rejectExtension(TLoanID, remarks);
             if (telegramid !== null) {
@@ -551,8 +560,8 @@ module.exports.rejectExtension = async (req, res) => {
             }
             createNotification(15, UserID, TLoanID);
             tloanExtensionRejectedMail(email, username, TLoanID, remarks);
-            redisClient.del('ManagerLoan');
-            redisClient.del('ManagerExtension');
+            redisClient.del(`ManagerLoan#${SalesManagerID}`);
+            redisClient.del(`ManagerExtension#${SalesManagerID}`);
             redisClient.del(`TLoanItems#${TLoanID}`);
             redisClient.del(`TLoan#${TLoanID}`);
             redisClient.del(`TLoanIDs#${TLoanID}`);
@@ -572,15 +581,17 @@ module.exports.rejectExtension = async (req, res) => {
 };
 
 module.exports.ManagerLoan = async (req, res) => {
+
+    const { SalesManagerID } = req.params
     try {
-        const TLoans = await redisClient.get('ManagerLoan');
+        const TLoans = await redisClient.get(`ManagerLoan#${SalesManagerID}`);
         if (TLoans !== null) {
             const redisresults = JSON.parse(TLoans);
             return res.status(200).json(redisresults);
         }
-        const results = await TLoan.getManagerLoan();
+        const results = await TLoan.getManagerLoan(SalesManagerID);
         if (results.length > 0) {
-            redisClient.set('ManagerLoan', JSON.stringify(results[0]), {
+            redisClient.set(`ManagerLoan#${SalesManagerID}`, JSON.stringify(results[0]), {
                 EX: 60 * 5
             });
             return res.status(200).json(results[0]);
@@ -593,16 +604,17 @@ module.exports.ManagerLoan = async (req, res) => {
 };
 
 module.exports.ManagerExtension = async (req, res) => {
+    const { SalesManagerID } = req.params
+
     try {
-        const TLoans = await redisClient.get('ManagerExtension');
+        const TLoans = await redisClient.get(`ManagerExtension#${SalesManagerID}`);
         if (TLoans !== null) {
             const redisresults = JSON.parse(TLoans);
             return res.status(200).json(redisresults);
         }
-        const results = await TLoan.getManagerExtension();
-        redisClient.set('ManagerExtension', JSON.stringify(results[0]));
+        const results = await TLoan.getManagerExtension(SalesManagerID);
         if (results.length > 0) {
-            redisClient.set('ManagerExtension', JSON.stringify(results[0]), {
+            redisClient.set(`ManagerExtension#${SalesManagerID}`, JSON.stringify(results[0]), {
                 EX: 60 * 5
             });
             return res.status(200).json(results[0]);
@@ -620,13 +632,14 @@ module.exports.LoanExtend = async (req, res) => {
         const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
         const UserID = gettingInfo[0][0].UserID.toString();
         const results = await TLoan.loanExtension(TLoanID, duration, reason);
-
+        const getManagerIDFromTLoan = await TLoan.getManagerIDFromTLoan(TLoanID)
+        const SalesManagerID = getManagerIDFromTLoan[0][0].SalesManagerID
         if (results.length > 0) {
             redisClient.del(`TLoanItems#${TLoanID}`);
             redisClient.del(`TLoan#${TLoanID}`);
             redisClient.del(`TLoanIDs#${TLoanID}`);
-            redisClient.del('ManagerLoan');
-            redisClient.del('ManagerExtension');
+            redisClient.del(`ManagerLoan#${SalesManagerID}`);
+            redisClient.del(`ManagerExtension#${SalesManagerID}`);
             redisClient.del(`TLoanStatusID#${TLoanID}`);
             redisClient.del(`ExtensionStatus#${TLoanID}`);
             redisClient.del(`CurrentTLoan#${UserID}`);
@@ -798,6 +811,8 @@ module.exports.updateStatus = async (req, res) => {
         const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
         const { UserID } = gettingInfo[0][0];
         const results = await TLoan.updateStatus(TLoanID, statusChange);
+        const getManagerIDFromTLoan = await TLoan.getManagerIDFromTLoan(TLoanID)
+        const SalesManagerID = getManagerIDFromTLoan[0][0].SalesManagerID
         console.log(statusChange);
         if (results) {
             if (statusChange === '5') {
@@ -814,8 +829,8 @@ module.exports.updateStatus = async (req, res) => {
             redisClient.del(`TLoanItems#${TLoanID}`);
             redisClient.del(`TLoan#${TLoanID}`);
             redisClient.del(`TLoanIDs#${TLoanID}`);
-            redisClient.del('ManagerLoan');
-            redisClient.del('ManagerExtension');
+            redisClient.del(`ManagerLoan#${SalesManagerID}`);
+            redisClient.del(`ManagerExtension#${SalesManagerID}`);
             redisClient.del(`CurrentTLoan#${UserID}`);
             redisClient.del(`PendingTLoan#${UserID}`);
             redisClient.del(`DraftTLoan#${UserID}`);

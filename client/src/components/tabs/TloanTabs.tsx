@@ -54,7 +54,7 @@ const TLoanTabs: React.FC = () => {
   const context: any = useContext(EditableContext);
   const { isEditable } = context;
   const dispatch = useAppDispatch();
-
+  const managerid = userid
   useEffect(() => {
     dispatch(ChangeTab({ currenttab: "T-Loan" }));
   });
@@ -76,10 +76,10 @@ const TLoanTabs: React.FC = () => {
         .get(`${config.baseURL}/tloan/history/${userid}`)
         .then((historyData) => setHistoryTable(historyData.data));
       axios
-        .get(`${config.baseURL}/tloan/ManagerLoan`)
+        .get(`${config.baseURL}/tloan/ManagerLoan/${managerid}`)
         .then((pendingTloanData) => setManagerLoan(pendingTloanData.data));
       axios
-        .get(`${config.baseURL}/tloan/ManagerExtension`)
+        .get(`${config.baseURL}/tloan/ManagerExtension/${managerid}`)
         .then((draftData) => setExtensionTable(draftData.data));
       axios
         .get(`${config.baseURL}/tloan/approvedloans`)

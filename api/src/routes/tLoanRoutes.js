@@ -21,8 +21,8 @@ router.put(
     validation.validateRejectRemark,
     TLoanController.rejectExtension
 );
-router.get('/tloan/ManagerLoan', TLoanController.ManagerLoan);
-router.get('/tloan/ManagerExtension', TLoanController.ManagerExtension);
+router.get('/tloan/ManagerLoan/:SalesManagerID', TLoanController.ManagerLoan);
+router.get('/tloan/ManagerExtension/:SalesManagerID', TLoanController.ManagerExtension);
 router.post('/tloan/extension', validation.validateExtensionRequest, TLoanController.LoanExtend);
 router.get('/tloanid/:TLoanID', TLoanController.getIDofLoan);
 router.get('/tloanstatusid/:TLoanID', TLoanController.tloanStatusID);
