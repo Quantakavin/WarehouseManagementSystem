@@ -35,6 +35,7 @@ module.exports.createTLoan = async (
     email,
     collection,
     shipping,
+    managerid,
     tloanItems
 ) => {
     return knex.transaction((trx) => {
@@ -53,7 +54,8 @@ module.exports.createTLoan = async (
                 UserID: user,
                 CustomerEmail: email,
                 Collection: collection,
-                ShippingAddress: shipping
+                ShippingAddress: shipping,
+                SalesManagerID : managerid
             },
             'TLoanID'
         )
@@ -165,6 +167,7 @@ module.exports.SubmitAfterEdit = async (
     email,
     collection,
     shipping,
+    managerid,
     tloanItems
 ) => {
     return knex.transaction((trx) => {
@@ -181,7 +184,8 @@ module.exports.SubmitAfterEdit = async (
                     TLoanStatusID: 4,
                     CustomerEmail: email,
                     Collection: collection,
-                    ShippingAddress: shipping
+                    ShippingAddress: shipping,
+                    SalesManagerID : managerid
                 },
                 'TLoanID'
             )
@@ -368,7 +372,7 @@ module.exports.getHistory = async (UserID) => {
     return knex.raw(query, [UserID]);
 };
 
-module.exports.getManagerLoan = async () => {
+module.exports.getManagerLoan = async (SalesManagerID) => {
     const query = `
   SELECT
   t.TLoanID,
@@ -376,11 +380,11 @@ module.exports.getManagerLoan = async () => {
   t.Requestor,
   tt.TLoanType
   FROM TLoan t, TLoanType tt where t.TLoanStatusID = "4" AND 
-  t.TLoanTypeID = tt.TLoanTypeID;`;
-    return knex.raw(query);
+  t.TLoanTypeID = tt.TLoanTypeID AND t.SalesManagerID = ?;`;
+    return knex.raw(query, [SalesManagerID]);
 };
 
-module.exports.getManagerExtension = async () => {
+module.exports.getManagerExtension = async (SalesManagerID) => {
     const query = `
     SELECT
     t.TLoanID,
@@ -393,9 +397,9 @@ module.exports.getManagerExtension = async () => {
      JOIN TLoanType tt ON t.TLoanTypeID = tt.TLoanTypeID
      JOIN TLoanExtension te ON te.TLoanID = t.TLoanID
       JOIN TLoanExtensionStatus tes ON tes.TLoanExtensionStatusID = te.TLoanExtensionStatusID
-      where te.TLoanExtensionStatusID = "1"
+      where te.TLoanExtensionStatusID = "1" AND t.SalesManagerID = ?
   `;
-    return knex.raw(query);
+    return knex.raw(query, [SalesManagerID]);
 };
 
 module.exports.approveLoan = async (TLoanID) => {
@@ -607,6 +611,24 @@ module.exports.getEmployeeInfo = async (TLoanID) => {
     FROM User u 
     JOIN TLoan t ON t.UserID = u.UserID 
     WHERE t.TLoanID = ?
+    `;
+    return knex.raw(query, [TLoanID]);
+};
+
+module.exports.getSalesManagerID = async () => {
+    const query = `
+    SELECT UserID FROM User where 
+    Active = 'Y' and UserGroupID = 4
+    ORDER BY RAND() 
+    LIMIT 1
+    `;
+    return knex.raw(query);
+};
+
+module.exports.getManagerIDFromTLoan = async (TLoanID) => {
+    const query = `
+    SELECT SalesManagerID FROM TLoan where 
+    TLoanID = ?
     `;
     return knex.raw(query, [TLoanID]);
 };
