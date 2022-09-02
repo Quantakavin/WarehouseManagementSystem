@@ -21,7 +21,7 @@ describe('Login Test', () => {
         cy.contains('Continue').click()
         cy.contains('User with email doesn\'t exist').should('be.visible')
     })
-    it('Should check if email/password combination', () => {
+    it('Should check email/password combination', () => {
         cy.get('input[name="email"]').clear()
         cy.get('input[name="password"]').clear()
         cy.get('input[name="email"]').type("Admin@gmail.com")
