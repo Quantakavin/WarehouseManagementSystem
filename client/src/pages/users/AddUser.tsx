@@ -54,7 +54,7 @@ const AddUser: React.FC = () => {
     } else {
       dispatch(ChangeTab({ currenttab: "Users" }));
     }
-  }, []);
+  }, [dispatch, userrole, navigate]);
   const [companyOptions, setCompanyOptions] = useState<Option[]>([]);
   const [userGroupOptions, setUserGroupOptions] = useState<Option[]>([]);
   const [notiGroupOptions, setNotiGroupOptions] = useState<Option[]>([]);
@@ -65,10 +65,6 @@ const AddUser: React.FC = () => {
     register,
     trigger,
     handleSubmit,
-    getValues,
-    setValue,
-    control,
-    watch,
     formState: { errors, isDirty },
   } = useForm<FormValues>({ mode: "all" });
   const queryClient = useQueryClient();
@@ -137,7 +133,7 @@ const AddUser: React.FC = () => {
     const postdata = data;
     postdata.notificationgroups = returnNotiGroups;
     mutation.mutate(data, {
-      onSuccess: (returndata) => {
+      onSuccess: () => {
         Toast.fire({
           icon: "success",
           title: "User created successfully",

@@ -38,7 +38,10 @@ const SidebarLink: React.FC<SidebarLinkType> = ({ url, name, icon }) => {
   };
 
   const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
-    <Tooltip {...props} classes={{ popper: className }} />
+    <Tooltip
+      classes={{ popper: className }}
+      {...props} // eslint-disable-line react/jsx-props-no-spreading
+    />
   ))(({ theme }) => ({
     [`& .${tooltipClasses.tooltip}`]: {
       backgroundColor: theme.palette.common.white,

@@ -148,7 +148,7 @@ const SearchBarUpdated = () => {
         options={top100Films.map((option) => option.title)}
         renderInput={(params) => (
           <TextField
-            {...params}
+            {...params} // eslint-disable-line react/jsx-props-no-spreading
             placeholder="Search by RMA number..."
             InputProps={{
               ...params.InputProps,

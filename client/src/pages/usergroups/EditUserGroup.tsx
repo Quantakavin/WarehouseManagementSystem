@@ -47,7 +47,7 @@ const EditUserGroup: React.FC = () => {
     } else {
       dispatch(ChangeTab({ currenttab: "User Groups" }));
     }
-  }, []);
+  }, [dispatch, navigate, userrole]);
   const {
     register,
     handleSubmit,
@@ -58,7 +58,7 @@ const EditUserGroup: React.FC = () => {
   } = useForm<FormValues>({ mode: "all" });
   const [step, setStep] = useState<number>(1);
   const params = useParams();
-  const [userGroup, setUserGroup] = useState<any>(null);
+  // const [userGroup, setUserGroup] = useState<any>(null);
   const [featureOptions, setFeatureOptions] = useState<Option[]>([]);
   const [featureRightOptions, setFeatureRightOptions] = useState<Option[]>([]);
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
@@ -84,7 +84,7 @@ const EditUserGroup: React.FC = () => {
             };
           })
         );
-        setUserGroup(data.data[0]);
+        // setUserGroup(data.data[0]);
       },
     }
   );

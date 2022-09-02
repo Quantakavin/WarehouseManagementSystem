@@ -109,7 +109,7 @@ const Login: React.FC = () => {
       });
       return navigate("/dashboard", { replace: true });
     },
-    onError: (data) => {
+    onError: () => {
       controls.start("detecterror");
     },
   });
@@ -157,10 +157,12 @@ const Login: React.FC = () => {
           <ErrorAlert error={mutation.error} />
         ) : null}
 
-        <Link
+        <Link // eslint-disable-line jsx-a11y/anchor-is-valid
           onClick={() => {
             navigate("/forgetpassword");
           }}
+          component="button"
+          variant="body2"
           underline="hover"
           sx={{ ml: 10 }}
         >

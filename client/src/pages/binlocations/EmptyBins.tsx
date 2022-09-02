@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Box, Switch, Typography } from "@mui/material";
+import React, { useEffect } from "react";
+import { Box, Typography } from "@mui/material";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -14,7 +14,7 @@ const EmptyBins: React.FC = () => {
 
   useEffect(() => {
     dispatch(ChangeTab({ currenttab: "Bin Locations" }));
-  }, []);
+  }, [dispatch]);
 
   const EmptyBinsQuery = useQuery(`emptybins`, () => GetEmptyBins());
 

@@ -16,7 +16,7 @@ const Notifications: React.FC = () => {
 
   useEffect(() => {
     dispatch(ChangeTab({ currenttab: "null" }));
-  }, []);
+  }, [dispatch]);
 
   const NotificationsQuery = useQuery(
     [`notifications`, userID.toString()],

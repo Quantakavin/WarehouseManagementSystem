@@ -37,7 +37,7 @@ interface SceneProps {
 }
 
 const Scene = ({ selectedbintags }: SceneProps) => {
-  const { gl, camera } = useThree();
+  const { camera } = useThree();
 
   const controls = useRef<any>();
   useFrame(() => controls.current.update());
@@ -699,17 +699,14 @@ const BinLocations: React.FC = () => {
   const debouncedValue = useDebounce<string>(inputName, 500);
   const params = useParams();
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
-
-  console.log(`the bin tags are ${selectedBinTags}`);
 
   useEffect(() => {
     if (params.BinTag) {
       setSelectedBinTags([params.BinTag]);
     }
     dispatch(ChangeTab({ currenttab: "Bin Locations" }));
-  }, []);
+  }, [dispatch, params.BinTag]);
 
   useQuery(
     [`brandnames`, debouncedValue],
@@ -770,8 +767,10 @@ const BinLocations: React.FC = () => {
               searchoptions={searchOptions}
             />
           </div>
-          <Link
+          <Link // eslint-disable-line jsx-a11y/anchor-is-valid
             onClick={() => navigate("/emptybins")}
+            component="button"
+            variant="body2"
             sx={{ fontSize: "12px", marginTop: "5px", marginLeft: "10px" }}
           >
             View Empty Bins

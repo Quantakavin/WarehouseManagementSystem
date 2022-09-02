@@ -53,7 +53,7 @@ const TLoanTabs: React.FC = () => {
   const context: any = useContext(EditableContext);
   const { isEditable } = context;
   const dispatch = useAppDispatch();
-  const managerid = userid
+  const managerid = userid;
   useEffect(() => {
     dispatch(ChangeTab({ currenttab: "T-Loan" }));
   });

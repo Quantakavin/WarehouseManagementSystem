@@ -60,7 +60,7 @@ const AddNotificationGroup: React.FC = () => {
     } else {
       dispatch(ChangeTab({ currenttab: "Notification Groups" }));
     }
-  }, []);
+  }, [dispatch, navigate, userrole]);
   const {
     register,
     handleSubmit,

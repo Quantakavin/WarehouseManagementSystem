@@ -20,7 +20,7 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     dispatch(ChangeTab({ currenttab: "Null" }));
-  }, []);
+  }, [dispatch]);
 
   if (UserQuery.isLoading || UserQuery.isError) {
     return <CardSkeleton NoOfFields={4} />;

@@ -24,7 +24,7 @@ const ViewUserGroup: React.FC = () => {
     } else {
       dispatch(ChangeTab({ currenttab: "User Groups" }));
     }
-  }, []);
+  }, [dispatch, navigate, userrole]);
   const [features, setFeatures] = useState<any[]>([]);
 
   const UserGroupQuery = useQuery(
@@ -63,6 +63,7 @@ const ViewUserGroup: React.FC = () => {
           </h2>
           <div
             className="cardsubheading"
+            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(
                 UserGroupQuery.data.data[0].UserGroupDesc

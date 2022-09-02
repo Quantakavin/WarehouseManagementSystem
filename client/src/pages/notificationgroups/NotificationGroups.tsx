@@ -45,7 +45,7 @@ const NotificationGroups: React.FC = () => {
     } else {
       dispatch(ChangeTab({ currenttab: "Notification Groups" }));
     }
-  }, []);
+  }, [dispatch, navigate, userrole]);
   const sortColumn = useAppSelector(selectSortColumn);
   const sortOrder = useAppSelector(selectSortOrder);
   // const dispatch = useAppDispatch();

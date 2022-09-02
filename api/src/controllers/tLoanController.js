@@ -132,9 +132,8 @@ module.exports.SubmitAfterEdit = async (req, res) => {
             return item;
         });
         const getManagerID = await TLoan.getSalesManagerID();
-        const managerid = getManagerID[0][0].UserID
+        const managerid = getManagerID[0][0].UserID;
         if (results.length > 0) {
-
             await TLoan.DeleteProductsByID(TLoanID);
             const results2 = await TLoan.SubmitAfterEdit(
                 TLoanID,
@@ -251,7 +250,7 @@ module.exports.newLoan = async (req, res) => {
             return item;
         });
         const getManagerID = await TLoan.getSalesManagerID();
-        const managerid = getManagerID[0][0].UserID
+        const managerid = getManagerID[0][0].UserID;
         const results = await TLoan.createTLoan(
             type,
             company,
@@ -420,8 +419,8 @@ module.exports.approveLoan = async (req, res) => {
         const { UserID } = gettingInfo[0][0];
         const telegramid = gettingInfo[0][0].TelegramID;
         const results = await TLoan.getLoanByNumber(TLoanID);
-        const getManagerIDFromTLoan = await TLoan.getManagerIDFromTLoan(TLoanID)
-        const SalesManagerID = getManagerIDFromTLoan[0][0].SalesManagerID
+        const getManagerIDFromTLoan = await TLoan.getManagerIDFromTLoan(TLoanID);
+        const { SalesManagerID } = getManagerIDFromTLoan[0][0];
         if (results.length > 0) {
             await TLoan.approveLoan(TLoanID);
             if (telegramid !== null) {
@@ -459,8 +458,8 @@ module.exports.rejectLoan = async (req, res) => {
         const { UserID } = gettingInfo[0][0];
         const telegramid = gettingInfo[0][0].TelegramID;
         const results = await TLoan.getLoanByNumber(TLoanID);
-        const getManagerIDFromTLoan = await TLoan.getManagerIDFromTLoan(TLoanID)
-        const SalesManagerID = getManagerIDFromTLoan[0][0].SalesManagerID
+        const getManagerIDFromTLoan = await TLoan.getManagerIDFromTLoan(TLoanID);
+        const { SalesManagerID } = getManagerIDFromTLoan[0][0];
         if (results.length > 0) {
             await TLoan.rejectLoan(TLoanID, remarks);
             if (telegramid !== null) {
@@ -496,8 +495,8 @@ module.exports.approveExtension = async (req, res) => {
         const { UserID } = gettingInfo[0][0];
         const telegramid = gettingInfo[0][0].TelegramID;
         const results = await TLoan.getLoanByNumber(TLoanID);
-        const getManagerIDFromTLoan = await TLoan.getManagerIDFromTLoan(TLoanID)
-        const SalesManagerID = getManagerIDFromTLoan[0][0].SalesManagerID
+        const getManagerIDFromTLoan = await TLoan.getManagerIDFromTLoan(TLoanID);
+        const { SalesManagerID } = getManagerIDFromTLoan[0][0];
         if (results.length > 0) {
             await TLoan.approveExtension(TLoanID);
             if (telegramid !== null) {
@@ -534,8 +533,8 @@ module.exports.rejectExtension = async (req, res) => {
         const { UserID } = gettingInfo[0][0];
         const telegramid = gettingInfo[0][0].TelegramID;
         const results = await TLoan.getLoanByNumber(TLoanID);
-        const getManagerIDFromTLoan = await TLoan.getManagerIDFromTLoan(TLoanID)
-        const SalesManagerID = getManagerIDFromTLoan[0][0].SalesManagerID
+        const getManagerIDFromTLoan = await TLoan.getManagerIDFromTLoan(TLoanID);
+        const { SalesManagerID } = getManagerIDFromTLoan[0][0];
         if (results.length > 0) {
             await TLoan.rejectExtension(TLoanID, remarks);
             if (telegramid !== null) {
@@ -563,8 +562,7 @@ module.exports.rejectExtension = async (req, res) => {
 };
 
 module.exports.ManagerLoan = async (req, res) => {
-
-    const { SalesManagerID } = req.params
+    const { SalesManagerID } = req.params;
     try {
         const TLoans = await redisClient.get(`ManagerLoan#${SalesManagerID}`);
         if (TLoans !== null) {
@@ -585,7 +583,7 @@ module.exports.ManagerLoan = async (req, res) => {
 };
 
 module.exports.ManagerExtension = async (req, res) => {
-    const { SalesManagerID } = req.params
+    const { SalesManagerID } = req.params;
 
     try {
         const TLoans = await redisClient.get(`ManagerExtension#${SalesManagerID}`);
@@ -612,8 +610,8 @@ module.exports.LoanExtend = async (req, res) => {
         const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
         const UserID = gettingInfo[0][0].UserID.toString();
         const results = await TLoan.loanExtension(TLoanID, duration, reason);
-        const getManagerIDFromTLoan = await TLoan.getManagerIDFromTLoan(TLoanID)
-        const SalesManagerID = getManagerIDFromTLoan[0][0].SalesManagerID
+        const getManagerIDFromTLoan = await TLoan.getManagerIDFromTLoan(TLoanID);
+        const { SalesManagerID } = getManagerIDFromTLoan[0][0];
         if (results.length > 0) {
             redisClient.del(`TLoanItems#${TLoanID}`);
             redisClient.del(`TLoan#${TLoanID}`);
@@ -782,9 +780,8 @@ module.exports.updateStatus = async (req, res) => {
         const gettingInfo = await TLoan.getEmployeeInfo(TLoanID);
         const { UserID } = gettingInfo[0][0];
         const results = await TLoan.updateStatus(TLoanID, statusChange);
-        const getManagerIDFromTLoan = await TLoan.getManagerIDFromTLoan(TLoanID)
-        const SalesManagerID = getManagerIDFromTLoan[0][0].SalesManagerID
-        console.log(statusChange);
+        const getManagerIDFromTLoan = await TLoan.getManagerIDFromTLoan(TLoanID);
+        const { SalesManagerID } = getManagerIDFromTLoan[0][0];
         if (results) {
             if (statusChange === '5') {
                 createNotification(21, UserID, TLoanID);

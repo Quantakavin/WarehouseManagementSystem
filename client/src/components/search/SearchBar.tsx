@@ -4,8 +4,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Autocomplete from "@mui/material/Autocomplete";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import { motion } from "framer-motion";
-import { Box, Hidden } from "@mui/material";
+import { Box } from "@mui/material";
 import GeneralButton from "../buttons/GeneralButton";
 
 interface SearchParams {
@@ -49,7 +48,7 @@ const SearchBar = ({
           renderInput={(params) => (
             <TextField
               className="searchfield"
-              {...params}
+              {...params} // eslint-disable-line react/jsx-props-no-spreading
               placeholder="Search..."
               InputProps={{
                 ...params.InputProps,

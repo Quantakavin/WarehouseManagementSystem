@@ -25,7 +25,7 @@ const ViewNotificationGroup: React.FC = () => {
     } else {
       dispatch(ChangeTab({ currenttab: "Notification Groups" }));
     }
-  }, []);
+  }, [dispatch, navigate, userrole]);
   const [notiFeatures, setNotiFeatures] = useState<any[]>([]);
 
   const NotificationGroupQuery = useQuery(
@@ -64,6 +64,7 @@ const ViewNotificationGroup: React.FC = () => {
           </h2>
           <div
             className="cardsubheading"
+            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(
                 NotificationGroupQuery.data.data[0].NotiGroupDesc

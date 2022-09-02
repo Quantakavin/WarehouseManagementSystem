@@ -47,7 +47,7 @@ const AddUserGroup: React.FC = () => {
     } else {
       dispatch(ChangeTab({ currenttab: "User Groups" }));
     }
-  }, []);
+  }, [dispatch, navigate, userrole]);
   const {
     register,
     handleSubmit,

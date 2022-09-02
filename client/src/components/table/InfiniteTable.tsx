@@ -47,7 +47,7 @@ const InfiniteTable = ({
             <TableRow>
               {headers.map((header, key) => (
                 <TableHeader
-                  key={key}
+                  key={key} // eslint-disable-line react/no-array-index-key
                   header={header}
                   filter={filter}
                   sortColumn={sortColumn}

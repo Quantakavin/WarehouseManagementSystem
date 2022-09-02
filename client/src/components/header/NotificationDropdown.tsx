@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -6,43 +6,36 @@ import {
   Divider,
   Menu,
   MenuItem,
-  Paper,
   Typography,
 } from "@mui/material";
-
-import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router";
-import { SocketContext } from "../../context/socket";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectId } from "../../app/reducers/CurrentUserSlice";
-// import { selectNotifications, setNotifications } from "../../app/reducers/NotificationSlice";
 import {
   selectNotificationCount,
   setNotificationCount,
 } from "../../app/reducers/NotificationSlice";
-import config from "../../config/config";
-import { NotificationType } from "../../utils/CommonTypes";
 import Notification from "../notifications/Notification";
 import {
   GetNotifications,
   MarkNotificationsAsRead,
 } from "../../api/NotificationDB";
 
-interface NotificationDropdown {
+interface NotificationDropdownProps {
   menuId: string;
   anchorEl: null | HTMLElement;
   isMenuOpen: boolean;
   handleMenuClose: () => void;
 }
 
-const NotificationDropdown: React.FC<NotificationDropdown> = ({
+const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
   menuId,
   anchorEl,
   isMenuOpen,
   handleMenuClose,
 }) => {
-  const socket = useContext(SocketContext);
+  // const socket = useContext(SocketContext);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -163,20 +156,17 @@ const NotificationDropdown: React.FC<NotificationDropdown> = ({
         <Typography sx={{ fontWeight: 600 }}>
           Notifications {notificationcount > 0 && `(${notificationcount})`}
         </Typography>
-        {notificationcount > 0 && (
-          <>
-            {mutation.isLoading || mutation.isSuccess ? (
-              <CircularProgress size="20px" sx={{ ml: "auto" }} />
-            ) : (
-              <Button
-                onClick={() => mutation.mutate()}
-                sx={{ textTransform: "none", ml: "auto", fontSize: "12px" }}
-              >
-                Mark all as read
-              </Button>
-            )}
-          </>
-        )}
+        {notificationcount > 0 &&
+          (mutation.isLoading || mutation.isSuccess ? (
+            <CircularProgress size="20px" sx={{ ml: "auto" }} />
+          ) : (
+            <Button
+              onClick={() => mutation.mutate()}
+              sx={{ textTransform: "none", ml: "auto", fontSize: "12px" }}
+            >
+              Mark all as read
+            </Button>
+          ))}
       </Box>
       <Divider />
       {NotificationsQuery.status === "success" ? (

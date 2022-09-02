@@ -22,7 +22,7 @@ const ViewUser: React.FC = () => {
     } else {
       dispatch(ChangeTab({ currenttab: "Users" }));
     }
-  }, []);
+  }, [dispatch, navigate, userrole]);
 
   const UserQuery = useQuery([`user${params.id}`, params.id], () =>
     GetUser(params.id)

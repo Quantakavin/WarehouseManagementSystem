@@ -62,7 +62,7 @@ const EditUser: React.FC = () => {
     } else {
       dispatch(ChangeTab({ currenttab: "Users" }));
     }
-  }, []);
+  }, [dispatch, userrole, navigate]);
   const [companyOptions, setCompanyOptions] = useState<Option[]>([]);
   const [userGroupOptions, setUserGroupOptions] = useState<Option[]>([]);
   const [notiGroupOptions, setNotiGroupOptions] = useState<Option[]>([]);
@@ -85,8 +85,7 @@ const EditUser: React.FC = () => {
     handleSubmit,
     getValues,
     setValue,
-    watch,
-    formState: { errors, isDirty, isValid },
+    formState: { errors, isDirty },
   } = useForm<FormValues>({ mode: "all", shouldUnregister: true });
   const UserQuery = useQuery(
     [`user${params.id}`, params.id],
@@ -168,8 +167,6 @@ const EditUser: React.FC = () => {
       },
     }),
   };
-
-  console.log("is form valid? ", isValid);
 
   const onSubmit = (data: FormValues) => {
     const postdata = data;

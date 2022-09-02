@@ -49,7 +49,7 @@ const ActionMenu: React.FC<MenuProps> = ({ items }) => {
       >
         {items.map((item, key) => [
           <MenuItem
-            key={key}
+            key={key} // eslint-disable-line react/no-array-index-key
             sx={{ color: item.delete ? "#D11A2A" : "#0A2540" }}
             onClick={() => {
               if (!item.delete) {

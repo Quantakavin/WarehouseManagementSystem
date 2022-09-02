@@ -3,12 +3,29 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { TableCell } from "@mui/material";
 
+interface IconProps {
+  header: string;
+  sortColumn: string;
+  sortOrder: string;
+}
+
+const Icon = ({ sortColumn, header, sortOrder }: IconProps) => {
+  if (sortColumn === header && sortOrder === "DESC") {
+    return <ArrowDropUpIcon fontSize="small" />;
+  }
+  if (header !== "Action") {
+    return <ArrowDropDownIcon fontSize="small" />;
+  }
+  return null;
+};
+
 interface TableHeaderProps {
   header: string;
   filter: (header: string) => void;
   sortColumn: string;
   sortOrder: string;
 }
+
 const TableHeader = ({
   header,
   filter,
@@ -20,15 +37,15 @@ const TableHeader = ({
   // const sortColumn = useAppSelector(selectSortColumn)
   // const sortOrder = useAppSelector(selectSortOrder)
 
-  const Icon = () => {
-    if (sortColumn === header && sortOrder === "DESC") {
-      return <ArrowDropUpIcon fontSize="small" />;
-    }
-    if (header !== "Action") {
-      return <ArrowDropDownIcon fontSize="small" />;
-    }
-    return null;
-  };
+  // const Icon = () => {
+  //   if (sortColumn === header && sortOrder === "DESC") {
+  //     return <ArrowDropUpIcon fontSize="small" />;
+  //   }
+  //   if (header !== "Action") {
+  //     return <ArrowDropDownIcon fontSize="small" />;
+  //   }
+  //   return null;
+  // };
 
   // const ApplyFilter = () => {
   //   if (header !== "Action") {
@@ -48,7 +65,8 @@ const TableHeader = ({
       sx={{ color: "#86898E", fontWeight: 500 }}
       className="tableheader"
     >
-      {header} {Icon()}
+      {header}{" "}
+      <Icon header={header} sortColumn={sortColumn} sortOrder={sortOrder} />
     </TableCell>
   );
 };

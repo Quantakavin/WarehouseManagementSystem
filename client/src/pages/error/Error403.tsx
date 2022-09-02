@@ -19,7 +19,7 @@ const Error403 = () => {
 
   useEffect(() => {
     dispatch(ChangeTab({ currenttab: "null" }));
-  }, []);
+  }, [dispatch]);
 
   return (
     <Grid container sx={{ height: "100%", width: 1, p: 3, pb: 0 }}>

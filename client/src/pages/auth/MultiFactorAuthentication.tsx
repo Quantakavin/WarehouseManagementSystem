@@ -61,7 +61,7 @@ const MultiFactorAuthentication: React.FC = () => {
 
   const onSubmit = (data: FormValues) => {
     verifymutation.mutate(data, {
-      onSuccess: (data) => {
+      onSuccess: () => {
         localStorage.setItem("token", usertoken);
         localStorage.setItem("user_id", userid.toString());
         localStorage.setItem("username", username);
@@ -74,10 +74,9 @@ const MultiFactorAuthentication: React.FC = () => {
           timer: 1500,
           width: 330,
         });
-        console.log("the data is ", data);
         return navigate("/dashboard", { replace: true });
       },
-      onError: (data) => {
+      onError: () => {
         controls.start("detecterror");
       },
     });
@@ -102,10 +101,12 @@ const MultiFactorAuthentication: React.FC = () => {
 
         <Box className="formsubheading">
           Didnt receive a code?{" "}
-          <Link
+          <Link // eslint-disable-line jsx-a11y/anchor-is-valid
             onClick={() => {
               resend();
             }}
+            component="button"
+            variant="body2"
             underline="hover"
             sx={{ ml: "10px" }}
           >

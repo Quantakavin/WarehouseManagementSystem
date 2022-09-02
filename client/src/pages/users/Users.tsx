@@ -41,9 +41,9 @@ const Users: React.FC = () => {
     if (userrole !== "Admin") {
       navigate("/403");
     } else {
-      dispatch(ChangeTab({ currenttab: "Notification Groups" }));
+      dispatch(ChangeTab({ currenttab: "Users" }));
     }
-  }, []);
+  }, [dispatch, navigate, userrole]);
   const [searchOptions, setSearchOptions] = useState<string[]>([]);
   const [inputName, setInputName] = useState<string>(null);
   const [searchName, setSearchName] = useState<string>("");

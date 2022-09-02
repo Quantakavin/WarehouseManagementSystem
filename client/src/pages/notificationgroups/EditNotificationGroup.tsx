@@ -62,7 +62,7 @@ const AddNotificationGroup: React.FC = () => {
     } else {
       dispatch(ChangeTab({ currenttab: "Notification Groups" }));
     }
-  }, []);
+  }, [dispatch, navigate, userrole]);
   const {
     register,
     handleSubmit,
@@ -73,7 +73,7 @@ const AddNotificationGroup: React.FC = () => {
   } = useForm<FormValues>();
   const [step, setStep] = useState<number>(1);
   const params = useParams();
-  const [notificationGroup, setNotificationGroup] = useState<any>(null);
+  // const [notificationGroup, setNotificationGroup] = useState<any>(null);
   const [companyOptions, setCompanyOptions] = useState<Option[]>([]);
   const [notiFeatureOptions, setNotiFeatureOptions] = useState<Option[]>([]);
   const [notiTypeOptions, setNotiTypeOptions] = useState<Option[]>([]);
@@ -101,7 +101,7 @@ const AddNotificationGroup: React.FC = () => {
             };
           })
         );
-        setNotificationGroup(data.data[0]);
+        // setNotificationGroup(data.data[0]);
       },
     }
   );
@@ -272,7 +272,6 @@ const AddNotificationGroup: React.FC = () => {
   };
 
   const getNotiFeatureName = (notifeature: string) => {
-    console.log(" IS IT UNDEFINED ", notiFeaturesQuery);
     return notiFeaturesQuery.data.data.find(
       (data) => data.NotiFeatureID === notifeature
     ).NotiFeature;

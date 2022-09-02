@@ -8,7 +8,9 @@ interface SkeletonProps {
 
 const TableSkeleton: React.FC<SkeletonProps> = ({ NoOfCols }) => {
   const skeletonrows = [...Array(5)].map((value, index) => (
-    <TableRow key={index}>
+    <TableRow
+      key={index} // eslint-disable-line react/no-array-index-key
+    >
       <TableCell colSpan={NoOfCols}>
         <Skeleton
           variant="rectangular"
@@ -19,7 +21,7 @@ const TableSkeleton: React.FC<SkeletonProps> = ({ NoOfCols }) => {
     </TableRow>
   ));
 
-  return <>{skeletonrows}</>;
+  return <div>{skeletonrows}</div>;
 };
 
 export default TableSkeleton;

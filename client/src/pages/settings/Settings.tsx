@@ -71,7 +71,7 @@ const Settings: React.FC = () => {
   useEffect(() => {
     setEnabledTele(currentTeleID !== null);
     dispatch(ChangeTab({ currenttab: "Null" }));
-  }, []);
+  }, [dispatch, currentTeleID]);
   const [showEnableConfirmation, setShowEnableConfirmation] =
     useState<boolean>(false);
   const [showDisableConfirmation, setShowDisableConfirmation] =
@@ -124,7 +124,6 @@ const Settings: React.FC = () => {
           },
         })
         .then(() => {
-          console.log("called");
           setEnabledTele(true);
           Toast.fire({
             icon: "success",
@@ -133,10 +132,6 @@ const Settings: React.FC = () => {
             timer: 2000,
             width: 450,
           });
-        })
-        .catch((e) => {
-          console.log(e);
-          console.error("There was an error!", e);
         });
     } else {
       setError(true);
@@ -170,10 +165,6 @@ const Settings: React.FC = () => {
           timer: 2000,
           width: 450,
         });
-      })
-      .catch((error) => {
-        console.log(error);
-        console.error("There was an error!", error);
       });
   };
   // Password modal open/close
@@ -243,7 +234,7 @@ const Settings: React.FC = () => {
             width: 400,
           });
         })
-        .catch((error) => {
+        .catch(() => {
           Toast.fire({
             icon: "error",
             title: `Failed to change password`,
@@ -251,8 +242,6 @@ const Settings: React.FC = () => {
             timer: 2000,
             width: 310,
           });
-          console.log(error);
-          console.error("There was an error!", error);
         });
       setValues({ password: "", showPassword: false });
     }

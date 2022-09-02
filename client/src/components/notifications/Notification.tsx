@@ -69,7 +69,7 @@ const Notification: React.FC<NotificationProps> = ({
       "{a}",
       notification.ContentID.toString()
     );
-    url = notification.Url.replace("${a}", notification.ContentID.toString());
+    url = notification.Url.replace("${a}", notification.ContentID.toString()); // eslint-disable-line no-template-curly-in-string
   } else {
     url = "/notifications";
   }

@@ -68,7 +68,7 @@ const TopNav = () => {
     } else {
       socket.emit("logout", { userid });
     }
-  }, []);
+  }, [userid, socket]);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -420,7 +420,7 @@ const TopNav = () => {
                   color="inherit"
                 >
                   <img
-                    alt="Profile Photo"
+                    alt="Profile"
                     src={defaultprofile}
                     width="30"
                     height="30"

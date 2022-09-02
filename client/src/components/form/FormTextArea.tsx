@@ -39,7 +39,7 @@ const FormTextArea = <T,>({
     if (defaultvalue) {
       setValue(name, defaultvalue);
     }
-  }, [register]);
+  }, [register, defaultvalue, name, rules, setValue]);
 
   const onEditorStateChange = (editorState) => {
     setValue(name, editorState);

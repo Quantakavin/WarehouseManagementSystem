@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Container, Hidden } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Step from "@mui/material/Step";
@@ -73,18 +73,36 @@ interface FormStepsProps {
 }
 
 const FormSteps: React.FC<FormStepsProps> = ({ steps, activestep, icons }) => {
-  const ColorlibStepIcon = (props: StepIconProps) => {
-    const { active, completed, className } = props;
+  // eslint-disable-next-line react/no-unstable-nested-components
 
-    return (
-      <ColorlibStepIconRoot
-        ownerState={{ completed, active }}
-        className={className}
-      >
-        {icons[String(props.icon)]}
-      </ColorlibStepIconRoot>
-    );
-  };
+  const ColorlibStepIcon = useCallback(
+    (props: StepIconProps) => {
+      const { active, completed, className, icon } = props;
+
+      return (
+        <ColorlibStepIconRoot
+          ownerState={{ completed, active }}
+          className={className}
+        >
+          {icons[String(icon)]}
+        </ColorlibStepIconRoot>
+      );
+    },
+    [icons]
+  );
+
+  // const ColorlibStepIcon = (props: StepIconProps) => {
+  //   const { active, completed, className, icon } = props;
+
+  //   return (
+  //     <ColorlibStepIconRoot
+  //       ownerState={{ completed, active }}
+  //       className={className}
+  //     >
+  //       {icons[String(icon)]}
+  //     </ColorlibStepIconRoot>
+  //   );
+  // };
 
   return (
     <Hidden smDown>

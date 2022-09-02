@@ -55,7 +55,7 @@ module.exports.createTLoan = async (
                 CustomerEmail: email,
                 Collection: collection,
                 ShippingAddress: shipping,
-                SalesManagerID : managerid
+                SalesManagerID: managerid
             },
             'TLoanID'
         )
@@ -185,7 +185,7 @@ module.exports.SubmitAfterEdit = async (
                     CustomerEmail: email,
                     Collection: collection,
                     ShippingAddress: shipping,
-                    SalesManagerID : managerid
+                    SalesManagerID: managerid
                 },
                 'TLoanID'
             )

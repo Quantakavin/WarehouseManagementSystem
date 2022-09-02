@@ -19,7 +19,7 @@ const Error404 = () => {
 
   useEffect(() => {
     dispatch(ChangeTab({ currenttab: "null" }));
-  }, []);
+  }, [dispatch]);
 
   return (
     <Grid container sx={{ height: "100%", width: 1, p: 3, pb: 0 }}>
@@ -67,6 +67,7 @@ const Error404 = () => {
                     Oops!
                     <br />
                   </Typography>
+                  {/* eslint-disable-next-line react/no-unescaped-entities */}
                   The page you are looking for doesn't exist
                   <br />
                   Please return to the page you were on

@@ -47,7 +47,7 @@ const UserGroups: React.FC = () => {
     } else {
       dispatch(ChangeTab({ currenttab: "User Groups" }));
     }
-  }, []);
+  }, [dispatch, navigate, userrole]);
   const [searchOptions, setSearchOptions] = useState<string[]>([]);
   const [inputName, setInputName] = useState<string>(null);
   const [searchName, setSearchName] = useState<string>("");
