@@ -2,6 +2,9 @@ import React, { Suspense, useEffect, useRef, useState } from "react";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { useQuery } from "react-query";
+import { Box, Link, Typography } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
 import TwoColRack from "../../components/3Dmodels/2ColRack";
 import ThreeColRack from "../../components/3Dmodels/3ColRack";
 import FourColRack from "../../components/3Dmodels/4ColRack";
@@ -10,10 +13,7 @@ import Pallets from "../../components/3Dmodels/Palletsandboxes";
 import SearchBar from "../../components/search/SearchBar";
 import useDebounce from "../../hooks/useDebounce";
 import "../../styles/BinLocation.scss";
-import { useQuery } from "react-query";
 import { GetBinsByBrand, GetBrandNames } from "../../api/BinLocationDB";
-import { Box, Link, Typography } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
 
@@ -70,14 +70,12 @@ const Scene = ({ selectedbintags }: SceneProps) => {
         ref={controls}
       />
       <Suspense fallback={null}>
-
         <Office position={[-30, -10, -80]} />
 
         <Pallets position={[-40, -12, -80]} />
         <Pallets position={[-80, -12, -80]} />
         <Pallets position={[-40, -12, -140]} />
         <Pallets position={[-80, -12, -140]} />
-
 
         {/* Section A01 */}
         <FourColRack
@@ -704,11 +702,11 @@ const BinLocations: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
-  console.log("the bin tags are " + selectedBinTags)
+  console.log(`the bin tags are ${selectedBinTags}`);
 
   useEffect(() => {
     if (params.BinTag) {
-      setSelectedBinTags([params.BinTag])
+      setSelectedBinTags([params.BinTag]);
     }
     dispatch(ChangeTab({ currenttab: "Bin Locations" }));
   }, []);
@@ -750,49 +748,49 @@ const BinLocations: React.FC = () => {
 
   return (
     <Box sx={{ pl: 3, pr: 3, pt: 1 }}>
-    <Box sx={{ display: "flex", height: "100%" }}>
-    <Box sx={{ flexGrow: 1 }}>
-      {/* <h1 className="binlocationTitle">Warehouse Visualisation</h1> */}
-      <Box
+      <Box sx={{ display: "flex", height: "100%" }}>
+        <Box sx={{ flexGrow: 1 }}>
+          {/* <h1 className="binlocationTitle">Warehouse Visualisation</h1> */}
+          <Box
             component="span"
             display="flex"
             justifyContent="space-between"
             alignItems="center"
           >
-      <Typography
-        sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
-      >
-        Warehouse Visualisation
-      </Typography>
-      </Box>
-      <div className="flexcontainer" style={{ marginBottom: "5px"}}>
-        <SearchBar
-          handleInputChange={handleInputChange}
-          handleSearch={handleSearch}
-          searchoptions={searchOptions}
-        />
-      </div>
-      <Link
-        onClick={() => navigate("/emptybins")}
-        sx={{ fontSize: "12px", marginTop: "5px", marginLeft: "10px"}}
-      >
-        View Empty Bins
-      </Link>
+            <Typography
+              sx={{ color: "#063970", fontWeight: "bold", fontSize: 36 }}
+            >
+              Warehouse Visualisation
+            </Typography>
+          </Box>
+          <div className="flexcontainer" style={{ marginBottom: "5px" }}>
+            <SearchBar
+              handleInputChange={handleInputChange}
+              handleSearch={handleSearch}
+              searchoptions={searchOptions}
+            />
+          </div>
+          <Link
+            onClick={() => navigate("/emptybins")}
+            sx={{ fontSize: "12px", marginTop: "5px", marginLeft: "10px" }}
+          >
+            View Empty Bins
+          </Link>
 
-      <div className="flexcontainer">
-        <Canvas
-          camera={{ fov: 45, position: [0, 40, 150] }}
-          style={{
-            border: "solid 1px black",
-            height: 1000,
-            marginTop: 20
-          }}
-        >
-          <Scene selectedbintags={selectedBinTags} />
-        </Canvas>
-      </div>
-    </Box>
-    </Box>
+          <div className="flexcontainer">
+            <Canvas
+              camera={{ fov: 45, position: [0, 40, 150] }}
+              style={{
+                border: "solid 1px black",
+                height: 1000,
+                marginTop: 20,
+              }}
+            >
+              <Scene selectedbintags={selectedBinTags} />
+            </Canvas>
+          </div>
+        </Box>
+      </Box>
     </Box>
   );
 };

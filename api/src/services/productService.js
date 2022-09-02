@@ -102,7 +102,7 @@ module.exports.updateQuantity = async (ItemNo, BatchNo, Quantity) => {
         .andWhere('BatchNo', BatchNo)
         .returning('BinProductPK')
         .update({
-            Quantity: Quantity
+            Quantity
         });
 };
 

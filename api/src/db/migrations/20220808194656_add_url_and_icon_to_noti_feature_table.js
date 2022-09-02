@@ -2,8 +2,8 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function (knex) {
-    return knex.schema.table('NotiFeature', function (table) {
+exports.up = (knex) => {
+    return knex.schema.table('NotiFeature', (table) => {
         table.string('Url');
         table.string('Icon');
     });
@@ -13,7 +13,9 @@ exports.up = function (knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function (table) {
-    table.dropColumn('Url');
-    table.dropColumn('Icon');
+exports.down = (knex) => {
+    return knex.schema.table('NotiFeature', (table) => {
+        table.dropColumn('Url');
+        table.dropColumn('Icon');
+    });
 };

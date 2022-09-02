@@ -5,21 +5,18 @@ module.exports.createNotification = async (NotiFeatureID, ReceiverID, ContentID 
     // const { NotiFeatureID, ReceiverID } = req.body;
     try {
         await notification.insert(NotiFeatureID, ReceiverID, ContentID);
-        // return res.status(204).send();
+        return null;
     } catch (error) {
-        console.log(error);
-        // return res.status(500).json({ message: 'Internal Server Error!' });
+        return null;
     }
 };
 
 module.exports.getAllNotifications = async (req, res) => {
     const UserID = req.params.id;
     try {
-        console.log('the userid has to be ', UserID);
         const results = await notification.getById(UserID);
         return res.status(200).json(results[0]);
     } catch (error) {
-        console.log('the error has to be ', error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };

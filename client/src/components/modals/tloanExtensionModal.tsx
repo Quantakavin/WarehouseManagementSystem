@@ -77,7 +77,7 @@ const ModalButton = () => {
   }, []);
 
   // getting current date
-  const today = new Date('2002/07/22');
+  const today = new Date("2002/07/22");
   const yyyy = today.getFullYear();
   let mm = (today.getMonth() + 1).toString(); // Months start at 0!
   let dd = today.getDate().toString();

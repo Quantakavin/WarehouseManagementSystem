@@ -61,12 +61,12 @@ const SearchBar = ({
         />
       </Stack>
 
-      <Box sx={{ml: "15px", mr: "auto", mt: "10px"}}>
-      <GeneralButton 
-      text="Search"
-      clickfunction={() => handleSearch(selectedOption)}
-      starticon={<SearchIcon fontSize="small" />}
-      />
+      <Box sx={{ ml: "15px", mr: "auto", mt: "10px" }}>
+        <GeneralButton
+          text="Search"
+          clickfunction={() => handleSearch(selectedOption)}
+          starticon={<SearchIcon fontSize="small" />}
+        />
       </Box>
       {/* <motion.button
         className="searchbutton"
@@ -76,7 +76,6 @@ const SearchBar = ({
       >
         <SearchIcon fontSize="small" /> Search
       </motion.button> */}
-
     </>
   );
 };

@@ -12,7 +12,6 @@ module.exports = {
     },
     plugins: ['prettier'],
     rules: {
-        'prettier/prettier': 'error',
-        'func-names': 'off'
+        'prettier/prettier': 'error'
     }
 };

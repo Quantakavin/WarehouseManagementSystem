@@ -8,20 +8,16 @@ module.exports.binTag = async (req, res) => {
         const searchBinTag = await redisClient.get(`BinTag#${BinTag}`);
         if (searchBinTag !== null) {
             const redisresults = JSON.parse(searchBinTag);
-            console.log('bintag 1 working');
-            console.log(BinTag);
             return res.status(200).json(redisresults);
         }
         const results = await bin.getBinByBinTag(BinTag);
         redisClient.set(`BinTag#${BinTag}`, JSON.stringify(results[0]));
 
         if (results.length > 0) {
-            console.log('bintag working');
             return res.status(200).json(results[0]);
         }
         return res.status(404).send('There is no such BinTag');
     } catch (error) {
-        console.log('bintag not working');
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -36,12 +32,10 @@ module.exports.binInfo = async (req, res) => {
         }
         const results = await bin.getBinInformmation();
         if (results.length > 0) {
-            console.log('endpoint working');
             return res.status(200).json(results[0]);
         }
         return res.status(404).send('There is no such BinInfo');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -59,7 +53,6 @@ module.exports.getAllBrandNames = async (req, res) => {
         redisClient.set(`brands#${name}`, JSON.stringify(results[0]), 'EX', 60 * 60 * 24);
         return res.status(200).json(results[0]);
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -75,7 +68,6 @@ module.exports.emptyBins = async (req, res) => {
         redisClient.set(`emptybins`, JSON.stringify(results[0]), 'EX', 60 * 60 * 24);
         return res.status(200).json(results[0]);
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -93,12 +85,10 @@ module.exports.brand = async (req, res) => {
         redisClient.set(`Brand#${Brand}-Bins`, JSON.stringify(results[0]));
 
         if (results.length > 0) {
-            console.log('the searched bins are ', results);
             return res.status(200).json(results[0]);
         }
         return res.status(404).send('');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -116,13 +106,10 @@ module.exports.ItemName = async (req, res) => {
         redisClient.set(`ItemName#${ItemName}`, JSON.stringify(results[0]));
 
         if (results.length > 0) {
-            console.log('endpoint working');
-            console.log(results);
             return res.status(200).json(results[0]);
         }
         return res.status(404).send('');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -140,13 +127,10 @@ module.exports.BinProducts = async (req, res) => {
         redisClient.set(`BinTag#${BinTag}`, JSON.stringify(results[0]));
 
         if (results.length > 0) {
-            console.log('endpoint working');
-            console.log(results);
             return res.status(200).json(results[0]);
         }
         return res.status(404).send('');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -164,12 +148,10 @@ module.exports.BinQtyBrand = async (req, res) => {
         redisClient.set(`Brand#${Brand}`, JSON.stringify(results[0]));
 
         if (results.length > 0) {
-            console.log('endpoint working');
             return res.status(200).json(results[0]);
         }
         return res.status(404).send('');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -186,12 +168,10 @@ module.exports.BinQtyBinID = async (req, res) => {
         redisClient.set(`BinID#${BinID}`, JSON.stringify(results[0]));
 
         if (results.length > 0) {
-            console.log('endpoint working');
             return res.status(200).json(results[0]);
         }
         return res.status(404).send('');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };

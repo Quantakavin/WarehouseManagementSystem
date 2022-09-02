@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 const knex = require('../config/database');
 
 // T-Loan Overview

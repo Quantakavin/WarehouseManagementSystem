@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { GetCompanies } from "../../api/CompanyDB";
+import GetCompanies from "../../api/CompanyDB";
 import { GetNotificationGroups } from "../../api/NotificationGroupDB";
 import { PostUser } from "../../api/UserDB";
 import { GetUserGroups } from "../../api/UserGroupDB";

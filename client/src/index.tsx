@@ -3,11 +3,11 @@ import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./app/store";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./styles/main.scss";
-import { PersistGate } from "redux-persist/integration/react";
 import { SocketContext, socket } from "./context/socket";
 
 const container = document.getElementById("root")!;

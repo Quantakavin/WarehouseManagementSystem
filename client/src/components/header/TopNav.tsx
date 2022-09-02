@@ -19,6 +19,7 @@ import { motion } from "framer-motion";
 
 import { useNavigate } from "react-router-dom";
 // import { io } from "socket.io-client";
+import { useCart } from "react-use-cart";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   removeUser,
@@ -41,7 +42,6 @@ import {
 } from "../../app/reducers/NotificationSlice";
 import { EditableContext } from "../context/IsEditableContext";
 import useWindowSize from "../../hooks/useWindowSize";
-import { useCart } from "react-use-cart";
 
 const TopNav = () => {
   const socket = useContext(SocketContext);
@@ -61,7 +61,7 @@ const TopNav = () => {
   const { viewportwidth } = useWindowSize();
   const context: any = useContext(EditableContext);
   const { setIsEditable } = context;
-  const { emptyCart } = useCart()
+  const { emptyCart } = useCart();
   useEffect(() => {
     if (localStorage.getItem("token") !== null) {
       socket.emit("login", { userid });
@@ -106,7 +106,7 @@ const TopNav = () => {
     dispatch(resetNotificationCount());
     localStorage.clear();
     setIsEditable(false);
-    emptyCart()
+    emptyCart();
     navigate("/");
   };
 

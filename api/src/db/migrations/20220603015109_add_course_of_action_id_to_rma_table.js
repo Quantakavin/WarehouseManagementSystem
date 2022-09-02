@@ -2,8 +2,8 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function (knex) {
-    return knex.schema.table('Rma', function (table) {
+exports.up = (knex) => {
+    return knex.schema.table('Rma', (table) => {
         table.integer('CourseOfActionID').unsigned();
         table
             .foreign('CourseOfActionID')
@@ -19,8 +19,8 @@ exports.up = function (knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function (knex) {
-    return knex.schema.table('Rma', function (table) {
+exports.down = (knex) => {
+    return knex.schema.table('Rma', (table) => {
         table.dropForeign(['CourseOfActionID'], 'FK_Rma_CourseOfAction_CourseOfActionID');
         table.dropColumn('CourseOfActionID');
     });

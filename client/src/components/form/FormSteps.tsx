@@ -76,12 +76,6 @@ const FormSteps: React.FC<FormStepsProps> = ({ steps, activestep, icons }) => {
   const ColorlibStepIcon = (props: StepIconProps) => {
     const { active, completed, className } = props;
 
-    // const icons: { [index: string]: React.ReactElement } = {
-    //   1: <SettingsIcon />,
-    //   2: <GroupAddIcon />,
-    //   3: <VideoLabelIcon />,
-    // };
-
     return (
       <ColorlibStepIconRoot
         ownerState={{ completed, active }}

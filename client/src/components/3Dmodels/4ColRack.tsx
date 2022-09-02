@@ -149,7 +149,7 @@ const Model: React.FC<ModelProps> = ({
   currentbintags,
 }) => {
   const group = useRef<THREE.Group>();
-  const { nodes, materials } = useGLTF("/rack.glb") as GLTFResult;
+  const { nodes } = useGLTF("/rack.glb") as GLTFResult;
 
   const CreateBoxes = () => {
     const initialx = -6.5;

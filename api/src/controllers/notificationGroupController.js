@@ -20,7 +20,6 @@ module.exports.filterNotificationGroups = async (req, res) => {
         );
         return res.status(200).json(results[0][0]);
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -31,7 +30,6 @@ module.exports.getAllNames = async (req, res) => {
         const results = await notificationGroup.getNames(name);
         return res.status(200).json(results[0]);
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -66,7 +64,6 @@ module.exports.getAllNotificationGroups = async (req, res) => {
             newresult.NotiGroupDesc = result.NotiGroupDesc.replace(/<[^>]+>/g, '');
             return newresult;
         });
-        console.log(finalresults);
         redisClient.set('notificationGroups', JSON.stringify(finalresults), { EX: 60 * 60 * 24 });
         return res.status(200).json(finalresults);
     } catch (error) {
@@ -99,7 +96,6 @@ module.exports.getNotificationGroupById = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find notification group with that id' });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -141,12 +137,11 @@ module.exports.updateNotificationGroup = async (req, res) => {
                 company,
                 notifications
             );
-            console.log('the id is ', notificationGroupID);
             redisClient.del(`notificationGroup#${notificationGroupID}`);
             redisClient.del('notificationGroups');
             return res.status(200).json({ message: 'Notification Group updated successfully!' });
         }
-        return res.status(404).json({ message: 'Cannot find Notification Group with that id' });
+        return res.status(404).json({ message: 'Cannot find notification group with that id' });
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
@@ -170,8 +165,17 @@ module.exports.deleteNotificationGroup = async (req, res) => {
                 message: 'This Notification group cannot be deleted as it contains users'
             });
         }
-        return res.status(404).json({ message: 'Cannot find Notification Group with that id' });
+        return res.status(404).json({ message: 'Cannot find notification group with that id' });
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+};
+
+module.exports.getLastID = async () => {
+    try {
+        const results = await notificationGroup.getLastID();
+        return results[0];
+    } catch (error) {
+        return null;
     }
 };

@@ -8,7 +8,6 @@ import * as THREE from "three";
 import { GLTF } from "three-stdlib";
 import ReplaceAlphanumericString from "../../utils/ReplaceAlphanumericString";
 import Bin from "./Bin";
-import NewBox from "./Newbox";
 // import { useAppDispatch } from "../../app/hooks";
 // import { ChangeLocation } from "../../app/reducers/BinLocationSlice";
 
@@ -136,7 +135,7 @@ const Model: React.FC<ModelProps> = ({
   currentbintags,
 }) => {
   const group = useRef<THREE.Group>();
-  const { nodes, materials } = useGLTF("/rackrow.gltf") as GLTFResult;
+  const { nodes } = useGLTF("/rackrow.gltf") as GLTFResult;
   // const dispatch = useAppDispatch();
 
   const CreateBoxes = () => {

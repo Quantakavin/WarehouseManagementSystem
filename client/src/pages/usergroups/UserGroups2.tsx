@@ -42,7 +42,7 @@ const UserGroups2: React.FC = () => {
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
   const [userGroups, setUserGroups] = useState([]);
-  //const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const mutation = useMutation(DeleteUserGroup);
   const userrole = useAppSelector(selectRole);
 
@@ -54,15 +54,11 @@ const UserGroups2: React.FC = () => {
     }
   }, []);
 
-  const UserGroupsQuery = useQuery(
-    'usergroups',
-    GetUserGroups, {
-      onSuccess: (data) => {
-        setUserGroups(data.data)
-      }
-    }
-  );
-
+  const UserGroupsQuery = useQuery("usergroups", GetUserGroups, {
+    onSuccess: (data) => {
+      setUserGroups(data.data);
+    },
+  });
 
   // useEffect(() => {
   //   setLoading(true);
@@ -181,7 +177,7 @@ const UserGroups2: React.FC = () => {
     },
   }));
 
-  function CustomNoRowsOverlay() {
+  const CustomNoRowsOverlay = () => {
     return (
       <StyledGridOverlay>
         <svg
@@ -226,7 +222,7 @@ const UserGroups2: React.FC = () => {
         <Box sx={{ mt: 1 }}>No User Groups Found</Box>
       </StyledGridOverlay>
     );
-  }
+  };
 
   return (
     <Box sx={{ pl: 3, pr: 3, pt: 1, height: "100%", width: "100%" }}>
@@ -247,13 +243,21 @@ const UserGroups2: React.FC = () => {
               Cancel
             </button>
             <motion.button
-              style={{ alignSelf: "flex-end", width: "auto", minWidth: "155px" }}
+              style={{
+                alignSelf: "flex-end",
+                width: "auto",
+                minWidth: "155px",
+              }}
               className="deletebutton"
               onClick={() => Delete(idToDelete)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              {mutation.isLoading? <CircularProgress size={15} color="inherit" /> : "Delete Anyway"}
+              {mutation.isLoading ? (
+                <CircularProgress size={15} color="inherit" />
+              ) : (
+                "Delete Anyway"
+              )}
             </motion.button>
             {/* 
             <motion.button

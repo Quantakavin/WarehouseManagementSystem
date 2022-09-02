@@ -10,6 +10,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "react-use-cart";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { GetProduct } from "../../api/ProductDB";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectPermissions } from "../../app/reducers/CurrentUserSlice";
@@ -21,7 +22,6 @@ import { EditableContext } from "../../components/context/IsEditableContext";
 import CardSkeleton from "../../components/skeletons/CardSkeleton";
 import config from "../../config/config";
 import { SocketContext } from "../../context/socket";
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 const ViewProduct: React.FC = () => {
   const params = useParams();
@@ -85,7 +85,7 @@ const ViewProduct: React.FC = () => {
     {
       onSuccess: (data) => {
         setQuantity(data.data[0].Quantity);
-        setBinLocation(data.data[0].BinTag2)
+        setBinLocation(data.data[0].BinTag2);
       },
     }
   );
@@ -217,10 +217,7 @@ const ViewProduct: React.FC = () => {
                   label="Batch Number"
                   value={ProductQuery.data.data[0].BatchNo}
                 />
-                <CardField
-                  label="Bin Tag"
-                  value={binLocation}
-                />
+                <CardField label="Bin Tag" value={binLocation} />
                 <CardField
                   label="Warehouse Code"
                   value={ProductQuery.data.data[0].WarehouseCode}
@@ -262,53 +259,60 @@ const ViewProduct: React.FC = () => {
                   justifyContent="space-between"
                   alignItems="center"
                 >
-                  <div className="flexcontainer" style={{flexDirection: "row"}}>
-                  <motion.div
-                    className="animatable"
-                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                    whileTap={{ scale: 0.9 }}
+                  <div
+                    className="flexcontainer"
+                    style={{ flexDirection: "row" }}
                   >
-                    <Button
-                      size="small"
-                      variant="contained"
-                      sx={{
-                        color: "white",
-                        backgroundColor: "#063970",
-                        width: 150,
-                        height: 50,
-                        borderRadius: 10,
-                        paddingRight: 4,
-                      }}
-                      startIcon={<ArrowBackIosIcon />}
-                      onClick={() => navigate("/products")}
+                    <motion.div
+                      className="animatable"
+                      whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                      whileTap={{ scale: 0.9 }}
                     >
-                      Back
-                    </Button>
-                  </motion.div>
-                  <motion.div
-                  className="animatable"
-                  style={{marginLeft: '15px'}}
-                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <Button
-                    size="small"
-                    variant="contained"
-                    sx={{
-                      color: "white",
-                      backgroundColor: "#063970",
-                      width: 150,
-                      height: 50,
-                      borderRadius: 10,
-                      paddingRight: 4,
-                    }}
-                    startIcon={<LocationOnIcon />}
-                    onClick={() => navigate(`/binlocations/${binLocation.replace(/-/g, '')}`)}
-                  >
-                    Location
-                  </Button>
-                </motion.div>
-                </div>
+                      <Button
+                        size="small"
+                        variant="contained"
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          width: 150,
+                          height: 50,
+                          borderRadius: 10,
+                          paddingRight: 4,
+                        }}
+                        startIcon={<ArrowBackIosIcon />}
+                        onClick={() => navigate("/products")}
+                      >
+                        Back
+                      </Button>
+                    </motion.div>
+                    <motion.div
+                      className="animatable"
+                      style={{ marginLeft: "15px" }}
+                      whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Button
+                        size="small"
+                        variant="contained"
+                        sx={{
+                          color: "white",
+                          backgroundColor: "#063970",
+                          width: 150,
+                          height: 50,
+                          borderRadius: 10,
+                          paddingRight: 4,
+                        }}
+                        startIcon={<LocationOnIcon />}
+                        onClick={() =>
+                          navigate(
+                            `/binlocations/${binLocation.replace(/-/g, "")}`
+                          )
+                        }
+                      >
+                        Location
+                      </Button>
+                    </motion.div>
+                  </div>
                   {addProduct()}
                 </Box>
               </Grid>
@@ -339,10 +343,7 @@ const ViewProduct: React.FC = () => {
                 label="Batch Number"
                 value={ProductQuery.data.data[0].BatchNo}
               />
-              <CardField
-                label="Bin Tag"
-                value={binLocation}
-              />
+              <CardField label="Bin Tag" value={binLocation} />
               <CardField
                 label="Warehouse Code"
                 value={ProductQuery.data.data[0].WarehouseCode}
@@ -384,7 +385,7 @@ const ViewProduct: React.FC = () => {
                 justifyContent="space-between"
                 alignItems="center"
               >
-              <div className="flexcontainer" style={{flexDirection: "row"}}>
+                <div className="flexcontainer" style={{ flexDirection: "row" }}>
                   <motion.div
                     className="animatable"
                     whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
@@ -408,28 +409,32 @@ const ViewProduct: React.FC = () => {
                     </Button>
                   </motion.div>
                   <motion.div
-                  className="animatable"
-                  style={{marginLeft: '15px'}}
-                  whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <Button
-                    size="small"
-                    variant="contained"
-                    sx={{
-                      color: "white",
-                      backgroundColor: "#063970",
-                      width: 150,
-                      height: 50,
-                      borderRadius: 10,
-                      paddingRight: 4,
-                    }}
-                    startIcon={<LocationOnIcon />}
-                    onClick={() => navigate(`/binlocations/${binLocation.replace(/-/g, '')}`)}
+                    className="animatable"
+                    style={{ marginLeft: "15px" }}
+                    whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+                    whileTap={{ scale: 0.9 }}
                   >
-                    Location
-                  </Button>
-                </motion.div>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#063970",
+                        width: 150,
+                        height: 50,
+                        borderRadius: 10,
+                        paddingRight: 4,
+                      }}
+                      startIcon={<LocationOnIcon />}
+                      onClick={() =>
+                        navigate(
+                          `/binlocations/${binLocation.replace(/-/g, "")}`
+                        )
+                      }
+                    >
+                      Location
+                    </Button>
+                  </motion.div>
                 </div>
               </Box>
             </Grid>

@@ -98,3 +98,8 @@ module.exports.getFeatures = async (userGroupID) => {
 module.exports.delete = async (userGroupID) => {
     return knex('UserGroup').where('UserGroupID', userGroupID).del();
 };
+
+module.exports.getLastID = async () => {
+    const query = `SELECT UserGroupID FROM UserGroup ORDER BY UserGroupID DESC LIMIT 1`;
+    return knex.raw(query);
+};

@@ -10,7 +10,6 @@ import {
   UseFormWatch,
 } from "react-hook-form";
 import ReactQuill from "react-quill";
-import styled from "styled-components";
 
 interface FormFieldProps<T> {
   label: string;
@@ -45,7 +44,6 @@ const FormTextArea = <T,>({
   const onEditorStateChange = (editorState) => {
     setValue(name, editorState);
   };
-  console.log(`default is ${defaultvalue}`);
 
   const editorContent = watch(name) as string;
 

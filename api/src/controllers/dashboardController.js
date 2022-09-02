@@ -11,12 +11,10 @@ module.exports.currentTLoans = async (req, res) => {
         }
         const results = await dashboard.getCurrentTLoans();
         if (results.length > 0) {
-            console.log('endpoint working');
             return res.status(200).json(results[0]);
         }
         return res.status(404).send('There is no incoming TLoans');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -29,7 +27,6 @@ module.exports.PendingTLoans = async (req, res) => {
         }
         return res.status(404).send('There is no pending TLoans');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -42,7 +39,6 @@ module.exports.DraftTLoans = async (req, res) => {
         }
         return res.status(404).send('There is no draft TLoans');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -55,7 +51,6 @@ module.exports.ExtendedTLoans = async (req, res) => {
         }
         return res.status(404).send('There is no extended TLoans');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -69,7 +64,6 @@ module.exports.pendingRMAs = async (req, res) => {
         }
         return res.status(404).send('There are no pending RMAs');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -82,7 +76,6 @@ module.exports.approvedRMAs = async (req, res) => {
         }
         return res.status(404).send('There are no approved RMAs');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -95,7 +88,6 @@ module.exports.processingRMAs = async (req, res) => {
         }
         return res.status(404).send('There are no RMAs being processed');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -108,7 +100,6 @@ module.exports.rejectedRMAs = async (req, res) => {
         }
         return res.status(404).send('There are no rejected RMAs');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -121,7 +112,6 @@ module.exports.receivedRMAs = async (req, res) => {
         }
         return res.status(404).send('There are no received RMAs');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -134,7 +124,6 @@ module.exports.verifiedRMAs = async (req, res) => {
         }
         return res.status(404).send('There are no verified RMAs');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -147,7 +136,6 @@ module.exports.IPRMAs = async (req, res) => {
         }
         return res.status(404).send('There are no RMAs in progress');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -161,7 +149,6 @@ module.exports.closedRMAs = async (req, res) => {
         }
         return res.status(404).send('There are no closed RMAs');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -175,7 +162,6 @@ module.exports.TLoanCurrentStats = async (req, res) => {
         }
         return res.status(404).send('Error retriving T-Loan Statistic');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -188,7 +174,6 @@ module.exports.RMACurrentStats = async (req, res) => {
         }
         return res.status(404).send('Error retriving RMA Statistic');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -202,7 +187,6 @@ module.exports.TLoanCompanies = async (req, res) => {
         }
         return res.status(404).send('Error retrieving TLoanCompanies');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -216,7 +200,6 @@ module.exports.TloanType = async (req, res) => {
         }
         return res.status(404).send('Error retriving TloanTypes');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };

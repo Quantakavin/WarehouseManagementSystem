@@ -42,10 +42,7 @@ module.exports.loginUser = async (req, res) => {
                         .verifications.create({
                             to: ConvertMobileNo(results[0][0].MobileNo),
                             channel: 'sms'
-                        })
-                        .then((verification) =>
-                            console.log('twilio status is ', verification.status)
-                        );
+                        });
                 }
 
                 return res.status(200).json(data);
@@ -54,11 +51,9 @@ module.exports.loginUser = async (req, res) => {
         }
         return res.status(401).json({ message: "User with email doesn't exist" });
     } catch (error) {
-        console.log('login error is ', error);
         if (error.status === 429) {
             return res.status(500).json({ message: 'Too many requests. Please try again later' });
         }
-        console.log(error.status);
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 };
@@ -68,11 +63,9 @@ module.exports.resend2FAToken = async (req, res) => {
     try {
         await twilioClient.verify.v2
             .services(config.TwilioService)
-            .verifications.create({ to: ConvertMobileNo(mobileno), channel: 'sms' })
-            .then((verification) => console.log('twilio status is ', verification.status));
+            .verifications.create({ to: ConvertMobileNo(mobileno), channel: 'sms' });
         return res.status(204).send();
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -81,7 +74,6 @@ module.exports.verify2FAToken = async (req, res) => {
     const { mobileno = null } = req.query;
     const { code } = req.body;
     let verificationstatus = '';
-    console.log('the no is ', code);
     try {
         await twilioClient.verify.v2
             .services(config.TwilioService)
@@ -90,12 +82,10 @@ module.exports.verify2FAToken = async (req, res) => {
                 verificationstatus = verificationCheck;
             });
         if (verificationstatus.status !== 'approved') {
-            console.log(verificationstatus);
             return res.status(400).json({ message: 'Incorrect code entered! Please try again.' });
         }
         return res.status(204).send();
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -106,7 +96,6 @@ module.exports.getAllNames = async (req, res) => {
         const results = await user.getNames(name);
         return res.status(200).json(results[0]);
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -122,7 +111,6 @@ module.exports.getAllUsers = async (req, res) => {
         redisClient.set('users', JSON.stringify(results[0]), 'EX', 60 * 60 * 24);
         return res.status(200).json(results[0]);
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -139,7 +127,6 @@ module.exports.filterUsers = async (req, res) => {
         const results = await user.filter(pageSize, pageNo, sortColumn, sortOrder, name);
         return res.status(200).json(results[0][0]);
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -205,14 +192,12 @@ module.exports.getUserByName = async (req, res) => {
 
 module.exports.createUser = async (req, res) => {
     const { name, email, password, mobileno, company, usergroup, notificationgroups } = req.body;
-    console.log('noti groups are ', notificationgroups);
     try {
         const hash = await bcrypt.hash(password, 10);
         await user.insert(name, email, hash, mobileno, company, usergroup, notificationgroups);
         redisClient.del('users');
         return res.status(201).json({ message: 'User created successfully!' });
     } catch (error) {
-        console.log('the error object is ', error);
         if (error.code === 'ER_DUP_ENTRY') {
             if (error.sqlMessage.endsWith(`key 'user_username_unique'`)) {
                 return res.status(422).json({ message: 'User with that username already exists' });
@@ -226,8 +211,6 @@ module.exports.createUser = async (req, res) => {
 module.exports.update2FA = async (req, res) => {
     const userID = req.params.id;
     const { enabled2FA } = req.body;
-    console.log('the boolean is ', req.body);
-    console.log('the boolean is ', enabled2FA);
     let return2FA;
     let successmsg = '';
     if (enabled2FA) {
@@ -242,11 +225,10 @@ module.exports.update2FA = async (req, res) => {
         if (results.length > 0) {
             await user.update2FA(userID, return2FA);
             redisClient.del(`user#${userID}`);
-            return res.status(204).json({ message: successmsg });
+            return res.status(200).json({ message: successmsg });
         }
         return res.status(404).json({ message: 'Cannot find user with that id' });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -264,9 +246,6 @@ module.exports.updateUser = async (req, res) => {
         notificationgroups
     } = req.body;
     try {
-        // const notigroups = notificationgroups.map((group) => {
-        //     return JSON.parse(group)
-        // })
         const results = await user.getByID(userID);
         let finalactive = '';
         if (active) {
@@ -302,11 +281,10 @@ module.exports.updateUser = async (req, res) => {
             }
             redisClient.del(`user#${userID}`);
             redisClient.del(`users`);
-            return res.status(204).json({ message: 'User updated successfully!' });
+            return res.status(200).json({ message: 'User updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find user with that id' });
     } catch (error) {
-        console.log(error);
         if (error.code === 'ER_DUP_ENTRY') {
             if (error.sqlMessage.endsWith(`key 'user_username_unique'`)) {
                 return res.status(422).json({ message: 'User with that username already exists' });
@@ -323,7 +301,6 @@ module.exports.deleteUser = async (req, res) => {
         const results = await user.getByID(userID);
         if (results[0].length > 0) {
             const results2 = await user.checkTLoansAndRMA(userID);
-            console.log(results2);
             if (results2[0][0].Count === 0) {
                 await user.delete(userID);
                 redisClient.del(`user#${userID}`);
@@ -336,7 +313,6 @@ module.exports.deleteUser = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find User with that id' });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -352,11 +328,10 @@ module.exports.updateUserTeleID = async (req, res) => {
         if (results.length > 0) {
             await user.updateTeleID(userID, telegramid);
             redisClient.del(`user#${userID}`);
-            return res.status(204).json({ message: 'User telegram id updated successfully!' });
+            return res.status(200).json({ message: 'User telegram id updated successfully!' });
         }
         return res.status(404).json({ message: 'Cannot find user with that id' });
     } catch (error) {
-        console.log(error);
         if (error.code === 'ER_DUP_ENTRY') {
             if (error.sqlMessage.endsWith(`key 'user_telegramid_unique'`)) {
                 return res
@@ -394,10 +369,18 @@ module.exports.updateUserPassword = async (req, res) => {
         return res.status(404).json({
             message: 'Cannot find user with that id'
         });
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
         return res.status(500).json({
             message: 'Internal Server Error!'
         });
+    }
+};
+
+module.exports.getLastID = async () => {
+    try {
+        const results = await user.getLastID();
+        return results[0];
+    } catch (error) {
+        return null;
     }
 };

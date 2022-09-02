@@ -199,3 +199,8 @@ module.exports.updateTeleID = async (userID, telegramid) => {
         TelegramID: telegramid
     });
 };
+
+module.exports.getLastID = async () => {
+    const query = `SELECT UserID FROM User ORDER BY UserID DESC LIMIT 1`;
+    return knex.raw(query);
+};

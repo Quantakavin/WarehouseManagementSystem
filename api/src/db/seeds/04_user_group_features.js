@@ -2,10 +2,10 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.seed = async function (knex) {
+exports.seed = async (knex) => {
     return knex('UserGroupFeature')
         .del()
-        .then(function () {
+        .then(() => {
             return knex('UserGroupFeature').insert([
                 { UserGroupID: 1, FeatureID: 1, FeatureRightID: 3 },
                 { UserGroupID: 1, FeatureID: 2, FeatureRightID: 3 },

@@ -186,7 +186,7 @@ module.exports.SubmitAfterEdit = async (
                 'TLoanID'
             )
             .transacting(trx)
-            .then(function () {
+            .then(() => {
                 // tloanItems.forEach((item) => (item.TLoanID = TLoanID));
                 return knex('TLoanOutItem').insert(tloanItems).transacting(trx);
             })
@@ -226,7 +226,7 @@ module.exports.DraftAfterEdit = async (
                 'TLoanID'
             )
             .transacting(trx)
-            .then(function () {
+            .then(() => {
                 // tloanItems.forEach((item) => (item.TLoanID = TLoanID));
                 return knex('TLoanOutItem').insert(tloanItems).transacting(trx);
             })

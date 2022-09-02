@@ -2,8 +2,8 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function (knex) {
-    return knex.schema.table('Notification', function (table) {
+exports.up = (knex) => {
+    return knex.schema.table('Notification', (table) => {
         table.integer('ReceiverID');
         table
             .foreign('ReceiverID')
@@ -19,8 +19,8 @@ exports.up = function (knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function (knex) {
-    return knex.schema.table('NotiGroup', function (table) {
+exports.down = (knex) => {
+    return knex.schema.table('NotiGroup', (table) => {
         table.dropForeign(['ReceiverID'], 'FK_Notification_User_UserID');
         table.dropColumn('ReceiverID');
     });

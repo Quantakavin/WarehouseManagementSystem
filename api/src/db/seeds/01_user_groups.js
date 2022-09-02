@@ -2,7 +2,7 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.seed = async function (knex) {
+exports.seed = async (knex) => {
     // Deletes ALL existing entries
     /*
   await knex('UserGroups').del()
@@ -15,7 +15,7 @@ exports.seed = async function (knex) {
 
     return knex('UserGroup')
         .del()
-        .then(function () {
+        .then(() => {
             return knex('UserGroup').insert([
                 {
                     UserGroupID: 1,

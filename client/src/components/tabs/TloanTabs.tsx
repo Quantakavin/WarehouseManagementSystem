@@ -27,12 +27,11 @@ import {
 } from "@mui/x-data-grid";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../app/hooks";
+import axios from "axios";
+import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { selectId, selectRole } from "../../app/reducers/CurrentUserSlice";
 import config from "../../config/config";
 import { EditableContext } from "../context/IsEditableContext";
-import axios from "axios";
-import { useAppDispatch } from "../../app/hooks";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
 import CustomToolbar from "../table/CustomToolbar";
 
@@ -135,7 +134,7 @@ const TLoanTabs: React.FC = () => {
     },
   }));
 
-  function CustomNoRowsOverlay() {
+  const CustomNoRowsOverlay = () => {
     return (
       <StyledGridOverlay>
         <svg
@@ -180,7 +179,7 @@ const TLoanTabs: React.FC = () => {
         <Box sx={{ mt: 1 }}>No T-Loan Requests Found</Box>
       </StyledGridOverlay>
     );
-  }
+  };
 
   const navigate = useNavigate();
   const [pageSize, setPageSize] = React.useState(25);

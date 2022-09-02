@@ -56,7 +56,7 @@ const Rmatabs: React.FC = () => {
   useEffect(() => {
     dispatch(ChangeTab({ currenttab: "RMA" }));
   });
-  //Retrieving RMA request data for each table
+  // Retrieving RMA request data for each table
   useEffect(() => {
     setTableLoading(true);
     // declare the async data fetching function
@@ -145,7 +145,7 @@ const Rmatabs: React.FC = () => {
     },
   }));
 
-  function CustomNoRowsOverlay() {
+  const CustomNoRowsOverlay = () => {
     return (
       <StyledGridOverlay>
         <svg
@@ -190,7 +190,7 @@ const Rmatabs: React.FC = () => {
         <Box sx={{ mt: 1 }}>No RMA Requests Found</Box>
       </StyledGridOverlay>
     );
-  }
+  };
 
   console.log(pendingTable);
 

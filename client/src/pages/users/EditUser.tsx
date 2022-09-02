@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { GetCompanies } from "../../api/CompanyDB";
+import GetCompanies from "../../api/CompanyDB";
 import { GetNotificationGroups } from "../../api/NotificationGroupDB";
 import { GetUser, UpdateUser } from "../../api/UserDB";
 import { GetUserGroups } from "../../api/UserGroupDB";

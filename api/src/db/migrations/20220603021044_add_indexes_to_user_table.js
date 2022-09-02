@@ -2,8 +2,8 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function (knex) {
-    return knex.schema.table('User', function (table) {
+exports.up = (knex) => {
+    return knex.schema.table('User', (table) => {
         table.index(['Username'], 'FK_User_Username_idx');
     });
 };
@@ -12,8 +12,8 @@ exports.up = function (knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function (knex) {
-    return knex.schema.table('User', function (table) {
+exports.down = (knex) => {
+    return knex.schema.table('User', (table) => {
         table.dropIndex(['Username'], 'FK_User_Username_idx');
     });
 };

@@ -103,16 +103,7 @@ module.exports.delete = async (notiGroupID) => {
     return knex('NotiGroup').where('NotiGroupID', notiGroupID).del();
 };
 
-// module.exports.delete = async (notiGroupID) => {
-//     return knex.transaction((trx) => {
-//         knex('NotiGroupFeature')
-//             .where('NotiGroupID', notiGroupID)
-//             .del()
-//             .transacting(trx)
-//             .then(() => {
-//                 return knex('NotiGroup').where('NotiGroupID', notiGroupID).del().transacting(trx);
-//             })
-//             .then(trx.commit)
-//             .catch(trx.rollback);
-//     });
-// };
+module.exports.getLastID = async () => {
+    const query = `SELECT NotiGroupID FROM NotiGroup ORDER BY NotiGroupID DESC LIMIT 1`;
+    return knex.raw(query);
+};

@@ -2,8 +2,8 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function (knex) {
-    return knex.schema.createTable('UserNotiGroup', function (table) {
+exports.up = (knex) => {
+    return knex.schema.createTable('UserNotiGroup', (table) => {
         table.integer('UserID').notNullable();
         table.integer('NotiGroupID').notNullable();
         table
@@ -27,6 +27,6 @@ exports.up = function (knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function (knex) {
+exports.down = (knex) => {
     return knex.schema.dropTable('UserNotiGroup');
 };

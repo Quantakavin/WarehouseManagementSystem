@@ -8,6 +8,7 @@ const { TOKEN } = process.env;
 const bot = new TelegramBot(TOKEN, { polling: true });
 const isdnlogo =
     'https://www.pngitem.com/pimgs/m/621-6213396_isdn-holdings-limited-isdn-holdings-logo-hd-png.png';
+/* eslint-disable no-console */
 
 // const tloanoptions = {
 //     reply_markup: JSON.stringify({

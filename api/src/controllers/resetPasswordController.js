@@ -5,6 +5,8 @@ const crypto = require('crypto');
 const resetPasswordService = require('../services/resetPasswordService');
 const userService = require('../services/userService');
 
+/* eslint-disable no-console */
+
 async function sendEmail({ from, to, subject, html }) {
     const transporter = nodemailer.createTransport({
         host: 'smtp.office365.com', // change when not using ethereal host email

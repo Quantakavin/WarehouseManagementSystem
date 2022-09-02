@@ -55,14 +55,11 @@ const Users2: React.FC = () => {
     }
   }, []);
 
-  const UsersQuery = useQuery(
-    'users',
-    GetAllUsers, {
-      onSuccess: (data) => {
-        setUsers(data.data)
-      }
-    }
-  );
+  const UsersQuery = useQuery("users", GetAllUsers, {
+    onSuccess: (data) => {
+      setUsers(data.data);
+    },
+  });
 
   // useEffect(() => {
   //   setLoading(true);
@@ -102,7 +99,7 @@ const Users2: React.FC = () => {
         // queryClient.invalidateQueries('filterusergroups');
         queryClient.invalidateQueries("usernames");
         setIdToDelete(null);
-        //navigate("/users");
+        // navigate("/users");
       },
     });
   };
@@ -185,7 +182,7 @@ const Users2: React.FC = () => {
     },
   }));
 
-  function CustomNoRowsOverlay() {
+  const CustomNoRowsOverlay = () => {
     return (
       <StyledGridOverlay>
         <svg
@@ -230,7 +227,7 @@ const Users2: React.FC = () => {
         <Box sx={{ mt: 1 }}>No Users Found</Box>
       </StyledGridOverlay>
     );
-  }
+  };
 
   return (
     <Box sx={{ pl: 3, pr: 3, pt: 1, height: "100%", width: "100%" }}>
@@ -251,13 +248,21 @@ const Users2: React.FC = () => {
               Cancel
             </button>
             <motion.button
-              style={{ alignSelf: "flex-end", width: "auto", minWidth: "155px" }}
+              style={{
+                alignSelf: "flex-end",
+                width: "auto",
+                minWidth: "155px",
+              }}
               className="deletebutton"
               onClick={() => Delete(idToDelete)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              {mutation.isLoading? <CircularProgress size={15} color="inherit" /> : "Delete Anyway"}
+              {mutation.isLoading ? (
+                <CircularProgress size={15} color="inherit" />
+              ) : (
+                "Delete Anyway"
+              )}
             </motion.button>
             {/* <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="animatable deletebutton" style={{ alignSelf: "flex-end" }} onClick={() => Delete(idToDelete)}>
             <Button sx={{textTransform: "none", color: "white", fontWeight: 500}}>

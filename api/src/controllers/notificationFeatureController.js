@@ -27,7 +27,6 @@ module.exports.getAllNotificationTypes = async (req, res) => {
         redisClient.set('notificationtypes', JSON.stringify(results[0]), { EX: 60 * 60 * 24 });
         return res.status(200).json(results[0]);
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };

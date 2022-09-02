@@ -31,15 +31,15 @@ const ProductCard = () => {
           </div>
           <div>
             <span className="ItemName">Item Name</span>
-            <h1 className="Current" />
+            {/* <h1 className="Current" /> */}
           </div>
           <div>
             <span className="Brand">Brand</span>
-            <h1 className="Brand" />
+            {/* <h1 className="Brand" /> */}
           </div>
           <div>
             <span className="BatchNumber">Batch Number</span>
-            <h1 className="BatchNumber" />
+            {/* <h1 className="BatchNumber" /> */}
           </div>
         </div>
       </div>

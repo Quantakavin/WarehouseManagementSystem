@@ -33,7 +33,6 @@ module.exports.getAllRMA = async (req, res) => {
         }
         return res.status(404).send('No RMAs found!');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -53,7 +52,6 @@ module.exports.getRMAProducts = async (req, res) => {
         }
         return res.status(404).json({ error: 'No RMA products Found!' });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -72,7 +70,6 @@ module.exports.getRMADetails = async (req, res) => {
             [output] = results;
             const IDOfRMA = results[0][0].RmaID;
             const results2 = await rmaService.getRMAProducts(IDOfRMA);
-            console.log(output);
             if (results2.length > 0) {
                 [output[0].RMAProducts] = results2;
                 output = output[0];
@@ -82,7 +79,6 @@ module.exports.getRMADetails = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find RMA with that RMA No.!' });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -104,7 +100,6 @@ module.exports.getByRmaID = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find RMA with that RMA No.!' });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -126,7 +121,6 @@ module.exports.getMyPendingRMA = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find pending RMA requests under you!' });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -155,7 +149,6 @@ module.exports.getMyAcceptedRMA = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find accepted RMA requests under you!' });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -177,7 +170,6 @@ module.exports.getMyRejectedRMA = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find rejected RMA requests under you!' });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -202,7 +194,6 @@ module.exports.getMyIPRMA = async (req, res) => {
             .status(404)
             .json({ message: 'Cannot find RMA requests under you that are in progress!' });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -228,7 +219,6 @@ module.exports.getPendingRMA = async (req, res) => {
         }
         return res.status(404).send('No RMAs found!');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -247,7 +237,6 @@ module.exports.getAcceptedRMA = async (req, res) => {
         }
         return res.status(404).send('No Accepted RMAs found!');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -273,7 +262,6 @@ module.exports.getInProgressChecklist = async (req, res) => {
         }
         return res.status(404).send('No RMAs in processing found!');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -292,7 +280,6 @@ module.exports.getRejectedRMA = async (req, res) => {
         }
         return res.status(404).send('No rejected RMAs found!');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -318,7 +305,6 @@ module.exports.getReceivedRMA = async (req, res) => {
         }
         return res.status(404).send('No received RMAs found!');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -337,7 +323,6 @@ module.exports.getVerifiedRMA = async (req, res) => {
         }
         return res.status(404).send('No verified RMAs found!');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -356,7 +341,6 @@ module.exports.getIPRMA = async (req, res) => {
         }
         return res.status(404).send('No RMAs in progress found!');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -375,7 +359,6 @@ module.exports.getClosedRMA = async (req, res) => {
         }
         return res.status(404).send('No closed RMAs found!');
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -412,7 +395,6 @@ module.exports.newRMA = async (req, res) => {
         }
         return res.status(500).json({ message: 'Could Not Create The RMA' });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 };
@@ -449,7 +431,6 @@ module.exports.updateRmaAccepted = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
     } catch (error) {
-        console.log('rma accept error is ', error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -512,7 +493,6 @@ module.exports.updateRmaChecklist = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -549,7 +529,6 @@ module.exports.updateRmaReceived = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -567,9 +546,7 @@ module.exports.updateRmaInstructions = async (req, res) => {
         if (results.length > 0) {
             await rmaService.updateRmaInstructions(RmaID, products);
             if (telegramid != null) {
-                console.log('Sending Telegram Notification');
                 rmaVerifiedTele(telegramid, username, RmaID);
-                console.log(`Telegram sent, telegram id is: ${telegramid}`);
             }
             createNotification(18, userid, RmaID);
             rmaVerifiedMail(email, username, RmaID);
@@ -588,7 +565,6 @@ module.exports.updateRmaInstructions = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -606,9 +582,7 @@ module.exports.updateRmaCoa = async (req, res) => {
         if (results.length > 0) {
             await rmaService.updateRmaCOA(RmaID, products);
             if (telegramid != null) {
-                console.log('Sending Telegram Notification');
                 rmaProgressTele(telegramid, username, RmaID);
-                console.log(`Telegram sent, telegram id is: ${telegramid}`);
             }
             createNotification(19, userid, RmaID);
             rmaInprogressMail(email, username, RmaID);
@@ -627,7 +601,6 @@ module.exports.updateRmaCoa = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
     } catch (error) {
-        console.log(error);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -663,7 +636,6 @@ module.exports.closeRma = async (req, res) => {
         }
         return res.status(404).json({ message: 'Cannot find RMA with that number' });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };

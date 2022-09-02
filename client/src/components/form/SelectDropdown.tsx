@@ -29,7 +29,7 @@ const SelectDropdown: React.FC<SelectProps<any>> = ({
       defaultValue={defaultoption}
       className="selectfield"
       name={name}
-      {...(register && register(name, rules))}
+      {...(register && register(name, rules))} // eslint-disable-line react/jsx-props-no-spreading
       sx={{
         borderRadius: "10px",
         paddingTop: "0px",
@@ -50,23 +50,7 @@ const SelectDropdown: React.FC<SelectProps<any>> = ({
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <p className="formlabels"> {label} </p>
-      <div className="formfieldcontainer">
-        {field}
-        {/* <select
-          defaultValue=""
-          className="formselect"
-          name={name}
-          {...(register && register(name, rules))}
-          multiple={multiselect}
-        >
-          <option value="" disabled hidden>
-            {defaultoption}
-          </option>
-          {options.map(({ id, text, value }) => (
-            <option key={id} value={value}>{text}</option>
-          ))}
-        </select> */}
-      </div>
+      <div className="formfieldcontainer">{field}</div>
       <p className="errormsg">
         {error && (
           <>

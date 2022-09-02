@@ -6,6 +6,8 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 // const apiKey = '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'
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+/* eslint-disable no-console */
+
 module.exports.rmaAcceptedMail = (email, username, RmaID) => {
     sgMail
         .send({

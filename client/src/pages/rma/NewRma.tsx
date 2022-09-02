@@ -738,7 +738,7 @@ const CreateRMA: React.FC = () => {
     },
   }));
 
-  function CustomNoRowsOverlay() {
+  const CustomNoRowsOverlay = () => {
     return (
       <StyledGridOverlay>
         <svg
@@ -783,7 +783,7 @@ const CreateRMA: React.FC = () => {
         <Box sx={{ mt: 1 }}>No Products Added</Box>
       </StyledGridOverlay>
     );
-  }
+  };
 
   return (
     <Box>

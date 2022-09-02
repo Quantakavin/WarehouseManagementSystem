@@ -5,6 +5,7 @@ import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "react-use-cart";
 import { LoginUser } from "../../api/UserDB";
 import { useAppDispatch } from "../../app/hooks";
 import { removeUser, setUser } from "../../app/reducers/CurrentUserSlice";
@@ -16,7 +17,6 @@ import FormContainer from "../../components/form/FormContainer";
 import FormField from "../../components/form/FormField";
 import SubmitButton from "../../components/form/SubmitButton";
 import { SocketContext } from "../../context/socket";
-import { useCart } from "react-use-cart";
 import {
   EmailValidation,
   PasswordValidation,
@@ -28,7 +28,7 @@ interface FormValues {
 }
 
 const Login: React.FC = () => {
-  const { emptyCart} = useCart();
+  const { emptyCart } = useCart();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const socket = useContext(SocketContext);
@@ -79,7 +79,7 @@ const Login: React.FC = () => {
       localStorage.setItem("token", token);
       localStorage.setItem("user_id", id);
       localStorage.setItem("username", name);
-      emptyCart()
+      emptyCart();
       dispatch(
         setUser({
           id,

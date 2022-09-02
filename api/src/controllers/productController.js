@@ -31,7 +31,6 @@ module.exports.updateQuantity = async (ItemNo, BatchNo, Quantity) => {
             const results2 = await productService.getByItemCode(ItemNo, BatchNo);
             if (results2 != null) {
                 results2[0].forEach((result) => {
-                    // console.log("first result is ", result.BinProductPK)
                     redisClient.del(`product#${result.BinProductPK}`);
                 });
             }
@@ -39,7 +38,6 @@ module.exports.updateQuantity = async (ItemNo, BatchNo, Quantity) => {
         return null;
         // return res.status(204).send();
     } catch (error) {
-        console.log('the error is', error);
         return null;
         // return res.status(500).json({ message: 'Internal Server Error!' });
     }
@@ -65,7 +63,6 @@ module.exports.updateBinLocation = async (ItemNo, BatchNo, CurrentBinTag, FinalB
         return null;
         // return res.status(204).send();
     } catch (error) {
-        console.log('the error is', error);
         return null;
         // return res.status(500).json({ message: 'Internal Server Error!' });
     }
@@ -76,7 +73,6 @@ module.exports.getAllProducts = async (req, res) => {
     try {
         const products = await redisClient.get(`products?limit=${limit}&page=${page}`);
         if (products !== null) {
-            console.log('Products have been found in redis');
             const redisresults = JSON.parse(products);
             return res.status(200).json(redisresults);
         }
@@ -84,7 +80,6 @@ module.exports.getAllProducts = async (req, res) => {
         redisClient.set(`products?limit=${limit}&page=${page}`, JSON.stringify(results[0]));
         return res.status(200).json(results[0]);
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -142,7 +137,6 @@ module.exports.searchFilterProducts = async (req, res) => {
         }
         return res.status(404).send('Cannot find product(s)!');
     } catch (error) {
-        console.log(error);
         return res.status(500).send({
             message: 'Internal Server Error!'
         });
@@ -156,7 +150,6 @@ module.exports.getAllProductsPag = async (req, res) => {
         const result = await productService.getAllpag(offsetNo);
         return res.status(200).send(result[0]);
     } catch (error) {
-        console.log(error);
         return res.status(500).json({
             message: 'Internal Server Error!'
         });

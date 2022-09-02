@@ -1,7 +1,7 @@
 import axios from "axios";
 import config from "../config/config";
 
-export const GetAllRma = async (RmaID: string) => {
+export const GetAllRma = async () => {
   return axios.get(`${config.baseURL}/AllRMA`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -97,7 +97,7 @@ export const GetReceivedRMA = async () => {
   });
 };
 
-export const GetVerifiedRMA = async (userid: string) => {
+export const GetVerifiedRMA = async () => {
   return axios.get(`${config.baseURL}/verifiedRMA`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -105,7 +105,7 @@ export const GetVerifiedRMA = async (userid: string) => {
   });
 };
 
-export const GetIPRMA = async (userid: string) => {
+export const GetIPRMA = async () => {
   return axios.get(`${config.baseURL}/inprogressRMA`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -113,7 +113,7 @@ export const GetIPRMA = async (userid: string) => {
   });
 };
 
-export const GetClosedRMA = async (userid: string) => {
+export const GetClosedRMA = async () => {
   return axios.get(`${config.baseURL}/closedRMA`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,

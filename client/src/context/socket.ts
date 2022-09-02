@@ -5,6 +5,7 @@ import config from "../config/config";
 export const socket = io(config.serverURL);
 
 socket.on("connect", () => {
+  /* eslint-disable-next-line no-console */
   console.log("connected socket is ", socket.id);
 });
 

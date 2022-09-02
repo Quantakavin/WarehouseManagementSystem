@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Box, Switch, Typography } from "@mui/material";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { GetEmptyBins } from "../../api/BinLocationDB";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { GetEmptyBins } from "../../api/BinLocationDB";
 import { useAppDispatch } from "../../app/hooks";
 import { ChangeTab } from "../../app/reducers/SidebarSlice";
 

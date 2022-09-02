@@ -6,7 +6,7 @@ import * as THREE from "three";
 import React, { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
-import { Euler, useFrame, useLoader, useThree } from "@react-three/fiber";
+import { useLoader } from "@react-three/fiber";
 
 type GLTFResult = GLTF & {
   nodes: {

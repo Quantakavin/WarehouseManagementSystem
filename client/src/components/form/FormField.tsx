@@ -63,7 +63,7 @@ const FormField = <T,>({
             backgroundColor: disabled && "#e3e8ee",
           }}
           inputProps={inputProps}
-          {...(register && register(name, rules))}
+          {...(register && register(name, rules))} // eslint-disable-line react/jsx-props-no-spreading
           endAdornment={
             type === "password" && (
               <InputAdornment position="end">

@@ -4,8 +4,6 @@ function userConnect(id, userid) {
     const pUser = { id, userid };
 
     cUsers.push(pUser);
-    console.log('user added');
-    console.log(cUsers, 'users');
     return pUser;
 }
 
@@ -18,8 +16,6 @@ function userLogout(id) {
 
     if (index !== -1) {
         return cUsers.splice(index, 1)[0];
-        // console.log('user removed');
-        // console.log(cUsers, 'users');
     }
     return null;
 }

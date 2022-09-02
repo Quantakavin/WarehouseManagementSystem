@@ -57,14 +57,14 @@ const NotificationGroups2: React.FC = () => {
   }, []);
 
   const NotificationGroupQuery = useQuery(
-    'notificationgroups',
-    GetNotificationGroups, {
+    "notificationgroups",
+    GetNotificationGroups,
+    {
       onSuccess: (data) => {
-        setNotificationGroups(data.data)
-      }
+        setNotificationGroups(data.data);
+      },
     }
   );
-
 
   // const [hoveredRow, setHoveredRow] = React.useState(null);
   // useEffect(() => {
@@ -184,7 +184,7 @@ const NotificationGroups2: React.FC = () => {
     },
   }));
 
-  function CustomNoRowsOverlay() {
+  const CustomNoRowsOverlay = () => {
     return (
       <StyledGridOverlay>
         <svg
@@ -229,7 +229,7 @@ const NotificationGroups2: React.FC = () => {
         <Box sx={{ mt: 1 }}>No Notification Groups Found</Box>
       </StyledGridOverlay>
     );
-  }
+  };
 
   /*
   const onMouseEnterRow = (event) => {
@@ -260,14 +260,22 @@ const NotificationGroups2: React.FC = () => {
               Cancel
             </button>
             <motion.button
-              style={{ alignSelf: "flex-end", width: "auto", minWidth: "155px" }}
+              style={{
+                alignSelf: "flex-end",
+                width: "auto",
+                minWidth: "155px",
+              }}
               className="deletebutton"
               onClick={() => Delete(idToDelete)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              {mutation.isLoading? <CircularProgress size={15} color="inherit" /> : "Delete Anyway"}
-            </motion.button>  
+              {mutation.isLoading ? (
+                <CircularProgress size={15} color="inherit" />
+              ) : (
+                "Delete Anyway"
+              )}
+            </motion.button>
             {/* <motion.button
               style={{ alignSelf: "flex-end" }}
               className="deletebutton"

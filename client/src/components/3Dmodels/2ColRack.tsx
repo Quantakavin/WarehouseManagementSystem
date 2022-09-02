@@ -112,7 +112,7 @@ const Model: React.FC<ModelProps> = ({
   currentbintags,
 }) => {
   const group = useRef<THREE.Group>();
-  const { nodes, materials } = useGLTF("/smallrack.glb") as GLTFResult;
+  const { nodes } = useGLTF("/smallrack.glb") as GLTFResult;
 
   const CreateBoxes = () => {
     const initialx = -1.5;
@@ -136,7 +136,12 @@ const Model: React.FC<ModelProps> = ({
   };
 
   return (
-    <group ref={group} dispose={null} position={position}>
+    <group
+      ref={group}
+      dispose={null}
+      position={position}
+      onClick={() => changeposition(position)}
+    >
       {CreateBoxes()}
       <mesh
         geometry={nodes.Cube006.geometry}
