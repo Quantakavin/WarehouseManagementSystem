@@ -769,8 +769,6 @@ const BinLocations: React.FC = () => {
           </div>
           <Link // eslint-disable-line jsx-a11y/anchor-is-valid
             onClick={() => navigate("/emptybins")}
-            component="button"
-            variant="body2"
             sx={{ fontSize: "12px", marginTop: "5px", marginLeft: "10px" }}
           >
             View Empty Bins

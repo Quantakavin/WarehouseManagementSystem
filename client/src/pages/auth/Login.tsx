@@ -161,8 +161,6 @@ const Login: React.FC = () => {
           onClick={() => {
             navigate("/forgetpassword");
           }}
-          component="button"
-          variant="body2"
           underline="hover"
           sx={{ ml: 10 }}
         >

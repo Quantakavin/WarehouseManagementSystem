@@ -24,7 +24,7 @@ describe('Login Test', () => {
     it('Should check if email/password combination', () => {
         cy.get('input[name="email"]').clear()
         cy.get('input[name="password"]').clear()
-        cy.get('input[name="email"]').type("kavin@gmail.com")
+        cy.get('input[name="email"]').type("Admin@gmail.com")
         cy.get('input[name="password"]').type("Password1")
         cy.contains('Continue').click()
         cy.contains('Invalid Email/Password Combination').should('be.visible')
@@ -32,7 +32,7 @@ describe('Login Test', () => {
     it('Should redirect upon successful login', () => {
         cy.get('input[name="email"]').clear()
         cy.get('input[name="password"]').clear()
-        cy.get('input[name="email"]').type("kavin@gmail.com")
+        cy.get('input[name="email"]').type("Admin@gmail.com")
         cy.get('input[name="password"]').type("Password12@")
         cy.contains('Continue').click()
         cy.url().should('include', '/dashboard')
